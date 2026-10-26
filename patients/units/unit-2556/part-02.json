@@ -1,0 +1,400 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002556",
+      "events": [
+        {
+          "id": "2023-05-09a",
+          "kind": "portal_message",
+          "start": "2023-05-09T22:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about a research study",
+              "author": "patient",
+              "date": "2023-05-09T22:41",
+              "body": "Hi Doctor, I signed up for a study through the university about how blood pressure reacts to position changes. At my session last Thursday they had me lie flat for a while and then stand up quickly, and I was lightheaded for a few seconds before it passed. The cardiology people running it said my pressure dipped and then came back up, and that they'd send you a summary. I've never fainted. Is this something I should worry about?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about a research study",
+              "author": "PCP",
+              "date": "2023-05-10T07:55",
+              "body": "Thanks for letting me know. A few seconds of lightheadedness when you pop up fast from lying down is common, especially in lean young people, and the fact that it settled on its own is reassuring. I'll look at their summary when it arrives and get back to you."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-11a",
+          "kind": "outside_records",
+          "start": "2023-05-11T13:05",
+          "conditions": [
+            {"label": "Orthostatic hypotension", "action": "diagnosed", "onset": "2023-05-04", "note": "Transient drop on active stand during a university research protocol, recovered by 30 seconds"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Research visit summary, university cardiology research group",
+              "author": "cardiology",
+              "date": "2023-05-11T13:05",
+              "body": "UNIVERSITY CARDIOVASCULAR PHYSIOLOGY RESEARCH PROGRAM\nResearch Visit Summary for Primary Care\n\nParticipant: Vikram Rahman   DOB 03/27/1998\nVisit date: 05/04/2023\nProtocol: Hemodynamic response to rapid postural change in healthy adult volunteers\n\nThe participant completed the active-stand portion of the protocol. Following 10 minutes of supine rest he was asked to rise quickly to standing. He described mild lightheadedness lasting several seconds that cleared spontaneously. No presyncope beyond this and no loss of consciousness.\n\nContinuous noninvasive monitoring showed a transient fall in systolic blood pressure on standing, accompanied by a compensatory increase in heart rate. By the 30-second measurement after standing, blood pressure had returned to near his supine baseline.\n\nMedications: none. Allergies: no known drug allergies.\nFamily history: negative for cardiovascular disease, syncope and sudden cardiac death.\nSocial: graduate student; never smoker; no alcohol.\n\nImpression: transient orthostatic hypotension with active stand, recovered within 30 seconds. This is a research encounter and not a clinical consultation. We are sharing the finding with the participant's permission; further evaluation is at the discretion of his primary care physician.\n\nResearch cardiologist, Cardiovascular Physiology Research Program"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-12a",
+          "kind": "portal_message",
+          "start": "2023-05-12T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Research summary received",
+              "author": "PCP",
+              "date": "2023-05-12T12:20",
+              "body": "Got the study summary. When you stood up quickly your systolic pressure dropped for a moment, your heart rate rose to make up for it, and by 30 seconds you were back near baseline. No fainting. I'm adding orthostatic hypotension to your problem list so it's on record, but this pattern is usually benign.\nPractical stuff: get up in stages (sit, then stand), drink enough water, and sit or lie down right away if you feel lightheaded. If you ever actually pass out, or get lightheaded with exercise or chest pain, call me same day. We'll go over it at your physical in August."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Research summary received",
+              "author": "patient",
+              "date": "2023-05-12T17:48",
+              "body": "Great, thank you. That makes sense."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-08-22T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-08-22T10:05",
+              "body": "25M here for yearly exam.\nInterval: the research study in May picked up a brief BP drop on rapid standing (see summary in media). Since then no further lightheaded spells, never syncopal. Getting up slowly as advised. No palpitations, no exertional symptoms.\nNo meds, NKDA. No tobacco, no EtOH.\nROS otherwise neg.\nExam: vitals as charted, seated BP normal. Lean, NAD. HEENT ok. No thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities warm, no edema. Neuro intact.\nPHQ-2 0.\nA/P\n1. Orthostatic hypotension, brief, research-visit finding. Asymptomatic since. Fluids, slow position changes. Call if syncope.\n2. Health maintenance: labs normal 2021, will recheck next year. Flu shot at nurse visit when it's in. Will get the new COVID shot at the pharmacy.\nFollow up 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-03T17:15"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-03T17:15"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "author": "MA",
+              "date": "2023-10-03T17:20",
+              "body": "Flu vaccine, quadrivalent, 0.5 mL IM R deltoid. Screening questions negative, NKDA. VIS given. Seated for 15 min after, no lightheadedness, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "portal_message",
+          "start": "2023-10-17T20:15",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-14T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID shot",
+              "author": "patient",
+              "date": "2023-10-17T20:15",
+              "body": "Got this year's Pfizer COVID shot on 10/14 at the pharmacy in town, just letting you know for my records."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID shot",
+              "author": "MA",
+              "date": "2023-10-18T08:40",
+              "body": "Recorded, thanks Vikram."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-30a",
+          "kind": "telephone",
+          "start": "2023-10-30T07:52",
+          "reason": "Lightheaded during fast",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Triage: lightheaded and tired",
+              "author": "RN",
+              "date": "2023-10-30T08:05",
+              "body": "Pt texted the practice line at 0752, called him back. He is on the second day of a 48-hr religious fast, water only. Feels tired and gets lightheaded when he stands up, similar to the spell from the research study in the spring. No fainting, no chest pain, no palpitations, no vomiting. Drinking water. Able to walk around the apartment.\nOffered same-day visit, booked 10:40 with PCP. Told him to sit or lie down if lightheaded and to call 911 if he passes out before then. Pt agreeable."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-30b",
+          "kind": "office_visit",
+          "start": "2023-10-30T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue and lightheadedness during fast",
+          "conditions": [
+            {"label": "Starvation", "icd10": "T73.0XXA", "action": "diagnosed", "onset": "2023-10-29", "note": "48-hour water-only religious fast"}
+          ],
+          "state": {"labs": {"Glucose": 68}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-30T11:05", "resulted": "2023-10-30T12:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}, {"test": "Glucose", "value": 68}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-10-30T10:40"},
+            {"procedure": "Venipuncture", "performed": "2023-10-30T11:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: fatigue and lightheadedness",
+              "author": "PCP",
+              "date": "2023-10-30T13:15",
+              "body": "S: 25M, seen same day. Day 2 of a 48-hour religious fast, taking only water. Before starting he ate a big meal (rice, lentils, vegetables) Saturday evening. Since yesterday afternoon he's been tired and gets lightheaded when standing, a lot like the brief spells from the May research session. No syncope, no chest pain, no palpitations, no nausea or vomiting, no confusion. Urinating normally. Fast is meant to end this evening.\nNo medications. NKDA.\n\nO: Seated vitals as charted, stable.\nOrthostatics: supine 118/74, HR 68. Standing at 3 min 98/68, HR 90, lightheaded on standing, cleared after he sat down. No syncope.\nGen: tired-appearing but alert and conversant. Mucous membranes moist. Heart regular, no murmur. Lungs clear. Abd soft, nontender. Neuro nonfocal, gait steady.\n\nBMP (resulted 12:40): sodium, potassium, bicarbonate, BUN and creatinine all normal. Glucose 68.\n\nA/P:\nStarvation state from the prolonged fast, with mild orthostatic hypotension and a mildly low glucose. Clinically this is the expected picture at this point in a water-only fast: his body is keeping his sugar up on its own, kidneys and electrolytes fine. He wants to finish the fast tonight, which is reasonable.\n- Keep drinking water through the rest of the fast.\n- Rise in stages, sit or lie down if lightheaded.\n- Break the fast early (juice, then a meal) if he gets shaky, confused, faints, or the lightheadedness is getting worse rather than better.\n- When it ends tonight, start with something easy and keep fluids going.\n- Message me Wednesday to let me know he's back to normal.\nTotal time incl. review of research summary and labs, about 35 min."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-10-30T13:25",
+              "body": "Vikram, your electrolytes and kidney tests are normal. Blood sugar was 68, which is on the low side but expected late in a 48-hour fast. Plan as we discussed: water, slow to stand, break the fast early if you feel worse."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-01a",
+          "kind": "portal_message",
+          "start": "2023-11-01T09:02",
+          "conditions": [
+            {"label": "Starvation", "icd10": "T73.0XXA", "action": "resolved", "onset": "2023-10-29"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update after the fast",
+              "author": "patient",
+              "date": "2023-11-01T09:02",
+              "body": "Hi, checking in like you asked. The fast ended Monday evening, I had soup and rice first and then a normal dinner. By yesterday I felt completely normal, no more lightheadedness."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update after the fast",
+              "author": "PCP",
+              "date": "2023-11-01T11:30",
+              "body": "Glad to hear it. Nothing else needed. Before the next long fast, let me know and we can plan for it, and the same rules apply: water, slow to stand, break it if you feel worse."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "portal_message",
+          "start": "2024-01-23T15:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization form for the department",
+              "author": "patient",
+              "date": "2024-01-23T15:47",
+              "body": "My department needs an immunization record on their form before I start teaching a lab section this semester. Uploading it now. Could someone fill it out from my chart?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunization form for the department",
+              "author": "MA",
+              "date": "2024-01-24T10:05",
+              "body": "Hi Vikram, form completed from your immunization history (MMR, varicella, Tdap 2016, MenACWY, HPV, flu and COVID) and signed. It is under Documents for you to download."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Glucose": 87}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-08-20T08:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-20T08:50", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-08-20T08:15"},
+            {"procedure": "Venipuncture", "performed": "2024-08-20T08:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-08-20T09:00",
+              "body": "Vikram, 26, yearly exam.\nSince last year: one episode last October during a 48-hr fast (lightheaded, glucose 68), resolved once he ate. No spells since. Gets up slowly out of habit now. No syncope, palpitations or exertional symptoms.\nMeds none. NKDA. Nonsmoker, no alcohol.\nROS neg.\nPE: vitals as charted. Lean, well. Eyes, ears, throat normal. Neck no nodes or thyroid enlargement. Cardiac regular, no murmur. Lungs clear. Abdomen soft, no HSM. Skin normal. No edema.\nPHQ-2 0.\nAssessment/Plan\n- Orthostatic hypotension, history of brief episodes with rapid standing and fasting. Quiet. Same precautions.\n- Preventive: CBC and CMP today. Lipids normal 2021, repeat in a couple of years. Flu shot in October at nurse visit.\nSee you next summer."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T07:45",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-08-22T07:45",
+              "body": "Hi Vikram, labs from Tuesday look good. Blood count normal, kidney and liver function normal, and your sugar was normal this time."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T16:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-08T16:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2024-10-08T16:40",
+              "body": "Flu shot today. Well, afebrile by report, NKDA. Trivalent influenza 0.5 mL IM L deltoid, VIS reviewed. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "portal_message",
+          "start": "2024-10-23T09:38",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Can I be seen today?",
+              "author": "patient",
+              "date": "2024-10-23T09:38",
+              "body": "Hi, I just got back this morning from a three-day hiking trip. We ran short on food so the last two days I mostly had a bit of jerky and water. I'm really tired and my pee is dark. No vomiting or anything. Is it worth coming in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Can I be seen today?",
+              "author": "RN",
+              "date": "2024-10-23T09:51",
+              "body": "Yes, let's have the doctor take a look. You're booked at 2:00 today. Start sipping fluids now, and if you feel faint or start vomiting before then, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23b",
+          "kind": "office_visit",
+          "start": "2024-10-23T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue after hiking trip with limited food",
+          "conditions": [
+            {"label": "Fasting metabolic state", "icd10": "R63.8", "action": "diagnosed", "onset": "2024-10-21", "note": "Physiologic fasting adaptation, glucagon/PKA-driven hepatic glucose output, after two days of minimal intake"},
+            {"label": "Dehydration", "icd10": "E86.0", "action": "diagnosed", "onset": "2024-10-22", "note": "Mild, by history"}
+          ],
+          "state": {"weight_kg": 63.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-10-23T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: fatigue after hiking trip",
+              "author": "PCP",
+              "date": "2024-10-23T14:40",
+              "body": "CC: tired after a backpacking trip.\nHPI: Back this morning from 3 days hiking in a remote national park. Food ran short, so for the last 2 days he ate only small portions of jerky and drank water. Feels worn out but thinking clearly. Thinks he's down 2-3 lb. Denies nausea, vomiting, abdominal pain. Last void several hours ago, dark yellow. Has been drinking since he got home. Similar fatigue last October during a 48-hr fast.\nMeds: none. Allergies: NKDA. No alcohol or drugs.\nExam: vitals as charted, all normal. Weight 1.2 kg below his August weight. Lean young man, alert, well hydrated, moist mucous membranes, no sclera icterus or jaundice. Heart RRR. Lungs clear. Abdomen soft, nontender, no hepatomegaly or splenomegaly.\nImpression:\n1. Fasting metabolic state after 2 days of very low intake. This is the normal fasting response (the liver is making and releasing glucose for him); no sign of liver disease on exam.\n2. Mild dehydration by history (dark urine, limited intake), not evident on exam.\nPlan: drink steadily over the next day until urine is pale, regular meals starting tonight. No labs needed today. Call if vomiting, fainting, or not improving in 2-3 days. Message me Monday.\nAdvised packing extra food on future trips."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-28a",
+          "kind": "portal_message",
+          "start": "2024-10-28T08:20",
+          "conditions": [
+            {"label": "Fasting metabolic state", "icd10": "R63.8", "action": "resolved", "onset": "2024-10-21"},
+            {"label": "Dehydration", "icd10": "E86.0", "action": "resolved", "onset": "2024-10-22"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Monday check-in",
+              "author": "patient",
+              "date": "2024-10-28T08:20",
+              "body": "Morning! Back to eating normally since Wednesday night, urine went back to normal by Thursday, and my energy is fine now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Monday check-in",
+              "author": "PCP",
+              "date": "2024-10-28T12:10",
+              "body": "Perfect, that's what I expected. Nothing further needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-06a",
+          "kind": "portal_message",
+          "start": "2024-11-06T18:55",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-11-02T12:15"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine",
+              "author": "patient",
+              "date": "2024-11-06T18:55",
+              "body": "Got the updated COVID vaccine Saturday (Moderna this time) at the pharmacy. Please add it to my chart."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine",
+              "author": "MA",
+              "date": "2024-11-07T09:30",
+              "body": "Added, 11/2/24 Moderna. Thanks!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

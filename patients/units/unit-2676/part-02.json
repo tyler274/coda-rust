@@ -1,0 +1,214 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002676",
+      "events": [
+        {
+          "id": "2023-03-22a",
+          "kind": "portal_message",
+          "start": "2023-03-22T20:30",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "Inhaler", "author": "patient", "date": "2023-03-22T20:30", "body": "My albuterol says it expired in February — I barely use it but want a fresh one before spring. Same pharmacy please."},
+            {"type": "Patient Message", "title": "RE: Inhaler", "author": "PCP", "date": "2023-03-23T07:50", "body": "Done, sent one inhaler with a refill. Good call checking the date. Let me know if you find yourself reaching for it more than a couple of times a week this season."}
+          ]
+        },
+        {
+          "id": "2023-07-14a",
+          "kind": "ed_visit",
+          "start": "2023-07-14T10:20",
+          "end": "2023-07-14T16:05",
+          "service": "Emergency Medicine",
+          "reason": "Hypotension and bronchospasm during dental procedure",
+          "conditions": [
+            {"label": "Anaphylaxis", "icd10": "T78.2XXA", "action": "diagnosed", "onset": "2023-07-14", "note": "During a dental procedure; trigger not established"}
+          ],
+          "vitals": [
+            {"time": "2023-07-14T10:22", "bp": [84, 52], "hr": 116, "rr": 24, "spo2": 92},
+            {"time": "2023-07-14T10:45", "bp": [116, 74], "hr": 102},
+            {"time": "2023-07-14T15:50", "bp": [124, 78], "hr": 88, "spo2": 98}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2023-07-14T10:20"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2023-07-17T09:10", "body": "REGIONAL EMERGENCY DEPARTMENT — PHYSICIAN RECORD\nVisit date: 07/14/2023   Arrival 10:20 by EMS\n\nCC: Low blood pressure and wheezing during dental work.\n\nHPI: 34-year-old man with systemic mastocytosis, allergic asthma and allergic rhinitis. He was in the chair for a scheduled dental procedure when his blood pressure dropped suddenly and he began wheezing; office staff called EMS. Arrives hypotensive with bronchospasm. Inciting exposure not clear from the history available.\n\nPMH: systemic mastocytosis; allergic asthma; persistent allergic rhinitis; generalized anxiety disorder.\nPSH: tonsillectomy (childhood); third molar extraction.\nHome meds: epinephrine auto-injector 0.3 mg PRN; cetirizine 10 mg daily; famotidine 20 mg BID; albuterol HFA PRN; fluticasone nasal daily; cromolyn oral solution 200 mg QID.\nAllergies: Hymenoptera venom (anaphylaxis), latex (anaphylaxis), dust mite, Timothy grass pollen.\nSocial: never smoker, occasional alcohol, teaches high school math.\nFamily: father with severe sting allergy and hypertension; paternal uncle with systemic mastocytosis.\n\nVitals on arrival: BP 84/52, HR 116, RR 24, SpO2 92% RA.\n\nExam: alert. Expiratory wheeze throughout. Heart tachycardic, regular. Abdomen soft. Skin warm.\n\nED course: Epinephrine 0.5 mg IM to the anterolateral thigh at 10:24. Within about 15 minutes pressure up to 116/74, HR 102, wheeze cleared and breathing comfortably. No further doses needed. Monitored on telemetry for observation; remained stable.\n\nDischarge vitals: BP 124/78, HR 88, SpO2 98% RA.\n\nImpression: Anaphylaxis during a dental procedure; trigger not established.\n\nDisposition: Home at 16:05 on his usual regimen. Carry both auto-injectors. Follow up with PCP this week. Return for any recurrence of symptoms.\n\nAllergies reviewed: venom, latex."}
+          ]
+        },
+        {
+          "id": "2023-07-14b",
+          "kind": "telephone",
+          "start": "2023-07-14T18:40",
+          "reason": "Patient call after ED visit",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from patient", "author": "PCP", "date": "2023-07-14T18:55", "body": "Randall called my cell from home. Had a reaction in the dentist's chair this morning — pressure dropped, wheezing — EMS took him to the ED, got IM epi there and improved quickly. Home since 4, feels wiped out but breathing fine. No recurrence. Reviewed: if any return of symptoms, use the auto-injector and call 911, don't wait. Booked him Wednesday. Asked him to bring the ED paperwork."}
+          ]
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "office_visit",
+          "start": "2023-07-19T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, anaphylaxis",
+          "conditions": [
+            {"label": "Anaphylaxis", "icd10": "T78.2XXA", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 9},
+            {"survey": "PHQ-9 total score", "value": 4}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-07-19T10:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2023-07-19T11:15", "body": "ED follow-up.\n\nFriday 7/14: anaphylaxis in the dental chair — hypotension and bronchospasm, IM epinephrine x1 in the ED with quick recovery, observed ~6 h, home same day. ED record received and reviewed. Trigger not established.\n\nSince then: no recurrence. Tired for a day, back to normal now. Has not reused albuterol. Taking cetirizine, famotidine and cromolyn as usual.\n\nHis auto-injectors at home are past their date. New prescription today.\n\nGAD-7 9, PHQ-9 4 — a bit more on edge this week, understandable; not asking for treatment.\n\nAllergies: Hymenoptera venom, latex (anaphylaxis); dust mite; Timothy grass.\n\nExam: well, no distress. Lungs clear, no wheeze. Heart regular. Skin clear.\n\nA/P:\n1. Anaphylaxis 7/14 — resolved. Epinephrine auto-injector 0.3 mg two-pack sent; carry both.\n2. Systemic mastocytosis — regimen unchanged.\n3. Allergic asthma — quiet.\n4. GAD — slightly up after the event, follow at the physical next month.\nHe'll let the dental office know about this episode before rescheduling."}
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "annual_physical",
+          "start": "2023-08-29T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-29T08:55", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-29T08:55", "results": [{"test": "Creatinine"}]}
+          ],
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 7},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-08-29T08:15"},
+            {"procedure": "Venipuncture", "performed": "2023-08-29T08:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-08-29T09:10", "body": "Physical. 34M.\n\nSince the July ED visit for anaphylaxis during dental work, no further reactions. Picked up the new auto-injectors. School starts next week.\n\nAsthma: no albuterol since spring. Rhinitis: controlled on daily fluticasone.\nSM: same regimen, cetirizine/famotidine/oral cromolyn.\nGAD-7 7, back near his usual.\n\nMeds and allergies reviewed, no changes. Never smoker, AUDIT-C 1.\n\nExam: HEENT normal. Neck no nodes. Heart RRR without murmur. Lungs clear throughout. Abdomen benign, no organomegaly. Skin unremarkable. Neuro intact.\n\nPlan:\n- CBC, CMP.\n- Flu and updated COVID vaccine in October.\n- Continue current meds.\n- Next physical August."}
+          ]
+        },
+        {
+          "id": "2023-08-31a",
+          "kind": "portal_message",
+          "start": "2023-08-31T16:45",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from your physical", "author": "PCP", "date": "2023-08-31T16:45", "body": "Your CBC and metabolic panel are normal across the board. Nothing to change."}
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-19T15:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-19T15:42"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-19T15:40"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2023-10-19T16:05", "body": "Influenza (quad) 0.5 mL IM L deltoid; 2023-24 COVID (Pfizer) 0.3 mL IM R deltoid. Latex-free supplies, chart flag confirmed. Auto-injectors with him. Observed 15 min without incident."}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up asthma, rhinitis, anxiety",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-02-14a",
+          "kind": "portal_message",
+          "start": "2024-02-14T09:30",
+          "reason": "Missed appointment",
+          "documents": [
+            {"type": "Patient Message", "title": "Missed you yesterday", "author": "front desk", "date": "2024-02-14T09:30", "body": "Hi Randall, we missed you at your 4:00 follow-up yesterday. Want to rebook? Video works too if after-school is tight."},
+            {"type": "Patient Message", "title": "RE: Missed you yesterday", "author": "patient", "date": "2024-02-14T12:10", "body": "So sorry — staff meeting ran way over and I completely forgot. Video would be great, any afternoon after 3:30 the first week of March."}
+          ]
+        },
+        {
+          "id": "2024-03-06a",
+          "kind": "telehealth_visit",
+          "start": "2024-03-06T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up asthma, rhinitis, anxiety",
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 6}
+          ],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-03-06T15:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2024-03-06T16:10", "body": "Video visit, pt at home. Identity confirmed.\n\nAsthma: one albuterol use all winter. No cough at night.\nRhinitis: fine on fluticasone.\nSM: no reactions since July. Allergist saw him in the fall, regimen the same.\nAnxiety: GAD-7 6. Busy but manageable. Declines treatment again, which is reasonable at this level.\n\nMeds reviewed, unchanged. Allergies unchanged.\n\nAssessment: allergic asthma and rhinitis controlled; systemic mastocytosis stable; GAD mild.\nPlan: continue all. Physical in August."}
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "portal_message",
+          "start": "2024-06-24T11:20",
+          "reason": "Epinephrine auto-injector refill",
+          "documents": [
+            {"type": "Patient Message", "title": "EpiPens", "author": "patient", "date": "2024-06-24T11:20", "body": "Both my auto-injectors expire next month. Could you send a new two-pack before I head out for summer stuff? Thanks!"},
+            {"type": "Patient Message", "title": "RE: EpiPens", "author": "RN", "date": "2024-06-24T14:05", "body": "Sent a new two-pack to your pharmacy. Insurance covered it with the usual copay. Keep the old ones until the new ones are in hand."}
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "annual_physical",
+          "start": "2024-08-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-21T09:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-21T09:40", "results": [{"test": "Creatinine"}]}
+          ],
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 7},
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-08-21T09:00"},
+            {"procedure": "Venipuncture", "performed": "2024-08-21T09:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-08-21T09:30", "body": "Annual exam — 35 y/o male teacher.\n\nQuiet year. No reactions, no urgent visits. Auto-injectors renewed in June. Albuterol barely used. Nasal symptoms controlled. Keeps cromolyn going faithfully.\n\nScreens: GAD-7 7, PHQ-9 2, AUDIT-C 1. Never smoker.\n\nMedications: cetirizine 10 mg daily; famotidine 20 mg BID; cromolyn oral solution 200 mg QID; fluticasone nasal 2 sprays/nostril daily; albuterol HFA PRN; epinephrine 0.3 mg auto-injector x2.\nAllergies: Hymenoptera venom — anaphylaxis; latex — anaphylaxis; dust mite; Timothy grass.\n\nExam: Healthy-appearing. Eyes, ears, throat normal. No lymphadenopathy. Cardiac exam regular, no murmurs. Lungs clear, no wheezing. Abdomen nontender, no masses. Skin without rash. Normal gait and strength.\n\nPlan: CBC and CMP today. Vaccines in the fall. Tdap due in 2026. All meds continued."}
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T13:15",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2024-08-23T13:15", "body": "Hi Randall, your labs from Wednesday are all within normal limits. See you in the fall for shots."}
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "nurse_visit",
+          "start": "2024-10-24T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-24T15:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-24T15:47"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-24T15:45"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "MA", "date": "2024-10-24T16:10", "body": "Flu (trivalent) right arm, 2024-25 COVID left arm. Latex-free. 15-minute wait, no problems."}
+          ]
+        }
+      ]
+    }
+  ]
+}

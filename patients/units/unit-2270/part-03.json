@@ -1,0 +1,279 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002270",
+      "events": [
+        {
+          "id": "2021-01-12a",
+          "kind": "office_visit",
+          "start": "2021-01-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, yearly labs",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-01-12T10:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2021-01-12T10:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-01-12T10:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2021-01-12T10:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-01-12T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes / HTN / AS", "author": "PCP", "date": "2021-01-12T10:35", "body": "Masked in-person visit. Has been mostly home. Stairs still make him stop partway; he thinks no worse than last year. No syncope. Cardiology letter from July never came despite our request; he says his next cardiology visit is this summer. Sober four years.\n\nExam: vitals per flowsheet. Harsh basal systolic murmur, unchanged. Lungs clear. Ankles without edema. Feet: sensation intact.\n\nPlan: yearly labs. Meds unchanged. COVID vaccine: on our list for February. Wellness visit May."},
+            {"type": "Result Note", "title": "Yearly labs", "author": "PCP", "date": "2021-01-14T09:10", "body": "A1c in range, lipids at goal on atorvastatin 20, kidney function and urine albumin normal. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2021-02-09a",
+          "kind": "nurse_visit",
+          "start": "2021-02-09T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 vaccine, dose 1",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-09T13:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-02-09T13:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "COVID vaccine #1", "author": "RN", "date": "2021-02-09T13:25", "body": "Pfizer COVID-19 vaccine dose 1, 0.3 mL IM left deltoid. Fact sheet given and card filled in. Observed 15 minutes, no reaction. Dose 2 booked for 3/2."}
+          ]
+        },
+        {
+          "id": "2021-03-02a",
+          "kind": "nurse_visit",
+          "start": "2021-03-02T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 vaccine, dose 2",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-02T13:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-03-02T13:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "COVID vaccine #2", "author": "RN", "date": "2021-03-02T13:25", "body": "Dose 2 Pfizer, 0.3 mL IM left deltoid. Had a tired day after the first. Card updated. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "annual_physical",
+          "start": "2021-05-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed wellness visit", "author": "front desk", "date": "2021-05-11T10:40", "body": "Pt did not arrive for 10:00 wellness visit. Called; he said he had it down for next week. Rebooking; reminder call to be made the day before."}
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "telephone",
+          "start": "2021-06-08T16:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Daughter calling about memory", "author": "RN", "date": "2021-06-08T16:20", "body": "Daughter called (pt gave verbal OK on the line). Over the past couple of months he has been forgetting things and seems 'not himself', more irritable. She found unpaid bills, he burned a pot, and last week he left the stove on and went out. Two days ago he got lost driving to the grocery store he has used for years. No falls she knows of. Not drinking as far as she can tell. Appointment made with PCP 6/15; she will come. Advised not to drive until seen."}
+          ]
+        },
+        {
+          "id": "2021-06-15a",
+          "kind": "office_visit",
+          "start": "2021-06-15T14:00",
+          "end": "2021-06-15T14:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Memory concerns",
+          "conditions": [{"label": "Hemiplegia and hemiparesis following cerebral infarction affecting left non-dominant side", "icd10": "I69.354", "action": "diagnosed", "onset": "2021-01-20"}],
+          "state": {"bp": [138, 82]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-15T14:55", "results": [{"test": "Sodium"}, {"test": "Calcium"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-15T14:55", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}]},
+            {"panel": null, "collected": "2021-06-15T14:55", "results": [{"test": "Vitamin B12"}, {"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "orders": [{"id": "neurology-referral", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "cognitive decline and prior stroke"}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2021-06-15T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Memory concerns", "author": "PCP", "date": "2021-06-15T15:20", "body": "Seen with his daughter.\n\nHPI: Daughter describes about two months of decline: bills piling up, trouble following recipes he has cooked for years, the stove left on, and getting lost on a familiar drive last week. More short-tempered. He minimizes it ('everyone forgets'). New today: the daughter says that in January he told her his left arm and leg felt weak and clumsy for several days; he did not call anyone and 'it mostly got better'. He confirms this, vague on dates, thinks around the third week of January. No headache, no falls, no alcohol (daughter agrees).\n\nEXAM: vitals per flowsheet. Alert, cooperative, repeats questions. Speech fluent. Left arm drifts; left grip and left hip flexion weaker than right. Left reflexes livelier than right. Gait a little wide, no falls in clinic. Mini-Cog: 1 of 3 words, clock with numbers crowded on one side. Heart: basal systolic murmur as before. Lungs clear.\n\nA/P:\n1. Subacute cognitive decline, with the history of a second, unreported stroke in January and residual left-sided weakness. Labs today (B12, TSH, CMP, CBC) for reversible causes. Neurology referral, expedited.\n2. Left hemiparesis after stroke (January 2021): added to problem list.\n3. Safety: no driving for now; he agreed reluctantly, daughter will take the keys. Stove: daughter looking into an automatic shut-off. Daughter will check in daily.\n4. Chronic issues unchanged; meds as before. Daughter will review pill organizer."}
+          ]
+        },
+        {
+          "id": "2021-06-17a",
+          "kind": "portal_message",
+          "start": "2021-06-17T11:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2021-06-17T11:00", "body": "George (and your daughter, who you said may read these): the blood tests we did for memory came back normal, including B12, thyroid, salt and calcium levels, kidney function and blood counts. Nothing there explains the memory change, so the neurology visit is the next step. Their office has the referral."}
+          ]
+        },
+        {
+          "id": "2021-07-07a",
+          "kind": "specialist_visit",
+          "start": "2021-07-07T09:00",
+          "service": "Neurology (outside)",
+          "reason": "Cognitive decline",
+          "conditions": [{"label": "Multi-infarct dementia", "icd10": "F01.50", "action": "diagnosed", "onset": "2021-04-15"}],
+          "vitals": {"bp": [150, 88], "hr": 76},
+          "orders": [{"id": "neurology-referral", "action": "done", "date": "2021-07-07T09:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology consultation", "author": "neurology", "date": "2021-07-20T14:30", "body": "NEUROLOGY CONSULTATION\nDate of service: 07/07/2021\n\nReason: cognitive decline.\n\nMr. Fleming, 75, comes with his daughter, who has noticed worsening memory and a change in personality over about two months. He is having difficulty with things that used to be easy, such as keeping his bills in order and cooking; recently he left the stove on unattended and lost his way driving to a nearby store. This is in the setting of earlier cerebrovascular disease and known aortic stenosis. He had a small stroke roughly six months ago, not evaluated at the time, and has residual left-sided weakness. Other history includes type 2 diabetes, hyperlipidemia, long-standing hypertension, presbycusis.\n\nMedications: hydrochlorothiazide 25 mg daily, metformin 500 mg twice daily, atorvastatin 20 mg nightly, loratadine 10 mg as needed.\nAllergies: NKDA.\nSocial: lives by himself and now needs regular supervision. Does not drink or smoke.\n\nExam: BP 150/88, pulse 76. Cranial nerves II to XII intact. Power 3/5 in the left arm and leg, normal on the right. Reflexes brisker on the left; left plantar extensor. MMSE 24/30. Delayed recall 1 of 3 at five minutes.\n\nImpression: multi-infarct (vascular) dementia, with a stepwise course in the setting of two clinical strokes and vascular risk factors.\n\nRecommendations:\n- Supervision for finances, medications and cooking; no driving.\n- Continue control of blood pressure, glucose and lipids per primary care.\n- Follow up in neurology in 6 months.\n\nNeurology"},
+            {"type": "Result Note", "title": "Neurology letter reviewed", "author": "PCP", "date": "2021-07-21T08:00", "body": "Neurology letter in: multi-infarct dementia, MMSE 24/30, left 3/5. No driving, supervision. Problem list updated. Visit with daughter booked 8/3 to plan."}
+          ]
+        },
+        {
+          "id": "2021-08-03a",
+          "kind": "office_visit",
+          "start": "2021-08-03T13:30",
+          "end": "2021-08-03T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Dementia care planning with daughter; diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-08-03T14:35", "results": [{"test": "Creatinine"}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2021-08-03T14:35", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-08-03T13:30"},
+            {"procedure": "Advance care planning, first 30 minutes", "performed": "2021-08-03T14:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Care planning visit", "author": "PCP", "date": "2021-08-03T14:50", "body": "With daughter. Reviewed the neurology consult together: vascular (multi-infarct) dementia after two strokes. He listened and said he had suspected something was wrong. Not driving since June. Daughter stops by every day after work and calls each morning; she now handles his bills and fills a weekly pill box. Left side feels stronger than in June, he says.\n\nExam: vitals per flowsheet. Left arm and leg still weaker than right but better than at the June visit; walks without a device. Basal systolic murmur. Lungs clear.\n\nAdvance care planning (30 min): he named his daughter as health care proxy; form signed and scanned. He wants full treatment for now and does not want to be kept alive on machines if he could no longer recognize his family; documented. MOLST deferred.\n\nPlan: A1c and BMP today. Meds unchanged. Neurology follow-up in January per their plan. RTC 5 months; daughter has portal proxy access."},
+            {"type": "Result Note", "title": "Labs", "author": "PCP", "date": "2021-08-04T12:15", "body": "A1c and BMP fine. Proxy message sent to daughter."}
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "outside_records",
+          "start": "2021-09-21T10:00",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic eye examination", "author": "optometry", "date": "2021-09-21T10:00", "body": "George Fleming was examined with his daughter present. Dilated exam: retinas free of diabetic disease bilaterally. Moderate cataracts; he is not bothered enough to consider surgery. Annual follow-up.\n\nOptometry"}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine and COVID booster",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-10-05T11:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-05T11:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-05T11:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2021-10-05T11:45", "body": "Daughter brought him. High-dose flu IM right deltoid; Pfizer booster 0.3 mL IM left deltoid. Both tolerated. Card updated."}
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "telephone",
+          "start": "2021-11-09T09:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Medication packaging", "author": "MA", "date": "2021-11-09T09:15", "body": "Daughter asks that his pharmacy dispense in dated blister packs; she found doubled-up doses in the pill box twice. Called pharmacy: they can do monthly blister cards; need new prescriptions for 30-day fills. Pended to PCP."},
+            {"type": "Telephone Encounter", "title": "Prescriptions sent", "author": "PCP", "date": "2021-11-09T12:40", "body": "New 30-day prescriptions for HCTZ, metformin, atorvastatin sent with note for blister packaging. Loratadine stays as needed, separate bottle."}
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "office_visit",
+          "start": "2022-01-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, yearly labs",
+          "state": {"labs": {"Hemoglobin A1c": 6.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-01-11T10:50", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2022-01-11T10:50", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-01-11T10:50", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2022-01-11T10:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-01-11T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2022-01-11T11:00", "body": "With daughter. Blister packs working, no missed doses she can find. Eating better since she brings dinners. Memory about the same, no new episodes of weakness. Saw neurology last week per daughter; no note to us yet. Stairs still tire him.\n\nExam: vitals per flowsheet. Slight left drift; left grip a bit weaker than right. Gait steady without device. Basal systolic murmur. Lungs clear. Feet intact.\n\nPlan: yearly labs. Continue all. Wellness visit May."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2022-01-11T11:20", "body": "Requested January 2022 neurology follow-up note."}
+          ]
+        },
+        {
+          "id": "2022-01-13a",
+          "kind": "portal_message",
+          "start": "2022-01-13T15:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2022-01-13T15:30", "body": "Hi, writing to you both. Your father's labs look good this year: the diabetes number is a bit better than last year, cholesterol at goal, kidneys normal, no protein in the urine. No changes."},
+            {"type": "Patient Message", "title": "RE: Results", "author": "patient", "date": "2022-01-13T19:05", "body": "Thank you. (This is his daughter writing.) He was happy to hear it."}
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "annual_physical",
+          "start": "2022-05-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2022-05-17T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2022-05-17T10:50", "body": "WELLNESS VISIT, daughter present.\n\nFunction: bathes, dresses and feeds himself. Daughter manages money, medicines and appointments; he makes simple meals, uses the microwave, stove has a shut-off. Not driving. No falls.\nCognition: known vascular dementia; Mini-Cog 1/3 today.\nMood: PHQ-9 4, says he misses driving.\nHearing aids used daily. Optometry yearly.\nAlcohol: still none.\nAdvance directive on file, daughter proxy.\nFall risk: home safety handout reviewed.\n\nExam: vitals per flowsheet. Mild left weakness, gait steady. Systolic murmur. Lungs clear. Skin of feet intact.\n\nPlan: diabetes visit July. Flu and COVID vaccines in the fall."}
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "office_visit",
+          "start": "2022-07-19T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-07-19T09:25", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2022-07-19T09:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-07-19T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2022-07-19T09:35", "body": "Daughter brought him. Quiet summer. Allergy season, loratadine helping. No falls. Exam stable: mild left weakness, murmur unchanged, lungs clear, no edema. A1c and BMP. Same plan."},
+            {"type": "Result Note", "title": "Labs", "author": "PCP", "date": "2022-07-20T10:40", "body": "Stable. Proxy message to daughter."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T11:00",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic eye examination", "author": "optometry", "date": "2022-09-20T11:00", "body": "Annual diabetic eye exam: no retinopathy OU. Cataracts moderate, unchanged. Return one year.\n\nOptometry"}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-04T10:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T10:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T10:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2022-10-04T11:00", "body": "High-dose flu right deltoid, Pfizer bivalent booster left deltoid. Daughter present. No reactions."}
+          ]
+        },
+        {
+          "id": "2022-11-15a",
+          "kind": "office_visit",
+          "start": "2022-11-15T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Urinary difficulty, weight loss",
+          "conditions": [{"label": "Elevated prostate specific antigen", "action": "diagnosed", "onset": "2022-11-15"}],
+          "state": {"weight_kg": 79.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-11-15T14:55", "resulted": "2022-11-16T15:30", "results": [{"test": "Prostate Specific Antigen", "value": 48.6}]},
+            {"panel": "Urinalysis", "collected": "2022-11-15T14:50", "results": [{"test": "Urine Blood"}, {"test": "Urine Leukocyte Esterase"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-11-15T14:55", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-11-15T14:55", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "orders": [{"id": "urology-referral", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "obstructive urinary symptoms, weight loss, PSA pending"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-11-15T14:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Urinary symptoms", "author": "PCP", "date": "2022-11-15T15:10", "body": "With daughter.\n\nHPI: For a few months he has to push to get his stream started, it stops and starts, and he is up several times a night to urinate. Some dull ache low in the belly. No blood in the urine, no burning, no fevers, no back or flank pain. Daughter has noticed his trousers are loose; he has lost about 5 kg since spring by our scale, though he says he is eating normally. Brother had prostate cancer.\n\nEXAM: vitals per flowsheet, weight down. Abdomen soft, mild suprapubic tenderness without a palpable bladder. No flank tenderness. Deferred rectal exam to urology at his request.\n\nA/P: Obstructive urinary symptoms with unintentional weight loss in a man whose brother had prostate cancer. PSA, urinalysis, CMP, CBC today. Urology referral now; will call with PSA."},
+            {"type": "Result Note", "title": "PSA", "author": "PCP", "date": "2022-11-16T16:10", "body": "PSA 48.6, markedly elevated. UA without blood or infection. Will call daughter tomorrow and ask urology to see him soon."}
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "telephone",
+          "start": "2022-11-17T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "PSA result", "author": "PCP", "date": "2022-11-17T09:30", "body": "Called daughter with him on speaker. Explained the PSA is high and that the prostate needs to be checked for cancer; urology will examine him and likely arrange imaging and a biopsy. They took it calmly. Urology office called by our staff: first opening January 4. Daughter will drive."}
+          ]
+        }
+      ]
+    }
+  ]
+}

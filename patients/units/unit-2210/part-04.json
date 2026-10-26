@@ -1,0 +1,497 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002210",
+      "events": [
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"weight_kg": 86.5, "bp": [132, 80]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-11T15:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-11T14:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-02-11T15:10",
+              "body": "Routine HF/DM/CKD visit.\n\nGood winter, no hospital since last April. Weights 189-191. Short of breath with stairs, unchanged for a year. Two pillows. He has been getting up 2-3 times a night to urinate, has for a long time, and says it is just the water pill. No dysuria. No chest pain.\n\nMeds x6, wife fills the pillbox Sundays. FIT negative in December.\n\nExam: comfortable. Heart regular, apical holosystolic murmur, no gallop. Lungs clear. No edema.\n\nA/P\n- HFrEF/ICM: compensated. Continue. Cardiology due June.\n- HTN: ok.\n- DM2: A1c in spring.\n- CKD 3b: BMP today.\n- Nocturia on furosemide: reminded him to take it in the morning only.\nRTC 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-18a",
+          "kind": "ed_visit",
+          "start": "2025-04-18T15:40",
+          "end": "2025-04-18T21:10",
+          "service": "Emergency Medicine",
+          "reason": "Acute confusion",
+          "conditions": [
+            {"label": "Hyponatremia", "icd10": "E87.1", "action": "diagnosed", "onset": "2025-04-18"}
+          ],
+          "vitals": {"bp": [160, 90], "hr": 88, "rr": 18, "temp_c": 37.1},
+          "measure": ["spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-18T16:00", "results": [
+              {"test": "Sodium", "value": 118},
+              {"test": "Potassium", "value": 4.5},
+              {"test": "Chloride", "value": 88},
+              {"test": "Bicarbonate", "value": 24},
+              {"test": "Glucose", "value": 180},
+              {"test": "Creatinine", "value": 2.1}
+            ]},
+            {"panel": null, "collected": "2025-04-18T16:00", "results": [{"test": "Osmolality of Serum or Plasma", "loinc": "2692-2", "unit": "mOsm/kg", "value": 250}]},
+            {"panel": null, "collected": "2025-04-18T16:30", "results": [{"test": "Sodium [Moles/volume] in Urine", "loinc": "2955-3", "unit": "mmol/L", "text": "Low"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-04-18T15:40"}],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-04-21T11:15",
+              "body": "Emergency Department Note - regional hospital\nDOS 04/18/2025 15:40\nPt: Howard Marino, 70 y/o M\n\nCC: confused per neighbor.\n\nHPI: 70-year-old with ischemic cardiomyopathy and HFrEF, seen here for heart failure decompensations in 2023 and 2024, brought in after a neighbor found him confused and disoriented. He can tell us his name but not the date or where he is, and he can't give much of his history. No family member came with him. The neighbor says he has been drinking less water lately because he is afraid of having to get up at night to use the bathroom.\n\nPMH (from our records): ischemic cardiomyopathy with LV aneurysm, HFrEF, CAD s/p MI and stent, HTN, DM2, HLD, CKD 3.\nMeds per our last list: aspirin 81, metoprolol succinate 50, lisinopril 20, atorvastatin 40, metformin 1000 BID, furosemide 40.\nAllergies: NKDA.\nAdvance directive: none on file. No designated surrogate.\n\nExam: BP 160/90, HR 88, RR 18, T 37.1 C (98.8 F). Skin warm and dry. Disoriented to time and place. No focal neurological deficits.\n\nLabs: Na 118, K 4.5, Cl 88, HCO3 24, glucose 180, creatinine 2.1 (baseline 1.9). Serum osmolality 250. Urine sodium low.\n\nImpression: acute confusion with severe hypotonic hyponatremia.\nPlan: admit to medicine, careful sodium correction with frequent checks, hold free water, neuro checks."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-18b",
+          "kind": "hospital_admission",
+          "start": "2025-04-18T21:10",
+          "end": "2025-04-22T12:00",
+          "service": "Internal Medicine",
+          "reason": "Hyponatremia with confusion",
+          "labs": [
+            {"panel": null, "collected": "2025-04-22T06:00", "results": [{"test": "Sodium", "value": 131}]}
+          ],
+          "procedures": [{"procedure": "Initial hospital inpatient care", "performed": "2025-04-18T21:10"}],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospitalist",
+              "date": "2025-04-23T10:20",
+              "body": "DISCHARGE SUMMARY - Medicine\nAdmit 04/18/2025   Discharge 04/22/2025\n\nPrincipal problem: hyponatremia (Na 118 on arrival) with acute confusion.\nChronic: HFrEF / ischemic cardiomyopathy with LV aneurysm; CAD s/p stent; HTN; DM2; HLD; CKD 3 (creatinine 2.1 on arrival vs baseline 1.9).\n\nHospital course: Sodium raised slowly with frequent checks, staying within safe daily limits. Confusion lifted over the first two days; by day 3 he was oriented and back to his usual self per his wife, who visited daily. Sodium 131 on the morning of discharge. Diuretic plan discussed: take the furosemide in the morning so it is done before bedtime, and drink normally rather than cutting fluids to avoid night trips.\n\nDischarge meds (unchanged): aspirin 81 mg daily, metoprolol succinate 50 mg daily, lisinopril 20 mg daily, atorvastatin 40 mg daily, metformin 1000 mg BID, furosemide 40 mg every morning.\nAllergies: NKDA.\n\nFollow-up: PCP within 1 week with a BMP."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "telephone",
+          "start": "2025-04-24T10:15",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge nurse call",
+              "author": "RN",
+              "date": "2025-04-24T10:15",
+              "body": "TCM outreach. Spoke with patient, wife on the line. He remembers little of the ED day but feels clear now. Taking furosemide at 7 am. Drinking 'normal, coffee and water with meals.' Has all meds, no changes. Confirmed visit 4/29 with blood work. Reviewed: confusion, falls, headache or vomiting -> ED."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-29a",
+          "kind": "office_visit",
+          "start": "2025-04-29T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up (transitional care)",
+          "state": {"labs": {"Sodium": 134, "Creatinine": 1.9}},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-29T09:50", "results": [{"test": "Sodium", "value": 134}, {"test": "Potassium"}, {"test": "Creatinine", "value": 1.9}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-04-29T09:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2025-04-29T10:15",
+              "body": "TCM. ED note and discharge summary reviewed: 4/18-4/22, confusion with Na 118 (serum osm 250, low urine Na, creatinine 2.1 vs baseline 1.9), corrected slowly, Na 131 at discharge, no medication changes.\n\nToday: oriented, conversational, back to normal per his wife. He had been limiting water in the evenings to cut down the bathroom trips; now drinking with meals and taking the diuretic early.\n\nExam: alert, oriented x3. Heart regular, apical systolic murmur. Lungs clear. No edema. Gait steady.\n\nMed rec: unchanged x6, matches discharge.\n\nA/P\n1. Hyponatremia: BMP today.\n2. HFrEF: euvolemic. Continue.\n3. CKD 3b: creatinine today.\n4. Advance directive and a health care proxy: raised again given that he came in alone and confused. He agreed to think about naming his wife.\nRTC 6 weeks with BMP."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP",
+              "author": "PCP",
+              "date": "2025-04-29T16:40",
+              "body": "Na 134, up from 131 at discharge. Creatinine 1.9, back to baseline. Called patient with result. Recheck June."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "office_visit",
+          "start": "2025-06-12T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hyponatremia and diabetes follow-up",
+          "conditions": [
+            {"label": "Hyponatremia", "icd10": "E87.1", "action": "resolved", "onset": "2025-04-18"}
+          ],
+          "state": {"labs": {"Sodium": 137, "Hemoglobin A1c": 6.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-12T10:40", "results": [{"test": "Sodium", "value": 137}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2025-06-12T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-12T10:10"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-06-12T10:50",
+              "body": "6-week f/u after the April hyponatremia admission.\nFeels fine. Taking furosemide at breakfast, drinks with meals, up once a night now. No confusion. Weights stable 189-191.\nMeds unchanged.\nExam: alert, oriented. Heart regular, apical systolic murmur. Lungs clear. No edema.\nA/P:\n- Hyponatremia: BMP today.\n- DM2: A1c today.\n- HFrEF: stable; cardiology appointment is in July this year.\n- HCP: not yet.\nRTC fall."
+            },
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2025-06-13T08:20",
+              "body": "Sodium 137, normal. Hyponatremia resolved, taken off the active problem list. A1c 7.4. Creatinine 2.0, near his baseline. Letter sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "outside_records",
+          "start": "2025-08-21T13:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye exam",
+              "author": "optometry",
+              "date": "2025-08-21T13:00",
+              "body": "Diabetic retinal exam, 08/14/2025, Howard Marino.\nDilated both eyes. Acuity with glasses 20/30 each eye. Pressures normal. Lenses: mild nuclear sclerosis, stable. Retina: no hemorrhages, microaneurysms or exudates; maculae flat. No diabetic retinopathy.\nReturn 1-2 years.\nNKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-28a",
+          "kind": "telephone",
+          "start": "2025-08-28T14:50",
+          "reason": "Cardiology appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient",
+              "author": "front desk",
+              "date": "2025-08-28T14:50",
+              "body": "Patient called to say the cardiology office moved his July appointment and he never got the new date. Gave him the cardiology scheduling number. He'll call them."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "nurse_visit",
+          "start": "2025-09-30T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-09-30T11:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-09-30T11:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-09-30T11:25"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2025-09-30T11:40",
+              "body": "Flu high-dose trivalent, left arm. 2025-26 COVID (Pfizer), right arm. Screened, VIS given, observed, tolerated. Asked about cardiology: he says he still hasn't rebooked, says he'll do it this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "annual_physical",
+          "start": "2025-11-06T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 7.3, "Low Density Lipoprotein": 72}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-11-06T09:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-06T09:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2025-11-06T09:00", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-11-06T09:00", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2025-11-06T09:00", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "orders": [
+            {"id": "fit-2025", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "Colorectal cancer screening"}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-11-06T08:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-11-06T09:40",
+              "body": "Annual wellness, year 5 with us.\n\nYear in review: April admission for hyponatremia (Na 118) with confusion; sodium normal since June. No HF admission this year. He missed his cardiology follow-up this summer when it was moved and has not rebooked; front desk will call them with him today. Eye exam August, no retinopathy.\n\nHRA: lives with wife; she manages meds. Independent. No falls. Doesn't drive at night. PHQ-2 0.\n\nMeds: ASA 81, metoprolol succinate 50, lisinopril 20, atorvastatin 40, metformin 1000 BID, furosemide 40 qAM. NKDA.\n\nExam: Heart RRR, apical holosystolic murmur. Lungs clear. No edema. Feet: monofilament intact, no lesions.\n\nPlan: labs (CMP, CBC, lipids, A1c, UACR). FIT kit again. PSA declined. Vaccines up to date for the season. Health care proxy: he took the form home again.\nRTC 3 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2025-11-07T13:10",
+              "body": "A1c 7.5, LDL 63, Na normal, creatinine 1.9 steady, urine albumin normal, CBC normal. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "lab_only",
+          "start": "2025-12-09T08:30",
+          "reason": "FIT returned",
+          "labs": [
+            {"panel": null, "collected": "2025-12-05T07:30", "resulted": "2025-12-09T08:30", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "fit-2025", "action": "done", "date": "2025-12-09T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT negative",
+              "author": "RN",
+              "date": "2025-12-09T12:00",
+              "body": "FIT negative. Pt notified via portal. Next kit due fall 2026."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-10T13:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2026-02-10T13:35", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-02-10T13:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-02-10T13:40",
+              "body": "Winter f/u, HF/DM/CKD.\nNo admissions since last April. Breathless on stairs, same. Two pillows. Weights 189-192. No chest pain. Cardiology: still not rebooked; he says the cardiology office has him on a waitlist for spring.\nMeds unchanged x6.\nExam: no distress. Heart regular, apical holosystolic murmur. Lungs clear. No edema.\nA/P: HFrEF compensated; DM2 A1c today; CKD 3b BMP; HTN ok. Reviewed call-in rules for weight gain and for any chest pain. RTC 4-5 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2026-02-11T09:30",
+              "body": "A1c 6.6. Sodium, potassium normal. Creatinine 1.9. No changes. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-12a",
+          "kind": "ed_visit",
+          "start": "2026-04-12T18:25",
+          "end": "2026-04-12T21:00",
+          "service": "Emergency Medicine",
+          "reason": "Found unresponsive at home",
+          "conditions": [
+            {"label": "Cardiac arrest", "icd10": "I46.9", "action": "diagnosed", "onset": "2026-04-12"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-12T18:35", "results": [
+              {"test": "Sodium", "value": 140},
+              {"test": "Potassium", "value": 4.2},
+              {"test": "Chloride", "value": 102},
+              {"test": "Bicarbonate", "value": 24},
+              {"test": "Blood Urea Nitrogen", "value": 18},
+              {"test": "Glucose", "value": 180},
+              {"test": "Creatinine"}
+            ]},
+            {"panel": null, "collected": "2026-04-12T18:35", "results": [
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.1},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 60},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 500}
+            ]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-04-12T18:25"}],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department resuscitation record",
+              "author": "emergency medicine",
+              "date": "2026-04-16T15:00",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nResuscitation record, 04/12/2026, arrival 18:25 by EMS\nHoward Marino, 71 M\n\nHistory (from wife and EMS): 71-year-old man with CAD, hypertension and ischemic cardiomyopathy with LV aneurysm, with repeated heart failure admissions. His wife found him unresponsive at home this evening. Earlier in the day he had told her he was short of breath and had chest pain, but he would not agree to come in.\n\nMeds per wife: aspirin, metoprolol succinate 50, lisinopril 20, atorvastatin 40, metformin, furosemide 40.\nAllergies: NKDA.\nSocial: never smoker, no alcohol, retired postal worker.\n\nOn arrival: pulseless and apneic. Monitor shows an organized rhythm with no palpable pulse (PEA).\n\nInterventions: intubated; CPR continued; IV access obtained; epinephrine given. Return of spontaneous circulation after further CPR and epinephrine.\n\nInitial labs: Na 140, K 4.2, Cl 102, HCO3 24, BUN 18, glucose 180. Troponin I pending at the time of this note. ABG on 100% FiO2: pH 7.1, PaCO2 60, PaO2 500.\n\nImpression: cardiac arrest, PEA, with ROSC.\nDisposition: ICU, intubated."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-12b",
+          "kind": "hospital_admission",
+          "start": "2026-04-12T21:00",
+          "end": "2026-04-22T13:00",
+          "service": "Critical Care Medicine",
+          "reason": "Post-cardiac arrest care",
+          "procedures": [{"procedure": "Initial hospital inpatient care", "performed": "2026-04-12T21:00"}],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospitalist",
+              "date": "2026-04-23T09:40",
+              "body": "DISCHARGE SUMMARY\nAdmitted 04/12/2026 via ED to the medical ICU; transferred to the cardiac floor 04/17/2026; discharged 04/22/2026.\n\nPrincipal diagnosis: cardiac arrest (PEA) with return of spontaneous circulation in the ED.\nSecondary: ischemic cardiomyopathy with LV aneurysm and HFrEF; old MI; CAD on antiplatelet therapy, stent 2016; essential hypertension; type 2 diabetes with stress hyperglycemia on arrival (glucose 180); hyperlipidemia; CKD stage 3.\n\nCourse:\nICU: post-arrest care on the ventilator. He woke appropriately and was extubated on 04/14. Troponin I rose and then fell over the first two days, felt to reflect the arrest and the resuscitation. Neurologically intact on serial exams.\nCardiology: coronary angiography 04/16 showed the 2016 stent patent and no new obstructive lesion. The arrest was attributed to his ischemic cardiomyopathy.\nFloor: walked with physical therapy, cleared for home without services.\n\nDischarge medications (no changes from home):\naspirin 81 mg daily; metoprolol succinate 50 mg daily; lisinopril 20 mg daily; atorvastatin 40 mg daily; metformin 1000 mg twice daily; furosemide 40 mg daily.\nAllergies: NKDA.\n\nDischarged home with his wife. Follow-up: PCP within 7 days; cardiology within 1 month. Call 911 for chest pain or breathlessness, and do not wait."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "telephone",
+          "start": "2026-04-24T10:40",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge nurse call",
+              "author": "RN",
+              "date": "2026-04-24T10:40",
+              "body": "TCM call 2 days after discharge. Spoke with wife, then patient. Home, tired, sleeping a lot. No chest pain like before, breathing okay at rest. Meds the same six; wife has the pillbox set. Weight 183 lb. Cardiology appointment 5/13. Reinforced: any chest pain or shortness of breath means 911, not waiting. Visit with PCP 4/29, wife will come."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-29a",
+          "kind": "office_visit",
+          "start": "2026-04-29T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after cardiac arrest (transitional care)",
+          "conditions": [
+            {"label": "Cardiac arrest", "icd10": "I46.9", "action": "resolved", "onset": "2026-04-12"},
+            {"label": "Personal history of sudden cardiac arrest", "icd10": "Z86.74", "action": "history", "onset": "2026-04-12"}
+          ],
+          "state": {"weight_kg": 83.0, "bp": [118, 72]},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-29T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-29T10:40", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-04-29T10:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2026-04-29T11:00",
+              "body": "TCM visit after cardiac arrest. ED resuscitation record and discharge summary reviewed: found unresponsive by his wife 4/12 after chest pain and breathlessness earlier that day that he did not report; PEA arrest, intubated, CPR and epinephrine with ROSC in the ED; extubated 4/14; troponin rose and fell; cath 4/16 with a patent stent and no new blockage; arrest attributed to his cardiomyopathy. Home 4/22, meds unchanged.\n\nHe and his wife both here. He remembers nothing from that afternoon until the ICU. Walking around the house and to the mailbox. No chest pain since. Short of breath on stairs, about as before. Sleeping well.\n\nHe said, unprompted, that he should have let her call. We talked through it: chest pain or new breathlessness means 911.\n\nMed rec: aspirin 81, metoprolol succinate 50, lisinopril 20, atorvastatin 40, metformin 1000 BID, furosemide 40 qAM. Matches discharge.\n\nExam: thinner. Alert, oriented, clear speech, memory for recent events intact apart from the arrest day. Heart regular, apical holosystolic murmur. Lungs clear. No edema.\n\nA/P\n1. Cardiac arrest (PEA), survived neurologically intact: resolved; problem list now carries it as history. Cardiology 5/13.\n2. HFrEF/ICM: euvolemic, continue.\n3. CKD 3b, DM2, HTN: BMP and CBC today.\n4. Health care proxy: they want to do this properly now. Booked a visit 5/21 for it.\nRTC 5/21."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "specialist_visit",
+          "start": "2026-05-13T09:00",
+          "service": "Cardiology",
+          "reason": "Follow-up after cardiac arrest",
+          "measure": ["bp", "hr", "weight_kg"],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up letter",
+              "author": "cardiology",
+              "date": "2026-05-18T11:30",
+              "body": "Cardiology clinic visit 05/13/2026\nRe: Howard Marino, 71\n\nDear Doctor,\n\nMr. Marino returns after his PEA arrest on 04/12 with ROSC in the emergency department. Our angiogram on 04/16 showed a patent stent and no new obstructive disease, and the event was attributed to his ischemic cardiomyopathy. He is recovering at home with his wife, walking short distances, without chest pain. Breathless on stairs as before.\n\nMedications: aspirin 81, metoprolol succinate 50, lisinopril 20, atorvastatin 40, metformin 1000 BID, furosemide 40.\nAllergies: NKDA.\n\nExam: alert, comfortable. Apical holosystolic murmur. Lungs clear. No edema.\n\nAssessment: ischemic cardiomyopathy with LV aneurysm, HFrEF, after cardiac arrest. CAD with patent stent.\nPlan: continue the current regimen. Return in three months.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "office_visit",
+          "start": "2026-05-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Advance care planning",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-05-21T14:00"},
+            {"procedure": "Advance care planning, first 30 minutes", "performed": "2026-05-21T14:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Advance Care Planning",
+              "author": "PCP",
+              "date": "2026-05-21T14:55",
+              "body": "Visit for advance care planning, patient and wife present, 35 minutes on ACP.\n\nContext: cardiac arrest 4/12 with full recovery; HFrEF with three admissions since 2023; a 2025 ED visit where he arrived alone and confused with no surrogate on file.\n\nDiscussion: what the arrest meant to him and what he would want if it happened again. He wants full resuscitation, CPR and a breathing tube included, if it happens again. His wife heard this and agrees she can speak for him.\n\nDocuments: Massachusetts health care proxy completed and signed today naming his wife as agent; copy scanned, original to patient. Code status: full code.\n\nCardiology 5/13 reviewed: no changes, back in 3 months.\nRTC July for chronic follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "office_visit",
+          "start": "2026-07-23T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"weight_kg": 84.5, "labs": {"Hemoglobin A1c": 7.4}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-23T09:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2026-07-23T09:55", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-23T09:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-07-23T10:05",
+              "body": "3 months after the arrest.\nBack to walking the street most mornings, not the hill. No chest pain. Breathless on stairs, unchanged. Two pillows. Weights 186-187, some of the lost weight back. Meds x6, wife does the pillbox. Cardiology back in August.\nExam: well. Heart regular, apical holosystolic murmur. Lungs clear. No edema. Feet intact, monofilament normal.\nA/P\n- HFrEF/ICM after arrest: stable; continue.\n- DM2: A1c today.\n- CKD 3b: BMP.\n- HTN: lower since the hospital, no dizziness; fine.\n- HCP on file (wife).\nRTC September: flu shot, FIT kit then."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "author": "PCP",
+              "date": "2026-07-24T12:20",
+              "body": "Hi Howard, A1c 7.5, up from February's 6.6 but in the range we've seen over the years; no change for now, we'll look again in the fall. Kidney function and sodium are where they usually are. Glad to see you walking again."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T08:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "author": "patient",
+              "date": "2026-08-18T08:10",
+              "body": "Mail order says metformin and furosemide need a new prescription, can you send. My wife says I have about 3 weeks left. Howard"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "author": "RN",
+              "date": "2026-08-18T13:45",
+              "body": "Done. Metformin 1000 mg and furosemide 40 mg sent to mail order, 90 days each with refills. You should have them before you run out. See you September 17."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T10:30",
+          "reason": "Chronic disease follow-up and flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

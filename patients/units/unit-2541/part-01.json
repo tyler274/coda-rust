@@ -1,0 +1,1733 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002541",
+   "given": "Noah",
+   "family": "Nadeau",
+   "birth_date": "1994-08-03",
+   "address_line": "212 Florence Road, Apt 3, Northampton, MA 01060",
+   "phone": "+1-917-555-0155",
+   "email": "noah.nadeau@example.test",
+   "marital_status": "single",
+   "summary": "Man in his early 30s with paranoid schizophrenia, repeated nonadherence and admissions, who joined in 2023 on aripiprazole and isoniazid for latent TB. Risperidone caused an oculogyric crisis in 2024, clozapine was started and abandoned, he had two police-brought ED visits and a psychiatric admission, falciparum malaria after a Uganda trip in 2025, and tuberculous meningitis in January 2026 now on continuation-phase therapy under DOT.",
+   "events": [
+    {
+     "id": "2023-08-29a",
+     "kind": "telephone",
+     "start": "2023-08-29T10:40",
+     "reason": "New patient call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient inquiry",
+       "author": "front desk",
+       "date": "2023-08-29T10:52",
+       "body": "Caller: patient's mother (on patient's behalf; patient on speaker briefly and agreed to her calling).\nWants to establish primary care for her son. Previous PCP office is closing its adult panel. He has Medicaid, verified active.\nScheduled new patient visit 9/12 at 9:00, 60 min slot.\nMother says he takes \"two or three\" pills daily and sees no psychiatrist right now. Asked her to bring all bottles.\nRecords release signed verbally, paper form mailed to home address; mother will drop off. Records request faxed to prior office today."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request sent",
+       "author": "front desk",
+       "date": "2023-08-29T15:10",
+       "body": "Release form dropped off by mother this afternoon, signed by patient. Records request re-faxed with signed release to prior primary care office. Asked for last 3 years of notes, med list, labs, imaging, immunizations, and any hospital discharge paperwork they hold."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-06a",
+     "kind": "outside_records",
+     "start": "2023-09-06T14:00",
+     "reason": "Prior primary care records",
+     "labs": [
+      {
+       "collected": "2022-06-14T09:30",
+       "results": [
+        {
+         "test": "Quantiferon-TB Gold",
+         "text": "Positive"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records received",
+       "author": "outside primary care",
+       "date": "2023-09-06T14:00",
+       "body": "OUTSIDE RECORDS - scanned, 34 pages, from prior primary care office. Summary abstracted by MA; originals in media tab.\n\nProblem list as printed by sending office:\n- Schizophrenia, paranoid type. Diagnosed at age 21. Followed by community psychiatry in past, gaps in follow-up. Multiple antipsychotic trials per their notes, agents not itemized.\n- Latent TB infection. Interferon-gamma release assay positive 06/14/2022 (QuantiFERON). Their note same month: no cough, no weight loss, chest exam clear. Isoniazid 300 mg daily started 2022; refill history in their notes is sporadic.\n- History of acute dystonic reaction to an antipsychotic (eyes rolling up). Date and drug not given in these records.\n- Medication nonadherence, recurrent.\n\nHospital admissions noted in their 2023 encounter: psychiatric admission May 2023 and again June 2023, outside psychiatric unit. No discharge summaries included in packet.\n\nMedications on last visit (07/2023): aripiprazole 10 mg daily; isoniazid 300 mg daily.\nAllergies: NKDA.\nScreening in packet: lipid panel and basic metabolic panel 2022, normal per their flowsheet.\n\nMA note: recent psychiatric discharge summaries not in packet. Will ask patient/family at visit."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-12a",
+     "kind": "establish_care",
+     "start": "2023-09-12T09:00",
+     "end": "2023-09-12T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient visit",
+     "conditions": [
+      {
+       "label": "Paranoid schizophrenia",
+       "icd10": "F20.0",
+       "action": "history",
+       "onset": "2015-11-01"
+      },
+      {
+       "label": "Latent tuberculosis",
+       "action": "history",
+       "onset": "2022-06-14"
+      },
+      {
+       "label": "Drug-induced acute dystonia (antipsychotic)",
+       "icd10": "G24.02",
+       "action": "history",
+       "note": "Oculogyric crisis on an earlier antipsychotic; drug not recorded. Adverse drug reaction, not an allergy."
+      },
+      {
+       "label": "Noncompliance with medication regimen",
+       "icd10": "Z91.148",
+       "action": "history"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "aripiprazole 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Paranoid schizophrenia"
+      },
+      {
+       "drug_text": "isoniazid 300 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 300,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Latent tuberculosis"
+      }
+     ],
+     "state": {
+      "weight_kg": 70.2,
+      "height_cm": 175.0,
+      "bp": [
+       112,
+       70
+      ],
+      "hr": 70,
+      "labs": {
+       "Hemoglobin A1c": 5.2,
+       "Total Cholesterol": 158,
+       "Low Density Lipoprotein": 90,
+       "Fasting Glucose": 87,
+       "Prolactin": 11
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2023-09-12T10:10",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "collected": "2023-09-12T10:10",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "collected": "2023-09-12T10:10",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Unemployed; receiving disability benefits"
+      },
+      {
+       "item": "Housing status",
+       "value": "Lives alone"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-09-12T09:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2023-09-12T09:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cxr-2023",
+       "action": "placed",
+       "order": "Chest X-ray, 2 views",
+       "category": "imaging",
+       "reason": "Latent tuberculosis, baseline"
+      },
+      {
+       "id": "psych-ref-2023",
+       "action": "placed",
+       "order": "Psychiatry referral",
+       "category": "referral",
+       "to": "Psychiatry",
+       "reason": "Paranoid schizophrenia, establish outpatient psychiatric care"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2023-09-12T11:40",
+       "body": "NEW PATIENT VISIT\n\n29-year-old man establishing care. Came by himself; mother set up the appointment and drove him. History from patient (brief answers) and from the prior office records received 9/6.\n\nHPI / background\nParanoid schizophrenia, diagnosed at 21. He has been on several antipsychotics over the years; he cannot name the earlier ones and the outside records do not list them. Two inpatient psychiatric stays this year, May and then June, at an outside unit. We do not have those discharge summaries. Since June he has taken aripiprazole 10 mg daily \"most days.\" He has no psychiatrist at the moment and agrees to a referral.\nRemote reaction to one of the older antipsychotics where his eyes rolled up and stuck; he remembers it as frightening. Drug not known.\nLatent TB: positive QuantiFERON 6/2022 at the prior office. Isoniazid 300 mg daily was started then. He admits he takes it \"on and off\" and ran out a few weeks ago. No cough, fevers, night sweats or weight loss.\n\nPMH: as above. PSH: none.\nMeds: aripiprazole 10 mg daily; isoniazid 300 mg daily (lapsed).\nAllergies: NKDA.\nFH: a first-degree relative with schizophrenia (he did not want to say who). Mother with major depression. Father with hypertension.\nSH: Lives alone in an apartment in Northampton. Started college, did not finish. Not working, on disability benefits. Never smoked. No alcohol. Denies any drug use.\n\nROS: negative for fever, cough, chest pain, dyspnea, abdominal pain, jaundice, dark urine, numbness or tingling.\n\nExam\nBP 117/70, HR 67, RR 16, T 36.5, SpO2 96% RA, Wt 70.6 kg. Ht 175 cm per patient.\nGen: thin, casually dressed, sits quietly, little eye contact.\nPsych: guarded, speech sparse but organized. Answers questions with a few words. Did not voice or appear to respond to hallucinations during visit. Denies thoughts of harming himself or others.\nHEENT: anicteric, oropharynx clear. Neck supple, no adenopathy.\nHeart: RRR, no murmur. Lungs: clear bilaterally.\nAbd: soft, nontender, no hepatosplenomegaly.\nNeuro: alert, oriented, moves all extremities, gait normal, no tremor or abnormal movements.\nSkin: no rash.\n\nAssessment / plan\n1. Latent TB infection, on isoniazid with poor adherence. Restart isoniazid 300 mg daily; new script sent, 30 days with refills. Talked about why the full course matters and what liver symptoms to call about. Pill box suggested. Hepatic panel today. Baseline chest x-ray ordered.\n2. Paranoid schizophrenia, two admissions in 2023, nonadherence history. Referral to outpatient psychiatry group placed today. Continue aripiprazole 10 mg; will refill once if needed to bridge until intake.\n3. History of antipsychotic dystonic reaction. Listed as an adverse reaction on the problem list, not an allergy, since he will keep needing antipsychotics.\n4. Health maintenance: HIV and hepatitis C screening today. Flu vaccine given today. COVID vaccine when the new formulation arrives.\nReturn 3 months, sooner if needed."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Rooming note",
+       "author": "MA",
+       "date": "2023-09-12T09:08",
+       "body": "Roomed pt. Vitals entered. Med rec done from bottles: aripiprazole 10 mg (bottle filled 8/20), isoniazid 300 mg (empty bottle, filled 6/30). NKDA confirmed.\nFlu vaccine (quadrivalent) given L deltoid per PCP order after VIS given. Tolerated, no reaction in 15 min."
+      },
+      {
+       "type": "Referral",
+       "title": "Referral to psychiatry",
+       "author": "PCP",
+       "date": "2023-09-12T12:05",
+       "body": "Referral: outpatient psychiatry group, routine-urgent.\nReason: 29M with paranoid schizophrenia diagnosed at 21, multiple antipsychotics in the past (agents not documented), two psychiatric admissions May and June 2023 at an outside unit, history of medication nonadherence. Currently on aripiprazole 10 mg daily. Prior acute dystonic reaction to an antipsychotic (oculogyric), drug unknown. Latent TB on isoniazid 300 mg daily. NKDA.\nRequest: establish ongoing psychiatric care and medication management. Mother is involved and can help with scheduling (contact via patient)."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-14a",
+     "kind": "imaging",
+     "start": "2023-09-14T11:20",
+     "reason": "Chest X-ray",
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2023-09-14T11:20",
+       "issued": "2023-09-14T13:05",
+       "text": "PA and lateral views of the chest. Comparison: none available. The lungs are clear without consolidation, nodule, cavitation or effusion. No hilar or mediastinal lymphadenopathy. No apical scarring or calcified granuloma. Heart size and mediastinal contour are normal. Osseous structures are unremarkable.",
+       "conclusion": "No acute cardiopulmonary process. No radiographic evidence of active or prior tuberculosis."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cxr-2023",
+       "action": "done",
+       "date": "2023-09-14T11:20"
+      }
+     ],
+     "documents": []
+    },
+    {
+     "id": "2023-09-15a",
+     "kind": "portal_message",
+     "start": "2023-09-15T16:05",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your recent results",
+       "author": "PCP",
+       "date": "2023-09-15T16:05",
+       "body": "Hi Noah,\nYour test results from this week are back and they look good.\n- Liver tests are normal (AST 21, ALT 18). These are the ones we watch while you take isoniazid.\n- HIV and hepatitis C screening tests were negative.\n- Your chest x-ray is clear, with no sign of active TB.\nKeep taking the isoniazid every day. Let us know if you notice yellow eyes, dark urine, belly pain or nausea.\nSee you in December."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-05a",
+     "kind": "nurse_visit",
+     "start": "2023-10-05T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COVID vaccine",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-05T14:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-05T14:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "COVID vaccine",
+       "author": "RN",
+       "date": "2023-10-05T14:45",
+       "body": "Pt here for updated COVID vaccine. No prior reactions. Not feeling ill today.\nCOVID-19 Pfizer 2023-24 formula given R deltoid. VIS given. Observed 15 min, no reaction. Left with mother.\nReminded him of December visit with PCP."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-30a",
+     "kind": "pharmacy",
+     "start": "2023-10-30T09:15",
+     "reason": "Refill history",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Fill history",
+       "author": "RN",
+       "date": "2023-10-30T09:20",
+       "body": "Pharmacy called for refill authorization on isoniazid; pt still had refills. Per pharmacy, the 9/12 isoniazid fill (30 tabs) was picked up 9/14 and the next fill today, about 2 weeks late. Aripiprazole picked up on time.\nWill flag for PCP at December visit."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-21a",
+     "kind": "telephone",
+     "start": "2023-11-21T11:10",
+     "reason": "Psychiatry referral status",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Psychiatry referral status",
+       "author": "RN",
+       "date": "2023-11-21T11:20",
+       "body": "Called psychiatry group re 9/12 referral. They had tried to reach pt twice by phone without success. Intake now set for 1/16/2024 at 10:00. Called pt, no answer, left message. Spoke with mother at the number pt gave; she will bring him. Mother says he has been staying in his apartment more and \"keeps to himself,\" which she notes is not new.\nRouted to PCP as FYI."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-12a",
+     "kind": "office_visit",
+     "start": "2023-12-12T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up, isoniazid",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2023-12-12T14:35",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-12-12T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2023-12-12T15:10",
+       "body": "F/u latent TB on isoniazid.\n\nS: Says he is taking isoniazid \"most days,\" maybe 4-5 days a week. Pharmacy records show he refilled about 2 weeks late in October. No nausea, abdominal pain, dark urine, yellow eyes, numbness or tingling. No cough, fever, sweats.\nPsychiatry intake is booked for 1/16. Taking aripiprazole 10 mg. He says he is \"fine.\" Mother reported more time alone in his apartment; he shrugs at this.\n\nO: BP 131/68, HR 67, RR 13, T 37.0, SpO2 98%, Wt 70.1 kg.\nQuiet, sparse speech, linear when he answers. Anicteric. Lungs clear. RRR. Abdomen soft, nontender. No tremor.\n\nA/P:\n1. LTBI on INH, adherence partial. Reviewed again why daily dosing matters; set phone alarm with him in the room. Hepatic panel today. Continue isoniazid 300 mg daily.\n2. Paranoid schizophrenia: intake 1/16. Continue aripiprazole. Mother is involved, which helps.\nRTC 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-14a",
+     "kind": "portal_message",
+     "start": "2023-12-14T08:50",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Liver test result",
+       "author": "PCP",
+       "date": "2023-12-14T08:50",
+       "body": "Noah, your liver tests from Tuesday are normal (AST 26, ALT 21). Keep going with the isoniazid every day. Good luck with the psychiatry appointment in January."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-16a",
+     "kind": "specialist_visit",
+     "start": "2024-01-16T10:00",
+     "end": "2024-01-16T11:30",
+     "service": "Psychiatry",
+     "reason": "Psychiatric intake evaluation",
+     "medications": [
+      {
+       "drug_text": "risperidone 4 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily",
+       "dose": {
+        "value": 4,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Paranoid schizophrenia"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-01-16T11:40",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.2
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 6.8
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-01-16T11:40",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 140
+        },
+        {
+         "test": "Potassium",
+         "value": 4.1
+        },
+        {
+         "test": "Chloride",
+         "value": 102
+        },
+        {
+         "test": "Bicarbonate",
+         "value": 24
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 18
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Glucose",
+         "value": 90
+        },
+        {
+         "test": "Calcium",
+         "value": 9.6
+        },
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 20
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 18
+        },
+        {
+         "test": "Alkaline Phosphatase",
+         "value": 70
+        },
+        {
+         "test": "Total Protein",
+         "value": 7.0
+        },
+        {
+         "test": "Albumin",
+         "value": 4.5
+        },
+        {
+         "test": "Bilirubin, Total",
+         "value": 0.8
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "psych-ref-2023",
+       "action": "done",
+       "date": "2024-01-16T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry intake evaluation (outside)",
+       "author": "psychiatry",
+       "date": "2024-01-18T09:30",
+       "body": "OUTPATIENT PSYCHIATRY - INITIAL EVALUATION\nDate of service: 01/16/2024\nReferred by: primary care\n\nPatient: Noah Nadeau, 29-year-old man. Accompanied by his mother, who supplied most of the history.\n\nReason for referral: established paranoid schizophrenia, recent admissions, needs ongoing care.\n\nHistory: Per his mother, over roughly the last seven months, since his June discharge, his behavior has become steadily stranger. He has withdrawn from almost everyone. She often finds him muttering to himself, and he has told her the voices talk about whatever he is doing. He is certain the neighbors intend to hurt him, and he nailed boards over his apartment windows so they cannot watch him. He has lived on his own since leaving college. He gives brief, partial answers and does not dispute her account.\n\nPsychiatric history: paranoid schizophrenia since age 21. Multiple antipsychotics in the past; specific trials not available to us. Admissions May 2023 and June 2023. Prior antipsychotic-induced oculogyric crisis, agent unknown. History of stopping medication.\nCurrent medications: aripiprazole 10 mg daily; isoniazid 300 mg daily (latent TB, prescribed by PCP).\nAllergies: no known drug allergies.\nMedical: latent TB infection. No surgeries.\nFamily: schizophrenia in a first-degree relative; his mother has major depression; his father has hypertension.\nSubstances: never smoker, no alcohol, denies drugs.\nSocial: unemployed, on disability benefits; lives alone.\n\nMental status: unkempt and poorly groomed. Avoids eye contact. Appears to be attending to internal stimuli at several points. Speech is understandable and goal-directed for the most part, though he loses the thread and wanders off topic now and then. Paranoid delusions regarding neighbors. Denies suicidal or homicidal ideation.\nNeurological screen: no abnormalities; no tremor, rigidity or abnormal movements.\n\nLabs (drawn today): Hb 14.2, WBC 6.8, Plt 250. Na 140, K 4.1, Cl 102, HCO3 24, BUN 18, Cr 1.0, glucose 90, Ca 9.6, AST 20, ALT 18, alk phos 70, total protein 7.0, albumin 4.5, total bilirubin 0.8. Urine drug screen negative.\n\nAssessment: relapse of paranoid schizophrenia with prominent positive symptoms and withdrawal on aripiprazole alone.\nPlan:\n- Add risperidone 4 mg by mouth twice daily. Continue aripiprazole 10 mg daily.\n- Reviewed side effects including stiffness and abnormal eye movements; to go to ED for any eye-rolling episode.\n- Mother to supervise doses where possible.\n- Follow-up in 4-6 weeks, sooner if worse.\n\ncc: primary care"
+      }
+     ]
+    },
+    {
+     "id": "2024-01-30a",
+     "kind": "ed_visit",
+     "start": "2024-01-30T15:10",
+     "end": "2024-01-30T19:40",
+     "service": "Emergency Medicine",
+     "reason": "Episodes of upward eye deviation",
+     "conditions": [
+      {
+       "label": "Drug-induced acute dystonia (antipsychotic)",
+       "icd10": "G24.02",
+       "action": "diagnosed",
+       "onset": "2024-01-28",
+       "note": "Oculogyric crisis due to risperidone"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2024-01-30T15:20",
+       "bp": [
+        124,
+        78
+       ],
+       "hr": 88,
+       "rr": 16,
+       "temp_c": 36.8,
+       "spo2": 99
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "diphenhydramine hydrochloride 50 MG/ML Injectable Solution",
+       "action": "start",
+       "sig": "50 mg IV once",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "ONCE",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "Oculogyric crisis"
+      },
+      {
+       "drug_text": "benztropine mesylate 1 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily for 3 days",
+       "dose": {
+        "value": 1,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Oculogyric crisis"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-01-30T15:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-01-30T15:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "collected": "2024-01-30T15:40",
+       "results": [
+        {
+         "test": "Prolactin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2024-01-30T15:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Provider Notes",
+       "title": "Emergency department record (outside)",
+       "author": "emergency medicine",
+       "date": "2024-01-31T08:15",
+       "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE - regional hospital\nDate of service: 01/30/2024\n\nCC: eyes rolling up\n\nHPI: 29-year-old man with schizophrenia and a past dystonic reaction to an antipsychotic. For the last two days he has had sudden spells where both eyes are pulled upward and stay there for several minutes, a few times each day. Psychiatry added a new antipsychotic, risperidone, about two weeks ago. No fever, headache, neck pain or trauma. No new substances.\n\nMeds: risperidone 4 mg BID (new, started 1/16), aripiprazole 10 mg daily, isoniazid 300 mg daily.\nAllergies: NKDA.\n\nExam: BP 124/78, HR 88, RR 16, T 36.8, SpO2 99% RA.\nAlert, anxious, visibly upset by the spells. During exam, bursts of involuntary upward deviation of both eyes. Neck supple, no meningismus. Pupils equal and reactive, facial movement symmetric, other cranial nerves intact. Strength and sensation normal. No limb dystonia.\n\nLabs: CBC, CMP and prolactin within normal limits.\n\nED course: diphenhydramine 50 mg IV. Eye deviation stopped within a few minutes and did not recur during 3 hours of observation.\n\nImpression: oculogyric crisis (acute dystonic reaction) due to risperidone.\nDisposition: discharged with mother. Benztropine 1 mg by mouth twice daily for 3 days. Follow up with prescribing psychiatrist this week about the regimen. Return for recurrence, difficulty swallowing or breathing."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-01a",
+     "kind": "telephone",
+     "start": "2024-02-01T09:30",
+     "reason": "ED follow-up",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "ED follow-up call",
+       "author": "RN",
+       "date": "2024-02-01T09:40",
+       "body": "Mother called. Son was seen in the ED Tuesday for his eyes rolling up after the new psychiatry medicine; given a shot and sent home with benztropine for 3 days. No episodes since. Psychiatry office aware, told her they are keeping the risperidone for now.\nED record requested. Appt made with PCP 2/8."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-08a",
+     "kind": "office_visit",
+     "start": "2024-02-08T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-02-08T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "ED follow-up",
+       "author": "PCP",
+       "date": "2024-02-08T11:20",
+       "body": "ED f/u, oculogyric crisis.\n\nS: Seen in ED 1/30 with two days of upward eye deviation spells, about two weeks after psychiatry added risperidone 4 mg BID to aripiprazole. Got IV diphenhydramine with prompt relief, then benztropine 1 mg BID x 3 days, finished. No further spells since the ED. No stiffness, tremor, trouble swallowing. Mother says psychiatry reviewed it by phone and is continuing risperidone. He says the voices are \"a little quieter.\"\nIsoniazid: taking \"most days.\"\n\nO: BP 123/66, HR 61, RR 15, T 36.8, SpO2 97%, Wt 70.1 kg.\nCalm, flat, brief answers. EOM full, no deviation, no nystagmus. No cogwheeling, no tremor, normal gait. Lungs clear, RRR.\nED record reviewed: CBC, CMP and prolactin normal there.\n\nA/P:\n1. Acute dystonic reaction (oculogyric crisis) due to risperidone; this is his second dystonic episode on an antipsychotic. Updated the problem list entry to include both episodes. Kept off the allergy list on purpose, since psychiatry is continuing antipsychotics. Reviewed return precautions with him and mother.\n2. Schizophrenia: on risperidone 4 mg BID and aripiprazole 10 mg daily per psychiatry. Will defer regimen to them.\n3. LTBI: continue isoniazid; LFTs at next visit.\nRTC April."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-19a",
+     "kind": "pharmacy",
+     "start": "2024-03-19T10:00",
+     "reason": "Refill history",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Refill history",
+       "author": "RN",
+       "date": "2024-03-19T10:05",
+       "body": "Refill request from pharmacy for isoniazid 300 mg. Last fill 1/22, so roughly a month without supply before this request. Refill authorized per standing order. Note for PCP at April visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-09a",
+     "kind": "office_visit",
+     "start": "2024-04-09T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up, isoniazid",
+     "appointment": "no-show",
+     "documents": []
+    },
+    {
+     "id": "2024-04-10a",
+     "kind": "telephone",
+     "start": "2024-04-10T15:20",
+     "reason": "Missed appointment",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2024-04-10T15:25",
+       "body": "Pt no-showed 4/9 1:30 appt. Called home number, father answered, said he forgot to remind him. Rescheduled to 4/23 at 11:00. Father will bring him."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-23a",
+     "kind": "office_visit",
+     "start": "2024-04-23T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up, isoniazid",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2024-04-23T11:30",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-04-23T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2024-04-23T11:45",
+       "body": "Follow-up. Missed 4/9; father brought him today.\n\nIsoniazid: had a gap of about a month after January; back on since mid-March and says he has not missed much since. No GI upset, no dark urine, no tingling in hands or feet.\nPsych: seeing psychiatry; on risperidone and aripiprazole. No more eye-rolling spells. Still hears voices \"sometimes.\"\n\nBP 108/65, HR 71, RR 16, T 36.6, SpO2 97%, Wt 69.4 kg.\nUnkempt hair, calm, minimal speech. Anicteric. Lungs clear, heart regular. Abdomen benign. No tremor or rigidity.\n\nPlan:\n- Hepatic panel today.\n- Continue isoniazid 300 mg daily; father agreed to keep the bottle in the kitchen and watch him take it.\n- Psychiatry follow-up next month per their schedule.\n- Physical in July with metabolic labs."
+      },
+      {
+       "type": "Result Note",
+       "title": "Hepatic panel",
+       "author": "PCP",
+       "date": "2024-04-23T17:30",
+       "body": "LFTs normal: AST 26, ALT 21, alk phos 88, bili 0.5. Continue isoniazid. No call needed; will mention at July visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-13a",
+     "kind": "specialist_visit",
+     "start": "2024-05-13T13:00",
+     "service": "Psychiatry",
+     "reason": "Psychiatry follow-up",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-05-13T14:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-05-13T14:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-05-13T14:00",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "collected": "2024-05-13T14:00",
+       "results": [
+        {
+         "test": "Fasting Glucose"
+        }
+       ]
+      }
+     ],
+     "social": [
+      {
+       "item": "Housing status",
+       "value": "Lives with parents"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry follow-up (outside)",
+       "author": "psychiatry",
+       "date": "2024-05-16T14:00",
+       "body": "OUTPATIENT PSYCHIATRY - FOLLOW-UP\nDate of service: 05/13/2024\n\nSeen for schizophrenia, about three months after the oculogyric crisis on risperidone. He reports that the voices are still there most days, the belief that people mean him harm has not let up, and he still keeps away from others. His family confirms he is taking the medicines; his parents now hand him the doses. He is living with his parents. He has had two psychiatric admissions within the past year (May and June 2023). He has been through several antipsychotics since the diagnosis at 21. No alcohol or drug use.\n\nMedications: risperidone 4 mg twice daily; aripiprazole 10 mg daily; isoniazid 300 mg daily per PCP.\nAllergies: NKDA.\n\nMSE: disheveled. Affect blunted. Speech reduced in amount, with long latencies. No dystonia or abnormal movements. Denies SI/HI.\n\nLabs: CBC, CMP, lipid panel and fasting glucose all within normal limits. Urine drug screen negative.\n\nAssessment: paranoid schizophrenia with ongoing positive and negative symptoms on current regimen.\nPlan: no changes. Continue risperidone 4 mg BID and aripiprazole 10 mg daily. Return in about 3-4 months.\n\ncc: primary care"
+      }
+     ]
+    },
+    {
+     "id": "2024-06-04a",
+     "kind": "portal_message",
+     "start": "2024-06-04T19:20",
+     "reason": "Proxy access and contact update",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Proxy access and contact update",
+       "author": "patient",
+       "date": "2024-06-04T19:20",
+       "body": "Hello, this is Noah's mother writing from his account with his permission. Noah is staying with us now. Can you please add my cell as a contact and tell me how I can get proxy access so I can see his appointments? Thank you."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Proxy access and contact update",
+       "author": "front desk",
+       "date": "2024-06-05T09:15",
+       "body": "Hi, thanks for reaching out. We updated the contact information in his chart. For proxy access, Noah needs to sign our proxy authorization form. We will leave one at the front desk, or he can sign it at his July physical. Please let us know if you have questions."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-16a",
+     "kind": "annual_physical",
+     "start": "2024-07-16T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2024-07-16T09:40",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "collected": "2024-07-16T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      },
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2024-07-16T09:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-07-16T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-07-16T10:30",
+       "body": "ANNUAL PHYSICAL\n\n29M, here with mother for yearly exam. Now living with his parents.\n\nInterval: Psychiatry follow-up 5/13, no changes. Ongoing voices and suspiciousness per mother, no dystonia since January. Isoniazid: mother supervises; she estimates he misses one or two doses a week.\n\nROS: no fever, sweats, cough, weight change, chest pain, dyspnea, GI or GU symptoms. No jaundice.\n\nMeds: risperidone 4 mg BID, aripiprazole 10 mg daily (psychiatry); isoniazid 300 mg daily.\nAllergies: NKDA.\nSH: never smoker, no alcohol, no drugs. Not working.\n\nScreening: PHQ-2 1, PHQ-9 2. Denies thoughts of self-harm. Followed by psychiatry.\n\nExam: BP 117/67, HR 56, RR 14, T 36.5, SpO2 96%, Wt 70.5 kg, Ht 175.4 cm, BMI 22.9.\nGen: quiet, cooperative, poor eye contact.\nHEENT: normal. Neck: no thyromegaly or nodes.\nCV: regular, no murmur. Lungs: clear.\nAbd: soft, no organomegaly.\nExt: no edema. Skin: normal.\nNeuro: normal gait, no tremor, no rigidity, no abnormal involuntary movements.\n\nAntipsychotic metabolic monitoring: weight stable around 70 kg since joining; BP normal. Lipids and fasting glucose from psychiatry 5/13 reviewed: total cholesterol 157, LDL 92, HDL 52, TG 115, fasting glucose 89. A1c today.\n\nPlan:\n- A1c and hepatic panel today.\n- Tdap today (no adult Tdap on record).\n- Continue isoniazid with supervised dosing.\n- Flu and COVID vaccines in the fall.\n- Proxy form signed today for mother.\nF/u 3-4 months."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Rooming note",
+       "author": "MA",
+       "date": "2024-07-16T09:10",
+       "body": "Vitals and height taken. PHQ-2/PHQ-9 done on tablet with mother in waiting room per pt preference. Proxy authorization form signed by pt, scanned.\nTdap given L deltoid per order, VIS given, no reaction."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-18a",
+     "kind": "portal_message",
+     "start": "2024-07-18T12:15",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical results",
+       "author": "PCP",
+       "date": "2024-07-18T12:15",
+       "body": "Hi Noah (and Mom, as proxy),\nResults from the physical are normal. A1c (blood sugar average) 5.2%, which is normal. Liver tests normal: AST 22, ALT 19. Cholesterol from psychiatry in May was fine too.\nNext check in the fall. Flu shots usually arrive late September."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-09a",
+     "kind": "specialist_visit",
+     "start": "2024-09-09T09:30",
+     "service": "Psychiatry",
+     "reason": "Psychiatry follow-up, worsening hallucinations",
+     "vitals": [
+      {
+       "time": "2024-09-09T09:35",
+       "bp": [
+        122,
+        78
+       ],
+       "hr": 76,
+       "rr": 14,
+       "temp_c": 36.7,
+       "spo2": 98
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "clozapine 25 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1/2 tablet (12.5 mg) by mouth at bedtime; increase as directed by psychiatry",
+       "dose": {
+        "value": 12.5,
+        "unit": "mg"
+       },
+       "frequency": "QHS",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Treatment-resistant paranoid schizophrenia"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-09-09T10:30",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 7.8
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %",
+         "value": 59
+        },
+        {
+         "test": "Lymphocytes %",
+         "value": 31
+        },
+        {
+         "test": "Monocytes %",
+         "value": 7
+        },
+        {
+         "test": "Eosinophils %",
+         "value": 2
+        },
+        {
+         "test": "Basophils %",
+         "value": 1
+        },
+        {
+         "test": "Absolute Neutrophil Count",
+         "value": 4.6
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-09T10:30",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry follow-up (outside)",
+       "author": "psychiatry",
+       "date": "2024-09-11T10:20",
+       "body": "OUTPATIENT PSYCHIATRY - FOLLOW-UP / CHANGE OF PRESCRIBER\nDate of service: 09/09/2024\n\nJun is a 30-year-old man with roughly nine years of paranoid schizophrenia, seen today by me for the first time (transferring within the group). His father brought him because the voices have become louder and more constant over recent weeks and he has pulled further back from the family. He lives with his parents. No tobacco, alcohol or other substances.\n\nHistory: repeated admissions over the years tied to poor response and to stopping medication. He has had adequate trials of both risperidone and aripiprazole, each at a therapeutic dose for six weeks or longer, with little benefit. Prior oculogyric crisis on risperidone (January 2024) and an earlier dystonic reaction on another antipsychotic.\nMeds: risperidone 4 mg BID, aripiprazole 10 mg daily, isoniazid 300 mg daily.\nAllergies: NKDA.\n\nVitals: T 36.7 C, BP 122/78, HR 76, RR 14, SpO2 98% on room air.\nExam: physical exam unremarkable; no rigidity or abnormal movements.\nMSE: guarded, sparse speech, appears preoccupied; denies SI/HI.\n\nLabs: CBC with differential, CMP and liver enzymes within normal limits; baseline ANC 4.6.\n\nAssessment: treatment-resistant schizophrenia after two adequate antipsychotic trials.\nPlan:\n- Start clozapine 12.5 mg at bedtime, titrating upward over the coming weeks per schedule given to the family.\n- Continue risperidone and aripiprazole for now; cross-taper to be planned once clozapine reaches a therapeutic dose.\n- Weekly ANC required. Family prefers blood draws at PCP office lab; will call PCP office to arrange.\n- Discussed constipation, sedation, drooling, fever and sore throat warning signs.\n- Follow-up in 2-3 weeks.\n\ncc: primary care"
+      }
+     ]
+    },
+    {
+     "id": "2024-09-11a",
+     "kind": "telephone",
+     "start": "2024-09-11T13:45",
+     "reason": "Psychiatry coordination, clozapine monitoring",
+     "orders": [
+      {
+       "id": "anc-weekly",
+       "action": "placed",
+       "order": "CBC with differential weekly (clozapine monitoring)",
+       "category": "lab",
+       "reason": "Clozapine absolute neutrophil count monitoring"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Psychiatry call re clozapine monitoring",
+       "author": "RN",
+       "date": "2024-09-11T13:55",
+       "body": "Call from psychiatry office nurse. Pt started clozapine 9/9 (12.5 mg qHS, titrating). Baseline ANC 4.6 done at their visit. They are asking us to draw weekly CBC with diff at our lab, Mondays, results faxed to their office for the monitoring registry.\nDiscussed with PCP, agreed. Standing order for weekly CBC with diff entered. Father notified; he will bring pt Monday mornings."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-16a",
+     "kind": "lab_only",
+     "start": "2024-09-16T08:20",
+     "reason": "Weekly ANC",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-09-16T08:20",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 7.5
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %",
+         "value": 56
+        },
+        {
+         "test": "Lymphocytes %",
+         "value": 35
+        },
+        {
+         "test": "Monocytes %",
+         "value": 6
+        },
+        {
+         "test": "Eosinophils %",
+         "value": 2
+        },
+        {
+         "test": "Basophils %",
+         "value": 1
+        },
+        {
+         "test": "Absolute Neutrophil Count",
+         "value": 4.2
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Weekly ANC",
+       "author": "RN",
+       "date": "2024-09-16T14:10",
+       "body": "ANC 4.2 (WBC 7.5). Normal. Faxed to psychiatry. Next draw 9/23."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-23a",
+     "kind": "lab_only",
+     "start": "2024-09-23T08:35",
+     "reason": "Weekly ANC",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-09-23T08:35",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 7.1
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %",
+         "value": 54
+        },
+        {
+         "test": "Lymphocytes %",
+         "value": 37
+        },
+        {
+         "test": "Monocytes %",
+         "value": 6
+        },
+        {
+         "test": "Eosinophils %",
+         "value": 2
+        },
+        {
+         "test": "Basophils %",
+         "value": 1
+        },
+        {
+         "test": "Absolute Neutrophil Count",
+         "value": 3.8
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Weekly ANC",
+       "author": "RN",
+       "date": "2024-09-23T13:40",
+       "body": "ANC 3.8, WBC 7.1. Within normal. Faxed to psychiatry office, confirmation received."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-30a",
+     "kind": "lab_only",
+     "start": "2024-09-30T08:10",
+     "reason": "Weekly ANC",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-09-30T08:10",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 7.4
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets",
+         "value": 310
+        },
+        {
+         "test": "Neutrophils %",
+         "value": 65
+        },
+        {
+         "test": "Lymphocytes %",
+         "value": 27
+        },
+        {
+         "test": "Monocytes %",
+         "value": 6
+        },
+        {
+         "test": "Eosinophils %",
+         "value": 2
+        },
+        {
+         "test": "Basophils %",
+         "value": 0
+        },
+        {
+         "test": "Absolute Neutrophil Count",
+         "value": 4.8
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Weekly ANC",
+       "author": "RN",
+       "date": "2024-09-30T15:05",
+       "body": "Weekly clozapine CBC: ANC 4.8, WBC 7.4, platelets 310. Faxed to psychiatry. Father asked if flu shot ok on clozapine; per PCP yes, scheduled nurse visit 10/3."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-03a",
+     "kind": "nurse_visit",
+     "start": "2024-10-03T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-03T15:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-03T15:08"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-03T15:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2024-10-03T15:15",
+       "body": "Here with father for flu and COVID vaccines. Afebrile, no sore throat or illness symptoms.\nInfluenza (trivalent) L deltoid and COVID-19 Pfizer 2024-25 R deltoid given. VIS given. No reaction during observation."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-07a",
+     "kind": "lab_only",
+     "start": "2024-10-07T08:25",
+     "reason": "Weekly ANC",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-10-07T08:25",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 6.2
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %",
+         "value": 55
+        },
+        {
+         "test": "Lymphocytes %",
+         "value": 36
+        },
+        {
+         "test": "Monocytes %",
+         "value": 6
+        },
+        {
+         "test": "Eosinophils %",
+         "value": 2
+        },
+        {
+         "test": "Basophils %",
+         "value": 1
+        },
+        {
+         "test": "Absolute Neutrophil Count",
+         "value": 3.4
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Weekly ANC",
+       "author": "RN",
+       "date": "2024-10-07T14:30",
+       "body": "ANC 3.4, WBC 6.2. Lower than prior weeks but still within normal range. Faxed to psychiatry. Reviewed with PCP, no action needed. Next draw 10/14."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "outside_records",
+     "start": "2024-10-08T11:00",
+     "reason": "Psychiatry medication update",
+     "medications": [
+      {
+       "drug_text": "clozapine 25 MG Oral Tablet",
+       "action": "stop"
+      },
+      {
+       "drug_text": "clozapine 50 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 3 tablets (150 mg) by mouth at bedtime",
+       "dose": {
+        "value": 150,
+        "unit": "mg"
+       },
+       "frequency": "QHS",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Treatment-resistant paranoid schizophrenia"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Psychiatry medication update (outside)",
+       "author": "psychiatry",
+       "date": "2024-10-08T11:00",
+       "body": "OUTPATIENT PSYCHIATRY - MEDICATION UPDATE\nDate: 10/04/2024\n\nClozapine titration has reached 150 mg at bedtime as of 10/04/2024 (three 50 mg tablets). He is tolerating it with some sedation. Weekly ANCs so far 4.6, 4.2, 3.8 and 4.8, all normal. Please continue weekly CBC with differential and fax results.\nRisperidone 4 mg BID and aripiprazole 10 mg daily unchanged for now; cross-taper to be discussed at next visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-15a",
+     "kind": "telephone",
+     "start": "2024-10-15T11:30",
+     "reason": "Missed weekly ANC draw",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed weekly ANC draw",
+       "author": "RN",
+       "date": "2024-10-15T11:40",
+       "body": "Pt did not come in for weekly clozapine CBC on 10/14. Called home number twice, no answer; left voicemail asking family to bring him in this week. Called patient cell, voicemail full.\nPsychiatry office notified that 10/14 ANC was not drawn."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "telephone",
+     "start": "2024-10-22T10:00",
+     "reason": "Missed weekly ANC draw",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed weekly ANC draw - follow-up",
+       "author": "RN",
+       "date": "2024-10-22T10:05",
+       "body": "No show again for 10/21 draw. Left another message at home number. Psychiatry office aware; they are also trying to reach family. Will keep standing order open."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-06a",
+     "kind": "ed_visit",
+     "start": "2024-11-06T14:20",
+     "end": "2024-11-06T23:10",
+     "service": "Emergency Medicine",
+     "reason": "Agitation, brought by police",
+     "vitals": [
+      {
+       "time": "2024-11-06T14:40",
+       "bp": [
+        128,
+        82
+       ],
+       "hr": 92,
+       "rr": 18,
+       "temp_c": 36.9,
+       "spo2": 98
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "haloperidol lactate 5 MG/ML Injectable Solution",
+       "action": "start",
+       "sig": "5 mg IM once",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "ONCE",
+       "route": "Intramuscular",
+       "course": "short",
+       "reason": "Acute agitation"
+      },
+      {
+       "drug_text": "lorazepam 2 MG/ML Injectable Solution",
+       "action": "start",
+       "sig": "2 mg IM once",
+       "dose": {
+        "value": 2,
+        "unit": "mg"
+       },
+       "frequency": "ONCE",
+       "route": "Intramuscular",
+       "course": "short",
+       "reason": "Acute agitation"
+      },
+      {
+       "drug_text": "diphenhydramine hydrochloride 50 MG/ML Injectable Solution",
+       "action": "start",
+       "sig": "50 mg IM once",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "ONCE",
+       "route": "Intramuscular",
+       "course": "short",
+       "reason": "Dystonia prophylaxis"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-11-06T16:30",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 140
+        },
+        {
+         "test": "Potassium",
+         "value": 4.1
+        },
+        {
+         "test": "Chloride",
+         "value": 102
+        },
+        {
+         "test": "Bicarbonate",
+         "value": 24
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 18
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Glucose",
+         "value": 98
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-11-06T16:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2024-11-06T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Provider Notes",
+       "title": "Emergency department record (outside)",
+       "author": "emergency medicine",
+       "date": "2024-11-07T07:50",
+       "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE - regional hospital\nDate of service: 11/06/2024\n\nBrought in by police. 30-year-old man with paranoid schizophrenia and a history of stopping his medications, last seen by outpatient psychiatry about two months ago for worsening symptoms. Police were called to a public park where he was shouting and throwing objects. Per the officers, he has not been taking his prescribed medicines for several weeks. Family reports no prior violence.\n\nIn the ED, staff tried to calm him verbally and offered food and water without effect. He then threw chairs in the room and threatened to hurt staff.\n\nMedications listed: risperidone 4 mg BID, aripiprazole 10 mg daily, clozapine (dose per psychiatry), isoniazid 300 mg daily; not taking any of these recently.\nAllergies: no known allergies. Past dystonic reactions to antipsychotics.\n\nExam: BP 128/82, HR 92, RR 18, T 36.9, SpO2 98%. Agitated, pacing, responding to internal stimuli. Otherwise unremarkable exam; no rigidity, no signs of trauma.\n\nLabs: Na 140, K 4.1, Cl 102, HCO3 24, BUN 18, Cr 1.0, glucose 98. CBC normal.\n\nED course: haloperidol 5 mg IM, lorazepam 2 mg IM and diphenhydramine 50 mg IM (diphenhydramine added because of his dystonia history). He settled within about 30 minutes without injury to himself or staff.\n\nImpression: acute psychotic agitation in paranoid schizophrenia after weeks off medication.\nDisposition: admitted to inpatient psychiatry, regional hospital."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-06b",
+     "kind": "hospital_admission",
+     "start": "2024-11-06T23:30",
+     "end": "2024-11-18T11:00",
+     "service": "Inpatient Psychiatry",
+     "reason": "Acute psychosis after medication lapse",
+     "medications": [
+      {
+       "drug_text": "clozapine 50 MG Oral Tablet",
+       "action": "stop"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2024-11-07T09:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2024-11-18T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Inpatient psychiatry discharge summary (outside)",
+       "author": "inpatient psychiatry",
+       "date": "2024-11-18T16:30",
+       "body": "INPATIENT PSYCHIATRY - DISCHARGE SUMMARY\nAdmitted: 11/06/2024 via ED. Discharged: 11/18/2024.\n\nReason for admission: acute agitation and psychosis after stopping all medications, including clozapine, around mid-October.\n\nHospital course: received IM haloperidol, lorazepam and diphenhydramine in the ED. On the unit, risperidone (4 mg BID) and aripiprazole (10 mg daily) were restarted. Clozapine was not resumed after the lapse and is discontinued. Isoniazid 300 mg daily continued. Agitation resolved over the first several days. No dystonia during the stay. At discharge he was calm, sleeping, and denied SI/HI; hallucinations persist but are less intrusive.\n\nDischarge diagnosis: paranoid schizophrenia, acute exacerbation in the setting of medication nonadherence.\nAllergies: NKDA.\n\nDischarge medications:\n- risperidone 4 mg by mouth twice daily\n- aripiprazole 10 mg by mouth daily\n- isoniazid 300 mg by mouth daily\nDiscontinued: clozapine.\n\nDisposition: home to parents, who will supervise medications. Outpatient psychiatry follow-up within 1-2 weeks. PCP follow-up within 1 week."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-08a",
+     "kind": "telephone",
+     "start": "2024-11-08T10:15",
+     "reason": "Family call, hospitalization",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Family call - hospitalization",
+       "author": "RN",
+       "date": "2024-11-08T10:25",
+       "body": "Mother called. Noah was taken to the ED by police on 11/6 and is now admitted to the inpatient psych unit at the regional hospital. She says he had stopped all his pills in October and hid it from them. She apologized for missing our calls.\nTold her we will see him within a week of discharge and she should call when she has a date. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-21a",
+     "kind": "office_visit",
+     "start": "2024-11-21T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2024-11-21T10:40",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "anc-weekly",
+       "action": "cancelled",
+       "date": "2024-11-21T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2024-11-21T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-hospital visit",
+       "author": "PCP",
+       "date": "2024-11-21T11:00",
+       "body": "Transitional care visit. Discharged 11/18 from inpatient psychiatry (admitted 11/6 via ED after police brought him from a park). Discharge summary reviewed. Here with both parents.\n\nCourse: had stopped everything in mid-October, including clozapine, without telling the family. Treated in the ED with IM haloperidol, lorazepam and diphenhydramine. On the unit, risperidone and aripiprazole restarted; clozapine stopped and not restarted. Isoniazid continued.\n\nNow: calmer, sleeping. Parents hand him each dose and watch. No stiffness or eye spells. Psychiatry follow-up 11/26.\n\nMeds reconciled: risperidone 4 mg BID, aripiprazole 10 mg daily, isoniazid 300 mg daily. Clozapine removed from list.\nAllergies: NKDA.\n\nBP 103/73, HR 69, RR 14, T 36.5, SpO2 96%, Wt 69.8 kg, BMI 22.7.\nCalm, flat, a few words at a time. No tremor, rigidity or abnormal eye movements. Lungs clear, heart regular. Abdomen soft, no hepatomegaly.\n\nA/P:\n1. Paranoid schizophrenia, recent admission for exacerbation after nonadherence. Supervised dosing at home. Psychiatry 11/26.\n2. Clozapine discontinued: weekly CBC standing order cancelled; psychiatry office informed.\n3. LTBI: isoniazid continues. Hepatic panel today.\n4. Flu and COVID done in October.\nRTC 2-3 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "Hepatic panel",
+       "author": "PCP",
+       "date": "2024-11-21T16:45",
+       "body": "AST 22, ALT 19, bili 0.6. Normal. Continue isoniazid."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-17a",
+     "kind": "pharmacy",
+     "start": "2024-12-17T09:40",
+     "reason": "Refill history",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Refill history",
+       "author": "RN",
+       "date": "2024-12-17T09:50",
+       "body": "Pharmacy fax for isoniazid refill. Last fill 11/18 at discharge (30 tabs), so this request is on time. Risperidone and aripiprazole filled on schedule by psychiatry. Refill approved."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

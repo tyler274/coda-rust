@@ -1,0 +1,244 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002796",
+      "events": [
+        {
+          "id": "2025-02-11a",
+          "kind": "portal_message",
+          "start": "2025-02-11T06:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bladder infection again?",
+              "author": "patient",
+              "date": "2025-02-11T06:55",
+              "body": "Since Sunday night I've been running to the bathroom and it burns. No fever, back feels fine. You told me to call instead of going to urgent care so here I am. Can I come in after school?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bladder infection again?",
+              "author": "RN",
+              "date": "2025-02-11T07:30",
+              "body": "Yes - 3:20 today with the doctor. Please don't urinate for an hour before if you can, we'll want a sample. If you get fever, chills or side pain before then, call right away."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11b",
+          "kind": "office_visit",
+          "start": "2025-02-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "dysuria and frequency",
+          "conditions": [
+            {"label": "Acute cystitis without hematuria", "action": "diagnosed", "onset": "2025-02-09"}
+          ],
+          "medications": [
+            {"drug": "nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily with food for 5 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "acute cystitis"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2025-02-11T15:25", "results": [
+              {"test": "Urine Leukocyte Esterase", "text": "2+"},
+              {"test": "Urine Nitrite", "text": "Positive"},
+              {"test": "Urine Blood", "text": "Negative"},
+              {"test": "Urine Clarity", "text": "Cloudy"}
+            ]},
+            {"panel": null, "collected": "2025-02-11T15:25", "resulted": "2025-02-13T11:40", "results": [{"test": "Urine Culture", "text": "Klebsiella pneumoniae >100,000 CFU/mL. Susceptible: nitrofurantoin, ciprofloxacin."}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-02-11T15:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit: Urinary Symptoms",
+              "author": "PCP",
+              "date": "2025-02-11T15:55",
+              "body": "2 days of frequency and dysuria. No fever, chills, flank pain, nausea. No vaginal symptoms. Not pregnant per pt. Stone free since ureteroscopy last June; last UTI was the Klebsiella in April.\n\nAfebrile. Looks well. No suprapubic or CVA tenderness.\nDip: LE 2+, nitrite +, blood neg. Culture sent.\n\nA/P: uncomplicated cystitis. Nitrofurantoin 100 mg BID x 5 days. Will check culture against her prior Klebsiella. Fluids. Call for fever or back pain."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-13a",
+          "kind": "telephone",
+          "start": "2025-02-13T12:10",
+          "reason": "urine culture",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Culture result",
+              "author": "RN",
+              "date": "2025-02-13T12:10",
+              "body": "Culture back: Klebsiella pneumoniae, sensitive to nitrofurantoin. Per PCP continue current antibiotic. Pt reports burning already better. Will call Tuesday to check in."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "telephone",
+          "start": "2025-02-18T16:05",
+          "conditions": [
+            {"label": "Acute cystitis without hematuria", "action": "resolved"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "UTI check-in",
+              "author": "RN",
+              "date": "2025-02-18T16:05",
+              "body": "Finished antibiotic Sunday. No burning, no frequency, no fever. Reminded her to call early with any recurrence."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "specialist_visit",
+          "start": "2025-06-10T09:40",
+          "service": "Urology",
+          "reason": "yearly stone surveillance",
+          "reports": [
+            {"study": "Renal ultrasound", "performed": "2025-06-10T09:15", "text": "Both kidneys normal in size and echotexture. No shadowing calculus. No hydronephrosis. Bladder unremarkable.", "conclusion": "No renal calculi. No hydronephrosis."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Annual Follow-up",
+              "author": "urology",
+              "date": "2025-06-11T08:30",
+              "body": "Yearly visit 06/10/2025. One episode of cystitis in February treated by PCP (Klebsiella, nitrofurantoin), no flank pain or fever since. Struvite stone cleared by ureteroscopy 6/2024.\nUltrasound today: no stones, no hydronephrosis.\nPlan: continue hydration; repeat ultrasound in one year. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "portal_message",
+          "start": "2025-08-26T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "School form",
+              "author": "patient",
+              "date": "2025-08-26T20:15",
+              "body": "Our district wants an updated staff health form and a printout of my shots before the 2nd. Could you fill out the doctor part? I'll drop it at the front desk tomorrow."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: School form",
+              "author": "MA",
+              "date": "2025-08-27T10:10",
+              "body": "Got the form this morning. Doctor signed it and your immunization record is attached in the portal under Letters. Original is at the front desk for pickup."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-16T16:30", "results": [{"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-16T16:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-09-16T16:30", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Urinalysis", "collected": "2025-09-16T16:30", "results": [{"test": "Urine pH"}, {"test": "Urine Leukocyte Esterase"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2025-09-16T16:10", "issued": "2025-09-23T14:00", "text": "Liquid-based cervical cytology. Specimen adequate, transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative. Routine co-testing in 5 years."}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-16T16:35"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-09-16T15:45"},
+            {"procedure": "Immunization administration", "performed": "2025-09-16T16:35"},
+            {"procedure": "Venipuncture", "performed": "2025-09-16T16:30"}
+          ],
+          "orders": [
+            {"id": "fit-2025", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "colorectal cancer screening, age 45"},
+            {"id": "mammo-2025", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "routine breast cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-16T17:20",
+              "body": "Annual. Feeling well. Has a fourth-grade class this year, new room on the top floor.\n\nSince last year: cystitis in Feb (Klebsiella, nitrofurantoin, resolved). Urology in June - ultrasound clean, still stone free. No flank pain.\n\nMeds none. NKDA. Never smoker, no alcohol.\nROS negative.\n\nExam: well. Thyroid normal. Heart regular. Lungs clear. Abdomen benign, no CVA tenderness. Pelvic: normal external genitalia, cervix without lesion, Pap with HPV collected. No edema.\nPHQ-2: 0.\n\nA/P\n- Hx struvite stone, stone free; urology yearly.\n- Recurrent UTI, last Feb.\n- Prevention: turned 45 - discussed colon screening options, she chose FIT, kit given. Pap/HPV today. Mammogram ordered. Flu shot today; COVID at a nurse visit next month. Labs today.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "portal_message",
+          "start": "2025-09-23T17:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "author": "PCP",
+              "date": "2025-09-23T17:45",
+              "body": "Your Pap and HPV test are both negative, so the next one isn't due for five years. Blood work from last week is normal, and cholesterol is about where it was last time. Still waiting on the stool kit when you get a chance."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "lab_only",
+          "start": "2025-09-30T09:00",
+          "labs": [
+            {"panel": null, "collected": "2025-09-28T08:00", "resulted": "2025-09-30T13:20", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "fit-2025", "action": "done", "date": "2025-09-30T13:20"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "PCP",
+              "date": "2025-09-30T15:00",
+              "body": "FIT negative. Repeat yearly. Released to portal with a note."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:30",
+          "reason": "COVID vaccine",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T15:33"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-07T15:33"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "COVID vaccine",
+              "author": "RN",
+              "date": "2025-10-07T15:45",
+              "body": "2025-26 COVID vaccine given right deltoid. Feeling well, no fever. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "imaging",
+          "start": "2025-10-28T16:15",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2025-10-28T16:15", "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 10/2024 and 10/2023. Scattered fibroglandular density. No suspicious finding in either breast.", "conclusion": "BI-RADS 1, negative."}
+          ],
+          "orders": [
+            {"id": "mammo-2025", "action": "done", "date": "2025-10-28T16:15"}
+          ]
+        }
+      ]
+    }
+  ]
+}

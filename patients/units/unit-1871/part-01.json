@@ -1,0 +1,345 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001871",
+      "given": "Malee",
+      "family": "Nguyen",
+      "birth_date": "1993-07-09",
+      "address_line": "27 Lawrence Plain Rd, Apt 4",
+      "phone": "+1-774-555-0137",
+      "email": "malee.nguyen@example.test",
+      "marital_status": "single",
+      "summary": "Biology PhD candidate who joined in 2021 with mild persistent asthma on albuterol alone, recurrent kidney stones and pollen allergy. A 2022 pregnancy brought fetal toxoplasmosis, an asthma exacerbation and pyelonephritis; pulmonary TB was found and treated postpartum in 2023, followed by a ureteral stone in 2025 and an atypical pneumonia in 2026.",
+      "events": [
+        {
+          "id": "2021-09-08a",
+          "kind": "establish_care",
+          "start": "2021-09-08T09:00",
+          "end": "2021-09-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "conditions": [
+            {"label": "Mild persistent asthma", "action": "diagnosed", "onset": "2008-01-01", "note": "since adolescence; albuterol only"},
+            {"label": "Recurrent nephrolithiasis", "icd10": "N20.0", "action": "diagnosed", "onset": "2014-01-01", "note": "two prior episodes, both passed on their own"},
+            {"label": "Allergic rhinitis due to pollen", "action": "diagnosed", "onset": "2005-01-01"}
+          ],
+          "medications": [
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 1-2 puffs every 4-6 hours as needed for wheezing or shortness of breath", "dose": {"value": 2, "unit": "puff"}, "frequency": "PRN", "route": "Inhalation", "course": "chronic", "reason": "Mild persistent asthma"}
+          ],
+          "allergies": [
+            {"substance": "Dust mites", "reaction": "Itching", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "Pollen", "reaction": "Itching", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 54.0, "height_cm": 157.0, "bp": [110, 70]},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-08T09:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-09-08T09:50", "results": [{"test": "Creatinine"}, {"test": "Calcium"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-08T09:50", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Urinalysis", "collected": "2021-09-08T09:50", "results": [{"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "PhD candidate (biology), graduate research assistant"}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-20T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-11T10:00"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2021-09-08T09:00"}],
+          "documents": [
+            {
+              "type": "History and physical note",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-08T10:00",
+              "body": "NEW PATIENT — ESTABLISH CARE / PREVENTIVE\n\n28F, PhD student in biology (3rd year, works as a research assistant in a lab on campus). Moved to the area for the program. Previously used university student health for everything; no regular PCP since coming to the US in 2018. Wants someone for the long haul and liked that she can text.\n\nASTHMA: dx as a teenager. Calls it mild. Uses albuterol a few times a month, more in spring and with hard runs in cold air. Never hospitalized, never intubated. No night waking lately. Has never been on a daily inhaler.\n\nKIDNEY STONES: two episodes, the first in her early twenties before immigrating and the second in 2020 here, both passed at home with pain meds, no procedures. Never had a stone analyzed that she knows of. Dad has had 'a lot' of stones.\n\nALLERGIES: spring and late-summer sneezing, itchy eyes; was told years ago it is dust mites and pollen. Manages without regular meds. No drug allergies.\n\nMEDS: albuterol HFA 1-2 puffs q4-6h prn.\n\nPMH as above. PSH none. OB: G0.\nFHx: mother asthma; mother also told she had a weak cervix and her brother was born early. Father recurrent kidney stones. Maternal grandmother type 2 diabetes.\nSH: Never smoked. Alcohol a drink or two a month. Runs about 5 miles most days. Lives in Hadley with her two cats. Two COVID doses this spring through the university.\n\nROS: negative except seasonal nasal symptoms.\n\nEXAM: Well-appearing, thin. HEENT: TMs clear, mild pale nasal mucosa, oropharynx clear. Neck supple, no LAD, thyroid normal. Lungs clear, no wheeze, good air movement. Heart RRR, no murmur. Abd soft, NT, no CVA tenderness. Skin no rash. Ext no edema.\n\nA/P\n1. Mild persistent asthma — albuterol PRN, refilled. Reviewed technique with spacer.\n2. Recurrent nephrolithiasis — two episodes. Fluids, aim for pale urine. BMP and UA today. If another stone, strain it so we can get an analysis.\n3. Allergic rhinitis, pollen — symptomatic, OTC options discussed, she declines for now.\n4. Health maintenance: Pap last done 2020 at student health, normal per pt, will request records. Flu shot when it arrives. CBC, BMP, lipids, UA today.\n\nRTC 1 year or prn."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-10a",
+          "kind": "portal_message",
+          "start": "2021-09-10T14:20",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient message", "title": "Your lab results", "author": "PCP", "date": "2021-09-10T14:20", "body": "Hi Malee, all of your labs from Wednesday look good: blood counts, kidney function, electrolytes and calcium are normal, cholesterol is in a healthy range, and the urine test was clean with no blood. Nothing to change. Keep up the water! We'll let you know when flu shots are in."}
+          ]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "outside_records",
+          "start": "2021-09-22T11:00",
+          "reason": "Records from university student health",
+          "documents": [
+            {"type": "Outside records", "title": "Student Health Records Received", "author": "front desk", "date": "2021-09-22T11:00", "body": "Records received by fax from university student health services, 14 pages, scanned to chart.\n\nPCP summary of contents: visits 2018-2021 for asthma refills, an upper respiratory illness, a flank pain visit in spring 2020 treated as a kidney stone (passed, no imaging on file), and a routine gynecologic exam 2020 with a normal Pap. No hospitalizations. Medication list: albuterol only. Allergies: environmental (dust mite, pollen), NKDA."}
+          ]
+        },
+        {
+          "id": "2021-10-13a",
+          "kind": "nurse_visit",
+          "start": "2021-10-13T16:10",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-13T16:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-13T16:15"}],
+          "documents": [
+            {"type": "Nursing note", "title": "Nurse Visit — Influenza Vaccine", "author": "RN", "date": "2021-10-13T16:25", "body": "Here for seasonal flu vaccine. Feeling well, no fever. Screening questions negative, no prior reaction to vaccines. Quadrivalent flu 0.5 mL IM left deltoid, lot and exp entered. Tolerated well, waited 15 min, no issues. VIS given."}
+          ]
+        },
+        {
+          "id": "2021-12-06a",
+          "kind": "portal_message",
+          "start": "2021-12-06T08:42",
+          "reason": "Inhaler refill",
+          "documents": [
+            {"type": "Patient message", "title": "Refill request", "author": "patient", "date": "2021-12-06T08:42", "body": "Hi, my albuterol is almost out and the cold air has me using it a bit more on runs. Could you send a new one to my usual pharmacy? Thanks, Malee"},
+            {"type": "Patient message", "title": "RE: Refill request", "author": "PCP", "date": "2021-12-06T12:05", "body": "Sent, with 2 refills. If you find you're needing it more than twice a week, or it's waking you up at night, let me know and we'll talk about adding something. Warm up gradually in the cold."}
+          ]
+        },
+        {
+          "id": "2022-01-31a",
+          "kind": "portal_message",
+          "start": "2022-01-31T07:58",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "diagnosed", "onset": "2021-12-31", "note": "LMP 2021-12-31 by patient report"}
+          ],
+          "orders": [
+            {"id": "ob-referral", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "New pregnancy, prenatal care"}
+          ],
+          "documents": [
+            {"type": "Patient message", "title": "Pregnancy test", "author": "patient", "date": "2022-01-31T07:58", "body": "Good morning! I took a home test this weekend and it was positive, then another one this morning, also positive. My last period started Dec 31. This was planned, we're happy but I have no idea what to do first. Do I come see you or go straight to an OB? Also is my inhaler ok to keep using?"},
+            {"type": "Patient message", "title": "RE: Pregnancy test", "author": "PCP", "date": "2022-01-31T11:30", "body": "Congratulations! That puts you at about 4-5 weeks. I've sent a referral to obstetrics; they usually see people for the first visit around 10-12 weeks and will do the dating and first labs. Yes, keep using your albuterol when you need it. Untreated asthma is a bigger risk to the pregnancy than the inhaler. Call any time with questions."}
+          ]
+        },
+        {
+          "id": "2022-03-30a",
+          "kind": "outside_records",
+          "start": "2022-03-30T10:15",
+          "reason": "Obstetrics initial prenatal visit note",
+          "orders": [{"id": "ob-referral", "action": "done", "date": "2022-03-30T10:15"}],
+          "conditions": [
+            {"label": "Pregnancy with risk factors for cervical insufficiency requiring modified exercise regimen", "icd10": "O09.891", "action": "diagnosed", "onset": "2022-03-28"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-03-28T10:30", "resulted": "2022-03-29T15:00", "results": [
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis B Surface Antigen", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "Rapid Plasma Reagin", "text": "Nonreactive"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult note", "title": "Obstetrics — Initial Prenatal Visit", "author": "obstetrics", "date": "2022-03-28T11:00", "body": "OBSTETRICS & GYNECOLOGY\nInitial prenatal visit — 2022-03-28\nCopy to primary care physician.\n\n28 y/o G1P0 at 12w3d by LMP 2021-12-31, EDD 2022-10-07. Planned pregnancy. Mild nausea, otherwise doing well. No vaginal bleeding, no cramping or contractions, no leakage of fluid.\n\nShe is a committed distance runner, currently about 5 miles a day at a moderate pace, and her main question today is whether she can keep that up.\n\nPMH: mild persistent asthma (albuterol prn), recurrent kidney stones, seasonal allergies.\nMeds: albuterol inhaler prn.\nAllergies: dust mites, pollen. NKDA.\nFamily: her mother was told she had cervical incompetence and her brother was born prematurely. Mother also has asthma. Father with kidney stones; maternal grandmother with type 2 DM.\nSocial: never smoker, no alcohol since positive test. Graduate student.\n\nVitals within normal limits. General exam unremarkable. Uterus palpable just above the symphysis, size consistent with dates. FHT by Doppler 150s, regular.\n\nAssessment / plan\n— IUP at 12 weeks, uncomplicated so far.\n— Family history of cervical insufficiency in her mother: we discussed that this raises her own risk somewhat. Recommended scaling back from daily 5-mile runs to shorter, lower-intensity sessions on most days, with walking, swimming or prenatal yoga as alternatives; avoid high-impact intervals. Cervical length assessment with her anatomy scan.\n— Asthma: continue albuterol as needed.\n— Prenatal labs sent today (results below). Rubella and other immunity labs per routine.\n— RTC 4 weeks.\n\nPrenatal labs 2022-03-29: HIV Ag/Ab nonreactive. HBsAg nonreactive. HCV Ab nonreactive. RPR nonreactive."}
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "portal_message",
+          "start": "2022-04-12T21:14",
+          "reason": "Question about asthma and running in pregnancy",
+          "documents": [
+            {"type": "Patient message", "title": "Running and inhaler", "author": "patient", "date": "2022-04-12T21:14", "body": "Hi Dr, the OB asked me to cut back on running because of my mom's history. I switched to 2 miles easy and some prenatal yoga. Pollen season is starting and I've used the inhaler maybe twice this week. Is that okay or too much?"},
+            {"type": "Patient message", "title": "RE: Running and inhaler", "author": "PCP", "date": "2022-04-13T08:10", "body": "That sounds very reasonable. A couple of puffs twice a week during pollen season is fine. If you start needing it most days, waking at night, or it isn't working as well, message me or come in. Rinse your face and change clothes after being outside on high pollen days, it does help."}
+          ]
+        },
+        {
+          "id": "2022-06-20a",
+          "kind": "outside_records",
+          "start": "2022-06-20T09:40",
+          "reason": "Obstetrics 24-week visit, ultrasound and serologies",
+          "conditions": [
+            {"label": "Toxoplasma infection in pregnancy with congenital (fetal) toxoplasmosis", "icd10": "O98.612", "action": "diagnosed", "onset": "2022-06-17", "note": "maternal Toxoplasma IgG and IgM positive; fetal ultrasound findings"}
+          ],
+          "orders": [
+            {"id": "mfm-referral", "action": "placed", "order": "Maternal-fetal medicine referral", "category": "referral", "to": "Maternal-Fetal Medicine", "reason": "Fetal ultrasound findings with positive Toxoplasma serology"}
+          ],
+          "documents": [
+            {"type": "Consult note", "title": "Obstetrics — Prenatal Visit, 24 Weeks", "author": "obstetrics", "date": "2022-06-17T16:30", "body": "OBSTETRICS & GYNECOLOGY\nPrenatal visit — 2022-06-17\ncc: primary care\n\n28 y/o G1P0 at 24w0d. Has modified her exercise as advised (shorter easy runs, prenatal yoga). Feels well apart from some tiredness. No bleeding, contractions or fluid.\n\nExposure history obtained today: two cats at home, and a few months ago she took in a stray that she has been feeding and whose litter box she has been scooping herself.\n\nVitals normal. Exam unremarkable.\n\nUltrasound (growth and anatomy follow-up) today: bilateral ventriculomegaly; intracranial calcifications; mild fetal ascites. Estimated fetal weight small for gestational age.\n\nTORCH serologies:\nToxoplasma IgG — positive\nToxoplasma IgM — positive\nRubella IgG — positive (immune); Rubella IgM — negative\nCMV IgG — positive; CMV IgM — negative\nParvovirus B19 IgG — positive; Parvovirus B19 IgM — negative\n\nAssessment: serology with positive Toxoplasma IgM and IgG together with the ultrasound findings is concerning for congenital toxoplasmosis.\nPlan: urgent maternal-fetal medicine consultation (scheduled 6/22) for counseling, confirmatory testing and treatment. Advised to stop handling cat litter entirely; someone else should do it, or gloves and daily changes if unavoidable. Wash hands after handling cats, avoid undercooked meat. Long discussion; she is understandably upset. Social work contact offered.\n\nWill keep primary care informed."}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "telephone",
+          "start": "2022-06-21T12:30",
+          "reason": "Call after OB report",
+          "documents": [
+            {"type": "Telephone encounter", "title": "Phone Call — Checking In", "author": "PCP", "date": "2022-06-21T12:45", "body": "Called pt after receiving OB note from 6/17. She had already heard the results from OB and has the MFM appointment tomorrow. Tearful but has support. Questions mostly about what the cats mean now; reviewed that OB/MFM will guide testing and treatment, and that someone else should handle the litter. Asthma ok, albuterol about twice a week. Offered visit or call any time. She will send an update after MFM."}
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "outside_records",
+          "start": "2022-06-24T15:05",
+          "reason": "Maternal-fetal medicine consultation",
+          "orders": [{"id": "mfm-referral", "action": "done", "date": "2022-06-24T15:05"}],
+          "documents": [
+            {"type": "Consult note", "title": "Maternal-Fetal Medicine Consultation", "author": "maternal-fetal medicine", "date": "2022-06-22T14:00", "body": "MATERNAL-FETAL MEDICINE — CONSULTATION\nDate of service: 2022-06-22\nReferring: obstetrics. Copy: primary care.\n\nReason: positive maternal Toxoplasma IgM/IgG with fetal ventriculomegaly, intracranial calcifications, mild ascites and SGA at 24 weeks.\n\nHistory reviewed with the patient. Exposure to a newly adopted stray cat's litter in recent months. No fevers or adenopathy she recalls. Medications: albuterol prn. NKDA.\n\nTargeted ultrasound today confirms the referring findings.\n\nCounseling: we discussed that the ultrasound findings with maternal serology strongly suggest fetal infection. Amniocentesis for Toxoplasma PCR on amniotic fluid was offered to confirm and she elected to proceed. Procedure performed today under ultrasound guidance without complication.\n\nPlan: amniotic fluid Toxoplasma PCR sent. If positive, treatment with pyrimethamine, sulfadiazine and leucovorin for the remainder of the pregnancy, with CBC monitoring here. Serial ultrasound with us every 2-4 weeks. Pediatric infectious disease will be involved before delivery."}
+          ]
+        },
+        {
+          "id": "2022-07-01a",
+          "kind": "outside_records",
+          "start": "2022-07-01T10:20",
+          "reason": "MFM amniocentesis result and treatment",
+          "medications": [
+            {"drug_text": "pyrimethamine 25 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (50 mg) twice daily for 2 days, then 2 tablets (50 mg) once daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Fetal toxoplasmosis"},
+            {"drug_text": "sulfadiazine 500 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (1,000 mg) three times daily", "dose": {"value": 1000, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "Fetal toxoplasmosis"},
+            {"drug_text": "leucovorin calcium 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (10 mg) daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Folate rescue with pyrimethamine"}
+          ],
+          "documents": [
+            {"type": "Consult note", "title": "Maternal-Fetal Medicine — Result and Treatment", "author": "maternal-fetal medicine", "date": "2022-06-30T11:30", "body": "MATERNAL-FETAL MEDICINE — FOLLOW-UP\nDate of service: 2022-06-30\n\nAmniotic fluid Toxoplasma gondii PCR (collected 6/22, resulted 6/28): POSITIVE. This confirms fetal infection.\n\nTreatment started today at 25w6d:\n- Pyrimethamine 50 mg PO twice daily x 2 days, then 50 mg daily\n- Sulfadiazine 1,000 mg PO three times daily\n- Leucovorin (folinic acid) 10 mg PO daily\nContinue until delivery. Weekly CBC with us while on pyrimethamine. Good oral hydration encouraged on sulfadiazine, particularly given her history of kidney stones.\n\nAsthma: albuterol prn, she reports more use lately with nighttime cough; advised she contact her PCP if it persists.\n\nNext MFM ultrasound 2 weeks. Pediatric ID consult arranged for delivery planning."}
+          ]
+        },
+        {
+          "id": "2022-07-06a",
+          "kind": "ed_visit",
+          "start": "2022-07-06T22:10",
+          "end": "2022-07-07T03:30",
+          "service": "Emergency Medicine",
+          "reason": "Cough, wheeze and shortness of breath in pregnancy",
+          "conditions": [
+            {"label": "Mild persistent asthma with acute exacerbation, uncontrolled", "icd10": "J45.31", "action": "diagnosed", "onset": "2022-06-22"}
+          ],
+          "vitals": [
+            {"time": "2022-07-06T22:15", "rr": 22, "spo2": 96}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (40 mg) by mouth once daily for 5 days", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Asthma exacerbation"}
+          ],
+          "procedures": [{"procedure": "Nebulizer treatment", "performed": "2022-07-06T22:30"}],
+          "documents": [
+            {"type": "Emergency department note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2022-07-07T09:00", "body": "EMERGENCY DEPARTMENT RECORD — date of service 2022-07-06\nForwarded to primary care.\n\nCC: wheezing, cough, SOB\n\nHPI: 28 y/o G1 at 26w5d, followed by OB and MFM for fetal toxoplasmosis, with mild persistent asthma. Two weeks of on-and-off cough, wheeze and breathlessness that has been getting steadily worse. Worst at night and when she tries her prenatal yoga class. Using albuterol 3-4 times a week now and says it barely helps. She has been reluctant to take more medicine because of the pregnancy but is now more worried about her breathing. No fever, no chest pain. No contractions, bleeding or leakage of fluid.\n\nMeds: albuterol HFA prn; pyrimethamine 50 mg daily, sulfadiazine 1 g TID, leucovorin 10 mg daily (MFM).\nAllergies: dust mites, pollen. NKDA.\nSH: never smoker, no alcohol in pregnancy. Graduate student.\n\nTriage: RR 22, SpO2 96% RA. Afebrile.\nExam: mild increased work of breathing, speaking full sentences. Bilateral expiratory wheezes throughout. Heart regular. Gravid abdomen, nontender.\n\nED course: albuterol/ipratropium nebulizer x3 back to back. Prednisone 40 mg PO given. OB triage at bedside: FHT 140s, reassuring; no contractions on toco. After treatments wheeze much improved, moving air well, ambulatory without desaturation.\n\nImpression: mild persistent asthma with acute exacerbation, uncontrolled.\n\nDisposition: discharged. Prednisone 40 mg daily to complete 5 days (rx sent). Albuterol 2-4 puffs every 4 hours as needed for the next few days. Follow up with PCP within the week; return for worsening breathing, fever, or any obstetric concerns."}
+          ]
+        },
+        {
+          "id": "2022-07-11a",
+          "kind": "office_visit",
+          "start": "2022-07-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, asthma",
+          "conditions": [
+            {"label": "Mild persistent asthma with acute exacerbation, uncontrolled", "icd10": "J45.31", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 61.0},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-07-11T15:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2022-07-11T16:05", "body": "S: Seen in ED 7/6 for asthma flare at 26 wks. Finished prednisone yesterday. Breathing 'night and day' better. Sleeping through. Used albuterol once since Saturday. Did a gentle yoga class Sunday without trouble. On MFM regimen for fetal toxo (pyrimethamine, sulfadiazine, leucovorin), tolerating it, drinking lots of water. Feeling the baby move. Worried the prednisone hurt the baby; reassured.\n\nO: Vitals reviewed, sats normal on RA. Comfortable, no accessory muscle use. Lungs clear, no wheeze, good air entry. Heart RRR. Gravid.\n\nA/P: Asthma exacerbation, resolved after burst. Continue albuterol as needed. Reviewed warning signs and when to use it. Call if needing it more than a couple times a week. ED record reviewed. Next OB/MFM visits as scheduled. Message me with anything."}
+          ]
+        },
+        {
+          "id": "2022-08-01a",
+          "kind": "outside_records",
+          "start": "2022-08-01T13:00",
+          "reason": "OB visit records, Tdap",
+          "immunizations": [{"vaccine": "Tdap", "date": "2022-07-27T10:30"}],
+          "documents": [
+            {"type": "Outside records", "title": "Obstetrics Visit Summary Received", "author": "front desk", "date": "2022-08-01T13:00", "body": "OB visit summary from 2022-07-27 received and scanned. Prenatal visit at 29 weeks; Tdap given in clinic that day. Immunization entered from the outside record."}
+          ]
+        },
+        {
+          "id": "2022-08-10a",
+          "kind": "hospital_admission",
+          "start": "2022-08-10T19:40",
+          "end": "2022-08-13T12:00",
+          "service": "Obstetrics inpatient",
+          "reason": "Fever and right flank pain in pregnancy",
+          "conditions": [
+            {"label": "Acute pyelonephritis in pregnancy", "icd10": "O23.03", "action": "diagnosed", "onset": "2022-08-08"}
+          ],
+          "vitals": [
+            {"time": "2022-08-10T19:50", "temp_c": 38.9, "bp": [120, 78], "hr": 110, "rr": 18}
+          ],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2022-08-10T20:15", "results": [
+              {"test": "Urine Leukocyte Esterase", "text": "Positive"},
+              {"test": "Urine White Blood Cells", "text": "Many (pyuria)"},
+              {"test": "Urine Blood", "text": "Negative"}
+            ]},
+            {"panel": null, "collected": "2022-08-10T20:15", "resulted": "2022-08-12T09:00", "results": [
+              {"test": "Urine Culture", "text": "Escherichia coli, greater than 100,000 CFU/mL. Susceptible to ceftriaxone and cephalexin."}
+            ]}
+          ],
+          "medications": [
+            {"drug": "cephalexin 500 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth four times daily to complete 14 days of total antibiotic therapy", "dose": {"value": 500, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "Acute pyelonephritis in pregnancy"}
+          ],
+          "procedures": [{"procedure": "Initial hospital inpatient care", "performed": "2022-08-10T23:00"}],
+          "documents": [
+            {"type": "Emergency department note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2022-08-15T09:30", "body": "EMERGENCY DEPARTMENT — date of service 2022-08-10\n\n29 y/o G1 at 31w5d, h/o recurrent kidney stones and asthma (ED visit for exacerbation last month). Two days of fever, shaking chills and right-sided flank pain, with burning on urination and going much more often. No vomiting. Denies contractions, vaginal bleeding or leakage of fluid. On MFM treatment for fetal toxoplasmosis.\n\nMeds: pyrimethamine, sulfadiazine, leucovorin; albuterol prn. NKDA (env: dust mites, pollen).\n\nT 38.9 C (102 F), BP 120/78, HR 110, RR 18.\nUncomfortable, flushed. Lungs clear. Right CVA tenderness. Gravid abdomen soft, no uterine tenderness. FHT reassuring.\n\nUA: pyuria, bacteriuria, leukocyte esterase positive. Urine culture sent.\n\nImpression: acute pyelonephritis in pregnancy.\nPlan: IV fluids, ceftriaxone IV. Admit to antepartum service."},
+            {"type": "Discharge summary", "title": "Hospital Discharge Summary", "author": "obstetrics", "date": "2022-08-15T09:30", "body": "DISCHARGE SUMMARY — ANTEPARTUM SERVICE\nAdmitted 2022-08-10, discharged 2022-08-13\n\nDiagnosis: acute pyelonephritis in pregnancy, 31-32 weeks.\n\nCourse: admitted from the ED with fever, right flank pain and urinary symptoms. Started on IV ceftriaxone. Defervesced and afebrile from 48 hours on, with marked improvement in flank pain. Urine culture: E. coli >100,000 CFU/mL, susceptible to ceftriaxone and cephalexin. Fetal monitoring reassuring throughout; no preterm contractions. Continued MFM toxoplasmosis regimen inpatient.\n\nDischarge medications:\n- Cephalexin 500 mg PO four times daily to complete 14 days of antibiotics\n- Pyrimethamine 50 mg daily, sulfadiazine 1 g TID, leucovorin 10 mg daily (unchanged)\n- Albuterol inhaler prn\n\nFollow-up: OB/MFM next week. PCP follow-up after discharge. Return for fever, flank pain, contractions or bleeding."}
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "telehealth_visit",
+          "start": "2022-08-16T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "conditions": [
+            {"label": "Acute pyelonephritis in pregnancy", "icd10": "O23.03", "action": "resolved"}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2022-08-16T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit — Post Discharge", "author": "PCP", "date": "2022-08-16T11:25", "body": "Video visit, pt at home, ID confirmed.\n\nAdmitted 8/10-8/13 with pyelonephritis at 31 wks, E. coli, treated with IV ceftriaxone then cephalexin. Discharge summary and ED record reviewed. Today: no fever since Friday, flank pain gone, urinating normally. Taking cephalexin QID, about 7 days left. Some fatigue. Breathing fine. Baby active.\n\nA/P: Pyelonephritis, clinically resolved, finish cephalexin. Hydration, especially with sulfadiazine and her stone history. OB to follow cultures. Call for fever or flank pain."}
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "hospital_admission",
+          "start": "2022-09-26T04:30",
+          "end": "2022-09-28T11:00",
+          "service": "Labor and Delivery",
+          "reason": "Spontaneous labor at term",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "resolved"},
+            {"label": "Pregnancy with risk factors for cervical insufficiency requiring modified exercise regimen", "icd10": "O09.891", "action": "resolved"},
+            {"label": "Toxoplasma infection in pregnancy with congenital (fetal) toxoplasmosis", "icd10": "O98.612", "action": "resolved", "note": "delivered; infant followed by the pediatric team"}
+          ],
+          "medications": [
+            {"drug_text": "pyrimethamine 25 MG Oral Tablet", "action": "stop"},
+            {"drug_text": "sulfadiazine 500 MG Oral Tablet", "action": "stop"},
+            {"drug_text": "leucovorin calcium 10 MG Oral Tablet", "action": "stop"}
+          ],
+          "documents": [
+            {"type": "Discharge summary", "title": "Delivery Discharge Summary", "author": "obstetrics", "date": "2022-09-30T08:45", "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted 2022-09-26, discharged 2022-09-28\n\n29 y/o G1 now P1, admitted in spontaneous labor at 38w3d. Pregnancy complicated by fetal toxoplasmosis on maternal pyrimethamine/sulfadiazine/leucovorin since 25w6d, pyelonephritis at 31 weeks, and one asthma exacerbation at 26 weeks.\n\nSpontaneous vaginal delivery 2022-09-26. Pediatric team present; infant admitted to the newborn unit for evaluation and treatment of congenital toxoplasmosis under pediatric infectious disease.\n\nMaternal postpartum course uncomplicated. Afebrile, ambulating, voiding, pain well controlled.\n\nMaternal medications at discharge: pyrimethamine, sulfadiazine and leucovorin DISCONTINUED at delivery. Continue albuterol prn.\n\nFollow-up: postpartum visit with OB in 6 weeks. PCP follow-up as usual."}
+          ]
+        },
+        {
+          "id": "2022-10-03a",
+          "kind": "portal_message",
+          "start": "2022-10-03T20:02",
+          "reason": "Update after delivery",
+          "documents": [
+            {"type": "Patient message", "title": "Update", "author": "patient", "date": "2022-10-03T20:02", "body": "Hi, just wanted to let you know I delivered last Monday. The pediatric team is taking care of the treatment side for the baby. I am off all the toxo pills now. I'm tired but ok. Do I need to see you before the 6 week OB visit?"},
+            {"type": "Patient message", "title": "RE: Update", "author": "PCP", "date": "2022-10-04T07:50", "body": "Thank you for letting me know, and congratulations. No need to come in before your OB visit unless something comes up. Let's get you in after that, in early November, for a check-in and your flu and COVID shots. Rest when you can."}
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "office_visit",
+          "start": "2022-11-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in, vaccines",
+          "state": {"weight_kg": 58.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-11-09T11:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-11-09T11:12"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-11-09T10:40"},
+            {"procedure": "Immunization administration", "performed": "2022-11-09T11:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2022-11-09T11:20", "body": "6 weeks postpartum. SVD 9/26 at 38 wks. OB postpartum visit done last week, 'all fine.' Off pyrimethamine/sulfadiazine/leucovorin since delivery. Baby's care is with peds ID. Sleep is choppy, mood mostly ok, has help from friends in the program. PHQ-9 5, no SI. Back in the lab part time. Asthma quiet, albuterol rarely. No urinary sx since the pyelo.\n\nExam: well, tired-appearing. Lungs clear. Heart RRR. Abd soft, NT, no CVA tenderness.\n\nA/P\n- Postpartum, doing well. PHQ-9 mild range, normal adjustment; she knows to reach out if mood dips. \n- Asthma: stable, albuterol prn.\n- Flu and bivalent COVID boosters today.\n- Physical next fall."}
+          ]
+        }
+      ]
+    }
+  ]
+}

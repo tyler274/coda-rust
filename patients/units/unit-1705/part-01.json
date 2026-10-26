@@ -1,0 +1,960 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001705",
+   "given": "Susan",
+   "family": "Strong",
+   "birth_date": "1989-01-06",
+   "address_line": "61 Pleasant St, Apt 2R, Holyoke, MA 01040",
+   "phone": "+1-860-555-0108",
+   "email": "susan.strong@example.test",
+   "marital_status": "partnered",
+   "summary": "33-year-old woman who joins in June 2022 with new symptomatic type 2 diabetes, hypertension, bipolar I and a 2020 nephrectomy for clear cell RCC; Von Hippel-Lindau syndrome is diagnosed that December (hemangioblastomas, retinal angiomas, a right renal mass, elevated normetanephrine). Later: PCOS, Cushing syndrome (ketoconazole from 2024), olanzapine, an ED stay for hyperinsulinemic hypoglycemia, and a 2026 admission for right pyelonephritis.",
+   "events": [
+    {
+     "id": "2022-06-06a",
+     "kind": "establish_care",
+     "start": "2022-06-06T08:40",
+     "end": "2022-06-06T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient; thirst, frequent urination, weight loss",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "diagnosed",
+       "onset": "2021-12-01",
+       "note": "Symptomatic hyperglycemia with ketonuria at presentation"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2020-03-01",
+       "note": "Diagnosed during 2020 nephrectomy admission; off medication for several months"
+      },
+      {
+       "label": "Bipolar I disorder",
+       "icd10": "F31.9",
+       "action": "diagnosed",
+       "note": "By history; not on treatment"
+      },
+      {
+       "label": "History of kidney cancer",
+       "action": "history",
+       "onset": "2020-03-01",
+       "note": "Clear cell renal cell carcinoma, left radical nephrectomy 2020"
+      },
+      {
+       "label": "Acquired absence of kidney",
+       "action": "history",
+       "onset": "2020-03-01",
+       "note": "Left radical nephrectomy 2020"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 10 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Social, 1-2 drinks per month"
+      },
+      {
+       "item": "Occupation",
+       "value": "Part-time administrative assistant"
+      }
+     ],
+     "state": {
+      "weight_kg": 59.9,
+      "height_cm": 165.0,
+      "labs": {
+       "Hemoglobin A1c": 11.2,
+       "Glucose": 380,
+       "Creatinine": 1.0,
+       "Thyroid Stimulating Hormone": 2.5,
+       "Hemoglobin": 13.2,
+       "Hematocrit": 39.8
+      }
+     },
+     "vitals": {
+      "bp": [
+       130,
+       85
+      ]
+     },
+     "measure": [
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-06-06T08:55",
+       "results": [
+        {
+         "test": "Glucose",
+         "value": 380
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-06T08:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 11.2
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-06-06T08:50",
+       "results": [
+        {
+         "test": "Urine Glucose",
+         "text": "3+"
+        },
+        {
+         "test": "Urine Ketones",
+         "text": "1+"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-06-06T09:45",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ],
+       "resulted": "2022-06-06T17:10"
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-06T09:45",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 2.5
+        }
+       ],
+       "resulted": "2022-06-07T07:30"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-06-06T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ],
+       "resulted": "2022-06-06T15:20"
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-06T09:45",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ],
+       "resulted": "2022-06-07T11:00"
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-06T09:45",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ],
+       "resulted": "2022-06-07T11:00"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 5
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2022-06-06T08:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "psych-referral",
+       "action": "placed",
+       "order": "Psychiatry referral",
+       "category": "referral",
+       "to": "Psychiatry",
+       "reason": "Bipolar I disorder, re-establish care"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2022-06-06T10:15",
+       "body": "NEW PATIENT VISIT\n\n33 y/o woman here to establish. Has not had a regular doctor in years -- no insurance until she picked up MassHealth last month. Main reason she came in now: about six months of being thirsty all the time, up several times a night to urinate, and losing weight without trying. Clothes looser. Some fatigue. No vomiting, no abdominal pain, no shortness of breath. Drinking a lot of water and some juice.\n\nPMH\n- Hypertension, found during a hospital stay in 2020. Was sent home on lisinopril 10 and metoprolol succinate 50. Ran out a few months ago and never got them refilled.\n- Kidney cancer: left kidney removed in 2020 at an outside hospital (clear cell RCC per her). Never had follow-up after.\n- Bipolar I disorder, diagnosed years ago. Not on anything now. Says mood has been OK lately. Would like to get back in with psychiatry now that she has coverage.\n\nPSH: left radical nephrectomy 2020.\nMeds: none currently.\nAllergies: NKDA.\nFH: mother has type 2 diabetes.\nSH: part-time administrative assistant. Never smoked. Drinks socially, a drink or two a month. Lives in Holyoke.\n\nROS: as above. No chest pain, no vision change, no dysuria.\n\nEXAM\nBP 130/85. BMI 22. Thin, looks dry -- dry mucous membranes, otherwise in no distress. Alert, conversant.\nHeart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed left flank incision. No edema. Skin without rash.\n\nIN-OFFICE TESTS\nFingerstick glucose 380 (random).\nPOC A1c 11.2%.\nUrine dip: glucose 3+, ketones 1+.\n\nASSESSMENT / PLAN\n1. Diabetes mellitus, new, symptomatic -- type 2. Mother with T2DM. Small ketones on dip but she is eating and drinking, no vomiting, looks dry but not sick. BMP sent today to make sure bicarb and gap are OK; will call her this afternoon. Start metformin 500 mg BID with meals, will titrate in two weeks. Push water, cut out juice and soda. Glucometer prescribed, check fasting and before supper. Diabetes education referral. Reviewed ED precautions: vomiting, abdominal pain, confusion, trouble breathing.\n2. Hypertension -- 130/85 off meds. Restart her prior lisinopril 10 daily and metoprolol succinate 50 daily. BMP today, recheck at next visit.\n3. History of RCC s/p left nephrectomy, solitary right kidney -- will request the hospital records.\n4. Bipolar I -- stable by her report, PHQ-9 5. Referral to psychiatry.\n5. Health maintenance -- HIV and hep C screens today with consent. TSH, CBC.\n\nFollow up 2 weeks (video OK)."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-06b",
+     "kind": "telephone",
+     "start": "2022-06-06T17:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Lab call",
+       "author": "PCP",
+       "date": "2022-06-06T17:35",
+       "body": "Called pt re BMP. Bicarb normal, no anion gap. Creatinine 1.0. Glucose 380 matches the fingerstick. OK to continue plan at home -- metformin tonight, lots of water. She knows to go to the ED with vomiting or abdominal pain. Has meter from pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-07a",
+     "kind": "portal_message",
+     "start": "2022-06-07T13:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2022-06-07T13:05",
+       "body": "Hi Susan -- the rest of your labs are back. Thyroid test normal (TSH 2.5). Blood count normal. HIV and hepatitis C screens negative. The only abnormal numbers were the sugar values we talked about. See you on the video visit in two weeks. Bring your sugar log."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-09a",
+     "kind": "portal_message",
+     "start": "2022-06-09T20:42",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "metformin",
+       "author": "patient",
+       "date": "2022-06-09T20:42",
+       "body": "hi, the metformin is giving me some stomach upset and loose stools the first few days. is that normal? sugars in the morning are around 250s now, was over 300 before."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: metformin",
+       "author": "RN",
+       "date": "2022-06-10T09:15",
+       "body": "Hi Susan, yes that is very common in the first couple weeks and usually settles down. Take it in the middle of a meal, not on an empty stomach. If it gets worse or you can't keep food down, call us. Your morning numbers are already coming down -- keep logging them for your visit on the 21st."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-21a",
+     "kind": "telehealth_visit",
+     "start": "2022-06-21T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up, metformin titration",
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 500 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Dose increase"
+      },
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2022-06-21T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2022-06-21T11:45",
+       "body": "Video visit, pt at home in Holyoke, identity verified, consents to video.\n\nS: Two weeks on metformin 500 BID. GI upset settled once she started taking it with food. Thirst and nighttime urination much better -- up once a night now instead of 4-5 times. Fasting sugars on her log 180-220, pre-supper 190s-240s. Back on lisinopril and metoprolol, no lightheadedness. No cough.\n\nO: Well appearing on video, speaking full sentences, not dry-looking today.\n\nA/P:\nT2DM, improving. Increase metformin to 1000 mg BID. Keep checking fasting sugars. Diabetes ed class scheduled for July.\nHTN: on lisinopril/metoprolol, will check BP in office.\nOffice visit 4 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-08a",
+     "kind": "outside_records",
+     "start": "2022-07-08T10:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records received: 2020 hospital admission",
+       "author": "MA",
+       "date": "2022-07-08T10:20",
+       "body": "Records received by fax from regional hospital (requested 6/6).\n\nAdmission spring 2020, urology service. Left radical nephrectomy for left renal mass; surgical pathology clear cell renal cell carcinoma. Blood pressure elevated during the stay; discharged on lisinopril 10 mg daily and metoprolol succinate 50 mg daily. Discharge instructions advised urology follow-up -- no subsequent visits in the records sent.\n\n22 pages scanned to chart. Routed to PCP."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Chart review",
+       "author": "PCP",
+       "date": "2022-07-08T16:40",
+       "body": "Reviewed outside hospital records. Confirms L radical nephrectomy 2020, clear cell RCC. BP meds started at that admission -- same doses she's back on. No post-op surveillance done. Will discuss at visit later this month."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-19a",
+     "kind": "office_visit",
+     "start": "2022-07-19T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "weight_kg": 62.4,
+      "labs": {
+       "Glucose": 168,
+       "Microalbumin/Creatinine Ratio": 11
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2022-07-19T09:35"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2022-07-19T09:36"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-07-19T09:30",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ],
+       "resulted": "2022-07-20T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-07-19T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-07-19T09:35"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gyn-referral",
+       "action": "placed",
+       "order": "Gynecology referral",
+       "category": "referral",
+       "to": "Obstetrics & Gynecology",
+       "reason": "Irregular menses, difficulty conceiving"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-07-19T09:50",
+       "body": "F/u diabetes, HTN.\n\nDoing much better. On metformin 1000 BID about four weeks, tolerating. Fasting sugars now 130s-160s. Thirst gone, sleeping through the night. Weight coming back up, she's glad about that. Went to the first diabetes ed class.\n\nNew issue: periods have been irregular for the last six months or so, coming every month and a half to two months, and heavy when they come. She and her partner have been trying to get pregnant for about six months without success. Would like to see gyn.\n\nTaking lisinopril and metoprolol daily. No side effects.\n\nExam: vitals as charted. Weight up from last visit. Heart RRR, lungs clear. Feet: skin intact, monofilament sensation normal bilaterally, pulses 2+.\n\nA/P\n1. T2DM -- improving on metformin, A1c due in Sept. Urine microalbumin today.\n2. HTN -- continue lisinopril 10, metoprolol succ 50.\n3. Irregular menses / trying to conceive -- referral to gynecology.\n4. Solitary kidney, h/o RCC -- outside records reviewed; she never had post-op imaging. Will address at next visit once diabetes settled.\n5. HM -- Tdap and PCV20 today (diabetes). Flu shot in the fall.\n\nRTC 2 months with A1c."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-20a",
+     "kind": "portal_message",
+     "start": "2022-07-20T14:10",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Urine microalbumin",
+       "author": "PCP",
+       "date": "2022-07-20T14:10",
+       "body": "Urine microalbumin normal -- no protein leak from the kidney. Good news."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-16a",
+     "kind": "portal_message",
+     "start": "2022-08-16T10:31",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "psych appointment?",
+       "author": "patient",
+       "date": "2022-08-16T10:31",
+       "body": "hello, I never heard back about the psychiatry referral. also I need more test strips, the pharmacy said the order ran out."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: psych appointment?",
+       "author": "RN",
+       "date": "2022-08-16T15:02",
+       "body": "Hi Susan -- I checked on the psychiatry referral. The behavioral health clinic that takes MassHealth has you on their waitlist; they told us it is running several months right now. They will call you directly when a slot opens. New test strip prescription sent to your pharmacy (testing up to twice a day)."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-05a",
+     "kind": "specialist_visit",
+     "start": "2022-09-05T13:30",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Irregular menses, difficulty conceiving",
+     "conditions": [
+      {
+       "label": "Polycystic ovary syndrome",
+       "action": "diagnosed",
+       "onset": "2022-03-01"
+      }
+     ],
+     "state": {
+      "weight_kg": 64.0,
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Glucose": 126
+      }
+     },
+     "vitals": {
+      "bp": [
+       135,
+       85
+      ]
+     },
+     "measure": [
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-09-05T14:10",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 126
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-05T14:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-05T14:10",
+       "results": [
+        {
+         "test": "Testosterone, Total",
+         "value": 45
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-05T14:10",
+       "results": [
+        {
+         "test": "Sex hormone binding globulin",
+         "loinc": "13967-5",
+         "unit": "nmol/L",
+         "value": 14
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-05T14:10",
+       "results": [
+        {
+         "test": "Estrone",
+         "loinc": "2258-2",
+         "unit": "pg/mL",
+         "value": 262
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "gyn-referral",
+       "action": "done",
+       "date": "2022-09-05T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecology Consultation",
+       "author": "gynecology",
+       "date": "2022-09-09T11:00",
+       "body": "Outside Gynecology -- Consultation Letter\nDate of service: 09/05/2022\n\nDear Doctor,\n\nThank you for referring Ms. Strong, a 33-year-old G0, for evaluation of irregular cycles and difficulty conceiving.\n\nHISTORY: Over the last six months her cycles have lengthened and become unpredictable, now every 45 to 60 days, with heavy flow each time. She and her partner have been attempting conception for six months. She was recently diagnosed with type 2 diabetes by your office and is on metformin.\n\nPMH: type 2 diabetes, hypertension, bipolar I disorder, clear cell renal cell carcinoma s/p left radical nephrectomy (age 31).\nMEDICATIONS: metformin, lisinopril, metoprolol succinate 50 mg daily.\nALLERGIES: NKDA.\nFAMILY HISTORY: Father -- Von Hippel-Lindau syndrome. Mother -- type 2 diabetes, hypertension. Maternal uncle -- bipolar disorder.\nSOCIAL: never smoker; alcohol 1-2 drinks monthly; part-time administrative assistant.\n\nEXAM: BP 135/85. Central adiposity. Acanthosis nigricans at the posterior neck and axillae. Hirsutism of the chin and lower abdomen. Thyroid not enlarged. Pelvic exam: normal external genitalia, cervix without lesions, uterus normal size, no adnexal masses.\n\nLABS (drawn today): fasting glucose 126 mg/dL; hemoglobin A1c 7.2%; total testosterone 45 ng/dL (reference 8-60); SHBG low at 14 nmol/L; estrone elevated at 262 pg/mL.\n\nIMPRESSION: Oligomenorrhea with heavy bleeding, hirsutism and acanthosis in the setting of insulin resistance -- consistent with polycystic ovary syndrome. Testosterone within range; low SHBG and elevated estrone fit the picture.\n\nPLAN: Continue metformin per your office. Menstrual calendar. Follow up with us as needed.\n\nSincerely,\nGynecology"
+      }
+     ]
+    },
+    {
+     "id": "2022-09-20a",
+     "kind": "office_visit",
+     "start": "2022-09-20T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "weight_kg": 64.6
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-09-20T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-09-20T16:05",
+       "body": "DM f/u.\n\nSaw gyn 9/5 -- letter in chart. Dx PCOS. A1c drawn there was 7.2 (from 11.2 in June), so did not repeat today. Fasting glucose 126 there. Home fasting 120s-140s.\n\nTolerating metformin 1000 BID. Taking BP meds. Feels well. No hypoglycemia symptoms.\n\nExam: vitals reviewed. Comfortable. Heart RRR. Lungs clear.\n\nA/P\nT2DM -- big improvement, continue metformin. Recheck A1c in 3 months.\nPCOS -- per gyn, continue metformin, she's tracking cycles.\nHTN -- continue current meds.\nFlu shot next month at nurse visit."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-11a",
+     "kind": "nurse_visit",
+     "start": "2022-10-11T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-11T08:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-11T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Flu Vaccine",
+       "author": "RN",
+       "date": "2022-10-11T08:25",
+       "body": "Flu vaccine given L deltoid, lot recorded. VIS reviewed. Tolerated, no reaction during 15 min wait. Pt says she got her bivalent COVID booster at the pharmacy last week."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-05a",
+     "kind": "office_visit",
+     "start": "2022-12-05T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Headaches and visual disturbance",
+     "state": {
+      "weight_kg": 65.5,
+      "bp": [
+       142,
+       90
+      ],
+      "labs": {
+       "Calcium": 9.8,
+       "Normetanephrine, Free, Plasma": 476,
+       "Metanephrine, Free, Plasma": 42,
+       "Hemoglobin A1c": 7.0,
+       "Glucose": 122
+      }
+     },
+     "vitals": {
+      "bp": [
+       142,
+       90
+      ]
+     },
+     "measure": [
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-12-05T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        },
+        {
+         "test": "Hematocrit",
+         "value": 39.8
+        }
+       ],
+       "resulted": "2022-12-05T15:00"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-12-05T11:00",
+       "results": [
+        {
+         "test": "Calcium",
+         "value": 9.8
+        },
+        {
+         "test": "Creatinine"
+        }
+       ],
+       "resulted": "2022-12-05T16:00"
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-05T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2022-12-05T16:00"
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-05T11:00",
+       "results": [
+        {
+         "test": "Normetanephrine, Free, Plasma",
+         "value": 476
+        },
+        {
+         "test": "Metanephrine, Free, Plasma",
+         "value": 42
+        }
+       ],
+       "resulted": "2022-12-09T13:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-12-05T10:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mri-brain-2022",
+       "action": "placed",
+       "order": "MRI brain with and without contrast",
+       "category": "imaging",
+       "reason": "Headaches, visual disturbance, family history of VHL"
+      },
+      {
+       "id": "mri-spine-2022",
+       "action": "placed",
+       "order": "MRI cervical and thoracic spine with and without contrast",
+       "category": "imaging",
+       "reason": "Family history of VHL, screen for hemangioblastoma"
+      },
+      {
+       "id": "us-abd-2022",
+       "action": "placed",
+       "order": "Abdominal ultrasound",
+       "category": "imaging",
+       "reason": "Solitary kidney, history of RCC"
+      },
+      {
+       "id": "ophtho-referral-2022",
+       "action": "placed",
+       "order": "Ophthalmology referral",
+       "category": "referral",
+       "to": "Ophthalmology",
+       "reason": "Retinal angiomas on fundoscopy, visual disturbance"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-12-05T11:20",
+       "body": "CC: headaches and vision trouble.\n\nS: Six months of headaches, mostly frontal and behind the eyes, a few times a week, acetaminophen helps partly. Over the same stretch, episodes of blurred vision, mostly the left eye, lasting minutes. No weakness, numbness, speech change or falls. No nausea.\n\nShe brings up that her brother was just diagnosed with a brain tumor. Her father has Von Hippel-Lindau syndrome (also listed in the gyn letter). She had kidney cancer at 31.\n\nHTN: on lisinopril 10 and metoprolol succ 50 daily, says she takes both. Diagnosed in 2020.\nDM: on metformin, fasting sugars 110s-130s.\n\nO: BP 142/90 (repeat similar). Comfortable.\nFundi (undilated): left eye shows a reddish vascular lesion in the periphery with a feeding vessel, appearance of retinal angioma; a second smaller one adjacent. Right fundus normal as far as seen. Discs sharp.\nNeuro: CN II-XII intact, strength 5/5 throughout, finger-nose normal, gait normal, Romberg negative.\nHeart RRR, lungs clear, abdomen soft, healed L flank scar.\n\nA/P\nHeadaches + visual disturbance + retinal angiomas, h/o clear cell RCC at 31, father with VHL, brother with brain tumor -- this strongly suggests Von Hippel-Lindau syndrome.\n- MRI brain and cervical/thoracic spine with and without contrast\n- Abdominal ultrasound (solitary R kidney, never had post-op imaging)\n- Plasma free metanephrines, CBC, BMP with calcium, A1c today\n- Ophthalmology referral\nWill see her back once imaging is done to go over everything.\n\nHTN above goal today. Continue current meds for now; recheck at follow-up.\nT2DM: A1c today."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "telephone",
+     "start": "2022-12-06T14:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior authorization - MRI",
+       "author": "front desk",
+       "date": "2022-12-06T14:05",
+       "body": "MassHealth prior auth submitted for MRI brain and MRI C/T spine w/wo contrast. Clinicals faxed. Approved same day, auth # on file. Pt scheduled 12/14 at outside imaging center. Ultrasound 12/12 (no auth needed)."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-09a",
+     "kind": "portal_message",
+     "start": "2022-12-09T16:20",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Labs from 12/5",
+       "author": "PCP",
+       "date": "2022-12-09T16:20",
+       "body": "Susan -- blood count normal (hemoglobin 13.2), calcium normal, A1c 7.0, kidney function stable. One of the adrenal hormone tests (normetanephrine) came back high at 476 (normal under 148). This fits with what we talked about and I'll go over it with you after your scans on the 19th. No action needed before then."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-12a",
+     "kind": "imaging",
+     "start": "2022-12-12T09:30",
+     "service": "Radiology",
+     "conditions": [
+      {
+       "label": "Neoplasm of uncertain behavior of right kidney",
+       "icd10": "D41.01",
+       "action": "diagnosed",
+       "onset": "2022-12-12"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2022-12-12T09:30",
+       "issued": "2022-12-12T15:10",
+       "text": "EXAM: Ultrasound abdomen, complete.\nINDICATION: History of renal cell carcinoma, status post left nephrectomy.\nCOMPARISON: None.\nFINDINGS: Liver normal in size and echotexture without focal lesion. Gallbladder without stones or wall thickening. Common bile duct 3 mm. Pancreas partially obscured by bowel gas; visualized portions unremarkable. Spleen 9.8 cm. Left kidney surgically absent; no mass in the left nephrectomy bed. Right kidney 11.9 cm with normal cortical thickness. Multiple simple cysts in the right kidney, the largest 1.4 cm in the upper pole. In the interpolar region there is a 2.0 x 1.8 cm solid, mildly hypoechoic mass with internal vascularity. No hydronephrosis or stone. Aorta normal caliber. No ascites.",
+       "conclusion": "1. Solid 2.0 cm mass in the solitary right kidney, suspicious for neoplasm; MRI recommended.\n2. Multiple simple right renal cysts.\n3. Postsurgical absence of the left kidney."
+      }
+     ],
+     "orders": [
+      {
+       "id": "us-abd-2022",
+       "action": "done",
+       "date": "2022-12-12T09:30"
+      }
+     ]
+    },
+    {
+     "id": "2022-12-14a",
+     "kind": "imaging",
+     "start": "2022-12-14T13:00",
+     "service": "Radiology",
+     "conditions": [
+      {
+       "label": "Hemangioblastoma of cerebellum",
+       "icd10": "D33.1",
+       "action": "diagnosed",
+       "onset": "2022-12-14"
+      },
+      {
+       "label": "Hemangioblastoma of spinal cord",
+       "icd10": "D33.4",
+       "action": "diagnosed",
+       "onset": "2022-12-14"
+      }
+     ],
+     "reports": [
+      {
+       "study": "MRI brain with and without contrast",
+       "loinc": "24587-8",
+       "performed": "2022-12-14T13:00",
+       "issued": "2022-12-15T09:40",
+       "text": "EXAM: MRI brain without and with IV gadolinium.\nINDICATION: Headaches, visual disturbance, family history of VHL.\nCOMPARISON: None.\nFINDINGS: In the left cerebellar hemisphere there is a 1.1 cm avidly enhancing nodule abutting the pial surface. A second 0.6 cm enhancing nodule is present in the inferior vermis. No associated cyst. No surrounding edema. Fourth ventricle normal in size; no hydrocephalus. Supratentorial brain normal. No acute infarct or hemorrhage on diffusion and susceptibility imaging. Orbits and globes grossly normal on this exam. Paranasal sinuses clear.",
+       "conclusion": "Two enhancing cerebellar nodules (left hemisphere 1.1 cm, vermis 0.6 cm) consistent with hemangioblastomas in the setting of suspected VHL. No hydrocephalus."
+      },
+      {
+       "study": "MRI cervical and thoracic spine with and without contrast",
+       "loinc": "43456-3",
+       "performed": "2022-12-14T13:45",
+       "issued": "2022-12-15T09:55",
+       "text": "EXAM: MRI cervical and thoracic spine without and with IV gadolinium.\nINDICATION: Suspected VHL, screening for spinal hemangioblastoma.\nCOMPARISON: None.\nFINDINGS: Small intramedullary enhancing nodules at C4 (0.4 cm) and T8 (0.5 cm), dorsally located, without syrinx or cord expansion. Remainder of the cord normal in signal and caliber. Vertebral body heights and alignment preserved. No significant disc herniation or canal stenosis.",
+       "conclusion": "Two small intramedullary enhancing nodules at C4 and T8 consistent with hemangioblastomas. No syrinx."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mri-brain-2022",
+       "action": "done",
+       "date": "2022-12-14T13:00"
+      },
+      {
+       "id": "mri-spine-2022",
+       "action": "done",
+       "date": "2022-12-14T13:45"
+      }
+     ]
+    },
+    {
+     "id": "2022-12-19a",
+     "kind": "office_visit",
+     "start": "2022-12-19T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Review imaging and labs",
+     "conditions": [
+      {
+       "label": "Von Hippel-Lindau syndrome",
+       "icd10": "Q85.83",
+       "action": "diagnosed",
+       "onset": "2022-12-19"
+      },
+      {
+       "label": "Retinal angioma of left eye",
+       "icd10": "D31.22",
+       "action": "diagnosed",
+       "onset": "2022-12-05"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2022-12-19T14:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-referral-2022",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "Cerebellar and spinal hemangioblastomas, VHL"
+      },
+      {
+       "id": "uro-referral-2022",
+       "action": "placed",
+       "order": "Urology referral",
+       "category": "referral",
+       "to": "Urology",
+       "reason": "Solid right renal mass, solitary kidney, history of RCC, VHL"
+      },
+      {
+       "id": "endo-referral-2022",
+       "action": "placed",
+       "order": "Endocrinology referral",
+       "category": "referral",
+       "to": "Endocrinology",
+       "reason": "VHL with elevated plasma normetanephrine; type 2 diabetes"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-12-19T15:05",
+       "body": "Results visit. Spent most of the visit going through findings with her; she had already read the reports on the portal and came with questions.\n\nImaging:\n- MRI brain: two cerebellar hemangioblastomas (L hemisphere 1.1 cm, vermis 0.6 cm), no hydrocephalus.\n- MRI C/T spine: small intramedullary hemangioblastomas at C4 and T8, no syrinx.\n- US abdomen: 2.0 cm solid mass in the remaining (right) kidney plus multiple simple cysts.\nLabs: plasma free normetanephrine 476 (ref <148), metanephrine normal 42. Hgb 13.2, Hct 39.8, Ca 9.8.\nFundi 12/5: left retinal angiomas.\n\nHeadaches unchanged, no new neuro symptoms. Blurry spells in L eye continue occasionally.\n\nExam: vitals as charted. Neuro nonfocal, gait normal.\n\nASSESSMENT\nVon Hippel-Lindau syndrome -- clinical diagnosis: father affected, plus her own clear cell RCC, CNS hemangioblastomas and retinal angiomas. Elevated normetanephrine raises concern for a catecholamine-secreting tumor.\n\nPLAN\n- Neurology for the hemangioblastomas\n- Urology for the solid right renal mass in a solitary kidney\n- Endocrinology for the elevated normetanephrine (and her diabetes)\n- Ophthalmology referral already placed 12/5\n- Talked about what VHL means for her brother and other relatives; she will let her family know.\n- HTN: 142/90 last time. No change today; endocrinology to weigh in.\n- DM: A1c 7.0. Continue metformin.\n\nF/u 3 months, sooner as needed."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

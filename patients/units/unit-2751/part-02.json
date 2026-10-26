@@ -1,0 +1,734 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002751",
+      "events": [
+        {
+          "id": "2024-01-16a",
+          "kind": "office_visit",
+          "start": "2024-01-16T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-operative evaluation, hysterectomy",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-01-16T11:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-16T11:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-16T10:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Evaluation",
+              "author": "PCP",
+              "date": "2024-01-16T13:30",
+              "body": "PRE-OP H&P\nProcedure: total laparoscopic hysterectomy + BSO, planned 2/6 (gyn), for complex atypical endometrial hyperplasia.\n\nBleeding has tapered off since estradiol stopped 12/19. Hot flashes back, tolerable. Mood steady on escitalopram 10, still in counseling.\nFunctional capacity: climbs two flights and walks 30 min without symptoms (>4 METs). No chest pain, dyspnea, syncope, palpitations. No personal or family bleeding problems. No prior anesthesia trouble (several breast surgeries, lap chole). Never smoker. No OSA symptoms.\n\nMeds: tamoxifen 20 (ask onc/gyn re peri-op hold given VTE risk), escitalopram 10, Ca/D, ibuprofen prn (stop 7 days before), MVI. NKDA.\n\nExam: vitals normal. Airway unremarkable, full dentition. Heart RRR no murmur. Lungs clear. No edema. Healed R mastectomy scar.\n\nLabs today: CBC, BMP.\n\nASSESSMENT: Low-risk patient for a low-to-intermediate-risk procedure. No further cardiac testing needed; ECG not indicated. Medically optimized.\nTamoxifen peri-operative plan deferred to oncology and surgeon. Hold ibuprofen 1 week prior. Clearance faxed to gyn."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Pre-op clearance faxed",
+              "author": "MA",
+              "date": "2024-01-17T09:05",
+              "body": "Pre-op note, CBC and BMP faxed to gynecology surgical scheduling. Confirmation received."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "procedure_visit",
+          "start": "2024-02-06T07:30",
+          "end": "2024-02-06T16:30",
+          "service": "Gynecologic Surgery (outside)",
+          "reason": "Total laparoscopic hysterectomy with bilateral salpingo-oophorectomy",
+          "conditions": [
+            {"label": "Complex atypical endometrial hyperplasia", "icd10": "N85.02", "action": "resolved", "note": "Uterus removed; no carcinoma on final pathology."},
+            {"label": "Acquired absence of uterus and cervix", "action": "diagnosed", "onset": "2024-02-06"}
+          ],
+          "procedures": [
+            {"procedure": "Laparoscopic total hysterectomy", "performed": "2024-02-06T08:15"}
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-02-06T09:40",
+              "issued": "2024-02-12T11:00",
+              "text": "A. Uterus and cervix, total hysterectomy: uterus 112 g. Endometrium with complex atypical hyperplasia; no carcinoma identified after complete submission of the endometrium. Myometrium and serosa unremarkable. Cervix with no dysplasia.\nB. Right ovary and fallopian tube: unremarkable ovary; unremarkable fallopian tube.\nC. Left ovary and fallopian tube: unremarkable ovary; unremarkable fallopian tube.",
+              "conclusion": "Complex atypical endometrial hyperplasia without carcinoma. Benign cervix, both ovaries and both fallopian tubes."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative summary",
+              "author": "gynecology",
+              "date": "2024-02-14T10:10",
+              "body": "Gynecologic Surgery - Operative and Discharge Summary\nDate of surgery: 02/06/2024\nPreoperative diagnosis: complex atypical endometrial hyperplasia; history of ER-positive breast cancer.\nProcedure: total laparoscopic hysterectomy with bilateral salpingo-oophorectomy.\nAnesthesia: general. EBL 50 mL. No complications. Specimens to pathology.\nFindings: uterus mildly enlarged, smooth. Normal-appearing tubes and ovaries. Pelvic and upper abdominal survey otherwise normal.\nCourse: voided, tolerated diet, ambulating; discharged home same evening.\nDischarge medications: acetaminophen and ibuprofen as needed; resume home medications.\nFollow-up: gynecology post-op visit 2 weeks.\nFinal pathology (02/12): complex atypical hyperplasia, no carcinoma; tubes and ovaries benign. Discussed with patient by phone."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-26a",
+          "kind": "portal_message",
+          "start": "2024-02-26T14:22",
+          "reason": "Hot flashes after surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Recovering",
+              "author": "patient",
+              "date": "2024-02-26T14:22",
+              "body": "Surgery went fine and the gynecologist says no cancer, which is a huge relief. The incisions look good. The hot flashes are back in full force though, I'm up two or three times a night changing my shirt. I know I can't go back on the estrogen. Anything else I can try?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Recovering",
+              "author": "PCP",
+              "date": "2024-02-27T08:30",
+              "body": "Wonderful news about the pathology. Hot flashes are expected now that your ovaries are out. The escitalopram you are already on helps some women with them. Layers, a fan by the bed and keeping the bedroom cool help too. Let's talk it through at your April visit, and keep a note of how many nights you're woken up."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {"weight_kg": 69.5},
+          "state": {"weight_kg": 69.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-04-16T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-04-16T12:05",
+              "body": "10 wk out from TLH/BSO, healed, cleared by gyn. Hot flashes now 1-2 a night, she's sleeping better with the fan. Doesn't want another medication for them.\nMood: good. Counseling monthly now. PHQ-9 5. Escitalopram 10 - continue; psychiatry handed refills to us.\nWeight back up to 69.5 kg.\nMeds: tamoxifen, escitalopram, Ca/D, ibuprofen prn, MVI.\nExam: vitals fine. Abd: small laparoscopic incisions healed. Heart/lungs normal.\nA/P\n- S/p hysterectomy/BSO for atypical hyperplasia, benign path - done with gyn.\n- Vasomotor sx after surgical menopause - nonpharmacologic, revisit prn.\n- MDD recurrent - near remission, continue.\n- Breast ca - tamoxifen per onc; mammogram due in June.\nRTC October physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "imaging",
+          "start": "2024-06-11T08:15",
+          "reason": "Annual surveillance mammogram, left breast",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2024-06-11T08:15",
+              "text": "Left diagnostic mammogram with tomosynthesis. Comparison 06/20/2023.\nScattered fibroglandular density. Stable lumpectomy scar in the upper outer quadrant with expected architectural distortion. No mass, suspicious calcification or new asymmetry. Axillary tail unremarkable.",
+              "conclusion": "BI-RADS 2, benign. Return in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "portal_message",
+          "start": "2024-08-20T07:58",
+          "reason": "Right chest wall pain",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Chest wall pain",
+              "author": "patient",
+              "date": "2024-08-20T07:58",
+              "body": "This isn't my heart, it's on the right side where the mastectomy was. A dull ache that never quite goes away and sharp twinges when I move my arm. It has been going on for a few months. I've been taking ibuprofen 400 three times a day and it barely takes the edge off. I see oncology on September 9. Should I come in before?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Chest wall pain",
+              "author": "PCP",
+              "date": "2024-08-20T12:40",
+              "body": "Hi Janet, thanks for the detail. Please do raise this with oncology on the 9th - they will want to examine that area. Please don't go above the ibuprofen you're taking, and take it with food. If you'd like to be seen before then I have openings this week; just reply and the front desk will book you. If the pain changes, you get redness or swelling there, or you get short of breath, call us that day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: Chest wall pain",
+              "author": "patient",
+              "date": "2024-08-20T18:15",
+              "body": "Thank you, I'll wait for the 9th."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-09a",
+          "kind": "specialist_visit",
+          "start": "2024-09-09T13:30",
+          "service": "Medical Oncology (outside)",
+          "reason": "Persistent right chest wall pain",
+          "conditions": [
+            {"label": "Neoplasm related pain", "icd10": "G89.3", "action": "diagnosed", "onset": "2024-05-01", "note": "Right chest wall, after mastectomy."}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for pain", "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "Cancer-related chest wall pain"},
+            {"drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution", "action": "historical", "sig": "Mix 17 g in 8 oz of liquid and drink daily as needed for constipation", "frequency": "DAILY PRN", "route": "Oral", "course": "chronic", "reason": "Opioid-induced constipation prevention"}
+          ],
+          "state": {"labs": {"Hemoglobin": 13.2, "White Blood Cells": 7.8, "Creatinine": 0.9}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-09T13:10", "results": [{"test": "Hemoglobin", "value": 13.2}, {"test": "White Blood Cells", "value": 7.8}, {"test": "Platelets", "value": 250}]},
+            {"panel": null, "collected": "2024-09-09T13:10", "results": [{"test": "Creatinine", "loinc": "2160-0", "unit": "mg/dL", "value": 0.9}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-09-09T13:10", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}]}
+          ],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 5}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical oncology visit",
+              "author": "oncology",
+              "date": "2024-09-13T09:00",
+              "body": "Medical Oncology - Clinic Note\nDate of service: 09/09/2024\nPatient: Janet Madden, 58F\n\nDx: R breast carcinoma stage IIA ER+ (2021) s/p lumpectomy/XRT, R MRM + ALND 02/2022, docetaxel/carboplatin 2022, adjuvant tamoxifen since 06/2022. Remote L breast IDC stage II (2018). S/p TLH/BSO 02/2024 for atypical hyperplasia (benign).\n\nInterval: Seen today for right chest wall pain present for several months. She calls it a steady dull ache with occasional sharp jabs, worse with arm and trunk movement. Average 5/10, as high as 7/10 on bad days. Ibuprofen 400 mg TID gives her little relief. No fall, blow or other injury.\n\nMeds: tamoxifen 20 mg daily, escitalopram 10 mg daily, calcium/vit D, ibuprofen, MVI. NKDA.\n\nVS within normal limits.\nExam: R mastectomy site with mild tenderness to palpation along the lateral chest wall; no erythema, warmth or swelling. No palpable nodularity. L breast and both axillae without masses.\n\nLabs today: Hgb 13.2, WBC 7.8, plt 250, creatinine 0.9, LFTs normal.\n\nA/P: Moderate cancer-related pain of the right chest wall, not controlled by NSAID alone.\n- Add oxycodone/acetaminophen 5/325 mg, 1 tab q6h PRN; #40, no early refills. Continue ibuprofen with food. Bowel regimen with PEG 3350 daily PRN. Opioid agreement signed; PDMP reviewed.\n- Continue tamoxifen.\n- RTC 3 months.\n\nMedical Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {"weight_kg": 70.4},
+          "state": {"weight_kg": 70.4},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-08T09:45", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Alkaline Phosphatase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-10-08T09:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-10-08T09:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4},
+            {"survey": "Pain severity (0-10)", "value": 4}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T09:35"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T09:37"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-10-08T09:00"},
+            {"procedure": "Immunization administration", "performed": "2024-10-08T09:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-08T13:15",
+              "body": "Physical, age 58.\n\nYear in review: TLH/BSO Feb (benign). Oncology added oxycodone/APAP prn in Sept for R chest wall pain - uses about 1 tab a day, usually evening; pain 4/10 today, can sleep and garden. PEG most days; BMs regular. Hot flashes fewer. Mood good, PHQ-9 4; still on escitalopram 10, counseling ended over the summer by mutual agreement.\nToes still a little numb, unchanged.\n\nMeds: tamoxifen 20, escitalopram 10, oxycodone/APAP 5/325 prn (onc), PEG prn, ibuprofen 400 prn, Ca/D BID, MVI.\nAllergies: NKDA.\n\nPrevention: colonoscopy 2019 (next 2029). Post-hysterectomy for benign dx - no further Paps. L mammo 6/2024 BI-RADS 2. Shingrix done, PCV20 done, Tdap 2016 (due 2026). Flu + COVID today.\n\nExam: BP/HR normal, wt 70.4 kg. Well. Neck no nodes. Heart RRR, lungs clear. R chest wall: mild tenderness laterally, scar flat. L breast no mass. Abd soft, nontender. No edema. Feet intact skin.\n\nA/P\n1. Cancer-related chest wall pain on prn opioid per onc - controlled. Reviewed safe storage; she lives alone, no one else in the home.\n2. MDD recurrent - in remission range. Continue escitalopram.\n3. R breast ca on tamoxifen - per onc.\n4. Osteopenia - Ca/D; DXA due next year.\n5. Labs: CMP, lipids, A1c."
+            },
+            {
+              "type": "Clinical Note",
+              "title": "Immunizations",
+              "author": "MA",
+              "date": "2024-10-08T09:40",
+              "body": "Flu (2024-25 trivalent) 0.5 mL IM L deltoid; Moderna COVID 2024-25 0.5 mL IM R deltoid. VIS provided. Tolerated, no immediate reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "portal_message",
+          "start": "2024-10-10T11:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "author": "PCP",
+              "date": "2024-10-10T11:20",
+              "body": "Labs from Tuesday look fine - kidney and liver tests and A1c normal, cholesterol steady and not in treatment range. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "pharmacy",
+          "start": "2024-12-03T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - escitalopram",
+              "author": "MA",
+              "date": "2024-12-03T09:10",
+              "body": "e-Refill request from pharmacy: escitalopram 10 mg #90. Last visit 10/8, on med list, PCP managing per psychiatry. Pended to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "author": "PCP",
+              "date": "2024-12-03T12:30",
+              "body": "Approved escitalopram 10 mg daily, #90 with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T16:44",
+          "reason": "Numbness hands and feet",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Numbness getting worse",
+              "author": "patient",
+              "date": "2025-01-21T16:44",
+              "body": "The numbness in my feet has been creeping up since around Christmas, and now my fingers feel it too. It's like I'm wearing gloves and socks all day. It doesn't hurt and I'm not weak, just strange. Should I be worried?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Numbness getting worse",
+              "author": "front desk",
+              "date": "2025-01-22T08:20",
+              "body": "Hi Janet, the doctor would like to examine you. You're booked Tuesday 2/4 at 10:00. If you notice weakness, trouble walking, or problems with bladder or bowels before then, please call the office right away."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "office_visit",
+          "start": "2025-02-04T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worsening numbness of hands and feet",
+          "vitals": {"weight_kg": 70.0},
+          "state": {"weight_kg": 70.0, "labs": {"Vitamin B12": 612}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-02-04T10:45", "results": [{"test": "Vitamin B12"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Hemoglobin A1c"}]}
+          ],
+          "orders": [
+            {"id": "neuro-referral-2025", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "Worsening sensory neuropathy after chemotherapy"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-04T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-02-04T12:50",
+              "body": "Numbness. Had mild toe numbness since docetaxel/carboplatin in 2022, stable for years. Over the last ~6 wk it has spread: feet to above the ankles, and now both hands to the wrists. Describes it as gloves and socks. No pain, no burning, no weakness, no falls, no bladder/bowel change, no back pain. No new meds. Rare alcohol.\nMeds: tamoxifen, escitalopram, oxycodone/APAP prn (~1/d), PEG, ibuprofen prn, Ca/D, MVI.\n\nExam: vitals ok. Strength 5/5 throughout incl. foot dorsiflexion. Vibration diminished at both great toes, present at the ankles. Ankle jerks absent bilaterally; knees 2+. Romberg negative. Gait normal, can heel and toe walk.\n\nA/P: Worsening length-dependent sensory neuropathy, background of chemo neuropathy. B12, TSH, A1c today. Neurology referral. Foot checks daily, good footwear."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-06a",
+          "kind": "portal_message",
+          "start": "2025-02-06T13:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "author": "PCP",
+              "date": "2025-02-06T13:00",
+              "body": "Janet, B12, thyroid and A1c are all normal, so none of the usual treatable causes showed up. The neurology referral is in; their office should call you within a week or two."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "specialist_visit",
+          "start": "2025-03-10T15:00",
+          "service": "Neurology (outside)",
+          "reason": "Sensory symptoms hands and feet",
+          "orders": [
+            {"id": "neuro-referral-2025", "action": "done", "date": "2025-03-10T15:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "author": "neurology",
+              "date": "2025-03-14T10:30",
+              "body": "Neurology Consultation\nDate: 03/10/2025\nReason: numbness of the hands and feet\n\nThank you for referring Ms. Madden, a 59-year-old woman with ER-positive breast cancer on tamoxifen and a post-surgical right thoracic outlet syndrome. She says it feels as though she has gloves and socks on at all times, and this has steadily worsened over the last two months on a background of mild toe numbness since chemotherapy. She has no weakness and no pain. Her chemotherapy included docetaxel and carboplatin (2022).\n\nMedications: tamoxifen, escitalopram, oxycodone/acetaminophen PRN, polyethylene glycol, ibuprofen PRN, calcium/vitamin D, multivitamin. Allergies: none.\n\nExamination: Cranial nerves intact. Strength full. Vibration sense is reduced in both legs; joint position sense is preserved. Reflexes 1+ in the arms, 2+ at the knees, ankle jerks absent. Plantars flexor. Gait normal.\n\nRecent B12, TSH and A1c from primary care are normal.\n\nImpression: Length-dependent sensory polyneuropathy, attributable to her prior taxane/platinum chemotherapy, now worsening.\n\nRecommendations: No medication needed while it remains painless. Daily foot inspection, protective footwear, fall precautions at night. Return if pain, weakness or gait change develops.\n\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-28a",
+          "kind": "office_visit",
+          "start": "2025-04-28T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right upper abdominal pain and weight loss",
+          "vitals": {"weight_kg": 63.5},
+          "state": {"weight_kg": 63.5, "labs": {"Alkaline Phosphatase": 165}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-04-28T14:50", "results": [{"test": "Alkaline Phosphatase", "value": 165}, {"test": "Bilirubin, Total"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-28T14:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "orders": [
+            {"id": "abd-us-2025", "action": "placed", "order": "Abdominal ultrasound", "category": "imaging", "reason": "RUQ pain, weight loss"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-04-28T14:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-04-28T17:20",
+              "body": "CC: RUQ pain, weight loss.\n\nHPI: Since mid-March a dull ache under the right ribs, slowly getting worse, now most of the day. Not related to meals. Weight 70.0 kg in Feb, 63.5 today without trying. No fever or chills. No jaundice, dark urine or pale stools noticed. Bowels unchanged on PEG. No nausea or vomiting. Chest wall pain is separate and stable. Gallbladder out years ago.\n\nMeds: tamoxifen 20, escitalopram 10, oxycodone/APAP 5/325 prn, PEG, ibuprofen prn, Ca/D, MVI.\n\nExam: vitals normal, afebrile. Thinner. Sclerae anicteric. Abdomen soft, mild tenderness RUQ, no guarding, no palpable mass, liver edge not felt, no shifting dullness. No edema. No nodes.\n\nA/P: RUQ pain + 6.5 kg weight loss in a woman with ER+ breast cancer - concerned. CMP, CBC today; abdominal ultrasound this week. Will call with results. Pain 4/10."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-30a",
+          "kind": "imaging",
+          "start": "2025-04-30T11:30",
+          "reason": "RUQ pain, weight loss",
+          "orders": [
+            {"id": "abd-us-2025", "action": "done", "date": "2025-04-30T11:30"}
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-04-30T11:30",
+              "text": "Complete abdominal ultrasound.\nIndication: right upper quadrant pain, weight loss, history of breast cancer.\nLiver: normal size. Multiple hypoechoic lesions are seen in both lobes, the largest in the right lobe measuring about 3 cm. Hepatic and portal veins patent with normal flow direction.\nGallbladder: surgically absent. Common bile duct 5 mm, not dilated for post-cholecystectomy status.\nPancreas: visualized portions unremarkable. Spleen: normal size. Kidneys: normal size and echogenicity, no hydronephrosis. Aorta: normal caliber. No ascites.",
+              "conclusion": "Multiple hypoechoic liver lesions, concerning for metastatic disease given history. Cross-sectional imaging recommended."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-01a",
+          "kind": "telephone",
+          "start": "2025-05-01T08:15",
+          "reason": "Ultrasound and lab results",
+          "orders": [
+            {"id": "ct-ap-2025", "action": "placed", "order": "CT abdomen and pelvis with contrast", "category": "imaging", "reason": "Liver lesions on ultrasound"},
+            {"id": "gi-referral-2025", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "RUQ pain, weight loss, multiple liver lesions"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "author": "PCP",
+              "date": "2025-05-01T08:40",
+              "body": "Called pt with US: several spots in the liver. Told her honestly that with her history the first concern is spread of the breast cancer, but we need a CT and likely a biopsy before anyone can say. ALP mildly up at 165, bilirubin normal, CBC normal. She took it calmly, asked good questions.\nPlan: CT A/P with contrast (ordered, scheduling for next week). Urgent GI referral per our usual liver lesion workup. Messaged her oncologist with images/report so they are in the loop. Pt to call with fever, jaundice or worsening pain. Will call her after CT."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "imaging",
+          "start": "2025-05-06T10:00",
+          "reason": "Liver lesions on ultrasound",
+          "orders": [
+            {"id": "ct-ap-2025", "action": "done", "date": "2025-05-06T10:00"}
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-05-06T10:00",
+              "text": "CT abdomen and pelvis with IV contrast, portal venous phase.\nComparison: ultrasound 04/30/2025.\nLiver: multiple hypoattenuating masses in both lobes with irregular margins, the largest in segment 7 measuring 3.2 x 2.8 cm. Portal and hepatic veins patent.\nGallbladder: surgically absent. Biliary tree not dilated.\nPancreas, spleen, adrenal glands: normal. Kidneys enhance symmetrically; no hydronephrosis.\nBowel: no obstruction or wall thickening. No ascites. No enlarged lymph nodes.\nPelvis: post-hysterectomy; no adnexal mass. Bladder unremarkable.\nBones: no suspicious lesion.\nLung bases: clear.",
+              "conclusion": "Multiple irregular liver masses, most consistent with metastases in this patient with breast cancer. No other site of disease in the abdomen or pelvis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "CT result call",
+              "author": "PCP",
+              "date": "2025-05-06T16:50",
+              "body": "Discussed CT with pt: multiple liver masses, nothing elsewhere in abdomen/pelvis. GI appt confirmed 5/13. Oncology aware and will see her after tissue diagnosis. She'd like to keep us updated by portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "specialist_visit",
+          "start": "2025-05-13T09:30",
+          "service": "Gastroenterology (outside)",
+          "reason": "Right upper quadrant pain, weight loss, liver masses",
+          "conditions": [
+            {"label": "Secondary malignant neoplasm of liver", "icd10": "C78.7", "action": "diagnosed", "onset": "2025-04-30"}
+          ],
+          "vitals": {"weight_kg": 60.0},
+          "state": {"weight_kg": 60.0},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "orders": [
+            {"id": "gi-referral-2025", "action": "done", "date": "2025-05-13T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "author": "gastroenterology",
+              "date": "2025-05-16T11:45",
+              "body": "Gastroenterology & Hepatology - New Consultation\nDate of visit: 05/13/2025\n\nDear colleague,\n\nMs. Madden is a 59-year-old woman with breast cancer (left breast 2018, right ER-positive 2021, on tamoxifen) and a recent neurology evaluation for neuropathy, sent for right upper quadrant pain and liver masses. Over two months the RUQ pain has progressed and she has lost 10 kg without trying. She denies fevers, chills and any change in bowel habit. Remote cholecystectomy. NKDA.\n\nVital signs stable; weight 60.0 kg. Mild RUQ tenderness to palpation. No jaundice; no ascites. No stigmata of chronic liver disease.\n\nData: alkaline phosphatase mildly elevated, bilirubin normal. Ultrasound with multiple hypoechoic liver lesions; CT confirms multiple liver masses with irregular borders, no extrahepatic disease seen.\n\nImpression: Multiple liver masses, almost certainly secondary malignancy, most likely metastatic breast carcinoma. No evidence of primary liver disease or biliary obstruction.\n\nPlan: Ultrasound-guided core biopsy of a liver lesion arranged with interventional radiology for next week, with ER and HER2 testing requested. We will forward results to you and to her oncologist. No GI follow-up needed unless biopsy shows otherwise.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "procedure_visit",
+          "start": "2025-05-21T08:00",
+          "end": "2025-05-21T13:00",
+          "service": "Interventional Radiology (outside)",
+          "reason": "Liver lesion biopsy",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-05-21T09:10",
+              "issued": "2025-05-23T15:30",
+              "text": "Specimen: liver, segment 7 lesion, ultrasound-guided core needle biopsy (3 cores, 18-gauge).\nMicroscopic: cores of liver parenchyma infiltrated by nests and cords of malignant epithelial cells with moderate nuclear pleomorphism, in a desmoplastic stroma. Background liver unremarkable.\nImmunohistochemistry: tumor cells positive for GATA3 and cytokeratin 7, negative for cytokeratin 20 and TTF-1. Estrogen receptor positive. HER2 negative (IHC 1+).",
+              "conclusion": "Liver, biopsy: metastatic carcinoma consistent with breast primary. ER positive, HER2 negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Liver biopsy",
+              "author": "interventional radiology",
+              "date": "2025-05-27T09:15",
+              "body": "Interventional Radiology - Procedure Note (05/21/2025)\nProcedure: ultrasound-guided percutaneous core biopsy, segment 7 liver lesion.\nConsent obtained. Moderate sedation. INR and platelets acceptable. 18G coaxial, 3 cores, gelfoam tract embolization. No immediate complication. Observed 4 hours, discharged home.\nPathology (05/23): metastatic carcinoma consistent with breast primary, ER positive, HER2 negative. Results sent to ordering GI, oncology and PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "portal_message",
+          "start": "2025-05-27T19:30",
+          "reason": "Biopsy result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Biopsy",
+              "author": "patient",
+              "date": "2025-05-27T19:30",
+              "body": "Oncology called me Friday. It is the breast cancer in my liver. I see them next Tuesday to talk about treatment. I'm okay, mostly. I wanted you to hear it from me."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Biopsy",
+              "author": "PCP",
+              "date": "2025-05-28T07:20",
+              "body": "Janet, thank you for telling me yourself. I'm so sorry. I've read the report. After you meet with oncology, let's sit down together - I'd like to hear how you're doing and make sure we have the rest of your care lined up around their plan. I'll have the front desk hold a slot for you in mid-June. Message me anytime before then."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "specialist_visit",
+          "start": "2025-06-03T10:00",
+          "service": "Medical Oncology (outside)",
+          "reason": "Metastatic breast cancer, treatment planning",
+          "medications": [
+            {"drug_text": "tamoxifen 20 MG Oral Tablet", "action": "stop", "reason": "Progression to liver metastases"},
+            {"drug_text": "letrozole 2.5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 2.5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Metastatic ER-positive breast cancer"},
+            {"drug_text": "palbociclib 125 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth daily on days 1-21 of each 28-day cycle", "dose": {"value": 125, "unit": "mg"}, "frequency": "DAILY days 1-21 q28d", "route": "Oral", "course": "chronic", "reason": "Metastatic ER-positive breast cancer"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical oncology visit",
+              "author": "oncology",
+              "date": "2025-06-06T14:00",
+              "body": "Medical Oncology - Clinic Note\nDate of service: 06/03/2025\n\nDx: Metastatic breast carcinoma to liver, ER+, HER2- (biopsy 05/21/2025), arising on adjuvant tamoxifen for R breast stage IIA ER+ cancer (2021). Remote L breast stage II IDC (2018). Surgically menopausal since BSO 02/2024.\n\nWe reviewed the biopsy and imaging; disease is limited to the liver. Goals of treatment discussed: not curable, treatable, aim is control and quality of life. She understands and wishes to proceed.\n\nPlan:\n- Stop tamoxifen.\n- Start letrozole 2.5 mg daily and palbociclib 125 mg daily days 1-21 of 28.\n- CBC on days 1 and 15 for the first two cycles, then monthly (neutropenia expected).\n- Restaging CT in about 3 months.\n- Baseline DXA (aromatase inhibitor) - requested from PCP.\n- Continue oxycodone/APAP PRN, PEG.\n\nMedical Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "imaging",
+          "start": "2025-06-10T08:00",
+          "reason": "Annual surveillance mammogram, left breast",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2025-06-10T08:00",
+              "text": "Left diagnostic mammogram with tomosynthesis. Comparison 06/11/2024 and 06/20/2023.\nScattered fibroglandular density. Lumpectomy scar upper outer quadrant, unchanged. No suspicious mass, calcification or architectural distortion apart from the known scar.",
+              "conclusion": "BI-RADS 2, benign. Continue annual imaging."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T15:00",
+          "end": "2025-06-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after new diagnosis of metastatic breast cancer",
+          "vitals": {"weight_kg": 60.5},
+          "state": {"weight_kg": 60.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 11},
+            {"survey": "Pain severity (0-10)", "value": 4}
+          ],
+          "orders": [
+            {"id": "dxa-2025", "action": "placed", "order": "DXA bone density, hip and spine", "category": "imaging", "reason": "Osteopenia, starting aromatase inhibitor"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-17T15:00"},
+            {"procedure": "Advance care planning, first 30 minutes", "performed": "2025-06-17T15:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-06-17T18:30",
+              "body": "Follow-up, liver mets.\nBiopsy 5/21 metastatic breast ca, ER+/HER2-. Oncology stopped tamoxifen and started letrozole + palbociclib 6/3; cycle 1 going ok, a bit tired. RUQ ache 4/10, oxycodone/APAP 1-2/day. Weight 60.5 (60.0 at GI).\nMood: understandably shaken - crying more, sleep broken, still gardening some. PHQ-9 11, item 9 = 0. Declines a dose change for now; wants to restart counseling - gave her the oncology social work and therapist contacts.\nMeds: letrozole 2.5, palbociclib 125 d1-21, escitalopram 10, oxycodone/APAP prn, PEG, ibuprofen prn, Ca/D, MVI. NKDA.\nExam: thin, tired, appropriate. Sclerae anicteric. Mild RUQ tenderness. No edema.\n\nAdvance care planning (25 min): talked about what matters most to her - staying at home, her garden, not being kept alive on machines if there is no realistic chance of recovery. Full code for now. She will think about who to name as health care proxy; form given. Revisit at next visit.\n\nA/P\n1. Metastatic ER+ breast ca to liver - per onc.\n2. MDD recurrent, worsened in context - counseling, continue escitalopram 10, recheck 2-3 mo.\n3. Osteopenia + new AI - DXA ordered (onc request).\n4. Pain - per onc, stable."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "imaging",
+          "start": "2025-07-22T09:30",
+          "reason": "Osteopenia, aromatase inhibitor baseline",
+          "orders": [
+            {"id": "dxa-2025", "action": "done", "date": "2025-07-22T09:30"}
+          ],
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2025-07-22T09:30",
+              "text": "Dual-energy x-ray absorptiometry, lumbar spine and left hip.\nIndication: osteopenia; aromatase inhibitor therapy.\nLumbar spine L1-L4: T-score -1.4.\nLeft femoral neck: T-score -1.9.\nLeft total hip: within the osteopenic range.\nNo vertebral levels excluded.",
+              "conclusion": "Osteopenia. Lowest T-score -1.9 at the left femoral neck."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "DXA result to patient",
+              "author": "PCP",
+              "date": "2025-07-24T10:05",
+              "body": "Hi Janet, the bone density shows osteopenia (thinner than average bone, but not osteoporosis), about where your earlier scan put you. Keep taking the calcium and vitamin D twice a day and keep walking. I've sent the report to oncology since letrozole can thin bones; we'll repeat it in 2 years."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-02a",
+          "kind": "imaging",
+          "start": "2025-09-02T11:00",
+          "service": "Medical Oncology (outside)",
+          "reason": "Restaging, metastatic breast cancer",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-09-02T11:00",
+              "text": "CT abdomen and pelvis with IV contrast.\nComparison: 05/06/2025.\nLiver: the multiple hypoattenuating hepatic metastases are smaller; segment 7 index lesion now 2.0 x 1.7 cm (previously 3.2 x 2.8 cm). No new liver lesion.\nAdrenal glands: normal.\nPancreas, spleen, kidneys: unremarkable. No lymphadenopathy. No ascites.\nPelvis: post-hysterectomy, unremarkable.\nBones: no suspicious lesion.",
+              "conclusion": "Partial response of hepatic metastases. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology restaging update",
+              "author": "oncology",
+              "date": "2025-09-05T13:20",
+              "body": "Medical Oncology - brief update to PCP\nRestaging CT 09/02/2025 shows partial response in the liver and no new disease. Tolerating letrozole/palbociclib with expected mild neutropenia, no dose change. Continue current therapy; next restaging in about 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {"weight_kg": 63.0},
+          "state": {"weight_kg": 63.0, "labs": {"Alkaline Phosphatase": 112}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-07T09:50", "results": [{"test": "Alkaline Phosphatase", "value": 112}, {"test": "Bilirubin, Total"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2025-10-07T09:50", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-10-07T09:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 6},
+            {"survey": "Pain severity (0-10)", "value": 3}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T09:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T09:42"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-10-07T09:00"},
+            {"procedure": "Immunization administration", "performed": "2025-10-07T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-07T12:40",
+              "body": "Annual exam. 59, turns 60 Sunday.\n\nInterval: letrozole + palbociclib since June; Sept CT partial response in the liver. Fatigue mild in the last week of each cycle. RUQ ache much less, pain 3/10, oxycodone/APAP maybe every other day now. Weight up to 63.0. Back in counseling; mood better - PHQ-9 6. Health care proxy form completed and scanned to chart. Feet/hands numbness unchanged since spring.\n\nMeds: letrozole 2.5, palbociclib 125 d1-21/28, escitalopram 10, oxycodone/APAP 5/325 prn, PEG prn, ibuprofen prn, Ca/D BID, MVI.\nNKDA.\n\nPrevention: colon 2019 -> 2029. No Pap (post-TLH benign). L mammo 6/2025 BI-RADS 2. DXA 7/2025 osteopenia. Shingrix and PCV20 done. Tdap 2016 - due next year. Flu + COVID today.\n\nExam: vitals normal. Looks better than June. Sclerae anicteric. Neck no nodes. Heart RRR. Lungs clear. Abd soft, minimal RUQ tenderness. No edema. Sensory: gloves/stocking reduced vibration as before.\n\nA/P\n1. Metastatic breast ca to liver, responding - per onc.\n2. MDD recurrent - improving again.\n3. Chemo neuropathy - stable.\n4. Osteopenia on AI - Ca/D, DXA 2027.\n5. Labs: CMP (ALP), lipids, A1c."
+            },
+            {
+              "type": "Clinical Note",
+              "title": "Immunizations",
+              "author": "MA",
+              "date": "2025-10-07T09:45",
+              "body": "Influenza 2025-26 trivalent IM R deltoid; Pfizer COVID 2025-26 IM L deltoid. VIS given, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "portal_message",
+          "start": "2025-10-09T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "author": "PCP",
+              "date": "2025-10-09T12:10",
+              "body": "Good news - your alkaline phosphatase (the liver enzyme that was up in April) is back to normal at 112, and the rest of your liver and kidney tests and A1c are normal too. Cholesterol is about where it always runs. Happy early birthday."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mood follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2025-11-17T15:30",
+              "body": "Pt called to cancel 11/18 follow-up - conflicts with an oncology lab draw that got moved. Feels fine. Will reschedule after the holidays."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T10:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - escitalopram",
+              "author": "MA",
+              "date": "2025-12-09T10:20",
+              "body": "Pharmacy requesting escitalopram 10 mg 90-day. Seen 10/7. Pended."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "author": "PCP",
+              "date": "2025-12-09T13:00",
+              "body": "Escitalopram 10 mg daily #90, 1 refill sent."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

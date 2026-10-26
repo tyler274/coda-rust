@@ -1,0 +1,305 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002524",
+      "given": "Raul",
+      "family": "Ramos",
+      "birth_date": "1986-12-03",
+      "address_line": "112 Dickinson Street",
+      "phone": "+1-201-555-0144",
+      "email": "raul.ramos@example.test",
+      "marital_status": "partnered",
+      "summary": "Software engineer in Amherst with HIV/AIDS on intermittently taken Biktarvy, followed at an outside HIV clinic, who joins in 2021. Over five years he develops ulcerative colitis, neurocysticercosis, 40% TBSA burns, miliary TB, cryptococcal meningitis, PML, and CMV esophagitis and colitis, mostly known to the practice through brief outside documents.",
+      "events": [
+        {
+          "id": "2021-07-13a",
+          "kind": "establish_care",
+          "start": "2021-07-13T09:00",
+          "end": "2021-07-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {"label": "Human immunodeficiency virus disease", "action": "diagnosed", "note": "AIDS, CDC stage 3; followed at outside HIV clinic"}
+          ],
+          "medications": [
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV infection; prescribed by outside HIV clinic"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 72.0, "height_cm": 173.0, "labs": {"Hemoglobin A1c": 5.4}},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-07-13T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-07-13T10:05", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2021-07-13T10:05", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-07-13T10:05", "results": [{"test": "Hemoglobin A1c"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Software engineer"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2021-07-13T09:50"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-07-13T09:52"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2021-07-13T09:54"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-07-13T09:00"},
+            {"procedure": "Immunization administration", "performed": "2021-07-13T09:50"},
+            {"procedure": "Venipuncture", "performed": "2021-07-13T10:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-07-13T10:40", "body": "34M here to establish primary care. Moved his care here from a group practice; does not have those records and isn't sure they'd tell us much.\n\nHIV: diagnosed before he came to us; followed at an outside HIV/ID clinic, which prescribes Biktarvy one tablet daily. He was told his counts put him in the AIDS range, CDC stage 3. Doesn't know his most recent CD4 or viral load. Candid that he misses doses, sometimes several days in a row, mostly when work gets busy. No prior opportunistic infections that he knows of. He has the clinic's number and plans to keep them as his HIV doctors; wants us for everything else.\n\nOther meds: multivitamin daily. NKDA.\nPMH otherwise none. No surgeries.\nFHx: father with high blood pressure, mother with type 2 diabetes, an uncle on his father's side with ulcerative colitis. Nobody with immune problems or neurologic disease that he knows of.\nSocial: software engineer, mostly remote. Lives in Amherst with his partner. Never smoked, no alcohol, no drugs.\nVaccines: COVID primary series this spring (pharmacy). Doesn't recall a tetanus shot or any pneumonia or meningitis vaccine.\n\nROS: negative in detail. Appetite fine, weight stable, bowels normal.\n\nExam: well, thin build. Vitals per flowsheet. HEENT clear, no thrush. No lymphadenopathy. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin without rash. Neuro nonfocal.\n\nA/P\n1. HIV infection with AIDS (stage 3), on Biktarvy via HIV clinic, adherence intermittent. Talked about why daily dosing matters with this regimen; he'd like a phone reminder approach. Will request HIV clinic notes and labs.\n2. Health maintenance: Tdap, PCV20 and MenACWY #1 today (all indicated with HIV). MenACWY #2 in 8 weeks. CBC, CMP, lipids, A1c (family hx), HCV Ab.\n3. PHQ-9 3.\nReturn in about 6 months or sooner as needed."},
+            {"type": "Immunization Record", "title": "Vaccines Administered", "author": "MA", "date": "2021-07-13T09:56", "body": "Tdap 0.5 mL IM L deltoid. PCV20 0.5 mL IM R deltoid. MenACWY 0.5 mL IM R deltoid, 1 inch below prior site. VIS given for each. Tolerated, observed 15 minutes without reaction."}
+          ]
+        },
+        {
+          "id": "2021-07-19a",
+          "kind": "portal_message",
+          "start": "2021-07-19T13:12",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your new-patient labs", "author": "PCP", "date": "2021-07-19T13:12", "body": "Hi Raul, your blood count, kidney and liver tests, cholesterol and A1c all came back normal. Hepatitis C test negative. Nice meeting you last week. See you in the winter, sooner if anything comes up."}
+          ]
+        },
+        {
+          "id": "2021-07-22a",
+          "kind": "telephone",
+          "start": "2021-07-22T11:30",
+          "reason": "records request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records Request", "author": "front desk", "date": "2021-07-22T11:34", "body": "Faxed signed release to outside HIV clinic for recent notes and labs. Called to confirm receipt; told the request is in their queue."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "nurse_visit",
+          "start": "2021-09-14T15:20",
+          "reason": "MenACWY dose 2",
+          "immunizations": [{"vaccine": "Meningococcal conjugate MenACWY", "date": "2021-09-14T15:25"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-09-14T15:25"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Vaccine", "author": "RN", "date": "2021-09-14T15:32", "body": "Here for second MenACWY. Feels well, no fever. 0.5 mL IM L deltoid. Tolerated. Series complete. Still nothing back from HIV clinic re: records; re-sent request."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T08:40",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T08:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-19T08:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T08:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Vaccines", "author": "RN", "date": "2021-10-19T08:55", "body": "Flu shot L deltoid and COVID booster (Pfizer) R deltoid. Eligible for booster given immunocompromise. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2022-01-06a",
+          "kind": "portal_message",
+          "start": "2022-01-06T21:48",
+          "reason": "loose stools",
+          "documents": [
+            {"type": "Patient Message", "title": "stomach issue", "author": "patient", "date": "2022-01-06T21:48", "body": "Hi, I've had loose stools on and off since around the end of the summer and it's gotten worse. Now there's some blood in it. Going 6 or more times a day and waking up to go. Should I come in?"},
+            {"type": "Patient Message", "title": "RE: stomach issue", "author": "RN", "date": "2022-01-07T08:20", "body": "Yes, we'd like to see you. Booked you Tuesday 1/11 at 2:00. If you get high fevers, dizziness, or a lot of blood, go to the ED."}
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "office_visit",
+          "start": "2022-01-11T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "bloody diarrhea",
+          "state": {"weight_kg": 69.0, "labs": {"Hemoglobin": 12.2, "Erythrocyte Sedimentation Rate": 36}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-01-11T14:45", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-01-11T14:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2022-01-11T14:45", "results": [{"test": "Erythrocyte Sedimentation Rate"}]},
+            {"panel": null, "collected": "2022-01-12T08:30", "resulted": "2022-01-14T09:10", "results": [
+              {"test": "Stool culture", "loinc": "625-4", "text": "No Salmonella, Shigella, Campylobacter or Shiga toxin-producing E. coli isolated"},
+              {"test": "Ova and parasites, stool", "loinc": "10704-5", "text": "No ova or parasites seen"}
+            ]}
+          ],
+          "orders": [
+            {"id": "gi-referral", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "bloody diarrhea, weight loss"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-01-11T14:00"},
+            {"procedure": "Venipuncture", "performed": "2022-01-11T14:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-01-11T15:20", "body": "S: Loose stools since roughly late August, gradually worse. For the past couple of months 6-8 a day with blood and mucus, gets up 1-2x at night. Tired. Appetite down; scale at home says he's lost weight. No vomiting. Denies travel, antibiotics, anyone sick at home. Thinks he's been taking Biktarvy \"most days.\"\n\nO: Vitals per flowsheet. Weight 69 kg, was 73 in July. Looks tired, mildly pale. Abdomen soft, mild tenderness low on both sides, no guarding. No masses.\n\nA/P: ~4.5 months of bloody diarrhea with weight loss in a man with AIDS. Infection first: stool culture and O&P (kit given, drop off tomorrow), CBC, CMP, ESR. With his uncle's UC, IBD is on the list. Referring to GI now rather than waiting on results. Call if fever or worse bleeding."}
+          ]
+        },
+        {
+          "id": "2022-01-14a",
+          "kind": "portal_message",
+          "start": "2022-01-14T12:05",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2022-01-14T12:05", "body": "Raul — stool culture and parasite test are negative. Your blood count shows mild anemia, and the inflammation marker (ESR) is up, which fits an inflammatory process in the colon. I've sent all of this to GI. Their office should call you to schedule; let us know if you haven't heard by the end of next week."}
+          ]
+        },
+        {
+          "id": "2022-02-28a",
+          "kind": "specialist_visit",
+          "start": "2022-02-28T10:30",
+          "service": "Gastroenterology",
+          "reason": "bloody diarrhea",
+          "vitals": {"temp_c": 37.9, "bp": [118, 74], "hr": 84, "rr": 14},
+          "state": {"weight_kg": 67.0},
+          "conditions": [
+            {"label": "Ulcerative colitis", "action": "diagnosed", "onset": "2021-08-25", "note": "per GI consult; colonoscopy planned"}
+          ],
+          "orders": [
+            {"id": "gi-referral", "action": "done", "date": "2022-02-28T10:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Consultation", "author": "gastroenterology", "date": "2022-03-09T16:10", "body": "Date of visit: 02/28/2022\nReason for referral: hematochezia and chronic diarrhea\n\nThank you for sending Mr. Ramos, 35, who has HIV with AIDS. For about six months his stools have been loose and increasingly frequent, now six to eight a day with visible blood and mucus, and some nights he wakes to go. He estimates an unintended loss of 5 kg (11 lb) over the last three months, with occasional low-grade fevers, fatigue and less appetite. No recent travel or antibiotics, no ill contacts, no camping or untreated water.\n\nOn review of systems he mentions stiff, aching knees and ankles in the mornings that loosen up as the day goes on, and red, mildly sore eyes for a few weeks. No rash, oral ulcers or chronic back pain.\n\nMedications: he tells me he takes a daily multivitamin. Biktarvy is prescribed by his HIV clinic; he acknowledges taking it intermittently. NKDA.\nFamily history: paternal uncle with ulcerative colitis who had some kind of intestinal surgery in his 40s; he doesn't know the details. Father with hypertension, mother with type 2 diabetes.\nSocial: software engineer; no tobacco or alcohol.\n\nExam: T 37.9 C, BP 118/74, HR 84, RR 14. Mildly pale, comfortable. Abdomen soft with mild tenderness in both lower quadrants, no rebound or guarding, no hepatosplenomegaly or mass, bowel sounds normal. Rectal: gross blood mixed with stool. Perianal exam without fistula or abscess.\n\nData: your January labs show a mild normocytic anemia and an elevated ESR; stool culture and O&P negative.\n\nImpression: presentation most consistent with ulcerative colitis. Infectious colitis, including CMV given his immune status, must be excluded on biopsy.\nPlan: colonoscopy with biopsies, scheduled for 3/22. Will start therapy once histology is back. We will keep you informed.\n\nAllergies: NKDA\n\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "procedure_visit",
+          "start": "2022-03-22T08:00",
+          "end": "2022-03-22T10:30",
+          "service": "Gastroenterology — Endoscopy",
+          "reason": "colonoscopy for suspected ulcerative colitis",
+          "medications": [
+            {"drug": "mesalamine 1200 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 4 tablets (4.8 g) by mouth once daily with food", "dose": {"value": 4800, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "ulcerative colitis; prescribed by gastroenterology"}
+          ],
+          "procedures": [{"procedure": "Colonoscopy with biopsy", "performed": "2022-03-22T08:40"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2022-03-22T08:40", "issued": "2022-03-25T14:00", "text": "Specimens: A. rectum, B. sigmoid colon, C. descending colon, D. transverse colon, E. ascending colon, F. terminal ileum (cold forceps biopsies).\nA-C: Colonic mucosa with chronic active colitis, crypt architectural distortion, basal lymphoplasmacytosis and cryptitis with focal crypt abscesses. No granulomas. No viral cytopathic effect; CMV immunostain negative. No dysplasia.\nD-E: Colonic mucosa without diagnostic abnormality.\nF: Small bowel mucosa without diagnostic abnormality.", "conclusion": "Chronic active colitis involving rectum through descending colon, consistent with ulcerative colitis. Negative for CMV, granulomas and dysplasia."}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "Colonoscopy Report", "author": "gastroenterology", "date": "2022-03-29T10:15", "body": "Procedure date: 03/22/2022. Indication: hematochezia, chronic diarrhea, suspected IBD.\nSedation: monitored anesthesia care. Prep adequate. Cecum and terminal ileum intubated; withdrawal 11 minutes.\nFindings: From the anal verge continuously to the mid-descending colon, erythematous mucosa with loss of vascular pattern, friability and scattered shallow ulcerations. Sharp transition to normal mucosa in the proximal descending colon. Transverse colon, ascending colon, cecum and terminal ileum normal. Segmental biopsies taken.\nPathology: chronic active colitis rectum through descending colon, CMV stain negative, no granulomas or dysplasia; proximal colon and ileum normal.\nImpression: left-sided ulcerative colitis.\nPlan: mesalamine DR 4.8 g once daily (prescription sent). GI clinic follow-up in about 3 months. Repeat CBC/creatinine with PCP.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2022-04-05a",
+          "kind": "pharmacy",
+          "start": "2022-04-05T10:40",
+          "reason": "prior authorization",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy — Prior Authorization", "author": "MA", "date": "2022-04-05T10:44", "body": "Pharmacy called: mesalamine DR 1.2 g needed PA through the insurer. GI's office already submitted it; approved 4/1 per the plan. Patient picked up first fill. Nothing for us to do; FYI to PCP."}
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "office_visit",
+          "start": "2022-05-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, ulcerative colitis",
+          "state": {"weight_kg": 69.5, "labs": {"Hemoglobin": 13.6}},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-05-10T09:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-05-10T09:00", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-05-10T08:30"},
+            {"procedure": "Venipuncture", "performed": "2022-05-10T09:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-05-10T09:15", "body": "UC f/u. Colonoscopy in March showed left-sided UC, biopsies negative for CMV. On mesalamine 4 tabs daily since late March, says he hasn't missed it — \"it's easier when you can feel the difference.\" Now 1-2 formed BMs/day, no blood, no nighttime stools. Energy better. Knee and ankle stiffness gone. Eyes fine.\nBiktarvy: \"better than before.\"\nWeight 69.5, up a bit. Abd soft, NT.\nA/P: UC in remission on mesalamine. CBC and creatinine today (mesalamine monitoring). Keep GI f/u. HIV per ID clinic — encouraged him to get his labs there; still no records from them."}
+          ]
+        },
+        {
+          "id": "2022-05-12a",
+          "kind": "portal_message",
+          "start": "2022-05-12T16:30",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2022-05-12T16:30", "body": "Good news: anemia has resolved and kidney function is normal on the mesalamine. No changes."}
+          ]
+        },
+        {
+          "id": "2022-08-27a",
+          "kind": "hospital_admission",
+          "start": "2022-08-27T19:20",
+          "end": "2022-09-02T13:00",
+          "service": "Emergency Medicine",
+          "reason": "headache, fever, confusion",
+          "vitals": [{"time": "2022-08-27T19:30", "temp_c": 38.3}],
+          "reports": [
+            {"study": "MRI brain without and with contrast", "loinc": "24590-2", "performed": "2022-08-27T23:10", "text": "Multiplanar multisequence MRI of the brain before and after gadolinium. Multiple enhancing lesions at the gray-white (corticomedullary) junction bilaterally. Ventricles and sulci normal for age. No hydrocephalus. No midline shift. Major flow voids preserved.", "conclusion": "Multiple enhancing lesions at the corticomedullary junction."}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2022-09-06T09:30", "body": "Date of service: 08/27/2022\nCC: headache, fever, confusion\n\n35M with HIV/AIDS and ulcerative colitis brought in by partner. Three weeks of headaches getting steadily worse, low-grade fevers, diffuse muscle aches, and over the last days increasing confusion. Back about a month from a humanitarian trip to rural Guatemala.\nMeds: Biktarvy (intermittent), multivitamin, mesalamine. NKDA.\n\nExam: T 38.3. Oriented to self only. Mild weakness of the right arm and leg. Fundi without papilledema. Neck supple.\n\nToxoplasma IgM and IgG: negative.\nMRI brain w/wo contrast: multiple enhancing lesions at the corticomedullary junction.\n\nMDM: multiple enhancing brain lesions in an AIDS patient with recent travel to an endemic area. Neurosurgery consulted; biopsy deferred pending further workup. Admitted to medicine with ID consult.\n\nDisposition: admitted.\nAllergies: NKDA"}
+          ]
+        },
+        {
+          "id": "2022-08-29a",
+          "kind": "portal_message",
+          "start": "2022-08-29T07:55",
+          "reason": "hospital admission",
+          "documents": [
+            {"type": "Patient Message", "title": "Raul is in the hospital", "author": "patient", "date": "2022-08-29T07:55", "body": "This is Raul's partner writing from his account. He was admitted Saturday night with fever and he was really confused. They found spots on his brain MRI and think it may be from the trip to Guatemala. They're doing more tests. Just wanted you to know."},
+            {"type": "Patient Message", "title": "RE: Raul is in the hospital", "author": "PCP", "date": "2022-08-29T09:10", "body": "Thank you for letting me know — I'm sorry. Please have him or the team call us when he's discharged so we can see him within the week. We'll ask the hospital to send records."}
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "office_visit",
+          "start": "2022-09-08T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {"label": "Neurocysticercosis", "icd10": "B69.0", "action": "diagnosed", "onset": "2022-08-06", "note": "admitted 8/27-9/2; treated with albendazole and dexamethasone"}
+          ],
+          "medications": [
+            {"drug_text": "albendazole 200 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (400 mg) by mouth twice daily with food for 14 days", "dose": {"value": 400, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "neurocysticercosis; hospital prescription"},
+            {"drug_text": "dexamethasone 4 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily during albendazole, then taper as directed", "dose": {"value": 4, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "neurocysticercosis; hospital prescription"}
+          ],
+          "state": {"weight_kg": 69.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2022-09-08T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2022-09-08T12:05", "body": "Seen with partner after admission 8/27-9/2 at the regional hospital. We have the ED record only; no discharge summary yet. History from patient, partner and the pharmacy fill list.\n\nThey tell me: brain MRI showed multiple lesions; toxo blood tests were negative; a blood test for the pork tapeworm came back positive and the team called it neurocysticercosis, presumably picked up in Guatemala. No biopsy. He was started on albendazole twice a day for 14 days plus dexamethasone, and the confusion cleared over the first few days. No seizures. Discharged home 9/2.\nFill history matches: albendazole 200 mg #56 and dexamethasone 4 mg, both filled 8/30.\n\nNow: headaches much less, no fever. Partner says he's \"back to himself.\" Taking albendazole with meals; 4 days left, then the steroid taper.\n\nExam: alert, oriented x3, conversational and appropriate. Speech normal. CN intact. Strength 5/5 in all four limbs, no drift. Gait normal. Lungs clear, heart regular.\n\nA/P\n1. Neurocysticercosis, on treatment, neuro exam normal today. Finish albendazole; follow steroid taper as written. Seizure precautions reviewed; no driving restrictions given since no seizures, but call or go to ED with any episode. Requesting discharge summary.\n2. HIV/AIDS — asked him to see the HIV clinic soon; he has an appointment later this month.\n3. UC — quiet on mesalamine.\nFlu and COVID shots next month."},
+            {"type": "Telephone Encounter", "title": "Records Request", "author": "front desk", "date": "2022-09-08T14:20", "body": "Faxed request to regional hospital HIM for discharge summary and labs from admission 8/27-9/2."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T16:10",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T16:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-11T16:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Vaccines", "author": "RN", "date": "2022-10-11T16:25", "body": "Influenza L deltoid, bivalent COVID booster R deltoid. Feels well. Finished his steroid taper last month. No reaction."}
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "pharmacy",
+          "start": "2022-11-29T09:15",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill — mesalamine", "author": "MA", "date": "2022-11-29T09:15", "body": "Pharmacy refill request for mesalamine DR 1.2 g, take 4 daily. GI prescription out of refills; patient says GI follow-up is in January. Routed to PCP."},
+            {"type": "Refill Request", "title": "RE: Refill — mesalamine", "author": "PCP", "date": "2022-11-29T12:40", "body": "Approved 90 days, 1 refill, to bridge to his GI visit."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "telephone",
+          "start": "2022-12-13T10:05",
+          "reason": "records follow-up",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records Follow-up", "author": "front desk", "date": "2022-12-13T10:08", "body": "Second request to regional hospital for 8/27 admission discharge summary. HIM says it was \"sent\"; nothing in our fax log. Re-faxed request."}
+          ]
+        }
+      ]
+    }
+  ]
+}

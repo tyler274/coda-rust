@@ -1,0 +1,1007 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001689",
+      "events": [
+        {
+          "id": "2023-02-20a",
+          "kind": "hospital_admission",
+          "start": "2023-02-20T18:25",
+          "end": "2023-02-22T11:00",
+          "service": "Emergency Medicine; Gynecology",
+          "reason": "Acute lower abdominal pain with hypotension",
+          "vitals": [
+            {
+              "time": "2023-02-20T18:30",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 37.2
+            },
+            {
+              "time": "2023-02-20T19:40",
+              "bp": [
+                85,
+                55
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Ruptured corpus luteum cyst with hemoperitoneum",
+              "icd10": "N83.11",
+              "action": "diagnosed",
+              "onset": "2023-02-20"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Blood loss anemia after hemoperitoneum"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-20T18:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                }
+              ],
+              "resulted": "2023-02-20T19:15"
+            },
+            {
+              "panel": null,
+              "collected": "2023-02-20T18:45",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ],
+              "resulted": "2023-02-20T19:15"
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-22T05:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2023-02-20T19:10",
+              "text": "Transabdominal pelvic ultrasound, transvaginal views deferred for pain. Uterus normal in size and contour. Endometrium thin. Ovaries not well seen. Free fluid in the cul-de-sac.",
+              "conclusion": "Free fluid in the cul-de-sac.",
+              "issued": "2023-02-20T19:25"
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-02-20T22:30",
+              "issued": "2023-02-23T14:00",
+              "text": "Specimen: right ovarian cyst wall, excision. Cyst lined by luteinized granulosa and theca cells with fresh hemorrhage and organizing blood clot.",
+              "conclusion": "Hemorrhagic corpus luteum cyst, right ovary. No malignancy."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2023-02-24T10:30",
+              "body": "Outside ED / GYN record, 02/20/2023.\n\n31-year-old woman with HTN, Rh negative, and a ruptured hepatocellular adenoma resected in Feb 2022. Came in about 4 hours after the start of sharp, constant lower abdominal pain that came on after a hard workout, with some crampy waves on top. Nauseated, no vomiting. LMP 2 weeks ago, normal flow.\n\nMeds: HCTZ 25 daily. (Outside med list also shows combined OCP.) Allergy: PCN - hives.\n\nTriage: BP 90/60, HR 120, RR 22, T 37.2.\nExam: abdomen diffusely tender, rigid, rebound present. Pelvic deferred due to pain.\nLabs: Hgb 11.2 (13.5 last fall per PCP), WBC 12.0. Urine hCG negative.\nUS: free fluid in the cul-de-sac.\n\nCourse: IV fluid boluses. Despite this HR climbed and BP fell to 85/55. GYN at bedside, consented for diagnostic laparoscopy, to OR emergently."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report - Laparoscopy",
+              "author": "gynecology",
+              "date": "2023-02-24T10:30",
+              "body": "Date: 02/20/2023\nPreop: hemoperitoneum, suspected ruptured ovarian cyst. Postop: ruptured right corpus luteum cyst with hemoperitoneum.\nProcedure: laparoscopy, evacuation of hemoperitoneum, right ovarian cystectomy.\nFindings: hemoperitoneum with clot in the pelvis. Right ovary with a ruptured hemorrhagic cyst, oozing at the rupture site. Left ovary and both tubes normal. Uterus with expected appearance after prior cesareans. Upper abdomen: liver resection site well healed.\nCyst wall excised, ovarian bed hemostatic with bipolar. Hemoperitoneum evacuated and pelvis irrigated.\nNo transfusion. No complications."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "author": "gynecology",
+              "date": "2023-02-24T10:30",
+              "body": "Admit 02/20/2023 - discharge 02/22/2023.\nDx: ruptured right corpus luteum cyst with hemoperitoneum, s/p laparoscopic evacuation and right ovarian cystectomy. Acute blood loss.\n\nUncomplicated recovery. Tolerating diet, ambulating, pain controlled with acetaminophen. Hgb 10.2 on day of discharge. Pathology pending at discharge.\n\nPlan: ferrous sulfate 325 mg daily x 3 months. Continue home HCTZ. Light activity 2 weeks. GYN post-op visit 2-3 weeks. PCP 1 week for CBC.\nAllergies: penicillin (hives)."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "telephone",
+          "start": "2023-02-21T12:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pt update - hospitalized",
+              "author": "RN",
+              "date": "2023-02-21T12:15",
+              "body": "Pt called from hospital. Had emergency laparoscopy last night for a bleeding ovarian cyst. Feeling better today, expects discharge tomorrow. Booked PCP post-hospital visit 3/1. Records requested."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-01a",
+          "kind": "office_visit",
+          "start": "2023-03-01T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, ovarian cyst rupture",
+          "state": {
+            "bp": [
+              122,
+              78
+            ],
+            "weight_kg": 65.4,
+            "labs": {
+              "Hemoglobin": 10.8,
+              "Hematocrit": 32.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-01T11:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2023-03-01T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2023-03-01T10:30",
+              "body": "Here after admission 2/20-2/22: sudden lower abd pain after a hard workout, hemoperitoneum, hypotensive despite fluids, laparoscopy found a ruptured R corpus luteum cyst. Cystectomy, no transfusion. D/c Hgb 10.2. Path: hemorrhagic corpus luteum cyst, benign.\n\nFeels ok. Port sites a bit sore. Taking iron. No fever, no bleeding.\nMeds: HCTZ 25 daily, ferrous sulfate 325 daily.\nNote: hospital med list still shows the combined OCP - she has not taken it since Feb 2022. Asked her to tell OB to update their list.\n\nExam: well, BP fine. Abd soft, 3 small port incisions clean and healing.\n\nA/P\n- Ruptured R corpus luteum cyst w/ hemoperitoneum, s/p lap. Recovering. GYN post-op visit 3/14.\n- Blood loss anemia: CBC today, iron x 3 mo then recheck.\n- Two big intra-abdominal bleeds in a year (liver 2022, ovary now), different causes, both with clear structural sources. No bruising, heavy periods or bleeding with past surgeries/deliveries. INR normal last year. Not pursuing a bleeding workup now; low threshold if anything else.\n- HTN controlled."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "specialist_visit",
+          "start": "2023-03-14T09:40",
+          "service": "Gynecology",
+          "reason": "Postoperative visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Post-op Letter",
+              "author": "gynecology",
+              "date": "2023-03-16T15:00",
+              "body": "Dear Colleague,\n\nYour patient was seen 03/14/2023 two weeks after laparoscopic evacuation of hemoperitoneum and right ovarian cystectomy for a ruptured corpus luteum cyst. Final pathology confirmed a hemorrhagic corpus luteum cyst with no malignancy. Incisions are healed and she is comfortable.\n\nCorpus luteum rupture usually does not recur, though it can. She is not on hormonal contraception given her hepatic adenoma history, and estrogen should stay off the table. We talked through progestin-only options which would also help with cycle irregularity; she is not interested at present.\n\nShe may resume all activity. Return as needed.\n\nMedications: hydrochlorothiazide 25 mg daily; ferrous sulfate 325 mg daily.\nAllergies: penicillin (hives)."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "lab_only",
+          "start": "2023-05-16T07:50",
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.0,
+              "Hematocrit": 39.2
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-16T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "portal_message",
+          "start": "2023-05-17T11:25",
+          "conditions": [
+            {
+              "label": "Ruptured corpus luteum cyst with hemoperitoneum",
+              "icd10": "N83.11",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Hemoglobin recovered"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2023-05-17T11:25",
+              "body": "Hi Taylor, hemoglobin is 13.0, fully back to your normal. OK to stop the iron. See you in June for your BP check."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No show",
+              "author": "front desk",
+              "date": "2023-06-20T16:00",
+              "body": "Pt did not arrive for 3:30 appt. Called cell, left VM to reschedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "portal_message",
+          "start": "2023-06-21T07:58",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appt",
+              "author": "patient",
+              "date": "2023-06-21T07:58",
+              "body": "So sorry about yesterday - we had open enrollment at work and I completely lost track of time. Can I get something in July? Mornings are better."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appt",
+              "author": "front desk",
+              "date": "2023-06-21T09:12",
+              "body": "No problem! You're booked Tuesday 7/11 at 8:15."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "office_visit",
+          "start": "2023-07-11T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "state": {
+            "bp": [
+              130,
+              82
+            ],
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-07-11T08:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-07-11T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "HTN Follow-up",
+              "author": "PCP",
+              "date": "2023-07-11T08:15",
+              "body": "BP f/u. Feeling well since the laparoscopy, back to the gym. Work busy.\nMeds: HCTZ 25 mg daily, taking reliably. Off iron.\nBP slightly higher than usual today, repeat similar. Heart regular, lungs clear, no edema.\nA/P: HTN, acceptable. Continue HCTZ, BMP. Asked her to check a few home readings before the fall physical. Cuff size reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              124,
+              80
+            ],
+            "weight_kg": 65.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-26T08:45",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-26T08:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-26T08:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-26T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-26T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-26T08:00",
+              "body": "32F annual.\n\nSince last year: ruptured R corpus luteum cyst Feb 2023 with laparoscopic cystectomy; recovered, Hgb normal by May. Hepatic adenoma resected 2022, no further imaging needed.\nHome BPs 118-128/76-82 per her log.\nCycles irregular, 5-8 wks. Not on hormonal contraception (no estrogen given adenoma); declines progestin options again, aware they are available.\n\nMeds: HCTZ 25 daily. Allergy PCN.\nSH: HR, partnered, never smoker, drinks rarely, exercising 3-4x/wk. PHQ-2 0.\n\nExam: well. Heart RRR, no murmur. Lungs clear. Abd soft, well-healed scars, no masses, nontender. Ext no edema. Skin nl.\n\nPlan: CBC, CMP. Flu today. Updated covid shot in a few weeks when it's in. Co-test due 2025. Lipids/A1c next year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 vaccine",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-17T12:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "MA",
+              "date": "2023-10-17T12:15",
+              "body": "Updated 2023-24 COVID-19 vaccine (Moderna) 0.5 mL IM L deltoid. Screening questions negative. Observed 15 minutes, left in good condition."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T08:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "author": "MA",
+              "date": "2023-12-05T08:20",
+              "body": "HCTZ 25 mg #90 requested by pharmacy, last refill used. BMP July normal. Approved by PCP, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "hospital_admission",
+          "start": "2024-02-21T17:50",
+          "end": "2024-02-22T13:00",
+          "service": "Emergency Medicine; Trauma Surgery",
+          "reason": "Motor vehicle collision with dizziness and hypotension",
+          "vitals": [
+            {
+              "time": "2024-02-21T17:55",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 22,
+              "spo2": 97
+            },
+            {
+              "time": "2024-02-21T20:30",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 96,
+              "rr": 18,
+              "spo2": 98
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Hypovolemic shock",
+              "icd10": "R57.1",
+              "action": "diagnosed",
+              "onset": "2024-02-21"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-21T18:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ],
+              "resulted": "2024-02-21T18:40"
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-02-21T18:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                }
+              ],
+              "resulted": "2024-02-21T18:40"
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-21T18:05",
+              "results": [
+                {
+                  "test": "Partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 30
+                },
+                {
+                  "test": "Lactate",
+                  "value": 4.2
+                }
+              ],
+              "resulted": "2024-02-21T18:40"
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-22T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2024-02-21T18:20",
+              "text": "Portable AP chest. Lungs clear. No pneumothorax or pleural effusion. Mediastinum not widened. Heart size normal. No displaced rib fracture.",
+              "conclusion": "Normal chest radiograph."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Trauma ED Record",
+              "author": "emergency medicine",
+              "date": "2024-02-26T09:45",
+              "body": "Outside ED record, DOS 02/21/2024.\n\n32F, restrained driver in a head-on collision at moderate speed, airbags deployed. No LOC. Complains of dizziness, fatigue and mild belly pain; denies other injury. Hx resected liver adenoma 2022, ruptured ovarian cyst 2023, HTN on HCTZ, O neg. PCN allergy (hives).\n\nPrimary survey intact. VS: BP 90/60, HR 120, RR 22, SpO2 97% RA.\nSecondary: alert, pale and anxious. Skin cool and clammy. Abd: mild LUQ tenderness, no rebound or guarding, BS normal. Pelvic and rectal unremarkable. No seat-belt sign, no external trauma.\n\nLabs: Hgb 9.8, Hct 29, plt 250, PT 12, PTT 30, lactate 4.2.\nFAST: negative for free fluid. CXR: normal.\n\nAssessment: hypovolemic shock after MVC.\nED course: crystalloid bolus, then 2 units O-negative PRBC with HR down to the 90s and BP 112/70. Admitted to trauma service for overnight observation with serial exams and Hgb."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Trauma Observation Discharge",
+              "author": "trauma surgery",
+              "date": "2024-02-26T09:45",
+              "body": "Admitted 02/21/2024 for observation after MVC with hypovolemic shock, responded to 2 units PRBC. Serial abdominal exams remained benign overnight. Hgb 10.4 this morning, stable. Tolerating diet, ambulating, vitals normal.\n\nDischarged 02/22/2024. Resume HCTZ 25 mg daily when eating and drinking normally. Return for worsening abdominal pain, lightheadedness, fainting. PCP follow-up within 1 week with CBC.\nAllergies: penicillin."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-23a",
+          "kind": "telephone",
+          "start": "2024-02-23T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "author": "RN",
+              "date": "2024-02-23T10:05",
+              "body": "Pt called. Car accident Wed, needed 2 units of blood in the ED, kept overnight, home yesterday. A little woozy when she stands fast. No new belly pain, no fainting. Drinking well. Advised slow position changes, ED if fainting or worse pain. Appt 2/28 with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-28a",
+          "kind": "office_visit",
+          "start": "2024-02-28T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after car accident and transfusion",
+          "state": {
+            "bp": [
+              120,
+              76
+            ],
+            "weight_kg": 65.1,
+            "labs": {
+              "Hemoglobin": 10.9,
+              "Hematocrit": 32.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Blood loss after collision"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-28T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-02-28T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "author": "PCP",
+              "date": "2024-02-28T09:15",
+              "body": "One week after head-on MVC. ED: BP 90/60, HR 120, Hgb 9.8, lactate 4.2, FAST neg, CXR neg; given 2 u PRBC with good response, observed overnight, Hgb 10.4 at d/c.\n\nNow: lightheadedness gone. Tired. Abd pain resolved. Back at work from home this week.\nMeds: HCTZ 25 (restarted 2/23).\n\nExam: NAD. BP ok, HR normal. Abd soft, nontender, no LUQ tenderness, no masses. No bruising.\n\nA/P\n- Hypovolemic shock after MVC, s/p transfusion. Stable and well. CBC today; start ferrous sulfate 325 daily, recheck CBC + ferritin in 8 wks.\n- O neg, received O neg units; antibody screen at next pregnancy per routine.\n- HTN, continue HCTZ.\nPaperwork for her auto insurer will go through records."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "telephone",
+          "start": "2024-03-12T14:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2024-03-12T14:30",
+              "body": "Auto insurance adjuster requested records related to 2/21 MVC. Signed authorization from patient on file (scanned). Sent 2/28 office note and ED/discharge records per authorization."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "lab_only",
+          "start": "2024-04-23T07:40",
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.9,
+              "Hematocrit": 38.8,
+              "Ferritin": 41
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-04-23T07:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-23T07:40",
+              "results": [
+                {
+                  "test": "Ferritin"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2024-04-24a",
+          "kind": "portal_message",
+          "start": "2024-04-24T12:40",
+          "conditions": [
+            {
+              "label": "Hypovolemic shock",
+              "icd10": "R57.1",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Hemoglobin and iron stores recovered"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2024-04-24T12:40",
+              "body": "Hemoglobin is 12.9 and iron stores are normal. You can stop the iron. Glad you are feeling back to yourself."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "telehealth_visit",
+          "start": "2024-06-18T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure review",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-06-18T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - HTN",
+              "author": "PCP",
+              "date": "2024-06-18T12:00",
+              "body": "Video visit from her office over lunch. Sent 2 weeks of home BPs: 116-130 / 74-84, avg about 124/79. Taking HCTZ daily. No dizziness now, energy normal.\nAppears well on video, speaking comfortably.\nA/P: HTN controlled on HCTZ 25. Continue. Physical in October with labs."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              126,
+              80
+            ],
+            "weight_kg": 66.4,
+            "labs": {
+              "Low Density Lipoprotein": 104,
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-08T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-08T08:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-08T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-08T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T08:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-08T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-08T08:00",
+              "body": "33F, annual.\n\nInterval: MVC Feb 2024 with hypovolemic shock, 2 u PRBC, observed overnight; Hgb back to 12.9 by April. No lasting injury.\nHTN: home BPs mid 120s/high 70s.\nGyn: cycles still irregular. No contraception currently; she and her partner are open to another pregnancy. Reviewed that she should let us and OB know early if she becomes pregnant - Rh negative, prior classical cesarean, HTN on HCTZ, adenoma history. Advised a prenatal vitamin with folic acid while not preventing pregnancy.\n\nMeds: HCTZ 25 daily. Allergy PCN (hives).\nSH unchanged. Never smoker, rare alcohol. PHQ-2 1 (a few stressful weeks at work).\n\nExam: well-appearing. HEENT nl. Thyroid nl. CV RRR. Lungs CTA. Abd soft, healed scars, NT. No edema. Skin nl.\n\nPlan: CBC, CMP, lipids, A1c. Flu and updated covid today. Co-test due next year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "portal_message",
+          "start": "2024-10-10T16:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2024-10-10T16:15",
+              "body": "Taylor, labs from Tuesday all look fine. Blood count normal, potassium and kidney function normal on the HCTZ, liver tests normal, LDL 105, which flags just over the lab's cutoff but is fine for you, A1c normal."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "pharmacy",
+          "start": "2024-12-10T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "author": "MA",
+              "date": "2024-12-10T09:30",
+              "body": "Refill HCTZ 25 mg 90-day. Labs 10/8 normal. Sent, 3 refills."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

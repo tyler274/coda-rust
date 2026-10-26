@@ -1,0 +1,235 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002661",
+      "given": "Gavin",
+      "family": "Holt",
+      "birth_date": "1999-06-16",
+      "address_line": "27 Parsons Street, Apt 2",
+      "phone": "+1-860-555-0157",
+      "email": "gavin.holt@example.test",
+      "marital_status": "single",
+      "summary": "Healthy young man and seasonal beach lifeguard who joined the practice in September 2022. Outside dermatology diagnosed KOH-confirmed tinea versicolor in March 2023; it recurs every warm season and is treated with ketoconazole shampoo, with monthly summer prophylaxis started in 2026.",
+      "events": [
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T08:40",
+          "end": "2022-09-13T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 80.0, "height_cm": 183.0, "labs": {"Total Cholesterol": 158, "Low Density Lipoprotein": 88, "Thyroid Stimulating Hormone": 1.7}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 2}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social use"},
+            {"item": "Occupation", "value": "Seasonal beach lifeguard"}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-09-13T09:20", "resulted": "2022-09-14T07:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T09:20", "resulted": "2022-09-14T07:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T09:20", "resulted": "2022-09-14T07:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-09-13T09:20", "resulted": "2022-09-14T11:45", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2022-09-13T09:25"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-13T09:25"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-09-13T08:40"},
+            {"procedure": "Immunization administration", "performed": "2022-09-13T09:25"},
+            {"procedure": "Venipuncture", "performed": "2022-09-13T09:20"}
+          ],
+          "orders": [
+            {"id": "records-prior-pcp", "action": "placed", "order": "Request records from prior primary care office", "category": "procedure", "reason": "new patient"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit / Physical", "author": "PCP", "date": "2022-09-13T09:40", "body": "23M here to set up primary care. Last regular doctor was the family practice he went to growing up; hasn't been in for a couple of years. No complaints today. Just finished the summer working as a beach lifeguard, season wrapped up last week.\n\nPMH: none.\nPSH: wisdom teeth out at 18.\nMeds: none. No supplements.\nAllergies: NKDA.\nFH: nothing he knows of that runs in the family; specifically no skin problems, eczema, asthma or allergies on either side.\nSH: single, lives in Easthampton. Never smoked, no vaping. Drinks socially, a few beers on a weekend night here and there. No drug use. Swims, runs on the beach for work conditioning.\n\nROS: negative.\n\nExam: well-appearing, fit. Vitals in flowsheet.\nHEENT: TMs clear, oropharynx benign, dentition good.\nNeck: supple, no adenopathy, thyroid not enlarged.\nCV: RRR, no murmur.\nLungs: clear throughout.\nAbd: soft, nontender, no organomegaly.\nExt: no edema, full ROM.\nSkin: tanned; no atypical moles on the areas examined.\nNeuro: grossly nonfocal.\n\nPHQ-2 0. AUDIT-C 2.\n\nA/P: healthy 23 yo, establishing care.\n- Baseline CBC, CMP, lipids, TSH; one-time HIV and hep C screening, he agreed.\n- Thinks his last tetanus shot was in middle school. Tdap today. Flu shot today.\n- Sunscreen counseling given his job: broad spectrum SPF 30+, reapply after swimming, rash guard and hat when he can.\n- Will request records from prior office.\n- Physical yearly."},
+            {"type": "Nursing Note", "title": "Immunization Administration", "author": "MA", "date": "2022-09-13T09:28", "body": "Tdap 0.5 mL IM left deltoid. Influenza quadrivalent 0.5 mL IM right deltoid. VIS given for both. Pt waited 15 min, no reaction. Lab drawn L antecubital, one stick."}
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your recent lab work", "author": "PCP", "date": "2022-09-15T16:20", "body": "Hi Gavin, your blood work from Tuesday looks good. Blood counts, kidney and liver numbers, sugar, thyroid and cholesterol are all in the normal range, and the HIV and hepatitis C screens came back negative. Nothing to follow up on. See you next fall for your physical, or sooner if anything comes up."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T11:05",
+          "reason": "Prior primary care records received",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2011-07-12T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2011-07-12T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2011-07-12T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2011-09-20T15:30"},
+            {"vaccine": "HPV, quadrivalent", "date": "2012-01-24T15:30"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2016-08-02T09:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-21T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-12T13:00"}
+          ],
+          "orders": [
+            {"id": "records-prior-pcp", "action": "done", "date": "2022-09-20T11:05"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior family practice", "author": "front desk", "date": "2022-09-20T11:05", "body": "22 pages received by fax from the family practice that followed the patient from childhood through 2020. Scanned to media.\n\nSummary for chart:\n- Well visits yearly through his teens, last full physical 2020 (age 20). Growth and development normal, no chronic problems listed.\n- Immunizations: childhood series complete. Tdap 07/2011. MenACWY 07/2011 and booster 08/2016. HPV x3 (07/2011, 09/2011, 01/2012). COVID Pfizer x2 04/2021 and 05/2021 (copy of card in file). Entered into immunization history.\n- Oral surgery letter 2018: removal of third molars, no complications.\n- No allergies listed.\n\nForwarded to PCP for review."},
+            {"type": "Progress Notes", "title": "Outside Records Review", "author": "PCP", "date": "2022-09-21T07:50", "body": "Reviewed prior office records. Unremarkable. Tdap from 2011 confirms he was due; covered last week. Immunizations reconciled."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "pharmacy",
+          "start": "2022-10-18T17:45",
+          "reason": "Vaccine given at pharmacy",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-15T12:30"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Got my covid booster", "author": "patient", "date": "2022-10-18T17:45", "body": "Hey, just letting you know I got the new covid booster at the pharmacy on Saturday so you can put it in my chart. Arm was a little sore, otherwise fine."},
+            {"type": "Patient Message", "title": "RE: Got my covid booster", "author": "MA", "date": "2022-10-19T09:10", "body": "Thanks Gavin, the bivalent booster dated 10/15 has been added to your immunization record."}
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "portal_message",
+          "start": "2023-02-07T20:14",
+          "reason": "Skin discoloration on back",
+          "documents": [
+            {"type": "Patient Message", "title": "spots on my back", "author": "patient", "date": "2023-02-07T20:14", "body": "Hi, I've had these blotchy lighter spots on my back since sometime last summer and they seem to be getting worse not better. They don't hurt or itch. They were worse in the summer when I was outside and sweating all day at work. Can someone take a look? Could come in tomorrow if there's anything open."},
+            {"type": "Patient Message", "title": "RE: spots on my back", "author": "MA", "date": "2023-02-08T08:05", "body": "Hi Gavin, we can see you today at 12:20. See you then."}
+          ]
+        },
+        {
+          "id": "2023-02-08a",
+          "kind": "office_visit",
+          "start": "2023-02-08T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Discoloration on back",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-02-08T12:20"}
+          ],
+          "orders": [
+            {"id": "derm-referral-2023", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "discoloration of back, worsening over several months"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-02-08T12:55", "body": "S: Discolored patches on his back for several months, first noticed last summer, steadily more of them. Worse during the lifeguard season, after a day outside and sweating. No itch, no pain. Hasn't tried anything on it. No new soaps or detergents. Otherwise feels well. No meds.\n\nO: Vitals reviewed. Skin: patchy lighter areas over the upper back. Chest, arms, face clear.\n\nA/P: Patchy discoloration of the upper back, several months.\n- Would like dermatology to take a look and scrape it rather than guess. Referral placed; he is fine waiting a few weeks.\n- Nothing to put on it until he's seen."}
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "specialist_visit",
+          "start": "2023-03-13T10:30",
+          "service": "Dermatology",
+          "reason": "Skin discoloration of back",
+          "conditions": [
+            {"label": "Tinea versicolor", "icd10": "B36.0", "action": "diagnosed", "onset": "2022-07-01"}
+          ],
+          "medications": [
+            {"drug_text": "ketoconazole 20 MG/ML Medicated Shampoo", "action": "start", "sig": "Lather onto affected skin of trunk, leave on 5 minutes, then rinse. Use daily for 2 weeks.", "dose": {"value": 1, "unit": "application"}, "frequency": "DAILY", "route": "Topical", "course": "short", "reason": "Tinea versicolor"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-03-13T10:45", "resulted": "2023-03-13T10:55", "results": [
+              {"test": "Fungal elements, skin scraping, KOH preparation", "loinc": "18482-5", "text": "Positive: short hyphae and round spores (\"spaghetti and meatballs\" pattern)"}
+            ]}
+          ],
+          "orders": [
+            {"id": "derm-referral-2023", "action": "done", "date": "2023-03-16T14:10"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Dermatology Consultation", "author": "dermatology", "date": "2023-03-16T14:10", "body": "Outside dermatology group, new patient consultation\nDate of visit: 03/13/2023\nReferred by: primary care\n\nThank you for sending Mr. Holt, a 23 year old man, for discoloration of the back.\n\nHistory: He describes several months of steadily increasing discolored patches on his back. He works outdoors as a beach lifeguard in the summer and notices it gets worse then, especially with heat, outdoor activity and sweating. He has no other medical problems.\n\nPast surgical history: third molar extraction at 18.\nMedications: none.\nAllergies: NKDA.\nFamily history: no skin disease or atopy in the family.\nSocial: never smoker, drinks occasionally. Summer lifeguard.\n\nExamination: Multiple hypopigmented macules with a fine overlying scale across the upper back. No erythema.\n\nIn-office testing: KOH prep of scale from the upper back shows short hyphae together with clusters of round spores, the classic \"spaghetti and meatballs\" picture.\n\nImpression: Tinea versicolor (pityriasis versicolor).\n\nPlan:\n1. Ketoconazole 2% shampoo used as a body wash to the trunk, left on about 5 minutes before rinsing, daily for 2 weeks.\n2. Explained that this is an overgrowth of a yeast that normally lives on the skin and is not contagious. The scale clears quickly with treatment, but the light color can take several months to even out, and will look more obvious after sun exposure before it does.\n3. Recurrence in hot, humid weather is common. Return if it comes back.\n\nPlease contact our office with questions."}
+          ]
+        },
+        {
+          "id": "2023-04-24a",
+          "kind": "portal_message",
+          "start": "2023-04-24T21:02",
+          "reason": "Question about skin",
+          "documents": [
+            {"type": "Patient Message", "title": "back still looks blotchy", "author": "patient", "date": "2023-04-24T21:02", "body": "I did the shampoo every day for the 2 weeks like the dermatologist said. The flaky part went away but my back still looks blotchy and white in spots. Is that normal or should I do more?"},
+            {"type": "Patient Message", "title": "RE: back still looks blotchy", "author": "PCP", "date": "2023-04-25T07:35", "body": "That's expected. The shampoo clears the yeast fast, but the skin underneath takes a while to make its normal pigment again, usually a few months. If the scale stays gone you don't need to repeat it. If the flaking comes back, let me know or call dermatology."}
+          ]
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "portal_message",
+          "start": "2023-05-17T13:40",
+          "reason": "Form request",
+          "documents": [
+            {"type": "Patient Message", "title": "form for work", "author": "patient", "date": "2023-05-17T13:40", "body": "My summer job needs a health form signed by a doctor before I start Memorial Day weekend. Uploading it now. Do I need to come in for it or can you fill it out from my physical in September?"},
+            {"type": "Patient Message", "title": "RE: form for work", "author": "front desk", "date": "2023-05-19T10:20", "body": "Hi Gavin, your doctor completed and signed the form using your September physical. It's uploaded to your portal under Letters, and we also left a copy at the front desk if you'd rather pick it up."},
+            {"type": "Letter", "title": "Seasonal Employment Health Form", "author": "PCP", "date": "2023-05-18T16:30", "body": "Employee: Gavin Holt, DOB 06/16/1999\nLast examined: 09/13/2022\n\nThe above was examined in this office and has no medical condition that restricts duty as a seasonal beach lifeguard. No restrictions. Immunizations reviewed and current, including Tdap 09/2022."}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 81.5},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 3}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-19T08:40", "resulted": "2023-09-20T06:55", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-19T08:40", "resulted": "2023-09-20T06:55", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-19T08:35"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-19T08:00"},
+            {"procedure": "Immunization administration", "performed": "2023-09-19T08:35"},
+            {"procedure": "Venipuncture", "performed": "2023-09-19T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-19T08:50", "body": "Annual. 24M, feels well. Lifeguard season over, had a good summer.\n\nInterval: dermatology in March diagnosed tinea versicolor on the back by KOH, treated with 2 weeks of ketoconazole shampoo. Scale cleared after the course. Not using anything now.\n\nMeds: none. Allergies: NKDA.\nSH: unchanged. Never smoker, social alcohol, a bit more over the summer.\n\nExam: vitals in flowsheet. Well. HEENT clear. Neck no nodes. Heart RRR without murmur. Lungs clear. Abdomen benign. Skin: no scale on trunk, no atypical nevi. Ext normal.\n\nPHQ-2 0, AUDIT-C 3.\n\nA/P:\n1. Tinea versicolor, treated in March. Repeat the shampoo if scaling returns; dermatology if it doesn't respond.\n2. Health maintenance: flu shot today. CMP and lipids. Reminded about sunscreen and reapplying.\n3. RTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2023-09-21T12:10", "body": "Gavin, your metabolic panel and cholesterol are normal. No changes needed."},
+            {"type": "Patient Message", "title": "RE: Lab results", "author": "patient", "date": "2023-09-21T18:44", "body": "great thanks"}
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "pharmacy",
+          "start": "2023-10-12T10:00",
+          "reason": "Outside vaccine record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T16:15"}
+          ],
+          "documents": [
+            {"type": "Immunization Record", "title": "Pharmacy vaccine administration report", "author": "MA", "date": "2023-10-12T10:00", "body": "Notification received from community pharmacy: COVID-19 mRNA vaccine 2023-2024 formula given 10/10/2023, left deltoid. Added to immunization history."}
+          ]
+        }
+      ]
+    }
+  ]
+}

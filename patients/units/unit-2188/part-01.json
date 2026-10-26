@@ -1,0 +1,476 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001102",
+      "given": "Lyle",
+      "family": "Haskins",
+      "birth_date": "1953-10-02",
+      "address_line": "27 Montgomery Road",
+      "phone": "+1-413-555-0174",
+      "email": "lyle.haskins@example.test",
+      "summary": "Retired construction foreman and lifelong pack-a-day smoker who joins in 2018 with hypertension, hyperlipidemia, COPD, PAD and a small AAA, has an MI with PCI in 2019, and over the next years accumulates outside surveillance of his aneurysm, claudication, worsening COPD and hypertensive heart disease. His blood pressure drifts up from 2022 and his COPD stays on olodaterol alone, with neither gap addressed in the chart.",
+      "events": [
+        {
+          "id": "2018-05-08a",
+          "kind": "establish_care",
+          "start": "2018-05-08T09:00",
+          "end": "2018-05-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "note": "on lisinopril, HCTZ"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "note": "on atorvastatin 40"
+            },
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "note": "on olodaterol daily"
+            },
+            {
+              "label": "Peripheral arterial disease",
+              "action": "history",
+              "note": "per prior PCP list"
+            },
+            {
+              "label": "Abdominal aortic aneurysm without rupture",
+              "action": "history",
+              "note": "small, followed by vascular surgery"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history",
+              "onset": "1974-10-02",
+              "note": "1 ppd since age 21"
+            },
+            {
+              "label": "History of rheumatic fever",
+              "icd10": "Z86.79",
+              "action": "history",
+              "note": "childhood, no valve disease known"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperlipidemia"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "PAD, AAA"
+            },
+            {
+              "drug_text": "olodaterol 2.5 MCG/ACTUAT Inhalation Spray",
+              "action": "historical",
+              "sig": "Inhale 2 puffs once daily (5 mcg)",
+              "dose": {
+                "value": 5,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              82
+            ],
+            "spo2": 94,
+            "hr": 72,
+            "weight_kg": 92.6,
+            "height_cm": 178.0,
+            "labs": {
+              "Low Density Lipoprotein": 76,
+              "High Density Lipoprotein": 45,
+              "Triglycerides": 135,
+              "Glucose": 90,
+              "Creatinine": 1.0,
+              "Hemoglobin": 14.2,
+              "Mean Corpuscular Volume": 85,
+              "Hematocrit": 43
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c",
+            "rr"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired construction foreman"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2018-05-08T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-05-08T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-05-08T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-05-08T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2018-05-08T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-05-08T10:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-05-08T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2018-05-08T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rec-prior-pcp-2018",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "referral",
+              "to": "Prior primary care practice",
+              "reason": "establishing care"
+            },
+            {
+              "id": "rec-vasc-2018",
+              "action": "placed",
+              "order": "Records request, vascular surgery",
+              "category": "referral",
+              "to": "Vascular Surgery",
+              "reason": "AAA surveillance reports"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2018-05-08T10:40",
+              "body": "NEW PATIENT VISIT\n\n64 y/o retired construction foreman here to establish. Previous PCP retired and he 'let it slide' for a while. No acute complaints today. Wants refills set up locally.\n\nCHRONIC PROBLEMS (per pt and the med bottles he brought; old records requested):\n- HTN - on lisinopril 20 and HCTZ 25 for years. Doesn't check at home.\n- High cholesterol - atorvastatin 40 qhs.\n- COPD - olodaterol inhaler, 2 puffs every morning. Gets winded on stairs and carrying things but says that's been the same a long time. Smoker's cough in the mornings.\n- PAD - on the old problem list, he says he was told 'poor circulation' in the legs. Currently denies leg pain with walking.\n- AAA - small, found on an ultrasound some years back. Followed by vascular surgery, he thinks every year or two. Doesn't remember the size. Brother has one too.\n- Rheumatic fever as a boy. Was told his heart was fine afterward; no known valve problem.\n\nPSH: diagnostic laparoscopy for belly pain around age 45 (~1998), no records, he doesn't know what they found.\nMeds: lisinopril 20 daily, HCTZ 25 daily, atorvastatin 40 daily, ASA 81 daily, olodaterol 5 mcg (2 inh) daily.\nAllergies: NKDA.\nFH: father MI at 58. Mother HTN, stroke at 72. Brother AAA.\nSH: smokes 1 ppd since age 21, ~44 pk-yr. Beer 1-2 a week. Drives. Retired from construction (foreman).\n\nROS: neg for chest pain, syncope, edema, melena. +chronic morning cough, white phlegm.\n\nEXAM: Gen well-appearing, smells of smoke. HEENT ok. Neck no bruit. Heart regular, no murmur. Lungs diminished throughout, prolonged expiration, no wheeze today. Abd soft, nontender, I think I feel aortic pulsation midline, not tender. Ext no edema, DP/PT palpable bilaterally, feet warm. Skin ok.\n\nA/P:\n1. HTN - at goal today on lisinopril/HCTZ. BMP.\n2. HLD - continue atorvastatin 40. Lipids today.\n3. COPD - continue olodaterol. Discussed it is a once-daily controller, not a rescue.\n4. Tobacco - 44 pk-yr, current. Talked about quitting; he's not ready to pick a date. 'Maybe after the summer.' Offered patch/meds, declined for now.\n5. AAA / PAD - continue ASA. Records request to vascular surgery for last scan and plan.\n6. HM - Tdap today (last tetanus unknown). HCV screen with labs. Rest of screening at a physical later this year.\n\nRTC 3 mo.\n"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Immunization Note",
+              "author": "MA",
+              "date": "2018-05-08T09:52",
+              "body": "Tdap 0.5 mL IM L deltoid. VIS given. Pt waited 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2018-05-10a",
+          "kind": "telephone",
+          "start": "2018-05-10T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result call",
+              "author": "RN",
+              "date": "2018-05-10T14:25",
+              "body": "Reached pt re labs from 5/8. Per PCP kidney function and potassium fine on the BP meds, blood count normal, cholesterol where we want it on atorvastatin, hep C test negative. No changes. Pt verbalized understanding. Reminded him of 3 mo f/u in August."
+            }
+          ]
+        },
+        {
+          "id": "2018-06-12a",
+          "kind": "outside_records",
+          "start": "2018-06-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior primary care records received",
+          "orders": [
+            {
+              "id": "rec-prior-pcp-2018",
+              "action": "done",
+              "date": "2018-06-12T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "front desk",
+              "date": "2018-06-12T11:05",
+              "body": "Records received by fax from previous primary care office (38 pages). Includes problem list (HTN, hyperlipidemia, COPD, PAD, AAA), medication list matching current meds, immunization history without a tetanus date, and office notes through 2016. No vascular surgery reports in the packet. Filed to the chart and sent to PCP's inbox.\n\nPCP addendum: Reviewed. Nothing new. Still need the vascular surgery reports - second request sent."
+            }
+          ]
+        },
+        {
+          "id": "2018-08-14a",
+          "kind": "office_visit",
+          "start": "2018-08-14T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3 month follow-up, BP and COPD",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c",
+            "rr"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2018-08-14T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Rooming Note",
+              "author": "MA",
+              "date": "2018-08-14T10:26",
+              "body": "Roomed. Vitals taken. Med list reviewed with pt - no changes, no new outside meds. Tobacco: current, 1 ppd. Pt declines quitline info today."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2018-08-14T10:55",
+              "body": "F/u HTN, COPD.\n\nDoing about the same. Summer is harder on the breathing when it's humid. Using olodaterol every morning, no rescue inhaler. No CP. Walks to the mailbox and around the yard, no leg complaints.\nStill smoking a pack a day. 'Not this year, doc.'\n\nBP 133/77, HR 66, SpO2 95%.\nExam: lungs distant, scattered expiratory wheeze at bases. Heart regular rate. Ankles without swelling.\n\nA/P\n- HTN: fine on current regimen.\n- COPD: stable. Continue olodaterol.\n- Tobacco: counseled ~3 min. Not ready. Will keep asking.\n- Vascular surgery records still not received; front desk to call.\n\nRTC 3-4 mo, flu shot in fall."
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ]
+        },
+        {
+          "id": "2018-09-04a",
+          "kind": "outside_records",
+          "start": "2018-09-04T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vascular surgery records",
+          "orders": [
+            {
+              "id": "rec-vasc-2018",
+              "action": "cancelled",
+              "date": "2018-09-04T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request follow-up",
+              "author": "front desk",
+              "date": "2018-09-04T09:35",
+              "body": "Called vascular surgery office for the third time re: records. They say the release form we sent was missing a signature page. Pt says he will just bring copies from his next appointment there. Closing this request; will re-request if nothing comes."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-16a",
+          "kind": "nurse_visit",
+          "start": "2018-10-16T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-16T15:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2018-10-16T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2018-10-16T15:15",
+              "body": "High-dose flu vaccine 0.5 mL IM R deltoid. Screening questions negative. Tolerated well. Pt turned 65 this month - asked about Medicare paperwork, gave him the front desk info sheet."
+            }
+          ]
+        },
+        {
+          "id": "2018-11-27a",
+          "kind": "office_visit",
+          "start": "2018-11-27T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c",
+            "rr"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2018-11-27T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Rooming Note",
+              "author": "MA",
+              "date": "2018-11-27T08:46",
+              "body": "Pt roomed, vitals entered. Brought med bottles; reconciled, matches list. Smoking status updated (every day)."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2018-11-27T09:15",
+              "body": "HTN/HLD/COPD follow-up.\n\nCold weather starting, more morning cough, sputum white, no fever. No chest pain or pressure with shoveling the walk last week, he says, just winded. Taking all meds.\nSmoking: same. Tried cutting to half a pack in Sept for a week, back to a pack.\n\nBP 131/73, HR 59, SpO2 94%.\nExam: NAD. Lungs: decreased BS, prolonged exp phase, no crackles. CV RRR. Abd soft. Ext warm, no edema.\n\nA/P\n1. HTN - acceptable.\n2. COPD - stable, chronic bronchitic symptoms. Continue olodaterol. Return for fever, change in sputum color, worse SOB.\n3. Tobacco - he made an attempt, which is new. Encouraged. Offered varenicline again; he wants to think about it.\n4. HLD - continue statin, lipids at next labs.\n5. AAA - he still hasn't gotten the vascular surgery report to us. Asked him to bring it.\n\nRTC 3 mo. Physical/screening to schedule in the new year."
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ]
+        },
+        {
+          "id": "2018-12-18a",
+          "kind": "pharmacy",
+          "start": "2018-12-18T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2018-12-18T11:45",
+              "body": "Pharmacy requesting 90-day supplies for lisinopril 20, HCTZ 25, atorvastatin 40 (new Part D plan prefers 90-day). Olodaterol 1 inhaler with 3 refills. Pended for PCP.\n\nPCP: approved x 90 days with 3 refills each."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

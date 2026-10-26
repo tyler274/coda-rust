@@ -1,0 +1,763 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002768",
+      "events": [
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "red painful right lower leg",
+          "state": {
+            "labs": {
+              "White Blood Cells": 2.3,
+              "Absolute Neutrophil Count": 0.9
+            }
+          },
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "diagnosed",
+              "onset": "2026-01-11",
+              "note": "right lower leg"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth four times daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "cellulitis right lower leg"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-13T12:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.3
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-13T12:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-13T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day Visit",
+              "author": "PCP",
+              "date": "2026-01-13T12:40",
+              "body": "Texted this morning about a red sore patch on her right shin since Sunday; seen same day.\n\nNo injury she remembers, dry skin from the cold. Area warm and tender, spreading a little since yesterday. No chills. Not using filgrastim lately.\n\nExam: vitals as charted. Right anterior lower leg with a blanching, warm, tender area of erythema about 8 x 6 cm, margins marked with pen. No fluctuance, no drainage, no streaking. No inguinal nodes. Calf soft. Left leg normal.\n\nCBC today: WBC 2.3, ANC 0.9.\n\nA/P: nonpurulent cellulitis, right lower leg, in a neutropenic patient on methotrexate and prednisone.\n- Cephalexin 500 mg four times daily x 7 days. Sulfa antibiotics excluded (anaphylaxis).\n- ANC under 1000: called hematology - they advise she use her filgrastim per her standing instructions; she has syringes at home.\n- Elevate, moisturize the skin.\n- If the redness passes the pen line, or fever, call immediately - low threshold for ED.\nPhone check in 48 hours."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-15a",
+          "kind": "telephone",
+          "start": "2026-01-15T16:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cellulitis Check",
+              "author": "RN",
+              "date": "2026-01-15T16:30",
+              "body": "Called pt. Redness inside the pen marks and less warm. No fever. Taking cephalexin, used filgrastim Tuesday night per hematology. Will finish course."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "portal_message",
+          "start": "2026-01-23T12:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leg update",
+              "author": "patient",
+              "date": "2026-01-23T12:00",
+              "body": "Finished the antibiotic Tuesday. Leg is just a little pink now and not sore. Thank you for seeing me so fast."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "telephone",
+          "start": "2026-02-03T10:45",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "resolved",
+              "note": "right lower leg resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up Call",
+              "author": "RN",
+              "date": "2026-02-03T10:45",
+              "body": "Follow-up after right leg cellulitis. Skin back to normal color, no tenderness. No fevers. Resolved per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "pharmacy",
+          "start": "2026-03-09T09:25",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Outside Fill Notification",
+              "author": "MA",
+              "date": "2026-03-09T09:25",
+              "body": "Medication history feed shows cephalexin 500 mg capsules #28 filled 03/07/2026, prescriber from an urgent care. Not on our list. Routed to PCP; RN to call patient."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "telephone",
+          "start": "2026-03-10T11:05",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "diagnosed",
+              "onset": "2026-03-06",
+              "note": "left lower leg, treated at urgent care 3/7"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth four times daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "cellulitis left lower leg (urgent care)"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call re: Urgent Care Visit",
+              "author": "RN",
+              "date": "2026-03-10T11:05",
+              "body": "Called about the cephalexin fill. Pt says the left shin got red and sore Friday evening; on Saturday our line went to the on-call message and she didn't want to bother anyone, so she went to an urgent care near the shopping plaza. Diagnosed with cellulitis, given cephalexin 4x/day for a week. No paperwork other than the discharge sheet, which she will photograph and upload. Today: redness fading, no fever. Reminded she can always reach the on-call doctor, weekends included. PCP aware; we'll request the urgent care note."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cough and fever",
+          "state": {
+            "labs": {
+              "White Blood Cells": 2.5,
+              "Absolute Neutrophil Count": 1.1
+            }
+          },
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "resolved",
+              "note": "left lower leg healed"
+            },
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "diagnosed",
+              "onset": "2026-04-11",
+              "note": "right lower lobe"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "levofloxacin 750 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily for 5 days",
+              "dose": {
+                "value": 750,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "community-acquired pneumonia"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-14T10:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.5
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-14T10:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2026-04",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "cough, fever, crackles"
+            },
+            {
+              "id": "heme-referral-2026",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "recurrent infections with chronic neutropenia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-04-14T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day Visit",
+              "author": "PCP",
+              "date": "2026-04-14T12:15",
+              "body": "Called at 8 with three days of cough and feeling feverish; seen this morning.\n\nCough productive, tired, some right-sided chest discomfort with deep breaths. Felt hot overnight. No hemoptysis. Third infection this year after the two leg cellulitis episodes (January here, March at an urgent care).\n\nExam: vitals as charted, not in distress, speaking full sentences. Crackles at the right base, no wheeze. Heart regular. Leg skin healed bilaterally.\n\nCXR done in house: right lower lobe consolidation (see report). CBC: WBC 2.5, ANC 1.1.\n\nA/P:\n1. Community-acquired pneumonia, RLL, outpatient-treatable today (oxygenating well, eating and drinking, has support by phone). Levofloxacin 750 mg daily x 5 days - she is sulfa-anaphylactic; reviewed tendon precautions with the prednisone. Call or go to the ED for breathlessness, confusion, or not improving in 48-72 hours.\n2. Recurrent infections with Felty neutropenia - three in four months. Referral to hematology for an earlier visit than the routine summer one; note sent.\n3. Left leg cellulitis from March resolved.\nRN check-in Monday. Recheck visit in about 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14b",
+          "kind": "imaging",
+          "start": "2026-04-14T10:35",
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-04-14T10:35",
+              "text": "PA and lateral chest. Airspace consolidation in the right lower lobe. No pleural effusion. No pneumothorax. Heart size normal. Mediastinal contours normal. Left lung clear.",
+              "conclusion": "Right lower lobe consolidation consistent with pneumonia."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2026-04",
+              "action": "done",
+              "date": "2026-04-14T10:35"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "telephone",
+          "start": "2026-04-20T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pneumonia Check",
+              "author": "RN",
+              "date": "2026-04-20T14:10",
+              "body": "Finished levofloxacin Saturday. Cough much less, no fever since Thursday, energy coming back slowly. No ankle or calf pain. Hematology has her on the list for 7/20 - earliest they had; she will call if a cancellation opens."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "office_visit",
+          "start": "2026-05-26T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pneumonia follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "resolved"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-05-26T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-05-26T15:55",
+              "body": "Six weeks after RLL pneumonia. Feels back to baseline - cough gone, no fevers. Working her regular shifts.\n\nExam: afebrile, sat normal on room air. Lungs clear throughout, including the right base. Spleen tip palpable.\n\nA/P: pneumonia resolved clinically; no repeat film needed at this point. Hematology 7/20 for recurrent infections. Low threshold to be seen for any fever. Next routine visit late summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-14a",
+          "kind": "hospital_admission",
+          "start": "2026-06-14T15:40",
+          "end": "2026-06-16T13:00",
+          "service": "Internal Medicine",
+          "reason": "evaluation of recurrent infections with neutropenia",
+          "state": {
+            "labs": {
+              "White Blood Cells": 2.1,
+              "Absolute Neutrophil Count": 0.8,
+              "Hemoglobin": 12.5,
+              "Platelets": 180
+            }
+          },
+          "vitals": [
+            {
+              "time": "2026-06-14T15:50",
+              "temp_c": 36.8,
+              "bp": [
+                130,
+                80
+              ],
+              "hr": 78,
+              "rr": 16,
+              "spo2": 98
+            },
+            {
+              "time": "2026-06-15T08:00",
+              "temp_c": 36.7,
+              "bp": [
+                126,
+                78
+              ],
+              "hr": 74,
+              "rr": 16,
+              "spo2": 98
+            },
+            {
+              "time": "2026-06-16T08:00",
+              "temp_c": 36.6,
+              "bp": [
+                124,
+                76
+              ],
+              "hr": 72,
+              "rr": 14,
+              "spo2": 99
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.5 ML filgrastim 0.6 MG/ML Prefilled Syringe",
+              "action": "stop",
+              "reason": "changed to scheduled dosing"
+            },
+            {
+              "drug_text": "0.5 ML filgrastim 0.6 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 300 mcg under the skin twice weekly (Monday and Thursday)",
+              "dose": {
+                "value": 300,
+                "unit": "mcg"
+              },
+              "frequency": "TWICE_WEEKLY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Felty syndrome neutropenia with recurrent infections (hematology)"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-14T16:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 180
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-14T16:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-14T16:10",
+              "results": [
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-14T16:20",
+              "resulted": "2026-06-19T08:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-14T16:25",
+              "resulted": "2026-06-19T08:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-16T06:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.4
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-06-14T17:30",
+              "text": "PA and lateral views. Lungs clear; the previously described right lower lobe opacity is no longer seen. No effusion or pneumothorax. Normal cardiomediastinal silhouette.",
+              "conclusion": "No acute cardiopulmonary process."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospitalist",
+              "date": "2026-07-02T14:20",
+              "body": "Admission 06/14/2026 - Discharge 06/16/2026\nService: Internal Medicine\n\nReason for admission: evaluation of repeated infections in a neutropenic patient.\n\nHistory: 58-year-old woman with seropositive rheumatoid arthritis and Felty syndrome (chronic neutropenia, splenomegaly). Over the past half year she has had two episodes of lower-leg cellulitis (January, March) and a right lower lobe pneumonia in April, each treated as an outpatient. She presented through the emergency department for evaluation of this pattern. Her arthritis is currently quiet on methotrexate and low-dose prednisone.\n\nPMH: as above; glucocorticoid-induced osteoporosis; chronic fatigue syndrome. PSH: bilateral carpal tunnel release; bone marrow biopsy and splenic aspiration 2021.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis); ibuprofen (gastropathy).\n\nExam on admission: afebrile, BP 130/80, HR 78, RR 16. No cervical, axillary or inguinal lymphadenopathy. Joints without synovitis; chronic deformities of longstanding RA in the hands. Palpable spleen tip. Skin intact, no cellulitis.\n\nData: Hgb 12.5, WBC 2.1, ANC 0.8, platelets 180. RF positive, ACPA positive. CMP unremarkable. Blood cultures x2: no growth. CXR: clear, prior RLL opacity resolved.\n\nHospital course: no active infection identified. Hematology consulted; filgrastim 300 mcg given on 6/14 and 6/15 with ANC 1.9 (WBC 3.4) on 6/16. Given the frequency of infections on as-needed dosing, hematology recommended scheduled filgrastim twice weekly. Rheumatology aware; no change to methotrexate or prednisone.\n\nDischarge medications:\n- Filgrastim 300 mcg SC twice weekly (Mon/Thu) - CHANGED from as needed\n- Methotrexate 20 mg weekly\n- Prednisone 5 mg daily\n- Folic acid 1 mg daily except methotrexate day\n- Risedronate 35 mg weekly\n- Calcium carbonate/vitamin D3 600 mg/400 IU twice daily\n\nFollow-up: PCP within one week; hematology 7/20 as scheduled. Return for temperature 38.0 C or higher.\n\nHospital Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "telephone",
+          "start": "2026-06-17T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge Call",
+              "author": "RN",
+              "date": "2026-06-17T09:30",
+              "body": "Pt called to let us know she was in the hospital Sunday to Tuesday. Went in through the ED Sunday afternoon because she was worried about all the infections. Told no infection right now; they gave her filgrastim shots and her count came up, and she is to take it twice a week now instead of only when called. No discharge papers sent to us yet - requested. Feels fine, afebrile. Has syringes; specialty pharmacy shipping more. Post-hospital visit booked Monday 6/22."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "office_visit",
+          "start": "2026-06-22T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-06-22T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "author": "PCP",
+              "date": "2026-06-22T13:50",
+              "body": "Hospital 6/14-6/16 for evaluation of recurrent infections; summary not received yet, history from patient and her discharge med sheet.\n\nPer patient: no infection found, cultures negative so far, chest film clear. Got filgrastim two days and her neutrophils rose. Discharged on filgrastim twice weekly (Mon/Thu). Gave herself this morning's dose without trouble. No fevers.\n\nMed reconciliation: filgrastim changed from as-needed to 300 mcg twice weekly - list updated. Methotrexate 20 mg weekly, prednisone 5 mg, folic acid, risedronate, calcium/D unchanged.\n\nExam: afebrile, well. Lungs clear. Spleen tip palpable. Skin intact on both legs.\n\nA/P: Felty syndrome with recurrent infections, now on scheduled growth factor. Hematology 7/20. No NSAIDs. Fever 100.4 or higher: call us any hour. Follow-up late summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-02a",
+          "kind": "outside_records",
+          "start": "2026-07-02T14:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Discharge Summary Received",
+              "author": "front desk",
+              "date": "2026-07-02T14:25",
+              "body": "Discharge summary for 06/14-06/16/2026 admission received after two requests. Scanned and routed. PCP reviewed: matches our reconciled list."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "specialist_visit",
+          "start": "2026-07-20T10:00",
+          "service": "Hematology & Oncology",
+          "reason": "Felty syndrome, recurrent infections",
+          "state": {
+            "labs": {
+              "White Blood Cells": 2.9,
+              "Absolute Neutrophil Count": 1.4,
+              "Hemoglobin": 12.3,
+              "Platelets": 175
+            }
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-07-20T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 175
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral-2026",
+              "action": "done",
+              "date": "2026-07-20T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up Letter",
+              "author": "hematology",
+              "date": "2026-07-29T11:10",
+              "body": "Seen 07/20/2026.\n\nDear colleague,\n\nI saw Ms. Kelleher after her June admission. Since discharge she has had no fevers or infections. She is injecting filgrastim 300 mcg Mondays and Thursdays without difficulty.\n\nExam: well-appearing. Spleen tip palpable. No adenopathy. Skin intact.\nCBC: WBC 2.9, ANC 1.4, hemoglobin 12.3, platelets 175.\nMedications: filgrastim 300 mcg SC twice weekly; methotrexate 20 mg weekly; prednisone 5 mg daily; folic acid; risedronate 35 mg weekly; calcium/vitamin D3.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis); ibuprofen (gastropathy).\n\nAssessment: Felty syndrome with improved neutrophil count on scheduled filgrastim.\nPlan: continue twice-weekly filgrastim. CBC with differential in one month - fine to draw at your office and send to us. I will see her again in three months.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "portal_message",
+          "start": "2026-08-03T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill please",
+              "author": "patient",
+              "date": "2026-08-03T20:15",
+              "body": "Could you send the calcium + D and the risedronate? Both say zero refills. Also hematology wants a blood count around the 20th - can I just come in for that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill please",
+              "author": "MA",
+              "date": "2026-08-04T09:30",
+              "body": "Both refills sent per the doctor. Lab visit booked Monday 8/24 at 8:15 for the CBC; results will go to hematology too."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "lab_only",
+          "start": "2026-08-24T08:15",
+          "reason": "CBC for hematology",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-24T08:15",
+              "pending": true,
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Absolute Neutrophil Count"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-24T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Lab Draw",
+              "author": "MA",
+              "date": "2026-08-24T08:25",
+              "body": "CBC with differential drawn L antecubital, one attempt. Sent out; copy to hematology requested on the requisition."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-21a",
+          "kind": "office_visit",
+          "start": "2026-09-21T10:20",
+          "reason": "chronic care follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,587 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002751",
+      "given": "Janet",
+      "family": "Madden",
+      "birth_date": "1965-10-12",
+      "address_line": "112 Prospect Street",
+      "phone": "+1-774-555-0184",
+      "email": "janet.madden@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired administrative assistant with two breast cancers (left 2018, right ER-positive 2021 treated through mastectomy, docetaxel/carboplatin and tamoxifen) who joins in October 2022. Over four years she has HRT-related complex atypical endometrial hyperplasia ending in hysterectomy, recurrent depression, post-mastectomy shoulder and chest wall problems, worsening chemotherapy neuropathy, then liver metastases in 2025 and bilateral adrenal metastases with primary adrenal insufficiency in 2026.",
+      "events": [
+        {
+          "id": "2022-09-27a",
+          "kind": "telephone",
+          "start": "2022-09-27T10:40",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake",
+              "author": "front desk",
+              "date": "2022-09-27T10:52",
+              "body": "Pt called to join the practice. Moving her care closer to home; her oncology stays where it is. Membership paperwork and BCBS PPO card info taken over the phone. New patient visit booked Tue 10/4 at 9:00 with PCP. Mailed records release forms for her old primary care office and her oncology group. Asked her to bring all pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "establish_care",
+          "start": "2022-10-04T09:00",
+          "end": "2022-10-04T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit",
+          "conditions": [
+            {"label": "Malignant neoplasm of breast", "action": "history", "onset": "2021-03-01", "note": "Right breast, stage IIA, estrogen receptor positive. Lumpectomy and radiation 2021, modified radical mastectomy with axillary dissection early 2022, docetaxel/carboplatin spring 2022, adjuvant tamoxifen since June 2022."},
+            {"label": "History of breast cancer", "action": "history", "onset": "2018-03-01", "note": "Left breast stage II invasive ductal carcinoma 2018; lumpectomy, sentinel node biopsy, adjuvant chemotherapy. In remission."},
+            {"label": "Acquired absence of right breast and nipple", "icd10": "Z90.11", "action": "history", "onset": "2022-02-01"},
+            {"label": "Drug-induced polyneuropathy", "icd10": "G62.0", "action": "history", "onset": "2022-05-01", "note": "Mild numbness of the toes since docetaxel/carboplatin."},
+            {"label": "Osteopenia", "action": "history", "onset": "2021-05-01"},
+            {"label": "Acquired absence of gallbladder", "action": "history", "onset": "2010-01-01", "note": "Remote laparoscopic cholecystectomy; year approximate."}
+          ],
+          "medications": [
+            {"drug_text": "tamoxifen 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Adjuvant endocrine therapy, right breast cancer"},
+            {"drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily (600 mg calcium / 400 IU vitamin D3)", "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Osteopenia"},
+            {"drug_text": "ibuprofen 400 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 8 hours as needed for pain", "dose": {"value": 400, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "chronic"},
+            {"drug_text": "multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "vitals": {"weight_kg": 72.0, "height_cm": 163.0},
+          "state": {"weight_kg": 72.0, "height_cm": 163.0, "labs": {"Hemoglobin A1c": 5.4, "Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-04T10:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-10-04T10:10", "results": [{"test": "Creatinine"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-10-04T10:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-10-04T10:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 glasses of wine per month"},
+            {"item": "Occupation", "value": "Retired administrative assistant"}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T10:00"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-10-04T09:00"},
+            {"procedure": "Immunization administration", "performed": "2022-10-04T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-10-04T12:20",
+              "body": "NEW PATIENT\n56F joining us; wants a PCP close to home who can coordinate around her oncology care. Brought her bottles and a treatment summary.\n\nONC HX (per pt and the summary she brought; formal records requested)\n- L breast: stage II IDC 2018. Lumpectomy + sentinel node bx, then adjuvant chemo. No evidence of disease since.\n- R breast: stage IIA, ER+, 2021. Lumpectomy + radiation, then R modified radical mastectomy with axillary dissection early this year. Chemo after that through a port: docetaxel and carboplatin, finished in the spring. Port came out over the summer.\n- Tamoxifen 20 daily since June. Tolerating it. Med onc follows her every few months.\n- Since chemo the tips of her toes have been a little numb. Not painful, not affecting walking.\n\nOTHER PMH\n- Osteopenia on a DXA at her old office (2021). On calcium/D.\n- One episode of depression years ago, resolved; no treatment now, no psychiatric admissions.\n- Gallbladder out laparoscopically long ago.\n\nMEDS: tamoxifen 20 mg daily; calcium carbonate 600 mg/vit D3 400 IU BID; ibuprofen 400 mg q8h prn aches; MVI daily.\nALL: NKDA.\nFH: mother - breast ca at 45, deceased. Maternal aunt - ovarian ca. Father - HTN, T2DM.\nSH: divorced, lives alone in Northampton. Retired admin assistant. Never smoker. Wine 1-2 glasses a MONTH. No drugs.\n\nROS: energy decent. No new lumps, no bone pain, no cough, no abdominal pain, no bleeding. Mood good.\nPHQ-9 3.\n\nEXAM: vitals in flowsheet, normal. Comfortable, well-groomed. HEENT unremarkable. No cervical, supraclavicular or L axillary nodes. R chest: well-healed mastectomy scar, flat, no nodularity, no skin change. L breast: healed lumpectomy scar, no mass, no nipple change. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed laparoscopic port scars, no organomegaly. Arms: no lymphedema either side. Feet: skin intact, monofilament felt at all sites.\n\nA/P\n1. R breast ca, ER+, on adjuvant tamoxifen - per oncology. Will get their notes.\n2. Hx L breast ca - in remission.\n3. Mild chemo neuropathy, toes - stable, observe.\n4. Osteopenia - continue Ca/D. Old DXA requested.\n5. HCM: baseline CBC, CMP, lipids, A1c, TSH; one-time HCV and HIV screening. Flu shot today. Colonoscopy and Pap history from old office pending records.\nRTC 6-7 months, sooner prn."
+            },
+            {
+              "type": "Clinical Note",
+              "title": "Immunization",
+              "author": "MA",
+              "date": "2022-10-04T10:02",
+              "body": "Flu vaccine (quadrivalent) 0.5 mL IM L deltoid. VIS given. No reaction during the 15 min wait. Labs drawn L antecubital, one stick."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-06a",
+          "kind": "portal_message",
+          "start": "2022-10-06T16:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "author": "PCP",
+              "date": "2022-10-06T16:30",
+              "body": "Hi Janet, everything from Tuesday came back fine: blood counts, kidney and liver numbers, sugar (A1c) and thyroid are all normal, and your cholesterol is fine for your risk level, and the hepatitis C and HIV screens are negative. Nothing needs changing. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "outside_records",
+          "start": "2022-10-19T11:15",
+          "reason": "Prior records received",
+          "immunizations": [{"vaccine": "Tdap", "date": "2016-05-17T10:00"}],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records (summary)",
+              "author": "MA",
+              "date": "2022-10-19T11:15",
+              "body": "114 pages from her previous primary care office, abstracted for the chart:\n- Screening colonoscopy 2019: normal, repeat in 10 years.\n- Pap with HPV co-test late 2021: NILM, HPV negative.\n- DXA 2021: osteopenia. Calcium/vitamin D advised.\n- Tdap 05/2016.\n- Problem list there matches her history here. No allergies listed.\nScanned to media."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Oncology treatment summary",
+              "author": "oncology",
+              "date": "2022-10-19T11:20",
+              "body": "Medical Oncology - Treatment Summary (prepared 08/2022, sent at patient request)\n\nPatient: Janet Madden, DOB 10/12/1965\n\nDiagnoses:\n1. Left breast invasive ductal carcinoma, stage II (2018). Lumpectomy with sentinel lymph node biopsy followed by adjuvant chemotherapy. No evidence of recurrence.\n2. Right breast carcinoma, stage IIA, ER positive (2021). Lumpectomy with adjuvant whole-breast radiation. Subsequent right modified radical mastectomy with axillary lymph node dissection (02/2022). Implanted port placed; adjuvant docetaxel and carboplatin completed spring 2022; port removed 08/2022. Tamoxifen 20 mg daily started 06/2022, planned for at least 5 years.\n\nToxicities: grade 1 sensory neuropathy of the toes after docetaxel/carboplatin.\nAllergies: NKDA.\nSurveillance: oncology visits every 3-6 months, annual left diagnostic mammogram."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-10a",
+          "kind": "portal_message",
+          "start": "2022-11-10T08:12",
+          "reason": "Vaccine report",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-11-07T14:00"}],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID booster",
+              "author": "patient",
+              "date": "2022-11-10T08:12",
+              "body": "Hello, just letting you know I had the new bivalent covid shot at my pharmacy Monday afternoon (Pfizer). Sore arm overnight, otherwise fine. Janet"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID booster",
+              "author": "MA",
+              "date": "2022-11-10T11:40",
+              "body": "Thanks Janet, I've added the 11/7 Pfizer bivalent dose to your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "pharmacy",
+          "start": "2022-12-12T13:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request - tamoxifen",
+              "author": "MA",
+              "date": "2022-12-12T13:05",
+              "body": "Pharmacy faxed a 90-day refill request for tamoxifen 20 mg. This is prescribed by her oncologist; called pharmacy and asked them to send it to the oncology office instead. Left pt a voicemail so she isn't caught short."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-18a",
+          "kind": "portal_message",
+          "start": "2023-01-18T19:47",
+          "reason": "Upper back discomfort",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back and shoulder",
+              "author": "patient",
+              "date": "2023-01-18T19:47",
+              "body": "Hi Doctor, not urgent. Over the last month or so I have an on and off ache across my upper back on the right, and reaching up to my top kitchen shelves is harder than it should be. No pain at the mastectomy site and no swelling. I see my breast surgeon at the end of February for my one-year checkup. Should I wait for that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back and shoulder",
+              "author": "PCP",
+              "date": "2023-01-19T07:55",
+              "body": "Hi Janet, waiting for your surgeon on the 27th is reasonable since it sounds tied to that side and that surgery. If you get arm swelling, new numbness in the hand, or pain that is getting steadily worse before then, let me know and I'll see you sooner."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-06a",
+          "kind": "specialist_visit",
+          "start": "2023-02-06T14:00",
+          "service": "Gynecology (outside)",
+          "reason": "Hot flashes and night sweats",
+          "conditions": [
+            {"label": "Menopausal and female climacteric states", "action": "diagnosed", "onset": "2022-02-01", "note": "Perimenopausal symptoms for about a year."}
+          ],
+          "medications": [
+            {"drug_text": "estradiol 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Vasomotor symptoms"},
+            {"drug_text": "progesterone 100 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth at bedtime", "dose": {"value": 100, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "Endometrial protection with estradiol"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit letter",
+              "author": "gynecology",
+              "date": "2023-02-10T09:30",
+              "body": "Women's Health / Gynecology\nVisit date: 02/06/2023\n\nDear colleague,\n\nI saw Ms. Madden, 57, for vasomotor symptoms. For roughly the past year her cycles have been irregular and she now has severe hot flashes through the day and night sweats that wake her most nights. Allergies: none known.\n\nAfter discussion she wished to start hormone therapy. I have prescribed estradiol 1 mg orally daily with micronized progesterone 100 mg nightly for endometrial protection.\n\nImpression: perimenopausal vasomotor syndrome.\nPlan: start combined therapy as above; follow up as needed or sooner with any bleeding.\n\nSincerely,\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "specialist_visit",
+          "start": "2023-02-27T10:30",
+          "service": "General Surgery (outside)",
+          "reason": "One-year follow-up after right mastectomy",
+          "conditions": [
+            {"label": "Thoracic outlet syndrome", "icd10": "G54.0", "action": "diagnosed", "onset": "2022-12-15", "note": "Post-surgical, right."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Breast surgery follow-up letter",
+              "author": "general surgery",
+              "date": "2023-03-03T08:45",
+              "body": "Surgical Oncology / Breast Surgery\nDate of visit: 02/27/2023\nRe: Janet Madden, DOB 10/12/1965\n\nMs. Madden returns for routine surveillance, now about a year out from her right modified radical mastectomy with axillary dissection. Overall she is doing well and has recovered steadily. The chest wall itself is comfortable, with no pain and no swelling. Her complaint is an intermittent ache in the right upper back and difficulty working overhead, for example lifting things onto a high shelf.\n\nMedications: tamoxifen 20 mg daily, estradiol 1 mg daily, micronized progesterone 100 mg nightly, calcium/vitamin D, ibuprofen as needed, multivitamin. Allergies: NKDA.\n\nExamination: The mastectomy flap is healed without erythema, warmth or swelling. Upper extremity range of motion is full bilaterally. When she leans into the wall with both arms extended, the medial edge of the right scapula stands out noticeably from the chest wall. Strength is 5/5 throughout the upper limbs apart from mild weakness of right shoulder abduction above 90 degrees. Sensation is normal in both arms and hands.\n\nImpression: Post-surgical thoracic outlet syndrome, right.\n\nPlan: Referral to physical therapy for scapular stabilization and shoulder girdle strengthening. Continue surveillance per medical oncology. Return in one year, sooner if needed.\n\nBreast Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-16a",
+          "kind": "specialist_visit",
+          "start": "2023-03-16T13:00",
+          "service": "Physical Therapy (outside)",
+          "reason": "Right shoulder girdle weakness",
+          "procedures": [
+            {"procedure": "Physical therapy evaluation, low complexity", "performed": "2023-03-16T13:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Physical therapy evaluation",
+              "author": "physical therapy",
+              "date": "2023-03-20T15:10",
+              "body": "Outpatient Physical Therapy - Initial Evaluation (03/16/2023)\nReferral: breast surgery, post-surgical thoracic outlet syndrome R.\n\nS: Intermittent R upper back ache, trouble reaching overhead. No arm swelling.\nO: Full AROM both shoulders. R scapular prominence with wall push-up. Mild R abduction weakness above shoulder height. Sensation intact.\nA: Scapular stabilizer and shoulder girdle weakness after R mastectomy/ALND, consistent with referral diagnosis. Good rehab potential.\nP: 6 visits over 6 weeks; serratus and lower trap strengthening, posture work; home exercise program issued today with band."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-10a",
+          "kind": "portal_message",
+          "start": "2023-04-10T09:20",
+          "reason": "Stopped progesterone",
+          "medications": [
+            {"drug_text": "progesterone 100 MG Oral Capsule", "action": "stop", "reason": "Patient stopped because of mood swings"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Medication change",
+              "author": "patient",
+              "date": "2023-04-10T09:20",
+              "body": "For my file - I stopped the progesterone capsule on Friday. Since February it has made me moody and weepy in a way I don't like at all. I'm still taking the estradiol and the hot flashes are much better on it. I left a message at the gynecology office too."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Medication change",
+              "author": "PCP",
+              "date": "2023-04-10T12:15",
+              "body": "Thanks for telling me, I've taken the progesterone off your list. Please do make sure the gynecology office calls you back so they can decide what comes next with your hormone therapy, and let them know right away about any bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "office_visit",
+          "start": "2023-05-09T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-05-09T09:10"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-05-09T08:40"},
+            {"procedure": "Immunization administration", "performed": "2023-05-09T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-05-09T11:30",
+              "body": "S: 7-month check. Hot flashes much better on estradiol from gyn; she stopped the progesterone a month ago (moodiness), gyn aware. R upper back ache improving with PT; finished 6 sessions, doing band exercises at home. Tamoxifen fine. Toes the same. Mood good, gardening started up again. PHQ-2 0.\nMeds reviewed: tamoxifen, estradiol, Ca/D, ibuprofen prn, MVI.\nO: Vitals reviewed, normal, weight steady. Well appearing. R scapula slight prominence with arm push, improved per pt. Lungs clear, heart RRR.\nA/P: Doing well. Shingrix #1 today, #2 in the fall. Surgery and PT notes reviewed. See her in October for a physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-02a",
+          "kind": "telephone",
+          "start": "2023-06-02T11:05",
+          "reason": "Vaginal bleeding",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse triage - bleeding",
+              "author": "RN",
+              "date": "2023-06-02T11:18",
+              "body": "Pt calling: several weeks of on-and-off vaginal bleeding, some days heavy enough to soak a pad in a few hours, then quiet for days. Started a while after the estradiol. Denies lightheadedness, chest pain or shortness of breath. Already booked with her gynecologist Wed 6/7. Advised to keep that appointment; go to ED if soaking a pad an hour for 2+ hours, faint or dizzy. Pt verbalized understanding. FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "specialist_visit",
+          "start": "2023-06-07T09:15",
+          "service": "Gynecology (outside)",
+          "reason": "Abnormal uterine bleeding on hormone therapy",
+          "conditions": [
+            {"label": "Endometrial hyperplasia", "icd10": "N85.00", "action": "diagnosed", "onset": "2023-05-01"}
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2023-06-07T10:00",
+              "text": "Transabdominal and transvaginal pelvic ultrasound.\nIndication: abnormal uterine bleeding on estrogen therapy.\nUterus: anteverted, smooth contour, no focal myometrial mass. Endometrium: thickened, measuring 14 mm in double-layer thickness, without focal lesion or fluid. Right and left ovaries: normal size and appearance. No adnexal mass. No free fluid.",
+              "conclusion": "Thickened endometrium, 14 mm. Otherwise normal pelvic ultrasound."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit letter",
+              "author": "gynecology",
+              "date": "2023-06-12T10:20",
+              "body": "Women's Health / Gynecology\nVisit date: 06/07/2023\n\nDear colleague,\n\nMs. Madden, now 57, returned with abnormal bleeding. She has been perimenopausal for about a year and started hormone therapy four months ago for severe vasomotor symptoms. She was on estradiol with micronized progesterone but stopped the progesterone on her own because of mood swings. For several weeks now she has had intermittent heavy bleeding. Current medications: estradiol 1 mg daily, tamoxifen 20 mg daily (oncology), calcium/vitamin D, ibuprofen as needed, multivitamin. NKDA.\n\nPelvic examination: unremarkable. Her most recent Pap was normal.\nPelvic ultrasound today: endometrium thickened at 14 mm; uterus and ovaries otherwise normal.\n\nImpression: Endometrial hyperplasia, presumed, in the setting of hormone therapy.\nPlan: endometrial sampling at a follow-up visit.\n\nSincerely,\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "imaging",
+          "start": "2023-06-20T08:30",
+          "reason": "Annual surveillance mammogram, left breast",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2023-06-20T08:30",
+              "text": "Left diagnostic mammogram, CC, MLO and spot compression views of the lumpectomy site. History: left lumpectomy 2018, right mastectomy 2022.\nBreast composition: scattered areas of fibroglandular density. Post-lumpectomy architectural distortion and scar at the upper outer left breast, stable compared with prior outside studies. No suspicious mass, calcifications or new distortion. Skin and nipple unremarkable.",
+              "conclusion": "BI-RADS 2: benign post-surgical changes. Annual follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "office_visit",
+          "start": "2023-08-22T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, weight loss, low mood",
+          "vitals": {"weight_kg": 67.5},
+          "state": {"weight_kg": 67.5, "labs": {"Hemoglobin": 11.2, "White Blood Cells": 5.0, "Platelets": 250, "Thyroid Stimulating Hormone": 2.5}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-22T14:05", "results": [{"test": "Hemoglobin", "value": 11.2}, {"test": "White Blood Cells", "value": 5.0}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-22T14:05", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": null, "collected": "2023-08-22T14:05", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.5}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 16}],
+          "orders": [
+            {"id": "psych-referral-2023", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "Recurrent depressive symptoms"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-08-22T13:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-08-22T17:10",
+              "body": "CC: tired, losing weight, not herself.\n\nHPI: Since around early June she has been worn out all the time, sleeping badly (up at 3 am, can't get back to sleep), and has lost about 10 lb without trying (72.0 kg in Oct, 67.5 today). Feels low most of the day, most days. Has stopped going out to the garden, which is usually what she lives for in summer. Says she feels useless, and can't keep her mind on a book or a TV show. No thoughts of self-harm, no plan, no intent; feels safe. Feels it is like the episode she had years ago and wants to go back to psychiatry. No fever, no cough, no night sweats now. Still having intermittent bleeding; gyn plans a biopsy. Appetite down.\nPHQ-9 16 (item 9 = 0).\n\nMeds: tamoxifen, estradiol, Ca/D, ibuprofen prn, MVI.\n\nExam: vitals in flowsheet. Tired-appearing, subdued, linear thought, good eye contact. No nodes. Thyroid not enlarged. Heart RRR, lungs clear. Abdomen soft, nontender, no mass. R chest wall unremarkable.\n\nA/P:\n1. Recurrent depressive symptoms, moderate. Psych referral (she prefers the psychiatry group she saw before). Safety plan reviewed; crisis line numbers given.\n2. Fatigue/weight loss: CBC, CMP, TSH today.\n3. Ongoing uterine bleeding - gyn following.\nRTC after psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "author": "PCP",
+              "date": "2023-08-24T12:30",
+              "body": "Janet, your thyroid is normal (TSH 2.5) and your kidney, liver and salt levels are all fine. Your hemoglobin is mildly low at 11.2; white count and platelets are normal. We'll recheck the blood count at your physical in October. I've sent these results to psychiatry for your visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-04a",
+          "kind": "specialist_visit",
+          "start": "2023-09-04T11:00",
+          "service": "Psychiatry (outside)",
+          "reason": "Depressive symptoms",
+          "conditions": [
+            {"label": "Major depressive disorder, recurrent, moderate", "action": "diagnosed", "onset": "2023-06-01"}
+          ],
+          "medications": [
+            {"drug": "escitalopram 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"}
+          ],
+          "orders": [
+            {"id": "psych-referral-2023", "action": "done", "date": "2023-09-04T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry evaluation",
+              "author": "psychiatry",
+              "date": "2023-09-08T14:40",
+              "body": "Outpatient Psychiatry - Return Evaluation\nDate seen: 09/04/2023\nReferred by: primary care\n\nMs. Madden, 57, is known to our clinic from a prior depressive episode. She comes back now during a difficult stretch: ongoing gynecologic evaluation for abnormal bleeding and continuing endocrine therapy for breast cancer. Over three months she describes fatigue that does not lift, about ten pounds of unintended weight loss and broken sleep. Her mood is low for most of nearly every day. Gardening, her main pleasure, no longer interests her. She endorses feelings of worthlessness and poor concentration. No suicidal ideation. No fever, cough or other acute symptoms.\n\nMedications: tamoxifen 20 mg daily, estradiol 1 mg daily, calcium/vitamin D, ibuprofen PRN, multivitamin. NKDA.\n\nExam: unremarkable apart from mild pallor. MSE: casually dressed, cooperative, mood 'low', affect congruent, thought process linear, no SI/HI, insight and judgment good.\n\nLabs from primary care (08/22): Hgb 11.2, WBC 5.0, platelets 250, TSH 2.5, CMP normal.\n\nAssessment: Major depressive disorder, recurrent episode, moderate.\n\nPlan: Start escitalopram 10 mg daily (chosen to avoid interaction with tamoxifen). Referral for weekly psychotherapy. Follow-up here in 6 weeks; primary care may continue refills once stable.\n\nPsychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "portal_message",
+          "start": "2023-09-19T20:05",
+          "reason": "Update after psychiatry",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "author": "patient",
+              "date": "2023-09-19T20:05",
+              "body": "Quick update: I started the escitalopram two weeks ago and I have my first counseling appointment next Thursday. Too soon to tell but I'm sleeping a little better. Thank you for getting me in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "author": "PCP",
+              "date": "2023-09-20T08:10",
+              "body": "Glad to hear it, Janet. It usually takes 4-6 weeks to feel the full effect, so hang in there. See you on October 10."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "annual_physical",
+          "start": "2023-10-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-10T09:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-10-10T09:50", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 10}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T09:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T09:42"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-10-10T09:44"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-10-10T09:46"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-10-10T09:00"},
+            {"procedure": "Immunization administration", "performed": "2023-10-10T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-10-10T12:45",
+              "body": "ANNUAL - 57F (58 on Thursday).\n\nInterval: psychiatry started escitalopram 10 early Sept, in weekly counseling. Mood 'coming up out of the hole' - sleeping through most nights, out in the garden putting beds to bed for winter. PHQ-9 10 (from 16). Still some intermittent bleeding; gyn biopsy planned. Shoulder fine with home exercises. Toes unchanged.\n\nMeds: tamoxifen 20, estradiol 1, escitalopram 10, Ca/D BID, ibuprofen prn, MVI. NKDA.\nHabits: never smoker, wine a couple times a month, walks 30 min most days.\n\nScreening/prevention:\n- Colon: colonoscopy 2019 normal -> 2029.\n- Cervical: Pap/HPV 2021 normal.\n- Breast: L diagnostic mammo 6/2023 benign (oncology).\n- Bone: osteopenia, on Ca/D.\n- HCV/HIV done 2022.\n- Vaccines today: flu, updated COVID, Shingrix #2, PCV20 (indicated with her cancer/chemo history). Tdap 2016.\n\nExam: vitals normal (see flowsheet). Pleasant, brighter than August. Eyes, ears, mouth normal. Neck supple, no thyromegaly, no nodes. Heart RRR without murmur. Lungs clear. R chest wall flat scar, no nodules. L breast no mass. Abdomen soft, no HSM. No edema. Feet: monofilament intact.\n\nA/P:\n1. MDD, recurrent - improving on escitalopram + therapy. Continue.\n2. Mild anemia in Aug - recheck CBC today.\n3. Breast ca on tamoxifen - per onc.\n4. AUB - gyn.\n5. HCM as above; lipids today (A1c normal last year).\nRTC 6 wk telehealth for mood."
+            },
+            {
+              "type": "Clinical Note",
+              "title": "Immunizations",
+              "author": "MA",
+              "date": "2023-10-10T09:50",
+              "body": "Given with consent, VIS for each:\n- Influenza quadrivalent 0.5 mL IM R deltoid\n- COVID-19 Pfizer 2023-24 0.3 mL IM L deltoid\n- Shingrix #2 0.5 mL IM L deltoid (lower)\n- PCV20 0.5 mL IM R deltoid (lower)\nObserved 15 min, tolerated well. Labs drawn."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "portal_message",
+          "start": "2023-10-12T15:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "author": "PCP",
+              "date": "2023-10-12T15:15",
+              "body": "Hi Janet, happy birthday. Cholesterol is about where it was last year, nothing to treat. Your hemoglobin is about where it was in August, still a bit below normal. We'll keep checking it. Nothing to change today."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "telehealth_visit",
+          "start": "2023-11-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression follow-up",
+          "surveys": [{"survey": "PHQ-9 total score", "value": 7}],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2023-11-14T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2023-11-14T11:05",
+              "body": "Video, she is at home, consented to virtual visit.\nMood follow-up. 10 weeks on escitalopram 10, counseling every other week now. Energy better, eating normally, concentrating enough to read again. Some sad days but no longer most days. No SI. No side effects she can name. Saw psychiatry in October - continue same dose; they're happy for us to refill.\nPHQ-9 7.\nAppears well on camera, smiling, normal speech.\nA/P: MDD recurrent, improving. Continue escitalopram 10 mg. Recheck in the spring, sooner if she slides."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-15a",
+          "kind": "specialist_visit",
+          "start": "2023-12-15T09:45",
+          "service": "Gynecology (outside)",
+          "reason": "Ongoing intermittent vaginal bleeding",
+          "conditions": [
+            {"label": "Endometrial hyperplasia", "icd10": "N85.00", "action": "resolved", "note": "Superseded by biopsy diagnosis."},
+            {"label": "Complex atypical endometrial hyperplasia", "icd10": "N85.02", "action": "diagnosed", "onset": "2023-06-07"}
+          ],
+          "medications": [
+            {"drug_text": "estradiol 1 MG Oral Tablet", "action": "stop", "reason": "Atypical endometrial hyperplasia on biopsy"}
+          ],
+          "state": {"labs": {"Hemoglobin": 12.3}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-12-15T10:30", "results": [{"test": "Hemoglobin", "value": 12.3}, {"test": "Platelets", "value": 250}]},
+            {"panel": null, "collected": "2023-12-15T10:30", "results": [
+              {"test": "Follicle Stimulating Hormone", "value": 7.2},
+              {"test": "Luteinizing hormone", "loinc": "10501-5", "unit": "mIU/mL", "value": 6.9},
+              {"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 45}
+            ]}
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-12-15T10:15",
+              "issued": "2023-12-19T13:00",
+              "text": "Specimen: endometrium, office biopsy (pipelle).\nGross: received in formalin, multiple fragments of tan-red tissue aggregating 1.6 x 1.0 x 0.3 cm, entirely submitted.\nMicroscopic: crowded, back-to-back endometrial glands with complex architecture and cytologic atypia, with little intervening stroma. No stromal invasion identified. No carcinoma seen in this sample.",
+              "conclusion": "Endometrium, biopsy: complex atypical hyperplasia. Negative for carcinoma in this sample."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit and biopsy result",
+              "author": "gynecology",
+              "date": "2023-12-21T16:00",
+              "body": "Women's Health / Gynecology\nVisit date: 12/15/2023; pathology reviewed 12/19/2023\n\nDear colleague,\n\nMs. Madden returned with six months of intermittent vaginal bleeding since starting estrogen therapy, previously evaluated here with a thickened endometrium. She is not sexually active and has no discharge or pelvic pain. Her last Pap, two years ago, was normal. History is notable for stage IIA ER-positive right breast cancer treated with lumpectomy and radiation and then adjuvant tamoxifen, started 18 months ago. Medications: tamoxifen 20 mg, estradiol 1 mg daily (estrogen only since April), escitalopram 10 mg, calcium/vitamin D, ibuprofen PRN, multivitamin. NKDA.\n\nVital signs normal. Abdomen benign. Pelvic exam: uterus slightly enlarged and non-tender; no adnexal mass.\n\nLabs: Hgb 12.3, platelets 250. FSH 7.2 mIU/mL, LH 6.9 mIU/mL, estradiol 45 pg/mL, in keeping with her oral estradiol.\n\nEndometrial biopsy performed in the office. Pathology: complex atypical hyperplasia, no carcinoma in the sample.\n\nImpression: complex atypical endometrial hyperplasia.\n\nPlan: I called her on 12/19 with the result. Estradiol stopped as of that day. I have recommended total laparoscopic hysterectomy with bilateral salpingo-oophorectomy and she agrees; we will schedule for early February. Please complete a pre-operative evaluation in January.\n\nSincerely,\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-21a",
+          "kind": "portal_message",
+          "start": "2023-12-21T18:40",
+          "reason": "Question about recommended surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hysterectomy?",
+              "author": "patient",
+              "date": "2023-12-21T18:40",
+              "body": "The gynecologist called - the biopsy showed atypical hyperplasia and she wants to take out my uterus and ovaries in February. I stopped the estradiol Tuesday like she said. Honestly after everything else I just want to know if you think this is the right call."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hysterectomy?",
+              "author": "PCP",
+              "date": "2023-12-22T07:45",
+              "body": "Janet, I'm sorry this is one more thing. Yes - with atypical hyperplasia, removing the uterus is the standard recommendation, and taking the ovaries at the same time makes sense with your breast cancer history. I agree with her. I've taken estradiol off your list. Our front desk will call you to set up the pre-op visit in January. The hot flashes may come back off the estradiol; tell me if they do."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

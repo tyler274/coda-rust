@@ -1,0 +1,774 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001681",
+      "given": "Emily",
+      "family": "Lemieux",
+      "birth_date": "1992-04-22",
+      "address_line": "57 Silver Street",
+      "phone": "+1-617-555-0187",
+      "email": "emily.lemieux@example.test",
+      "marital_status": "married",
+      "summary": "Administrative assistant who joined the practice at 27 weeks of her second pregnancy with a history of gestational hypertension. Severe preeclampsia with AKI and hypertensive retinopathy at 35 weeks in October 2024, then eclampsia at 34 weeks in her third pregnancy in October 2025; both resolved postpartum on short courses of nifedipine.",
+      "events": [
+        {
+          "id": "2024-08-06a",
+          "kind": "telephone",
+          "start": "2024-08-06T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2024-08-06T10:12",
+              "body": "Caller wants to set up primary care here. Has had no PCP since her old practice closed its panel to her plan. Currently about 25 weeks pregnant, OB care with an outside OB group and she plans to keep them for the pregnancy. Membership paperwork emailed. New patient visit booked 8/20 at 8:40. Asked her to have her prior practice and OB send records."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T08:40",
+          "end": "2024-08-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "History of gestational hypertension",
+              "icd10": "Z87.59",
+              "action": "history",
+              "onset": "2021-06-01",
+              "note": "First pregnancy 2021, resolved postpartum"
+            },
+            {
+              "label": "Pregnant state",
+              "icd10": "Z33.1",
+              "action": "diagnosed",
+              "onset": "2024-02-26",
+              "note": "LMP 2024-02-12, prenatal care with outside OB"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin oral tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preeclampsia prevention, prescribed by OB"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 74.5,
+            "height_cm": 165.0,
+            "labs": {
+              "Creatinine": 0.7,
+              "Hemoglobin": 11.6
+            },
+            "bp": [
+              110,
+              70
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T09:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "No alcohol use"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-08-20T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-08-20T09:40",
+              "body": "New patient, establishing primary care.\n\nEmily is 32, G2P1, currently 27w1d by an LMP of 2/12/24. Prenatal care is with an outside OB group and going smoothly so far by her account. She wanted a primary care home for after the baby and for her own long-term health. No complaints today. No headaches, no visual changes, no swelling beyond the end of the day.\n\nOB history: first pregnancy 2021, term vaginal delivery. Developed gestational hypertension late in that pregnancy, no meds needed after delivery and pressures came back to normal postpartum. Because of that history her OB started her on aspirin 81 mg at 12 weeks this time. Also on a prenatal vitamin.\n\nPMH: as above, otherwise none. PSH: none.\nMeds: prenatal vitamin with folic acid 1 tab daily; aspirin 81 mg daily (OB).\nAllergies: NKDA.\nFH: mother had preeclampsia with her pregnancies. Father has hypertension. Otherwise noncontributory.\nSH: married, works as an administrative assistant. Never smoked, does not drink.\n\nExam: vitals as charted, BP normal. Pleasant, well appearing, gravid. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen gravid, fundus consistent with dates, nontender. Trace ankle edema only. Reflexes 2+ and symmetric. Skin without rash.\n\nAssessment/plan:\n1. Pregnancy, 27 weeks, with history of gestational hypertension and a mother with preeclampsia. Higher risk for a hypertensive disorder this time. Agree with aspirin. Reviewed warning signs: severe headache, vision change, RUQ or upper belly pain, sudden swelling, shortness of breath. These go to L&D or the ED, not a call-back. OB is following BP at every visit.\n2. Baseline labs today: CMP and CBC so we have her own numbers on file.\n3. Health maintenance: will request prior-practice records for Pap history. Flu shot this fall, can do it here.\n\nRTC after delivery, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "portal_message",
+          "start": "2024-08-21T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-08-21T16:05",
+              "body": "Hi Emily, your labs from yesterday look good. Kidney function is normal (creatinine 0.7), liver tests normal, and your hemoglobin is 11.6, which is a typical number for this point in pregnancy. Nothing to do. Nice to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "outside_records",
+          "start": "2024-08-28T11:20",
+          "reason": "Records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal Records, Outside OB Group",
+              "author": "obstetrics",
+              "date": "2024-08-28T11:20",
+              "body": "Prenatal record summary, received by fax.\n\nPatient: Emily Lemieux, DOB 04/22/1992. G2P1001. LMP 02/12/2024, EDD 11/18/2024, dating confirmed by first-trimester ultrasound.\n\nHistory: gestational hypertension in prior pregnancy (2021), resolved after delivery. Family history of preeclampsia (mother).\nMedications: prenatal vitamin daily. Low-dose aspirin 81 mg daily started at 12 weeks for preeclampsia risk reduction, continue to 36 weeks.\nAllergies: NKDA.\n\nPrenatal labs: antibody screen negative. Rubella immune. HBsAg negative. HIV negative. Hepatitis C antibody negative. RPR nonreactive. Urine culture negative. First-trimester screen low risk. Anatomy survey at 20 weeks normal. Glucose challenge at 26 weeks normal.\n\nBlood pressures at all visits through 26 weeks in the normal range. Urine protein negative at each visit.\n\nPlan: routine prenatal visits, Tdap at 28-32 weeks in office, BP at each visit."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "outside primary care",
+              "date": "2024-08-28T11:25",
+              "body": "Records from prior primary care practice, 2019-2023.\n\nProblem list: history of gestational hypertension (2021).\nMedications at last visit: none.\nAllergies: no known drug allergies.\nPreventive: cervical cytology with HPV co-testing 03/2023, NILM, HPV negative. Tdap 2021 (pregnancy). COVID-19 primary series completed.\nLast visit 05/2023, annual exam, BP 112/70, no concerns."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "nurse_visit",
+          "start": "2024-09-24T13:30",
+          "reason": "Influenza vaccine",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-24T13:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T13:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2024-09-24T13:40",
+              "body": "Here for flu vaccine. 32 weeks pregnant, OB aware and agrees. Screening questions negative, no prior reactions. Influenza vaccine 0.5 mL IM right deltoid, VIS provided. BP normal today. Tolerated well, waited 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-18a",
+          "kind": "ed_visit",
+          "start": "2024-10-18T07:52",
+          "end": "2024-10-18T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Severe headache and blurry vision, 35 weeks pregnant",
+          "conditions": [
+            {
+              "label": "Severe preeclampsia without HELLP features",
+              "icd10": "O14.13",
+              "action": "diagnosed",
+              "onset": "2024-10-17"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "diagnosed",
+              "onset": "2024-10-18"
+            },
+            {
+              "label": "Hypertensive retinopathy",
+              "icd10": "H35.033",
+              "action": "diagnosed",
+              "onset": "2024-10-18"
+            }
+          ],
+          "state": {
+            "bp": [
+              155,
+              100
+            ],
+            "labs": {
+              "Hemoglobin": 11.0,
+              "Platelets": 95,
+              "Creatinine": 1.2,
+              "Aspartate Aminotransferase": 70,
+              "Alanine Aminotransferase": 80
+            }
+          },
+          "vitals": [
+            {
+              "time": "2024-10-18T07:58",
+              "bp": [
+                155,
+                100
+              ],
+              "hr": 94,
+              "rr": 18,
+              "temp_c": 36.8,
+              "spo2": 98
+            },
+            {
+              "time": "2024-10-18T08:14",
+              "bp": [
+                155,
+                100
+              ],
+              "hr": 91
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-18T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 95
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-18T08:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 80
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-10-18T08:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-10-18T07:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-10-23T09:10",
+              "body": "Regional hospital emergency department. Date of service 10/18/2024. Copy received 10/23/2024.\n\nCC: headache, blurry vision.\n\nHPI: 32 y/o G2P1 at 35w4d by early ultrasound. Woke yesterday with a headache that has been severe all day and night, not relieved by rest, and her vision has been blurry since yesterday afternoon. Pregnancy uncomplicated to this point per patient and OB record. Prior pregnancy with gestational hypertension. Denies seizure, chest pain, shortness of breath. Fetal movement present.\n\nMeds: prenatal vitamin daily; aspirin 81 mg daily. Allergies: NKDA.\nFH: mother with preeclampsia; father with chronic hypertension.\nSH: never smoker, no alcohol, works as an administrative assistant.\n\nVitals: BP 155/100 on arrival and 155/100 again on repeat 15 minutes later. HR 90s, afebrile, SpO2 98% RA.\nExam: uncomfortable but alert and oriented. Fundoscopy with arteriolar narrowing and cotton wool spots. Lungs clear. Heart regular. Gravid, nontender. 2+ edema of both lower legs. DTRs 3+, no clonus. No focal neuro deficit.\n\nLabs: Hgb 11.0 g/dL. Platelets 95,000/uL. Creatinine 1.2 mg/dL (baseline 0.7 on prenatal labs). AST 70 U/L, ALT 80 U/L. UA protein 2+.\nFetal heart tones in the 140s, reactive tracing on L&D monitor.\n\nED course: IV labetalol given with improvement in pressure. Magnesium sulfate load and infusion started for seizure prophylaxis. OB at bedside.\n\nImpression: severe preeclampsia without HELLP features. Acute kidney injury. Hypertensive retinopathy.\nDisposition: admitted to labor and delivery under OB for delivery planning."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-18b",
+          "kind": "hospital_admission",
+          "start": "2024-10-18T11:30",
+          "end": "2024-10-22T12:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Severe preeclampsia at 35 weeks, delivery",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "icd10": "Z33.1",
+              "action": "resolved",
+              "onset": "2024-02-26",
+              "note": "Delivered 2024-10-19"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 0.9,
+              "Platelets": 162,
+              "Aspartate Aminotransferase": 38,
+              "Alanine Aminotransferase": 44
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T05:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets",
+                  "value": 162
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T05:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 38
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 44
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "Delivered"
+            },
+            {
+              "drug_text": "nifedipine 30 MG 24HR Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 30,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Postpartum hypertension after severe preeclampsia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2024-10-23T09:15",
+              "body": "Regional hospital, labor and delivery. Admitted 10/18/2024, discharged 10/22/2024. Received 10/23/2024.\n\nAdmitting diagnosis: severe preeclampsia without HELLP features at 35w4d, with acute kidney injury and hypertensive retinopathy.\n\nHospital course: Admitted from the ED on magnesium sulfate after IV labetalol. Pressures controlled with as-needed IV labetalol. Cervix favorable; induction with oxytocin. Uncomplicated vaginal delivery early on 10/19/2024 of a liveborn infant. Blood loss within normal limits. Magnesium continued 24 hours postpartum, no seizure activity. Headache and visual blurring resolved by postpartum day 1. Pressures settled into the 130s-140s/80s-90s; started nifedipine ER 30 mg daily on postpartum day 1.\n\nDischarge labs 10/22: creatinine 0.9 mg/dL, platelets 162,000/uL, AST 38 U/L, ALT 44 U/L.\n\nDischarge medications: nifedipine ER 30 mg daily. Prenatal vitamin daily. Aspirin discontinued.\nAllergies: NKDA.\n\nFollow-up: BP check with PCP within one week. Home BP twice daily, call for 160/110 or higher, severe headache or vision change. Postpartum visit with OB in 6 weeks. Eye follow-up recommended for the retinal findings."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "telephone",
+          "start": "2024-10-23T14:20",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2024-10-23T14:20",
+              "body": "Called pt day after discharge, records in from hospital this AM. She and baby home, doing well. Taking nifedipine 30 daily, has a home cuff, readings 128-140/84-90. No headache, vision back to normal, no RUQ pain, swelling going down. Off aspirin per OB. Reviewed when to call/go to ED. Visit with PCP Friday 10/25 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-25a",
+          "kind": "office_visit",
+          "start": "2024-10-25T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, postpartum preeclampsia",
+          "state": {
+            "weight_kg": 69.0,
+            "labs": {
+              "Creatinine": 0.8,
+              "Platelets": 248,
+              "Aspartate Aminotransferase": 24,
+              "Alanine Aminotransferase": 26
+            },
+            "bp": [
+              138,
+              88
+            ]
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-25T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-25T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-2024",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "Hypertensive retinopathy with cotton wool spots during severe preeclampsia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-10-25T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2024-10-25T12:05",
+              "body": "Hospital f/u, 6 days postpartum.\n\nS: Seen in the ED 10/18 at 35w4d with severe headache and blurry vision, BP 155/100, platelets 95K, Cr 1.2 (her baseline here was 0.7 in August), AST/ALT 70/80, 2+ proteinuria, cotton wool spots on fundoscopy. Dx severe preeclampsia. Mag, labetalol, induced, SVD 10/19. Discharge Cr 0.9, plt 162. Went home on nifedipine ER 30.\nFeels fine. Tired, baby feeding every 2-3 h. Headache gone, vision normal. No RUQ pain, no SOB. Home BPs 126-140/82-90. Off aspirin.\n\nMeds: nifedipine ER 30 mg daily, prenatal vitamin.\n\nO: BP 138/88 here. Well appearing. Fundi not dilated, no papilledema on undilated look. Heart regular. Lungs clear. Abdomen soft, fundus firm below umbilicus. Trace edema at ankles. Reflexes 2+, no clonus. PHQ-9 = 3.\n\nA/P:\n1. Postpartum hypertension after severe preeclampsia: acceptable on nifedipine ER 30. Keep home log, send readings next week. Call for 150/100 or above, or any headache or vision change.\n2. AKI: rechecking CMP today.\n3. Hypertensive retinopathy: referral to ophthalmology for dilated exam in 4-6 weeks.\n4. Prenatal vitamin can continue.\n5. Mood screen reassuring, has support at home.\n\nRTC 6 weeks postpartum (early Dec), sooner prn."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-10-26T09:30",
+              "body": "Emily, good news. Kidney number is down to 0.8, almost back to your August value. Platelets and liver tests are back to normal. Keep the nifedipine going and keep sending your home readings."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ]
+          }
+        },
+        {
+          "id": "2024-11-01a",
+          "kind": "portal_message",
+          "start": "2024-11-01T20:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home BP Readings",
+              "author": "patient",
+              "date": "2024-11-01T20:44",
+              "body": "Hi, here's my week. Mornings mostly 122/80 to 128/84, evenings a little higher, highest was 132/86 Tuesday. No headaches. Is that ok? Should I keep checking twice a day?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home BP Readings",
+              "author": "PCP",
+              "date": "2024-11-02T10:15",
+              "body": "Those look very good. Stay on the nifedipine for now and keep checking once a day is fine. We'll talk about stopping it at your visit in December."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "pharmacy",
+          "start": "2024-11-12T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2024-11-12T09:05",
+              "body": "Pharmacy fax: refill request nifedipine ER 30 mg, hospital rx was 14 days. Pended 30 day supply, no refills, for PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "PCP",
+              "date": "2024-11-12T12:40",
+              "body": "Sent 30 days. Plan is to reassess at 6 wk visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "office_visit",
+          "start": "2024-12-03T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6-week postpartum BP follow-up",
+          "conditions": [
+            {
+              "label": "Severe preeclampsia without HELLP features",
+              "icd10": "O14.13",
+              "action": "resolved",
+              "onset": "2024-10-17"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "resolved",
+              "onset": "2024-10-18"
+            },
+            {
+              "label": "History of preeclampsia",
+              "action": "diagnosed",
+              "onset": "2024-10-18"
+            }
+          ],
+          "medications": [
+            {
+              "action": "stop",
+              "reason": "Pressures normal postpartum",
+              "drug_text": "nifedipine 30 MG 24HR Extended Release Oral Tablet"
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0,
+            "labs": {
+              "Creatinine": 0.7,
+              "Hemoglobin": 12.6
+            },
+            "bp": [
+              116,
+              74
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-03T16:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-03T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-12-03T16:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-12-03T15:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-03T15:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-12-03T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-12-03T16:10",
+              "body": "6 wk postpartum f/u for BP.\n\nDoing well. Home BPs the last 2 weeks 108-120/68-78 on nifedipine ER 30, a couple of lightheaded moments standing up fast. No headaches, vision fine. Saw OB last week for her postpartum visit, all ok there.\n\nBP 116/74, rest of vitals as charted. Looks well. Heart RRR, lungs clear, no edema. PHQ-2 0.\n\nA/P:\n1. Postpartum HTN resolved. Stop nifedipine today. Check home BP a few times a week for 2 weeks, then weekly for a month; send me numbers if over 135/85.\n2. Severe preeclampsia, now resolved. AKI resolved if today's Cr is back to baseline, rechecking BMP/CBC/LFT. Putting history of preeclampsia on the problem list.\n3. Talked about what this means long-term: having preeclampsia raises lifetime risk of high blood pressure and heart disease, so yearly BP, lipids and sugar from here on. For any future pregnancy: early OB visit, aspirin from 12 weeks, baseline labs, and let us know as soon as she's pregnant.\n4. Eye appt with ophthalmology 12/10.\n5. COVID booster today. Flu done in Sept.\n\nRTC for a physical in about a year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-12-04T08:50",
+              "body": "Hi Emily, creatinine is 0.7, right back to your baseline. Blood counts and liver tests normal. The kidney injury from October has fully recovered."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ]
+          }
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "specialist_visit",
+          "start": "2024-12-10T09:30",
+          "service": "Ophthalmology",
+          "reason": "Retinal follow-up after preeclampsia",
+          "conditions": [
+            {
+              "label": "Hypertensive retinopathy",
+              "icd10": "H35.033",
+              "action": "resolved",
+              "onset": "2024-10-18"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-2024",
+              "action": "done",
+              "date": "2024-12-10T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Consultation",
+              "author": "ophthalmology",
+              "date": "2024-12-12T13:00",
+              "body": "Thank you for sending Ms. Lemieux, 32, seen 12/10/2024 for follow-up of retinal changes noted during severe preeclampsia in October (arteriolar narrowing and cotton wool spots per the hospital record).\n\nShe reports clear vision since delivery. No floaters, flashes or field loss. Allergies: NKDA. Meds: none besides a prenatal vitamin; postpartum nifedipine stopped last week.\n\nVA 20/20 OD, 20/20 OS. Pupils equal, no APD. IOP 14/15. Anterior segment quiet OU.\nDilated fundus exam: discs pink and sharp, C/D 0.3 OU. Vessels of normal caliber, no AV nicking. No cotton wool spots, hemorrhages or exudates. Macula flat with good foveal reflex OU. Periphery attached.\n\nImpression: hypertensive retinopathy of pregnancy, resolved. Normal fundus exam today.\nPlan: no ophthalmic follow-up needed beyond routine eye care. Would re-examine if hypertension recurs."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

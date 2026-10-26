@@ -1,0 +1,992 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001789",
+   "events": [
+    {
+     "id": "2024-02-24a",
+     "kind": "telephone",
+     "start": "2024-02-24T07:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "After-hours call: red urine, facial swelling",
+       "author": "PCP",
+       "date": "2024-02-24T07:55",
+       "body": "Sonia texted at 7:20 and I called her back. Since Thursday her urine has been reddish, her face and around her eyes look puffy, and her hands and knees are sore and stiff for an hour or more each morning. Very tired. No throat or tongue swelling, voice normal, breathing fine. No fever she knows of. She says this puffiness feels different from her HAE swelling - soft, both eyes, there on waking.\n\nWith SLE this could be nephritis and she needs labs and urine today, which we can't do on a Saturday. Advised ED now; mom will drive. I called the ED to give them a heads-up and flagged that she has HAE type I (procedures/intubation trigger attacks) and cold AIHA (warm any blood products or fluids). Will follow."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-24b",
+     "kind": "hospital_admission",
+     "start": "2024-02-24T10:30",
+     "end": "2024-03-05T13:00",
+     "service": "Nephrology",
+     "reason": "Hematuria, facial edema, acute kidney injury in SLE",
+     "vitals": {
+      "bp": [
+       148,
+       94
+      ]
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Creatinine": 2.0,
+       "Hemoglobin": 10.6,
+       "Erythrocyte Sedimentation Rate": 56
+      }
+     },
+     "conditions": [
+      {
+       "label": "Lupus nephritis, ISN/RPS class IV",
+       "icd10": "M32.14",
+       "action": "diagnosed",
+       "onset": "2024-02-22"
+      },
+      {
+       "label": "Cholelithiasis",
+       "action": "diagnosed",
+       "onset": "2024-02-24",
+       "note": "Incidental on renal ultrasound, asymptomatic"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-02-24T11:05",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.6
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-02-24T11:05",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 2.0
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-02-24T11:20",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "2+"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "3+"
+        },
+        {
+         "test": "Urine Red Blood Cells",
+         "text": ">50/hpf, dysmorphic forms; red cell casts seen"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-02-24T11:05",
+       "resulted": "2024-02-25T14:00",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate",
+         "value": 56
+        },
+        {
+         "test": "DNA double strand Ab",
+         "loinc": "5130-0",
+         "unit": "[IU]/mL",
+         "value": 410
+        },
+        {
+         "test": "Complement C3",
+         "loinc": "4485-9",
+         "unit": "mg/dL",
+         "value": 48
+        },
+        {
+         "test": "Complement C4",
+         "loinc": "4498-2",
+         "unit": "mg/dL",
+         "value": 4
+        },
+        {
+         "test": "Protein/Creatinine ratio, urine",
+         "loinc": "2890-2",
+         "unit": "g/g",
+         "value": 2.4
+        },
+        {
+         "test": "Pregnancy Test, Urine",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-03-05T06:00",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.4
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Renal ultrasound",
+       "performed": "2024-02-25T09:40",
+       "text": "Right kidney 11.2 cm, left kidney 11.5 cm. Normal cortical thickness and echogenicity bilaterally. No hydronephrosis, stones or masses. Bladder partially distended, unremarkable. Incidentally, several mobile echogenic shadowing gallstones are seen in a nondistended gallbladder without wall thickening or pericholecystic fluid.",
+       "conclusion": "Normal-sized kidneys without hydronephrosis; suitable for biopsy. Incidental cholelithiasis."
+      },
+      {
+       "study": "Surgical pathology report",
+       "performed": "2024-02-27T10:30",
+       "text": "Specimen: left kidney, percutaneous core biopsy (2 cores). Light microscopy: 24 glomeruli, none globally sclerosed; more than half show diffuse global endocapillary hypercellularity with neutrophils and wire-loop deposits. Interstitial fibrosis and tubular atrophy minimal. Immunofluorescence: full-house pattern (IgG, IgA, IgM, C3, C1q) in mesangial and capillary-wall distribution. Electron microscopy: subendothelial and mesangial electron-dense deposits.",
+       "conclusion": "Lupus nephritis, ISN/RPS class IV-G (A). Activity index 9/24, chronicity index 1/12."
+      }
+     ],
+     "medications": [
+      {
+       "drug": "prednisone 5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Replaced by high-dose steroid course"
+      },
+      {
+       "drug_text": "mycophenolate mofetil 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 2 tablets (1000 mg) by mouth twice daily",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Lupus nephritis class IV"
+      },
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "40 mg daily, then taper by 5 mg weekly to 20 mg, then by 2.5 mg every 2 weeks to 5 mg daily, per nephrology calendar",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Lupus nephritis class IV"
+      }
+     ],
+     "documents": [
+      {
+       "type": "History and Physical",
+       "title": "Nephrology Admission History and Physical",
+       "author": "nephrology",
+       "date": "2024-03-07T10:15",
+       "body": "REGIONAL HOSPITAL - NEPHROLOGY ADMISSION H&P\nDate of admission: 02/24/2024\n\nCC: reddish urine, facial puffiness, joint pain, fatigue x 2 days.\n\nHPI: 24-year-old woman with SLE (2021), hereditary angioedema type I on danazol, and cold autoimmune hemolytic anemia, sent in by her PCP. For two days her urine has been red-brown and her face puffy, mostly around the eyes. Fingers and knees are stiff for about an hour each morning. More tired than usual. She mentions sun sensitivity and, when asked, one episode in the past of sharp chest pain on breathing that went away on its own; she never sought care for it. No urticaria. No airway symptoms.\n\nMeds: hydroxychloroquine 200 mg bid, prednisone 5 mg daily, danazol 200 mg tid, folic acid 1 mg, vitamin D3 2000 IU. NKDA.\nFamily: father HAE; mother SLE and hypothyroidism; maternal aunt RA; paternal grandmother suspected HAE.\nSocial: veterinary technician, lives on her family's ranch. Never smoker. No alcohol.\n\nExam: BP 148/94. Afebrile. Mild periorbital edema bilaterally, soft, non-pruritic. Oropharynx normal, no stridor. Small joints of both hands tender without effusion. Heart regular. Lungs clear. No leg edema. No rash.\n\nData: creatinine 2.0 (normal last November), anti-dsDNA 410 IU/mL, C3 48, C4 4, ESR 56, hemoglobin 10.6. UA protein 2+, blood 3+, dysmorphic RBCs with red cell casts on microscopy; UPCR 2.4 g/g. Urine hCG negative.\n\nAssessment: Active lupus nephritis with acute kidney injury and nephritic sediment.\nPlan: renal ultrasound, kidney biopsy once anatomy confirmed; allergy/immunology consulted for peri-procedural HAE prophylaxis; warm all IV fluids/blood (cold AIHA); hold off on immunosuppression changes until tissue diagnosis unless creatinine climbs."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Nephrology Discharge Summary",
+       "author": "nephrology",
+       "date": "2024-03-07T10:20",
+       "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted 02/24/2024, discharged 03/05/2024. Service: Nephrology (ICU 02/28-03/01).\n\nDiagnoses:\n1. Lupus nephritis, ISN/RPS class IV-G (A), new - kidney biopsy 2/27\n2. Laryngeal angioedema attack from hereditary angioedema type I, requiring intubation 2/28-3/1\n3. SLE\n4. Cold autoimmune hemolytic anemia, stable\n5. Cholelithiasis, incidental, asymptomatic\n\nCourse:\nRenal ultrasound 2/25 showed normal-sized kidneys without hydronephrosis and incidental gallstones. Per allergy/immunology, she received plasma-derived C1 inhibitor 1000 units IV one hour before percutaneous left kidney biopsy on 2/27, which was uncomplicated. Pathology: diffuse proliferative lupus nephritis, class IV-G (A), activity 9/24, chronicity 1/12.\nMethylprednisolone 500 mg IV daily 2/27-2/29.\nOn the morning of 2/28 she developed a hoarse voice and inspiratory stridor. She was given C1 inhibitor 20 units/kg IV, and anesthesia intubated her in the ICU for airway protection. Swelling regressed over 36 hours; leak test passed and she was extubated 3/1 without difficulty. No further swelling during the stay.\nMycophenolate mofetil 1000 mg twice daily started 2/29. Prednisone 40 mg daily from 3/1 with taper.\nCreatinine 2.0 on admission, 1.4 at discharge. Hemoglobin stable at about 10.6, no hemolysis; no transfusion.\n\nDischarge medications:\n- Mycophenolate mofetil 1000 mg PO twice daily (NEW)\n- Prednisone 40 mg PO daily, then down by 5 mg each week to 20 mg, then by 2.5 mg every 2 weeks to 5 mg daily (CHANGED - calendar given)\n- Hydroxychloroquine 200 mg PO twice daily\n- Danazol 200 mg PO three times daily\n- Folic acid 1 mg PO daily\n- Cholecalciferol 2000 IU PO daily\n\nMycophenolate counseling done: risk of birth defects, pregnancy must be avoided; she reports no sexual activity and agrees to two methods if that changes. Pregnancy test negative this admission.\n\nFollow-up: PCP within 1 week; nephrology clinic 3 weeks with CMP, UA, UPCR, C3; rheumatology and allergy/immunology to be updated."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-06a",
+     "kind": "portal_message",
+     "start": "2024-03-06T09:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Home from the hospital",
+       "author": "patient",
+       "date": "2024-03-06T09:30",
+       "body": "Got home yesterday. They want me to see you this week. I have a ton of new pills and a prednisone calendar. My throat is fine now, just sore from the tube."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Home from the hospital",
+       "author": "front desk",
+       "date": "2024-03-06T10:05",
+       "body": "Welcome home Sonia. You're booked Tuesday 3/12 at 9:40. Please bring all your pill bottles and the calendar."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-12a",
+     "kind": "office_visit",
+     "start": "2024-03-12T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up",
+     "state": {
+      "bp": [
+       132,
+       84
+      ],
+      "weight_kg": 79.0,
+      "labs": {
+       "Creatinine": 1.3
+      }
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-03-12T10:20",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.3
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-03-12T10:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2024-03-12T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-hospital visit",
+       "author": "PCP",
+       "date": "2024-03-12T11:30",
+       "body": "TCM visit. Discharged 3/5 after 10 days for new class IV lupus nephritis (biopsy 2/27); course complicated by HAE laryngeal attack 2/28 needing intubation, extubated 3/1. Discharge summary reviewed in full; phone contact made 3/6.\n\nSince home: eating well, tired but improving. Urine lighter, no longer red. Throat fine. No swelling episodes. Joints better.\n\nMed reconciliation with bottles:\n- mycophenolate 1000 mg bid (new)\n- prednisone 35 mg daily this week per calendar\n- hydroxychloroquine 200 mg bid\n- danazol 200 mg tid\n- folic acid 1 mg, vitamin D3 2000 IU\nOld prednisone 5 mg bottle set aside until the taper reaches 5.\n\nExam: BP 132/84. Weight 79 kg (about 74 last August). No periorbital edema now. Voice normal, oropharynx clear. Lungs clear. No edema. Joints without synovitis.\nPHQ-9 4 - shaken by the ICU stay but coping, supportive family.\n\nLabs today: creatinine 1.3 (1.4 at discharge, 2.0 on admission).\n\nA/P:\n1. Lupus nephritis class IV - improving. Added to problem list. Nephrology 3/26.\n2. HAE - airway attack after biopsy. Allergy follow-up requested. Any future procedure (including dental) needs a plan from allergy first; flagged in chart.\n3. Gallstones, incidental - no symptoms. Reviewed what biliary pain would feel like.\n4. Steroid effects - BP borderline today, likely steroids and kidneys; recheck at nephrology. Glucose ok.\n5. SLE / cold AIHA - Hgb unchanged from discharge, no hemolysis.\nRTC after nephrology visit or sooner."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       132,
+       84
+      ],
+      "weight_kg": 79.0
+     }
+    },
+    {
+     "id": "2024-03-26a",
+     "kind": "specialist_visit",
+     "start": "2024-03-26T10:00",
+     "service": "Nephrology",
+     "reason": "Lupus nephritis follow-up",
+     "state": {
+      "labs": {
+       "Creatinine": 1.2
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-03-26T09:30",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-03-26T09:30",
+       "results": [
+        {
+         "test": "Protein/Creatinine ratio, urine",
+         "loinc": "2890-2",
+         "unit": "g/g",
+         "value": 1.2
+        },
+        {
+         "test": "Complement C3",
+         "loinc": "4485-9",
+         "unit": "mg/dL",
+         "value": 71
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology clinic follow-up",
+       "author": "nephrology",
+       "date": "2024-03-29T15:00",
+       "body": "Nephrology clinic 3/26/2024. Three weeks out from discharge for class IV lupus nephritis. Feels better, swelling gone. On MMF 1000 bid, prednisone 30 mg this week on the taper, HCQ, danazol, folic acid, D3.\nCreatinine 1.2, UPCR 1.2 g/g (2.4 at diagnosis), C3 71.\nResponding. Continue MMF 1000 mg bid and the taper as scheduled. Labs and visit in about 10 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-09a",
+     "kind": "specialist_visit",
+     "start": "2024-04-09T14:30",
+     "service": "Allergy and Immunology",
+     "reason": "HAE follow-up after laryngeal attack",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Allergy and Immunology follow-up",
+       "author": "allergy and immunology",
+       "date": "2024-04-12T09:45",
+       "body": "Allergy & Immunology 4/9/2024\n\nReviewed the February admission: C1 inhibitor given before the kidney biopsy, then laryngeal attack the next day requiring intubation, treated with C1 inhibitor and extubated after about 48 hours. No attacks since discharge. She had been attack-free on danazol since late 2021.\n\nMeds: danazol 200 mg tid, MMF 1000 bid, prednisone taper (25 mg today), HCQ, folic acid, D3.\n\nExam: no swelling. Airway normal.\n\nPlan: continue danazol 200 mg three times daily. Liver tests and lipids with her next labs. Before any procedure, surgery or dental work she or her doctors should contact us for a peri-procedural plan. Any throat or tongue swelling or voice change: 911. Follow-up 1 year, sooner if attacks."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-16a",
+     "kind": "lab_only",
+     "start": "2024-04-16T07:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Labs for rheumatology",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-04-16T07:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-04-16T07:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-04-16T07:50",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "Complement C3",
+         "loinc": "4485-9",
+         "unit": "mg/dL",
+         "value": 79
+        },
+        {
+         "test": "DNA double strand Ab",
+         "loinc": "5130-0",
+         "unit": "[IU]/mL",
+         "value": 128
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-04-16T07:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2024-04-16T08:00",
+       "body": "Rheum labs drawn. Pt says nephrology will do urine studies at their visit. Sent to rheumatology."
+      }
+     ],
+     "state": {
+      "labs": {
+       "Erythrocyte Sedimentation Rate": 20
+      }
+     }
+    },
+    {
+     "id": "2024-04-23a",
+     "kind": "specialist_visit",
+     "start": "2024-04-23T09:00",
+     "service": "Rheumatology",
+     "reason": "SLE with new lupus nephritis",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2024-04-26T13:20",
+       "body": "Rheumatology 4/23/2024\n\nInterval: admitted in February with class IV lupus nephritis; induction with IV methylprednisolone then mycophenolate 1000 mg bid and a prednisone taper, run by nephrology - I agree with the plan. Complicated by an HAE airway attack after biopsy.\nNow: energy improving, joints quiet, no rash or ulcers. Prednisone 20 mg this week.\nExam: no synovitis, no edema.\nLabs 4/16: C3 79, dsDNA 128, counts and creatinine reviewed.\nPlan: continue HCQ 200 bid, MMF per nephrology, finish the taper to 5 mg. I will see her in about 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-21a",
+     "kind": "portal_message",
+     "start": "2024-05-21T18:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Prednisone calendar",
+       "author": "patient",
+       "date": "2024-05-21T18:05",
+       "body": "Quick question - my calendar says 12.5 mg this week. That's two 5s and half of a 5? The 20s don't split right. Want to make sure I'm doing it right."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Prednisone calendar",
+       "author": "RN",
+       "date": "2024-05-21T18:40",
+       "body": "Yes, that's right: two 5 mg tablets plus half of a 5 mg tablet. Your 5 mg bottle from before is fine to use for the rest of the taper. Call if anything is unclear."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-11a",
+     "kind": "specialist_visit",
+     "start": "2024-06-11T10:00",
+     "service": "Nephrology",
+     "reason": "Lupus nephritis follow-up",
+     "state": {
+      "bp": [
+       116,
+       74
+      ],
+      "labs": {
+       "Creatinine": 0.9
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-06-11T09:30",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 0.9
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-06-11T09:35",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Trace"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Trace"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-06-11T09:30",
+       "results": [
+        {
+         "test": "Protein/Creatinine ratio, urine",
+         "loinc": "2890-2",
+         "unit": "g/g",
+         "value": 0.42
+        },
+        {
+         "test": "Complement C3",
+         "loinc": "4485-9",
+         "unit": "mg/dL",
+         "value": 88
+        },
+        {
+         "test": "DNA double strand Ab",
+         "loinc": "5130-0",
+         "unit": "[IU]/mL",
+         "value": 92
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology clinic follow-up",
+       "author": "nephrology",
+       "date": "2024-06-14T11:10",
+       "body": "Nephrology 6/11/2024. Feeling well. On MMF 1000 bid; prednisone 7.5 mg in the last steps of the taper. Creatinine 0.9, UPCR 0.42 g/g, C3 88, dsDNA 92; UA trace protein and trace blood. Partial renal response at 3 months, trending the right way. Continue MMF 1000 bid; finish taper to 5 mg. Recheck in 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-23a",
+     "kind": "specialist_visit",
+     "start": "2024-07-23T14:00",
+     "service": "Hematology",
+     "reason": "Cold AIHA annual",
+     "state": {
+      "labs": {
+       "Hemoglobin": 11.5
+      }
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-07-23T14:10",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 11.5
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology annual follow-up",
+       "author": "hematology",
+       "date": "2024-07-25T09:20",
+       "body": "Hematology 7/23/2024. Admission in February for lupus nephritis noted; no hemolysis during that stay. Hemoglobin 11.5 today. Cold AIHA quiet. Continue folic acid and winter precautions. Annual."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-30a",
+     "kind": "specialist_visit",
+     "start": "2024-07-30T09:30",
+     "service": "Rheumatology",
+     "reason": "SLE follow-up",
+     "medications": [
+      {
+       "drug": "prednisone 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Systemic lupus erythematosus"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2024-08-02T10:00",
+       "body": "Rheumatology 7/30/2024. Finished the prednisone taper at the end of June and has been on 5 mg daily since. Joints quiet, no rash, no ulcers. Exam normal. Nephrology labs from June reviewed. Plan: prednisone 5 mg daily maintenance, HCQ 200 bid, MMF 1000 bid per nephrology. Labs before November visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-20a",
+     "kind": "annual_physical",
+     "start": "2024-08-20T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 78.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-08-20T09:30",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2024-08-20T09:30",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2024-08-20T09:40"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2024-08-20T09:42"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-08-20T08:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-08-20T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-08-20T10:10",
+       "body": "Annual, age 25.\n\nBig year: class IV lupus nephritis in February with an HAE airway attack after the biopsy (intubated 2 days). Now in partial-going-on-complete response per nephrology (UPCR 0.42 in June). Prednisone back to 5 mg since late June.\n\nMeds: mycophenolate 1000 mg bid, hydroxychloroquine 200 mg bid, prednisone 5 mg daily, danazol 200 mg tid, folic acid 1 mg, vitamin D3 2000 IU. NKDA.\nNo pregnancy plans; not sexually active; MMF/danazol pregnancy risk reviewed again.\nSocial: back at work full time at the clinic. Never smoker, no ETOH.\n\nROS: no swelling episodes, no dark urine, no rash, joints ok.\n\nExam: Well. Weight 78 kg. Skin clear. Oropharynx normal. Heart and lungs normal. Abdomen soft, nontender, no RUQ tenderness. No edema. No synovitis.\nPHQ-2 0.\n\nA/P:\n1. Lupus nephritis class IV - nephrology 9/17.\n2. SLE - rheum, stable.\n3. HAE type I - danazol; LFTs and lipids today.\n4. Cold AIHA - Hgb 11.5 in July.\n5. Cholelithiasis - asymptomatic.\n6. Immunosuppressed on MMF + prednisone: PCV20 and Shingrix #1 today; Shingrix #2 in 2 months. Flu + COVID in October. No live vaccines.\n7. Pap 2023 normal.\nRTC 1 yr."
+      }
+     ],
+     "vitals": {
+      "weight_kg": 78.0
+     }
+    },
+    {
+     "id": "2024-09-17a",
+     "kind": "specialist_visit",
+     "start": "2024-09-17T10:00",
+     "service": "Nephrology",
+     "reason": "Lupus nephritis follow-up",
+     "state": {
+      "labs": {
+       "Creatinine": 0.82
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-17T09:30",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 0.82
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-09-17T09:35",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-17T09:30",
+       "results": [
+        {
+         "test": "Protein/Creatinine ratio, urine",
+         "loinc": "2890-2",
+         "unit": "g/g",
+         "value": 0.16
+        },
+        {
+         "test": "Complement C3",
+         "loinc": "4485-9",
+         "unit": "mg/dL",
+         "value": 98
+        },
+        {
+         "test": "DNA double strand Ab",
+         "loinc": "5130-0",
+         "unit": "[IU]/mL",
+         "value": 44
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology clinic follow-up",
+       "author": "nephrology",
+       "date": "2024-09-20T14:30",
+       "body": "Nephrology 9/17/2024. Six and a half months after diagnosis of class IV lupus nephritis. Creatinine 0.82, UPCR 0.16 g/g, urinalysis negative for blood and protein, C3 98, dsDNA 44.\nComplete renal response - lupus nephritis class IV now in remission.\nContinue mycophenolate 1000 mg bid as maintenance (plan at least 3 years), hydroxychloroquine and prednisone 5 mg per rheumatology. Follow-up every 4-6 months with CMP, UA and UPCR."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "nurse_visit",
+     "start": "2024-10-08T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-08T08:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-08T08:17"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-08T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2024-10-08T08:35",
+       "body": "Inactivated trivalent flu L deltoid, 2024-25 Pfizer COVID R deltoid. Immunosuppressed - live vaccines contraindicated, none given. Tolerated. Shingrix #2 booked 10/22."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "nurse_visit",
+     "start": "2024-10-22T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shingrix dose 2",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2024-10-22T08:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-22T08:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Shingrix #2",
+       "author": "RN",
+       "date": "2024-10-22T08:35",
+       "body": "Shingrix dose 2 IM L deltoid. Series complete. Pt says dose 1 gave her a sore arm and felt tired for a day."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-05a",
+     "kind": "lab_only",
+     "start": "2024-11-05T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Labs for rheumatology",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-11-05T07:45",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-11-05T07:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-11-05T07:50",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-11-05T07:45",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "Complement C3",
+         "loinc": "4485-9",
+         "unit": "mg/dL",
+         "value": 97
+        },
+        {
+         "test": "DNA double strand Ab",
+         "loinc": "5130-0",
+         "unit": "[IU]/mL",
+         "value": 40
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-11-05T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2024-11-05T07:58",
+       "body": "Rheum labs drawn, sent."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-12a",
+     "kind": "specialist_visit",
+     "start": "2024-11-12T09:00",
+     "service": "Rheumatology",
+     "reason": "SLE follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2024-11-14T15:45",
+       "body": "Rheumatology 11/12/2024. Nephritis in complete remission per nephrology (Sept). No extrarenal activity. Labs 11/5: counts normal, creatinine normal, UA negative, C3 97, dsDNA 40, ESR normal. Continue HCQ 200 bid, prednisone 5 mg, MMF 1000 bid. Six months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

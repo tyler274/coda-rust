@@ -1,0 +1,17 @@
+# unit-2141 story: Christopher Chandler, MRN00002141
+
+- 2025-05-07 to 05-10 outside: regional hospital ED then ICU, first organophosphate poisoning; records received 05-20 (S, A2, R1)
+- 2025-05-13 telephone: calls to join the practice, records release signed (P)
+- 2025-05-21 establish_care: post-hospital new-patient visit, establishing labs, cholinesterase 4,400 (A1, A3, P)
+- 2025-05-23 portal: results to patient, stay off spraying until recheck (A3, P)
+- 2025-06-25 lab_only: cholinesterase 7,600, cleared with protective equipment, poisoning resolved (A3)
+- 2025-10-22 nurse_visit: influenza, COVID and Tdap vaccines (P)
+- 2026-04-07 telephone: cancels the 04-08 physical, planting season (P)
+- 2026-04-08 annual_physical: cancelled (P)
+- 2026-05-07 to 05-09 outside: same hospital ED then ICU, second organophosphate poisoning with brief convulsion; records received 05-12 (S, A4, R2, R3)
+- 2026-05-11 telephone: RN post-discharge call (P)
+- 2026-05-14 office_visit: post-hospital visit, cholinesterase 3,900 (A5, P)
+- 2026-06-17 lab_only: cholinesterase 7,400, poisoning resolved (A5)
+- 2026-06-18 portal: patient asks about going back to the sprayer; PCP replies (P)
+- 2026-08-12 portal: asks to book the physical (P)
+- 2026-09-16 annual_physical: booked (P)

@@ -1,0 +1,1003 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001686",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "portal_message",
+          "start": "2024-01-09T06:48",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2023-12-12",
+              "note": "LMP 2023-12-12, EDD 2024-09-17"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2024",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Prenatal care, LMP 2023-12-12"
+            },
+            {
+              "id": "tsh-2024-01",
+              "action": "placed",
+              "order": "Thyroid Stimulating Hormone",
+              "category": "lab",
+              "reason": "Hypothyroidism, early pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant again",
+              "author": "patient",
+              "date": "2024-01-09T06:48",
+              "body": "Hi, writing before school. Positive test again, LMP was December 12. Can you send the referral to the same OB group as last time? And do you want the thyroid test again?\n\nHolly"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant again",
+              "author": "PCP",
+              "date": "2024-01-09T12:31",
+              "body": "Congratulations! Referral sent to the same OB group. Yes, TSH please, same as last time; lab is open 7-11 any weekday. Keep up the prenatal, iron and levothyroxine.\n\nGiven what happened after your last delivery, please make sure your OB team has that history front and center. I'll send them a summary with the referral."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-11a",
+          "kind": "lab_only",
+          "start": "2024-01-11T07:20",
+          "reason": "TSH, early pregnancy",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-01-11T07:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-11T07:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "tsh-2024-01",
+              "action": "done",
+              "date": "2024-01-11T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "TSH Result",
+              "author": "PCP",
+              "date": "2024-01-11T15:40",
+              "body": "TSH in range at ~4 wks. No dose change, levothyroxine 75 mcg. Released to portal with note: \"Thyroid level looks good. Stay on the same dose.\""
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "outside_records",
+          "start": "2024-02-20T11:10",
+          "reason": "OB prenatal intake letter",
+          "orders": [
+            {
+              "id": "ob-referral-2024",
+              "action": "done",
+              "date": "2024-02-20T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Prenatal Intake Letter",
+              "author": "obstetrics",
+              "date": "2024-02-20T11:10",
+              "body": "Re: Holly Barrett, DOB 07/16/1992\nNew OB visit 02/06/2024 at 7w6d.\n\nG3P2002. 2017 term vaginal delivery with episiotomy. 06/2023 precipitous term vaginal delivery at home complicated by postpartum hemorrhage from uterine atony requiring uterotonics and transfusion of 2 units.\n\nHypothyroidism on levothyroxine 75 mcg, TSH normal per your office in January. Iron deficiency anemia on daily ferrous sulfate. Allergic to penicillin (rash) and latex (contact dermatitis).\n\nRoutine prenatal labs within normal limits. Given her history we have counseled her to come in at the first sign of labor and will plan delivery in hospital with active management of the third stage. We will forward results. EDD 09/17/2024.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-18a",
+          "kind": "pharmacy",
+          "start": "2024-03-18T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine Refill",
+              "author": "MA",
+              "date": "2024-03-18T09:05",
+              "body": "eRx renewal request, levothyroxine 0.075 mg, #90. TSH 1/11/24 normal. Pended for PCP, 90 days + 3 RF.\nApproved by PCP 3/18."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "telehealth_visit",
+          "start": "2024-05-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia check in pregnancy",
+          "orders": [
+            {
+              "id": "cbc-2024-05",
+              "action": "placed",
+              "order": "CBC and iron studies",
+              "category": "lab",
+              "reason": "Iron deficiency anemia, pregnancy"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-05-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2024-05-14T16:00",
+              "body": "Video visit, pt at home, identity confirmed.\n\n31F G3P2 at 22w0d, here to keep an eye on iron and thyroid alongside OB care. Prenatal visits going fine per her. Taking ferrous sulfate daily, separate from levothyroxine. No dizziness or fainting. No bleeding.\n\nExam limited to video: well appearing, conversant, no distress, not pale-looking on camera.\n\nA/P\n- Iron deficiency anemia in pregnancy, prior PPH with transfusion: CBC and iron studies this week; continue ferrous sulfate. Want her stores as good as we can get them before delivery. Will share with OB.\n- Hypothyroidism: TSH normal in January, continue 75 mcg.\nLabs Thursday."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-16a",
+          "kind": "lab_only",
+          "start": "2024-05-16T07:30",
+          "reason": "CBC and iron studies",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.2,
+              "Hematocrit": 33.5,
+              "Ferritin": 13,
+              "Transferrin Saturation": 10
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-16T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-05-16T07:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 13
+                },
+                {
+                  "test": "Iron"
+                },
+                {
+                  "test": "Transferrin Saturation"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-16T07:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-2024-05",
+              "action": "done",
+              "date": "2024-05-16T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC and Iron",
+              "author": "PCP",
+              "date": "2024-05-17T08:15",
+              "body": "Hgb 11.2, ferritin 13. Similar to last pregnancy at this stage. Continue daily iron. Faxed to OB.\n\nTo patient via portal: \"Your blood count is holding steady at 11.2. Iron stores are still low, so keep taking the iron every day. I've sent these to your OB.\""
+            }
+          ]
+        },
+        {
+          "id": "2024-07-05a",
+          "kind": "outside_records",
+          "start": "2024-07-05T13:25",
+          "reason": "Immunization record from OB",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-07-02T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB Immunization Record",
+              "author": "front desk",
+              "date": "2024-07-05T13:25",
+              "body": "OB office faxed vaccine record: Tdap 07/02/2024 at 29 wks. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-08a",
+          "kind": "hospital_admission",
+          "start": "2024-09-08T02:50",
+          "end": "2024-09-10T12:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Active labor",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved",
+              "onset": "2023-12-12",
+              "note": "Delivered 2024-09-08"
+            },
+            {
+              "label": "Vaginal laceration causing postpartum hemorrhage",
+              "icd10": "O71.4",
+              "action": "diagnosed",
+              "onset": "2024-09-08",
+              "note": "Deep upper vaginal wall laceration, repaired in OR"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "icd10": "D62",
+              "action": "diagnosed",
+              "onset": "2024-09-08"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-09-08T09:45",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 110
+            },
+            {
+              "time": "2024-09-09T08:00",
+              "bp": [
+                108,
+                66
+              ],
+              "hr": 88
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 8.6,
+              "Hematocrit": 26.0,
+              "Platelets": 250,
+              "Prothrombin Time": 12
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-08T03:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-08T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-09-08T09:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-08T09:55",
+              "results": [
+                {
+                  "test": "Activated Partial Thromboplastin Time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 30
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-09T05:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.0
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-09-08T02:50"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-09-10T11:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetrics Discharge Summary",
+              "author": "obstetrics",
+              "date": "2024-09-11T10:20",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nPatient: Holly Barrett, 32 y/o G3 now P3003\nAdmitted 09/08/2024 02:50. Discharged 09/10/2024.\n\nHistory: hypothyroidism on levothyroxine 75 mcg; iron deficiency anemia on ferrous sulfate; prenatal vitamin. Postpartum hemorrhage from atony 06/2023 after a home birth, transfused 2 units. Two prior vaginal deliveries.\nAllergies: penicillin (rash), latex (contact dermatitis). Latex-free room.\n\nCourse: Presented in active labor at 38w5d. Admission Hgb 12.0, Hct 36. Labor progressed over several hours; second stage assisted with forceps. Liveborn male, vigorous. Placenta delivered intact. Active management of the third stage. EBL at delivery 300 mL.\n\nAbout 30 minutes after delivery she reported ongoing bleeding and felt faint. BP 90/60, HR 110. Fundus firm. Steady vaginal bleeding. Cervix seen and intact on speculum exam; a deep laceration of the upper vaginal wall was identified as the source. Hgb 9.0, Hct 27, platelets 250K, PT 12 s, PTT 30 s.\n\nTaken to the OR; laceration repaired under regional anesthesia with good hemostasis. IV crystalloid given. Not transfused. PPD1 BP 108/66, HR 88, Hgb 8.6. Ambulating, tolerating diet, lochia appropriate.\n\nDischarge diagnoses: term forceps-assisted vaginal delivery; postpartum hemorrhage due to upper vaginal wall laceration, repaired; acute blood loss anemia.\nDischarge meds: levothyroxine 75 mcg daily, ferrous sulfate 325 mg daily, prenatal vitamin daily.\nFollow-up: PCP 1-2 weeks for CBC. OB postpartum visit 6 weeks."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Repair of Vaginal Laceration",
+              "author": "obstetrics",
+              "date": "2024-09-11T10:20",
+              "body": "OPERATIVE NOTE (received with discharge packet)\nDate: 09/08/2024\nPreop/postop diagnosis: postpartum hemorrhage, deep upper vaginal wall laceration after forceps-assisted vaginal delivery.\nProcedure: exam under anesthesia, repair of vaginal laceration.\nAnesthesia: regional.\nFindings: uterus firm. Cervix intact circumferentially. Deep laceration of the upper vaginal wall, actively bleeding. No other lacerations.\nDescription: Patient positioned in lithotomy, latex-free setup. Apex identified and secured. Laceration closed in layers with absorbable suture with hemostasis achieved. Rectal exam normal after repair. Counts correct.\nComplications: none further. Condition: stable to recovery."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "telephone",
+          "start": "2024-09-12T09:40",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2024-09-12T09:40",
+              "body": "TCM call. Delivered 9/8, forceps, PPH from vaginal laceration repaired in OR, not transfused. Home since 9/10.\n\nPt reports soreness at repair, using ice and sitz baths. Bleeding moderate and decreasing. Mild lightheadedness on standing, no syncope. Baby boy feeding well. Meds reconciled: levothyroxine, ferrous sulfate, prenatal. Reviewed return precautions for heavy bleeding, fever, fainting, foul discharge.\n\nAppt with PCP Mon 9/23 3:30."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "office_visit",
+          "start": "2024-09-23T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after delivery",
+          "conditions": [
+            {
+              "label": "Vaginal laceration causing postpartum hemorrhage",
+              "icd10": "O71.4",
+              "action": "resolved",
+              "onset": "2024-09-08"
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0,
+            "labs": {
+              "Hemoglobin": 10.3,
+              "Hematocrit": 31.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-23T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.0
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-09-23T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-23T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2024-09-23T15:30",
+              "body": "Post-delivery f/u. 2 wks out from forceps delivery 9/8 with PPH from a deep upper vaginal wall laceration, repaired in OR. Hgb 12 -> 9 -> 8.6 PPD1. No transfusion this time.\n\nFeels better than after last delivery. Repair site less sore. Lochia light. Some fatigue, up at night with the baby. No dizziness now. Not back at school yet, on leave until November.\nMeds: levothyroxine 75, ferrous sulfate 325 daily, prenatal.\n\nExam: vitals as charted. NAD. Mild pallor of conjunctivae. RRR, lungs clear. Abd soft, nontender. Calves soft. (Perineal/vaginal exam deferred to OB postpartum visit.)\nPHQ-9: 5. Talked through sleep and support; she feels okay, knows to reach out if mood dips.\n\nA/P\n1. PPH from vaginal laceration, repaired. Resolved.\n2. Acute blood loss anemia on chronic iron deficiency. CBC today. Continue ferrous sulfate daily. CBC + ferritin + TSH in ~10 wks.\n3. Hypothyroidism, stable.\nTCM done: RN call 9/12, discharge summary and op note reviewed."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC",
+              "author": "PCP",
+              "date": "2024-09-24T07:45",
+              "body": "Hgb 10.3, improving from 8.6. Portal: \"Blood count is coming back up, 10.3 now. Keep the iron going. Labs again in early December.\""
+            }
+          ]
+        },
+        {
+          "id": "2024-10-25a",
+          "kind": "nurse_visit",
+          "start": "2024-10-25T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-25T10:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-25T10:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-25T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "author": "MA",
+              "date": "2024-10-25T10:10",
+              "body": "Flu (trivalent) 0.5 mL IM L deltoid; COVID 2024-25 Moderna 0.5 mL IM R deltoid. 7 wks postpartum. No prior reactions. Latex-free. VIS x2. Observed 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "lab_only",
+          "start": "2024-12-04T07:15",
+          "reason": "Anemia and thyroid recheck",
+          "conditions": [
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "icd10": "D62",
+              "action": "resolved",
+              "onset": "2024-09-08"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.8,
+              "Hematocrit": 35.5,
+              "Ferritin": 18,
+              "Transferrin Saturation": 15,
+              "Thyroid Stimulating Hormone": 2.6
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-04T07:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-12-04T07:15",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 18
+                },
+                {
+                  "test": "Iron"
+                },
+                {
+                  "test": "Transferrin Saturation"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-04T07:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-04T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC, Iron, TSH",
+              "author": "PCP",
+              "date": "2024-12-04T16:30",
+              "body": "Hgb 11.8, back to her baseline. Ferritin 18. TSH normal on 75 mcg. Blood loss anemia resolved.\n\nPortal: \"Hi Holly, your blood count has recovered fully and your thyroid level is normal. Iron stores are still lowish (18), so please keep taking the iron daily. See you for your physical in the spring.\""
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "portal_message",
+          "start": "2025-02-04T21:02",
+          "reason": "Iron refill and timing question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron question",
+              "author": "patient",
+              "date": "2025-02-04T21:02",
+              "body": "Hi! Two things. I need a refill on the iron. And my mornings are chaos now with a baby and a toddler, so sometimes I end up taking the iron and thyroid pill together. Is that a big deal?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron question",
+              "author": "PCP",
+              "date": "2025-02-05T07:40",
+              "body": "Refill sent. It does matter a bit: iron can block absorption of levothyroxine. Easiest fix for most people is thyroid pill first thing when you wake up, iron with dinner or at bedtime. If they keep ending up together, let me know and we'll check a TSH sooner. Physical is booked for March 10, we'll check both then."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "annual_physical",
+          "start": "2025-03-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 67.0,
+            "labs": {
+              "Hemoglobin": 12.1,
+              "Hematocrit": 36.5,
+              "Ferritin": 21,
+              "Transferrin Saturation": 18,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Total Cholesterol": 172,
+              "High Density Lipoprotein": 62,
+              "Triglycerides": 80,
+              "Low Density Lipoprotein": 94
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-10T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-03-10T16:25",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 21
+                },
+                {
+                  "test": "Iron"
+                },
+                {
+                  "test": "Transferrin Saturation"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-10T16:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-03-10T16:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-10T16:25",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-03-10T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-10T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-03-10T15:45",
+              "body": "PREVENTIVE VISIT\n32F, teacher, now mom of three (2017, 6/2023, 9/2024). Back at school since November.\n\nSince last physical: delivery 9/8/24, forceps, PPH from upper vaginal wall laceration repaired in OR; blood loss anemia recovered by December (Hgb 11.8). No other illness.\nThyroid: taking levothyroxine on waking, moved iron to bedtime after our February messages. Feels well.\n\nMeds: levothyroxine 75 mcg daily, ferrous sulfate 325 mg at bedtime, prenatal vitamin daily.\nAllergies: penicillin (rash), latex (contact dermatitis).\nFH: mother PPH and T2DM, father HTN. Unchanged.\nSH: never smoker. Wine a glass or two a month. Exercise is chasing toddlers.\nPHQ-9: 3.\n\nExam: vitals as charted, weight 67 kg. Well-appearing. Conjunctivae pink. Thyroid smooth, normal size. RRR, no murmur. Lungs clear. Abd soft, NT. Ext no edema. Skin no lesions of concern.\n\nA/P\n1. Health maintenance: CMP and lipids today given FH. Pap/HPV due 2026. Flu/COVID done in the fall.\n2. Hypothyroidism: TSH today.\n3. Iron deficiency anemia: CBC, iron studies. Continue ferrous sulfate.\nRTC 3 months to recheck iron if ferritin still low, otherwise 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "portal_message",
+          "start": "2025-03-12T12:05",
+          "reason": "Physical results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical Labs",
+              "author": "PCP",
+              "date": "2025-03-12T12:05",
+              "body": "Hi Holly,\n\nEverything from Monday is back. Hemoglobin 12.1, the best I've seen it since you joined us. Ferritin 21, better but still the low end, so keep the iron going. Thyroid normal. Cholesterol, kidney, liver and sugar all normal.\n\nI'd like a quick follow-up in June to recheck iron; the front desk will reach out."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Iron follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-06-10b",
+          "kind": "telephone",
+          "start": "2025-06-10T08:12",
+          "reason": "Appointment cancellation",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "author": "front desk",
+              "date": "2025-06-10T08:12",
+              "body": "Pt called to cancel 3:30 today, end-of-year field day at school and childcare fell through. Offered July dates, she will call back after school lets out."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "portal_message",
+          "start": "2025-09-23T19:40",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-08-24",
+              "note": "LMP 2025-08-24, EDD 2026-05-31"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Prenatal care, LMP 2025-08-24, two prior postpartum hemorrhages"
+            },
+            {
+              "id": "tsh-2025-09",
+              "action": "placed",
+              "order": "Thyroid Stimulating Hormone",
+              "category": "lab",
+              "reason": "Hypothyroidism, early pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Number four",
+              "author": "patient",
+              "date": "2025-09-23T19:40",
+              "body": "I never did reschedule that June visit, sorry! Bigger news: I'm pregnant again. LMP August 24. Same OB group please. Thyroid test again?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Number four",
+              "author": "PCP",
+              "date": "2025-09-24T07:15",
+              "body": "Congratulations, Holly. Referral is in to the same OB group, with a note about both of your prior deliveries. TSH this week, and we'll do CBC and iron around 20 weeks like last time. Keep taking all three pills."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "lab_only",
+          "start": "2025-09-25T07:05",
+          "reason": "TSH, early pregnancy",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.5
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-25T07:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-25T07:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "tsh-2025-09",
+              "action": "done",
+              "date": "2025-09-25T07:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "TSH",
+              "author": "PCP",
+              "date": "2025-09-25T14:50",
+              "body": "TSH in range. Continue levothyroxine 75 mcg. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "nurse_visit",
+          "start": "2025-10-23T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-23T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-23T15:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-23T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "author": "RN",
+              "date": "2025-10-23T15:45",
+              "body": "9 wks pregnant, here for flu and COVID. Both recommended in pregnancy, she agrees. Flu trivalent 0.5 mL IM R deltoid, COVID 2025-26 Pfizer 0.3 mL IM L deltoid. Non-latex supplies. VIS given. 15 min observation, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "outside_records",
+          "start": "2025-11-12T10:30",
+          "reason": "OB prenatal intake letter",
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "done",
+              "date": "2025-11-12T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Prenatal Intake Letter",
+              "author": "obstetrics",
+              "date": "2025-11-12T10:30",
+              "body": "Re: Holly Barrett, DOB 07/16/1992\nNew OB visit 10/20/2025 at 8w1d. EDD 05/31/2026.\n\nG4P3003. Obstetric history: 2017 vaginal delivery with episiotomy; 06/2023 home delivery with postpartum hemorrhage from atony, transfused; 09/2024 forceps-assisted delivery with postpartum hemorrhage from an upper vaginal wall laceration, repaired in the OR.\n\nHypothyroidism on levothyroxine 75 mcg (TSH normal 9/25 per your office). Iron deficiency anemia on ferrous sulfate. Allergies: penicillin, latex.\n\nPrenatal labs normal. She is aware of her hemorrhage history and we will plan hospital delivery with hemorrhage precautions. Thank you for continuing to follow her iron.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "pharmacy",
+          "start": "2025-12-08T11:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine Refill",
+              "author": "MA",
+              "date": "2025-12-08T11:40",
+              "body": "Pharmacy requesting levothyroxine 75 mcg #90. Pharmacy says manufacturer changed, pt asked whether that matters. Per PCP ok to fill, same dose; generic levothyroxine from a different manufacturer is fine, she should just stick with it. Sent 90 days + 3 refills."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,465 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002153",
+      "given": "Theo",
+      "family": "Esposito",
+      "birth_date": "1986-12-14",
+      "address_line": "9 Wapping Bend Road",
+      "phone": "+1-201-555-0137",
+      "email": "theo.esposito@example.test",
+      "marital_status": "single",
+      "summary": "Adult with cystic fibrosis and pancreatic insufficiency, bronchiectasis and nasal polyposis, followed by an outside CF center, who joins the practice in 2024. Vitamin A deficiency with night blindness and conjunctival keratinization is found weeks later and repleted; in 2026 weight loss and steatorrhea lead to a higher enzyme dose, a second vitamin A course and a CFTR modulator.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:12",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2024-08-27T10:12",
+              "body": "Caller wants to join the practice. Lives in Deerfield, works days at a warehouse as an inventory clerk, prefers early appointments. Says he has CF and gets his lung care at a CF center, wants a regular doctor for everything else. PPO card info entered. Booked new patient visit Tue 9/10 at 8:00. Signed release sent by email; records request faxed to his prior primary care office today."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "outside_records",
+          "start": "2024-09-04T14:30",
+          "reason": "Prior primary care records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2020-06-11T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "author": "MA",
+              "date": "2024-09-04T14:30",
+              "body": "38 pages received by fax from prior primary care office, abstracted for the new patient visit.\n\nProblem list on their summary: cystic fibrosis with pancreatic insufficiency, bronchiectasis, chronic rhinosinusitis with nasal polyps. CF care listed as managed by the CF center.\nSurgeries: sinus surgery (FESS) 2023; T&A as a child.\nMeds per their list (all from CF center): Creon with meals and snacks, CF multivitamin, vitamin D3 2000 units, azithromycin 250 mg MWF, albuterol inhaler, saline nasal spray.\nAllergies: sulfa antibiotics, IV contrast. No reactions listed.\nImmunizations: Tdap 06/2020. Childhood series documented complete, including hep B.\nNo abnormal labs in the packet. Scanned to media."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:00",
+          "end": "2024-09-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Cystic fibrosis",
+              "action": "history",
+              "note": "With exocrine pancreatic insufficiency; followed at an adult CF center"
+            },
+            {
+              "label": "Bronchiectasis",
+              "action": "history",
+              "note": "Chronic, CF-related"
+            },
+            {
+              "label": "Chronic rhinosinusitis with nasal polyps",
+              "action": "history",
+              "note": "FESS 2023"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth with each meal",
+              "dose": {
+                "value": 1,
+                "unit": "capsule"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pancreatic insufficiency"
+            },
+            {
+              "drug_text": "amylase 30000 UNT / lipase 6000 UNT / protease 19000 UNT Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 3 capsules by mouth with each snack",
+              "dose": {
+                "value": 3,
+                "unit": "capsule"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pancreatic insufficiency"
+            },
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (CF fat-soluble formulation) by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (2,000 units) by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[IU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "azithromycin 250 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times weekly (Mon/Wed/Fri)",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bronchiectasis"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs twice daily",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "BID",
+              "route": "Inhalation",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "sodium chloride 9 MG/ML Nasal Spray",
+              "action": "historical",
+              "sig": "2 sprays in each nostril twice daily",
+              "dose": {
+                "value": 2,
+                "unit": "spray"
+              },
+              "frequency": "BID",
+              "route": "Nasal",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "type": "allergy"
+            },
+            {
+              "substance": "Iodinated contrast media",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "height_cm": 175.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Inventory clerk"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-09-10T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-09-10T09:40",
+              "body": "37M joining the practice. Has cystic fibrosis with pancreatic insufficiency and is seen every few months at an adult CF center, which writes all his CF prescriptions. He wants us for general medicine, prevention and coordination. Prior PCP records reviewed.\n\nHe feels at his usual baseline. Daily cough with some sputum is his normal and has not changed. Sinuses better since the 2023 surgery. Stools manageable on his Creon. No recent antibiotics courses.\n\nPMH: CF with pancreatic insufficiency; bronchiectasis; chronic rhinosinusitis with nasal polyps.\nPSH: FESS 2023. T&A at age 8.\nMeds (CF center): Creon 36,000 x1 with meals, Creon 6,000 x3 with snacks; CF multivitamin daily; vitamin D3 2000 units daily; azithromycin 250 mg M/W/F; albuterol HFA 2 puffs BID; 0.9% saline nasal spray 2 sprays each side BID.\nAllergies: sulfonamide antibiotics, iodinated contrast (he does not remember the reactions).\nFH: second cousin with CF. Maternal grandmother had type 2 diabetes. Father has high blood pressure.\nSH: single, lives in Deerfield. Inventory clerk. Never smoked, no alcohol, no drugs.\nPHQ-2: 0.\n\nExam: slim, comfortable, conversational. Vitals as recorded. Conjunctivae clear, nares without visible polyps, oropharynx clear. Neck supple, no adenopathy. Lungs clear today, no crackles or wheeze. Heart RRR without murmur. Abdomen soft, nontender. No clubbing or edema. Skin without rash.\n\nA/P\n1. CF with pancreatic insufficiency, bronchiectasis, CRSwNP: stable, managed by CF center. Asked him to have their letters sent here after each visit.\n2. Health maintenance: CBC, CMP, lipids today; one-time HIV and hep C screening, he agrees. Flu shot and pneumococcal vaccine (chronic lung disease) at a nurse visit in October once flu vaccine is in. Tdap current (2020).\n3. Return in a year for a physical, sooner as needed."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 64.0,
+            "height_cm": 175.0
+          }
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2024-09-12T16:05",
+              "body": "Theo, everything from Tuesday came back fine. Blood counts and kidney and liver tests are normal, cholesterol is reasonable for now and needs nothing, and the HIV and hepatitis C screens are negative. No changes. We'll see you in October for the flu shot and pneumonia vaccine."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "portal_message",
+          "start": "2024-10-03T21:18",
+          "reason": "Vision at night, dry eyes",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Eyes",
+              "author": "patient",
+              "date": "2024-10-03T21:18",
+              "body": "Hi, not urgent but wanted to ask. Over the last while it's gotten really hard to see once it gets dark, driving home from work at dusk is getting sketchy. My eyes also feel dry and irritated a lot, kind of gritty. Should I get this looked at? I see the CF clinic on the 14th."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Eyes",
+              "author": "PCP",
+              "date": "2024-10-04T08:22",
+              "body": "Thanks for letting me know. With CF, trouble seeing in the dark plus dry eyes can come from low levels of some vitamins you absorb with fat, so please bring this up first thing at your CF visit on the 14th, they will likely check levels. I'll also send them a note. Until then, avoid driving after dark if you can. If you get eye pain, redness that won't settle, or any loss of vision during the day, call us the same day."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and pneumococcal vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T07:45"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-10-22T07:47"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Immunizations",
+              "author": "RN",
+              "date": "2024-10-22T07:55",
+              "body": "Here before work for vaccines per PCP plan. Afebrile, no current illness. Allergies reviewed (sulfa antibiotics, IV contrast), no vaccine reactions in the past. VIS given for both.\nInfluenza vaccine 0.5 mL IM left deltoid.\nPCV20 0.5 mL IM right deltoid.\nObserved 15 min, tolerated well. Mentioned his CF visit last week, they started him on vitamin A capsules."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "outside_records",
+          "start": "2024-10-24T11:15",
+          "reason": "CF center consult letter and pathology",
+          "conditions": [
+            {
+              "label": "Vitamin A deficiency",
+              "icd10": "E50.9",
+              "action": "diagnosed",
+              "onset": "2024-10-14",
+              "note": "Night blindness, conjunctival keratinization, dry scaly skin; retinol 14 ug/dL"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "vitamin A 10000 UNT Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily for 8 weeks",
+              "dose": {
+                "value": 10000,
+                "unit": "[IU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Vitamin A deficiency"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-14T10:20",
+              "resulted": "2024-10-17T13:00",
+              "results": [
+                {
+                  "test": "Vitamin A",
+                  "loinc": "2923-1",
+                  "unit": "ug/dL",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-10-14T10:40",
+              "issued": "2024-10-18T15:20",
+              "text": "SPECIMEN: Skin, left dorsal forearm, punch biopsy (3 mm).\nCLINICAL HISTORY: Adult with cystic fibrosis and pancreatic insufficiency; dry scaly skin; night blindness.\nGROSS: One tan skin punch, 3 mm diameter, 0.4 cm deep, bisected and entirely submitted.\nMICROSCOPIC: Sections show skin with compact hyperkeratosis overlying an epidermis of normal thickness. No parakeratosis, no interface change, no inflammatory infiltrate of note. Dermis and adnexa unremarkable. No fungal elements on PAS stain.",
+              "conclusion": "Skin, left forearm, punch biopsy: hyperkeratosis. Findings are compatible with the clinical impression of vitamin A deficiency."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "CF Center Pulmonology Visit (10/14/2024)",
+              "author": "pulmonology",
+              "date": "2024-10-24T11:15",
+              "body": "Adult Cystic Fibrosis Program, Pulmonary Medicine\nDate of visit: 10/14/2024\nRe: Theo Esposito, DOB 12/14/1986\n\nDear Colleague,\n\nI saw Theo today in CF clinic. Thank you for the heads-up about his eyes.\n\nHe describes several months of steadily worsening vision in dim light, now enough that he avoids driving at dusk, along with eyes that keep feeling dry and irritated. He also feels he has been picking up more chest colds and skin infections than usual over the same stretch, none needing a clinic visit. On review of his eating, most of what he eats is rice and bread; he takes very few vegetables, meat, eggs or dairy.\n\nCurrent regimen: Creon 36,000 units lipase with meals and 18,000 units with snacks; CF multivitamin daily; vitamin D3 2000 units daily; azithromycin 250 mg Mon/Wed/Fri; albuterol HFA 2 puffs twice daily; saline 0.9% nasal spray 2 sprays per nostril twice daily.\nAllergies: sulfonamide antibiotics, iodinated contrast media.\n\nOn examination his skin is dry and scaly. There are keratinized patches of the bulbar conjunctiva. The rest of the examination, including chest, was unremarkable.\n\nSerum vitamin A (retinol) is low at 14 ug/dL. I took a punch biopsy of a scaly patch on the left forearm; pathology shows hyperkeratosis.\n\nImpression: Vitamin A deficiency with nyctalopia and conjunctival xerosis (keratinizing squamous metaplasia of the conjunctiva) and cutaneous hyperkeratosis, on a background of CF with pancreatic insufficiency and a very limited diet. CF lung and sinus disease otherwise stable.\n\nPlan:\n- Vitamin A 10,000 units by mouth daily for 8 weeks, then stop and recheck a level.\n- Met with our CF dietitian today to broaden his diet and take enzymes with every meal and snack.\n- Continue the rest of the regimen unchanged.\n- Return in about 3 months.\n\nSincerely,\nAttending physician, Adult CF Program"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Indexing: CF Center Letter and Pathology",
+              "author": "MA",
+              "date": "2024-10-24T11:30",
+              "body": "CF center letter from 10/14 and skin biopsy path report received by fax, scanned and routed to PCP. New med from CF center: vitamin A 10,000 units daily x 8 weeks, added to med list as outside med."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "author": "PCP",
+              "date": "2024-10-24T17:40",
+              "body": "Reviewed CF clinic letter and biopsy. Vitamin A deficiency with night blindness and conjunctival changes, retinol 14. On 8 weeks of vitamin A through CF center, plus dietitian. Added to problem list. Nothing further needed from us; CF center rechecking the level after the course."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "portal_message",
+          "start": "2024-11-04T12:31",
+          "reason": "Outside COVID vaccine",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-11-01T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid shot",
+              "author": "patient",
+              "date": "2024-11-04T12:31",
+              "body": "Got the new covid shot Friday at the pharmacy, Pfizer. Just so you have it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Covid shot",
+              "author": "MA",
+              "date": "2024-11-04T14:02",
+              "body": "Thank you Theo, it's in your chart now with the date of 11/1."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "pharmacy",
+          "start": "2024-12-09T09:50",
+          "reason": "Prior authorization request, Creon",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization Request",
+              "author": "MA",
+              "date": "2024-12-09T09:50",
+              "body": "Fax from insurer: annual prior authorization renewal needed for Creon 36,000 and 6,000 capsules. Prescriber on file is the CF center, not us. Called CF center pharmacy line, they will submit the renewal. Faxed the request over to them. Left patient a voicemail so he isn't surprised if the pharmacy holds the fill a day or two."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

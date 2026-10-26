@@ -1,0 +1,673 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002285",
+   "given": "Philip",
+   "family": "Hall",
+   "birth_date": "1956-07-22",
+   "address_line": "23 Cotton Hollow Road",
+   "phone": "+1-646-555-0142",
+   "email": "philip.hall@example.test",
+   "marital_status": "married",
+   "summary": "Retired postal worker with long-standing poorly controlled type 2 diabetes who joins in 2018, develops B12 deficiency on a vegan diet and metformin (2021), CKD 3b and iron deficiency (2022), a neurogenic bladder from diabetic autonomic neuropathy (2024), and a pyloric adenocarcinoma treated by distal gastrectomy (2026), with overflow retention in July 2026.",
+   "events": [
+    {
+     "id": "2018-10-02a",
+     "kind": "establish_care",
+     "start": "2018-10-02T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care for diabetes",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus with hyperglycemia",
+       "action": "diagnosed",
+       "onset": "1996-06-01",
+       "note": "Long-standing, poorly controlled"
+      },
+      {
+       "label": "Type 2 diabetes mellitus with diabetic polyneuropathy",
+       "action": "diagnosed",
+       "onset": "2012-01-01"
+      },
+      {
+       "label": "Type 2 diabetes mellitus with unspecified diabetic retinopathy without macular edema",
+       "icd10": "E11.319",
+       "action": "diagnosed",
+       "onset": "2014-01-01"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2005-01-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "diagnosed",
+       "onset": "2005-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+       "action": "historical",
+       "sig": "Inject 30 units under the skin at bedtime",
+       "dose": {
+        "value": 30,
+        "unit": "[iU]"
+       },
+       "frequency": "QHS",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hyperlipidemia"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired postal worker"
+      }
+     ],
+     "state": {
+      "bp": [
+       138,
+       84
+      ],
+      "weight_kg": 84.2,
+      "height_cm": 178.0,
+      "labs": {
+       "Hemoglobin": 13.6,
+       "Mean Corpuscular Volume": 95,
+       "Low Density Lipoprotein": 86,
+       "Microalbumin/Creatinine Ratio": 14,
+       "Glucose": 176
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2018-10-02T10:05",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.18
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2018-10-02T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2018-10-02T10:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-10-02T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 9.4
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2018-10-02T10:00"
+      },
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2018-10-02T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2018-10-02T09:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "records-prior-2018",
+       "action": "placed",
+       "order": "Records request, prior primary care office",
+       "category": "procedure",
+       "reason": "Transfer of care"
+      },
+      {
+       "id": "fit-2018",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      },
+      {
+       "id": "eye-2018",
+       "action": "placed",
+       "order": "Ophthalmology referral, diabetic eye exam",
+       "category": "referral",
+       "to": "Ophthalmology",
+       "reason": "Diabetic retinopathy, annual exam"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2018-10-02T10:40",
+       "body": "62 yo M transferring care. Retired from the postal service a couple of years ago. Says he went to his old office \"whenever something came up,\" which wasn't often, and he is hoping for closer follow-up here.\n\nDiabetes since about 1996, on metformin and nightly glargine for years. Doesn't check sugars much, maybe twice a week, fasting numbers 160s-220s by his report. No lows he knows of. Numb feet for several years, worse at night, no wounds. Told he had diabetic changes in the back of the eyes, last eye exam a few years ago. BP and cholesterol treated for a long time.\n\nMeds: metformin 1000 mg BID, glargine 30 units qhs, lisinopril 20 mg daily, atorvastatin 40 mg daily. No known drug allergies.\nPMH as above. No surgeries.\nFH: father had type 2 diabetes. Mother had stomach cancer (gastric adenocarcinoma). Maternal grandfather had colon cancer.\nSH: grew up in northern Europe, came here as a young man. Married, lives with wife in Hatfield. Vegan for many years, for ethical reasons. Never smoked, does not drink.\n\nROS otherwise negative.\n\nExam: well-appearing. HEENT unremarkable, no thyromegaly. Heart regular rate, no murmur. Lungs clear. Abdomen soft, nontender. Ext: no edema. Feet: skin intact, no calluses or ulcers, DP pulses palpable bilaterally. Monofilament reduced at the toes and forefoot bilaterally, vibration reduced at both great toes.\n\nA/P:\n1. Type 2 DM, poorly controlled by history, with neuropathy and retinopathy. A1c, CMP, urine albumin today. Talked about tightening things up; he would like to see the numbers first. Continue metformin and glargine 30.\n2. HTN, near goal today. Continue lisinopril.\n3. Hyperlipidemia on atorvastatin 40. Lipids today.\n4. Retinopathy: referral to ophthalmology for a dilated exam.\n5. Health maintenance: hep C and HIV screening today. Tdap and flu today. Has never had colon cancer screening; not interested in colonoscopy right now, will do a FIT kit. Records request to prior office.\n\nFollow up 3 months."
+      }
+     ],
+     "vitals": {
+      "weight_kg": 84.2,
+      "height_cm": 178.0
+     }
+    },
+    {
+     "id": "2018-10-04a",
+     "kind": "portal_message",
+     "start": "2018-10-04T16:12",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your recent lab results",
+       "author": "PCP",
+       "date": "2018-10-04T16:12",
+       "body": "Hi Philip, your labs are back. Your A1c is 9.4, which is well above where we want it (under 8 for you, ideally lower). Kidney function, potassium and liver tests look fine. Blood count is normal. LDL cholesterol is in a good range on the atorvastatin. Urine protein test was normal. Hepatitis C and HIV screens were negative.\n\nI'd like to talk about the sugar numbers at your next visit in January. In the meantime, if you can check fasting sugars 3-4 mornings a week and bring the log, that would help a lot."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-23a",
+     "kind": "outside_records",
+     "start": "2018-10-23T11:30",
+     "reason": "Records from prior primary care office",
+     "orders": [
+      {
+       "id": "records-prior-2018",
+       "action": "done",
+       "date": "2018-10-23T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior Primary Care Records",
+       "author": "MA",
+       "date": "2018-10-23T11:30",
+       "body": "Records received from prior primary care office, 14 pages, covering 2011-2018. Scanned to chart.\n\nSummary for PCP review: visits roughly once a year, several gaps of more than a year. Problem list there: type 2 diabetes, hypertension, hyperlipidemia, diabetic neuropathy, diabetic retinopathy. Meds match what patient reported (metformin 1000 BID, glargine 30 u qhs, lisinopril 20, atorvastatin 40). Last A1c in their records 9.8 (2017). Eye clinic letter from 2015 mentions retinopathy both eyes. No colonoscopy or FIT on file. No allergies listed."
+      }
+     ]
+    },
+    {
+     "id": "2018-11-08a",
+     "kind": "lab_only",
+     "start": "2018-11-08T08:00",
+     "reason": "FIT returned",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2018-11-05T07:00",
+       "resulted": "2018-11-08T08:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2018",
+       "action": "done",
+       "date": "2018-11-08T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT result",
+       "author": "PCP",
+       "date": "2018-11-08T12:30",
+       "body": "FIT negative. Letter to patient. Repeat yearly unless he decides on colonoscopy."
+      }
+     ]
+    },
+    {
+     "id": "2018-12-06a",
+     "kind": "specialist_visit",
+     "start": "2018-11-29T13:40",
+     "service": "Ophthalmology",
+     "reason": "Diabetic eye exam",
+     "orders": [
+      {
+       "id": "eye-2018",
+       "action": "done",
+       "date": "2018-11-29T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology Letter",
+       "author": "ophthalmology",
+       "date": "2018-12-06T09:00",
+       "body": "Dear Doctor,\n\nWe saw Mr. Hall on 11/29/2018 for a dilated diabetic eye examination.\n\nVisual acuity with correction 20/25 OD, 20/25 OS. Pupils normal. IOP 15 and 16. Anterior segment: clear lenses for age.\nDilated fundus exam: diabetic retinopathy in both eyes. No macular edema on exam or OCT. Optic nerves healthy.\n\nImpression: diabetic retinopathy OU without macular edema.\nPlan: return in 12 months, sooner for any change in vision. Better glucose control will help protect his eyes, and we have encouraged this.\n\nThank you for the opportunity to participate in his care.\n\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2019-01-24a",
+     "kind": "office_visit",
+     "start": "2019-01-24T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-01-24T14:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 9.1
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-01-24T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2019-01-24T14:50",
+       "body": "S: Brought a log, about 10 fasting readings since Christmas, 148-231. Taking everything as prescribed, he says. No lows. Feet the same, numb, no sores. Eye exam done in November, letter reviewed.\n\nO: see vitals. Feet: skin intact, no ulcers. Point-of-care A1c drawn.\n\nA/P: DM2, A1c 9.1, a hair better than October but still high. Offered to move glargine up 2 units every few days to a fasting target of 100-150, or to add a once-weekly injection. He would rather not change insulin right now; worried about having a low while driving and says he is going to \"cut back on bread and pasta.\" Respected, revisit in spring. Continue current regimen.\nHTN at goal-ish. Continue lisinopril.\nRTC 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2019-03-11a",
+     "kind": "pharmacy",
+     "start": "2019-03-11T10:15",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request: metformin",
+       "author": "RN",
+       "date": "2019-03-11T10:15",
+       "body": "Pharmacy fax requesting 90-day supply of metformin 1000 mg BID; previous prescriber was the old office. Last A1c 9.1 on 1/24. Sent 90-day supply with 3 refills under PCP per refill protocol."
+      }
+     ]
+    },
+    {
+     "id": "2019-05-17a",
+     "kind": "office_visit",
+     "start": "2019-05-17T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-05-17T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.9
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-05-17T11:00",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-05-17T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up: Diabetes, Hypertension",
+       "author": "PCP",
+       "date": "2019-05-17T11:20",
+       "body": "Pt here for f/u. Feels fine. Has been walking more now that the weather turned, about 30 min most days. Diet changes \"some.\" Fasting sugars 140s-190s. No hypoglycemia.\n\nExam: NAD. Heart RRR. Lungs clear. No edema. Feet unchanged, skin intact.\n\nA1c 8.9.\n\nA/P\n- DM2: slow drift down. Again offered glargine titration; he'd like to keep going with diet and walking until fall. OK. Continue metformin 1000 BID, glargine 30 u.\n- HTN: BP acceptable. Continue lisinopril 20. BMP today.\n- HLD: atorvastatin 40.\nAll chronic meds now prescribed from here, 90-day supplies sent.\nRTC after summer / annual physical in October."
+      }
+     ]
+    },
+    {
+     "id": "2019-07-23a",
+     "kind": "portal_message",
+     "start": "2019-07-23T19:40",
+     "reason": "Insulin pen coverage question",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "insulin pens cost",
+       "author": "patient",
+       "date": "2019-07-23T19:40",
+       "body": "Hello, the pharmacy says my insulin pens will cost more starting next month because of the plan. Is there a different one that is cheaper? I don't want to stop it. Philip"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: insulin pens cost",
+       "author": "RN",
+       "date": "2019-07-24T11:05",
+       "body": "Hi Mr. Hall, I checked with your plan's formulary. The glargine pen you use is still the preferred one; the price change is from the deductible resetting, not the drug. The pharmacy can run it as a 90-day supply which lowers the per-month cost a bit. I sent a new 90-day prescription. Please don't skip doses. Call us if the cost is still a problem and we can look at assistance programs."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-09a",
+     "kind": "annual_physical",
+     "start": "2019-10-09T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-10-09T09:20",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.22
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-10-09T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-10-09T09:20",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-10-09T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 9.3
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-09T09:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2019-10-09T08:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2019",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2019-10-09T09:45",
+       "body": "Annual exam, 63M.\n\nInterval: no hospital visits or new problems. Walked a lot this summer, \"backed off\" with the colder weather. Sugars mostly 150-200 fasting. Takes meds daily, occasionally forgets the evening metformin. Eye exam due in December, scheduled.\n\nMeds: metformin 1000 BID, glargine 30 u qhs, lisinopril 20, atorvastatin 40. NKDA.\nSH: married, retired postal carrier. Vegan. Never smoker, no alcohol.\nFH unchanged (father DM2, mother gastric cancer, maternal GF colon cancer).\nPHQ-2: 0.\n\nExam: Gen well. HEENT: TMs clear, oropharynx normal. Neck: no thyromegaly or adenopathy. CV: RRR, no murmur. Lungs clear. Abd soft, NT, no masses. GU deferred. Ext: no edema. Skin: no concerning lesions. Neuro: diminished vibration at both great toes, monofilament reduced at toes; strength normal; gait normal. Feet: skin intact, pulses 2+.\n\nA/P:\n1. Health maintenance: flu shot today. FIT kit again; colonoscopy discussed, still prefers FIT. Tdap current (2018).\n2. DM2 with neuropathy, retinopathy: labs today. Will discuss results by portal.\n3. HTN: continue.\n4. HLD: continue statin.\nRTC 3-4 mo."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-11a",
+     "kind": "portal_message",
+     "start": "2019-10-11T13:20",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results from your physical",
+       "author": "PCP",
+       "date": "2019-10-11T13:20",
+       "body": "Hi Philip, A1c came back 9.3, so we are back up from the spring. Kidney function is about where it was last year, and cholesterol is in range. Blood count is normal. Urine protein normal.\n\nI'd really like to revisit insulin adjustment when you come in this winter. Please return the FIT kit in the next couple of weeks."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-30a",
+     "kind": "lab_only",
+     "start": "2019-10-30T08:00",
+     "reason": "FIT returned",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-10-27T07:00",
+       "resulted": "2019-10-30T08:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2019",
+       "action": "done",
+       "date": "2019-10-30T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT result",
+       "author": "PCP",
+       "date": "2019-10-30T15:00",
+       "body": "FIT negative x2 years. Result letter sent."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-12a",
+     "kind": "specialist_visit",
+     "start": "2019-12-05T10:20",
+     "service": "Ophthalmology",
+     "reason": "Annual diabetic eye exam",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology Letter",
+       "author": "ophthalmology",
+       "date": "2019-12-12T08:30",
+       "body": "Re: Philip Hall, DOB 07/22/1956. Seen 12/05/2019.\n\nBCVA 20/25 OU. IOP 16/15. Dilated exam: diabetic retinopathy both eyes, unchanged from last year. No macular edema; OCT macula normal thickness OU.\n\nAssessment: diabetic retinopathy OU, stable, no macular edema.\nPlan: annual exam. Patient counseled on glycemic and blood pressure control.\n\nAllergies: none known."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

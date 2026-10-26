@@ -1,0 +1,689 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002206",
+      "given": "Carl",
+      "family": "Clark",
+      "birth_date": "1952-09-28",
+      "address_line": "62 Kellogg Road",
+      "phone": "+1-413-555-0158",
+      "email": "carl.clark@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal worker with type 2 diabetes, hypertension and untreated hyperlipidemia who joins in 2017, is found to have hypertensive LVH in 2019, and in late 2024 is diagnosed with ascending colon adenocarcinoma metastatic to the liver. A 2025 admission brings Clostridium septicum sepsis, right hemicolectomy, postoperative AF and ileus, then parotitis and FOLFOX; a 2026 NSTEMI ends with an LAD stent.",
+      "events": [
+        {
+          "id": "2017-09-12a",
+          "kind": "establish_care",
+          "start": "2017-09-12T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care; diabetes and blood pressure",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "diagnosed",
+              "onset": "2011-06-01"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2005-06-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed",
+              "onset": "2011-06-01"
+            },
+            {
+              "label": "Family history of colon cancer",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              148,
+              90
+            ],
+            "weight_kg": 74.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Hemoglobin A1c": 8.1,
+              "Low Density Lipoprotein": 140,
+              "Total Cholesterol": 215,
+              "High Density Lipoprotein": 44,
+              "Triglycerides": 170,
+              "Hemoglobin": 14.4,
+              "Creatinine": 0.95,
+              "Microalbumin/Creatinine Ratio": 12,
+              "Glucose": 148
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2017-09-12T10:05",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2017-09-12T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2017-09-12T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 140
+                },
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2017-09-12T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2017-09-12T10:05",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2017-09-12T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2017-09-12T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired postal worker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2017-09-12T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2017-09-12T10:30",
+              "body": "NEW PATIENT VISIT\n\nCC: Establishing care. Previous doctor retired; records requested.\n\nHPI: 64M with type 2 diabetes for about six years by his count, hypertension since his early fifties, and high cholesterol. Feels fine. Takes metformin 1000 twice a day, lisinopril 20 and amlodipine 5 every morning, and a baby aspirin. Says his sugars \"run a little high\" and his pressure was always a sore subject with the old office. No home cuff. No chest pain, dyspnea, edema, claudication. No polyuria. No vision change. Bowels regular, no bleeding.\n\nPMH: T2DM. HTN. Hyperlipidemia, never on a statin per patient.\nPSH: Tonsillectomy as a boy (about age 8). Knee scope around 2008 (age 55).\nMeds: as above.\nAllergies: none known.\nFH: Father - colon cancer at 70, has since died. Mother - diabetes and high blood pressure.\nSH: Retired from the postal service after a long career carrying mail. Married, lives with his wife in Westfield. Never smoked. Does not drink. Walks the neighborhood most mornings.\n\nROS: 12-point negative except as in HPI.\n\nExam: Well appearing, pleasant. BP repeated at end of visit, still above goal. HEENT unremarkable. Neck without bruit or thyromegaly. Heart regular, no murmur or gallop appreciated. Lungs clear. Abdomen soft, nontender, no masses or organomegaly. Extremities warm, no edema. Feet: skin intact, monofilament intact bilaterally, DP pulses 2+.\n\nA/P:\n1. Type 2 diabetes - A1c, CMP, urine microalbumin today. Continue metformin 1000 BID. Diet review.\n2. Hypertension - above goal on lisinopril 20 + amlodipine 5. Not changing today on a first visit; would like home numbers. Bring cuff readings next time.\n3. Hyperlipidemia - lipid panel today.\n4. Health maintenance - never had a colonoscopy. With his father's history this is overdue; explained why. He would like to think about it and talk to his wife. Hep C and HIV screening offered and done today. Flu shot and pneumonia vaccine next month at a nurse visit.\n\nRTC 3 months, sooner for results.\n\nPCP"
+            }
+          ]
+        },
+        {
+          "id": "2017-09-14a",
+          "kind": "portal_message",
+          "start": "2017-09-14T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2017-09-14T16:40",
+              "body": "Hello Mr. Clark,\n\nYour labs from Tuesday are back. Kidney function, liver tests, potassium and blood counts are normal. Urine protein is normal. Hepatitis C and HIV screens are negative.\n\nYour A1c (3-month sugar average) is 8.1, which is higher than I would like. Before we add anything, let's see what the diet changes we talked about can do. Your cholesterol is up as well (LDL 140); we can go over that at the December visit.\n\nDr's office, primary care"
+            }
+          ]
+        },
+        {
+          "id": "2017-09-26a",
+          "kind": "outside_records",
+          "start": "2017-09-26T11:10",
+          "reason": "Prior practice records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "front desk",
+              "date": "2017-09-26T11:10",
+              "body": "Records received by fax from prior primary care office (42 pages), scanned to chart. Includes office notes 2012-2017, lab reports, immunization record.\n\nAbstracted by MA for PCP review:\n- Problems: diabetes type 2, hypertension, hyperlipidemia.\n- Meds on last note (05/2017): metformin 1000 mg BID, lisinopril 20 mg daily, amlodipine 5 mg daily, aspirin 81 mg.\n- A1c values on file above 7.5. Office BPs in 140s-150s over 80s-90s.\n- No colonoscopy on file; last note says \"pt declines, will reconsider.\"\n- Immunizations: flu shots most years. No pneumococcal or zoster vaccines recorded.\n\nForwarded to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2017-10-03a",
+          "kind": "nurse_visit",
+          "start": "2017-10-03T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and pneumococcal vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2017-10-03T10:05"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV13",
+              "date": "2017-10-03T10:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2017-10-03T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2017-10-03T10:20",
+              "body": "Here for vaccines per PCP. Denies fever or illness today, no prior vaccine reactions. High-dose flu 0.7 mL IM L deltoid. Prevnar 13 0.5 mL IM R deltoid. VIS sheets given. Observed 15 minutes, no reaction. Reminded him PPSV23 is due in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2017-12-12a",
+          "kind": "office_visit",
+          "start": "2017-12-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "state": {
+            "bp": [
+              150,
+              92
+            ],
+            "labs": {
+              "Hemoglobin A1c": 7.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2017-12-12T14:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2017-12-12T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2017-12-12T15:10",
+              "body": "S: Follow-up DM/HTN. Cutting back on bread and the evening ice cream, wife cooking differently. Did not buy a cuff yet. Taking all meds. No CP/SOB, no lightheadedness.\n\nO: BP high again today, see vitals; repeat similar. Wt about stable. Heart RRR, lungs clear, no edema.\n\nA1c point of care 7.8, down from 8.1.\n\nA/P:\n- T2DM: improving with diet. Continue metformin 1000 BID.\n- HTN: still above goal in the office. Asked again for a home log; he will pick up an automatic arm cuff at the pharmacy this week. If home average is above 135/85 we will adjust at next visit.\n- Lipids: LDL 140. Talked about cholesterol and heart risk in general terms; he wants to focus on diet first.\n- Colonoscopy: still thinking about it.\n\nRTC 3 mo."
+            }
+          ]
+        },
+        {
+          "id": "2018-02-06a",
+          "kind": "pharmacy",
+          "start": "2018-02-06T09:12",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2018-02-06T09:12",
+              "body": "Pharmacy faxed request to change metformin, lisinopril and amlodipine to 90-day supplies through his mail-order plan. Pended for PCP.\n\nPCP: approved, 90 days x 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2018-03-20a",
+          "kind": "office_visit",
+          "start": "2018-03-20T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "state": {
+            "bp": [
+              148,
+              92
+            ],
+            "labs": {
+              "Hemoglobin A1c": 7.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2018-03-20T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2018-03-20T11:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2018-03-20T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2018-03-20T11:35",
+              "body": "Diabetes / BP f/u.\n\nBrought a log: about 3 weeks of morning readings, mostly 132-142 / 80-86, a few in the 140s. Office reading higher again today. No symptoms.\n\nExam: RRR, no murmur; lungs clear; no edema.\n\nA1c 7.6 (7.8 in Dec). BMP drawn.\n\nAssessment/plan\nHTN - home average is close to goal and clearly lower than what we see here. Will hold the current regimen and recheck at the physical in the fall. Keep logging a few days a month.\nT2DM - trending down. Continue metformin.\nHLD - no change; diet.\n\nRTC Sept for Welcome to Medicare visit."
+            }
+          ]
+        },
+        {
+          "id": "2018-06-19a",
+          "kind": "outside_records",
+          "start": "2018-06-19T13:30",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination Report",
+              "author": "optometry",
+              "date": "2018-06-19T13:30",
+              "body": "Optometry - Diabetic Eye Exam\nPatient: Carl Clark   DOB 09/28/1952\nExam date 06/12/2018\n\nVA cc: OD 20/25, OS 20/25. IOP 15/16. Dilated fundus exam: no diabetic retinopathy either eye. No macular edema. Lenses clear.\n\nImpression: Diabetes without retinopathy.\nRecommend: repeat dilated exam in 12 months.\n\nThank you for allowing us to see your patient."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-18a",
+          "kind": "annual_physical",
+          "start": "2018-09-18T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Welcome to Medicare preventive visit",
+          "state": {
+            "bp": [
+              146,
+              88
+            ],
+            "labs": {
+              "Hemoglobin A1c": 7.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-09-18T09:20",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-09-18T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-09-18T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-09-18T09:20",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial preventive physical examination (Welcome to Medicare)",
+              "performed": "2018-09-18T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Initial Preventive Physical Examination",
+              "author": "PCP",
+              "date": "2018-09-18T10:00",
+              "body": "WELCOME TO MEDICARE VISIT\n\nFeels well. Still walking most mornings, about 2 miles. Independent with all daily activities, drives, manages his own pills with a weekly box. No falls. Hearing fine per patient and wife. Vision checked by optometry in June, no diabetic eye disease.\n\nPHQ-2: 0.\nAdvance directive: wife is health care proxy; no paperwork done yet. Gave forms.\n\nMeds reviewed: metformin 1000 BID, lisinopril 20, amlodipine 5, ASA 81. Adherent.\n\nExam: BP above goal again in the office. Well appearing. Heart regular, no murmur. Lungs clear. Abdomen benign. Feet normal sensation, pulses good, no lesions.\n\nScreening/plan:\n- Colon cancer screening: recommended colonoscopy again, given his father. He is not ready; says he will \"get to it.\" Discussed stool testing as an option; he prefers to wait.\n- PPSV23 next month with flu shot. Shingrix series - will start in November when the office has supply.\n- Labs: A1c, CMP, lipids, urine microalbumin.\n- BP: home log still runs better than office. Continue current meds.\n\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-20a",
+          "kind": "portal_message",
+          "start": "2018-09-20T17:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "author": "PCP",
+              "date": "2018-09-20T17:10",
+              "body": "Hi Carl - labs from the Welcome to Medicare visit: A1c 7.5, kidney function and potassium normal, urine protein normal. Cholesterol about the same as last year. Keep up the walking and the diet changes. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-09a",
+          "kind": "nurse_visit",
+          "start": "2018-10-09T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and PPSV23",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2018-10-09T09:34"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2018-10-09T09:36"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-09T09:34"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2018-10-09T09:50",
+              "body": "Fluzone High-Dose IM L deltoid; Pneumovax 23 IM R deltoid. Feeling well, no fever. Tolerated without incident, waited 15 min. Pneumococcal series now complete per CDC schedule."
+            }
+          ]
+        },
+        {
+          "id": "2018-11-20a",
+          "kind": "nurse_visit",
+          "start": "2018-11-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 1",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2018-11-20T11:04"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-11-20T11:04"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2018-11-20T11:20",
+              "body": "Shingrix #1 0.5 mL IM L deltoid. Counseled that a sore arm or a day of feeling run down is common. Dose #2 due in 2-6 months; scheduled for late February."
+            }
+          ]
+        },
+        {
+          "id": "2018-12-11a",
+          "kind": "office_visit",
+          "start": "2018-12-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "state": {
+            "bp": [
+              150,
+              90
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2018-12-11T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2018-12-11T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2018-12-11T16:05",
+              "body": "Quick f/u. Holidays coming, he knows the cookies are a problem. Arm sore for a day after Shingrix, otherwise fine. No complaints.\n\nBP above goal here again, home readings he reports \"in the 130s mostly.\" Exam unchanged: RRR, lungs clear, no edema.\n\nA1c today in his usual range.\n\nPlan: same meds. Shingrix #2 in February. Colonoscopy - raised again briefly; maybe after the winter. RTC 3 months."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

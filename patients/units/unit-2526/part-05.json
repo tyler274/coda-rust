@@ -1,0 +1,613 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002526",
+      "events": [
+        {
+          "id": "2025-12-31a",
+          "kind": "hospital_admission",
+          "start": "2025-12-31T18:40",
+          "end": "2026-01-20T12:30",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Fever, dyspnea, productive cough, respiratory failure",
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "diagnosed",
+              "onset": "2025-12-28"
+            },
+            {
+              "label": "Acute respiratory distress syndrome",
+              "icd10": "J80",
+              "action": "diagnosed",
+              "onset": "2025-12-31",
+              "note": "refractory hypoxemia; required mechanical ventilation and prone positioning"
+            }
+          ],
+          "state": {
+            "weight_kg": 76.0,
+            "labs": {
+              "Creatinine": 3.8,
+              "Blood Urea Nitrogen": 45
+            }
+          },
+          "vitals": [
+            {
+              "time": "2025-12-31T18:45",
+              "rr": 28,
+              "temp_c": 38.9,
+              "spo2": 88,
+              "hr": 112,
+              "bp": [
+                118,
+                70
+              ]
+            },
+            {
+              "time": "2026-01-20T08:00",
+              "rr": 18,
+              "temp_c": 36.8,
+              "spo2": 94,
+              "hr": 74,
+              "bp": [
+                118,
+                72
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-31T18:55",
+              "results": [
+                {
+                  "test": "pH, arterial",
+                  "loinc": "2744-1",
+                  "value": 7.48,
+                  "unit": "[pH]"
+                },
+                {
+                  "test": "PaCO2",
+                  "loinc": "2019-8",
+                  "value": 30,
+                  "unit": "mm[Hg]"
+                },
+                {
+                  "test": "PaO2",
+                  "loinc": "2703-7",
+                  "value": 58,
+                  "unit": "mm[Hg]"
+                },
+                {
+                  "test": "Bicarbonate, arterial",
+                  "loinc": "1960-4",
+                  "value": 24,
+                  "unit": "mmol/L"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-31T18:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-31T18:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-31T19:05",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-12-31T19:00",
+              "text": "Portable AP chest. Bilateral alveolar opacities. Sternotomy wires and aortic graft changes. No pneumothorax.",
+              "conclusion": "Bilateral alveolar infiltrates."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-12-31T21:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "ICU Admission Note",
+              "author": "critical care",
+              "date": "2026-01-01T02:30",
+              "body": "MICU ADMISSION NOTE\n\n41-year-old man, two months out from repair of a type A aortic dissection, with chronic hepatitis B, relapsed kappa light-chain myeloma on daratumumab maintenance (on hold since the surgery), CKD stage 4, prior mitral valve repair, CAD with RCA stent. Several days of feeling feverish at home, worsening breathlessness - worse when he lies flat - and a cough bringing up yellow sputum.\n\nMeds: metoprolol succinate 100, aspirin 81, atorvastatin 80, amlodipine 5, furosemide 40, tenofovir DF 300, acyclovir 400 BID. NKDA.\nSocial: 1 ppd smoker, no alcohol, safety compliance officer.\nFamily: father SUD, mother HTN, maternal uncle myeloma.\n\nOn arrival: RR 28, T 38.9 C, SpO2 88% on room air. Bilateral crackles.\nABG on room air: pH 7.48 / PaCO2 30 / PaO2 58 / HCO3 24.\nWBC 18,000 with a left shift.\nCXR: bilateral alveolar infiltrates.\n\nCourse so far: IV fluids and broad-spectrum antibiotics (vancomycin, cefepime - renally dosed) started in the ED. Despite this his breathing got worse and he was intubated. Ventilated at 6 mL/kg predicted body weight; peak pressures high, oxygenation remains poor on FiO2 0.8.\n\nAssessment: acute hypoxemic respiratory failure - ARDS from community-acquired pneumonia in an immunocompromised host, with refractory hypoxemia.\nPlan: lung-protective ventilation, prone positioning, neuromuscular blockade, conservative fluids once perfused, cultures pending, continue antibiotics.\n\nCritical Care"
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Pulmonary and Critical Care",
+              "author": "critical care",
+              "date": "2026-01-21T15:00",
+              "body": "DISCHARGE SUMMARY\n\nAdmitted 12/31/2025 - Discharged 01/20/2026\n\nDiagnoses: ARDS with refractory hypoxemia due to community-acquired pneumonia. Organism not identified.\n\nCourse: Intubated on the day of admission for worsening hypoxemia despite antibiotics and fluids. Lung-protective ventilation with high peak pressures and poor oxygenation on FiO2 0.8. Proned for four sessions with neuromuscular blockade for 48 hours; oxygenation improved steadily afterward. Vancomycin and cefepime, renally dosed, for 7 days. Blood cultures no growth; sputum culture normal respiratory flora. Extubated 01/09/2026. Transferred to the floor 01/12. Worked with physical therapy - deconditioned but walking with a walker at discharge, then without by the last day. Creatinine 3.8, near his baseline. No arrhythmia. Daratumumab remains on hold; oncology will decide timing.\n\nDischarge medications (unchanged from admission): metoprolol succinate 100 mg daily, aspirin 81 mg daily, atorvastatin 80 mg nightly, amlodipine 5 mg daily, furosemide 40 mg daily, nitroglycerin SL prn, tenofovir DF 300 mg daily, acyclovir 400 mg twice daily.\n\nFollow-up: PCP within 1 week; pulmonary clinic 6 weeks with chest X-ray; oncology.\nSmoking: advised to quit. Allergies: NKDA.\n\nPulmonary & Critical Care"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "telephone",
+          "start": "2026-01-21T14:10",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2026-01-21T14:10",
+              "body": "TCM call, discharged yesterday after ICU stay for pneumonia/ARDS. Pt home. Breathing 'way better than it was,' winded on the stairs to his apartment. No fever. Has all meds, went over list - unchanged from before admission. Eating small meals. Visit with PCP Monday 1/26 confirmed. Told to call 911 for severe shortness of breath."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-26a",
+          "kind": "office_visit",
+          "start": "2026-01-26T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ICU admission",
+          "state": {
+            "bp": [
+              120,
+              74
+            ],
+            "labs": {
+              "Blood Urea Nitrogen": 44
+            }
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-26T11:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-26T11:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-01-26T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2026-01-26T11:45",
+              "body": "Hospital f/u: 12/31-1/20, MICU. Pneumonia leading to ARDS, intubated 12/31 to 1/9, proned. Discharge summary reviewed.\n\nWalking around the apartment and to the mailbox; stairs slow. Cough mostly gone. No fever. Sleeping in his bed flat now. Weight 76 - lost about 6 kg since November.\nStill smoking. Denies cocaine.\n\nMeds reconciled, no changes.\n\nExam: vitals as charted, afebrile, SpO2 on room air as charted. Thin, tired but comfortable. Lungs clear, good air movement. Heart regular, soft apical murmur. Sternotomy healed. No edema.\n\nA/P\n1. ARDS/CAP, recovering - pulmonary f/u and CXR in March. Home exercise, slowly.\n2. CKD 4 - BMP.\n3. Leukocytosis on admission - CBC today.\n4. Type A dissection s/p repair - BP at goal on metoprolol 100 + amlodipine.\n5. Myeloma - oncology to restart dara when he's stronger.\n6. Tobacco - he asked about patches; counseled, he'll let me know.\n\nRTC with physical in March."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              72
+            ]
+          }
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "portal_message",
+          "start": "2026-01-27T12:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs Monday",
+              "author": "PCP",
+              "date": "2026-01-27T12:20",
+              "body": "White count is back to normal. Kidney function about where it was before (creatinine just under 4). Potassium fine. Keep walking a little more each day."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "pharmacy",
+          "start": "2026-02-18T10:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2026-02-18T10:30",
+              "body": "Refill requests: metoprolol succinate 100, amlodipine 5, atorvastatin 80, tenofovir DF 300. All sent 90 days. Acyclovir from oncology. Pharmacy asked if ticagrelor should be removed from his profile - yes, stopped 10/30/25."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "specialist_visit",
+          "start": "2026-03-04T13:30",
+          "service": "Pulmonology",
+          "reason": "Follow-up after ARDS",
+          "measure": [
+            "spo2",
+            "hr"
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-03-04T13:00",
+              "text": "PA and lateral chest. Interval clearing of the previously seen bilateral alveolar opacities. No new consolidation. No pleural effusion. Sternotomy wires and postoperative aortic changes.",
+              "conclusion": "Clearing of the bilateral opacities since the 12/31/2025 study."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary Clinic Letter",
+              "author": "pulmonology",
+              "date": "2026-03-09T08:30",
+              "body": "Dear Doctor,\n\nI saw Mr. Jackson about six weeks after discharge from the MICU for ARDS due to community-acquired pneumonia.\n\nHe is walking a mile now and climbs his stairs without stopping. Minimal cough. Still smoking.\n\nOxygen saturation on room air normal at rest. Lungs clear.\n\nChest X-ray today shows clearing of the bilateral opacities.\n\nAssessment: recovering well from ARDS. Smoking cessation is the most important thing he can do for his lungs; we discussed this again. No routine pulmonary follow-up needed; happy to see him if symptoms return.\n\nPulmonology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "annual_physical",
+          "start": "2026-03-09T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "resolved"
+            },
+            {
+              "label": "Acute respiratory distress syndrome",
+              "icd10": "J80",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0,
+            "labs": {
+              "Creatinine": 3.6,
+              "Blood Urea Nitrogen": 39
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-09T09:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-09T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-03-09T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-03-09T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-03-09T12:30",
+              "body": "Annual exam, 41M.\n\nRough year: type A dissection in October, ARDS in January. Pulmonary saw him last week, CXR clearing, discharged from their clinic. Walking a mile. Working from home.\nNo chest pain, no palpitations. Sleeping flat.\nCocaine: none since October. Heroin: none. Smoking a pack a day.\nOncology visit next week to restart daratumumab.\n\nMeds: metoprolol succinate 100, amlodipine 5, aspirin 81, atorvastatin 80, furosemide 40, nitro prn, tenofovir DF 300, acyclovir 400 BID. NKDA.\n\nExam: BP as charted, at goal. HEENT normal. Neck supple. Heart regular, soft apical systolic murmur. Lungs clear. Abd soft. Sternotomy healed. No edema. Skin normal.\nPHQ-2 1.\n\nA/P\n- Pneumonia/ARDS - resolved.\n- Type A dissection s/p repair - BP <120/80 target, met.\n- CAD/old MI - aspirin, statin, BB.\n- Paroxysmal AF - none since 2022.\n- CKD 4 - CMP.\n- Myeloma - dara restart per oncology.\n- Hep B - tenofovir.\n- Tobacco - counseled.\n- HM: flu/COVID 10/2025. Colon cancer screening at 45.\n\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-18a",
+          "kind": "specialist_visit",
+          "start": "2026-03-18T10:00",
+          "service": "Hematology-Oncology",
+          "reason": "Myeloma maintenance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology-Oncology Follow-up Letter",
+              "author": "hematology-oncology",
+              "date": "2026-03-24T11:00",
+              "body": "Dear Doctor,\n\nMr. Jackson returns after a long interruption in daratumumab: held since his aortic dissection repair in October and through his ICU admission for pneumonia and ARDS. He has recovered well.\n\nMyeloma remains in very good partial response off therapy for these months. We resumed daratumumab every 4 weeks today. Continue acyclovir and tenofovir.\n\nHematology-Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "portal_message",
+          "start": "2026-04-22T19:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "furosemide",
+              "author": "patient",
+              "date": "2026-04-22T19:30",
+              "body": "Can you refill the furosemide, I have 4 left. Pharmacy says it needs a new script"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: furosemide",
+              "author": "RN",
+              "date": "2026-04-23T08:20",
+              "body": "Sent a new prescription with refills for the year. It should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "office_visit",
+          "start": "2026-06-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "state": {
+            "bp": [
+              122,
+              76
+            ],
+            "weight_kg": 78.5
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-10T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-06-10T16:00",
+              "body": "F/u. Back on daratumumab since March, tolerating. Energy close to normal. Walking most evenings. No chest pain, no dyspnea, no palpitations.\nDenies cocaine. Smoking unchanged.\nBP 122/76 - home log 112-124/70-78. Weight up a bit.\nHeart regular, soft apical murmur. Lungs clear. No edema.\nA/P: HTN/post-dissection BP at goal. CAD stable. CKD 4 - labs in August. Tobacco - counseled. RTC late August."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              76
+            ]
+          }
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "pharmacy",
+          "start": "2026-07-16T11:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2026-07-16T11:45",
+              "body": "Pharmacy: tenofovir DF 300 refill. Last fill 6 weeks ago for 30 days - pt may be missing doses again. Refilled 90 days. Will raise adherence at the August visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "office_visit",
+          "start": "2026-08-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, labs",
+          "state": {
+            "bp": [
+              124,
+              78
+            ],
+            "weight_kg": 79.0,
+            "labs": {
+              "Blood Urea Nitrogen": 40
+            }
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-19T16:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-19T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-08-19T16:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-19T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-08-19T16:50",
+              "body": "F/u HTN, CKD 4, hep B, CAD.\n\nDoing well. Busy at work. Admits he skipped tenofovir 'a bunch' in June and July - the pharmacy flagged it. We went over why it matters for him more than most: his hep B came back once already. Back on the pill box.\nNo chest pain or palpitations. Breathing fine. Smoking a pack a day. Denies drugs.\n\nMeds: metoprolol succinate 100, amlodipine 5, aspirin 81, atorvastatin 80, furosemide 40, nitro prn, tenofovir DF 300, acyclovir 400 BID, daratumumab q4wk (oncology). NKDA.\n\nExam: BP 124/78. Heart regular, soft apical murmur. Lungs clear. Trace ankle edema.\n\nA/P\n1. Hep B - adherence lapse; reinforced daily dosing. LFTs today.\n2. CKD 4 - CMP, UA.\n3. HTN/post-dissection - at goal.\n4. CAD - stable.\n5. Myeloma - maintenance, oncology following.\n6. Tobacco - counseled.\n\nRTC late September, flu shot then."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              78
+            ]
+          }
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T13:35",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2026-08-20T13:35",
+              "body": "Andre, labs are steady: creatinine 3.8, potassium normal, liver tests normal, blood counts fine. Urine protein is still there but less than at its worst. Keep up with the tenofovir every day. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-21a",
+          "kind": "office_visit",
+          "start": "2026-09-21T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up and flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

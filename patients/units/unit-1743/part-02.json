@@ -1,0 +1,257 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001743",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "nurse_visit",
+          "start": "2025-01-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure check",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "telephone",
+          "start": "2025-01-22T10:05",
+          "reason": "Missed nurse visit",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment Follow-up",
+              "author": "front desk",
+              "date": "2025-01-22T10:05",
+              "body": "Called re: missed BP check yesterday. Pt apologized, daycare pickup ran late. Pt says her home cuff readings have all been normal. Prefers to fold the BP check into her physical. Booked 3/18 at 8:40, fasting for labs."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "annual_physical",
+          "start": "2025-03-18T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 71.6},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-18T09:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-03-18T09:20", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-03-18T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-03-18T09:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-03-18T08:40"},
+            {"procedure": "Venipuncture", "performed": "2025-03-18T09:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-03-18T10:15",
+              "body": "Annual exam. Feels well. Back at work full time since January, sleeping better now that the baby sleeps through most nights. Home BP readings normal. No headaches or visual symptoms. Still taking the prenatal vitamin and iron daily, no GI upset.\n\nMeds: prenatal vitamin daily; ferrous sulfate 325 mg daily.\nAllergies: NKDA.\nSH: never smoker, rare glass of wine, no drugs. Walks at lunch most days.\nFH unchanged (mother preeclampsia, father HTN).\n\nROS negative in detail.\nPHQ-9: 2.\n\nExam: BP and vitals as charted. Well appearing. HEENT normal, oral mucosa and gums normal. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft and nontender. Skin clear. No edema. Neuro grossly normal.\n\nHealth maintenance: cervical screening done through OB, normal and current. Flu and COVID from October.\n\nA/P\n1. History of preeclampsia x1 severe, plus gestational HTN with her first. Normotensive. Fasting CBC, CMP, lipids, A1c today. Keep checking home BP a few times a month.\n2. Thinking about another pregnancy in the next year or two. If she conceives, OB will want to know early given her history; she knows to book early.\n3. Prevention up to date.\n\nReturn in a year, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "portal_message",
+          "start": "2025-03-20T12:35",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2025-03-20T12:35",
+              "body": "Ava, all of Tuesday's bloodwork is normal: blood count, kidney and liver function, sugar/A1c and cholesterol. Good numbers to carry forward. Nothing needed until next year."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "portal_message",
+          "start": "2025-06-03T07:48",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {"label": "Pregnant state", "icd10": "Z33.1", "action": "diagnosed", "onset": "2025-05-12", "note": "third pregnancy, LMP about 2025-04-28"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "News",
+              "author": "patient",
+              "date": "2025-06-03T07:48",
+              "body": "Hi! Wanted you to hear it from me, I got a positive home test over the weekend. Last period started around April 28. I already called my OB's office and they have me in for an intake visit on the 17th. I'm still on the prenatal and iron. Anything I should be doing from your end?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: News",
+              "author": "PCP",
+              "date": "2025-06-03T13:10",
+              "body": "Congratulations, Ava! Good that you have the OB intake booked so soon. Keep up the prenatal vitamin. Your OB will run the pregnancy care and labs; please keep checking your blood pressure at home and call them (or us) for readings of 140/90 or above, a headache that won't quit, or any change in your vision. We're here for anything outside the pregnancy."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "nurse_visit",
+          "start": "2025-09-30T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-30T16:20"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-09-30T16:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Influenza Vaccine",
+              "author": "RN",
+              "date": "2025-09-30T16:30",
+              "body": "In for flu shot, 22 weeks pregnant, OB aware and recommends. Screening questions reviewed, no prior reactions. Trivalent inactivated influenza 0.5 mL IM given in the left deltoid; lot and expiration in the immunization record. VIS reviewed. BP and pulse checked at her request, normal. Tolerated well, left after a short wait."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "portal_message",
+          "start": "2025-10-14T20:12",
+          "reason": "Gum lesion in pregnancy",
+          "conditions": [
+            {"label": "Pyogenic granuloma of gingiva (pregnancy epulis)", "icd10": "K06.8", "action": "diagnosed", "onset": "2025-09-22"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bump on my gum",
+              "author": "patient",
+              "date": "2025-10-14T20:12",
+              "body": "Quick question. For a few weeks I've had a red bump on my upper gum that keeps getting bigger. It doesn't hurt but it bleeds every time I brush. I showed my OB yesterday at my 24 week appointment and she said it's a pregnancy tumor (pyogenic granuloma?) and that it's harmless and usually goes away after the baby. She said it's about 1 cm and doesn't look infected. Everything else with the pregnancy is going fine so far. Should I see my dentist about it or just leave it alone?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bump on my gum",
+              "author": "PCP",
+              "date": "2025-10-15T08:25",
+              "body": "Hi Ava, that fits what your OB told you. These are common in pregnancy, they're benign, and most shrink on their own after delivery. In the meantime use a soft toothbrush, keep flossing gently around it, and it's worth a routine visit with your dentist so they can keep an eye on it and help if the bleeding gets bothersome. Let us know if it gets much bigger, becomes painful, or bleeds in a way that's hard to stop. Glad the rest of the pregnancy is going well."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "hospital_admission",
+          "start": "2025-12-02T10:25",
+          "end": "2025-12-05T12:10",
+          "service": "Obstetrics — Labor and Delivery (outside hospital)",
+          "reason": "Abdominal pain and vaginal bleeding at 31 weeks",
+          "conditions": [
+            {"label": "Premature separation of placenta, third trimester", "icd10": "O45.93", "action": "diagnosed", "onset": "2025-12-02"},
+            {"label": "Severe pre-eclampsia, third trimester", "icd10": "O14.13", "action": "diagnosed", "onset": "2025-12-02", "note": "without HELLP features; third pregnancy"},
+            {"label": "Other stimulant use, unspecified, uncomplicated", "icd10": "F15.90", "action": "diagnosed", "onset": "2025-06-01", "note": "amphetamine use several times during pregnancy"}
+          ],
+          "vitals": [
+            {"time": "2025-12-02T10:30", "bp": [160, 110], "hr": 102, "temp_c": 37.2}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-02T10:45", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Platelets", "value": 120}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-12-02T10:45", "results": [{"test": "Creatinine", "value": 1.2}, {"test": "Aspartate Aminotransferase", "value": 70}, {"test": "Alanine Aminotransferase", "value": 65}]},
+            {"panel": "Urinalysis", "collected": "2025-12-02T10:50", "results": [{"test": "Urine Protein", "text": "3+"}]}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside hospital)",
+              "author": "emergency medicine",
+              "date": "2026-01-08T14:20",
+              "body": "Regional hospital — Emergency Department\nVisit: 2025-12-02, arrived 10:25\nReceived by the practice 2026-01-08 after records request.\n\nCC: abdominal pain, vaginal bleeding, 31 weeks.\n\nHPI: 30-year-old in her third pregnancy, 31w1d by LMP and early ultrasound. Abrupt onset this morning of severe, constant abdominal pain, followed by vaginal bleeding. Says the pregnancy had been going smoothly until today. History of severe preeclampsia with preterm delivery last year, gestational hypertension in her first pregnancy. On direct questioning she says she has used amphetamines several times during this pregnancy; denies any other substances.\n\nMeds: prenatal vitamin, ferrous sulfate 325 mg daily.\nAllergies: NKDA.\nFH: mother with preeclampsia, father with chronic hypertension.\n\nVitals on arrival: BP 160/110, HR 102, T 37.2 C (99.0 F).\n\nExam: in obvious pain. Uterus firm and tender to palpation. Small amount of vaginal bleeding on the pad. FHT 140.\n\nLabs: Hgb 10.2 g/dL, platelets 120,000/mm3, creatinine 1.2 mg/dL, AST 70, ALT 65. UA protein 3+.\n\nImpression: suspected placental abruption; preeclampsia with severe-range pressure.\n\nDisposition: OB at bedside within minutes; to labor and delivery."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary (outside hospital)",
+              "author": "obstetrics",
+              "date": "2026-01-08T14:22",
+              "body": "Regional hospital — Labor and Delivery\nAdmitted 2025-12-02, discharged 2025-12-05\nReceived by the practice 2026-01-08.\n\nDiagnoses: placental abruption at 31 weeks 1 day; severe preeclampsia without HELLP features; amphetamine use in pregnancy. Status post preterm vaginal delivery.\n\nCourse: On arrival to L&D the tracing was reassuring and the mother was hemodynamically stable apart from the pressure. Magnesium sulfate started, IV labetalol for severe-range pressures, first dose of betamethasone given. She was already contracting and labor progressed quickly; vaginal delivery the same evening at 19:50. A retroplacental clot was delivered with the placenta, confirming abruption. Liveborn infant admitted to the NICU. Bleeding after delivery was within usual limits. Magnesium continued 24 hours postpartum. Pressures under 140/90 from postpartum day 2 without oral agents. Platelets never below 100,000. Social work saw her regarding the stimulant use; resources provided.\n\nDischarge medications: prenatal vitamin, ferrous sulfate 325 mg daily. No antihypertensive.\nAllergies: NKDA.\n\nFollow-up: BP check this week; OB postpartum visit in six weeks; primary care follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "telephone",
+          "start": "2025-12-08T09:15",
+          "reason": "Patient reports delivery",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Telephone Note",
+              "author": "RN",
+              "date": "2025-12-08T09:30",
+              "body": "Pt called to let us know she delivered early on 12/2 at about 31 weeks. Went to the ED with sudden belly pain and bleeding, told the placenta had separated, and her pressure was high again. Delivered vaginally that night; baby in the NICU, stable. Discharged 12/5, no BP meds. Hospital asked for a BP check this week. Home readings below 140/90, no headache, vision ok, bleeding tapering. Booked with PCP Thursday 12/11. Advised ED for very high readings, severe headache, vision change, chest pain or shortness of breath."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "office_visit",
+          "start": "2025-12-11T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum blood pressure check",
+          "conditions": [
+            {"label": "Premature separation of placenta, third trimester", "icd10": "O45.93", "action": "resolved"},
+            {"label": "Severe pre-eclampsia, third trimester", "icd10": "O14.13", "action": "resolved"},
+            {"label": "Pregnant state", "icd10": "Z33.1", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 79.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-11T11:55", "results": [{"test": "Hemoglobin", "value": 11.4}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-12-11T11:55", "results": [{"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-12-11T11:20"},
+            {"procedure": "Venipuncture", "performed": "2025-12-11T11:55"}
+          ],
+          "orders": [
+            {"id": "rec-req-2025", "action": "placed", "order": "Outside records request: December 2025 hospital admission", "category": "procedure", "to": "Regional hospital health information management", "reason": "abruption and delivery"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Blood Pressure Check",
+              "author": "PCP",
+              "date": "2025-12-11T12:30",
+              "body": "9 days postpartum. Here for the BP check the hospital asked for; OB postpartum visit is in January.\n\nPer patient (records requested today): 12/2 sudden constant abdominal pain and bleeding at 31 weeks, told it was a placental abruption and that her pressure was in the severe range again. Delivered vaginally that evening. Magnesium for a day. Baby in the NICU, doing well. Home 12/5 without BP medication.\n\nSince home: home BP all under 140/90. No headache, no visual change, no RUQ pain, no chest pain or dyspnea. Lochia lighter each day. Leg swelling gone. Gum bump from October is smaller and bleeds less.\n\nMeds: prenatal vitamin, ferrous sulfate 325 mg daily.\nAllergies: NKDA.\n\nExam: tired but well. BP and vitals as charted. Upper gingival nodule present, clearly smaller than she describes it in the fall, not bleeding. Heart regular. Lungs clear. Abdomen soft, appropriately involuting uterus, nontender. No edema. Reflexes 2+.\n\nA/P\n1. Second hypertensive pregnancy with severe preeclampsia, now with abruption. Normotensive today without medication. CBC and CMP to confirm platelets, creatinine and liver tests have recovered. Keep the ferrous sulfate for now given the blood loss.\n2. Placental abruption, delivered. Pregnancy problems closed out on the list.\n3. Pregnancy epulis regressing as expected.\n4. Will review the hospital record when it arrives; see her again around six weeks postpartum.\n\nCall for BP of 140/90 or above on repeat, or any warning symptoms."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records Request Sent",
+              "author": "front desk",
+              "date": "2025-12-11T12:45",
+              "body": "Release signed. Faxed request to regional hospital HIM for 12/2-12/5/2025 admission (ED record, L&D discharge summary, labs)."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "portal_message",
+          "start": "2025-12-12T17:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Yesterday's labs",
+              "author": "PCP",
+              "date": "2025-12-12T17:05",
+              "body": "Ava, your platelets, kidney function and liver tests are all back in the normal range. Your hemoglobin is 11.4, a little low, which is expected after the bleeding with the delivery; keep taking the iron and we'll recheck it down the road. Keep logging your home blood pressures, and we'll see you in mid-January."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

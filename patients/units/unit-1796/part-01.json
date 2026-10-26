@@ -1,0 +1,452 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001796",
+      "given": "Lauren",
+      "family": "Vaillancourt",
+      "birth_date": "1992-10-18",
+      "address_line": "112 Linden Street, Apt 3",
+      "phone": "+1-347-555-0120",
+      "email": "lauren.vaillancourt@example.test",
+      "marital_status": "married",
+      "summary": "Healthy 32-year-old business development manager who joins the practice in July 2025 with cryptosporidiosis after a work trip to southern Mexico. Later seen at two outside EDs: dehydration at a Florida marathon in January 2026 and norovirus with dehydration on a cruise in July 2026. Otherwise routine preventive care.",
+      "events": [
+        {
+          "id": "2025-07-28a",
+          "kind": "telephone",
+          "start": "2025-07-28T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New membership enrollment; requesting visit",
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "placed",
+              "order": "Request records from prior primary care office",
+              "category": "referral",
+              "to": "Prior primary care office",
+              "reason": "new patient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Member Enrollment",
+              "author": "front desk",
+              "date": "2025-07-28T10:20",
+              "body": "Membership enrollment completed by phone. Insurance BCBS PPO, card on file. Pt asking to be seen soon: says she has had diarrhea for about four days since getting back from a work trip. Offered Wed 7/30 9:40 new patient slot with Dr., accepted. Records release signed electronically; request faxed to her previous PCP office. Told her to text the practice line if she gets worse before Wednesday."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-30a",
+          "kind": "establish_care",
+          "start": "2025-07-30T09:40",
+          "end": "2025-07-30T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; watery diarrhea x 6 days",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 59.0,
+            "height_cm": 167.6,
+            "labs": {
+              "White Blood Cells": 11.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "International business development manager"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-30T10:25",
+              "resulted": "2025-07-30T17:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-07-30T10:25",
+              "resulted": "2025-07-30T17:05",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-30T10:30",
+              "resulted": "2025-08-01T08:50",
+              "results": [
+                {
+                  "test": "Bacteria identified in Stool by Culture",
+                  "loinc": "625-4",
+                  "text": "No Salmonella, Shigella, Campylobacter or Shiga toxin-producing E. coli isolated."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-30T10:30",
+              "resulted": "2025-07-31T15:40",
+              "results": [
+                {
+                  "test": "Microscopic observation in Stool by Modified acid fast stain",
+                  "loinc": "11545-1",
+                  "text": "Positive. Round to ovoid acid-fast oocysts, 4-6 micrometers, consistent with Cryptosporidium species."
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "stool-cx-0730",
+              "action": "placed",
+              "order": "Stool culture, routine enteric pathogens",
+              "category": "lab",
+              "reason": "watery diarrhea after travel"
+            },
+            {
+              "id": "stool-afb-0730",
+              "action": "placed",
+              "order": "Stool modified acid-fast stain (Cryptosporidium/Cyclospora)",
+              "category": "lab",
+              "reason": "watery diarrhea after travel"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2025-07-30T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-30T10:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2025-07-30T13:15",
+              "body": "NEW PATIENT, ACUTE\n\nCC: watery diarrhea for 6 days.\n\nHPI: 32F, joined the practice this week. Got home roughly a week ago from ten days in southern Mexico for work. A lot of the trip was outdoor events, and she ate street food and drank local drinks there. Diarrhea began about 6 days ago; watery, as many as 8 times a day, with mild crampy belly pain. Never any blood or mucus, no tenesmus. No vomiting. No fever. Eating less than usual and wiped out, but says she has kept fluids up fine. Hasn't taken anything for it.\n\nPMH: none. Healthy, no immune problems.\nPSH: tonsillectomy at 12; wisdom teeth out at 21.\nMeds: none.\nAllergies: NKDA.\nFHx: mother hypothyroid. Father HTN. No immunodeficiency or GI disease in the family.\nSH: international business development, travels a fair amount. Married. Never smoker. Drinks socially, 1-2 a week. Runs for exercise.\n\nExam: vitals per flowsheet, afebrile. Looks tired. Mucous membranes dry. Neck supple. Heart regular, no murmur. Lungs clear. Abdomen soft, mildly tender diffusely, no guarding or rebound, normal bowel sounds, no hepatosplenomegaly. Skin warm, no rash.\n\nA/P:\n1. Acute watery diarrhea after travel to southern Mexico, day 6, nonbloody, afebrile. Mildly dry on exam but drinking. Bacterial pathogens vs parasite (crypto, cyclospora, giardia). Sending stool culture and modified acid-fast stain. BMP and CBC today.\n- Oral rehydration: ORS or broth plus salty crackers, aim to keep urine pale.\n- Hold off on loperamide until we know what this is.\n- Call or text same day for blood in stool, fever, or not keeping fluids down.\n2. Health maintenance: get prior records in, full physical in the fall.\n\nFollow-up: will call with stool results."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-30b",
+          "kind": "portal_message",
+          "start": "2025-07-30T18:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work from today",
+              "author": "PCP",
+              "date": "2025-07-30T18:10",
+              "body": "Hi Lauren, your electrolytes and kidney numbers came back normal, so the fluids are keeping up. Your white count is slightly high, which fits with a gut infection and isn't worrying by itself. Stool tests take a couple of days. I'll call you when they're in."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-01a",
+          "kind": "telephone",
+          "start": "2025-08-01T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Stool results",
+          "conditions": [
+            {
+              "label": "Cryptosporidiosis",
+              "icd10": "A07.2",
+              "action": "diagnosed",
+              "onset": "2025-07-24"
+            }
+          ],
+          "orders": [
+            {
+              "id": "stool-cx-0730",
+              "action": "done",
+              "date": "2025-08-01T08:50"
+            },
+            {
+              "id": "stool-afb-0730",
+              "action": "done",
+              "date": "2025-07-31T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Stool Results Call",
+              "author": "PCP",
+              "date": "2025-08-01T11:05",
+              "body": "Called pt with stool results. Culture: no bacterial pathogens. Modified AFB stain positive, oocysts c/w Cryptosporidium. Explained the diagnosis: a parasite picked up from food or water, usually clears on its own in 1-3 weeks in someone healthy. She is still having 5-6 watery stools a day, cramping a bit better, drinking well, no fever. Plan supportive: fluids/ORS, normal diet as tolerated. It spreads easily, so careful handwashing, don't cook for others while symptomatic, and no pools or hot tubs until 2 weeks after the diarrhea stops. She will message if not improving in a week or if she can't keep up with fluids."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "portal_message",
+          "start": "2025-08-13T07:52",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Update after cryptosporidium",
+          "conditions": [
+            {
+              "label": "Cryptosporidiosis",
+              "icd10": "A07.2",
+              "action": "resolved",
+              "onset": "2025-07-24"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Feeling better",
+              "author": "patient",
+              "date": "2025-08-13T07:52",
+              "body": "Quick update, the diarrhea finally stopped around Saturday the 9th and I've been eating normally since. Back in the office this week. Is there anything I need to do now or am I all set? Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Feeling better",
+              "author": "PCP",
+              "date": "2025-08-13T12:40",
+              "body": "Glad to hear it. Nothing more to do. No need to retest. Just stay out of pools until about the 23rd. We'll see you for your physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "outside_records",
+          "start": "2025-08-20T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior primary care records",
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "done",
+              "date": "2025-08-20T14:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2018-05-09T10:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-03-22T09:30",
+              "text": "Specimen: ThinPrep, satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care",
+              "author": "MA",
+              "date": "2025-08-20T14:30",
+              "body": "Scanned 23 pages from pt's previous PCP office (2016-2024). Abstracted:\n- Problem list: none active.\n- Meds: none.\n- Allergies: NKDA.\n- Pap with HPV 03/2023: NILM, HPV neg.\n- Immunizations: childhood series documented complete; HPV series x3 completed as teen; Tdap 05/2018. Flu shots most years.\n- Last physical there 03/2023, normal.\nForwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "annual_physical",
+          "start": "2025-10-08T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "labs": {
+              "White Blood Cells": 6.4,
+              "Total Cholesterol": 171
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-08T08:45",
+              "resulted": "2025-10-08T15:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-08T08:45",
+              "resulted": "2025-10-08T15:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-08T08:45",
+              "resulted": "2025-10-08T15:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-08T08:45",
+              "resulted": "2025-10-09T11:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T09:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-08T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T09:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-08T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-08T11:30",
+              "body": "ANNUAL PHYSICAL\n\nS: 32F here for her first full physical with us. Feels well. The cryptosporidium in July-August cleared in about two weeks without treatment and bowels have been normal since. Running 4-5 days a week, working up toward a marathon this winter. Travels for work every month or two. Sleep okay. Periods regular. No concerns today.\n\nPMH: cryptosporidiosis 7-8/2025, resolved.\nPSH: tonsillectomy age 12; third molars age 21.\nMeds: none. Allergies: NKDA.\nFHx: mom hypothyroidism; dad hypertension.\nSH: married, works in international business development. Never smoked. Alcohol 1-2 drinks/week.\n\nROS: negative x 12 systems.\n\nO: Vitals reviewed. Well, fit-appearing. HEENT: TMs clear, oropharynx normal, tonsils surgically absent. Neck: no thyroid enlargement, no lymphadenopathy. CV: RRR, no murmurs. Lungs: clear bilaterally. Abd: soft, nontender, no masses. Ext: no edema. Skin: no concerning lesions. Neuro: grossly nonfocal. Mood/affect normal.\n\nPHQ-2: 0.\n\nA/P: Healthy adult, preventive visit.\n- Pap/HPV co-test 3/2023 normal at prior office, next due 2028.\n- Tdap 2018, good until 2028.\n- Flu vaccine given today. Offered this season's COVID shot, she'll think about it.\n- One-time HIV and hep C screens, CBC (recheck the white count from July), CMP, lipids.\n- Hydration and fueling on long runs, especially when traveling somewhere hot.\nRTC 1 year, sooner as needed."
+            },
+            {
+              "type": "Immunization Note",
+              "title": "Vaccine Administration",
+              "author": "MA",
+              "date": "2025-10-08T09:05",
+              "body": "Influenza vaccine 0.5 mL IM left deltoid. Standard pre-vaccine questions answered, no contraindications. VIS provided. Tolerated without issue, observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "portal_message",
+          "start": "2025-10-10T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical lab results",
+              "author": "PCP",
+              "date": "2025-10-10T09:15",
+              "body": "Lauren, everything from Wednesday looks good. White count is back to normal, blood counts, kidney and liver tests are normal, and cholesterol is in a healthy range. HIV and hepatitis C screens were nonreactive. Those two only need doing once. See you next fall unless something comes up."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

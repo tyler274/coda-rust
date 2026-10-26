@@ -1,0 +1,1034 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002774",
+   "given": "Anjali",
+   "family": "Rahman",
+   "birth_date": "1970-05-03",
+   "address_line": "214 Mountain Laurel Road",
+   "phone": "+1-617-555-0102",
+   "email": "anjali.rahman@example.test",
+   "marital_status": "single",
+   "summary": "Administrative assistant from India who joins at 51 with six months of breathlessness and is found to have severe rheumatic mitral stenosis with heart failure. Paroxysmal atrial fibrillation follows in late 2022 and she is managed on warfarin, furosemide, metoprolol and potassium, with pulmonary hypertension in 2024 and an ICU stay for pulmonary edema in April 2026, after which her mitral valve is opened by balloon commissurotomy in June 2026.",
+   "events": [
+    {
+     "id": "2022-04-21a",
+     "kind": "telephone",
+     "start": "2022-04-21T13:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient scheduling",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "date": "2022-04-21T13:10",
+       "author": "front desk",
+       "body": "Caller is looking for a new primary care doctor and asked to be seen soon; says she has been getting short of breath for several months. Membership and insurance explained, she wants to enroll. New patient visit booked 5/2 at 9:40 with PCP. Records release for her previous primary care office emailed for signature. Advised ED or 911 for chest pain or breathing trouble at rest before then."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-02a",
+     "kind": "establish_care",
+     "start": "2022-05-02T09:40",
+     "end": "2022-05-02T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient; breathlessness for six months",
+     "conditions": [
+      {
+       "label": "Personal history of rheumatic fever",
+       "action": "history",
+       "onset": "1978-06-01",
+       "note": "Acute rheumatic fever at age 8, hospitalized in India; no long-term prophylaxis afterward",
+       "icd10": "Z86.79"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "furosemide 40 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Pulmonary congestion"
+      },
+      {
+       "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily with food",
+       "dose": {
+        "value": 20,
+        "unit": "meq"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Potassium replacement on furosemide"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-05-02T10:30",
+       "resulted": "2022-05-02T15:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-05-02T10:30",
+       "resulted": "2022-05-02T15:30",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 0.9
+        }
+       ]
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Administrative assistant"
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2022-05-02T10:15",
+       "text": "Sinus rhythm. Normal axis. P waves broad and notched in lead II with a prominent negative terminal component in V1. Normal intervals. No ST or T-wave abnormality.",
+       "conclusion": "Sinus rhythm with left atrial enlargement.",
+       "issued": "2022-05-02T10:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, high MDM",
+       "performed": "2022-05-02T09:40"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2022-05-02T10:15"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-05-02T10:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "tte-2022",
+       "action": "placed",
+       "order": "Transthoracic echocardiogram",
+       "category": "imaging",
+       "to": "Regional hospital echo lab",
+       "reason": "Apical diastolic murmur, dyspnea, history of rheumatic fever"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "date": "2022-05-02T10:40",
+       "author": "PCP",
+       "body": "NEW PATIENT VISIT\n\nCC: short of breath, getting worse since around November.\n\nHPI: 51 y/o woman, administrative assistant, originally from India (in the US about ten years), here to establish care. About six months of breathlessness on exertion that has crept up steadily. Now winded after one flight of stairs or a few minutes of brisk walking, which she could do without trouble a year ago. Has started propping herself on extra pillows to sleep and twice a week or so wakes up gasping and has to sit on the edge of the bed for a few minutes. Mild cough, mostly when she lies flat, not productive. No chest pain or pressure. No palpitations. No ankle or leg swelling. No fever.\n\nPMH: rheumatic fever at age 8 (around 1978) in India, hospitalized for it. No monthly or long-term penicillin afterward. No records from that time. No known heart or lung disease.\nPSH: tonsillectomy age 11 (1981). Wisdom teeth out age 22 (1992).\nMeds: none. No supplements.\nAllergies: NKDA.\nFH: father with hypertension, had a stroke at 70. Mother with type 2 diabetes and hypothyroidism. No congenital heart disease or rheumatic fever in the family.\nSH: never smoker, no alcohol, no drug use. Works full time as an administrative assistant. Lives in Williamsburg.\n\nExam:\nBP 120/75, HR 68 regular, RR 14, T 36.9, SpO2 97% RA. Wt 63.3 kg, Ht 157 cm, BMI 25.7.\nWell appearing, speaking full sentences. No JVD at 45 degrees. Lungs clear throughout, no crackles or wheeze. Heart regular. Low-pitched rumbling diastolic murmur at the apex, heard only after rolling her onto her left side; S1 normal. No other murmurs. Abd soft. No peripheral edema, extremities warm.\n\nECG (done today, my read): sinus rhythm, normal axis, broad notched P in II and deep terminal negative P in V1 = left atrial enlargement. No ST-T changes.\n\nA/P:\n1. Progressive exertional dyspnea with orthopnea and PND, apical diastolic rumble, LAE on ECG, childhood rheumatic fever. Strongly suspect rheumatic mitral stenosis with pulmonary venous congestion. Needs echo.\n- TTE ordered, regional hospital echo lab. Scheduled for Mon 5/9.\n- CBC, BMP, BNP drawn today.\n- Start furosemide 40 mg every morning and potassium chloride ER 20 mEq daily for the congestion. Recheck BMP when she comes back.\n- 2 g sodium diet, handout given. Asked her to buy a scale and weigh every morning, write it down.\n- Back 5/16 to go over echo. ED for chest pain, breathlessness at rest, fainting.\n2. History of rheumatic fever: as above.\n3. Health maintenance: records requested from prior primary care office. Will catch up screening and vaccines once I see what she's had."
+      },
+      {
+       "type": "Result Note",
+       "title": "B-type natriuretic peptide (BNP)",
+       "author": "lab",
+       "date": "2022-05-02T15:30",
+       "body": "B-TYPE NATRIURETIC PEPTIDE (BNP), plasma. Send-out test.\nCollected: 05/02/2022 10:30   Resulted: 05/02/2022 15:30\nResult: 150 pg/mL   H\nReference range: less than 100 pg/mL\nOrdering provider: PCP"
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab results",
+       "date": "2022-05-03T08:15",
+       "author": "PCP",
+       "body": "Results to patient via portal:\nHi Ms. Rahman, your blood counts are normal (hemoglobin 13.2). Kidney function and potassium are normal (creatinine 0.9, potassium 4.5), good baseline before the water pill. BNP came back 150 (normal is under 100). It is a heart strain marker and the mild rise fits with fluid backing up toward the lungs, which is what we are treating with the furosemide. Echo is Monday. Call or text if anything changes."
+      }
+     ],
+     "state": {
+      "bp": [
+       122,
+       78
+      ],
+      "hr": 74,
+      "spo2": 97,
+      "weight_kg": 63.4,
+      "height_cm": 157.5,
+      "labs": {
+       "Creatinine": 0.9,
+       "Hemoglobin": 13.2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ]
+    },
+    {
+     "id": "2022-05-06a",
+     "kind": "outside_records",
+     "start": "2022-05-06T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Records from prior primary care practice",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-18T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-08T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-11-20T10:00"
+      },
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-09T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care practice",
+       "date": "2022-05-06T11:20",
+       "author": "front desk",
+       "body": "Outside records received by fax from patient's previous primary care office (MA), 14 pages, scanned to chart. Abstracted for PCP:\n- Problem list there: none active. Rheumatic fever in childhood listed by history.\n- Medications: none.\n- Allergies: NKDA.\n- Cervical cytology with HPV co-test 2019: negative for intraepithelial lesion, HPV not detected.\n- Screening mammogram 2021: BI-RADS 1, negative.\n- Immunizations: Pfizer COVID-19 3/18/2021, 4/8/2021, booster 11/20/2021. Influenza 10/9/2021. No Tdap or pneumococcal on file.\n- Last seen there in 2021.\nImmunizations entered into our record."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-09a",
+     "kind": "imaging",
+     "start": "2022-05-09T08:30",
+     "service": "Regional hospital echo lab",
+     "reason": "Transthoracic echocardiogram",
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2022-05-09T08:30",
+       "text": "Transthoracic echocardiogram, complete 2D with color, spectral and tissue Doppler.\nIndication: apical diastolic murmur, exertional dyspnea, history of rheumatic fever.\nRhythm during study: sinus. Image quality: good.\n\nLeft ventricle: normal cavity size. Normal wall thickness. Normal systolic function, no regional wall motion abnormality. Ejection fraction 60% (biplane). Left ventricular end-diastolic pressure estimated normal.\nMitral valve: leaflets thickened with restricted excursion and diastolic doming of the anterior leaflet; orifice narrowed. Mitral valve area 1.2 cm² by 2D planimetry. Mean transmitral gradient 9 mmHg. No significant mitral regurgitation.\nLeft atrium: enlarged.\nAortic valve: trileaflet, opens normally. No aortic stenosis or regurgitation.\nRight heart: pulmonary artery systolic pressure estimated at 45 mmHg from the tricuspid regurgitant velocity plus estimated right atrial pressure.\nPericardium: no effusion.",
+       "conclusion": "Rheumatic mitral stenosis, severe: mitral valve area 1.2 cm² by planimetry, mean gradient 9 mmHg. Enlarged left atrium. Estimated PA systolic pressure 45 mmHg. Normal left ventricular size, wall thickness and systolic function, EF 60%. No significant mitral regurgitation. Normal aortic valve.",
+       "issued": "2022-05-09T13:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "tte-2022",
+       "action": "done",
+       "date": "2022-05-09T08:30"
+      }
+     ]
+    },
+    {
+     "id": "2022-05-11a",
+     "kind": "portal_message",
+     "start": "2022-05-11T19:42",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Patient message",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Echo done",
+       "date": "2022-05-11T19:42",
+       "author": "patient",
+       "body": "Hello doctor, I had the heart ultrasound on Monday. The water pill makes me run to the bathroom all morning but I am managing. My weight this week 63 kg every day. Should I keep taking both pills until I see you on Monday the 16th?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Echo done",
+       "date": "2022-05-12T07:30",
+       "author": "PCP",
+       "body": "Yes, keep taking both every morning. I have the echo report and want to go through it with you properly in person on Monday, there's a fair bit to explain. Taking the furosemide early in the day like you're doing is right. Steady weights are a good sign."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-16a",
+     "kind": "office_visit",
+     "start": "2022-05-16T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Echo results; diuretic follow-up",
+     "conditions": [
+      {
+       "label": "Rheumatic mitral stenosis",
+       "action": "diagnosed",
+       "onset": "2022-05-09",
+       "note": "Rheumatic heart disease, severe mitral stenosis",
+       "icd10": "I05.0"
+      },
+      {
+       "label": "Rheumatic heart failure",
+       "action": "diagnosed",
+       "onset": "2021-11-01",
+       "note": "Chronic heart failure from severe mitral stenosis, NYHA class III",
+       "icd10": "I09.81"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-05-16T15:40",
+       "resulted": "2022-05-16T20:40",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2022-05-16T15:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-05-16T15:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-2022",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "Severe rheumatic mitral stenosis with heart failure"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "date": "2022-05-16T15:45",
+       "author": "PCP",
+       "body": "Echo review / diuretic follow-up\n\nS: Two weeks on furosemide 40 and KCl 20. Taking both every morning, no missed doses. Urinating a lot until noon, no dizziness or cramps. Breathing about the same as at her first visit: still stops halfway up the stairs at work. Still sleeps propped up. Home weights 63.0-63.6 kg, steady. Keeping salt down, cooking at home.\n\nO: BP 120/81, HR 78 regular, SpO2 97% RA, wt 63.6 kg.\nLungs clear. Heart regular, apical diastolic rumble in left lateral decubitus as before. No edema.\n\nTTE 5/9 (regional hospital echo lab): thickened, doming mitral leaflets with narrowed orifice, MVA 1.2 cm² by planimetry, mean gradient 9 mmHg, LA enlarged, no significant MR, aortic valve normal. LV normal size/wall thickness/function, EF 60%, LVEDP estimated normal. PASP estimated 45 mmHg.\n\nA/P:\n1. Rheumatic heart disease with severe mitral stenosis. Fits the childhood rheumatic fever and the exam. Spent a long time explaining the valve to her with a drawing. Added to problem list.\n- Cardiology referral placed today, echo and ECG to go with it.\n2. Chronic heart failure due to the mitral stenosis, NYHA class III: comfortable at rest, symptoms with less than ordinary activity. LV function preserved, the problem is the valve. Added to problem list.\n- Continue furosemide 40 mg daily and KCl 20 mEq daily.\n- BMP today.\n- 2 g sodium, daily weights. Call if up more than 1 kg in a day or 2 kg in a week, or more short of breath.\n3. Elevated estimated PA systolic pressure (45 mmHg) on echo, from the back-pressure of the stenosed valve. Noted; cardiology to weigh in.\n4. Health maintenance: FIT kit given. Mammogram and vaccines at her physical.\nRTC about 3 months, sooner prn."
+      },
+      {
+       "type": "Result Note",
+       "title": "BMP result",
+       "date": "2022-05-17T09:05",
+       "author": "RN",
+       "body": "BMP on furosemide/KCl reviewed with PCP: K 4.5, creatinine 0.96, eGFR 71. No change. Pt notified by portal message, continue same doses."
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ]
+    },
+    {
+     "id": "2022-05-24a",
+     "kind": "telephone",
+     "start": "2022-05-24T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Referral",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cardiology referral sent",
+       "date": "2022-05-24T10:05",
+       "author": "front desk",
+       "body": "Cardiology referral faxed with 5/2 and 5/16 notes, ECG and 5/9 echo report. Cardiology office confirmed receipt, will contact the patient directly to schedule. Pt aware."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-13a",
+     "kind": "lab_only",
+     "start": "2022-06-13T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "FIT kit returned",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-06-11T08:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT result",
+       "date": "2022-06-13T10:00",
+       "author": "MA",
+       "body": "FIT returned by mail, collected 6/11. Result negative. Letter to patient: normal, repeat in one year."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-08a",
+     "kind": "office_visit",
+     "start": "2022-08-08T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Heart failure follow-up",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-08-08T10:50",
+       "resulted": "2022-08-08T15:50",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-08-08T10:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-08-08T10:50"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-08-08T10:55"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2022-08-08T10:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Heart Failure Follow-up",
+       "date": "2022-08-08T10:55",
+       "author": "PCP",
+       "body": "HF / mitral stenosis f/u\n\nDoing her usual. Breathless with one flight of stairs and carrying groceries, no worse since May. Still on 2 pillows, occasional night waking short of breath, maybe once a week. Weighs herself every morning, 63-64 kg on her log. Low salt, has stopped buying pickles and packaged snacks. No chest pain, no palpitations, no swelling. Taking furosemide and potassium daily.\n\nCardiology consult is on the books for mid-November.\n\nBP 124/77, HR 68 reg, SpO2 97% RA, wt 63.5 kg.\nComfortable. Lungs clear. Regular rhythm, apical diastolic rumble. No JVD. No edema.\n\nA/P:\n- Rheumatic mitral stenosis, severe, with chronic HF NYHA III: stable. Continue furosemide 40, KCl 20. BMP today.\n- PCV20 given today given her heart disease, VIS reviewed.\n- Physical in late September: flu, COVID booster, Tdap, mammogram."
+      },
+      {
+       "type": "Result Note",
+       "title": "BMP result",
+       "date": "2022-08-09T08:40",
+       "author": "RN",
+       "body": "K 4.6, Cr 0.96. Stable on furosemide/KCl, PCP reviewed. Portal note sent to pt."
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ]
+    },
+    {
+     "id": "2022-09-26a",
+     "kind": "annual_physical",
+     "start": "2022-09-26T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-26T09:10",
+       "resulted": "2022-09-26T14:10",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-26T09:10",
+       "resulted": "2022-09-26T14:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2022-09-26T08:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-09-26T09:10"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-09-26T09:15"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-09-26T09:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-09-26T09:16"
+      },
+      {
+       "vaccine": "Tdap",
+       "date": "2022-09-26T09:17"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "to": "Breast imaging",
+       "reason": "Routine screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "date": "2022-09-26T09:30",
+       "author": "PCP",
+       "body": "ANNUAL PREVENTIVE VISIT, age 52\n\nInterval: no new problems. Breathing unchanged from summer: limited on stairs and hills, fine at her desk. Sleeps on 2 pillows. Weights steady on home log. Taking furosemide and potassium daily. Cardiology in November.\n\nROS otherwise negative: no chest pain, palpitations, syncope, edema, bleeding, bowel change, breast lumps, mood change. \n\nPMH: rheumatic mitral stenosis (severe) with chronic HF NYHA III; childhood rheumatic fever.\nMeds: furosemide 40 mg daily, KCl ER 20 mEq daily.\nNKDA. Never smoker, no alcohol.\n\nBP 126/81, HR 73, RR 15, T 36.7, SpO2 96%, wt 63.5 kg.\nGeneral well. HEENT normal, no thyromegaly. Lungs clear. Heart regular, apical diastolic rumble in left lateral decubitus. Abd benign. Breast exam deferred to mammogram per pt preference. No edema. Skin normal. Mood bright.\n\nPHQ-9: 1.\n\nPrevention:\n- Cervical: co-test 2019 normal at prior practice, next due 2024.\n- Breast: mammogram 2021 normal, screening mammogram ordered.\n- Colon: FIT negative June 2022.\n- Hep C and HIV one-time screening sent today.\n- Lipids and A1c today (mother with T2DM, South Asian ancestry).\n- Vaccines today: influenza, COVID bivalent booster, Tdap (none on record). PCV20 done in August. Shingrix series to start this winter.\n\nA/P: healthy apart from the valve. Continue current meds. Follow-up after cardiology visit."
+      },
+      {
+       "type": "Result Note",
+       "title": "Physical labs",
+       "date": "2022-09-27T07:50",
+       "author": "PCP",
+       "body": "Portal message to pt: All normal. Total cholesterol 184, LDL 99, HDL 61, triglycerides 120. A1c 5.6, no diabetes. Hepatitis C and HIV screens negative, those don't need repeating. Mammogram is booked for Oct 5."
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 5.5,
+       "Total Cholesterol": 178
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ]
+    },
+    {
+     "id": "2022-10-05a",
+     "kind": "imaging",
+     "start": "2022-10-05T13:30",
+     "service": "Breast imaging",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2022-10-05T13:30",
+       "text": "Bilateral screening mammogram, CC and MLO views, with tomosynthesis. Compared with outside study from 2021.\nBreast composition: scattered areas of fibroglandular density (B).\nNo suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples normal. No axillary adenopathy.",
+       "conclusion": "BI-RADS 1: Negative. Routine screening mammogram recommended.",
+       "issued": "2022-10-06T09:10"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "done",
+       "date": "2022-10-05T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram result",
+       "date": "2022-10-06T14:00",
+       "author": "MA",
+       "body": "Screening mammogram 10/5 negative (BI-RADS 1). Normal result letter mailed and posted to portal."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-17a",
+     "kind": "hospital_admission",
+     "start": "2022-10-17T18:45",
+     "end": "2022-10-19T12:30",
+     "service": "Regional hospital — Medicine",
+     "reason": "Atrial fibrillation with rapid ventricular response",
+     "conditions": [
+      {
+       "label": "Paroxysmal atrial fibrillation",
+       "action": "diagnosed",
+       "onset": "2022-10-17"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Atrial fibrillation rate control"
+      },
+      {
+       "drug": "warfarin sodium 5 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily in the evening, or as directed by INR; INR goal 2.0-3.0",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Atrial fibrillation with mitral stenosis"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2022-10-17T18:50",
+       "bp": [
+        118,
+        76
+       ],
+       "hr": 136,
+       "rr": 20,
+       "temp_c": 36.8,
+       "spo2": 96
+      },
+      {
+       "time": "2022-10-17T22:30",
+       "bp": [
+        112,
+        72
+       ],
+       "hr": 104,
+       "rr": 18,
+       "spo2": 97
+      },
+      {
+       "time": "2022-10-18T08:00",
+       "bp": [
+        114,
+        74
+       ],
+       "hr": 92,
+       "rr": 16,
+       "temp_c": 36.7,
+       "spo2": 97
+      },
+      {
+       "time": "2022-10-19T08:00",
+       "bp": [
+        116,
+        74
+       ],
+       "hr": 84,
+       "rr": 16,
+       "temp_c": 36.6,
+       "spo2": 97
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-10-17T19:05",
+       "results": [
+        {
+         "test": "Troponin I, High Sensitivity"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-10-17T19:05",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-10-17T19:05",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.9
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 89
+        },
+        {
+         "test": "Mean Platelet Volume",
+         "value": 8.8
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-10-17T19:05",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2022-10-17T18:55",
+       "text": "12-lead ECG, emergency department.\nIrregularly irregular rhythm without discernible P waves. Ventricular rate about 135. Normal QRS duration and axis. No acute ST-segment elevation or depression.",
+       "conclusion": "Atrial fibrillation with rapid ventricular response.",
+       "issued": "2022-10-17T19:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2022-10-17T18:45"
+      },
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2022-10-17T23:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2022-10-19T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital Discharge Summary",
+       "date": "2022-10-20T09:15",
+       "author": "hospitalist",
+       "body": "Regional hospital, Department of Medicine. DISCHARGE SUMMARY (received by fax 10/20/2022)\n\nPatient: Anjali Rahman, 52F. Admitted 10/17/2022 via ED. Discharged 10/19/2022.\nAdmitting/discharge diagnosis: new-onset atrial fibrillation with rapid ventricular response, paroxysmal. Background severe rheumatic mitral stenosis with chronic heart failure.\n\nHistory: Presented to the ED the evening of 10/17 with palpitations that started suddenly that afternoon at work. Known severe rheumatic mitral stenosis (echo 5/2022, MVA 1.2 cm²) on furosemide and potassium; cardiology consult pending as outpatient.\nED: HR 136 irregular, BP 118/76, RR 20, T 36.8, SpO2 96% RA. ECG atrial fibrillation with RVR, no acute ST changes.\n\nHospital course: Rate controlled with IV metoprolol, then oral metoprolol, consolidated to metoprolol succinate 50 mg daily. HR 80s-90s by day 2. She remained in atrial fibrillation; rate controlled, so no cardioversion was attempted. Anticoagulation: atrial fibrillation in the setting of rheumatic mitral stenosis, warfarin is the agent of choice; started warfarin 5 mg daily, INR goal 2.0-3.0. Baseline INR 1.0. hs-troponin I 4 ng/L (normal). TSH 1.8 (normal). K 4.7, Cr 0.86, Hgb 12.9.\nDischarge vitals: HR 84 irregular, BP 116/74, SpO2 97% RA.\n\nDischarge condition: stable, in rate-controlled atrial fibrillation.\n\nDischarge medications:\n- metoprolol succinate ER 50 mg PO daily (NEW)\n- warfarin 5 mg PO every evening (NEW), target INR 2-3\n- furosemide 40 mg PO daily (continued)\n- potassium chloride ER 20 mEq PO daily (continued)\nAllergies: NKDA.\n\nFollow-up: PCP within one week for INR check and ongoing INR monitoring. Keep scheduled cardiology appointment. Return for bleeding, chest pain, fainting or worse breathlessness.\n\nAttending hospitalist, Department of Medicine"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 1.8,
+       "Troponin I, High Sensitivity": 4
+      }
+     }
+    },
+    {
+     "id": "2022-10-20b",
+     "kind": "telephone",
+     "start": "2022-10-20T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-discharge call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-discharge call",
+       "date": "2022-10-20T14:30",
+       "author": "RN",
+       "body": "Called pt after discharge summary received. Home since yesterday. Heart still \"a bit uneven\" but no racing like Monday. Picked up metoprolol succinate and warfarin from pharmacy, took both. Reviewed: warfarin every evening same time, no ibuprofen/naproxen/aspirin, Tylenol ok, call before any new med or antibiotic. Visit with PCP 10/25 at 11:00 with INR. Pt verbalized understanding."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-25a",
+     "kind": "office_visit",
+     "start": "2022-10-25T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up; atrial fibrillation; start INR monitoring",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-10-25T11:30",
+       "resulted": "2022-10-25T13:30",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-10-25T11:30",
+       "resulted": "2022-10-25T16:30",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2022-10-25T11:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-10-25T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Hospital Follow-up Visit",
+       "date": "2022-10-25T11:45",
+       "author": "PCP",
+       "body": "Post-hospital visit (TCM). Discharge summary from regional hospital reviewed; admitted 10/17-10/19.\n\nS: Went to the ED 10/17 with sudden palpitations, found in AF with RVR, rate controlled with metoprolol, no cardioversion. Started metoprolol succinate 50 and warfarin 5. Since home: aware of an irregular heartbeat at times but no racing. Breathing back to her usual (stairs slow her). No lightheadedness. No bleeding, no dark stools, no bruising. Taking all four meds. Weights 63-64 kg.\n\nO: BP 121/79, HR 82 irregularly irregular, SpO2 97% RA, wt 63.5 kg.\nLungs clear. Irregularly irregular rhythm, rate controlled; apical diastolic rumble. No edema.\n\nMeds reconciled with discharge list: metoprolol succinate ER 50 mg daily, warfarin 5 mg every evening, furosemide 40 mg daily, KCl ER 20 mEq daily.\n\nA/P:\n1. Paroxysmal atrial fibrillation, new this month, still in AF, rate controlled. Added to problem list. Continue metoprolol succinate 50.\n2. Anticoagulation with warfarin, goal INR 2-3 (AF + mitral stenosis). Monitoring here from now on. INR today, our RN will call with dosing.\nWarfarin teaching done today with pt: keep vitamin K foods steady week to week rather than avoiding them (she eats a lot of spinach and methi, keep portions consistent), signs of bleeding (black stools, blood in urine, nosebleed that won't stop, unusual bruising, bad headache), no NSAIDs or aspirin, check with us before any new prescription, antibiotic or herbal product. Written handout and INR log given.\n3. Rheumatic mitral stenosis, severe, chronic HF NYHA III: stable. BMP today. Continue furosemide/KCl.\n4. Cardiology consult 11/14.\nRTC 3 months; INR per RN."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "INR dosing",
+       "date": "2022-10-25T14:20",
+       "author": "RN",
+       "body": "INR 1.7, one week into warfarin: still below her goal of 2.0-3.0 (the lab H flag is against the off-warfarin reference range). Per PCP: take 7.5 mg (1.5 tablets) tonight only, then back to 5 mg every evening. Recheck INR 11/1. Called pt, she repeated instructions back. BMP K 4.5, Cr 0.92."
+      }
+     ],
+     "state": {
+      "hr": 90,
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 1.7
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ]
+    },
+    {
+     "id": "2022-11-01a",
+     "kind": "lab_only",
+     "start": "2022-11-01T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "INR check",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-11-01T08:10",
+       "resulted": "2022-11-01T10:40",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "INR",
+       "date": "2022-11-01T11:05",
+       "author": "RN",
+       "body": "INR 2.4, therapeutic. Continue warfarin 5 mg daily. Next INR in 4 weeks, 11/29. Pt informed via portal."
+      }
+     ],
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.4
+      }
+     }
+    },
+    {
+     "id": "2022-11-14a",
+     "kind": "specialist_visit",
+     "start": "2022-11-14T13:00",
+     "service": "Cardiology",
+     "reason": "Severe rheumatic mitral stenosis; atrial fibrillation",
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2022-11-14T13:40",
+       "text": "Limited transthoracic echocardiogram, cardiology office.\nMitral valve: thickened leaflets with restricted opening. Left atrium: enlarged. Left ventricle: normal size and systolic function.\nRhythm during study: atrial fibrillation.",
+       "conclusion": "Restricted rheumatic mitral valve opening with enlarged left atrium; normal LV size and function.",
+       "issued": "2022-11-14T16:10"
+      },
+      {
+       "study": "12-lead ECG",
+       "performed": "2022-11-14T13:10",
+       "text": "12-lead ECG, cardiology office.\nIrregularly irregular rhythm with no organized atrial activity. Ventricular rate below 100. QRS normal.",
+       "conclusion": "Atrial fibrillation, controlled ventricular rate.",
+       "issued": "2022-11-14T13:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-2022",
+       "action": "done",
+       "date": "2022-11-14T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Consultation",
+       "date": "2022-11-17T10:00",
+       "author": "cardiology",
+       "body": "CARDIOLOGY CONSULTATION (letter received 11/17/2022)\nRe: Anjali Rahman, DOB 05/03/1970\nSeen 11/14/2022 at the request of her primary care physician for severe rheumatic mitral stenosis.\n\nHistory: 52-year-old woman, emigrated from India about ten years ago, with rheumatic fever as a child (hospitalized, no secondary prophylaxis afterward). Over the past year she has become progressively more breathless with falling exercise tolerance, which led to her presentation to primary care in May and an echocardiogram showing severe mitral stenosis. She describes occasional palpitations. In October she was admitted to a regional hospital for atrial fibrillation of sudden onset, rate controlled and started on warfarin.\n\nCurrent medicines: warfarin 5 mg nightly (target INR 2-3); furosemide 40 mg each morning; metoprolol succinate ER 50 mg once a day; potassium chloride ER 20 mEq once a day. No known drug allergies.\nNever smoker, no alcohol.\n\nExamination: vital signs stable, heart rate irregular and below 100. Low-pitched apical diastolic rumble, brought out with her turned onto her left side, and an opening snap just after S2. Bibasilar crackles on lung auscultation.\n\nOffice echocardiogram: restricted mitral valve opening, enlarged left atrium; LV size and function normal.\nECG: irregularly irregular rhythm, atrial fibrillation with controlled rate.\n\nImpression:\n1. Severe rheumatic mitral stenosis, NYHA class III symptoms.\n2. Paroxysmal atrial fibrillation, currently in AF with controlled rate, on warfarin.\n\nPlan: no medication changes. Continue warfarin with INR 2.0-3.0, furosemide, metoprolol succinate and potassium chloride. INR monitoring to continue with her primary care office. Follow-up in cardiology clinic.\n\nAttending cardiologist"
+      }
+     ]
+    },
+    {
+     "id": "2022-11-29a",
+     "kind": "lab_only",
+     "start": "2022-11-29T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "INR check",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-11-29T08:20",
+       "resulted": "2022-11-29T10:50",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "INR",
+       "date": "2022-11-29T11:10",
+       "author": "RN",
+       "body": "INR 2.7. In range, continue 5 mg daily. Recheck 3 weeks (12/20, before the holidays). Portal msg sent."
+      }
+     ],
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.6
+      }
+     }
+    },
+    {
+     "id": "2022-12-20a",
+     "kind": "lab_only",
+     "start": "2022-12-20T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "INR check",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-12-20T08:15",
+       "resulted": "2022-12-20T10:45",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "INR",
+       "date": "2022-12-20T11:00",
+       "author": "RN",
+       "body": "INR 2.2, therapeutic. No change, warfarin 5 mg daily. Next INR with PCP visit 1/23."
+      }
+     ],
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.3
+      }
+     }
+    },
+    {
+     "id": "2022-12-20b",
+     "kind": "pharmacy",
+     "start": "2022-12-20T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request",
+       "date": "2022-12-20T15:20",
+       "author": "MA",
+       "body": "Pharmacy refill request: metoprolol succinate ER 50 mg and warfarin 5 mg, 90-day supply. Pended for PCP.\nPCP: approved both, 90 days with 1 refill. Sent."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

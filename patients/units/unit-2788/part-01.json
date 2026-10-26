@@ -1,0 +1,199 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002788",
+      "given": "Megan",
+      "family": "Larkin",
+      "birth_date": "1987-01-09",
+      "address_line": "41 Linden St, Apt 2",
+      "phone": "+1-201-555-0104",
+      "email": "megan.larkin@example.test",
+      "marital_status": "single",
+      "summary": "Graphic designer in her late thirties with lifelong mild persistent asthma and atopic dermatitis who joins in 2023. Progressive dyspnea in 2024 leads to pulmonology, basilar emphysema and PiZZ alpha-1 antitrypsin deficiency on weekly augmentation; in 2025 Raynaud-type episodes and hand stiffness lead to rheumatology and seropositive rheumatoid arthritis on hydroxychloroquine.",
+      "events": [
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Mild persistent asthma", "action": "history", "onset": "2012-06-01", "note": "Childhood asthma, quiet through teens, recurred mid-twenties"},
+            {"label": "Atopic dermatitis", "action": "history", "onset": "1995-01-01"}
+          ],
+          "medications": [
+            {"drug_text": "fluticasone propionate 0.11 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs twice daily, rinse mouth after use", "dose": {"value": 220, "unit": "mcg"}, "frequency": "BID", "route": "Inhalation", "course": "chronic", "reason": "Mild persistent asthma"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheeze or shortness of breath", "dose": {"value": 180, "unit": "mcg"}, "frequency": "PRN", "route": "Inhalation", "course": "chronic", "reason": "Mild persistent asthma"},
+            {"drug": "triamcinolone acetonide 1 MG/ML Topical Cream", "action": "historical", "sig": "Apply thin layer to affected areas twice daily during flares", "frequency": "BID", "route": "Topical", "course": "chronic", "reason": "Atopic dermatitis"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 61.2, "height_cm": 165.0, "labs": {"Total Cholesterol": 181, "Low Density Lipoprotein": 103, "High Density Lipoprotein": 63, "Triglycerides": 76}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-12T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T10:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-09-12T10:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Graphic designer"}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-12T10:10"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-09-12T09:20"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T10:05"},
+            {"procedure": "Immunization administration", "performed": "2023-09-12T10:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-09-12T09:20", "body": "NEW PATIENT VISIT\n\n36F graphic designer, works from home most days, moving her care here from her old practice. Main reason: wants one doctor she can reach. No acute concerns.\n\nASTHMA: had asthma as a kid, says she 'grew out of it' in high school, then it came back around 25 or so. Old PCP called it mild persistent and put her on fluticasone 110, 2 puffs BID; takes it every day, rinses after. Albuterol maybe once or twice a month, mostly with colds or cold air running. No nighttime symptoms, no ED visits or oral steroid bursts she can remember in years.\n\nECZEMA: lifelong, flares in the winter on the inner elbows and backs of knees. Triamcinolone cream BID during flares, a tube lasts her most of a winter.\n\nPMH: asthma, atopic dermatitis.\nPSH: T&A at age 7.\nMeds: fluticasone HFA 110 mcg 2 puffs BID; albuterol HFA 2 puffs q4-6h prn; triamcinolone 0.1% cream BID prn flares.\nAllergies: NKDA.\nFHx: father had emphysema, diagnosed in his mid-40s. Mother has eczema. Maternal aunt with rheumatoid arthritis.\nSH: never smoked, does not drink, no drugs. Lives in Holyoke. Graphic designer.\nGYN: Pap with HPV last year at the old office, normal per pt.\n\nROS: no dyspnea at baseline, no chronic cough, no chest pain, no joint pain, no weight change. Otherwise negative.\n\nEXAM: well appearing, in no distress.\nHEENT: TMs clear, oropharynx clear, tonsils surgically absent.\nNeck: supple, no adenopathy, no thyromegaly.\nLungs: clear, good air entry, no wheeze.\nCV: RRR, no murmur.\nAbd: soft, nontender.\nSkin: mild dry patches antecubital fossae bilaterally, no excoriation or infection.\nExt: no edema.\nPHQ-2: 0.\n\nA/P\n1. Mild persistent asthma: well controlled on current ICS. Continue fluticasone 110 2 puffs BID, albuterol prn. Asked her to let me know if she needs albuterol more than twice a week.\n2. Atopic dermatitis: quiet now. Triamcinolone prn, emollients daily.\n3. Health maintenance: baseline CBC, CMP, lipids, one-time HIV and HCV today. Flu vaccine given. Records request to prior practice for Pap and immunization dates. COVID booster when the new formula is out.\n\nRTC for physical in the spring."}
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2023-09-14T16:40", "body": "Hi Megan, your labs from Tuesday are back. Blood counts, kidney and liver tests, and cholesterol all look good, and the HIV and hepatitis C screens were negative. Nothing to change. Welcome to the practice."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T11:15",
+          "reason": "Records from prior primary care practice",
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-04-16T10:00"}],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2022-03-22T09:30", "text": "Specimen adequate for evaluation, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Summary", "author": "outside primary care", "date": "2023-09-26T11:15", "body": "Records received from prior primary care office (fax, 9 pages, mostly visit stubs and medication lists).\n\nSummary abstracted by MA:\n- Asthma: childhood asthma per history; symptoms recurred in her mid-twenties and she was treated as mild persistent asthma, on fluticasone HFA 110 mcg 2 puffs BID with albuterol prn since then.\n- Eczema: triamcinolone 0.1% cream prn.\n- Pap with HPV co-test 03/2022: NILM, HPV negative.\n- Tdap 04/2019.\n- Allergies: NKDA.\n\nNo PFTs or imaging in the packet. Scanned to media."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID vaccine",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T08:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T08:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization", "author": "RN", "date": "2023-10-17T08:45", "body": "Here for 2023-24 COVID vaccine. No fever today, no prior reactions beyond a sore arm. Pfizer 0.3 mL IM L deltoid, lot logged. Waited 15 min, fine. Card updated."}
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "pharmacy",
+          "start": "2024-01-23T13:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "MA", "date": "2024-01-23T13:05", "body": "Pharmacy fax: fluticasone HFA 110 mcg, no refills left. Last seen 9/12/23, on med list, controlled. Routed to PCP.\n\nPCP: approved, 90-day supply with 3 refills."}
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Asthma check",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "portal_message",
+          "start": "2024-03-05T20:12",
+          "documents": [
+            {"type": "Patient Message", "title": "Eczema cream", "author": "patient", "date": "2024-03-05T20:12", "body": "Hi, my eczema has been bad this winter, mostly both elbows and behind my knees, itchy at night. I'm almost out of the triamcinolone. Could you send a new tube? Sorry I cancelled last month, deadline week."},
+            {"type": "Patient Message", "title": "RE: Eczema cream", "author": "PCP", "date": "2024-03-06T08:31", "body": "No problem at all. I sent a larger tube of the triamcinolone to your pharmacy. Twice a day on the patches for up to two weeks, then back off, and keep a thick moisturizer on after showers. If it looks weepy, crusted or isn't settling in two weeks, send a photo or come in. We'll catch up at your physical in May."}
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "annual_physical",
+          "start": "2024-05-21T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-05-21T08:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-05-21T08:35", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-05-21T08:00"},
+            {"procedure": "Venipuncture", "performed": "2024-05-21T08:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-05-21T08:00", "body": "ANNUAL PREVENTIVE VISIT\n\nS: 37F feeling well. Asthma: daily fluticasone, albuterol a handful of times since the fall, none in the past month. Eczema calmed down once the heat came on less, using the cream rarely now. Sleeping OK, busy with freelance work on top of her job. Walks most evenings.\n\nMeds: fluticasone HFA 110 2 puffs BID, albuterol prn, triamcinolone cream prn.\nAllergies: NKDA.\nSH: never smoker, no alcohol.\n\nROS: no cough, no exertional dyspnea, no wheeze at night, no joint complaints. Negative otherwise.\n\nExam: NAD.\nHEENT normal. Neck no nodes or thyroid enlargement.\nLungs clear bilaterally, no wheeze.\nHeart regular, no murmurs.\nAbdomen soft, no masses.\nSkin: a few faint dry patches L antecubital, otherwise clear.\nExt warm, no edema.\nPHQ-2: 0.\n\nA/P\n- Health maintenance: Pap/HPV 2022 normal, next due 2027. Tdap 2019. Flu and COVID up to date for the season. CBC and CMP today.\n- Asthma: controlled, no change.\n- Eczema: emollients, cream prn.\n\nReturn in a year, sooner prn."}
+          ]
+        },
+        {
+          "id": "2024-05-23a",
+          "kind": "portal_message",
+          "start": "2024-05-23T12:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2024-05-23T12:20", "body": "Megan, your blood count and chemistry panel from the physical are normal. Have a good summer."}
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "office_visit",
+          "start": "2024-09-24T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shortness of breath and cough",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "orders": [
+            {"id": "pulm-referral", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "Progressive exertional dyspnea and chronic productive cough despite ICS"}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-09-24T11:20"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-09-24T10:40"},
+            {"procedure": "Immunization administration", "performed": "2024-09-24T11:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-09-24T10:40", "body": "S: 37F with asthma here because her breathing has been getting worse since around early June. Notices it walking up the hill to the bus and carrying groceries up to her apartment, has stopped her evening walks the last few weeks. Coughs every day now, brings up clear phlegm, worse in the mornings. No fever, no chest pain, no hemoptysis, no leg swelling, no weight loss. Says she has not missed fluticasone doses. Albuterol now a few times a week, helps a little but not like it used to. No sick contacts. No new pets, no mold at home, no change at work (desk job). Never smoked, no vaping.\n\nFHx reviewed: father with emphysema in his 40s.\n\nO: comfortable at rest, speaks full sentences.\nLungs: air movement fair, prolonged expiratory phase, no crackles, no focal findings.\nCV: regular, no murmur, no JVD.\nExt: no edema, no clubbing.\n\nA/P\n1. Progressive exertional dyspnea and daily productive cough in an adherent asthmatic, several months, never smoker. Not behaving like her usual asthma. Referring to pulmonology for full evaluation including PFTs and imaging; asked them to see her soon. Continue fluticasone and albuterol in the meantime; ED or call if dyspneic at rest.\n2. Flu vaccine given today.\n\nRTC after pulmonology."}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID vaccine",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-22T16:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-22T16:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization", "author": "RN", "date": "2024-10-22T16:15", "body": "2024-25 COVID vaccine, Moderna 0.5 mL IM R deltoid. Pt asked about pulmonology wait; front desk called referral line, appt 12/4. Observed 15 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2024-12-16a",
+          "kind": "outside_records",
+          "start": "2024-12-16T14:30",
+          "reason": "Pulmonology consult letter",
+          "conditions": [
+            {"label": "Emphysema", "icd10": "J43.9", "action": "diagnosed", "onset": "2024-12-04", "note": "Basilar-predominant on chest x-ray at pulmonology"}
+          ],
+          "orders": [{"id": "pulm-referral", "action": "done", "date": "2024-12-16T14:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Consultation", "author": "pulmonology", "date": "2024-12-16T14:30", "body": "OUTSIDE PULMONOLOGY CONSULTATION\nDate of visit: 12/04/2024\nReferred by: primary care\n\nThank you for sending Ms. Larkin, a 37-year-old never smoker with asthma, for evaluation of worsening breathlessness.\n\nShe describes half a year of steadily increasing shortness of breath and a daily cough raising clear sputum, despite taking her inhaled fluticasone faithfully. No smoking history and no occupational dust or fume exposure. Her father was diagnosed with emphysema at 44.\n\nMedications: fluticasone HFA 110 mcg 2 puffs twice daily; albuterol HFA as needed; triamcinolone cream for eczema.\nAllergies: NKDA.\n\nExam: breath sounds diminished at both bases with a prolonged expiratory phase.\n\nData:\n- CBC within normal limits.\n- Chest radiograph: hyperinflated lungs with emphysematous change most marked at the bases.\n- Spirometry: FEV1/FVC 65% (normal >70%), consistent with obstruction; minimal response to bronchodilator.\n\nImpression: fixed airflow obstruction with lower-zone emphysema in a young never smoker with a father who had early emphysema. This pattern raises strong concern for alpha-1 antitrypsin deficiency. A serum alpha-1 antitrypsin level was drawn today and is pending; we will phenotype if it is low.\n\nPlan: continue current inhalers. Will call her with results and see her back in about six weeks with full PFTs.\n\nPulmonology"}
+          ]
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "portal_message",
+          "start": "2024-12-20T09:02",
+          "conditions": [
+            {"label": "Alpha-1-antitrypsin deficiency", "action": "diagnosed", "onset": "2024-12-19", "note": "PiZZ per pulmonology; level and phenotype copy requested"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Alpha-1 results", "author": "patient", "date": "2024-12-20T09:02", "body": "Hi, the lung doctor's office called yesterday. They said my alpha-1 level is really low and the genetic type came back ZZ, so I have alpha-1 antitrypsin deficiency. I see them again in January. I'm honestly a little freaked out and wondering if this is what my dad had. Can we talk about it before then?"},
+            {"type": "Patient Message", "title": "RE: Alpha-1 results", "author": "PCP", "date": "2024-12-20T12:47", "body": "Megan, thank you for letting me know, and I'm sorry, that is a lot to take in right before the holidays. It does explain the breathing changes, and it is very possible it is what your father had. There is treatment for this and pulmonology will walk you through it. I've asked their office to fax the results to us. Let's sit down early January; the front desk will reach out with a time. Keep using your inhalers as you have been."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,704 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001684",
+      "given": "Gladys",
+      "family": "Perez",
+      "birth_date": "1992-01-15",
+      "address_line": "112 Hancock Street, Apt 2",
+      "phone": "+1-860-555-0193",
+      "email": "gladys.perez@example.test",
+      "marital_status": "married",
+      "summary": "34-year-old retail store manager with iron deficiency anemia on oral iron and obesity, two prior cesareans before joining in 2021. Three pregnancies under the practice each ended in uterine rupture at term at an outside hospital (2023, 2024, 2026); the third required cesarean hysterectomy and transfusion. Now recovering with improving hemoglobin.",
+      "events": [
+        {
+          "id": "2021-08-31a",
+          "kind": "telephone",
+          "start": "2021-08-31T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2021-08-31T10:20",
+              "body": "Caller is Gladys Perez, 29, wants to join the practice. Moved her care after her last doctor's office stopped taking her Medicaid plan. Had a baby in March by C-section, says she is doing fine, takes iron and vitamins. Asked if we can see her in the evening because she works at the store until 6 most days. Offered Tues 9/14 at 4:30, she took it. Sent new patient packet and records release to her email. Reminded her to bring all pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T16:30",
+          "end": "2021-09-14T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "history",
+              "onset": "2018-12-01",
+              "note": "On oral iron since her first pregnancy"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "history",
+              "onset": "2017-01-01",
+              "note": "BMI 34"
+            },
+            {
+              "label": "History of uterine scar from previous surgery",
+              "icd10": "Z98.891",
+              "action": "history",
+              "onset": "2019-04-01",
+              "note": "Low transverse cesarean section x2, 2019 and 2021"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin with iron Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            },
+            {
+              "drug_text": "calcium carbonate 1500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (600 mg calcium) by mouth twice daily",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "type": "allergy",
+              "criticality": "low"
+            }
+          ],
+          "state": {
+            "weight_kg": 87.0,
+            "height_cm": 160.0,
+            "labs": {
+              "Hemoglobin": 11.1,
+              "Mean Corpuscular Volume": 78,
+              "Hematocrit": 34.0,
+              "Thyroid Stimulating Hormone": 1.6,
+              "Total Cholesterol": 172
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 34,
+                  "unit": "ug/dL"
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 412,
+                  "unit": "ug/dL"
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 8,
+                  "unit": "%"
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 10,
+                  "unit": "ng/mL"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3,
+                  "unit": "%"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retail store manager"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T12:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-11T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T16:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-2021",
+              "action": "placed",
+              "order": "Request records from prior primary care practice",
+              "category": "procedure",
+              "reason": "Establish care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-14T17:45",
+              "body": "NEW PATIENT — establish care\n\n29F here to set up primary care. Last PCP was a family practice in town; leaving because of insurance. She is 6 months out from her second C-section (March 2021). Feels well. Main ongoing issue is anemia — told she was low on iron with her first pregnancy in 2019 and has been on iron ever since. Takes ferrous sulfate three times a day, a prenatal vitamin with iron, and calcium twice a day, all of which her OB started and she has kept going. No other complaints today.\n\nPMH: iron deficiency anemia; obesity.\nPSH: low transverse cesarean x2 — 2019 and March 2021. No other surgery.\nOB: two deliveries, both by cesarean, both term per pt.\nMeds: prenatal vitamin with iron 1 tab daily; ferrous sulfate 325 mg TID; calcium carbonate 600 mg BID.\nAllergies: SULFA drugs (reaction not recorded).\nFHx: mother needed a C-section for placenta previa. Maternal aunt had a uterine rupture during labor. No other family history she knows of.\nSHx: manages a retail store, long shifts on her feet. Married, lives in Springfield. Never smoked. No alcohol. No drugs.\nImmunizations: COVID Pfizer x2 this spring (April and May, at the pharmacy). Flu shot usually yearly.\n\nROS: no chest pain, no dyspnea, no palpitations, no abdominal pain. Neg otherwise per intake form.\n\nExam: vitals as recorded. Ht 159.5 cm, wt 87.5 kg, BMI 34.4.\nGen: pleasant, no distress.\nHEENT: conjunctivae slightly pale, oropharynx clear.\nNeck: supple, thyroid not enlarged.\nCV: regular, no murmur.\nLungs: clear.\nAbd: soft, nontender, healed low transverse incision.\nExt: warm, no edema.\nSkin: no rash.\nPsych: normal mood and affect.\n\nPHQ-2: 0.\n\nA/P\n1. Iron deficiency anemia on oral iron — CBC and iron studies today. Continue ferrous sulfate 325 TID for now.\n2. Obesity, BMI 34 — discussed in general terms, she is busy with two small kids and work; will revisit.\n3. Hx cesarean x2 — noted.\n4. Health maintenance — CMP, TSH, A1c, lipids. Offered one-time HIV and hep C screen, she agreed. Pap: says last one was 2019 and normal, will confirm with records. Flu shot next month when stock arrives.\n5. Records request to prior practice signed today.\n\nRTC 6 months, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Results from new patient labs",
+              "author": "PCP",
+              "date": "2021-09-16T08:40",
+              "body": "Hi Gladys, your labs from Tuesday are in. Your blood count is still a little low (hemoglobin 11.3) and your iron stores are low (ferritin 10), which fits with having had a baby in March. Keep taking the iron three times a day with the vitamin. Kidney, liver, sugar, thyroid and cholesterol all look fine, and the HIV and hepatitis C tests are negative. We'll recheck the blood count in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "outside_records",
+          "start": "2021-09-28T13:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior practice records received",
+          "orders": [
+            {
+              "id": "records-2021",
+              "action": "done",
+              "date": "2021-09-28T13:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "MA",
+              "date": "2021-09-28T13:05",
+              "body": "38 pages received by fax from prior family practice, scanned to media. Summary for PCP:\n- Problem list: iron deficiency anemia (noted during 2019 pregnancy), obesity.\n- Surgical: cesarean delivery 04/2019; repeat low transverse cesarean 03/2021 (operative notes not included, discharge summary from 2021 included — uncomplicated repeat cesarean).\n- Meds on file: prenatal vitamin with iron, ferrous sulfate 325 mg TID, calcium carbonate 600 mg BID.\n- Allergy: sulfa.\n- Pap smear 08/2019: negative for intraepithelial lesion or malignancy.\n- Last CBC 05/2021: hemoglobin low, on oral iron.\nNothing else of note. Records request closed."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-13a",
+          "kind": "nurse_visit",
+          "start": "2021-10-13T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-13T17:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-13T17:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "author": "RN",
+              "date": "2021-10-13T17:20",
+              "body": "Here after work for flu vaccine. Not breastfeeding per pt. No fever today, no prior vaccine reactions. Sulfa allergy noted, not relevant. Quadrivalent flu 0.5 mL IM R deltoid, VIS provided. Tolerated without issue, waited 15 min, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "pharmacy",
+          "start": "2021-12-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Ferrous sulfate refill",
+              "author": "MA",
+              "date": "2021-12-07T11:00",
+              "body": "Pharmacy fax: ferrous sulfate 325 mg tab, 1 TID, #90 x 5 refills requested — prior Rx was from outside prescriber. Pended for PCP.\n\nPCP: approved, sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "office_visit",
+          "start": "2022-03-08T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "author": "front desk",
+              "date": "2022-03-08T17:05",
+              "body": "Pt did not arrive for 4:30 appt. Called cell, left VM to reschedule. Text sent as well."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "office_visit",
+          "start": "2022-03-22T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia follow-up",
+          "state": {
+            "weight_kg": 88.0,
+            "labs": {
+              "Hemoglobin": 11.7,
+              "Mean Corpuscular Volume": 80,
+              "Hematocrit": 35.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-22T17:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-03-22T17:10",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 48,
+                  "unit": "ug/dL"
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 388,
+                  "unit": "ug/dL"
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 12,
+                  "unit": "%"
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 18,
+                  "unit": "ng/mL"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-22T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2022-03-22T17:25",
+              "body": "S: Back for anemia check, missed the slot two weeks ago because of inventory at work. Taking ferrous sulfate three times a day plus the prenatal and calcium. Energy okay. No bleeding issues she has noticed.\n\nO: Vitals reviewed. Wt 87.4 kg.\nNo pallor today. Heart regular, lungs clear. Abd soft.\n\nA/P: Iron deficiency anemia — repeat CBC and iron panel today, expect slow improvement. Continue current iron. Obesity — weight about the same, we talked about walking on her days off. Physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "portal_message",
+          "start": "2022-03-24T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count and iron",
+              "author": "PCP",
+              "date": "2022-03-24T12:15",
+              "body": "Gladys — hemoglobin is up to 12.4 from 11.3, which is in the normal range, and ferritin is 18, up from 10. Iron stores are still on the low side, so moving in the right direction but not done. Same iron dose, recheck at your physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood count and iron",
+              "author": "patient",
+              "date": "2022-03-24T19:48",
+              "body": "ok thank you!! will keep taking them"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "pharmacy",
+          "start": "2022-06-21T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prenatal vitamin coverage",
+              "author": "MA",
+              "date": "2022-06-21T09:30",
+              "body": "Pharmacy reports Medicaid plan now needs a prescription on file for the prenatal vitamin with iron to cover it (previously filled from old OB Rx, expired). Pended new Rx, 1 tab daily, #30 x 11 for PCP. PCP signed. Pharmacy notified, claim went through."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "annual_physical",
+          "start": "2022-10-18T16:00",
+          "end": "2022-10-18T16:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 88.6,
+            "labs": {
+              "Hemoglobin": 12.0,
+              "Mean Corpuscular Volume": 82,
+              "Hematocrit": 36.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-18T16:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-10-18T16:45",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 55,
+                  "unit": "ug/dL"
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 372,
+                  "unit": "ug/dL"
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 15,
+                  "unit": "%"
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 21,
+                  "unit": "ng/mL"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-18T16:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-18T16:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-18T16:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2,
+                  "unit": "%"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-10-18T16:30",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T16:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-18T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-10-18T17:20",
+              "body": "ANNUAL PREVENTIVE VISIT\n\n30 y/o here for physical. Doing well. Still on ferrous sulfate TID, prenatal with iron, calcium BID. No new symptoms. Kids are 3 and 1 now, work is busy with the holiday season starting.\n\nMeds and allergies reviewed (sulfa). Never smoker, no alcohol.\n\nExam: Wt 89.1 kg. Well appearing.\nHEENT normal. Neck supple, no thyroid enlargement.\nHeart: RRR, no murmur. Lungs: clear bilat.\nBreasts: deferred per pt preference, no concerns.\nAbd: soft, nontender, well-healed Pfannenstiel scar.\nPelvic: normal external genitalia, cervix normal appearing, Pap/HPV collected.\nExt: no edema.\n\nPHQ-2: 1.\n\nA/P\n- Preventive: Pap with HPV co-test today (last 2019 normal). CBC, iron, CMP, lipids, A1c.\n- Iron deficiency anemia: recheck today on TID iron.\n- Obesity: wt 89.1, up slightly. Encouraged activity, fewer sugary drinks at work.\n- Flu and bivalent COVID booster given today.\nRTC 1 year or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-21a",
+          "kind": "portal_message",
+          "start": "2022-10-21T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical results",
+              "author": "PCP",
+              "date": "2022-10-21T10:05",
+              "body": "Good news on the physical labs. Hemoglobin 12.4, same as March, and ferritin 21, the best it has been since you joined us. Sugar, cholesterol, kidney and liver normal. Your Pap and HPV test are both negative, so the next one isn't due for 5 years. Keep going with the iron."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

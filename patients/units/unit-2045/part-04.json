@@ -1,0 +1,1388 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002045",
+      "events": [
+        {
+          "id": "2025-01-06a",
+          "kind": "portal_message",
+          "start": "2025-01-06T19:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Update after neurosurgery visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Post-op visit",
+              "author": "patient",
+              "date": "2025-01-06T19:20",
+              "body": "Saw the neurosurgeon today, she said the nose is healing fine and I can go back to the gym slowly. Still on hydrocortisone twice a day. See you on the 29th."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Noted",
+              "author": "RN",
+              "date": "2025-01-07T08:30",
+              "body": "Noted. Awaiting neurosurgery post-op note."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-29a",
+          "kind": "office_visit",
+          "start": "2025-01-29T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after pituitary surgery",
+          "vitals": {
+            "bp": [
+              140,
+              88
+            ]
+          },
+          "state": {
+            "bp": [
+              140,
+              88
+            ],
+            "weight_kg": 104.0,
+            "labs": {
+              "Hemoglobin A1c": 7.0,
+              "Glucose": 124
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-29T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-29T16:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung cancer screening, 36 pack-years"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-29T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-29T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-01-29T16:20",
+              "body": "Seven weeks out from the pituitary surgery. Energy slowly coming back. Face less full, he says pants are looser. Back soreness easing. Nose healed. On hydrocortisone 10 BID, no missed doses, no illnesses. Neurosurgery post-op visit went fine. Endocrinology next week.\n\nPack a day.\n\nExam: BP 140/88, better than the fall. Weight down a bit more. Face less round. Striae fading to pink. Lungs clear. Heart regular.\n\nA/P\n- Cushing disease s/p resection, on replacement hydrocortisone - endocrinology to taper.\n- HTN improving, continue lisinopril 10.\n- T2DM: A1c 7.0 today, coming down from 7.4. Metformin same.\n- Lung screening CT due in March - ordered.\n- Tobacco counseled."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "specialist_visit",
+          "start": "2025-02-04T11:20",
+          "service": "Endocrinology",
+          "reason": "Post-operative Cushing disease",
+          "vitals": {
+            "weight_kg": 103.0
+          },
+          "state": {
+            "weight_kg": 103.0
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "medications": [
+            {
+              "drug_text": "hydrocortisone 10 MG Oral Tablet",
+              "action": "stop"
+            },
+            {
+              "drug_text": "hydrocortisone 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning. Double the dose if sick with fever or vomiting.",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "adrenal insufficiency after pituitary surgery"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "author": "endocrinology",
+              "date": "2025-02-07T09:50",
+              "body": "Endocrinology Clinic - 02/04/2025\nRe: Eric Strong\n\nDear Doctor,\n\nMr. Strong is eight weeks past transsphenoidal resection of his ACTH-staining adenoma. The post-operative morning cortisol of 1.2 ug/dL indicates remission. He feels better week by week; weight is down to 103 kg. No symptoms of under-replacement.\n\nCurrent: hydrocortisone 10 mg twice daily, metformin 1000 mg BID, lisinopril 10, atorvastatin 20, olanzapine 10 qhs, vitamin D3 1000 units. NKDA.\n\nPlan:\n- Reduce hydrocortisone to 10 mg each morning only. Sick-day rules unchanged.\n- I'll check a morning cortisol off hydrocortisone in a few months to see if his own adrenal function has recovered.\n- Bone: DXA showed low bone mass (L2-L4 T -2.2, femoral neck -1.7, total hip -1.3). Bone density usually recovers substantially once cortisol is normal, so I'll hold off on bone medication and repeat DXA a year after remission, around November 2026. Continue vitamin D and dietary calcium.\n- Diabetes: metformin unchanged.\n\nSincerely,\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "imaging",
+          "start": "2025-03-18T16:45",
+          "service": "Radiology",
+          "reason": "Lung cancer screening CT",
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-03-18T16:45"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-03-18T16:45",
+              "text": "Indication: annual lung cancer screening, current smoker.\nTechnique: low-dose noncontrast chest CT.\nComparison: 03/12/2024.\nFindings: No pulmonary nodules. Lungs clear. Central airways patent. No effusion. Normal heart size, no pericardial effusion. No adenopathy. Known L1 compression deformity.",
+              "conclusion": "Lung-RADS 1: negative. Annual low-dose CT in 12 months."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CT result",
+              "author": "PCP",
+              "date": "2025-03-19T12:00",
+              "body": "Lung CT clear again, no nodules. Next one in a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "annual_physical",
+          "start": "2025-04-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "weight_kg": 101.0
+          },
+          "state": {
+            "bp": [
+              132,
+              84
+            ],
+            "weight_kg": 101.0,
+            "labs": {
+              "Hemoglobin A1c": 6.5,
+              "Glucose": 110,
+              "Low Density Lipoprotein": 128,
+              "High Density Lipoprotein": 42,
+              "Triglycerides": 160,
+              "Total Cholesterol": 202
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-24T08:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-04-24T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 202
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 42
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 160
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-24T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.5
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-24T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-04-24T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-24T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-04-24T08:50",
+              "body": "Annual. 51.\n\nBig year: Cushing disease from a pituitary adenoma, resected in December, now on hydrocortisone 10 mg each morning with endocrinology tapering. Feels close to his old self. Weight 101, down nearly 7 kg from the fall. Legs stronger on stairs. Back pain has mostly faded.\n\nDiabetes on metformin. BP better. Psoriasis quiet. Knee: ibuprofen a few times a week like always. Lung CT in March clear. Still a pack a day.\n\nMeds: hydrocortisone 10 qAM, metformin 1000 BID, lisinopril 10, atorvastatin 20, olanzapine 10 qhs, vitamin D3 1000 units, ibuprofen prn, clobetasol prn. NKDA.\n\nExam: BP 132/84. Face no longer round. Striae pale. Heart RRR. Lungs clear. Abdomen soft. Feet: intact, monofilament normal. Strength full at the hips now. No edema.\n\nA/P\n1. Cushing disease, in remission on replacement, per endocrinology.\n2. T2DM - A1c, urine albumin today. Eye exam in June.\n3. HTN - at goal on lisinopril.\n4. Lipids today.\n5. Tobacco - counseled.\n6. Vaccines up to date. Colon 2022. PHQ-2 negative."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-28a",
+          "kind": "portal_message",
+          "start": "2025-04-28T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2025-04-28T10:10",
+              "body": "A1c 6.5, down from 7.0 in January. Kidney and liver tests normal, blood count normal, urine albumin normal. LDL 128, HDL 42, triglycerides 160. Good trends."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "specialist_visit",
+          "start": "2025-06-10T08:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal recovery check",
+          "vitals": {
+            "weight_kg": 99.0
+          },
+          "state": {
+            "weight_kg": 99.0,
+            "bp": [
+              130,
+              84
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "conditions": [
+            {
+              "label": "ACTH-producing pituitary adenoma",
+              "icd10": "E24.0",
+              "action": "resolved",
+              "note": "resected 12/2024, in remission"
+            },
+            {
+              "label": "Compression fracture of L1 vertebra",
+              "icd10": "M48.56XA",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydrocortisone 10 MG Oral Tablet",
+              "action": "stop"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-10T08:00",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 11.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "author": "endocrinology",
+              "date": "2025-06-13T13:15",
+              "body": "Endocrinology Clinic - 06/10/2025\nRe: Eric Strong\n\nDear Doctor,\n\nMr. Strong held his hydrocortisone for 24 hours before this morning's draw. Morning cortisol 11.6 ug/dL - his own adrenal function has recovered.\n\nHe feels well. Weight 99 kg. Cushingoid features have largely resolved. Back pain gone.\n\nPlan:\n- Stop hydrocortisone. Keep a few tablets at home for the next couple of months in case of serious illness, and call us if he becomes very fatigued, lightheaded or nauseated.\n- Cushing disease in remission. Yearly surveillance for recurrence; next visit in about a year with a 24-hour urine free cortisol.\n- Repeat DXA in November 2026. Continue vitamin D.\n- Metformin unchanged.\n\nAllergies: NKDA.\n\nSincerely,\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-16a",
+          "kind": "portal_message",
+          "start": "2025-06-16T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medication update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Off the steroid",
+              "author": "patient",
+              "date": "2025-06-16T09:05",
+              "body": "Endo says my cortisol is back on its own and I can stop the hydrocortisone. Please take it off my list."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Med list",
+              "author": "MA",
+              "date": "2025-06-16T11:30",
+              "body": "Hydrocortisone removed from active list per endocrinology letter of 6/13."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "outside_records",
+          "start": "2025-06-24T11:30",
+          "service": "Optometry",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam",
+              "author": "optometry",
+              "date": "2025-06-24T11:30",
+              "body": "Optometry - diabetic eye exam\nDate of exam: 06/20/2025\nPatient: Eric Strong\nDilated exam both eyes: no diabetic retinopathy. Optic discs and macula normal. IOP normal.\nPlan: annual dilated exam.\nAllergies: NKDA"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "portal_message",
+          "start": "2025-08-18T08:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill and scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Metformin and appointment",
+              "author": "patient",
+              "date": "2025-08-18T08:05",
+              "body": "Mail order says my metformin needs a new prescription. Also can I get my flu shot at my next visit instead of a separate trip?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Reply",
+              "author": "MA",
+              "date": "2025-08-18T11:40",
+              "body": "Metformin 1000 mg BID, 90 days x 3, sent to mail order. Told him flu vaccine arrives in September and can be done at any visit or nurse visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "ed_visit",
+          "start": "2025-10-17T14:10",
+          "service": "Emergency Medicine",
+          "reason": "Black stools and epigastric pain",
+          "vitals": [
+            {
+              "time": "2025-10-17T14:15",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 98,
+              "rr": 18,
+              "temp_c": 36.8,
+              "spo2": 98
+            },
+            {
+              "time": "2025-10-17T17:30",
+              "bp": [
+                126,
+                80
+              ],
+              "hr": 90,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 98
+            }
+          ],
+          "state": {
+            "weight_kg": 97.0,
+            "labs": {
+              "Hemoglobin": 10.2,
+              "Blood Urea Nitrogen": 29
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-17T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-17T14:30",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 29
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-10-17T14:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-10-17T14:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-17T14:40",
+              "results": [
+                {
+                  "test": "Stool occult blood",
+                  "text": "Positive",
+                  "loinc": "2335-8"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-17T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-10-20T08:30",
+              "body": "Emergency Department, community hospital\nSeen 10/17/2025\nPatient: Eric Strong, 51M\n\nCC: black stools, upper abdominal pain.\n\nHPI: Black, tarry stools for two days with a dull, gnawing ache in the upper abdomen that wakes him at night. Eating eases it for a while, then it comes back worse. No vomiting, no blood in vomit, no lightheadedness at rest. History of hypertension, hyperlipidemia, metabolic syndrome, schizophrenia and an ACTH-producing pituitary adenoma. Takes lisinopril and atorvastatin, olanzapine 10 mg nightly, and uses over-the-counter ibuprofen now and then for chronic knee pain.\nAllergies: NKDA.\nSocial: current smoker, about a pack a day since 15. Weekend alcohol, 1-2 drinks. Office manager.\nFamily: father died of lung cancer at 60; mother with hypertension and hyperlipidemia.\n\nExam: BP 130/85, HR 98. Pale. Abdomen soft with mild epigastric tenderness, no rebound, no guarding. Rectal: black stool, guaiac positive.\n\nLabs: hemoglobin 10.2 g/dL, hematocrit 30.5%, MCV 86 fL. BUN 29, creatinine 1.0. Liver enzymes normal. INR normal.\n\nED course: two large-bore IVs, IV pantoprazole bolus and infusion. Ibuprofen held. GI consulted. Heart rate down to 90 on reassessment. No transfusion needed.\n\nImpression: upper GI bleed, likely peptic ulcer in setting of NSAID use.\nDisposition: admitted to medicine for endoscopy."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17b",
+          "kind": "hospital_admission",
+          "start": "2025-10-17T19:00",
+          "service": "Hospital Medicine",
+          "reason": "Upper GI bleed",
+          "end": "2025-10-19T13:00",
+          "vitals": [
+            {
+              "time": "2025-10-18T06:00",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 86,
+              "rr": 16,
+              "temp_c": 36.6,
+              "spo2": 98
+            },
+            {
+              "time": "2025-10-19T08:00",
+              "bp": [
+                128,
+                80
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 98
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Bleeding duodenal ulcer",
+              "icd10": "K26.4",
+              "action": "diagnosed",
+              "onset": "2025-10-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "stop"
+            },
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily before breakfast and dinner for 8 weeks",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "bleeding duodenal ulcer"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1-2 tablets by mouth up to three times a day as needed for knee pain",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "knee osteoarthritis; avoid NSAIDs"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-18T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.7
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-19T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.9
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-17T19:00"
+            },
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2025-10-18T10:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-19T11:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-10-18T10:30",
+              "issued": "2025-10-21T15:00",
+              "text": "Specimen: gastric antrum and body biopsies.\nMicroscopic: gastric mucosa without significant inflammation. No Helicobacter pylori organisms identified on routine and immunohistochemical staining. No intestinal metaplasia, dysplasia or malignancy.",
+              "conclusion": "Gastric mucosa, negative for Helicobacter pylori. No dysplasia or malignancy."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Upper endoscopy report",
+              "author": "gastroenterology",
+              "date": "2025-10-21T09:00",
+              "body": "EGD 10/18/2025, inpatient\nIndication: melena, Hgb 10.2\nSedation: monitored anesthesia care.\nFindings: Esophagus normal. Stomach normal, no blood in the stomach; antrum and body biopsied for H. pylori. Duodenal bulb: 1 cm ulcer with a clean base, no visible vessel, no adherent clot, no active bleeding. Second portion normal.\nTherapy: none required.\nImpression: duodenal bulb ulcer, clean base. Likely NSAID related.\nPlan: PPI twice daily for 8 weeks, no NSAIDs, follow biopsy results."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "hospital medicine",
+              "date": "2025-10-21T09:05",
+              "body": "Community hospital - Medicine\nAdmitted 10/17/2025, discharged 10/19/2025\nPatient: Eric Strong, 51M\n\nPrincipal diagnosis: bleeding duodenal ulcer, NSAID-related.\nSecondary: blood-loss anemia; hypertension; type 2 diabetes; hyperlipidemia; schizophrenia, stable; history of Cushing disease, pituitary adenoma resected 12/2024.\n\nCourse: Presented with two days of melena and epigastric pain, Hgb 10.2, BUN 29. Treated with IV pantoprazole. EGD 10/18 showed a 1 cm clean-based duodenal bulb ulcer, no active bleeding, no endoscopic treatment. Gastric biopsies sent for H. pylori - negative (final 10/21). Hemoglobin 9.7 on 10/18 and 9.9 on the day of discharge; no transfusion. Tolerating diet, stools turning brown, pain much improved.\n\nDischarge medications:\n- Pantoprazole 40 mg twice daily x 8 weeks (NEW)\n- Acetaminophen 500 mg, 1-2 tabs up to three times daily as needed for knee pain (NEW)\n- STOP ibuprofen and all NSAIDs (Advil, Motrin, Aleve, aspirin products)\n- Continue metformin 1000 BID, lisinopril 10, atorvastatin 20, olanzapine 10 qhs, vitamin D3\nAllergies: NKDA\n\nFollow-up: PCP within a week with CBC. Return for black stools, vomiting blood, fainting."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "telephone",
+          "start": "2025-10-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional care call",
+              "author": "RN",
+              "date": "2025-10-20T09:40",
+              "body": "Called after his discharge yesterday. Stools brown now, no further black stool. Stomach pain mild, much better. No dizziness. Taking pantoprazole twice daily before meals. Threw out the ibuprofen at home; using acetaminophen for the knee. Med list updated. PCP visit Thursday with CBC."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "office_visit",
+          "start": "2025-10-23T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, GI bleed",
+          "state": {
+            "bp": [
+              128,
+              82
+            ],
+            "labs": {
+              "Hemoglobin": 11.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-23T13:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-10-23T13:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-23T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2025-10-23T13:55",
+              "body": "Hospital follow-up. Admitted 10/17-10/19 with melena from a 1 cm clean-based duodenal bulb ulcer on EGD; H. pylori negative. Hgb 10.2 in the ED, 9.9 at discharge, no transfusion. Blamed on the ibuprofen he's taken for his knee for years.\n\nToday: no black stools since Sunday, appetite back, a little epigastric ache after big meals. No lightheadedness. Pantoprazole BID. Acetaminophen for the knee works ok.\n\nMeds reconciled: pantoprazole 40 BID (through mid-December), acetaminophen prn, metformin 1000 BID, lisinopril 10, atorvastatin 20, olanzapine 10 qhs, vitamin D3. Ibuprofen removed - no NSAIDs going forward. NKDA.\n\nExam: vitals as charted. Color better. Abdomen soft, mild epigastric tenderness only. Heart regular.\n\nCBC today: Hgb 11.2, coming up.\n\nA/P\n1. Bleeding duodenal ulcer, NSAID-related: PPI 8 weeks, no NSAIDs. Smoking also slows ulcer healing - another reason to quit. Counseled.\n2. Blood-loss anemia recovering - CBC in 6 weeks.\n3. Knee OA: acetaminophen; avoid all NSAIDs.\n4. Flu shot at a nurse visit in a couple of weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "portal_message",
+          "start": "2025-10-28T21:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Knee pain question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Knee",
+              "author": "patient",
+              "date": "2025-10-28T21:00",
+              "body": "Knee is bugging me. Tylenol takes the edge off. Is Aleve ok instead of ibuprofen?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Reply",
+              "author": "PCP",
+              "date": "2025-10-29T07:40",
+              "body": "No - Aleve (naproxen) is in the same family as ibuprofen and can cause the same kind of ulcer. Stick with acetaminophen, up to 2 tabs three times a day. Ice and keeping the leg muscles strong help too. If it isn't enough we can talk about other options at your December visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-05a",
+          "kind": "nurse_visit",
+          "start": "2025-11-05T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-05T07:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-05T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "author": "RN",
+              "date": "2025-11-05T08:05",
+              "body": "Flu vaccine IM L deltoid. Feels well, stools normal. No reactions in past years. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Ulcer and anemia follow-up",
+          "state": {
+            "weight_kg": 96.0,
+            "labs": {
+              "Hemoglobin": 13.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Bleeding duodenal ulcer",
+              "icd10": "K26.4",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "stop"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-09T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-12-09T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-09T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-12-09T16:35",
+              "body": "Eight weeks after the bleeding ulcer. No pain at all for a month, no black stools, eating normally. Finished the pantoprazole course this week. No NSAIDs - acetaminophen for the knee.\n\nVitals as charted. Abdomen soft, nontender.\n\nHgb 13.4 today, up from 11.2.\n\nA/P\n- Duodenal ulcer: treated, symptom-free, H. pylori negative. Stop pantoprazole. No NSAIDs going forward; chart alert added.\n- Anemia recovering, recheck with January labs.\n- Tobacco: counseled."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "portal_message",
+          "start": "2025-12-11T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Hemoglobin",
+              "author": "PCP",
+              "date": "2025-12-11T12:15",
+              "body": "Hemoglobin 13.4, nearly back to normal. We'll check once more in January."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-29a",
+          "kind": "office_visit",
+          "start": "2026-01-29T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "vitals": {
+            "weight_kg": 95.0
+          },
+          "state": {
+            "weight_kg": 95.0,
+            "bp": [
+              128,
+              82
+            ],
+            "labs": {
+              "Hemoglobin": 14.2,
+              "Hemoglobin A1c": 6.1,
+              "Glucose": 104,
+              "Low Density Lipoprotein": 124,
+              "High Density Lipoprotein": 44,
+              "Triglycerides": 150,
+              "Total Cholesterol": 198
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-29T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-29T08:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-01-29T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 198
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 150
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-29T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.1
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2026",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung cancer screening, 37 pack-years"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-29T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-29T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-01-29T09:00",
+              "body": "Routine follow-up. Feels well. No stomach symptoms since the fall. Knee aches in the cold, acetaminophen helps enough. Weight 95, lowest in several years. Pack a day.\n\nMeds: metformin 1000 BID, lisinopril 10, atorvastatin 20, olanzapine 10 qhs, vitamin D3 1000 units, acetaminophen prn, clobetasol prn. NKDA. No NSAIDs.\n\nExam: vitals as charted. Heart regular. Lungs clear. Abdomen soft, nontender. No edema.\n\nA/P\n- T2DM, HTN, lipids - labs today.\n- Anemia - CBC today.\n- Lung screening CT due March - ordered.\n- Tobacco - counseled; not ready."
+            },
+            {
+              "type": "Result Note",
+              "title": "Your results",
+              "author": "PCP",
+              "date": "2026-01-30T14:20",
+              "body": "Hemoglobin 14.2 - back to normal. A1c 6.1. Kidney function fine. LDL 124, HDL 44, triglycerides 150."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "pharmacy",
+          "start": "2026-02-16T10:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refills",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Mail-order renewal",
+              "author": "MA",
+              "date": "2026-02-16T10:25",
+              "body": "Mail-order renewal request: lisinopril 10 mg, atorvastatin 20 mg. Sent 90 days x 3. Metformin has refills left."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "imaging",
+          "start": "2026-03-17T17:15",
+          "service": "Radiology",
+          "reason": "Lung cancer screening CT",
+          "orders": [
+            {
+              "id": "ldct-2026",
+              "action": "done",
+              "date": "2026-03-17T17:15"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2026-03-17T17:15",
+              "text": "Indication: annual lung cancer screening, current smoker, 37 pack-years.\nTechnique: low-dose noncontrast CT chest.\nComparison: 03/18/2025 and 03/12/2024.\nFindings: No pulmonary nodules. Lungs clear. Airways patent. No pleural or pericardial effusion. No lymphadenopathy. Stable L1 compression deformity.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CT result",
+              "author": "PCP",
+              "date": "2026-03-18T09:15",
+              "body": "Third clear lung CT in a row. Next one March 2027."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "specialist_visit",
+          "start": "2026-05-12T10:00",
+          "service": "Endocrinology",
+          "reason": "Cushing disease surveillance",
+          "state": {
+            "weight_kg": 94.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-08T07:00",
+              "results": [
+                {
+                  "test": "Urine free cortisol, 24 hour",
+                  "value": 28,
+                  "loinc": "2147-7",
+                  "unit": "ug/(24.h)"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology surveillance",
+              "author": "endocrinology",
+              "date": "2026-05-15T11:40",
+              "body": "Endocrinology Clinic - 05/12/2026\nRe: Eric Strong\n\nDear Doctor,\n\nAnnual check, 17 months after resection of his ACTH-producing pituitary adenoma. He has no recurrence symptoms; weight continues to drift down. Off hydrocortisone since June 2025.\n\n24-hour urine free cortisol 28 ug/24 h - normal. Remains in remission.\n\nMeds: metformin 1000 BID, lisinopril 10, atorvastatin 20, olanzapine 10 qhs, vitamin D3. NKDA.\n\nPlan: repeat DXA in November 2026 as planned; continue vitamin D. Surveillance again in a year.\n\nSincerely,\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-24a",
+          "kind": "annual_physical",
+          "start": "2026-06-24T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "weight_kg": 94.0
+          },
+          "state": {
+            "weight_kg": 94.0,
+            "labs": {
+              "Hemoglobin A1c": 6.0,
+              "Glucose": 102
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-24T08:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-24T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-06-24T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-24T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-06-24T08:35",
+              "body": "Annual, 52.\n\nGood year. Cushing disease still in remission per endocrinology in May (urine cortisol normal). DXA due November. No GI symptoms since the ulcer. Lung CT in March clear. Psoriasis quiet, weekend ointment now and then. Knee: acetaminophen. Weight 94. Pack a day - says he'll think about the quit pill again after his busy season at work.\n\nMeds: metformin 1000 BID, lisinopril 10, atorvastatin 20, olanzapine 10 qhs (psych), vitamin D3 1000 units, acetaminophen prn, clobetasol oint prn. NKDA. No NSAIDs.\n\nExam: vitals as charted. HEENT normal. Neck no nodes or thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Feet intact, monofilament normal, pulses 2+. Faint pale striae on abdomen. R knee crepitus. No edema.\n\nA/P\n1. T2DM: A1c, urine albumin, CMP. Eye exam July.\n2. HTN at goal.\n3. Hyperlipidemia on atorvastatin 20, lipids done January.\n4. Cushing disease in remission, endocrinology yearly.\n5. Tobacco: counseled, will revisit bupropion in the fall.\n6. Prevention: colonoscopy 2032, LDCT March 2027, flu in the fall. PHQ-2 negative.\n7. Follow-up September."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "portal_message",
+          "start": "2026-06-26T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2026-06-26T12:30",
+              "body": "A1c 6.0, best it's been since diagnosis. Kidney and liver tests normal, no protein in the urine."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "outside_records",
+          "start": "2026-07-14T15:20",
+          "service": "Optometry",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam",
+              "author": "optometry",
+              "date": "2026-07-14T15:20",
+              "body": "Optometry - diabetic eye exam\nDate of exam: 07/10/2026\nPatient: Eric Strong\nDilated fundus exam: no diabetic retinopathy OU. Discs and maculae healthy. IOP within normal limits.\nRecommend annual exam.\nAllergies: NKDA"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T18:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Appointment confirmation",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "September visit",
+              "author": "patient",
+              "date": "2026-08-20T18:50",
+              "body": "Confirming my appointment on September 22. Can I get the flu shot then too?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Reply",
+              "author": "front desk",
+              "date": "2026-08-21T09:15",
+              "body": "Confirmed 9/22 at 3:40. Flu vaccine can be given at that visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, blood pressure and smoking follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

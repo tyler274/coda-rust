@@ -1,0 +1,492 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002782",
+      "given": "Maureen",
+      "family": "Dunn",
+      "birth_date": "1983-06-12",
+      "address_line": "41 Ward Ave",
+      "phone": "+1-347-555-0119",
+      "email": "maureen.dunn@example.test",
+      "summary": "Elementary school teacher with seasonal allergic rhinitis who joined in 2021. A right thyroid nodule found in 2023 proved to be papillary thyroid carcinoma, treated with total thyroidectomy and radioactive iodine; in 2026 her surveillance thyroglobulin rose without structural disease on ultrasound and is being followed by otolaryngology.",
+      "events": [
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "conditions": [
+            {
+              "label": "Seasonal allergic rhinitis",
+              "icd10": "J30.2",
+              "action": "history",
+              "note": "Pollen and dust mites; spring and fall flares; OTC loratadine as needed"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "loratadine 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily as needed for seasonal allergies",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Seasonal allergic rhinitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies",
+              "type": "allergy"
+            },
+            {
+              "substance": "Seasonal pollen",
+              "reaction": "Sneezing, nasal congestion, itchy eyes",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Dust mites",
+              "reaction": "Nasal congestion, sneezing",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "weight_kg": 65.3,
+            "height_cm": 165.0,
+            "labs": {
+              "Low Density Lipoprotein": 92
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-09-14T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-14T16:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2021",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "procedure",
+              "reason": "Prior screening and immunization history"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and physical note",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-14T16:25",
+              "body": "New patient, 38F, elementary school teacher. Wants a practice she can reach directly. Records request to prior PCP signed today.\n\nNo active complaints. Only ongoing issue is seasonal allergies - sneezing, congestion, itchy eyes in spring and again in early fall, worse with dust at home. Uses OTC loratadine 10 mg on bad days, works well. Never seen an allergist, never needed a nasal spray.\n\nPMH: seasonal allergic rhinitis. No surgeries. No hospitalizations.\nMeds: loratadine 10 mg PRN.\nAllergies: no drug allergies. Environmental: pollen, dust mites.\nFH: mother - hypothyroidism, on replacement. Father - hypertension. Maternal aunt - papillary thyroid cancer, treated.\nSH: never smoker. 1-2 glasses of wine a week. No drugs. No radiation exposure.\nGYN: menses regular. Last Pap at prior office, she thinks 2018, normal.\nImmunizations: COVID series this winter through the school district clinic. Tdap within 10 years per her, will confirm with records.\n\nROS negative except allergy symptoms.\n\nExam: vitals as charted. Well, pleasant. HEENT: TMs clear, mild pale nasal turbinates, oropharynx normal. Neck supple, thyroid normal to palpation, no nodes. Heart RRR no murmur. Lungs clear bilaterally. Abd soft, non-tender. Ext no edema. Skin no concerning lesions. Neuro grossly normal.\n\nA/P\n1. Preventive: CBC, CMP, lipids. One-time HCV and HIV screening, she agrees. Pap - will confirm the date once records arrive. Flu shot once the clinic has stock. PHQ-2 0.\n2. Seasonal allergic rhinitis - stable on PRN loratadine. Fine to use daily through the season if needed.\n\nReturn for annual in a year."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-17a",
+          "kind": "portal_message",
+          "start": "2021-09-17T08:10",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2021-09-17T08:10",
+              "body": "Hi Maureen - all of your labs came back normal: blood counts, kidney and liver function, sugar, and cholesterol. Hepatitis C and HIV screens were negative, and those are one-time tests so you won't need them again. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "outside_records",
+          "start": "2021-09-20T11:05",
+          "orders": [
+            {
+              "id": "prior-records-2021",
+              "action": "done",
+              "date": "2021-09-20T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2017-03-22T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-01-30T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-20T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside records",
+              "title": "Records received from prior primary care",
+              "author": "front desk",
+              "date": "2021-09-20T11:05",
+              "body": "Faxed records from patient's previous primary care office, 34 pages, scanned to media.\n\nAbstracted by RN for the chart:\n- Pap smear 05/2018: negative for intraepithelial lesion. No prior abnormal Paps documented.\n- Tdap 03/2017.\n- COVID-19 Pfizer dose 1 01/30/2021, dose 2 02/20/2021 (copy of vaccination card in packet).\n- Problem list there: allergic rhinitis.\n- Labs 2019: CBC and BMP unremarkable.\nNothing else of note. Pap next due 05/2021 if cytology alone every 3 yr - routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Chart review",
+              "author": "PCP",
+              "date": "2021-09-21T07:45",
+              "body": "Reviewed prior records. Pap 2018 normal - she's overdue by the 3-year schedule. Will do co-testing at her annual next fall rather than bring her back sooner; low risk. Tdap current until 2027."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-05T15:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-05T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2021-10-05T16:00",
+              "body": "Came by after school for seasonal flu vaccine. No fever today, no prior reactions to flu shots. Quadrivalent given IM left deltoid, lot logged. VIS given. Waited 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "portal_message",
+          "start": "2021-11-09T19:20",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-06T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "COVID booster",
+              "author": "patient",
+              "date": "2021-11-09T19:20",
+              "body": "Just letting you know I got the Pfizer booster Saturday at the pharmacy near school. Mostly just tired the next day. Can you put it in my record?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: COVID booster",
+              "author": "MA",
+              "date": "2021-11-10T09:02",
+              "body": "Added to your immunization record, dated 11/6. Thanks for letting us know!"
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "portal_message",
+          "start": "2022-04-19T20:44",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Allergy question",
+              "author": "patient",
+              "date": "2022-04-19T20:44",
+              "body": "Pollen is brutal this year. Is it ok to take the loratadine every day for the next couple months instead of just when it's bad? Or should I be on something else?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Allergy question",
+              "author": "PCP",
+              "date": "2022-04-20T07:30",
+              "body": "Yes, daily loratadine through the season is completely fine and often works better than taking it on and off. If it stops being enough, let me know and we can talk about other options."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "annual_physical",
+          "start": "2022-09-21T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-21T16:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-21T16:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-21T16:20",
+              "results": [
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-09-21T16:05",
+              "issued": "2022-09-26T14:00",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV DNA: not detected.",
+              "conclusion": "NILM. High-risk HPV negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-21T16:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-21T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-21T16:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-21T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-21T16:40",
+              "body": "Annual. Feeling well. Rough allergy spring, did fine with daily loratadine April-June, back to as needed now. Third week of classes, tired but ok. No new symptoms.\n\nMeds: loratadine 10 mg PRN. NKDA.\nSH unchanged: never smoker, 1-2 drinks/wk. FH unchanged.\nLMP 2 wk ago, regular.\n\nExam: vitals as charted, BMI ~24. HEENT normal. Neck: thyroid normal, no masses or adenopathy. CV RRR. Lungs clear. Breasts: no masses, skin or nipple changes, no axillary nodes. Abd benign. Pelvic: normal external genitalia, vaginal walls normal, cervix without lesions, Pap with HPV obtained. Skin normal.\n\nA/P\n- Health maintenance: Pap with HPV today. CBC, CMP, lipids. Flu shot today. Discussed mammograms - she turns 40 next June, plan to start screening then, every other year is reasonable. PHQ-2 0.\n- Allergic rhinitis: loratadine daily in season, PRN otherwise.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T12:15",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Your results",
+              "author": "PCP",
+              "date": "2022-09-27T12:15",
+              "body": "Maureen - Pap was normal and HPV negative, so with co-testing you're set for 5 years (2027). Bloodwork all normal again, cholesterol nice. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "portal_message",
+          "start": "2022-10-18T17:02",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-15T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Vaccine update",
+              "author": "patient",
+              "date": "2022-10-18T17:02",
+              "body": "Got the new bivalent covid shot this past weekend at the pharmacy. FYI for my chart."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Vaccine update",
+              "author": "MA",
+              "date": "2022-10-19T08:40",
+              "body": "Got it, recorded as 10/15/22. Thank you!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

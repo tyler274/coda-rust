@@ -1,0 +1,815 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002538",
+      "given": "Declan",
+      "family": "Daley",
+      "birth_date": "1991-09-09",
+      "address_line": "212 Belchertown Road, Apt 3B",
+      "phone": "+1-518-555-0179",
+      "email": "declan.daley@example.test",
+      "marital_status": "single",
+      "summary": "Construction laborer in his early thirties with severe alcohol, cocaine and opioid use disorders and daily smoking, who joins the practice after a first admission for substance-related rhabdomyolysis with AKI. Two more admissions follow (a prolonged down time in December 2024, a heroin overdose with a swollen left leg in October 2025); between them he keeps coming to primary care but declines every offer of treatment.",
+      "events": [
+        {
+          "id": "2024-04-24a",
+          "kind": "ed_visit",
+          "start": "2024-04-24T14:20",
+          "end": "2024-04-24T19:10",
+          "service": "Emergency Medicine",
+          "reason": "Muscle pain, weakness and dark urine",
+          "conditions": [
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "diagnosed",
+              "onset": "2024-04-23"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "diagnosed",
+              "onset": "2024-04-24"
+            },
+            {
+              "label": "Hyperkalemia",
+              "icd10": "E87.5",
+              "action": "diagnosed",
+              "onset": "2024-04-24"
+            },
+            {
+              "label": "Hypocalcemia",
+              "icd10": "E83.51",
+              "action": "diagnosed",
+              "onset": "2024-04-24"
+            },
+            {
+              "label": "Hyperphosphatemia",
+              "icd10": "E83.39",
+              "action": "diagnosed",
+              "onset": "2024-04-24"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-04-24T14:25",
+              "temp_c": 37.2,
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 110,
+              "rr": 20
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-24T14:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.1
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.5
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.0
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 6.0
+                },
+                {
+                  "test": "Creatine Kinase",
+                  "value": 20000
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-04-24T14:55",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Brown"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Large"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "None seen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-04-24T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note (outside record)",
+              "author": "emergency medicine",
+              "date": "2024-05-10T10:05",
+              "body": "Regional hospital emergency department. Date of service 04/24/2024. Received by fax after a records request from his new primary care office.\n\nCC: muscle pain, weakness, dark urine.\n\nHPI: 32-year-old man, construction laborer, here with diffuse muscle aching and weakness and urine he describes as cola-colored. He was at a bachelor party over the past few days. By his account he drank roughly fifteen beers a day and used cocaine off and on throughout. Known alcohol, cocaine and opioid use disorders. On no medications.\n\nAllergies: NKDA.\nPMH: alcohol use disorder, cocaine use disorder, opioid use disorder. No surgeries.\nSocial: smokes a pack a day. Heavy episodic drinking, 10-15 drinks per day when he is using. Works construction.\nFamily: father with alcohol use disorder, maternal uncle with opioid use disorder, mother with major depression.\n\nTriage vitals: T 37.2 C (99 F), BP 150/90, HR 110, RR 20.\n\nExam: Agitated, oriented x3. Mucous membranes dry, looks volume down. Heart tachycardic, regular. Lungs clear. Abdomen soft. Proximal muscle groups of both arms and both legs 3/5; distal strength intact. No rash.\n\nData: Creatinine 2.1 (0.9 on our prior draw). K 5.5. Ca 8.0. Phos 6.0. CK 20,000. UA brown, dipstick large blood, microscopy without RBCs, consistent with myoglobinuria.\n\nMDM: Rhabdomyolysis from heavy alcohol and cocaine use, with acute kidney injury, mild hyperkalemia, hypocalcemia and hyperphosphatemia. Started on aggressive IV isotonic fluids with a urine output goal. Calcium not replaced given no symptoms and high phosphorus. Admitted to medicine for continued fluid resuscitation and trending CK and renal function.\n\nDisposition: admit, medicine."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-24b",
+          "kind": "hospital_admission",
+          "start": "2024-04-24T19:10",
+          "end": "2024-04-27T11:30",
+          "service": "Internal Medicine — Inpatient",
+          "reason": "Rhabdomyolysis with acute kidney injury",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-27T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.7
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatine Kinase",
+                  "value": 3100
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-04-24T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-04-27T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (outside record)",
+              "author": "hospital medicine",
+              "date": "2024-05-10T10:06",
+              "body": "Regional hospital, inpatient medicine. Admitted 04/24/2024, discharged 04/27/2024.\n\nPrincipal diagnosis: rhabdomyolysis due to heavy alcohol and cocaine use.\nSecondary: acute kidney injury; hyperkalemia; hypocalcemia; hyperphosphatemia; alcohol use disorder; cocaine use disorder; opioid use disorder by history; tobacco use.\n\nCourse: Admitted from the ED with CK 20,000 and creatinine 2.1 against a baseline of 0.9. Treated with high-volume IV isotonic fluids, titrated to urine output. Urine cleared over the first 36 hours. CK fell steadily. Potassium normalized with fluids alone. No signs of withdrawal on CIWA monitoring. Proximal weakness improved daily and strength was full on the day of discharge.\n\nDischarge labs (04/27): creatinine 1.0, K 4.2, Ca 8.7, Phos 3.9, CK 3,100.\n\nSubstance use: counseled at length about the link between binge drinking, cocaine and muscle breakdown. He was not interested in an inpatient program or medication at this time.\n\nAllergies: NKDA.\nDischarge medications: none.\n\nFollow-up: he does not have a primary care physician. Advised to establish with one and have kidney function and CK rechecked in 1-2 weeks. Return for dark urine, weakness or reduced urine output."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "establish_care",
+          "start": "2024-05-07T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; follow-up after hospitalization for rhabdomyolysis",
+          "conditions": [
+            {
+              "label": "Alcohol use disorder, severe",
+              "icd10": "F10.20",
+              "action": "history"
+            },
+            {
+              "label": "Cocaine use disorder",
+              "icd10": "F14.20",
+              "action": "history"
+            },
+            {
+              "label": "Opioid use disorder",
+              "action": "history"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Creatinine": 0.9,
+              "Creatine Kinase": 140,
+              "Phosphorus": 3.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-07T10:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-07T10:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase"
+                },
+                {
+                  "test": "Phosphorus"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-07T10:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 9
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Binge drinking, 10-15 drinks per day during episodes"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-05-07T10:20"
+            },
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2024-05-07T10:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-05-07T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-05-07T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-07T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-05-07T11:15",
+              "body": "32M, construction laborer, new to me. Discharged 4/27 from a regional hospital after 3 days for rhabdomyolysis with AKI. The discharge paperwork he brought told him to find a PCP and get labs in 1-2 weeks, so here he is. He has not had a regular doctor since he aged out of pediatrics.\n\nHis version: a long weekend bachelor party, a lot of beer and some cocaine, woke up unable to lift his arms over his head and peeing what looked like cola. Since discharge the soreness is gone and the urine is normal color. Back at work as of yesterday, lifting okay. No fever, no swelling.\n\nSubstances, in his words: he drinks in binges, not every day, but when he goes he goes, 10-15 drinks a day for a few days at a stretch. Cocaine mostly comes with the drinking. Has used opioids in the past and puts that under the heading of history; did not want to go into detail today and I did not push. Smokes a pack a day.\n\nMeds: none. Allergies: NKDA. PSH: none.\nFH: father with alcohol problems; an uncle on mom's side with opioid addiction; mom has depression.\nSH: rents an apartment in Amherst, lives by himself. Single. Medicaid.\n\nPHQ-9 3. AUDIT-C 9.\n\nExam: vitals as charted, BP fine today. Pleasant, a little guarded. Mucous membranes moist. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no liver edge. Strength 5/5 at shoulders and hips, no muscle tenderness. No track marks seen on the arms. Skin otherwise unremarkable.\n\nA/P\n1. Rhabdomyolysis with AKI, recovering. Recheck CMP, CK, phosphorus today. Hospital records requested.\n2. Alcohol use disorder, severe, binge pattern; cocaine use disorder; opioid use disorder by history. Talked through what is out there, including medication for drinking and for opioids, outpatient programs, and meetings. He listened, says he is not ready and does not want a referral right now. Door is open. Told him plainly that a repeat of this weekend could cost him his kidneys.\n3. Tobacco: one pack daily. Advised quitting; not interested yet.\n4. Health maintenance: HIV and hep C screens today. Tdap and first Heplisav-B given. Return for dose two and the pneumococcal shot in a month.\n\nFollow up 3 months, sooner if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07b",
+          "kind": "outside_records",
+          "start": "2024-05-07T11:30",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Miscellaneous",
+              "title": "Records Request",
+              "author": "front desk",
+              "date": "2024-05-07T11:30",
+              "body": "Faxed signed release to the regional hospital health information office for ED and inpatient records, admission 4/24-4/27/24. Requested ED note, discharge summary and labs."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-08a",
+          "kind": "portal_message",
+          "start": "2024-05-08T16:40",
+          "reason": "Lab results",
+          "conditions": [
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "resolved"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "resolved"
+            },
+            {
+              "label": "Hyperkalemia",
+              "icd10": "E87.5",
+              "action": "resolved"
+            },
+            {
+              "label": "Hypocalcemia",
+              "icd10": "E83.51",
+              "action": "resolved"
+            },
+            {
+              "label": "Hyperphosphatemia",
+              "icd10": "E83.39",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2024-05-08T16:40",
+              "body": "Hi Declan, good news on yesterday's blood work. Your kidney number is 0.97, right around where the hospital had you before all this, and your muscle enzyme (CK) is normal again. Potassium, calcium and phosphorus are all fine, and the liver tests and blood counts look normal. The HIV and hepatitis C screens are negative. As far as the labs go, you have recovered from the rhabdo. See you next month for the second hepatitis B shot."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-10a",
+          "kind": "outside_records",
+          "start": "2024-05-10T10:00",
+          "reason": "Hospital records received",
+          "documents": [
+            {
+              "type": "Miscellaneous",
+              "title": "Outside Records Received",
+              "author": "MA",
+              "date": "2024-05-10T10:10",
+              "body": "Fax from the regional hospital, 9 pages: ED provider note 4/24/24, discharge summary 4/27/24, lab flowsheet. Scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "nurse_visit",
+          "start": "2024-06-11T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2024-06-11T15:15"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-06-11T15:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-06-11T15:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2024-06-11T15:25",
+              "body": "In for Heplisav-B #2 and PCV20 per PCP plan. Screened, no contraindications, no reaction to dose 1. Heplisav-B 0.5 mL IM L deltoid, PCV20 0.5 mL IM R deltoid. VIS given. Waited 15 min without issue. Hep B series complete."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "office_visit",
+          "start": "2024-08-20T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, alcohol and substance use",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-08-20T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-08-20T16:40",
+              "body": "Three-month check. Came straight from a job site, still in work boots.\n\nFeels fine physically. No muscle pain, urine normal. Honest that nothing has changed: two binges since I saw him, a long weekend each, with cocaine on one of them. Says he hydrated the whole time \"because of last time.\" Denies opioid use since we met. Still a pack a day.\n\nExam: vitals as charted, BP normal. Comfortable. No muscle tenderness, strength normal. Heart and lungs normal.\n\nA/P\nAUD, severe, binge pattern; cocaine use disorder; OUD by history. Offered again: medication to cut down drinking, a referral to the outpatient program, or just a callback from the behavioral health team. He declines all three for now, without hostility. We agreed he will call or text me if a binge goes sideways, and that dark urine or weakness means the ED, not waiting.\nTobacco: not ready.\n\nRTC 3-4 months; flu shot in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "office_visit",
+          "start": "2024-09-24T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2024-09-23T08:05",
+              "body": "Pt called to cancel tomorrow's visit, working overtime on a roofing job through the end of the month. Offered October, he will call back. Reminded him of flu shot clinic hours."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-22T07:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Flu Vaccine",
+              "author": "RN",
+              "date": "2024-10-22T07:55",
+              "body": "Early-morning walk-in before work for seasonal flu vaccine. No fever today, no egg or vaccine reactions. 0.5 mL IM L deltoid, VIS reviewed. Left after 15 min. He asked to rebook the visit he cancelled; front desk gave him the first opening in December."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-08a",
+          "kind": "ed_visit",
+          "start": "2024-12-08T11:05",
+          "end": "2024-12-08T17:40",
+          "service": "Emergency Medicine",
+          "reason": "Found collapsed at home",
+          "conditions": [
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "diagnosed",
+              "onset": "2024-12-07"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "diagnosed",
+              "onset": "2024-12-08"
+            },
+            {
+              "label": "Hyperkalemia",
+              "icd10": "E87.5",
+              "action": "diagnosed",
+              "onset": "2024-12-08"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-12-08T11:10",
+              "temp_c": 36.5,
+              "bp": [
+                105,
+                68
+              ],
+              "hr": 88,
+              "rr": 16
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-08T11:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 6.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 2.9
+                },
+                {
+                  "test": "Creatine Kinase",
+                  "value": 35000
+                }
+              ],
+              "resulted": "2024-12-08T12:05"
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-12-08T12:10",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "0-1 /hpf"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-08T15:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 5.1
+                }
+              ],
+              "resulted": "2024-12-08T16:10"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-12-08T11:20",
+              "text": "Sinus rhythm, rate 88. PR, QRS and QT intervals normal. Normal axis. No peaked T waves. No ST changes.",
+              "conclusion": "Normal sinus rhythm. No ECG changes of hyperkalemia."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-12-08T11:05"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2024-12-08T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note (outside record)",
+              "author": "emergency medicine",
+              "date": "2024-12-13T09:20",
+              "body": "Regional hospital emergency department. Date of service 12/08/2024.\n\nCC: found down at home.\n\nHPI: 33-year-old man with alcohol, cocaine and opioid use disorders, brought in by ambulance after a neighbor found him on the floor of his apartment. The neighbor had last seen him about 36 hours before. He lives alone. He cannot say how he ended up on the floor or how long he was there. Of note, he was here about eight months ago with rhabdomyolysis after a binge. He takes no medications.\n\nAllergies: NKDA.\nPMH: rhabdomyolysis 4/2024; alcohol, cocaine and opioid use disorders.\nSocial: pack-a-day smoker; binge drinker, 10-15 drinks a day when drinking; construction work.\nFamily: father AUD, maternal uncle OUD, mother depression.\n\nVitals on arrival: T 36.5 C (97.7 F), BP 105/68, HR 88, RR 16.\n\nExam: Obtunded, opens eyes and answers to voice. Extremities cool to the touch. Muscles diffusely tender, most in the thighs and upper arms. Compartments soft. No obvious head trauma. Heart regular. Lungs clear.\n\nData: Na 137, K 6.5, BUN 28, Cr 2.9, CK 35,000. UA 2+ blood with 0-1 RBC/hpf. ECG sinus at 88, no peaked T waves or other hyperkalemic changes.\n\nMDM: Rhabdomyolysis after a prolonged down time, with AKI and hyperkalemia. Given calcium gluconate 1 g IV, regular insulin 10 units IV with dextrose 25 g IV, then wide-open isotonic fluids. Repeat K 5.1 at four hours. Placed on telemetry and admitted to medicine.\n\nDisposition: admit, medicine, telemetry."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-08b",
+          "kind": "hospital_admission",
+          "start": "2024-12-08T17:40",
+          "end": "2024-12-12T12:15",
+          "service": "Internal Medicine — Inpatient",
+          "reason": "Rhabdomyolysis with acute kidney injury and hyperkalemia",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-12T05:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatine Kinase",
+                  "value": 4600
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-12-08T19:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-12-12T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (outside record)",
+              "author": "hospital medicine",
+              "date": "2024-12-13T09:21",
+              "body": "Regional hospital, inpatient medicine. Admitted 12/08/2024, discharged 12/12/2024. Copy to primary care physician.\n\nPrincipal diagnosis: rhabdomyolysis after prolonged immobilization (found down).\nSecondary: acute kidney injury; hyperkalemia, treated; alcohol, cocaine and opioid use disorders; tobacco use.\n\nCourse: Arrived obtunded after an estimated day and a half on the floor. Became fully alert overnight and remained oriented thereafter, without a clear account of the event. Hyperkalemia was treated in the ED and did not recur on telemetry. Aggressive IV fluids for four days; CK peaked on arrival and fell daily, urine output stayed good, creatinine came down steadily. Thigh and arm tenderness eased by day 3; he was walking the halls by discharge.\n\nDischarge labs (12/12): Cr 1.2, BUN 14, K 4.4, CK 4,600.\n\nSubstance use was discussed with him again; he declined referral.\n\nAllergies: NKDA.\nDischarge medications: none.\n\nFollow-up: PCP within one week with BMP and CK. Out of work until seen. Return for dark urine, weakness or decreased urine."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-13a",
+          "kind": "telephone",
+          "start": "2024-12-13T13:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge Call",
+              "author": "RN",
+              "date": "2024-12-13T13:45",
+              "body": "Hospital notified us of discharge 12/12; summary and ED note scanned. Called pt. Home, tired, legs and arms sore but improving. Urine light yellow, drinking water. No meds to reconcile. He needs a note for his foreman. Scheduled with PCP Tue 12/17 with labs same day."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "office_visit",
+          "start": "2024-12-17T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, rhabdomyolysis",
+          "state": {
+            "weight_kg": 81.0,
+            "labs": {
+              "Creatinine": 1.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-17T10:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-17T10:55",
+              "results": [
+                {
+                  "test": "Creatine Kinase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-12-17T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-17T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2024-12-17T11:20",
+              "body": "Seen after his second admission for rhabdo, 12/8-12/12. Discharge summary reviewed: found down at home after roughly 36 hours, CK 35,000, Cr 2.9, K 6.5 treated in the ED, discharged with Cr 1.2 and CK 4,600.\n\nHe still does not know how he ended up on the floor and gets quiet when I ask. Says it was a bad stretch. Soreness in the thighs mostly gone, arms fine. Urine normal. Eating and drinking well.\n\nExam: vitals as charted, weight down a kilo. Alert, a bit flat. Thighs and upper arms nontender, no swelling, strength full. Heart regular, lungs clear.\n\nA/P\n1. Rhabdomyolysis with AKI, second episode, recovering. BMP and CK today. Work note for this week; may return Monday if labs are okay.\n2. AUD/cocaine/OUD. This one scared him more than April, he says, but he still is not ready for a program or medication. I told him I would rather see him alive and drinking than not see him at all, and to keep coming back. He took a behavioral health card.\n3. Tobacco unchanged.\n\nRTC 6-8 weeks with BMP."
+            },
+            {
+              "type": "Letter",
+              "title": "Work Note",
+              "author": "PCP",
+              "date": "2024-12-17T11:25",
+              "body": "To whom it may concern: Declan Daley was hospitalized 12/8/2024 through 12/12/2024 and has been under my care since. He may return to full duty on 12/23/2024. Please contact the office with questions."
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Hyperkalemia",
+              "icd10": "E87.5",
+              "action": "resolved"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-18a",
+          "kind": "portal_message",
+          "start": "2024-12-18T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from yesterday",
+              "author": "PCP",
+              "date": "2024-12-18T12:10",
+              "body": "Declan, CK is back to normal and potassium is fine. Kidney function is 1.1, down from 1.2 at discharge and close to your usual 0.9, so keep drinking plenty of water. Fine to go back to work Monday as planned. We will recheck at your visit in February."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

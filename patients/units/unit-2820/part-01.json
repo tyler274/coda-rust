@@ -1,0 +1,284 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002820",
+      "given": "Beth",
+      "family": "Lambert",
+      "birth_date": "1982-06-26",
+      "address_line": "118 Dwight Street, Apt 3",
+      "phone": "+1-774-555-0196",
+      "email": "beth.lambert@example.test",
+      "marital_status": "single",
+      "summary": "Research scientist in her early 40s with seasonal allergic rhinitis and migraine without aura who joined the practice in 2022. A changing mole on her back in 2024 proved to be a thin stage IA melanoma, treated by wide local excision, now under dermatology surveillance; cleared by occupational health for a research protocol in late 2025.",
+      "events": [
+        {
+          "id": "2022-09-06a",
+          "kind": "telephone",
+          "start": "2022-09-06T10:42",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2022-09-06T10:42",
+              "body": "Caller is looking for a new primary care doctor; her previous physician is retiring and she heard about the membership model from a colleague. Reviewed how membership works, that insurance is still billed for labs, imaging, specialists and prescriptions. She would like to enroll. New patient physical booked for Tue 9/20 at 8:30, fasting for labs. Records release form emailed to beth.lambert@example.test; she will sign and return so we can request her chart from the prior office. Asked her to bring her pill bottles or a list."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "establish_care",
+          "start": "2022-09-20T08:30",
+          "end": "2022-09-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "conditions": [
+            {"label": "Allergic rhinitis due to pollen", "action": "diagnosed", "onset": "1992-04-01", "note": "long-standing, seasonal, worse in spring; also dust mite sensitive"},
+            {"label": "Migraine without aura", "action": "diagnosed", "onset": "2006-01-01", "note": "long-standing, episodic, responds to sumatriptan"}
+          ],
+          "medications": [
+            {"drug": "cetirizine hydrochloride 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "seasonal allergic rhinitis"},
+            {"drug": "sumatriptan 50 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at migraine onset as needed; may repeat once after 2 hours. Max 2 tablets in 24 hours.", "dose": {"value": 50, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "migraine without aura"}
+          ],
+          "allergies": [
+            {"substance": "Penicillin", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "Dust mites", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"height_cm": 165.0, "weight_kg": 62.0, "labs": {"Hemoglobin A1c": 5.3, "Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-09-20T09:20", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-20T09:20", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-20T09:20", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-20T09:20", "results": [
+              {"test": "Hemoglobin A1c"},
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 2}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Biomedical research scientist (PhD)"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 40-64", "performed": "2022-09-20T08:30"},
+            {"procedure": "Venipuncture", "performed": "2022-09-20T09:20"},
+            {"procedure": "Immunization administration", "performed": "2022-09-20T09:25"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-20T09:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2022-09-20T10:15",
+              "body": "40F establishing care. Prior PCP retiring; records requested, not yet here.\n\nShe feels well and is here mostly to get set up. Two long-standing issues:\n- Seasonal allergies since childhood: sneezing, itchy eyes and congestion, mostly April through June, also bothered by dust at home. Takes cetirizine 10 mg every day, which keeps it tolerable. No asthma, no sinus infections to speak of.\n- Migraine without aura since her twenties. Typical pattern for her, never any visual or sensory aura or weakness. A few a month, sometimes clustered around deadlines or poor sleep. Sumatriptan 50 mg at onset aborts most within an hour or two; rarely needs the second dose. Never been on a preventive and doesn't want one.\n\nPMH: as above.\nPSH: tonsillectomy age 7; wisdom teeth out at 18.\nMeds: cetirizine 10 mg daily; sumatriptan 50 mg prn migraine.\nAllergies: penicillin (rash); dust mites.\nFHx: mother HTN; father T2DM; maternal grandmother breast cancer at 68. No melanoma or other skin cancer in the family.\nSocial: PhD research scientist at a biomedical lab. Never smoker. A glass of wine once or twice a week. No drugs. Runs a few mornings a week.\nGYN: regular cycles. Last Pap at prior office, she thinks normal, 2019.\n\nROS: negative except as in HPI.\n\nExam: well-appearing, NAD. Vitals as recorded. HEENT: TMs clear, turbinates mildly pale, oropharynx clear (tonsils surgically absent). Neck supple, no thyroid enlargement or nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin: scattered small uniform nevi, nothing that catches my eye. Neuro: CN intact, strength and gait normal.\n\nPHQ-2 0. AUDIT-C 2.\n\nA/P\n1. Preventive: fasting CBC, CMP, lipids, A1c (father with diabetes), TSH, and one-time HIV and hep C screening today. Flu shot given. First screening mammogram - order placed, she will schedule for November. Pap due 2024 if the 2019 co-test was normal; will confirm with records. Tdap per records.\n2. Allergic rhinitis - stable on cetirizine. Mattress and pillow covers for dust mites discussed.\n3. Migraine without aura - well controlled with prn sumatriptan. Reviewed max 2 doses/24h, and to let me know if frequency climbs.\n\nRTC 1 year, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-22a",
+          "kind": "portal_message",
+          "start": "2022-09-22T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2022-09-22T16:05",
+              "body": "Hi Beth, your bloodwork from Tuesday is all back. Blood counts, kidney and liver tests, thyroid, sugar (A1c) and cholesterol all look healthy, and the HIV and hepatitis C screens were negative. Nothing to change. It was good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "outside_records",
+          "start": "2022-10-04T11:20",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2018-03-07T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-19T15:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T15:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-12T16:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "MA",
+              "date": "2022-10-04T11:20",
+              "body": "Records received by fax from prior primary care office, 2015 to 2022, 64 pages. Scanned to media.\n\nAbstracted for the chart:\n- Problems: allergic rhinitis, seasonal; migraine without aura.\n- Meds: cetirizine 10 mg daily; sumatriptan 50 mg prn.\n- Allergies: penicillin (rash).\n- Cervical cytology with HPV co-test 08/2019: negative for intraepithelial lesion, HPV not detected.\n- Immunizations: Tdap 03/2018. COVID-19 Pfizer 03/19/2021, 04/09/2021, booster 11/12/2021. Yearly flu shots.\n- Routine labs 2019 and 2021 within normal limits.\n\nRouted to PCP for review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "author": "PCP",
+              "date": "2022-10-05T07:50",
+              "body": "Reviewed prior records. Nothing new. Normal co-test 2019, so next cervical screening 2024. Tdap good until 2028. Immunizations entered."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T13:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-08T13:40",
+              "issued": "2022-11-09T09:12",
+              "text": "Bilateral screening digital mammogram with tomosynthesis. No prior studies available for comparison; baseline examination. There are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable. No axillary adenopathy.",
+              "conclusion": "Negative baseline screening mammogram. BI-RADS 1. Routine screening in 1 year."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram Result",
+              "author": "RN",
+              "date": "2022-11-10T09:30",
+              "body": "Hi Beth, your mammogram from Tuesday was normal. Since it was your first one there was nothing to compare against, so next year's will become the comparison. We'll remind you next fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "portal_message",
+          "start": "2022-12-13T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill Request",
+              "author": "patient",
+              "date": "2022-12-13T20:14",
+              "body": "Hello, I'm down to my last two sumatriptan from the old prescription. Could you send a new one to my usual pharmacy on file? Thanks, Beth"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill Request",
+              "author": "PCP",
+              "date": "2022-12-14T08:02",
+              "body": "Done - sumatriptan 50 mg, 9 tablets with 5 refills. Same rules as before, no more than 2 in a day."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "portal_message",
+          "start": "2023-04-11T12:37",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Allergies",
+              "author": "patient",
+              "date": "2023-04-11T12:37",
+              "body": "Pollen season has arrived early, my car is yellow. Quick question: is there any downside to staying on cetirizine every day all year rather than stopping in the winter? I've basically never stopped."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Allergies",
+              "author": "PCP",
+              "date": "2023-04-11T17:10",
+              "body": "No real downside - it is safe long term, and with the dust mite piece being year-round, staying on it makes sense. Some people notice itching for a few days if they stop suddenly, which is another reason not to bother. Saline rinses on the worst pollen days can help too."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "pharmacy",
+          "start": "2023-06-20T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request",
+              "author": "MA",
+              "date": "2023-06-20T09:15",
+              "body": "Electronic refill request from pharmacy for cetirizine 10 mg #90; patient prefers the prescription so her plan covers it. Approved per standing med list, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 61.6},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-26T08:45", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-26T08:45", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-26T08:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 2}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-09-26T08:00"},
+            {"procedure": "Venipuncture", "performed": "2023-09-26T08:45"},
+            {"procedure": "Immunization administration", "performed": "2023-09-26T08:50"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-26T08:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-26T08:52"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2023-09-26T09:40",
+              "body": "Annual. 41F, feeling well.\n\nInterval: no new issues this year. Allergies were rough for a few weeks in May but cetirizine got her through. Migraines unchanged, roughly 2 to 3 a month, sumatriptan still works, no new headache features, no aura. Sleep okay. Still running. Work busy with a grant cycle.\n\nMeds: cetirizine 10 mg daily; sumatriptan 50 mg prn.\nAllergies: PCN (rash); dust mites.\nSocial unchanged: never smoker, 1 to 2 drinks/wk.\n\nExam: NAD. Vitals reviewed. HEENT clear. Neck no LAD. CV RRR. Lungs CTA. Abd benign. Skin without concerning lesions on visual survey. Neuro nonfocal.\n\nPHQ-2 0.\n\nA/P\n- Health maintenance: CMP, lipids, A1c drawn. Flu and updated COVID given today, L arm. Mammogram due November, reminder sent. Pap 2024.\n- Rhinitis, migraine: stable, no changes.\n\nSee her in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "portal_message",
+          "start": "2023-09-28T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-09-28T12:20",
+              "body": "Beth - labs from your physical are normal again this year, including the A1c and cholesterol. Nothing needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "imaging",
+          "start": "2023-11-14T14:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-14T14:10",
+              "issued": "2023-11-15T10:40",
+              "text": "Bilateral screening digital mammogram with tomosynthesis, compared with 11/08/2022. Scattered areas of fibroglandular density. No new or suspicious mass, distortion or calcification. Stable appearance bilaterally.",
+              "conclusion": "Negative. BI-RADS 1. Annual screening recommended."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram Result",
+              "author": "RN",
+              "date": "2023-11-16T08:45",
+              "body": "Your mammogram this week was normal and unchanged from last year. Next one due November 2024."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

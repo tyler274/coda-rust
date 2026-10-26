@@ -1,0 +1,424 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001926",
+      "events": [
+        {
+          "id": "2024-03-20a",
+          "kind": "pharmacy",
+          "start": "2024-03-20T10:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - alprazolam",
+              "author": "MA",
+              "date": "2024-03-20T10:45",
+              "body": "Electronic refill request alprazolam 0.25 mg #20. Last fill 11/2023 per PMP. Pended to PCP.\n\nPCP: PMP checked, single prescriber, fills spaced out. Approved #20, 0 RF."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "portal_message",
+          "start": "2024-06-10T21:15",
+          "orders": [
+            {
+              "id": "ibs-labs-2024",
+              "action": "placed",
+              "order": "CBC, C-reactive protein, tissue transglutaminase IgA",
+              "category": "lab",
+              "reason": "Abdominal cramping and loose stools"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stomach issues",
+              "author": "patient",
+              "date": "2024-06-10T21:15",
+              "body": "Hi - I've been meaning to ask about this for a while. Since around December I get crampy stomach pain and loose stools a lot, like 3 or 4 times a day on bad days. It's worse when I'm stressed. Going to the bathroom usually makes the cramping better. I've been taking ginger capsules which kind of help with the nausea. No blood or anything. Is this something I should come in for?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stomach issues",
+              "author": "PCP",
+              "date": "2024-06-11T07:50",
+              "body": "Thanks for writing, yes let's look at it. I put in a few blood tests (blood count, an inflammation marker and a celiac screen) you can get done any morning this week, and the front desk will put you on my schedule Monday the 17th so we can go over everything together. If you see blood in your stool, have fevers, or the pain gets severe before then, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "lab_only",
+          "start": "2024-06-12T08:05",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-12T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-12T08:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein"
+                },
+                {
+                  "test": "Tissue Transglutaminase IgA"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-12T08:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ibs-labs-2024",
+              "action": "done",
+              "date": "2024-06-12T08:05"
+            }
+          ],
+          "state": {
+            "labs": {
+              "C Reactive Protein": 1.1,
+              "Tissue Transglutaminase IgA": 1.0
+            }
+          }
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "office_visit",
+          "start": "2024-06-17T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Abdominal cramping and loose stools",
+          "conditions": [
+            {
+              "label": "Irritable bowel syndrome with diarrhea",
+              "action": "diagnosed",
+              "onset": "2023-12-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ginger 500 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth as needed for nausea or abdominal cramping",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Over the counter, self-started"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-17T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-06-17T14:10",
+              "body": "CC: cramping, loose stools\n\nHPI: 24F with GAD and migraine. About six months of on-and-off belly cramps with loose stools. On bad days 3-4 BMs, typically clustered in the morning and around stressful stretches (qualifying exam prep this spring). The cramping is all over rather than in one spot, comes in waves, and eases once she has a bowel movement. No weight loss. No blood or black stools. Doesn't wake her at night. No antibiotics recently, no laxatives or magnesium products. No travel. Started OTC ginger capsules on her own over the winter, helps the queasy feeling a little. No new foods she can pin it on; drinks 2 coffees a day.\n\nMeds: sertraline 50 daily; alprazolam 0.25 prn; sumatriptan 50 prn; ginger extract 500 mg prn (OTC).\nAllergies: NKDA.\nFH notable for maternal grandmother with IBS.\n\nExam: vitals per flowsheet, normal. Comfortable. Abdomen soft, nondistended, normal bowel sounds, no tenderness, no masses or organomegaly. No pallor. Remainder of exam unremarkable.\n\nLabs 6/12: CBC normal. CRP normal. tTG-IgA negative.\n\nGAD-7 9 (up from her usual, she ties it to exams). PHQ-9 4.\n\nA/P\n1. IBS with diarrhea. Fits clinically: stress-linked, relieved by defecation, no alarm features, normal CBC/CRP and negative celiac screen. Went over the gut-brain picture. Plan a 4-6 week low-FODMAP trial with reintroduction (handout given), psyllium a teaspoon a day building up, cut coffee to one. OK to keep ginger. Not starting a prescription now; she would like to try diet first.\n2. GAD, a bit more active this spring. Continue sertraline 50. Encouraged counseling again; stress management will help the gut as well.\n3. Migraine stable.\n\nUpdate by portal in 6 weeks, sooner if alarm symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "portal_message",
+          "start": "2024-08-06T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "IBS update",
+              "author": "patient",
+              "date": "2024-08-06T18:30",
+              "body": "Following up like you asked. The low FODMAP thing was a lot but I think garlic and onion are big ones for me. Most days are 1-2 BMs now. Still get bad days when things are stressful. The fiber is fine. I'd like to keep going with this for now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: IBS update",
+              "author": "PCP",
+              "date": "2024-08-07T08:20",
+              "body": "That's real progress, and identifying triggers is the point of the reintroduction phase. Keep going and we'll check in at your physical in the fall. If the bad days stay frequent there are medication options we can talk about."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "annual_physical",
+          "start": "2024-10-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-10-09T08:55",
+              "issued": "2024-10-15T11:00",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-09T09:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-09T09:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-09T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-09T09:25",
+              "body": "Physical. Just turned 25.\n\nSince last year: IBS-D diagnosed in June, doing better with low-FODMAP reintroduction (garlic and onion seem to be her triggers) and daily psyllium, now 1-2 BMs most days with occasional stress flares. Still uses ginger now and then. Anxiety manageable on sertraline, alprazolam a few times a month. Migraines 1-2/month, sumatriptan works.\n\nMeds: sertraline 50 mg daily, alprazolam 0.25 mg prn (max 2/day), sumatriptan 50 mg prn, ginger extract 500 mg prn.\nNKDA. Never smoker. Social alcohol, 1-2/week.\n\nExam: vitals per flowsheet. NAD. HEENT clear. Neck supple, no thyroid enlargement. Heart regular without murmur. Lungs clear. Abdomen soft, nontender. Pelvic: external genitalia normal, cervix without lesions, Pap collected. Extremities no edema. Skin clear. Mood euthymic.\n\nGAD-7 7, PHQ-9 3, AUDIT-C 2.\n\nPlan\n- IBS-D improved with diet; continue.\n- GAD, migraine stable; no changes.\n- Pap today (cytology alone at 25).\n- Flu and updated COVID given.\n- Back in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "portal_message",
+          "start": "2024-10-15T14:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2024-10-15T14:00",
+              "body": "Hi Hannah, your Pap smear came back normal. Next one is due in three years, around fall 2027."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "telephone",
+          "start": "2025-03-12T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication refill",
+              "author": "RN",
+              "date": "2025-03-12T11:20",
+              "body": "Pt called for sumatriptan refill, out of refills. Migraines about the same, 1-2 a month, still responds to one tab. No new headache pattern, no neuro sx. Sertraline refills OK through summer. Routed.\n\nPCP: sumatriptan 50 #9 RF 3 sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-04a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety and IBS follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-06-04T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2025-06-04T16:25",
+              "body": "Video, at home.\n\nGut: mostly settled. Avoids onion and garlic, psyllium most days, ginger maybe once a week. Flares are short and line up with stress. No blood, no weight change.\nAnxiety: fine overall. Using alprazolam less, maybe twice a month. Sertraline daily, no side effects.\nMigraine: unchanged.\n\nA/P: IBS-D, GAD, migraine without aura all stable. No changes. Physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "annual_physical",
+          "start": "2025-10-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-08T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-08T09:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T09:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-08T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-08T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-08T09:30",
+              "body": "ANNUAL EXAM\n\n26 as of last week. Fourth year of grad school, writing.\n\nInterval history unremarkable. IBS-D quiet on diet and fiber. Anxiety baseline, alprazolam occasionally, last fill in the summer. Migraines 1-2 a month. No visits elsewhere.\n\nMeds: sertraline 50 mg daily; alprazolam 0.25 mg prn (max 2/day); sumatriptan 50 mg prn; ginger extract 500 mg prn.\nAllergies: none. Never smoker. 1-2 drinks a week.\n\nExam: vitals per flowsheet. Well appearing. HEENT normal. Neck no adenopathy. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Ext no edema. Skin normal. Neuro nonfocal. Calm, good eye contact.\n\nGAD-7 6, PHQ-9 3, AUDIT-C 2.\n\nA/P\n- Stable chronic conditions; continue meds.\n- CBC, CMP today.\n- Flu vaccine today. She'll get a COVID shot at the pharmacy if she wants one this year.\n- Pap due 2027.\n- RTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "portal_message",
+          "start": "2025-10-10T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-10-10T12:15",
+              "body": "Hi Hannah, Wednesday's labs are all normal - blood counts, kidney, liver and sugar. See you next fall, or sooner if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "pharmacy",
+          "start": "2025-11-12T09:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - alprazolam",
+              "author": "MA",
+              "date": "2025-11-12T09:50",
+              "body": "Refill request from pharmacy, alprazolam 0.25 mg #20. Last fill 07/2025 per PMP. Pended.\n\nPCP: PMP reviewed, no other controlled prescriptions. Approved #20, no refills."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

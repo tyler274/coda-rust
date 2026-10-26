@@ -1,0 +1,155 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002796",
+      "given": "Robin",
+      "family": "Goldberg",
+      "birth_date": "1980-07-04",
+      "address_line": "27 Laurel Park Road, Florence, MA 01062",
+      "phone": "+1-201-555-0141",
+      "email": "robin.goldberg@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher with recurrent kidney stones and urinary infections who joins in 2023. A 14 mm left renal pelvic struvite stone is found in the ED in 2024 and treated by ureteroscopy; in April 2026 she has septic shock from a Klebsiella urinary infection and a venous air embolism when her central line is pulled, and recovers fully.",
+      "events": [
+        {
+          "id": "2023-09-05a",
+          "kind": "telephone",
+          "start": "2023-09-05T15:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-09-05T15:20",
+              "body": "Caller would like to establish with the practice. Teaches second grade, said her old office keeps changing doctors on her. History of kidney stones and bladder infections, no daily meds she knows of. Membership details and fee schedule emailed. New patient visit booked for 9/12 at 3:45 (after school). Records release sent to her prior primary care office."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T15:45",
+          "end": "2023-09-12T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Personal history of urinary calculi", "icd10": "Z87.442", "action": "history", "onset": "2005-01-01", "note": "recurrent; stones passed spontaneously, no procedures"},
+            {"label": "Personal history of urinary (tract) infections", "icd10": "Z87.440", "action": "history", "onset": "2010-01-01", "note": "recurrent; treated at urgent care with short antibiotic courses"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 68.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "No alcohol use"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T16:40", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-12T16:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T16:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Urinalysis", "collected": "2023-09-12T16:40", "results": [{"test": "Urine pH"}, {"test": "Urine Leukocyte Esterase"}, {"test": "Urine Blood"}]},
+            {"panel": null, "collected": "2023-09-12T16:40", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-09-12T15:45"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T16:40"}
+          ],
+          "orders": [
+            {"id": "mammo-2023", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "routine breast cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-12T17:20",
+              "body": "43F here to establish. Left her old practice after a run of new doctors.\n\nKidney stones: first one in her mid-twenties, several since, all passed at home with fluids and over-the-counter pain medicine. Never needed a procedure, never had one analyzed that she knows of. Dad also forms stones. No flank pain right now.\n\nUrinary infections: a few a year on and off for over a decade, usually handled at urgent care with a short antibiotic. Last one maybe in the spring. Hasn't been told of any resistant bugs. Currently no urinary symptoms.\n\nPMH: as above. PSH: none. Meds: none. Allergies: NKDA.\nFH: father with stones, mother with high blood pressure.\nSH: teaches second grade, lives in Florence. Never smoker, does not drink. Single.\n\nROS otherwise negative.\n\nExam: well, pleasant. HEENT clear. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no CVA tenderness either side. No edema. Skin unremarkable.\n\nA/P\n1. Recurrent kidney stones - none active. Encouraged at least 2.5 L of water daily, she keeps a bottle at her desk but forgets during teaching. Will get her old records.\n2. Recurrent UTIs - asymptomatic. Asked her to call us rather than go to urgent care next time so we can culture.\n3. Health maintenance - CMP, CBC, lipids, UA today; HIV and hep C screen once. Mammogram ordered. Pap history pending records. Flu and COVID shots next month at a nurse visit.\n\nRTC for yearly physical, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent results",
+              "author": "PCP",
+              "date": "2023-09-14T08:05",
+              "body": "Hi Robin, your blood work from Tuesday came back fine: kidney function, calcium, sugar and blood counts are normal; LDL cholesterol is a little above the ideal line, nothing to treat at your risk level; and the HIV and hepatitis C screens were negative. The urine was clean as well. Nice to meet you, and see you at the nurse visit for shots."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "outside_records",
+          "start": "2023-09-20T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "MA",
+              "date": "2023-09-20T11:00",
+              "body": "Records received from prior primary care office (2016-2023), 41 pages, scanned to media. Summary for PCP:\n- Problem list: recurrent nephrolithiasis; recurrent urinary tract infections.\n- Medications: none.\n- Allergies: none known.\n- Cervical cytology with HPV co-test 06/2020: negative for intraepithelial lesion, HPV negative.\n- Tdap 2017.\n- No imaging or stone analysis in the packet.\nHealth maintenance updated."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T15:30",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-03T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T15:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-03T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2023-10-03T15:50",
+              "body": "Here after school for flu and COVID shots. No fever today, no prior reactions. Flu vaccine left deltoid, COVID right deltoid. Waited 15 minutes, felt fine, left."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "imaging",
+          "start": "2023-10-17T16:10",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-10-17T16:10", "text": "Bilateral digital screening mammogram with tomosynthesis. No prior studies available for comparison. The breasts show scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast.", "conclusion": "BI-RADS 1, negative. Routine screening in one year."}
+          ],
+          "orders": [
+            {"id": "mammo-2023", "action": "done", "date": "2023-10-17T16:10"}
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "portal_message",
+          "start": "2023-10-19T07:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2023-10-19T07:40",
+              "body": "Your mammogram was normal. Next one in a year; we'll remind you."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

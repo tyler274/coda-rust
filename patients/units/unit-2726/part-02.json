@@ -1,0 +1,1494 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002726",
+      "events": [
+        {
+          "id": "2022-01-12a",
+          "kind": "office_visit",
+          "start": "2022-01-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right hip pain",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 6
+            }
+          ],
+          "orders": [
+            {
+              "id": "hip-xray-2022",
+              "action": "placed",
+              "order": "X-ray right hip, 2 views",
+              "category": "imaging",
+              "reason": "progressive right hip pain, known AVN"
+            },
+            {
+              "id": "hip-mri-2022",
+              "action": "placed",
+              "order": "MRI right hip without contrast",
+              "category": "imaging",
+              "reason": "progressive right hip pain, known AVN, on prednisone 20 mg"
+            },
+            {
+              "id": "ortho-referral-2022",
+              "action": "placed",
+              "order": "Orthopedic surgery referral",
+              "category": "referral",
+              "to": "Orthopedic Surgery",
+              "reason": "progressive right hip pain, AVN right femoral head"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Hip X-ray, right, 2 views",
+              "loinc": "26132-1",
+              "performed": "2022-01-12T12:10",
+              "text": "AP pelvis and frog-leg lateral right hip. Comparison none available. Postsurgical change from prior core decompression of the right femoral neck. No fracture. No dislocation. Joint space preserved.",
+              "conclusion": "No fracture or dislocation.",
+              "issued": "2022-01-12T13:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-01-12T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hip Pain",
+              "author": "PCP",
+              "date": "2022-01-12T11:50",
+              "body": "Right hip pain getting steadily worse since about October. Deep dull ache in the groin, worse with standing and walking at work, eases when she sits or lies down. No trauma, no fall. Tylenol helps a little. Has been on prednisone 20 since late July.\n\nExam: antalgic gait. R hip: flexion to ~95, internal rotation markedly reduced and reproduces the groin pain. No warmth, no erythema, no swelling. Distal neurovascular intact.\n\nA/P: Progressive R hip pain, known AVN R femoral head s/p core decompression, on higher-dose steroid. Concern for progression.\n- X-ray R hip today (downstairs).\n- MRI R hip.\n- Refer back to ortho.\n- Tylenol scheduled, avoid NSAIDs with her BP and lupus.\nWill let rheum know."
+            },
+            {
+              "type": "Result Note",
+              "title": "Hip X-ray",
+              "author": "PCP",
+              "date": "2022-01-12T16:20",
+              "body": "XR R hip: no fracture or dislocation. MRI still needed to look at the femoral head. Message sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-21a",
+          "kind": "imaging",
+          "start": "2022-01-21T18:30",
+          "reason": "MRI right hip",
+          "orders": [
+            {
+              "id": "hip-xray-2022",
+              "action": "done",
+              "date": "2022-01-12T12:10"
+            },
+            {
+              "id": "hip-mri-2022",
+              "action": "done",
+              "date": "2022-01-21T18:30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI right hip without contrast",
+              "loinc": "36490-1",
+              "performed": "2022-01-21T18:30",
+              "text": "Multiplanar multisequence MRI of the right hip without contrast. Right femoral head: subchondral crescent sign consistent with subchondral fracture, with surrounding bone marrow edema. Postsurgical tract from prior core decompression. Acetabulum normal. Small physiologic joint fluid. Labrum and surrounding muscles and tendons unremarkable. Left hip partially imaged, unremarkable.",
+              "conclusion": "Avascular necrosis of the right femoral head with subchondral fracture (crescent sign) and bone marrow edema."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "MRI right hip",
+              "author": "PCP",
+              "date": "2022-01-24T08:40",
+              "body": "MRI shows the AVN has progressed to a subchondral fracture (crescent sign) with marrow edema. Called patient, explained. Use a cane, limit long standing. Ortho appt 1/31 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-31a",
+          "kind": "specialist_visit",
+          "start": "2022-01-31T09:20",
+          "service": "Orthopedic Surgery",
+          "reason": "Right hip avascular necrosis",
+          "orders": [
+            {
+              "id": "ortho-referral-2022",
+              "action": "done",
+              "date": "2022-01-31T09:20"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for hip pain, max 3000 mg/day",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hip pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic surgery consultation",
+              "author": "orthopedics",
+              "date": "2022-02-03T13:15",
+              "body": "Outside orthopedic surgery. Seen 1/31/2022.\n\nRE: Aisha Diallo, DOB 07/18/1976\n\nThank you for sending her back. She has known avascular necrosis of the right femoral head, treated with core decompression in 2019, and now has three months of worsening right hip pain: a dull ache that builds with weight-bearing and settles with rest. No injury. She has taken prednisone 20 mg daily for the past six months.\n\nMeds: hydroxychloroquine, prednisone 20 mg, lisinopril, amlodipine, HCTZ, potassium, vitamin D, calcium. Allergy: sulfonamides.\n\nExam: walks with an antalgic gait. Right hip range of motion is reduced, internal rotation most of all. The joint is not warm, red or swollen. Neurovascularly intact distally.\n\nImaging: I reviewed the radiographs from 1/12, which show no fracture or dislocation, and the MRI from 1/21, which shows a crescent sign consistent with subchondral fracture and marrow edema in the femoral head.\n\nAssessment: progression of right femoral head AVN to subchondral collapse.\n\nPlan: I explained that at this stage a repeat core decompression is unlikely to help and that total hip arthroplasty is the definitive treatment. She would like to hold off for now. Cane in the left hand, protected weight-bearing, acetaminophen as needed. I'd encourage the lowest prednisone dose her lupus allows and have written to her rheumatologist. Return when she is ready to talk about surgery, or sooner if pain becomes unmanageable.\n\nOrthopedic Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2022-02-14a",
+          "kind": "specialist_visit",
+          "start": "2022-02-14T10:30",
+          "service": "Rheumatology",
+          "reason": "Lupus follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up letter",
+              "author": "rheumatology",
+              "date": "2022-02-17T09:00",
+              "body": "Outside rheumatology practice. Visit 02/14/2022.\n\nDear Doctor,\n\nI saw Ms. Diallo after her orthopedic visit. Her joints and energy are better than last summer. Given progression of the right femoral head AVN I have started tapering prednisone: 15 mg daily for four weeks, then back to 10 mg daily from mid-March. Hydroxychloroquine continues unchanged.\n\nI will see her in six months, sooner if her lupus symptoms return on the lower dose.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-07a",
+          "kind": "nurse_visit",
+          "start": "2022-03-07T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-03-07T16:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-07T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Shingrix #2",
+              "author": "RN",
+              "date": "2022-03-07T16:30",
+              "body": "Shingrix dose 2 of 2, 0.5 mL IM L deltoid. Dose 1 was 12/13/21. Using a cane today for her hip. No reaction during wait. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-14a",
+          "kind": "telephone",
+          "start": "2022-03-14T12:15",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "tapered by rheumatology"
+            },
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic lupus erythematosus"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication reconciliation",
+              "author": "RN",
+              "date": "2022-03-14T12:15",
+              "body": "Pt called to update her list: finished the rheum taper, now prednisone 10 mg daily as of today. Joints OK so far. Hip still sore but manageable with cane + Tylenol. Med list updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-25a",
+          "kind": "office_visit",
+          "start": "2022-04-25T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-04-25T15:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-04-25T15:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-04-25T15:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-04-25T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-04-25T15:45",
+              "body": "Back on prednisone 10 since mid-March. Lupus holding. Hip: cane outside the house, pain ~4/10 most days, worse after work. Not ready for hip replacement; wants to get through the year at her job first. BP log 130s/80s.\n\nExam: BP as charted. Antalgic gait with cane. Lungs clear, RRR, no edema.\n\nA/P: AVN R hip - collapse on MRI, THA deferred by patient, ortho aware. Continue cane, Tylenol. HTN - at goal. Hyperaldosteronism/K - BMP. SLE - CBC.\nColonoscopy referral re-sent, she's ready now."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-13a",
+          "kind": "procedure_visit",
+          "start": "2022-06-13T07:30",
+          "end": "2022-06-13T10:00",
+          "service": "Gastroenterology",
+          "reason": "Screening colonoscopy",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2022-06-13T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy report",
+              "author": "gastroenterology",
+              "date": "2022-06-15T10:00",
+              "body": "Outside gastroenterology endoscopy unit. Procedure date 06/13/2022.\n\nIndication: average-risk screening, age 45.\nSedation: monitored anesthesia care.\nPrep: good (BBPS 8).\n\nFindings: the colonoscope was advanced to the cecum, identified by the appendiceal orifice and ileocecal valve. Withdrawal time 9 minutes. Normal mucosa throughout the colon and rectum. No polyps. Small internal hemorrhoids on retroflexion.\n\nImpression: normal screening colonoscopy.\nRecommendation: repeat colonoscopy in 10 years. Resume home medications."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-15a",
+          "kind": "specialist_visit",
+          "start": "2022-08-15T14:00",
+          "service": "Ophthalmology",
+          "reason": "Hydroxychloroquine retinal screening",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology screening letter",
+              "author": "ophthalmology",
+              "date": "2022-08-17T09:30",
+              "body": "Outside ophthalmology, exam 8/15/22. Plaquenil screening.\n\nVA 20/20 OD, 20/25 OS. Pupils normal. Fundus: maculae flat with normal foveal reflex, discs pink and sharp OU. OCT macula: normal foveal contour, no ellipsoid zone loss OU, stable vs 2021. HVF 10-2 reliable and full OU.\n\nNo signs of hydroxychloroquine toxicity. Continue annual screening."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "annual_physical",
+          "start": "2022-09-26T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-26T09:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-26T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-26T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-26T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-26T09:15",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-09-26T09:15",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2022",
+              "action": "placed",
+              "order": "DXA bone density",
+              "category": "imaging",
+              "reason": "osteopenia on long-term glucocorticoids"
+            },
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-09-26T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-26T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-26T10:00",
+              "body": "46F, annual exam.\n\nInterval: AVN R hip progressed to subchondral fracture on MRI 1/2022, ortho offered THA, she's deferring. Prednisone back to 10 since 3/2022. Colonoscopy 6/2022 normal. Eye screening 8/2022 normal.\n\nFeels reasonably well. Hip is the main limitation; cane for distance. Works full time. No new symptoms.\n\nMeds: hydroxychloroquine 200 bid, prednisone 10, lisinopril 20, amlodipine 5, HCTZ 25, KCl 20 mEq, vitamin D3 2000 u, calcium carbonate 600 bid, acetaminophen prn.\nAllergy: sulfa.\n\nExam: NAD. HEENT clear. Neck supple, thyroid not enlarged. Heart RRR. Lungs clear. Breasts without masses. Abdomen soft, nontender, no organomegaly. Ext no edema. R hip limited IR. Skin clear.\nPHQ-9 2.\n\nPlan:\n- Labs as ordered.\n- DXA (last 2019, ongoing steroids).\n- Mammogram due next month.\n- Flu and updated COVID booster at a nurse visit in Oct.\n- Pap next due 2024.\nRTC 3 mo."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T15:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Flu and COVID",
+              "author": "MA",
+              "date": "2022-10-11T15:50",
+              "body": "Flu quadrivalent 0.5 mL IM R deltoid; Pfizer bivalent booster 0.3 mL IM L deltoid. Screening questions negative. Observed 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "imaging",
+          "start": "2022-10-24T09:10",
+          "reason": "Screening mammogram",
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-10-24T09:10"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-10-24T09:10",
+              "text": "Standard views with tomosynthesis. Comparison 10/2020 and 10/2019. Heterogeneously dense breast tissue. No suspicious masses, calcifications or distortion in either breast. Stable.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-31a",
+          "kind": "imaging",
+          "start": "2022-10-31T13:40",
+          "reason": "Bone density",
+          "orders": [
+            {
+              "id": "dxa-2022",
+              "action": "done",
+              "date": "2022-10-31T13:40"
+            }
+          ],
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2022-10-31T13:40",
+              "text": "Lumbar spine L1-L4 BMD T-score -1.8. Left femoral neck T-score -1.4. Left total hip T-score -1.1. Right hip not analyzed (prior surgery, avascular necrosis). Compared with outside study 4/2019 (L-spine -1.6, left femoral neck -1.3), modest decline, not statistically significant at the hip.",
+              "conclusion": "Osteopenia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bone density result",
+              "author": "PCP",
+              "date": "2022-11-02T10:05",
+              "body": "Your bone density scan still shows osteopenia (thinner-than-average bone, but not osteoporosis), close to the 2019 numbers. Keep taking the calcium and vitamin D and stay as active as the hip allows. We'll repeat it in a few years."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "office_visit",
+          "start": "2022-12-12T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2022-12-12T08:05",
+              "body": "Pt called, can't make 2:40 today, snow and husband has the car. Offered video visit next week, booked 12/19."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "telehealth_visit",
+          "start": "2022-12-19T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2022-12-19T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2022-12-19T12:45",
+              "body": "Video, pt at home, identity verified. Doing OK. Home BP this week 128-136/80-86. Taking meds, KCl included. Hip unchanged, still using cane. Lupus quiet on prednisone 10 + HCQ.\n\nA/P: HTN at goal on home readings. Continue all. Labs at the spring visit. RTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-27a",
+          "kind": "hospital_admission",
+          "start": "2023-01-27T13:40",
+          "end": "2023-01-31T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Sudden left upper quadrant pain",
+          "vitals": [
+            {
+              "time": "2023-01-27T13:45",
+              "temp_c": 37.8,
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 95,
+              "rr": 18,
+              "spo2": 98
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.1,
+              "White Blood Cells": 9.0,
+              "Platelets": 250,
+              "Prothrombin Time-International Normalized Ratio": 1.0
+            }
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-01-27T14:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-01-27T14:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-01-27T14:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-01-27T14:00",
+              "results": [
+                {
+                  "test": "Lactate Dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 342
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-01-27T14:00",
+              "results": [
+                {
+                  "test": "Schistocytes",
+                  "loinc": "800-3",
+                  "text": "None seen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-01-28T05:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-01-27T14:50",
+              "text": "Limited ultrasound of the left upper quadrant and abdomen. Spleen with a wedge-shaped hypoechoic area. Liver, gallbladder and kidneys sonographically unremarkable.",
+              "conclusion": "Wedge-shaped hypoechoic area in the spleen.",
+              "issued": "2023-01-27T15:20"
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-01-27T15:40",
+              "text": "IV contrast. Disruption of the splenic capsule with perisplenic hematoma and hemoperitoneum tracking along the left paracolic gutter into the pelvis. Liver, pancreas, adrenal glands and kidneys normal. No free air. Bowel unremarkable.",
+              "conclusion": "Splenic rupture with perisplenic hematoma and hemoperitoneum, no history of trauma.",
+              "issued": "2023-01-27T16:10"
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-01-30T12:00",
+              "text": "Specimen: spleen, splenectomy. Gross: spleen with capsular disruption and adherent clot. Microscopic: capsular rupture with parenchymal hemorrhage and a hemorrhagic infarct. No neoplasm identified.",
+              "conclusion": "Spleen with capsular rupture and hemorrhagic infarction. Negative for malignancy.",
+              "issued": "2023-01-30T16:00"
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Atraumatic splenic rupture with hemoperitoneum",
+              "icd10": "D73.5",
+              "action": "diagnosed",
+              "onset": "2023-01-27"
+            },
+            {
+              "label": "Acquired absence of spleen",
+              "action": "diagnosed",
+              "onset": "2023-01-27",
+              "note": "splenectomy for atraumatic rupture"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain",
+              "dose": {
+                "value": 1,
+                "unit": "{tbl}"
+              },
+              "frequency": "Q6H",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2023-01-27T13:40"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2023-01-31T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department physician record",
+              "author": "emergency medicine",
+              "date": "2023-02-01T09:00",
+              "body": "Regional hospital ED. Seen 01/27/2023 13:40.\n\nCC: sharp left upper abdominal pain.\n\nHPI: 46-year-old woman with SLE on hydroxychloroquine and prednisone, with sudden onset of sharp, constant LUQ pain that goes up into the left shoulder. No trauma or fall. Never had anything like this.\n\nMeds: hydroxychloroquine, prednisone, lisinopril 20, amlodipine 5, HCTZ 25, cholecalciferol, calcium carbonate. Allergy: sulfonamides.\n\nVitals: T 37.8 C, BP 130/85, HR 95, RR 18.\nExam: uncomfortable, holding still. LUQ tender to palpation, positive splenic percussion sign. No peritoneal rigidity at triage. Heart tachy-normal, regular. Lungs clear.\n\nLabs: Hgb 12.1, WBC 9.0, Plt 250, INR 1.0, LDH elevated, smear without schistocytes.\nUS: wedge-shaped hypoechoic splenic area. CT A/P with contrast: splenic capsular rupture, perisplenic hematoma and hemoperitoneum.\n\nMDM: atraumatic splenic rupture with hemoperitoneum in an immunosuppressed patient. Two large-bore IVs, type and screen. General surgery at bedside; to OR.\n\nDisposition: admitted to surgery."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative report - splenectomy",
+              "author": "general surgery",
+              "date": "2023-02-01T09:05",
+              "body": "Date of surgery: 01/27/2023.\nPreoperative and postoperative diagnosis: atraumatic splenic rupture with hemoperitoneum.\nProcedure: splenectomy.\nAnesthesia: general endotracheal.\n\nFindings: moderate hemoperitoneum evacuated. Spleen with capsular disruption and adherent clot. No accessory spleen seen. Remaining abdominal viscera grossly normal.\n\nThe splenic hilum was controlled and divided and the spleen removed and sent to pathology. Hemostasis confirmed, left upper quadrant irrigated, fascia and skin closed.\nEBL as recorded by anesthesia. No transfusion. No complications. To PACU stable."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "general surgery",
+              "date": "2023-02-01T09:10",
+              "body": "Admitted 01/27/2023, discharged 01/31/2023.\n\nDiagnosis: atraumatic splenic rupture with hemoperitoneum, status post splenectomy 1/27.\n\nCourse: presented through the ED with acute LUQ pain; CT confirmed splenic rupture with hemoperitoneum; splenectomy the same day. Postoperative Hgb 10.4 on POD 1 and stable after. Diet advanced, ambulating, pain controlled on oral medication. Pathology: capsular rupture with hemorrhagic infarction, no neoplasm.\n\nDischarge meds: home medications unchanged (hydroxychloroquine 200 mg twice daily, prednisone 10 mg daily, lisinopril 20 mg, amlodipine 5 mg, hydrochlorothiazide 25 mg, potassium chloride 20 mEq, cholecalciferol, calcium carbonate). Oxycodone-acetaminophen 5/325, 1 tab q6h prn severe pain, #12. Acetaminophen otherwise.\nAllergies: sulfonamides.\n\nFollow-up: PCP within 1 week, to give post-splenectomy vaccines (meningococcal ACWY and B, Haemophilus b; pneumococcal status per PCP) at about 2 weeks after surgery. Fever above 38.3 C now warrants urgent evaluation given asplenia. Surgery clinic 2 weeks. No lifting over 10 lb for 4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-01a",
+          "kind": "telephone",
+          "start": "2023-02-01T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2023-02-01T10:30",
+              "body": "Called pt day after discharge. Sore at incision, taking Tylenol, used the oxycodone once overnight. Eating, BM yesterday. No fever. Husband home with her this week. Reviewed fever precautions with no spleen. Appt with PCP Monday 2/6 for wound check and vaccines. Records received from hospital and routed."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-06a",
+          "kind": "office_visit",
+          "start": "2023-02-06T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after splenectomy",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.6,
+              "White Blood Cells": 10.2,
+              "Platelets": 300
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-02-06T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Atraumatic splenic rupture with hemoperitoneum",
+              "icd10": "D73.5",
+              "action": "resolved"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2023-02-06T10:30"
+            },
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2023-02-06T10:32"
+            },
+            {
+              "vaccine": "Haemophilus influenzae type b (PRP-T)",
+              "date": "2023-02-06T10:34"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-02-06T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-02-06T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-02-06T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "author": "PCP",
+              "date": "2023-02-06T11:00",
+              "body": "Seen 10 days after emergency splenectomy for an atraumatic splenic rupture (1/27). Discharge summary, op note, path reviewed: capsular rupture with hemorrhagic infarct, no tumor.\n\nFeeling stronger each day. Incision sore, no drainage. Off the oxycodone since Friday. No fevers. Eating normally.\n\nExam: afebrile. Abdomen: LUQ incision clean, dry, edges well apposed, no erythema. Mild tenderness around the incision only. Lungs clear. Heart regular.\n\nA/P:\n1. S/p splenectomy - healing well. Asplenia now on the problem list. Fever = same-day call/ED. Wallet card given.\n2. Vaccines: Prevnar 20 already 10/2021 - pneumococcal complete. Today MenACWY #1, MenB #1, Hib. MenACWY and MenB #2 in 8 weeks.\n3. CBC today.\n4. Continue prednisone 10, HCQ, BP meds.\nRTC 2 months / nurse visit for vaccines."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "specialist_visit",
+          "start": "2023-02-27T11:00",
+          "service": "Rheumatology",
+          "reason": "Lupus flare",
+          "medications": [
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased for flare"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (60 mg) by mouth daily",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "SLE flare"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology urgent visit letter",
+              "author": "rheumatology",
+              "date": "2023-03-02T15:00",
+              "body": "Outside rheumatology practice. Seen urgently 02/27/2023.\n\nDear Doctor,\n\nMs. Diallo is one month out from her splenectomy and has had a severe lupus flare over the last week or so: her joints, the malar rash and profound fatigue, all as in her previous flares but much worse.\n\nI have started prednisone 60 mg daily and will taper once the flare is controlled. Hydroxychloroquine continues. With asplenia and high-dose steroid she is at real infection risk and knows to call with any fever.\n\nAllergies: sulfonamides.\n\nRheumatology"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Rheumatology medication change noted",
+              "author": "RN",
+              "date": "2023-03-02T16:10",
+              "body": "Letter from rheum: prednisone 60 mg daily for lupus flare. Med list updated. Called pt - started it 2/27, feels better already. Reminded about fever precautions."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-23a",
+          "kind": "telephone",
+          "start": "2023-03-23T09:10",
+          "orders": [
+            {
+              "id": "psych-referral-2023",
+              "action": "placed",
+              "order": "Psychiatry referral, urgent",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "behavior change on high-dose prednisone"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from husband",
+              "author": "PCP",
+              "date": "2023-03-23T09:40",
+              "body": "Husband called, worried. For about two weeks she's 'not herself' - irritable, short-tempered, barely sleeping, and buying things online they don't need. She's on prednisone 60 since 2/27 for a flare.\n\nSpoke with Aisha too: she says she feels great, full of energy, doesn't see the problem. Denies any thoughts of harming herself or anyone else. No headache, no fever.\n\nImpression: likely steroid-related mood change. Arranged urgent psychiatry, appointment 3/28. Messaged rheum re: faster taper. Husband to call 911 or go to ED if any safety concern before then; he agreed and is keeping the credit cards for now."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-28a",
+          "kind": "specialist_visit",
+          "start": "2023-03-28T14:00",
+          "service": "Psychiatry",
+          "reason": "Irritability, insomnia and behavior change on high-dose prednisone",
+          "state": {
+            "weight_kg": 83.0,
+            "labs": {
+              "Hemoglobin": 13.2,
+              "White Blood Cells": 7.8,
+              "Platelets": 250,
+              "Creatinine": 0.9,
+              "Thyroid Stimulating Hormone": 2.5
+            }
+          },
+          "measure": [
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-28T15:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-28T15:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-03-28T15:00",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-28T15:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                }
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Glucocorticoid-induced neuropsychiatric symptoms",
+              "icd10": "F06.33",
+              "action": "diagnosed",
+              "onset": "2023-03-13",
+              "note": "manic symptoms on prednisone 60 mg"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "accelerated taper"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Taper: 8 tablets (40 mg) daily x 7 days, 6 tablets (30 mg) x 7 days, 4 tablets (20 mg) x 7 days, 3 tablets (15 mg) x 7 days, then 10 mg daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "SLE, prednisone taper"
+            },
+            {
+              "drug": "quetiapine 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Glucocorticoid-induced manic symptoms"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2023",
+              "action": "done",
+              "date": "2023-03-28T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry consultation",
+              "author": "psychiatry",
+              "date": "2023-03-30T10:00",
+              "body": "Outside psychiatry clinic. Seen 03/28/2023.\n\nDear Doctor,\n\nThank you for the urgent referral. Ms. Diallo is a 46-year-old woman with SLE, avascular necrosis of the right femoral head, and a splenectomy two months ago for an atraumatic rupture. She came with her husband.\n\nHe describes two weeks of behavior that is out of character: she is irritable, sleeps very little, talks about big plans, and has been spending a lot of money online. Prednisone was raised to high dose about a month ago for a severe lupus flare. She has never had anything like this before. No prior psychiatric history, no substance use.\n\nVitals in clinic were normal. On exam she was restless and agitated, easily pulled off topic, with rapid pressured speech. Oriented. No psychotic content elicited. Denied suicidal or homicidal thoughts.\n\nLabs drawn today: Hgb 13.2, WBC 7.8, Plt 250, creatinine 0.9, urinalysis normal, TSH 2.5.\n\nAssessment: glucocorticoid-induced neuropsychiatric symptoms with manic features. No evidence of a primary mood disorder, infection or metabolic cause.\n\nPlan:\n- Quetiapine 25 mg at bedtime.\n- I spoke with her rheumatologist, who agrees to a faster prednisone taper: 40 mg from tomorrow, then 30, 20 and 15 mg weekly, reaching 10 mg daily in about four weeks.\n- Husband to manage finances for now. Return precautions given.\n- I will see her again in six weeks.\n\nPsychiatry"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              78
+            ],
+            "hr": 84,
+            "rr": 16,
+            "temp_c": 36.7
+          }
+        },
+        {
+          "id": "2023-04-10a",
+          "kind": "nurse_visit",
+          "start": "2023-04-10T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-splenectomy vaccines, dose 2",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2023-04-10T16:25"
+            },
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2023-04-10T16:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-04-10T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Meningococcal vaccines",
+              "author": "RN",
+              "date": "2023-04-10T16:40",
+              "body": "MenACWY #2 0.5 mL IM L deltoid, MenB #2 0.5 mL IM R deltoid. Doses 1 were 2/6. Post-splenectomy series complete; MenACWY booster due in 5 years. Pt calmer today, says she's sleeping 6 hours now and on prednisone 30 this week. No reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-26a",
+          "kind": "telephone",
+          "start": "2023-04-26T11:00",
+          "medications": [
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic lupus erythematosus"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication update",
+              "author": "RN",
+              "date": "2023-04-26T11:00",
+              "body": "Pt reports she's down to prednisone 10 mg daily as of today per the taper. Sleeping normally, 'feel like me again.' Still on quetiapine at night until psychiatry f/u 5/9. Med list updated."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "specialist_visit",
+          "start": "2023-05-09T13:30",
+          "service": "Psychiatry",
+          "reason": "Follow-up",
+          "conditions": [
+            {
+              "label": "Glucocorticoid-induced neuropsychiatric symptoms",
+              "icd10": "F06.33",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "quetiapine 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "symptoms resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry follow-up letter",
+              "author": "psychiatry",
+              "date": "2023-05-11T09:00",
+              "body": "Outside psychiatry clinic. Seen 05/09/2023.\n\nDear Doctor,\n\nMs. Diallo's symptoms have fully resolved now that she is back on prednisone 10 mg daily. She is sleeping normally, her husband agrees she is herself again, and her mental status exam today was normal.\n\nWe stopped quetiapine today. If high-dose glucocorticoids are needed again, consider prophylactic quetiapine and an early check-in with us. Discharged from psychiatry follow-up.\n\nPsychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "office_visit",
+          "start": "2023-06-12T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.6,
+              "White Blood Cells": 9.6,
+              "Platelets": 270
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-06-12T09:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-06-12T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-12T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-12T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-06-12T10:15",
+              "body": "First routine visit since a rough winter: splenectomy 1/27, lupus flare on prednisone 60, steroid-induced mania 3/2023, resolved; off quetiapine since 5/9. Prednisone 10 since 4/26.\n\nFeels well. Sleep and mood normal. Gained a few pounds on the high dose. Hip the same, cane for distance.\n\nExam: BP as charted, weight up from fall. Lungs clear, RRR. Incision well healed. No edema.\n\nA/P: SLE quiet on HCQ + pred 10. Asplenia - vaccines complete, fever plan reviewed. HTN controlled. K on KCl. Labs today. Note on chart: avoid high-dose steroids without psych plan if possible.\nRTC 3 mo / physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-11a",
+          "kind": "specialist_visit",
+          "start": "2023-09-11T10:40",
+          "service": "Ophthalmology",
+          "reason": "Hydroxychloroquine retinal screening",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology screening letter",
+              "author": "ophthalmology",
+              "date": "2023-09-13T08:30",
+              "body": "Outside ophthalmology. Annual hydroxychloroquine exam 9/11/2023.\n\nBest corrected 20/20 OU. Normal pressures. Dilated exam unremarkable OU. OCT: no parafoveal or pericentral ellipsoid-zone loss, unchanged from 2022. 10-2 fields full.\n\nNo toxicity. See again next year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "annual_physical",
+          "start": "2023-09-25T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 82.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-25T09:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-25T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-25T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-25T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-09-25T09:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-25T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-25T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-25T09:50",
+              "body": "47F for annual.\n\nYear in review: splenectomy 1/2023 for atraumatic rupture; lupus flare treated with high-dose prednisone, complicated by steroid-induced manic symptoms, resolved with taper and short quetiapine. Back to baseline since spring.\n\nNow: feels well. Weight coming back down. Hip pain stable with cane. Still deferring THA.\n\nMeds: hydroxychloroquine 200 bid, prednisone 10, lisinopril 20, amlodipine 5, HCTZ 25, KCl 20 mEq, vitamin D3, calcium carbonate, acetaminophen prn.\nAllergy: sulfa (severe rash).\n\nExam: well. HEENT normal, oral mucosa clear. Neck no nodes. RRR. Lungs clear. Breasts no masses. Abdomen soft, healed LUQ scar. Ext no edema. Skin no rash.\nPHQ-9 1.\n\nPlan: labs. Flu + updated COVID next month. Mammogram due 10/2024. Pap due 2024. Colonoscopy done 2022. Eye screening 9/2023 normal.\nRTC 3 mo."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "nurse_visit",
+          "start": "2023-10-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-16T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-16T15:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-16T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Flu and COVID",
+              "author": "MA",
+              "date": "2023-10-16T16:05",
+              "body": "Flu 0.5 mL IM L deltoid, COVID 2023-24 formula 0.3 mL IM R deltoid. No reactions during observation."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "office_visit",
+          "start": "2023-12-18T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-18T13:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-12-18T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-12-18T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-12-18T13:45",
+              "body": "Quick check. No complaints. BP fine. Lupus quiet. Refills sent for the year. BMP for K.\nRTC March."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

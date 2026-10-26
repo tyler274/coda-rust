@@ -1,0 +1,183 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002807",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "telephone",
+          "start": "2026-01-20T14:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI scheduling",
+              "author": "front desk",
+              "date": "2026-01-20T14:41",
+              "body": "Call from outside GI office. Referral reviewed by their physician and triaged to direct-access upper endoscopy first: EGD booked 2/10/26, clinic follow-up with GI 3/3/26. They asked for the barium swallow report and last office note - faxed both. Pt already notified by them."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "procedure_visit",
+          "start": "2026-02-10T07:45",
+          "end": "2026-02-10T09:30",
+          "service": "Gastroenterology",
+          "reason": "Dysphagia, esophageal dysmotility",
+          "orders": [
+            {"id": "gi-referral-2", "action": "done", "date": "2026-02-10T07:45"}
+          ],
+          "procedures": [
+            {"procedure": "Upper endoscopy with biopsy", "performed": "2026-02-10T08:20"}
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-02-10T08:20",
+              "issued": "2026-02-13T15:00",
+              "text": "Specimen A: esophagus, distal, biopsies. Specimen B: esophagus, proximal/mid, biopsies.\nGross: A and B - multiple tan soft tissue fragments.\nMicroscopic: squamous mucosa with normal maturation. No increase in intraepithelial eosinophils. No basal cell hyperplasia, no intestinal metaplasia, no dysplasia. No fungal organisms.",
+              "conclusion": "A and B: benign squamous mucosa. No increased intraepithelial eosinophils. Negative for dysplasia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Upper Endoscopy Report",
+              "author": "gastroenterology",
+              "date": "2026-02-12T11:05",
+              "body": "Outside gastroenterology - endoscopy unit\nProcedure date: 02/10/2026\nPatient: Abigail Paquette, DOB 07/27/1980\nProcedure: esophagogastroduodenoscopy with cold forceps biopsy\nIndication: dysphagia to solids and liquids; esophagram with corkscrew contractions.\nSedation: monitored anesthesia care, propofol per anesthesia record.\nAllergies: NKDA.\n\nFindings:\n- Esophagus: normal caliber and mucosa throughout. No rings, furrows, exudate, stricture or mass. Z-line regular. Biopsies taken from the distal and the proximal/mid esophagus to exclude eosinophilic esophagitis.\n- Stomach: normal mucosa; retroflexion normal, no hiatal hernia.\n- Duodenum: normal through the second portion.\nThe scope traversed the GE junction without resistance.\n\nImpression: normal upper endoscopy; no structural cause for dysphagia. Pathology pending.\nRecommendations: follow up in GI clinic 03/03/2026 as scheduled. Resume regular diet today.\nNo complications. Discharged home with an escort."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Pathology received",
+              "author": "front desk",
+              "date": "2026-02-16T09:30",
+              "body": "Pathology for 2/10 EGD biopsies received from outside GI and scanned. Routed to PCP."
+            },
+            {
+              "type": "Result Note",
+              "title": "EGD pathology",
+              "author": "PCP",
+              "date": "2026-02-16T12:15",
+              "body": "Esophageal biopsies benign, no eosinophilic esophagitis. GI will go over at her 3/3 visit. No action from me."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "specialist_visit",
+          "start": "2026-03-03T13:00",
+          "service": "Gastroenterology",
+          "reason": "Follow-up, dysphagia",
+          "orders": [
+            {"id": "hrm", "action": "placed", "order": "High-resolution esophageal manometry", "category": "procedure", "to": "Gastroenterology", "reason": "Esophageal dysmotility with corkscrew esophagram"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Clinic Note",
+              "author": "gastroenterology",
+              "date": "2026-03-06T10:40",
+              "body": "Outside gastroenterology group\nVisit date: 03/03/2026\nPatient: Abigail Paquette, 45 y/o F\nReferring: primary care physician\n\nReason for visit: return visit after EGD; dysphagia.\n\nHPI: Ms. Paquette comes back to clinic roughly a year after ENT first saw her for this. Over the past six months she has had on-and-off trouble getting both solids and liquids down, episodes of undigested food coming back up, and now and then pain behind the sternum. She ties many episodes to emotionally stressful stretches at work. No weight loss, no vomiting, no hematemesis or melena.\n\nProblem list: esophageal dysmotility.\nMedications: none.\nAllergies: no known drug allergies.\nFamily history: hypothyroidism in her mother, hypertension in her father.\nSocial: never smoker, 1-2 alcoholic drinks weekly, works as a corporate project manager.\n\nExam: normal. Well appearing, abdomen soft and nontender, no lymphadenopathy.\n\nData reviewed:\n- Barium esophagram 10/07/2025: intermittent corkscrew-type contractions of the esophagus, no structural lesion.\n- EGD 02/10/2026: no structural abnormality. Biopsies benign without eosinophilia.\n\nAssessment: esophageal dysmotility. The corkscrew pattern with a structurally normal esophagus most suggests a spastic disorder such as distal esophageal spasm; achalasia needs to be excluded before treatment is chosen.\n\nPlan:\n1. High-resolution esophageal manometry - ordered.\n2. Avoid very hot and very cold drinks, eat slowly with smaller bites, stay upright for a while after meals.\n3. No medication for now; will decide after manometry.\n4. Telehealth follow-up after the study.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "procedure_visit",
+          "start": "2026-04-08T08:00",
+          "end": "2026-04-08T09:00",
+          "service": "Gastroenterology",
+          "reason": "High-resolution esophageal manometry",
+          "orders": [
+            {"id": "hrm", "action": "done", "date": "2026-04-08T08:00"}
+          ],
+          "reports": [
+            {
+              "study": "High-resolution esophageal manometry",
+              "loinc": "51393-7",
+              "performed": "2026-04-08T08:00",
+              "issued": "2026-04-10T14:00",
+              "text": "Solid-state high-resolution manometry, Chicago Classification v4.0 protocol. Upper esophageal sphincter: normal resting pressure and relaxation. EGJ: median IRP 9 mmHg (normal). Esophageal body, 10 supine wet swallows: 4 premature (distal latency under 4.5 s), 6 normal peristalsis; no failed or hypercontractile swallows. Upright and multiple rapid swallows concordant.",
+              "conclusion": "Distal esophageal spasm (Chicago Classification v4.0). Normal EGJ relaxation; no achalasia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "High-Resolution Esophageal Manometry",
+              "author": "gastroenterology",
+              "date": "2026-04-10T14:20",
+              "body": "Outside gastroenterology - motility laboratory\nStudy date: 04/08/2026\nPatient: Abigail Paquette, DOB 07/27/1980\nIndication: dysphagia; esophagram with corkscrew contractions; normal EGD.\n\nProtocol: solid-state high-resolution catheter placed transnasally without difficulty. Supine 10 water swallows, followed by upright swallows and multiple rapid swallows per Chicago Classification v4.0. Patient tolerated well.\n\nUpper esophageal sphincter: normal resting pressure and relaxation.\nEsophagogastric junction: median integrated relaxation pressure 9 mmHg (normal).\nEsophageal body (supine): 10 wet swallows evaluated. 4 of 10 premature (distal latency less than 4.5 seconds). The remaining 6 showed normal peristalsis. No failed and no hypercontractile swallows.\nUpright and provocative maneuvers: consistent with the supine findings.\n\nInterpretation: normal EGJ relaxation with premature contractions in 40% of swallows. Meets criteria for distal esophageal spasm (Chicago Classification v4.0). No evidence of achalasia.\n\nMotility laboratory, gastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "specialist_visit",
+          "start": "2026-04-21T15:30",
+          "service": "Gastroenterology",
+          "reason": "Telehealth follow-up, manometry results",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Telehealth Follow-up",
+              "author": "gastroenterology",
+              "date": "2026-04-24T08:55",
+              "body": "Outside gastroenterology group - video visit 04/21/2026\nPatient: Abigail Paquette\n\nReviewed her manometry with her: normal sphincter relaxation and premature contractions on 4 of 10 swallows, which classifies her esophageal dysmotility as distal esophageal spasm. Achalasia excluded. This matches the corkscrew esophagram and her symptom triggers.\n\nWe talked through management. Episodes remain intermittent. Because they are intermittent and she does well between them, she would like to keep to the measures already in place rather than start a medication. Reasonable. If episodes become more frequent or harder to tolerate, a trial of a calcium channel blocker is the next step, and we would revisit other options after that.\n\nPlan: continue avoiding temperature extremes in drinks, small bites, eating slowly, upright after meals. No medications started. Return to GI clinic in about six months, sooner as needed. Medications: none. Allergies: NKDA.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "portal_message",
+          "start": "2026-05-04T20:11",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI results",
+              "author": "patient",
+              "date": "2026-05-04T20:11",
+              "body": "Hi - I assume you got the GI notes. Just wanted to make sure you're in the loop that it's esophageal spasm and we're not doing any meds for now. I see them again in the fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI results",
+              "author": "PCP",
+              "date": "2026-05-05T07:48",
+              "body": "Got them, thanks Abby. I agree with the plan. Glad to finally have a name for it. If the episodes pick up before your GI visit, tell me and we can move things along."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "portal_message",
+          "start": "2026-07-28T13:26",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "author": "patient",
+              "date": "2026-07-28T13:26",
+              "body": "Time for my yearly physical. Any Tuesday morning in late September works."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "author": "front desk",
+              "date": "2026-07-28T16:02",
+              "body": "You're booked for Tuesday 9/22 at 8:15. The doctor will also do your Pap that day, since it's due."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:15",
+          "reason": "Annual physical, Pap with HPV due",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,321 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002557",
+      "events": [
+        {
+          "id": "2023-01-17a",
+          "kind": "office_visit",
+          "start": "2023-01-17T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, antipsychotic monitoring",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-01-18a",
+          "kind": "telephone",
+          "start": "2023-01-18T10:02",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment Outreach",
+              "author": "front desk",
+              "date": "2023-01-18T10:04",
+              "body": "Pt no-show 1/17 9:20. Called cell, VM full. Sent portal msg asking him to call to reschedule. Second attempt 1/20 no answer."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-19a",
+          "kind": "ed_visit",
+          "start": "2023-05-19T14:30",
+          "end": "2023-05-19T23:50",
+          "service": "Emergency Medicine",
+          "reason": "Worsening psychosis",
+          "labs": [
+            {"panel": null, "collected": "2023-05-19T15:10", "results": [{"test": "Drugs of abuse panel - Urine by Screen method", "loinc": "69739-1", "text": "Negative"}]}
+          ],
+          "reports": [
+            {"study": "CT head without contrast", "performed": "2023-05-19T16:40", "text": "CT HEAD WITHOUT CONTRAST\nClinical indication: psychosis, altered orientation.\nTechnique: axial images from skull base to vertex without IV contrast.\nFindings: The lateral ventricles are enlarged. Third and fourth ventricles are normal in size. No intracranial hemorrhage, mass, mass effect or midline shift. Gray-white differentiation preserved. No extra-axial collection. Basal cisterns patent. Visualized paranasal sinuses and mastoid air cells clear. Calvarium intact.", "conclusion": "Enlarged lateral ventricles. No acute intracranial abnormality."}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2023-05-22T08:55",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 05/19/2023\n\nCC: brought in by roommate for strange behavior\n\n26M with paranoid schizophrenia, first episode about a year ago, also had an oculogyric crisis on haloperidol last June. Roommate says for roughly six months he has retreated from everyone, is heard talking to himself in his room, and now insists outside forces are steering his thoughts. Currently prescribed olanzapine by outpatient psychiatry.\n\nAllergies: haloperidol (oculogyric crisis/acute dystonia).\n\nExam: unkempt, poor eye contact, appears to be attending to internal stimuli. Oriented to self only; does not know where he is or the date. Neuro exam without deficit: CN intact, strength and sensation symmetric, no abnormal movements.\n\nData: urine tox screen negative. Non-contrast CT head: enlarged lateral ventricles, nothing acute (report attached).\n\nImpression: acute exacerbation of paranoid schizophrenia.\n\nDisposition: admitted to inpatient psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-19b",
+          "kind": "hospital_admission",
+          "start": "2023-05-19T23:50",
+          "end": "2023-06-09T11:00",
+          "service": "Inpatient Psychiatry",
+          "reason": "Exacerbation of schizophrenia",
+          "medications": [
+            {"drug_text": "olanzapine 15 MG Oral Tablet", "action": "stop", "reason": "Cross-tapered to clozapine inpatient"},
+            {"drug_text": "clozapine 100 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (300 mg) by mouth at bedtime", "dose": {"value": 300, "unit": "mg"}, "frequency": "NIGHTLY", "route": "Oral", "course": "chronic", "reason": "Treatment-resistant schizophrenia (outside psychiatry)"},
+            {"drug_text": "docusate sodium 100 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Constipation prevention on clozapine"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Psychiatry Discharge Medication List",
+              "author": "psychiatry",
+              "date": "2023-06-12T14:10",
+              "body": "INPATIENT PSYCHIATRY - DISCHARGE MEDICATION LIST\nAdmit 05/19/2023  Discharge 06/09/2023\n\nDx: schizophrenia, paranoid type, treatment-resistant (failed aripiprazole and olanzapine trials).\n\nNEW: clozapine 300 mg PO at bedtime (started 5/23, titrated). ANC monitoring weekly through outpatient psychiatry lab.\nNEW: docusate sodium 100 mg PO daily.\nSTOPPED: olanzapine 15 mg (tapered off 6/2).\n\nAllergies: haloperidol (oculogyric crisis/acute dystonia).\n\nFollow-up: outpatient psychiatry 6/13. PCP within 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "telephone",
+          "start": "2023-05-22T13:15",
+          "reason": "Family update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Note",
+              "author": "RN",
+              "date": "2023-05-22T13:21",
+              "body": "Father called to let Dr know Miles was admitted to inpatient psych Friday night after his roommate took him to the ED. Father visited Sunday, says he is safe. Will call when there is a discharge date so we can see him after. ED record received today, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "office_visit",
+          "start": "2023-06-14T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "state": {"weight_kg": 77.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2023-06-14T14:20", "results": [{"test": "Total Cholesterol"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-06-14T14:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-14T13:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit - Post Hospital",
+              "author": "PCP",
+              "date": "2023-06-14T14:35",
+              "body": "Post-discharge visit. Inpatient psych 5/19-6/9 after the ED visit his roommate brought him to (ED record and CT reviewed; discharge med list reviewed).\n\nS: Feels \"clearer.\" Voices are less. Back at the apartment with his roommate, father checking in daily. Saw psychiatry yesterday, CBC drawn there, weekly from here on. Taking clozapine 300 mg at night and docusate every morning. Bowels moving daily. No fever, sore throat. No SI.\n\nMeds: clozapine 300 mg qhs (psychiatry), docusate 100 mg daily. Olanzapine stopped.\nAllergy/intolerance: haloperidol - oculogyric crisis.\n\nO: vitals in flowsheet; weight up about 3 kg since last summer. Calm, more eye contact than last year, organized enough to give his own history. Heart regular. Lungs clear. Abd soft, nontender, normal BS. No abnormal movements.\n\nA/P\n1. Treatment-resistant schizophrenia, paranoid type - now on clozapine via psychiatry, who own ANC monitoring. Asked them to cc us on results.\n2. Antipsychotic metabolic monitoring: weight gain on olanzapine. A1c and lipids today. Discussed food and activity.\n3. Head CT ventricular enlargement noted in ED report.\nRTC ~5 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-16a",
+          "kind": "portal_message",
+          "start": "2023-06-16T09:12",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-06-16T09:12",
+              "body": "Hi Miles, your sugar test (A1c) and cholesterol are normal. We'll keep checking these about once a year while you're on clozapine. Glad you're feeling clearer."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "outside_records",
+          "start": "2023-08-08T11:30",
+          "reason": "Outside lab copy, clozapine monitoring",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-08-07T08:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Absolute Neutrophil Count"}]}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab Report - CBC with Differential",
+              "author": "front desk",
+              "date": "2023-08-08T11:30",
+              "body": "Faxed lab report received from outside lab, ordering provider outpatient psychiatry, cc PCP. CBC with differential collected 08/07/2023. Indexed to chart and routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "nurse_visit",
+          "start": "2023-09-26T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-26T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-26T16:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-09-26T16:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2023-09-26T16:52",
+              "body": "Flu L arm, updated COVID R arm. Tolerated well, observed 15 min. Pt came straight from a warehouse shift, in good spirits. Confirmed his November appt."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "office_visit",
+          "start": "2023-11-14T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "state": {"weight_kg": 79.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-11-14T15:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2023-11-14T15:30",
+              "body": "F/u. Five months on clozapine. Says this is the best he's felt in two years. Voices rare and quiet. Back to steady part-time hours at the warehouse. Still weekly blood draws at psych's lab, switching to every 2 wks soon he thinks. Bowels ok on docusate. No fever/infections.\n\nMeds: clozapine 300 mg qhs, docusate 100 mg daily.\n\nExam: vitals in flowsheet, weight 2 kg more than June. Pleasant, reactive affect, linear. Heart RRR, lungs clear, abd benign.\n\nA/P: schizophrenia, doing well on clozapine per psychiatry. Weight trending up, diet/walking reviewed again; A1c/lipids yearly, next at spring physical. Flu and COVID done in Sept."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "telephone",
+          "start": "2024-01-09T16:40",
+          "reason": "Pharmacy request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Call",
+              "author": "MA",
+              "date": "2024-01-09T16:46",
+              "body": "Pharmacist calling: psychiatry office closed today for weather, needs most recent ANC to dispense pt's clozapine. Our most recent copy on file is from August, too old. Pharmacist will call the psych lab directly. No action needed from us per pharmacist."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "annual_physical",
+          "start": "2024-03-19T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 80.5},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-03-19T09:20", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-03-19T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-03-19T09:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "Occupation", "value": "Part-time warehouse associate"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-03-19T08:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2024-03-19T09:35",
+              "body": "ANNUAL PHYSICAL\n\n27M. Interval: stable on clozapine since last June per psychiatry, now on twice-monthly CBCs. Working part-time at the warehouse, sharing an apartment with a roommate. Fasting this AM.\n\nMeds: clozapine 300 mg qhs, docusate 100 mg daily.\nAllergies/intolerances: haloperidol (oculogyric crisis).\nFH: father schizophrenia; maternal aunt bipolar.\nSocial: never smoker, no EtOH, no drugs.\n\nROS: negative.\n\nExam: vitals in flowsheet. Gen: well, groomed. HEENT normal. Neck no LAD or thyromegaly. CV RRR no murmur. Lungs clear. Abd soft, NT. Ext no edema. Skin clear. Neuro nonfocal, no tremor or abnormal movements. Psych: calm, organized, appropriate.\n\nPHQ-9: 3.\n\nA/P\n- Health maintenance: Tdap 2021. Flu and COVID up to date this season. HIV/HCV screened 2021.\n- Metabolic monitoring on clozapine: CMP, lipids, A1c today. Weight up about 6 kg since 2022; BMI now mid-20s. Continued diet and activity counseling.\n- Schizophrenia per psychiatry.\nRTC fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "portal_message",
+          "start": "2024-03-21T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "author": "PCP",
+              "date": "2024-03-21T12:30",
+              "body": "Miles, your labs from Tuesday look good. Kidney and liver tests, blood sugar and A1c, and cholesterol are all in the normal range. See you in the fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results from your physical",
+              "author": "patient",
+              "date": "2024-03-21T19:02",
+              "body": "ok thanks"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "outside_records",
+          "start": "2024-07-23T10:05",
+          "reason": "Outside lab copy, clozapine monitoring",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-07-22T07:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Absolute Neutrophil Count"}]}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Lab Report - CBC with Differential",
+              "author": "front desk",
+              "date": "2024-07-23T10:05",
+              "body": "Fax from outside lab, ordered by psychiatry, cc PCP: CBC with diff drawn 7/22/24 (monthly clozapine monitoring). Scanned to chart, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T16:14"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T16:16"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T16:14"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2024-10-08T16:31",
+              "body": "Seasonal flu (L deltoid) and 2024-25 COVID (R deltoid) administered. No prior reactions. Monitored 15 min, left in stable condition."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-05a",
+          "kind": "office_visit",
+          "start": "2024-11-05T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "office_visit",
+          "start": "2024-11-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-11-12T15:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2024-11-12T15:44",
+              "body": "Rescheduled from last week (he picked up an extra shift).\n\nDoing well. Psych visits every couple of months, CBC monthly now. No hallucinations he'd call bothersome. Bowels regular. Weight steady since spring.\n\nMeds unchanged: clozapine 300 qhs, docusate 100 daily.\n\nVitals in flowsheet. Exam: well appearing, heart and lungs normal, no edema.\n\nA/P: stable schizophrenia on clozapine (psychiatry). Weight plateaued. Vaccines done in October. Physical in the spring with fasting labs."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

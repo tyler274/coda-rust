@@ -1,0 +1,802 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001683",
+      "events": [
+        {
+          "id": "2022-01-06a",
+          "kind": "outside_records",
+          "start": "2022-01-06T10:20",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry — COVID-19 booster",
+              "author": "MA",
+              "date": "2022-01-06T10:20",
+              "body": "Booster dose of Pfizer-BioNTech COVID-19 vaccine 12/22/21 at a pharmacy, pulled from the state registry and added to the record."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-07a",
+          "kind": "specialist_visit",
+          "start": "2022-02-07T10:00",
+          "service": "Endocrinology & Metabolism",
+          "reason": "Graves disease follow-up",
+          "state": {
+            "weight_kg": 55.4,
+            "labs": {
+              "Thyroid Stimulating Hormone": 0.9,
+              "Free Thyroxine": 1.2
+            }
+          },
+          "measure": [
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-02-07T09:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.9
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug": "methimazole 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose reduced"
+            },
+            {
+              "drug": "methimazole 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (5 mg) by mouth once daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2022-02-09T08:15",
+              "body": "ENDOCRINOLOGY FOLLOW-UP — 2/7/2022\n\nMs. Zhang returns three months into methimazole for Graves disease. Palpitations gone, sleeping normally, appetite back to baseline and weight coming back up. No rash, fevers or sore throats. No itching or dark urine.\n\nVitals: HR 76. Exam: no tremor, goiter smaller and soft, no eye signs.\n\nLabs today: TSH 0.9 mIU/L, free T4 1.2 ng/dL. Your 12/20 values reviewed.\n\nAssessment: Graves disease, now euthyroid on methimazole 10 mg.\nPlan: Reduce to methimazole 5 mg daily. TFTs every 3-4 months for the first year, can be done with primary care. We will see her yearly. Continue to watch liver enzymes given chronic hepatitis B.\n\nAllergies: NKDA. Medications: methimazole 5 mg daily.\n\nEndocrinology"
+            }
+          ],
+          "vitals": {
+            "hr": 76
+          }
+        },
+        {
+          "id": "2022-02-09a",
+          "kind": "pharmacy",
+          "start": "2022-02-09T14:05",
+          "reason": "Medication reconciliation",
+          "documents": [
+            {
+              "type": "Medication Note",
+              "title": "Medication list updated",
+              "author": "MA",
+              "date": "2022-02-09T14:05",
+              "body": "Per endocrinology note, methimazole now 5 mg (1 tab) daily, down from 10 mg. Med list updated. Pharmacy confirms new Rx from endocrinology filled today."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-18a",
+          "kind": "lab_only",
+          "start": "2022-05-18T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function on methimazole",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.4,
+              "Free Thyroxine": 1.1
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-05-18T07:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-18T07:20"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-19a",
+          "kind": "portal_message",
+          "start": "2022-05-19T12:40",
+          "reason": "Thyroid results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid check",
+              "author": "PCP",
+              "date": "2022-05-19T12:40",
+              "body": "Thyroid numbers are right in the normal range on the 5 mg. No changes. Next check in the fall with your physical."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "annual_physical",
+          "start": "2022-09-21T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 56.4,
+            "hr": 68,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.8,
+              "Free Thyroxine": 1.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-21T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-21T08:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-21T08:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-21T08:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-21T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-21T08:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-21T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-21T08:30",
+              "body": "Annual exam.\n\nSince last physical: diagnosed with Graves disease last fall, on methimazole, now 5 mg daily per endocrinology. Feels back to herself. Weight back up close to her old baseline. No sore throats or fevers. No rash.\nMigraines: two or three this year, same pattern, home measures.\nNo GI symptoms. Coaching again this season.\n\nMeds: methimazole 5 mg daily. NKDA.\n\nExam: Vitals as charted. Calm, no tremor. Thyroid mildly full, smooth, non-tender. No proptosis. Heart regular, no murmur. Lungs clear. Abdomen soft, no hepatosplenomegaly. Skin warm and dry, no rash. Ext no edema.\nPHQ-2: 0.\n\nA/P\n1. Graves disease on methimazole 5 mg: TFTs today; CBC with diff given the drug.\n2. Chronic hepatitis B: CMP for liver enzymes.\n3. Migraine without aura: stable.\n4. Prevention: Pap current through 2023. Flu shot today. Bivalent COVID booster at pharmacy when she can.\n\nOne year."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-23a",
+          "kind": "portal_message",
+          "start": "2022-09-23T15:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your physical",
+              "author": "PCP",
+              "date": "2022-09-23T15:15",
+              "body": "Everything came back normal: white count fine on the methimazole, liver enzymes normal, thyroid in range. Copy sent to endocrinology."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "outside_records",
+          "start": "2022-11-03T09:45",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-14T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry — bivalent booster",
+              "author": "MA",
+              "date": "2022-11-03T09:45",
+              "body": "Bivalent Pfizer COVID-19 booster 10/14/22 at retail pharmacy, per state registry. Record updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "lab_only",
+          "start": "2022-12-07T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function on methimazole",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.5,
+              "Free Thyroxine": 1.1
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-07T07:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-12-07T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note — TFTs",
+              "author": "PCP",
+              "date": "2022-12-08T08:20",
+              "body": "TSH and free T4 normal on methimazole 5 mg. No change. Released to portal with comment. Endocrinology copied ahead of her January visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-23a",
+          "kind": "specialist_visit",
+          "start": "2023-01-23T14:00",
+          "service": "Endocrinology & Metabolism",
+          "reason": "Graves disease follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2023-01-26T10:05",
+              "body": "Endocrinology annual follow-up, 1/23/23.\n\nGraves disease, about 14 months on methimazole, on 5 mg daily for nearly a year. Clinically euthyroid. No side effects. Normal TFTs in May and December (drawn at your office), and normal CBC and liver tests in September.\n\nExam: HR regular, no tremor, small smooth goiter, no orbitopathy.\n\nWe talked about how long to continue. With a goiter still present she is willing to stay on low-dose methimazole for now rather than stop and risk relapse; long-term low-dose therapy is a reasonable option. RAI and thyroidectomy remain alternatives if she ever wants definitive treatment.\n\nPlan: continue methimazole 5 mg daily. TFTs every 4-6 months. Return 1 year.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "pharmacy",
+          "start": "2023-03-14T11:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Medication Note",
+              "title": "Refill request — methimazole",
+              "author": "MA",
+              "date": "2023-03-14T11:20",
+              "body": "Pharmacy fax: methimazole 5 mg, endocrinology Rx out of refills; patient asking for a 90-day supply through her plan. Last TFTs 12/2022 normal, seen by endo 1/2023. Pended 90-day supply with 3 refills for PCP."
+            },
+            {
+              "type": "Medication Note",
+              "title": "Refill approved",
+              "author": "PCP",
+              "date": "2023-03-14T16:45",
+              "body": "Sent. Methimazole 5 mg daily, #90, 3 refills. TFTs due in June."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "nurse_visit",
+          "start": "2023-06-06T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab draw, thyroid function",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "telephone",
+          "start": "2023-06-07T09:10",
+          "reason": "Missed lab appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed lab appointment",
+              "author": "MA",
+              "date": "2023-06-07T09:10",
+              "body": "Pt missed 6/6 lab draw. Reached her: field day at school ran long, forgot. Rebooked for 6/13 at 7:30."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "lab_only",
+          "start": "2023-06-13T07:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function on methimazole",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.1,
+              "Free Thyroxine": 1.0
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-13T07:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-13T07:35"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "portal_message",
+          "start": "2023-06-14T13:00",
+          "reason": "Thyroid results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "June thyroid labs",
+              "author": "PCP",
+              "date": "2023-06-14T13:00",
+              "body": "Normal again. TSH a touch higher than last time but well within range. Same dose. Enjoy the summer."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "annual_physical",
+          "start": "2023-09-27T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 56.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.7,
+              "Free Thyroxine": 1.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-27T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-27T08:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-27T08:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-09-27T07:55",
+              "issued": "2023-10-02T10:00",
+              "text": "Specimen: cervical, liquid-based preparation. Satisfactory for evaluation; endocervical/transformation zone component present.\nCytology: Negative for intraepithelial lesion or malignancy.\nHigh-risk HPV (including 16/18): Not detected.",
+              "conclusion": "NILM; high-risk HPV negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-27T08:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-27T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-27T08:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-27T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-27T08:40",
+              "body": "Annual. 30 now.\n\nInterval: Graves stable on methimazole 5 mg; endo in January kept her on it long term. Feels well. One missed lab in June, made up a week later, normal.\nMigraine: a few this year, nothing new about them.\nNo abdominal pain, no jaundice, no dark urine.\nBusy start of the school year, otherwise fine. Mood good.\n\nMeds: methimazole 5 mg daily. Allergies: NKDA.\n\nExam: Vitals as charted. Well, no tremor. Small smooth goiter, unchanged, no nodules. No proptosis. Heart RRR, no murmur. Lungs clear. Abd soft, no HSM. Pelvic: normal; Pap with HPV collected. Skin normal.\nPHQ-2: 1.\n\nA/P\n1. Graves disease: TFTs. CBC.\n2. Chronic hep B: CMP for LFTs.\n3. Migraine without aura: stable.\n4. Cervical screening: co-test today (now 30), then every 5 years if negative.\n5. Flu today. Updated COVID shot at the pharmacy.\n\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "portal_message",
+          "start": "2023-10-03T12:20",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2023-10-03T12:20",
+              "body": "Pap and HPV test are both negative, so the next one isn't due for five years. Blood count, liver tests and thyroid are all normal."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "outside_records",
+          "start": "2023-10-24T10:10",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-12T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry — COVID-19 2023-24",
+              "author": "MA",
+              "date": "2023-10-24T10:10",
+              "body": "2023-24 COVID-19 vaccine (Pfizer) given 10/12/23 at pharmacy per registry. Added."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "lab_only",
+          "start": "2024-02-20T07:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid function on methimazole",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.3,
+              "Free Thyroxine": 1.2
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-20T07:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-20T07:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note — TFTs",
+              "author": "PCP",
+              "date": "2024-02-21T07:50",
+              "body": "Euthyroid on methimazole 5 mg. Forwarded to endocrinology for her March visit. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "specialist_visit",
+          "start": "2024-03-12T15:20",
+          "service": "Endocrinology & Metabolism",
+          "reason": "Graves disease follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2024-03-14T09:30",
+              "body": "Follow-up, Graves disease (3/12/2024).\n\nDoing well on methimazole 5 mg daily, no adverse effects. Feb TSH and free T4 normal. Last CBC and liver panel (9/2023) normal.\nExam: no tremor, goiter small and soft, eyes quiet.\n\nContinue methimazole 5 mg. TFTs twice a year through primary care. See her in a year.\n\nAllergies NKDA. Meds: methimazole 5 mg daily.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2024-05-08a",
+          "kind": "portal_message",
+          "start": "2024-05-08T19:35",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Methimazole refill",
+              "author": "patient",
+              "date": "2024-05-08T19:35",
+              "body": "Hi, the pharmacy says my methimazole has no refills left. I have about a week of pills. Same pharmacy as always."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Methimazole refill",
+              "author": "RN",
+              "date": "2024-05-09T08:50",
+              "body": "Sent this morning, 90 days with 3 refills. It should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-25a",
+          "kind": "annual_physical",
+          "start": "2024-09-25T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 56.3,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9,
+              "Free Thyroxine": 1.05
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-25T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-25T08:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-25T08:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-25T08:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-25T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-25T08:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-25T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-25T08:35",
+              "body": "Physical, age 31.\n\nNo interval illnesses. Graves: methimazole 5 mg daily, endo visit in March, stays on it. No palpitations or heat intolerance.\nHep B: no symptoms.\nMigraines: still a few a year, unchanged.\nWorking full time, coaching basketball again this winter.\n\nMeds: methimazole 5 mg daily. NKDA.\n\nExam: Vitals as charted. Well appearing. Neck: small smooth goiter, stable. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, liver and spleen not felt. Skin no jaundice. Ext no edema. Neuro nonfocal.\nPHQ-2: 0.\n\nPlan\n- TFTs, CBC with diff, CMP today.\n- Pap/HPV next due 2028.\n- Flu shot given. COVID at pharmacy.\n- RTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-27a",
+          "kind": "portal_message",
+          "start": "2024-09-27T11:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-09-27T11:45",
+              "body": "Hi Yuki, all normal this year, including thyroid and liver tests. See you next fall, or sooner if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-06a",
+          "kind": "outside_records",
+          "start": "2024-11-06T13:30",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-19T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry — COVID-19 2024-25",
+              "author": "MA",
+              "date": "2024-11-06T13:30",
+              "body": "2024-25 COVID-19 vaccine (Pfizer) 10/19/24, retail pharmacy, per registry. Immunization record updated."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

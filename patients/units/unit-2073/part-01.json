@@ -1,0 +1,254 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002073",
+      "given": "Rohan",
+      "family": "Chowdhury",
+      "birth_date": "1972-04-30",
+      "address_line": "27 Bardwell Street",
+      "phone": "+1-508-555-0144",
+      "email": "rohan.chowdhury@example.test",
+      "marital_status": "single",
+      "summary": "Construction laborer with severe alcohol use disorder who joined in 2021 with alcoholic liver disease, then developed chronic pancreatitis with exocrine insufficiency, alcoholic cerebellar degeneration and thiamine deficiency, was treated for tuberculous spondylitis, and has had alcoholic hepatitis, withdrawal, delirium tremens and withdrawal seizures. Lives with his brother; outside records arrive late or not at all.",
+      "events": [
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2021-09-02T10:20", "body": "Caller is looking for a primary doctor; has not had one since moving to the area. Has MassHealth, confirmed we take his plan. Works construction, days vary, prefers early mornings. New patient visit booked 9/14 at 8:00. Asked him to bring any pill bottles and any old records he has. Says he doesn't have any."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T08:00",
+          "end": "2021-09-14T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Alcohol use disorder, severe", "icd10": "F10.20", "action": "diagnosed", "onset": "2001-06-01", "note": "about 6 beers daily for 20 years; prior withdrawal episodes by report"},
+            {"label": "Tobacco use", "action": "diagnosed", "onset": "2002-01-01"}
+          ],
+          "medications": [
+            {"drug_text": "thiamine hydrochloride 100 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "alcohol use disorder"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "alcohol use disorder"},
+            {"drug_text": "multivitamin Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "nutrition"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 61.0, "height_cm": 168.0, "labs": {"Aspartate Aminotransferase": 68, "Alanine Aminotransferase": 47, "Gamma Glutamyl Transferase": 290, "Alkaline Phosphatase": 104, "Bilirubin, Total": 1.0, "Albumin": 3.9, "Hemoglobin": 13.6, "Mean Corpuscular Volume": 99, "Platelets": 178, "Magnesium": 1.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-14T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin", "value": 3.9}, {"test": "Aspartate Aminotransferase", "value": 68}, {"test": "Alanine Aminotransferase", "value": 47}, {"test": "Alkaline Phosphatase", "value": 104}, {"test": "Bilirubin, Total", "value": 1.0}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-14T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin", "value": 13.6}, {"test": "Mean Corpuscular Volume", "value": 99}, {"test": "Platelets", "value": 178}]},
+            {"panel": null, "collected": "2021-09-14T09:10", "results": [{"test": "Gamma Glutamyl Transferase", "value": 290}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "Hepatitis B Surface Antigen", "text": "Negative"}, {"test": "Hepatitis B Surface Antibody", "text": "Negative"}]}
+          ],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 10}, {"survey": "PHQ-9 total score", "value": 5}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "About 6 beers daily for 20 years"},
+            {"item": "Occupation", "value": "Construction laborer"}
+          ],
+          "orders": [{"id": "ruq-us-2021", "action": "placed", "order": "Right upper quadrant ultrasound", "category": "imaging", "reason": "elevated liver enzymes, heavy alcohol use"}],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-09-14T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-09-14T09:05", "body": "49M establishing care. No PCP since moving to the US in 2019; before that, care was sporadic and he has no records to send. Works construction (laborer, mostly framing and demo).\n\nAlcohol: up front about it. Drinks about 6 beers a day, has for roughly 20 years. Has been through withdrawal before, several times, treated in EDs; can't give dates. Longest dry spells 1 to 3 months, then back to it. Not interested in a program today but willing to keep talking.\nTobacco: smokes, about a pack a day on and off since his late 20s. Thinking about quitting.\nNo drugs.\n\nPMH: nothing he knows of. PSH: none. Meds: none. NKDA.\nFH: father had alcohol use disorder and died with cirrhosis. Mother type 2 diabetes. Brother has high blood pressure; he lives with his brother and his brother's family.\n\nROS: appetite fair, no abdominal pain, no jaundice he's noticed, no GI bleeding. No chest pain or dyspnea.\n\nExam: thin man, NAD. Anicteric. Heart RRR, lungs clear. Abdomen soft, nontender, liver edge not palpable, no ascites. No spider angiomata. No tremor today. Gait normal.\n\nAUDIT-C 10. PHQ-9 5.\n\nA/P\n1. Severe alcohol use disorder. Long talk. Not ready to cut back much; agreed to come back in a few months. Gave him the outpatient addiction services list. Start thiamine 100 daily, folic acid 1 mg daily, multivitamin.\n2. Liver: check CMP, CBC, GGT; hep C and hep B serologies; RUQ ultrasound.\n3. Tobacco: advised quitting, he'll think about it.\n4. Health maintenance: flu shot next month with RN. Colorectal screening due, FIT at that visit."}
+          ]
+        },
+        {
+          "id": "2021-09-17a",
+          "kind": "portal_message",
+          "start": "2021-09-17T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your blood work", "author": "PCP", "date": "2021-09-17T16:40", "body": "Rohan, your liver tests are up: AST 68, ALT 47 and GGT 290. That pattern fits alcohol affecting the liver. Liver function itself (bilirubin, albumin) is OK, and your blood counts are fine. Hepatitis C test is negative. Your hepatitis B tests show you have never had it and are not immune, so I'd like to vaccinate you; we can start that at a follow-up. The ultrasound is scheduled for 9/28."}
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "imaging",
+          "start": "2021-09-28T07:30",
+          "service": "Radiology",
+          "reason": "elevated liver enzymes",
+          "conditions": [{"label": "Alcoholic liver disease", "icd10": "K70.9", "action": "diagnosed", "onset": "2021-09-14"}],
+          "reports": [
+            {"study": "Right upper quadrant ultrasound", "performed": "2021-09-28T07:30", "text": "Indication: elevated transaminases, heavy alcohol use.\nTechnique: grayscale and color Doppler sonography of the right upper quadrant.\nLiver: normal in size. Diffusely increased echogenicity with mild attenuation of the sound beam. No focal lesion. Hepatic contour smooth.\nGallbladder: normal wall, no stones, no pericholecystic fluid. Sonographic Murphy sign negative.\nBile ducts: no intrahepatic ductal dilatation. Common duct 4 mm.\nPortal vein: patent with normal hepatopetal flow.\nPancreas: head and body unremarkable where seen; tail obscured by bowel gas.\nRight kidney: normal size, no hydronephrosis.\nSpleen: normal in size.\nNo ascites.", "conclusion": "Diffusely echogenic liver consistent with hepatic steatosis. No focal liver lesion. No biliary dilatation."}
+          ],
+          "orders": [{"id": "ruq-us-2021", "action": "done", "date": "2021-09-28T07:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result note", "author": "PCP", "date": "2021-09-28T15:10", "body": "Steatosis on US, nothing focal, spleen normal size. With the enzyme pattern and his intake this is alcoholic liver disease. Added to problem list. RN to call."}
+          ]
+        },
+        {
+          "id": "2021-09-29a",
+          "kind": "telephone",
+          "start": "2021-09-29T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ultrasound result",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Result call", "author": "RN", "date": "2021-09-29T12:15", "body": "Reached pt on his lunch break. Reviewed US: fatty liver from alcohol, no masses, no scarring seen on this test. Explained cutting down is what lets the liver recover. He said \"I know.\" Confirmed nurse visit 10/19 for flu shot. Taking the vitamins."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T07:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T07:50"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse visit", "author": "RN", "date": "2021-10-19T08:00", "body": "Flu vaccine 0.5 mL IM L deltoid, tolerated. FIT kit given with instructions, he'll mail it from work. Reminded him of follow-up with PCP in December."}
+          ]
+        },
+        {
+          "id": "2021-11-03a",
+          "kind": "lab_only",
+          "start": "2021-11-03T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "colorectal cancer screening",
+          "labs": [{"panel": null, "collected": "2021-11-01T08:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result note", "author": "PCP", "date": "2021-11-03T14:30", "body": "FIT negative. Repeat in one year."}
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "office_visit",
+          "start": "2021-12-07T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up alcohol use, liver",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Hepatic Panel (LFT)", "collected": "2021-12-07T08:20", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]}],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 10}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2021-12-07T08:15"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-12-07T07:40"}, {"procedure": "Immunization administration", "performed": "2021-12-07T08:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-12-07T08:30", "body": "S: Here for follow-up. Drinking about the same, 5 or 6 a night after work. Says he tried to skip weekends in November and made it one weekend. Still smoking. Taking the vitamins most days. No abdominal pain, no yellowing. Work is slow for winter.\nO: Vitals as charted. Anicteric. Abdomen soft, nontender. No tremor.\nA/P: AUD, severe, precontemplative to contemplative. Talked about what a first step could look like; he'd like to try cutting to weekdays only. Not interested in medication or a program right now, which I respect, and the door stays open. ALD: repeat LFTs today. Tobacco: discussed, would like to quit after the holidays. Tdap today. RTC 3 months."}
+          ]
+        },
+        {
+          "id": "2022-01-18a",
+          "kind": "pharmacy",
+          "start": "2022-01-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2022-01-18T09:30", "body": "Pharmacy fax for thiamine and folic acid, 90-day supply. Last seen 12/7. Pended for PCP."},
+            {"type": "Progress Notes", "title": "Refill approved", "author": "PCP", "date": "2022-01-18T12:05", "body": "Approved x90 days with 1 refill."}
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "office_visit",
+          "start": "2022-03-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "conditions": [
+            {"label": "Tobacco use", "action": "resolved", "note": "quit January 2022"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2022-01-10", "note": "20 pack-years"}
+          ],
+          "state": {"weight_kg": 60.2},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 9}],
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-03-08T08:10"},
+            {"vaccine": "Hepatitis B, adult", "date": "2022-03-08T08:12"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-03-08T07:40"}, {"procedure": "Immunization administration", "performed": "2022-03-08T08:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-03-08T08:20", "body": "Good news first: stopped smoking the second week of January, cold turkey, and has not had one since. About 20 pack-years. Proud of it, as he should be.\nAlcohol: weekdays-only didn't stick. Still most nights, maybe a bit less. AUDIT-C 9.\nNo GI complaints. Weight down a little from fall.\nExam: well appearing, anicteric, abdomen benign.\nPlan: congratulated on quitting, reviewed triggers. Alcohol: same conversation, same answer; continue vitamins. PCV20 given for alcohol use disorder and smoking history. Hep B series dose 1 today, RN for dose 2 in a month and dose 3 in the fall. Labs at next visit. RTC 3 to 4 months."}
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "nurse_visit",
+          "start": "2022-04-12T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hepatitis B vaccine dose 2",
+          "immunizations": [{"vaccine": "Hepatitis B, adult", "date": "2022-04-12T07:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-04-12T07:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse visit", "author": "RN", "date": "2022-04-12T07:40", "body": "Hep B dose 2 IM R deltoid. No reaction to dose 1. Dose 3 due in September or later; will pair with flu shot."}
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "office_visit",
+          "start": "2022-06-14T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "office_visit",
+          "start": "2022-07-19T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after missed visit",
+          "state": {"weight_kg": 59.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-07-19T08:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-07-19T08:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2022-07-19T08:00", "results": [{"test": "Gamma Glutamyl Transferase"}, {"test": "Magnesium"}]}
+          ],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 10}, {"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-07-19T07:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-07-19T08:10", "body": "Missed June, says a job ran long. Busy season, out on a site six days a week. Still not smoking.\nDrinking unchanged. Eating less in the heat. Stools have been a bit looser the last month or so, figures it's the beer. No blood, no pain.\nWeight 59, down 2 kg since last fall.\nExam: thin, anicteric, abdomen soft and nontender. No tremor.\nA/P: AUD severe, ALD: labs today. Weight trending down; asked him to eat a real breakfast and lunch and we'll recheck. If stools stay loose, tell us. Hep B #3 and flu shot in October. RTC fall."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Hepatitis B, adult", "date": "2022-10-11T07:35"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T07:37"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T07:40"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-11T07:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse visit", "author": "RN", "date": "2022-10-11T07:55", "body": "Hep B dose 3 (series complete), flu and COVID bivalent booster given, split arms. Waited 15 min, fine. New FIT kit handed over; last year's was negative. Pt asked to reschedule his PCP follow-up to December when work slows."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "weight loss, diarrhea",
+          "state": {"weight_kg": 55.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-12-13T08:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-12-13T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 9}],
+          "orders": [{"id": "gi-referral-2022", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "weight loss, steatorrhea, epigastric pain"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-13T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-12-13T08:50", "body": "CC: weight loss, loose stools.\n\nHPI: About six months now of loose stools that he describes as big, greasy and smelling terrible, hard to flush. Several a day. Over the same stretch he has lost weight without trying; down to 55 kg from 61 at his first visit here. Also gets episodes of pain high in the belly that bores through to his back, worse after a big meal. No vomiting, no black or bloody stools, no fevers.\nAlcohol: stopped drinking at the start of December after a bad weekend, about ten days dry so far. No shakes this time.\nFIT kit from October not returned.\n\nExam: thin, temporal wasting. Anicteric today. Abdomen soft, tender in the epigastrium, no rebound, no guarding, no mass. No edema.\n\nA/P\n1. Weight loss with steatorrhea and epigastric pain radiating to the back in a long-term heavy drinker: concerning for chronic pancreatitis with malabsorption. Referring to GI, asked for the soonest slot. CMP and CBC today.\n2. AUD: newly abstinent. Encouraged; reviewed withdrawal warning signs and to go to the ED for confusion, shaking or seizures if he drinks and stops again.\n3. Continue thiamine, folate, MVI."}
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "telephone",
+          "start": "2022-12-20T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "referral scheduling",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Referral scheduled", "author": "front desk", "date": "2022-12-20T14:10", "body": "GI office has him on 1/5 at 10:30. Called pt, gave date and address. He'll get a ride from his brother."}
+          ]
+        }
+      ]
+    }
+  ]
+}

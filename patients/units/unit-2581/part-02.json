@@ -1,0 +1,204 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002581",
+      "events": [
+        {
+          "id": "2026-01-14a",
+          "kind": "ed_visit",
+          "start": "2026-01-14T17:05",
+          "end": "2026-01-14T18:20",
+          "service": "Emergency Medicine",
+          "reason": "Hypotension and pallor after high-speed motor vehicle collision",
+          "vitals": [
+            {"time": "2026-01-14T17:08", "bp": [90, 60], "hr": 120, "rr": 22, "spo2": 97},
+            {"time": "2026-01-14T17:40", "bp": [85, 55]}
+          ],
+          "conditions": [{"label": "Traumatic liver laceration with hemoperitoneum", "icd10": "S36.113A", "action": "diagnosed", "onset": "2026-01-14"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-14T17:15", "results": [{"test": "Hemoglobin", "value": 9.8}, {"test": "Hematocrit", "value": 29.4}, {"test": "Platelets", "value": 250}, {"test": "White Blood Cells"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-01-14T17:15", "resulted": "2026-01-14T17:50", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-14T17:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-01-14T17:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-01-14T17:05"}],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Trauma Resuscitation Record",
+              "author": "trauma surgery",
+              "date": "2026-01-21T09:30",
+              "body": "REGIONAL TRAUMA CENTER — TRAUMA BAY / ICU ADMISSION NOTE\nDate of service: 01/14/2026\nReceived by fax 01/21/2026.\n\nCC: low blood pressure and pallor after a high-speed crash.\n\nHPI: 26 y/o M, belted driver in a high-speed collision with airbag deployment, brought in as a trauma activation. Awake and answering questions on arrival, visibly pale and anxious. Initial BP 90/60 with HR 120; despite rapid crystalloid boluses the pressure drifted to 85/55. Complains of right upper abdominal pain.\n\nPMH: blunt abdominal trauma in a separate car crash 01/2025, treated with laparotomy and repair of a duodenal perforation, recovered.\nMeds: none. Allergies: NKDA.\nSH: graduate student, never smoker, social alcohol only.\nFH: noncontributory.\n\nPrimary survey: airway intact, breath sounds equal, SpO2 97% on room air, RR 22. Circulation as above, two large-bore IVs.\nAbdomen: distended; tender in the RUQ with guarding; no rebound; bowel sounds normal; healed midline scar.\n\nLabs: Hgb 9.8 (14.2 at his PCP's office one month ago), Hct 29.4, platelets 250. LFTs within normal limits. Coags normal.\nFAST: free fluid in the hepatorenal recess (Morison's pouch).\n\nAssessment: hemoperitoneum from liver injury, hypotensive and not responding to fluid.\nPlan: uncrossmatched blood started, straight to the OR for laparotomy. ICU afterward."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14b",
+          "kind": "hospital_admission",
+          "start": "2026-01-14T18:20",
+          "end": "2026-01-20T13:00",
+          "service": "Trauma Surgery",
+          "reason": "Traumatic liver laceration with hemoperitoneum",
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-01-14T18:20"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-01-20T11:45"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-20T05:30", "results": [{"test": "Hemoglobin", "value": 10.6}, {"test": "Platelets"}, {"test": "White Blood Cells"}]}
+          ],
+          "medications": [
+            {"drug_text": "oxycodone hydrochloride 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every 6 hours as needed for pain. Dispense #15.", "dose": {"value": 5, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "Postoperative pain"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets by mouth every 8 hours", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q8H", "route": "Oral", "course": "short", "reason": "Postoperative pain"}
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report",
+              "author": "trauma surgery",
+              "date": "2026-01-21T09:35",
+              "body": "REGIONAL TRAUMA CENTER — OPERATIVE REPORT\nDate: 01/14/2026\nReceived by fax 01/21/2026.\n\nPreop diagnosis: hemoperitoneum, hemodynamic instability after blunt trauma, FAST positive.\nPostop diagnosis: liver laceration with hemoperitoneum.\nProcedure: exploratory laparotomy, evacuation of hemoperitoneum, suture hepatorrhaphy.\nAnesthesia: general. Allergies: NKDA.\nBlood products: 2 units PRBC (started in the trauma bay, completed intraoperatively).\nComplications: none apparent. Specimens: none.\n\nDescription: Re-entry through the prior midline laparotomy scar. Hemoperitoneum evacuated and the abdomen packed in four quadrants. Packs removed sequentially; the bleeding source was a laceration of the liver, which was controlled with suture hepatorrhaphy. No further bleeding after a period of observation. Spleen, stomach, small bowel and colon run and intact. The prior duodenal repair was inspected and intact. Irrigated. Fascia closed, skin stapled. Hemodynamics normalized after hemorrhage control and transfusion; to the trauma ICU, extubated in the OR."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "author": "trauma surgery",
+              "date": "2026-01-21T09:40",
+              "body": "REGIONAL TRAUMA CENTER — DISCHARGE SUMMARY\nAdmission 01/14/2026. Discharge 01/20/2026.\nReceived by fax 01/21/2026.\n\nPrincipal diagnosis: traumatic liver laceration with hemoperitoneum (MVC, restrained driver, airbag deployment).\nOperation: 01/14/2026 exploratory laparotomy, suture hepatorrhaphy.\nPrior history: laparotomy with duodenal repair 01/2025 after an earlier crash.\nAllergies: NKDA.\n\nCourse: Hypotensive on arrival with positive FAST, went emergently to the OR as above with 2 units PRBC. Monitored in the trauma ICU through 01/16 with stable hemoglobin and hemodynamics, no further transfusion. Transferred to the surgical floor, diet advanced, ambulating, pain controlled on oral agents. Hemoglobin 10.6 on the morning of discharge. Uncomplicated stay.\n\nDischarge meds:\n1. Oxycodone 5 mg every 6 h PRN pain, #15\n2. Acetaminophen 1000 mg every 8 h\n\nActivity: no lifting over 10 lb x 6 weeks. No driving on oxycodone.\nFollow-up: trauma clinic for staple removal 02/03/2026; PCP within a week, with a CBC."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-17a",
+          "kind": "portal_message",
+          "start": "2026-01-17T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Patient hospitalized after second car accident",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "In the hospital again",
+              "author": "patient",
+              "date": "2026-01-17T15:10",
+              "body": "Hi, wanted to let you know I was in another car accident Wednesday. They had to operate again, bleeding from my liver this time, and I got blood. Out of the ICU now and on the regular floor. They think I'll go home Monday or Tuesday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: In the hospital again",
+              "author": "PCP",
+              "date": "2026-01-17T16:02",
+              "body": "Mehmet, I'm so sorry, and glad you're through the worst of it. We'll get the records from the hospital. Once you have a discharge date, let the front desk know and we'll see you within a few days of getting home and recheck your blood count. Text the practice line if anything comes up before then."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "office_visit",
+          "start": "2026-01-23T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after liver injury",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-23T11:35", "results": [{"test": "Hemoglobin", "value": 11.4}, {"test": "Platelets"}, {"test": "White Blood Cells"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2026-01-23T11:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2026-01-23T11:50",
+              "body": "Seen 3 days after discharge from the regional trauma center. Records reviewed. Second high-speed crash in a year: belted, airbags out, came in hypotensive with Hgb 9.8 (14.2 here in Dec) and a positive FAST. Emergent laparotomy through his old incision, liver laceration sutured, 2 u PRBC, ICU 2 nights. Discharge Hgb 10.6.\n\nHe says he feels \"wiped out\" but better each day. Pain 4/10, worst with coughing and rolling over. Using oxycodone at night only, acetaminophen during the day. Appetite OK. No fever, no vomiting, no dark stools. Not driving.\n\nExam: vitals as charted. Tired-appearing but in no distress. Heart regular. Lungs clear. Midline incision stapled, clean, no erythema or drainage. Abdomen soft, tender around the wound only.\n\nA/P\nS/p ex lap and hepatorrhaphy for traumatic liver laceration with hemoperitoneum, 1/14/26.\n- CBC today.\n- Wean off oxycodone, continue acetaminophen.\n- Staples out at trauma clinic 2/3. Same 10 lb limit as last year, through late February.\n- Recheck CBC in about 6 weeks.\n- Talked a bit about how he's doing after two of these; he says he's managing. Knows he can reach me."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-26a",
+          "kind": "portal_message",
+          "start": "2026-01-26T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2026-01-26T08:45",
+              "body": "Your hemoglobin from Friday was 11.4, up from 10.6 when you left the hospital. That's the direction we want. No iron or other treatment needed right now; your body will keep rebuilding. We'll check it again in early March."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "specialist_visit",
+          "start": "2026-02-03T10:20",
+          "service": "Trauma Surgery",
+          "reason": "Post-operative follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Trauma Surgery Clinic Letter",
+              "author": "trauma surgery",
+              "date": "2026-02-04T08:55",
+              "body": "Dear Doctor,\n\nThank you for following Mr. Saleh, whom I saw in trauma clinic on 02/03/2026 after laparotomy and hepatorrhaphy for a liver laceration on 01/14/2026.\n\nHe is recovering well. He stopped oxycodone last week and uses acetaminophen occasionally. Eating normally, no fevers. NKDA.\n\nThe incision is healing well and the staples were removed today. Abdomen soft with expected tenderness near the wound.\n\nPlease continue the 10 lb lifting restriction until six weeks after surgery. I will see him in about five weeks to clear him for full activity.\n\nSincerely,\nTrauma Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-06a",
+          "kind": "office_visit",
+          "start": "2026-03-06T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, recheck blood count",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-06T15:45", "results": [{"test": "Hemoglobin", "value": 13.6}, {"test": "Platelets"}, {"test": "White Blood Cells"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-03-06T15:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-03-06T16:00",
+              "body": "F/u 7 weeks after hepatorrhaphy. Feels like himself again. Energy back, walking to campus, done with acetaminophen. No abdominal pain, normal appetite and bowels.\n\nExam: vitals as charted. Color good. Incision healed, no hernia. Abdomen soft, non-tender.\n\nA/P\nRecovering from traumatic liver laceration; Hgb today pending at time of note.\n- Trauma clinic on Tuesday for clearance.\n- Physical in December.\n\nAddendum 3/6 evening: Hgb 13.6, nearly back to his baseline. Messaged him."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "specialist_visit",
+          "start": "2026-03-10T13:40",
+          "service": "Trauma Surgery",
+          "reason": "Post-operative follow-up",
+          "conditions": [{"label": "Traumatic liver laceration with hemoperitoneum", "icd10": "S36.113A", "action": "resolved", "onset": "2026-01-14"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Trauma Surgery Clinic Letter",
+              "author": "trauma surgery",
+              "date": "2026-03-11T09:15",
+              "body": "Dear Doctor,\n\nMr. Saleh was seen in trauma clinic on 03/10/2026, eight weeks after laparotomy and hepatorrhaphy. He is asymptomatic and back to his usual routine. His hemoglobin from your office last week was 13.6. NKDA.\n\nThe incision is well healed with no hernia, and the abdomen is soft and non-tender.\n\nHe has recovered from the liver injury and may return to full activity, including lifting and exercise, without restriction. No further trauma clinic follow-up is planned.\n\nSincerely,\nTrauma Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-12-10a",
+          "kind": "annual_physical",
+          "start": "2026-12-10T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

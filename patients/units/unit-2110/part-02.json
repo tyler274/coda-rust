@@ -1,0 +1,322 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002110",
+      "events": [
+        {
+          "id": "2023-01-24a",
+          "kind": "office_visit",
+          "start": "2023-01-24T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-01-24T13:55", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-01-24T13:55", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "orders": [
+            {"id": "rheum-referral-2022", "action": "done", "date": "2023-01-24T13:20"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-01-24T13:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2023-01-24T14:10", "body": "S: Saw rheumatology in December (no letter here yet, will request). By his telling: they agreed it is ankylosing spondylitis, said to keep the naproxen as he uses it and gave him a sheet of daily stretches, which he does most mornings. Back a bit better. Heels still sore after a lot of walking. Breathing: sleeping on one pillow since the furosemide, stairs unchanged. Says he cut the soda to one can a day.\n\nO: Vitals in flowsheet. Murmur unchanged. Lungs clear. Trace nothing at the ankles, no edema. Foot check: skin intact, monofilament normal.\n\nA/P:\n- T2DM: A1c today. Same regimen; he wants credit for the soda before anything new.\n- AS: rheumatology plan by report. Records request sent.\n- AR / aortitis on furosemide, carvedilol, aspirin: stable symptoms, cardiology follow-up later this year.\n- Smoking: says he is cutting back a little. Encouraged.\nRTC 4-5 mo for physical."},
+            {"type": "Result Note", "title": "Result note", "author": "PCP", "date": "2023-01-25T08:40", "body": "A1c a little lower but still far from goal. Kidney function fine. Portal note sent: keep going with the diet changes, we will look again at the physical."}
+          ]
+        },
+        {
+          "id": "2023-02-08a",
+          "kind": "telephone",
+          "start": "2023-02-08T11:00",
+          "reason": "rheumatology records request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request", "author": "MA", "date": "2023-02-08T11:00", "body": "Called outside rheumatology office for December consult note. Told it was sent. Nothing in our fax queue or media. Re-requested, gave our fax number again."}
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "pharmacy",
+          "start": "2023-03-14T10:25",
+          "reason": "prior authorization, insulin glargine pens",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior authorization: glargine", "author": "MA", "date": "2023-03-14T10:25", "body": "Pharmacy faxed rejection on glargine pen refill, plan now wants PA for the brand he has been on. Submitted PA through plan portal with diagnosis and current dose 30 units nightly. Approved same afternoon, 12 months. Pharmacy notified, pt picking up today. He had 2 days left."}
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "annual_physical",
+          "start": "2023-05-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "telephone",
+          "start": "2023-05-17T09:40",
+          "reason": "missed appointment",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed physical", "author": "front desk", "date": "2023-05-17T09:40", "body": "Pt missed yesterday's 9 am physical. Reached him: ride fell through. Rebooked for 6/13 at 9:30. Offered the van service through his plan, gave him the number."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "annual_physical",
+          "start": "2023-06-13T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 9.3}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-06-13T10:20", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-13T10:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2023-06-13T10:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-06-13T10:20", "results": [
+              {"test": "Hemoglobin A1c"},
+              {"test": "Microalbumin/Creatinine Ratio"},
+              {"test": "Rapid Plasma Reagin", "text": "Reactive, titer 1:2"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-06-13T09:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-06-13T10:35", "body": "Annual exam, 46M.\n\nInterval: no hospital or ED visits. Rheumatology letter never came; he still does the stretches and uses naproxen a few times a week. No eye flares. A couple of mouth sores this spring that healed on their own. Breathing about the same: stairs slow him, sleeps on one pillow. Cardiology recheck is in the fall, he has the card.\n\nHabits: smoking about the same. Drinks rarely. No drug use. Walks to the store daily.\nMood: PHQ-2 negative.\n\nExam: vitals in flowsheet. Alert, no distress. HEENT: no oral ulcers today, conjunctivae white. Neck supple, no bruit. Heart: regular, diastolic blowing murmur at left sternal border, bounding pulses. Lungs clear. Abdomen soft, no mass. Spine: reduced lumbar flexion. Skin no rash. Feet: intact, sensation normal, pulses good. No edema.\n\nA/P:\n- Health maintenance: FIT kit given for this year. Vaccines up to date except flu/COVID in the fall. Hep B series done.\n- T2DM: A1c, CMP, lipids, urine microalbumin today.\n- Syphilis: 12-month RPR today for ID.\n- Smoking: talked about patch or varenicline. Not now, he says, maybe after the summer.\n- AS, AR/aortitis: as above.\nRTC 4 months."},
+            {"type": "Result Note", "title": "Result note: physical labs", "author": "PCP", "date": "2023-06-14T13:00", "body": "RPR 1:2, fourfold drop from 1:8 at a year. Sent to ID. A1c back up. Lipids, kidneys, liver, urine microalbumin, CBC unremarkable. Portal note to pt."}
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "portal_message",
+          "start": "2023-06-14T13:10",
+          "reason": "results",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical results", "author": "PCP", "date": "2023-06-14T13:10", "body": "Christopher, the syphilis blood level has come down the way it should after treatment, which is good news; I sent it to the ID doctors. Your A1c went back up a little. Kidney, liver and cholesterol tests are all fine. Let's talk about the sugars again in October. Mail that stool kit back when you can."},
+            {"type": "Patient Message", "title": "RE: Physical results", "author": "patient", "date": "2023-06-14T21:02", "body": "ok will do. mailed it today"}
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "lab_only",
+          "start": "2023-06-27T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "FIT result",
+          "labs": [
+            {"panel": null, "collected": "2023-06-22T08:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Result note", "author": "PCP", "date": "2023-06-27T15:30", "body": "FIT negative. Repeat next year."}
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "outside_records",
+          "start": "2023-09-20T14:10",
+          "reason": "diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Eye exam report (optometry)", "author": "optometry", "date": "2023-09-20T14:10", "body": "Diabetic eye exam, dilated, 09/14/2023. Acuity 20/25 right, 20/20 left with current glasses. Anterior segment quiet in both eyes, no keratic precipitates or cell. No diabetic retinopathy and no macular edema on exam. Discs and vessels normal. Next exam in one year."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "office_visit",
+          "start": "2023-10-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up; vaccines",
+          "state": {"labs": {"Hemoglobin A1c": 9.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-10-10T15:35", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-10T15:35", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T15:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T15:31"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-10-10T15:00"},
+            {"procedure": "Immunization administration", "performed": "2023-10-10T15:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2023-10-10T15:50", "body": "Diabetes and general check-in.\n\nHe has been tired, more so in the evenings, and the stairs are still the hard part. Not worse than spring by his estimate. No chest pain, no fainting. Cardiology visit set for early November.\nSugars: no meter readings again. Taking meds. Soda back to two cans some days.\n\nExam: flowsheet vitals. Murmur as before, pulses bounding. Lungs clear, no edema. Feet fine.\n\nA/P:\n- T2DM: A1c today, same doses. Gave him a new meter and strips script; asked for fasting readings 3 mornings a week.\n- AR/aortitis: cardiology 11/7, asked him to have them send the letter here.\n- Flu and updated COVID given.\n- Smoking: same.\nRTC 4 months."}
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "specialist_visit",
+          "start": "2023-11-07T09:15",
+          "service": "Cardiology",
+          "reason": "aortic regurgitation follow-up",
+          "vitals": {"bp": [155, 45], "hr": 110},
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2023-11-07T08:40", "text": "PA and lateral. The cardiac silhouette is enlarged. The ascending aorta is prominent. Lungs clear without edema or consolidation. No effusion.", "conclusion": "Cardiomegaly with prominent ascending aorta."},
+            {"study": "Transthoracic echocardiogram", "performed": "2023-11-07T10:00", "text": "Left ventricle dilated with normal systolic function. Aortic valve with a broad central regurgitant jet; severe aortic regurgitation. Aortic root dilated. Mitral valve prolapse without significant mitral regurgitation. Right ventricle normal size. No pericardial effusion.", "conclusion": "Severe aortic regurgitation with a dilated left ventricle and normal systolic function."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up (received 1/9/2024)", "author": "cardiology", "date": "2024-01-09T10:20", "body": "Outside cardiology group, follow-up visit 11/07/2023. Faxed in response to records request.\n\nSyphilitic aortitis and aortic regurgitation, treated for syphilis in 2022.\n\nSubjective: over the past six months more exertional dyspnea and fatigue. He describes his heart pounding in his chest at night, mostly when he lies on his left side.\n\nMedications: carvedilol 6.25 mg twice daily, aspirin 81 mg, furosemide 40 mg, lisinopril 10 mg, metformin, insulin glargine, naproxen as needed. NKDA.\n\nExam: BP 155/45, pulse 110 with a collapsing character. High-pitched blowing diastolic murmur along the left sternal border. Lungs clear.\n\nStudies: chest film with cardiomegaly and a prominent ascending aorta. Echo: dilated left ventricle, systolic function normal, severe aortic regurgitation.\n\nAssessment: severe aortic regurgitation secondary to syphilitic aortitis; mitral valve prolapse.\nPlan: continue current medications. Repeat echocardiogram in 12 months. Smoking cessation advised."}
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "telephone",
+          "start": "2023-12-19T14:45",
+          "reason": "records request: cardiology",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cardiology note not received", "author": "MA", "date": "2023-12-19T14:45", "body": "Pt confirms he saw cardiology 11/7, had an x-ray and echo, was told keep the same pills. No letter here. Request faxed to cardiology office for visit note and echo report. Will flag to PCP when received."}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 9.3}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-02-13T10:40", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-13T10:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-13T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2024-02-13T10:55", "body": "Reviewed the November cardiology letter with him today (arrived January): severe aortic regurgitation now with an enlarged left ventricle, pumping function still normal. Plan there was same meds, echo again in a year. He feels the same as the fall. Pounding at night when on his left side, so he sleeps on his right.\n\nSugars: brought the meter, only a handful of readings in 4 months, all fasting and all high.\n\nExam: vitals per flowsheet. Murmur unchanged. Lungs clear. No edema. Feet intact.\n\nA/P:\n- T2DM: A1c today. Same meds for now.\n- Severe AR with LV dilation: cardiology following, echo late this year. Return precautions for worse breathing, swelling, fainting.\n- AS: stable on prn naproxen.\nRTC physical in June."}
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "portal_message",
+          "start": "2024-04-23T07:55",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "refills", "author": "patient", "date": "2024-04-23T07:55", "body": "need refills on the metformin and the carvedilol the pharmacy says no refills left. also the lisinopril"},
+            {"type": "Patient Message", "title": "RE: refills", "author": "RN", "date": "2024-04-23T09:30", "body": "Sent to your pharmacy: metformin, carvedilol and lisinopril, 90 days each with refills through your physical in June."}
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "annual_physical",
+          "start": "2024-06-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 9.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-18T10:15", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-18T10:15", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2024-06-18T10:15", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-06-18T10:15", "results": [
+              {"test": "Hemoglobin A1c"},
+              {"test": "Microalbumin/Creatinine Ratio"},
+              {"test": "Rapid Plasma Reagin", "text": "Reactive, titer 1:2"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-06-18T09:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-06-18T10:30", "body": "Yearly exam, age 47.\n\nSince last June: no ED or hospital visits. Saw cardiology in November (severe AR, LV enlarged). Stairs still the limit. No chest pain or fainting. One pillow. AS: mornings stiff for half an hour, naproxen a few days a week, does his stretches. No red eyes. Occasional mouth ulcer.\nSmoking about half a pack; not ready to set a date. Alcohol rare. No drugs.\nPHQ-2 0.\n\nExam: vitals reviewed. Well appearing. Mouth clear. Eyes white. Heart: regular, diastolic murmur LSB, water-hammer quality to the radial pulse. Lungs clear. Abdomen benign. Lumbar flexion reduced. Skin intact. Feet: no calluses or wounds, sensation normal. No edema.\n\nA/P:\n- Preventive: FIT kit given. Flu/COVID in the fall. 24-month RPR today.\n- T2DM: labs today; regimen unchanged.\n- Severe AR/aortitis: cardiology echo due in the fall.\n- Tobacco: counseled, 3 minutes.\nRTC fall for vaccines and diabetes."},
+            {"type": "Result Note", "title": "Result note: physical labs", "author": "PCP", "date": "2024-06-19T12:45", "body": "RPR stable at 1:2. Copy to ID. Rest of labs as before: A1c high, kidneys, liver, lipids, CBC and urine microalbumin fine."}
+          ]
+        },
+        {
+          "id": "2024-07-02a",
+          "kind": "lab_only",
+          "start": "2024-07-02T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "FIT result",
+          "labs": [
+            {"panel": null, "collected": "2024-06-28T08:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Result note", "author": "PCP", "date": "2024-07-02T14:20", "body": "FIT negative. Portal note sent with the RPR result."}
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "nurse_visit",
+          "start": "2024-09-26T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-26T11:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-09-26T11:06"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-09-26T11:05"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse visit: vaccines", "author": "RN", "date": "2024-09-26T11:25", "body": "Flu (L deltoid) and COVID (R deltoid) given. Observed 15 min, fine. Pt walking with a slight limp, says his right foot is sore, blames his boots. Advised to have PCP look at it; he declined an exam today, will mention at next visit."}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "hospital_admission",
+          "start": "2024-10-22T16:40",
+          "end": "2024-10-31T12:00",
+          "service": "Infectious Disease",
+          "reason": "right foot ulcer with cellulitis, fever",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with foot ulcer", "icd10": "E11.621", "action": "diagnosed", "onset": "2024-09-20"},
+            {"label": "Non-pressure chronic ulcer of other part of right foot with unspecified severity", "icd10": "L97.519", "action": "diagnosed", "onset": "2024-09-20"},
+            {"label": "Cellulitis of lower limb", "action": "diagnosed", "onset": "2024-10-20"},
+            {"label": "Methicillin susceptible Staphylococcus aureus infection, unspecified site", "icd10": "A49.01", "action": "diagnosed", "onset": "2024-10-20"},
+            {"label": "Bacteremia", "icd10": "R78.81", "action": "diagnosed", "onset": "2024-10-20"}
+          ],
+          "medications": [
+            {"drug_text": "cefazolin 2000 MG Injection", "action": "historical", "sig": "2 g IV every 8 hours via PICC through 11/19/2024", "dose": {"value": 2000, "unit": "mg"}, "frequency": "Q8H", "route": "Intravenous", "course": "short", "reason": "MSSA bacteremia (infectious disease)"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2024-10-22T17:10", "resulted": "2024-10-25T09:00", "results": [
+              {"test": "Blood Culture", "text": "Staphylococcus aureus, 2 of 2 sets. mecA not detected (MSSA). Beta-lactamase positive. Penicillin R, ampicillin R; oxacillin S, cefazolin S, piperacillin-tazobactam S, vancomycin S, linezolid S."}
+            ]}
+          ],
+          "reports": [
+            {"study": "Foot X-ray", "performed": "2024-10-22T19:30", "text": "Three views of the right foot. Soft tissue swelling along the plantar forefoot. No soft tissue gas. Cortical margins intact, no periosteal reaction or bone destruction. Joint spaces preserved.", "conclusion": "Plantar soft tissue swelling. No radiographic evidence of osteomyelitis."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge summary (received 11/1/2024)", "author": "hospitalist", "date": "2024-11-01T10:45", "body": "Regional hospital. Admitted 10/22/2024, discharged 10/31/2024. Infectious disease consulting.\n\nReason for admission: non-healing wound on the bottom of the right foot, with two days of fevers and redness and swelling spreading from it.\n\nBackground: type 2 diabetes on insulin, syphilitic aortitis with severe aortic regurgitation followed by cardiology since 2022, ankylosing spondylitis. Remote IV drug use. NKDA.\n\nFindings: 4 cm plantar ulcer of the right foot with purulent drainage and surrounding cellulitis. Foot films without osteomyelitis.\nBlood cultures grew Staphylococcus aureus in both sets. Isolate negative for mecA (MSSA), beta-lactamase producing: resistant to penicillin and ampicillin, susceptible to oxacillin, cefazolin, piperacillin-tazobactam, vancomycin and linezolid. Repeat cultures 10/24 no growth.\nGiven his valve disease, transesophageal echo was done 10/25: no valvular vegetation; known severe aortic regurgitation.\n\nCourse: started on vancomycin and piperacillin-tazobactam, changed to cefazolin once susceptibilities returned. Daily wound dressings by the wound care nurse. Fevers resolved by day 3. PICC placed 10/30.\n\nDiagnoses: diabetic foot ulcer, right sole, with cellulitis; MSSA bacteremia.\n\nDischarge medications: cefazolin 2 g IV every 8 hours through 11/19/2024 (4 weeks from first negative culture) via home infusion; continue metformin, insulin glargine 30 units at bedtime, lisinopril 10 mg, carvedilol 6.25 mg twice daily, furosemide 40 mg, aspirin 81 mg, naproxen as needed.\nFollow-up: PCP within 1 week; ID clinic in 3 weeks; wound clinic weekly. Weekly CBC and BMP drawn by home infusion, results to ID."}
+          ]
+        },
+        {
+          "id": "2024-11-06a",
+          "kind": "office_visit",
+          "start": "2024-11-06T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2024-11-06T11:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2024-11-06T11:45", "body": "Post-discharge visit. Summary reviewed.\n\nHe admits the sore on his foot was there about a month before he went in; thought it was a blister and covered it with a bandaid. No fevers since discharge. Home infusion nurse comes twice a week, he runs the cefazolin himself three times a day, no trouble with the line. Wound clinic saw him Monday.\n\nExam: vitals reviewed, afebrile. PICC right arm, site clean, no redness. Right sole: wound smaller than the description at admission, clean pink base, no drainage, redness gone. Left foot intact. Heart: murmur unchanged. Lungs clear.\n\nA/P:\n- Diabetic foot ulcer with cellulitis and MSSA bacteremia: improving. Finish cefazolin 11/19; ID and wound clinic follow-up as set. Showed him how to check both feet every night with a mirror.\n- T2DM: sugars were high in hospital; talked again about control and healing. He wants to keep the same regimen.\n- Med rec done, no changes beyond the antibiotic.\nRTC January, call sooner for fever or any change in the foot."}
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "telephone",
+          "start": "2024-11-20T15:15",
+          "reason": "home infusion update",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Home infusion: course complete", "author": "RN", "date": "2024-11-20T15:15", "body": "Home infusion pharmacy nurse called: last cefazolin dose 11/19, PICC pulled today intact, tip and site fine. Weekly labs during the course were sent to ID, nothing flagged per her. ID visit was 11/18, pt told them he feels well. Foot dressing changes at the wound clinic weekly."}
+          ]
+        }
+      ]
+    }
+  ]
+}

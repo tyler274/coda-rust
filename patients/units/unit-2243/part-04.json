@@ -1,0 +1,594 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002243",
+      "events": [
+        {
+          "id": "2025-01-13a",
+          "kind": "specialist_visit",
+          "start": "2025-01-13T10:00",
+          "service": "Cardiology",
+          "reason": "CAD follow-up",
+          "measure": ["bp", "hr"],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up",
+              "author": "cardiology",
+              "date": "2025-01-13T10:00",
+              "body": "Cardiology clinic\n\nRoutine follow-up of CAD with NSTEMI (LAD DES, 1/2024) and inferior STEMI (RCA DES, 6/2024). No angina, no nitroglycerin use, no dyspnea, no bleeding. Not shoveling this winter.\n\nExam: BP and HR at goal. Heart regular, no murmur. Lungs clear. No edema.\n\nPlan: no changes. Clopidogrel through late June, then aspirin alone. Return in June.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "portal_message",
+          "start": "2025-02-10T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2025-02-10T09:05",
+              "body": "Hi, the mail order says the lisinopril and the atorvastatin need a new prescription. Also the pantoprazole. Thanks. Roger (typed by his wife)"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "author": "RN",
+              "date": "2025-02-10T11:40",
+              "body": "Sent all three to the mail-order pharmacy, 90 days with 3 refills. Should ship within the week."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "annual_physical",
+          "start": "2025-03-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"weight_kg": 77.8},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-10T09:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-10T09:40", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2025-03-10T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-03-10T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-03-10T09:00",
+              "body": "AWV, with wife.\n\nQuiet winter. No chest pain. No bleeding on DAPT. No hallucinations. No falls. Walking in the house and at the senior center track.\nFunctional: independent ADLs; wife handles meds. PHQ-2 0.\nAdvance directive unchanged.\n\nExam: per flowsheet. Masking, R tremor. Heart RRR. Lungs clear. No edema.\n\nPlan:\n- CAD: clopidogrel ends late June per cardiology.\n- Colon cancer screening: colonoscopies 2016 and 2021, no polyps; no further screening planned at his age.\n- Vaccines up to date.\n- BMP, CBC today. RTC per cardiology/neuro schedule, fall visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "specialist_visit",
+          "start": "2025-06-23T09:30",
+          "service": "Cardiology",
+          "reason": "One year after STEMI",
+          "measure": ["bp", "hr"],
+          "medications": [
+            {"drug": "clopidogrel 75 MG Oral Tablet", "action": "stop", "reason": "Completed 12 months of dual antiplatelet therapy after STEMI"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up",
+              "author": "cardiology",
+              "date": "2025-06-23T09:30",
+              "body": "Cardiology clinic\n\nDear Doctor,\n\nMr. Desrosiers is now a year from his inferior STEMI with RCA stent and 17 months from his NSTEMI with LAD stent. No angina or nitroglycerin use. No bleeding.\n\nExam: BP and HR at goal. Heart regular. Lungs clear. No edema.\n\nPlan:\n- Stop clopidogrel; dual antiplatelet therapy complete.\n- Aspirin 81 mg daily indefinitely.\n- Continue pantoprazole with aspirin given his prior GI bleed.\n- Continue metoprolol succinate 50, lisinopril 20, atorvastatin 40.\n- Return in six months.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-06a",
+          "kind": "ed_visit",
+          "start": "2025-07-06T15:30",
+          "end": "2025-07-06T20:00",
+          "service": "Emergency Medicine",
+          "reason": "Painless rectal bleeding with large clots",
+          "state": {"labs": {"Hemoglobin": 10.2, "Hematocrit": 30.5, "Platelets": 250, "Prothrombin Time": 12, "Prothrombin Time-International Normalized Ratio": 1.0, "Blood Urea Nitrogen": 18, "Creatinine": 1.0}},
+          "vitals": [
+            {"time": "2025-07-06T15:35", "bp": [100, 60], "hr": 110},
+            {"time": "2025-07-06T17:30", "bp": [112, 68], "hr": 96, "rr": 16, "spo2": 98}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-06T15:45", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Hematocrit", "value": 30.5}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-07-06T15:45", "results": [{"test": "Prothrombin Time", "value": 12}, {"test": "Prothrombin Time-International Normalized Ratio", "value": 1.0}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-07-06T15:45", "results": [{"test": "Blood Urea Nitrogen", "value": 18}, {"test": "Creatinine", "value": 1.0}]}
+          ],
+          "conditions": [
+            {"label": "Diverticular hemorrhage of large intestine", "icd10": "K57.31", "action": "diagnosed", "onset": "2025-07-06"}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-07-06T15:30"}],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-07-10T08:45",
+              "body": "Regional hospital emergency department. Date of service 07/06/2025. Received 07/10/2025.\n\nCC: rectal bleeding.\n\nHPI: 71M with diverticulosis, on aspirin, with a prior painless diverticular bleed in 2021, presents with two hours of painless rectal bleeding, passing several large clots of bright red blood. No abdominal pain. No trauma. No NSAIDs.\n\nPMH: diverticulosis with 2021 diverticular hemorrhage; CAD with NSTEMI (LAD stent 2024) and inferior STEMI (RCA stent 2024); Parkinson disease with psychosis; mild cognitive impairment; HTN; hyperlipidemia; BPH.\nMeds: aspirin 81 (clopidogrel stopped two weeks ago), pantoprazole, atorvastatin, metoprolol succinate, lisinopril, carbidopa-levodopa, rasagiline, tamsulosin, finasteride.\nAllergies: NKDA.\nSH: never smoker, former occasional alcohol. Retired teacher, lives with wife.\n\nTriage: BP 100/60, HR 110.\nExam: pale. Abdomen soft, non-tender. Rectal: bright red blood.\n\nLabs: Hgb 10.2 (baseline about 14), Hct 30.5, plt 250K. PT 12, INR 1.0. BUN 18, Cr 1.0.\n\nED course: two large-bore IVs, crystalloid with improvement in heart rate and pressure. Type and screen. With hematochezia, tachycardia and low pressure, a brisk upper GI source must be excluded before attributing this to the diverticula; GI consulted for EGD first, then colonoscopy. Aspirin held. Admitted to medicine.\n\nImpression: hematochezia with hemodynamic instability; upper GI hemorrhage to be excluded; recurrent diverticular bleed most likely.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-06b",
+          "kind": "hospital_admission",
+          "start": "2025-07-06T20:00",
+          "end": "2025-07-09T12:00",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "Recurrent diverticular hemorrhage",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-07T05:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-08T05:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-09T05:30", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "reports": [
+            {"study": "Upper endoscopy report", "loinc": "18751-8", "performed": "2025-07-06T21:30", "text": "Indication: hematochezia with tachycardia, exclude upper GI source. Sedation: monitored anesthesia care. Esophagus normal. Stomach normal, no blood or coffee-ground material. Duodenal bulb and second portion normal, no blood. No ulcer, varix or vascular lesion.", "conclusion": "Normal EGD. No upper GI bleeding source."},
+            {"study": "Colonoscopy report", "loinc": "18746-8", "performed": "2025-07-07T11:00", "text": "Indication: recurrent hematochezia, prior diverticular bleed 2021. Prep: rapid purge, adequate. Scope advanced to the cecum, identified by the appendiceal orifice and ileocecal valve. Blood and clots in the sigmoid and descending colon, cleared with washing. Scattered sigmoid diverticula. One sigmoid diverticulum with an adherent clot and visible vessel at its neck; three hemostatic clips placed with hemostasis. No polyps or masses. Remainder of colon without blood after washing.", "conclusion": "Bleeding sigmoid diverticulum, treated with clips, hemostasis. Sigmoid diverticulosis. No polyps."}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-07-06T20:00"},
+            {"procedure": "Colonoscopy, diagnostic", "performed": "2025-07-07T11:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-07-09T11:30"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "hospital medicine",
+              "date": "2025-07-10T08:46",
+              "body": "Admission 07/06/2025 - Discharge 07/09/2025. Received 07/10/2025.\n\nDischarge diagnosis: recurrent diverticular hemorrhage, sigmoid colon, treated endoscopically. Upper GI hemorrhage excluded by EGD.\n\nCourse: 71M with diverticulosis and CAD with LAD and RCA stents, on aspirin alone since late June, admitted with painless hematochezia, tachycardia and low pressure. Heart rate and pressure improved with IV fluids. Given the instability an upper source was looked for first: EGD the evening of admission was normal. Colonoscopy the next morning found a sigmoid diverticulum with a visible vessel, clipped with hemostasis. No further bleeding. No transfusion. Hemoglobin stable over the following two days. Aspirin held during admission and resumed at discharge after discussion with cardiology given his two stents. Tolerated a regular diet.\n\nDischarge medications: unchanged from admission. Aspirin 81 restarted 7/9.\nAllergies: NKDA.\n\nFollow-up: PCP within one week with CBC. Return for further bleeding, lightheadedness, chest pain.\n\nHospital medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-11a",
+          "kind": "telephone",
+          "start": "2025-07-11T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2025-07-11T10:15",
+              "body": "TCM call. Home since 7/9 after second diverticular bleed, clipped at colonoscopy. No blood since discharge, stools brown. No dizziness. Back on aspirin. Visit Monday 7/14 with CBC."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "office_visit",
+          "start": "2025-07-14T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, diverticular bleed",
+          "state": {"labs": {"Hemoglobin": 10.9, "Hematocrit": 32.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-14T10:00", "results": [{"test": "Hemoglobin", "value": 10.9}, {"test": "Hematocrit", "value": 32.8}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2025-07-14T09:30"},
+            {"procedure": "Venipuncture", "performed": "2025-07-14T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2025-07-14T09:30",
+              "body": "TCM after recurrent diverticular bleed. Hospital records reviewed.\n\n7/6: painless hematochezia with clots, BP 100/60, HR 110, Hgb 10.2. EGD normal (no upper source). Colonoscopy 7/7: bleeding sigmoid diverticulum, clipped. No transfusion. Aspirin resumed at discharge with cardiology's input.\nSince: no bleeding, no lightheadedness, no chest pain.\n\nExam: BP and HR back to his usual. Mildly pale. Heart RRR. Lungs clear. Abd soft, NT.\n\nA/P:\n1. Recurrent diverticular hemorrhage - resolved clinically. CBC today, repeat in 4 weeks. Fiber, fluids; constipation avoidance.\n2. CAD with 2 stents - aspirin must continue; risk of rebleeding discussed with him and wife and accepted. On pantoprazole.\n3. Other meds unchanged.\nRTC fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-15a",
+          "kind": "portal_message",
+          "start": "2025-07-15T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "author": "PCP",
+              "date": "2025-07-15T16:10",
+              "body": "Hemoglobin 10.9, up a little from the hospital. Expected. Recheck in about a month; lab order is in."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-11a",
+          "kind": "lab_only",
+          "start": "2025-08-11T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Repeat CBC after GI bleed",
+          "state": {"labs": {"Hemoglobin": 12.4, "Hematocrit": 37.9}},
+          "conditions": [
+            {"label": "Diverticular hemorrhage of large intestine", "icd10": "K57.31", "action": "resolved"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-11T08:20", "results": [{"test": "Hemoglobin", "value": 12.6}, {"test": "Hematocrit", "value": 37.8}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2025-08-11T08:20"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "author": "PCP",
+              "date": "2025-08-12T07:50",
+              "body": "Hgb 12.6, recovering. Will check again at the November visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-22a",
+          "kind": "specialist_visit",
+          "start": "2025-09-22T14:30",
+          "service": "Urology",
+          "reason": "Yearly BPH follow-up",
+          "labs": [
+            {"panel": null, "collected": "2025-09-22T14:10", "results": [{"test": "Prostate Specific Antigen"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology follow-up",
+              "author": "urology",
+              "date": "2025-09-22T14:30",
+              "body": "Urology annual visit. Second diverticular bleed in July, recovered. Urinary symptoms stable on finasteride and tamsulosin, nocturia once. No hematuria. PSA stable. Continue. Return one year.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "nurse_visit",
+          "start": "2025-10-06T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-06T10:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-06T10:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-06T10:15"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "MA",
+              "date": "2025-10-06T10:10",
+              "body": "High-dose flu R deltoid, 2025-26 COVID L deltoid. RSV not due again. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "specialist_visit",
+          "start": "2025-10-20T13:30",
+          "service": "Neurology",
+          "reason": "Parkinson disease follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up letter",
+              "author": "neurology",
+              "date": "2025-10-20T13:30",
+              "body": "Movement disorders clinic\n\nYearly follow-up. Second diverticular bleed in July, recovered. No hallucinations or paranoia. No falls. His wife manages medicines.\n\nExam: rest tremor right hand, bradykinesia, rigidity right more than left; gait with reduced arm swing, stable.\n\nAssessment: Parkinson disease, stable; history of psychosis; mild cognitive impairment.\nPlan: continue carbidopa-levodopa 25/100 three times daily and rasagiline 1 mg daily. Return in six months.\n\nMovement disorders neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "office_visit",
+          "start": "2025-11-17T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"labs": {"Hemoglobin": 13.8, "Hematocrit": 41.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-17T09:45", "results": [{"test": "Hemoglobin", "value": 13.8}, {"test": "Hematocrit", "value": 41.2}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-17T09:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Lipid Panel", "collected": "2025-11-17T09:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-11-17T09:15"},
+            {"procedure": "Venipuncture", "performed": "2025-11-17T09:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-11-17T09:15",
+              "body": "F/u CAD, HTN, HLD, PD, diverticular bleeds.\n\nNo bleeding since July. No chest pain. Neuro and urology stable this fall. Walking most days.\n\nExam: BP ok. Color better. Heart RRR. Lungs clear. No edema. R tremor.\n\nA/P:\n1. Diverticular bleed x2 - CBC today to confirm recovery.\n2. CAD - aspirin, BB, ACEi, atorvastatin 40, PPI. Cardiology in the new year.\n3. HTN - controlled.\n4. Lipids, BMP today.\nAWV March."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "portal_message",
+          "start": "2025-11-19T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-11-19T12:30",
+              "body": "Good news: hemoglobin is back to your normal. Kidneys and potassium fine. Cholesterol unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-10a",
+          "kind": "ed_visit",
+          "start": "2026-01-10T10:45",
+          "end": "2026-01-10T16:00",
+          "service": "Emergency Medicine",
+          "reason": "Sudden painless vision loss, left eye",
+          "state": {"labs": {"Erythrocyte Sedimentation Rate": 12, "C Reactive Protein": 2.0}},
+          "vitals": [
+            {"time": "2026-01-10T10:50", "bp": [145, 90], "hr": 78},
+            {"time": "2026-01-10T13:00", "bp": [138, 84], "hr": 74, "rr": 16, "spo2": 98, "temp_c": 36.7}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-01-10T11:05", "results": [{"test": "Erythrocyte Sedimentation Rate"}, {"test": "C Reactive Protein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-10T11:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-10T11:05", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {"study": "CT head without contrast", "performed": "2026-01-10T11:30", "text": "Technique: axial non-contrast images of the head. No acute intracranial hemorrhage, mass effect or midline shift. No acute territorial infarct. Ventricles and sulci appropriate for age. Orbits and globes symmetric. Calvarium intact.", "conclusion": "No acute intracranial abnormality."},
+            {"study": "12-lead ECG", "performed": "2026-01-10T11:00", "text": "Sinus rhythm. Normal axis. No acute ST changes.", "conclusion": "Sinus rhythm."}
+          ],
+          "conditions": [
+            {"label": "Central retinal artery occlusion, left eye", "icd10": "H34.12", "action": "diagnosed", "onset": "2026-01-10"}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-01-10T10:45"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2026-01-10T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2026-01-13T09:15",
+              "body": "Regional hospital emergency department. Date of service 01/10/2026. Received 01/13/2026.\n\nCC: vision loss, left eye.\n\nHPI: 72M with Parkinson disease and CAD (NSTEMI and inferior STEMI, LAD and RCA stents) with sudden painless loss of vision in the left eye about two hours before arrival, \"like a curtain coming down.\" No eye pain, no headache, no trauma.\n\nPMH: CAD s/p NSTEMI and inferior STEMI with stents 2024; Parkinson disease with psychosis; MCI; HTN; hyperlipidemia; BPH; diverticulosis with diverticular bleeds 2021 and 2025.\nMeds: lisinopril, atorvastatin, metoprolol succinate, aspirin 81, pantoprazole, carbidopa-levodopa, rasagiline, tamsulosin, finasteride.\nAllergies: NKDA.\nSH: never smoker, former occasional alcohol, retired math teacher, lives with wife.\n\nVitals: BP 145/90, pulse 78 and regular.\nExam: left pupil does not react to light, left relative afferent pupillary defect. Left fundus: pale retina with a cherry-red spot at the macula. Right eye normal. No carotid bruits. Remainder of neuro exam at his baseline per wife (rest tremor right hand).\n\nCT head without contrast: no acute intracranial abnormality.\nESR and CRP normal. CBC, BMP unremarkable. ECG sinus rhythm.\n\nCourse: ophthalmology consulted in the ED and confirmed left central retinal artery occlusion. Admitted to medicine for stroke-equivalent workup.\n\nImpression: acute left central retinal artery occlusion.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-10b",
+          "kind": "hospital_admission",
+          "start": "2026-01-10T16:00",
+          "end": "2026-01-12T13:00",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "Left central retinal artery occlusion",
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2026-01-11T05:30", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}]},
+            {"panel": null, "collected": "2026-01-11T05:30", "results": [{"test": "Hemoglobin A1c", "value": 5.5}]}
+          ],
+          "reports": [
+            {"study": "Carotid duplex ultrasound", "performed": "2026-01-11T09:00", "text": "Bilateral carotid duplex. Right: common, internal and external carotid arteries with less than 50% stenosis by velocity criteria. Left: common, internal and external carotid arteries with less than 50% stenosis by velocity criteria. Antegrade vertebral flow bilaterally.", "conclusion": "No hemodynamically significant carotid stenosis; less than 50% bilaterally."},
+            {"study": "Transthoracic echocardiogram", "performed": "2026-01-11T13:30", "text": "Normal left ventricular size. LVEF 50%. Inferior wall hypokinesis, unchanged from 6/2024. No left ventricular or left atrial thrombus seen. Valves without significant regurgitation or stenosis. No pericardial effusion.", "conclusion": "LVEF 50%, known inferior hypokinesis, no intracardiac thrombus."}
+          ],
+          "orders": [
+            {"id": "event-monitor-2026", "action": "placed", "order": "14-day ambulatory cardiac monitor", "category": "procedure", "to": "Cardiology", "reason": "Central retinal artery occlusion, evaluate for atrial fibrillation"}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-01-10T16:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-01-12T12:30"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "hospital medicine",
+              "date": "2026-01-13T09:16",
+              "body": "Admission 01/10/2026 - Discharge 01/12/2026. Received 01/13/2026.\n\nDischarge diagnosis: acute central retinal artery occlusion, left eye.\n\nCourse: 72M with CAD (LAD and RCA stents), HTN and hyperlipidemia presented with sudden painless left monocular vision loss, RAPD and a cherry-red spot. CT head without acute findings. ESR and CRP normal, making giant cell arteritis unlikely. Ophthalmology confirmed CRAO; no ocular intervention offered at this point. Workup: carotid duplex with less than 50% stenosis bilaterally; TTE LVEF 50% with the known inferior hypokinesis, no thrombus; telemetry sinus rhythm throughout. Lipids and A1c drawn. Left eye vision not improved at discharge.\n\nDischarge medications: unchanged. Aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 20, pantoprazole 40, carbidopa-levodopa 25/100 TID, rasagiline 1 mg, tamsulosin 0.4, finasteride 5, NTG prn.\nAllergies: NKDA.\n\nFollow-up: 14-day ambulatory monitor to be mailed to home. Retina clinic in 1-2 weeks. PCP within one week. Cardiology to review monitor.\n\nHospital medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "telephone",
+          "start": "2026-01-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2026-01-13T11:00",
+              "body": "TCM call to wife. Home 1/12 after left CRAO. Left eye vision still very poor. Monitor patch arrives tomorrow. Retina appt 1/22. Visit with PCP 1/16."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "office_visit",
+          "start": "2026-01-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, central retinal artery occlusion",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-01-16T10:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2026-01-16T10:00",
+              "body": "TCM after left CRAO. ED and hospital records reviewed.\n\n1/10 sudden painless L vision loss, RAPD, cherry-red spot. CT head neg. ESR/CRP normal. Carotids <50% bilat. Echo EF 50%, inferior HK as before, no thrombus. Tele sinus. Home 1/12. Wearing the 14-day patch since 1/14.\nVision L eye still very poor. No jaw pain, no headache, no new neuro symptoms.\n\nExam: BP fine today. L RAPD. Heart RRR, no murmur. No carotid bruits. Lungs clear.\n\nA/P:\n1. L CRAO - stroke equivalent. Aspirin, atorvastatin continued as discharged. Retina 1/22. Monitor results to cardiology.\n2. HTN - BP in ED was up, normal today; no change.\n3. CAD - stable.\nRTC after retina and cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "specialist_visit",
+          "start": "2026-01-22T14:00",
+          "service": "Ophthalmology",
+          "reason": "Central retinal artery occlusion follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Retina clinic note",
+              "author": "ophthalmology",
+              "date": "2026-01-22T14:00",
+              "body": "Retina clinic\n\nDear Doctor,\n\nMr. Desrosiers was seen 12 days after a left central retinal artery occlusion.\n\nVisual acuity: right eye normal; left eye count fingers.\nPupils: left relative afferent pupillary defect.\nAnterior segment: no iris neovascularization either eye.\nFundus: left retinal pallor from the occlusion; no neovascularization of the disc or retina. Right fundus normal.\n\nAssessment: left CRAO, count-fingers vision, no neovascularization.\nPlan: neovascularization surveillance; return in three months or sooner for eye pain or redness. Vascular risk management per primary care and cardiology.\n\nRetina specialist"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "specialist_visit",
+          "start": "2026-02-09T09:00",
+          "service": "Cardiology",
+          "reason": "CAD follow-up and monitor review",
+          "measure": ["bp", "hr"],
+          "orders": [
+            {"id": "event-monitor-2026", "action": "done", "date": "2026-02-09T09:00"}
+          ],
+          "reports": [
+            {"study": "Holter monitor", "performed": "2026-02-09T09:00", "text": "14-day patch monitor, worn 01/14/2026 to 01/28/2026. Underlying rhythm sinus throughout. No atrial fibrillation or atrial flutter. No sustained arrhythmia. No pauses.", "conclusion": "Sinus rhythm throughout; no atrial fibrillation."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up",
+              "author": "cardiology",
+              "date": "2026-02-09T09:00",
+              "body": "Cardiology clinic\n\nDear Doctor,\n\nMr. Desrosiers is seen after a left central retinal artery occlusion in January, for CAD follow-up and review of the 14-day monitor. No angina. No palpitations.\n\nMonitor: sinus rhythm throughout, no atrial fibrillation.\nRecent workup: carotids less than 50% bilaterally; echo LVEF 50% with unchanged inferior hypokinesis, no thrombus.\n\nExam: BP and HR at goal. Heart regular. Lungs clear. No edema.\n\nAssessment: CAD with prior NSTEMI and inferior STEMI, stable. No cardiac source found for the retinal artery occlusion.\nPlan: continue aspirin, metoprolol succinate, lisinopril, atorvastatin 40, pantoprazole. Return in one year.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "annual_physical",
+          "start": "2026-03-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-03-16T09:40", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-16T09:40", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2026-03-16T09:00"},
+            {"procedure": "Venipuncture", "performed": "2026-03-16T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2026-03-16T09:00",
+              "body": "AWV, with wife.\n\nLeft eye vision has not come back. Getting used to it; more careful on stairs and curbs. Cardiology 2/9: monitor sinus throughout, no changes. No chest pain, no bleeding, no hallucinations. No falls.\nFunctional: independent ADLs; wife manages meds. PHQ-2 1, not depressed, \"frustrated about the eye.\"\nAdvance directive reviewed, unchanged.\n\nExam: per flowsheet. L RAPD. Masking, R tremor. Heart RRR. Lungs clear. No edema.\n\nPlan:\n- Fall prevention reviewed with monocular vision; night lights, stair rails in place.\n- CAD, HTN, HLD: continue. CMP, CBC today (lipids and A1c done in hospital in January).\n- Vaccines up to date.\n- RTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "specialist_visit",
+          "start": "2026-04-20T14:15",
+          "service": "Ophthalmology",
+          "reason": "CRAO neovascularization check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Retina clinic note",
+              "author": "ophthalmology",
+              "date": "2026-04-20T14:15",
+              "body": "Retina clinic follow-up, three months after left CRAO.\n\nVisual acuity: right normal; left count fingers, unchanged.\nLeft RAPD. No iris neovascularization. Left fundus: no neovascularization of the disc or retina. Right fundus normal.\n\nAssessment: left CRAO, stable vision, no neovascularization.\nPlan: return in six months.\n\nRetina specialist"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "specialist_visit",
+          "start": "2026-04-27T13:00",
+          "service": "Neurology",
+          "reason": "Parkinson disease follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up letter",
+              "author": "neurology",
+              "date": "2026-04-27T13:00",
+              "body": "Movement disorders clinic\n\nSix-month follow-up. Left central retinal artery occlusion in January with persistent left eye vision loss. No hallucinations or paranoia. No falls.\n\nExam: rest tremor right hand, bradykinesia, rigidity right more than left; gait with reduced arm swing, unchanged. Left RAPD.\n\nAssessment: Parkinson disease, stable; history of psychosis; mild cognitive impairment.\nPlan: continue carbidopa-levodopa 25/100 three times daily and rasagiline 1 mg daily. Return in six months.\n\nMovement disorders neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "office_visit",
+          "start": "2026-06-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-22T10:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-22T09:30"},
+            {"procedure": "Venipuncture", "performed": "2026-06-22T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-06-22T09:30",
+              "body": "F/u.\n\nRetina 4/20: L eye unchanged, no neovascularization. Neuro 4/27 stable. No CP, no bleeding, no falls. Walking with wife in the evenings.\n\nExam: BP ok. L RAPD. Heart RRR, lungs clear, no edema. R tremor.\n\nA/P: CAD, HTN, HLD, PD, BPH stable. BMP today. Retina in October, cardiology February. AWV booked September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Metoprolol refill",
+              "author": "patient",
+              "date": "2026-08-24T08:40",
+              "body": "Hello, mail order says no refills left on the metoprolol. Can you send a new one? We have about two weeks left. Thank you. (his wife)"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Metoprolol refill",
+              "author": "RN",
+              "date": "2026-08-24T13:15",
+              "body": "Sent metoprolol succinate 50 mg, 90 days with 3 refills, to the mail-order pharmacy. See you both on September 21."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-21a",
+          "kind": "annual_physical",
+          "start": "2026-09-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002583",
+      "events": [
+        {
+          "id": "2024-03-06a",
+          "kind": "ed_visit",
+          "start": "2024-03-06T16:35",
+          "end": "2024-03-06T23:50",
+          "service": "Emergency Medicine",
+          "reason": "Recurrent passing out",
+          "conditions": [
+            {"label": "Syncope", "action": "diagnosed", "onset": "2024-03-06"}
+          ],
+          "vitals": [
+            {"time": "2024-03-06T16:40", "bp": [120, 75], "hr": 70, "rr": 16, "spo2": 99, "temp_c": 36.7},
+            {"time": "2024-03-06T21:30", "bp": [116, 72], "hr": 62, "rr": 14, "spo2": 99, "temp_c": 36.6}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-03-06T16:55", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-06T16:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2024-03-06T16:55", "results": [{"test": "Troponin I, High Sensitivity", "value": 3}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2024-03-06T16:45", "issued": "2024-03-06T16:50", "text": "Recorded while the patient was asymptomatic. Normal sinus rhythm. Normal axis. Normal PR, QRS and QTc intervals. No ST segment or T wave abnormality. No pathologic Q waves. No pre-excitation.", "conclusion": "Normal sinus rhythm, normal ECG."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2024-03-06T16:35"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2024-03-07T09:30", "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nDate of service: 03/06/2024, arrived 16:35 by private vehicle with friends\nPCP: primary care physician, copy sent\n\nCHIEF COMPLAINT: passing out, more than once\n\nHPI: 21 y/o M with obstructive hypertrophic cardiomyopathy diagnosed last year after he collapsed at track practice, on metoprolol succinate 50 mg daily. Presents after another fainting spell this afternoon. Describes several similar spells: he gets queasy, hot and lightheaded, and then goes down. This afternoon he was with friends, who say he went pale and sweaty and then slumped to the floor; he came around within moments. No injury, no tongue biting, no incontinence, no post-event confusion. No chest pain, no palpitations, no exertion at the time of any of the spells. Denies drug use.\n\nPMH: obstructive HCM. PSH: none. Meds: metoprolol succinate 50 mg daily. Allergies: NKDA.\nFH: father with sudden cardiac death at 41; paternal uncle with HCM.\nSH: university student, never smoker, occasional alcohol, none today.\n\nEXAM: BP 120/75, HR 70 at triage. Alert, oriented x3, no distress. No head or facial trauma. Heart regular, systolic murmur at the LLSB. Lungs clear. Abdomen benign. Neuro: nonfocal, gait normal.\n\nECG (asymptomatic): normal sinus rhythm, no abnormalities.\nLabs: CBC, BMP and high-sensitivity troponin within normal limits.\n\nED COURSE: Placed on continuous cardiac monitoring. At about 18:10, while seated on the stretcher, he said he felt the same nausea and warmth coming on and became pale. The monitor showed sinus bradycardia followed by a brief period of asystole, then return to normal sinus rhythm as he came around. He was laid flat and recovered within a minute, no intervention needed. Cardiology was consulted by phone and reviewed the strip. He remained on telemetry for the rest of his stay without another event.\n\nMDM: Recurrent syncope with a prodrome of nausea, warmth and lightheadedness, and a captured episode showing sinus bradycardia and a brief pause. Background obstructive HCM. Normal resting ECG and labs. Cardiology agrees with discharge with early outpatient follow-up and no medication change tonight.\n\nDIAGNOSIS: Syncope.\n\nDISPOSITION: Discharged home at 23:50 in the care of friends. Continue metoprolol succinate 50 mg daily. Cardiology clinic will call him for a visit within two weeks. Return precautions given: chest pain, palpitations, fainting with exertion, or any injury from a fall.\n\nEmergency medicine attending"}
+          ]
+        },
+        {
+          "id": "2024-03-07a",
+          "kind": "telephone",
+          "start": "2024-03-07T11:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-ED call", "author": "RN", "date": "2024-03-07T11:15", "body": "Called pt after ED record came in. He's back in his room, felt washed out last night but fine this morning, no more episodes. Taking metoprolol as usual. Cardiology already called him, appt 3/18. Booked with PCP Mon 3/11 at 4:00. Told him to go back to the ED with any recurrence."}
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "office_visit",
+          "start": "2024-03-11T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, syncope",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-11T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - ED follow-up", "author": "PCP", "date": "2024-03-11T16:40", "body": "ED f/u 3/6 for recurrent syncope.\n\nRead through the ED record before he came in. He tells it the same way: these spells start with nausea, feeling hot and lightheaded, then he goes down; usually standing, never with exertion, never chest pain. He admits there were a few before last week that he didn't tell anyone about, thinking they were nothing. In the ED they caught one on the monitor: sinus brady, a brief pause, then back to sinus. Normal ECG between, normal labs. No episodes since Wednesday.\n\nMeds: metoprolol succinate 50 mg daily, taking it. NKDA.\n\nExam: vitals as charted, orthostatics not done. Heart regular, systolic murmur LLSB, unchanged. Lungs clear. Neuro nonfocal.\n\nA/P\n1. Syncope, recurrent, with prodrome, captured bradycardia/pause in the ED. Known obstructive HCM. Cardiology 3/18 to sort out the mechanism and the metoprolol question; I'd rather they make that call. Meanwhile: lots of fluids, sit or lie down the moment the warning feeling starts, no swimming alone. Return to ED for any spell with exertion or chest pain.\n2. Obstructive HCM: as above.\nI'll watch for the cardiology letter."}
+          ]
+        },
+        {
+          "id": "2024-03-18a",
+          "kind": "specialist_visit",
+          "start": "2024-03-18T10:30",
+          "service": "Cardiology",
+          "reason": "Follow-up after ED visit for syncope",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2024-03-18T10:00", "text": "Complete 2D, color and spectral Doppler study, compared with 03/13/2023. Normal left ventricular cavity size. Asymmetric septal hypertrophy, maximal septal thickness 21 mm. LVEF 70%, hyperdynamic. Systolic anterior motion of the anterior mitral leaflet persists. Resting LVOT peak gradient 36 mmHg, 60 mmHg with Valsalva. Mitral and aortic valves structurally normal. Right ventricle normal. Atria normal in size. No pericardial effusion.", "conclusion": "Obstructive hypertrophic cardiomyopathy, unchanged from 03/2023: septum 21 mm, LVEF 70%, LVOT gradient 36 mmHg at rest and 60 mmHg with Valsalva."}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-18T10:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up", "author": "cardiology", "date": "2024-03-19T15:00", "body": "Cardiology clinic follow-up\nDate of visit: 03/18/2024\n\nDear colleague,\n\nI saw Rowan again after his ED visit on 3/6 for recurrent fainting. He describes several episodes, all while standing or sitting still, each heralded by nausea, warmth and lightheadedness and followed by a brief loss of consciousness. None have been exertional and none came with chest pain or palpitations. The episode captured on ED telemetry showed sinus bradycardia and a brief asystolic pause with spontaneous recovery, coinciding with his usual prodrome. No episodes since the ED.\n\nMedications: metoprolol succinate 50 mg daily. Allergies: NKDA.\n\nToday he looks well. Vital signs as recorded. The systolic murmur at the left lower sternal border is unchanged. Lungs clear, no edema.\n\nEcho today is unchanged from last year: septum 21 mm, EF 70%, outflow gradient 36 mmHg at rest and 60 mmHg with Valsalva.\n\nImpression:\n1. Recurrent syncope. The prodrome and the setting, together with the bradycardia and pause during a typical spell, favor a reflex mechanism rather than an outflow or arrhythmic event.\n2. Obstructive hypertrophic cardiomyopathy, stable by echo.\n\nPlan:\n1. Continue metoprolol succinate 50 mg daily, no change.\n2. Generous fluid intake. At the first sign of the warning feeling, sit or lie down; leg-crossing and hand-grip counter-pressure maneuvers reviewed and practiced in clinic.\n3. Continue to avoid competitive and strenuous exertion.\n4. Return in one year, sooner for any exertional symptoms or recurrent syncope.\n\nSincerely,\nOutpatient cardiology"}
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "portal_message",
+          "start": "2024-03-20T08:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Cardiology visit", "author": "PCP", "date": "2024-03-20T08:05", "body": "Rowan, I read the cardiology note from Monday. Echo unchanged, and they think these spells are the reflex type, set off by the nausea and warm feeling, rather than coming from the heart muscle problem itself. No change to metoprolol. Keep up with the fluids and the counter-pressure moves they showed you. Text me if you have another one."},
+            {"type": "Patient Message", "title": "RE: Cardiology visit", "author": "patient", "date": "2024-03-20T19:40", "body": "ok will do, thanks for checking"}
+          ]
+        },
+        {
+          "id": "2024-06-03a",
+          "kind": "pharmacy",
+          "start": "2024-06-03T09:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2024-06-03T09:10", "body": "Electronic refill request from pharmacy, metoprolol succinate ER 50 mg, last 90 day fill 3/2024, no refills left on old Rx. Last PCP visit 3/11/24. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "Refill approved", "author": "PCP", "date": "2024-06-03T12:30", "body": "Metoprolol succinate ER 50 mg daily, #90, 3 refills, sent."}
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "annual_physical",
+          "start": "2024-08-26T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-26T11:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-08-26T11:20", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 1}, {"survey": "AUDIT-C total score", "value": 2}],
+          "social": [{"item": "Tobacco smoking status", "value": "Never smoker"}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2024-08-26T11:15"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-08-26T10:40"},
+            {"procedure": "Immunization administration", "performed": "2024-08-26T11:15"},
+            {"procedure": "Venipuncture", "performed": "2024-08-26T11:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-08-26T11:30", "body": "Yearly exam, 22 y/o, back at school next week, still on his mother's insurance.\n\nObstructive HCM on metoprolol succinate 50. Syncope: none since the ED visit in March. No exertional symptoms, no chest pain, no palpitations. Cardiology again next March.\n\nMeds: metoprolol succinate ER 50 mg daily. NKDA.\nSH: never smoker, drinks rarely, no drugs.\n\nPHQ-9 1, AUDIT-C 2.\nROS negative.\n\nExam: vitals as charted. HEENT normal. Neck supple. Heart regular, systolic murmur LLSB as before. Lungs clear. Abdomen soft, nontender. Extremities no edema. Skin normal. Neuro intact.\n\nA/P\n1. Obstructive HCM, stable.\n2. Syncope, none since March.\n3. Health maintenance: Tdap today, 10 years since the last. CBC and BMP. Flu and COVID when available in October.\nRTC 1 yr."},
+            {"type": "Nursing Note", "title": "Tdap", "author": "RN", "date": "2024-08-26T11:18", "body": "Tdap 0.5 mL IM left deltoid. VIS given. Tolerated, observed without reaction."}
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "portal_message",
+          "start": "2024-08-28T13:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2024-08-28T13:00", "body": "Rowan, Monday's blood count and metabolic panel are normal. See you in October for the fall shots."}
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "nurse_visit",
+          "start": "2024-10-21T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-21T17:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-21T17:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-21T17:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunizations", "author": "RN", "date": "2024-10-21T17:20", "body": "Flu (trivalent 2024-25) 0.5 mL IM R deltoid and Moderna 2024-25 COVID 0.5 mL IM L deltoid. Pt asked to lie down for the shots given his fainting history; done supine, no prodrome, sat up after 5 min and observed 15 min total. Fine."}
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "office_visit",
+          "start": "2025-02-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hypertrophic cardiomyopathy",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-02-10b",
+          "kind": "portal_message",
+          "start": "2025-02-10T16:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Missed appointment", "author": "front desk", "date": "2025-02-10T16:10", "body": "Hi Rowan, we missed you at 3:20 today. Please reply or call to reschedule; a video visit is fine if it's easier with classes."},
+            {"type": "Patient Message", "title": "RE: Missed appointment", "author": "patient", "date": "2025-02-10T21:30", "body": "so sorry, totally forgot. can we do video next week?"},
+            {"type": "Patient Message", "title": "RE: Missed appointment", "author": "front desk", "date": "2025-02-11T09:00", "body": "Booked: video visit Wednesday 2/19 at 12:15. Link will come by text."}
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "telehealth_visit",
+          "start": "2025-02-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hypertrophic cardiomyopathy",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-02-19T12:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2025-02-19T12:35", "body": "Video, pt in his apartment, identity verified.\n\nCheck-in on obstructive HCM and syncope. No fainting since 3/2024, no near spells. No chest pain, palpitations or shortness of breath. Taking metoprolol succinate 50 daily, few missed doses, needs refills before cardiology. Busy with classes, sleeping enough. Walks everywhere, no hard exercise.\n\nNKDA.\nNo exam beyond appearance: well, talking comfortably.\n\nA/P\n1. Obstructive HCM, stable, metoprolol refilled #90 x3.\n2. Syncope, no recurrence.\nCardiology annual in March, confirmed he has it booked. Physical in August."}
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "specialist_visit",
+          "start": "2025-03-24T14:00",
+          "service": "Cardiology",
+          "reason": "Annual follow-up hypertrophic cardiomyopathy",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-03-24T14:05", "text": "Normal sinus rhythm. Normal axis and intervals. No ST or T wave abnormality. No Q waves. No change from 03/2024.", "conclusion": "Normal sinus rhythm. Normal ECG."}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-24T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Annual Follow-up", "author": "cardiology", "date": "2025-03-26T11:00", "body": "Cardiology clinic\nDate of visit: 03/24/2025\n\nDear colleague,\n\nRowan returns for his yearly visit for obstructive hypertrophic cardiomyopathy. He has had no syncope since the ED visit of March 2024 and reports no exertional chest discomfort, dyspnea or palpitations. He continues to avoid strenuous exertion. He takes metoprolol succinate 50 mg daily.\n\nAllergies: NKDA.\n\nExam: vital signs as recorded. Systolic murmur at the left lower sternal border, unchanged. Lungs clear. No edema.\n\nECG today: normal sinus rhythm, no abnormality.\n\nImpression: Obstructive HCM, clinically stable. Syncope, no recurrence in a year.\n\nPlan: Continue metoprolol succinate 50 mg daily. Same activity guidance. Return in one year with an echocardiogram.\n\nSincerely,\nOutpatient cardiology"}
+          ]
+        },
+        {
+          "id": "2025-03-27a",
+          "kind": "portal_message",
+          "start": "2025-03-27T07:45",
+          "documents": [
+            {"type": "Patient Message", "title": "Cardiology note", "author": "PCP", "date": "2025-03-27T07:45", "body": "Got the cardiology letter from Monday. Stable, ECG normal, same dose. Nothing new from my end. See you in August."}
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "annual_physical",
+          "start": "2025-08-25T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-25T10:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-08-25T10:00", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}, {"survey": "AUDIT-C total score", "value": 2}],
+          "social": [{"item": "Tobacco smoking status", "value": "Never smoker"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-08-25T09:20"},
+            {"procedure": "Venipuncture", "performed": "2025-08-25T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-08-25T10:10", "body": "Annual, 23 y/o M, still in school.\n\nHCM (obstructive), metoprolol succinate 50 daily. Cardiology 3/2025 stable, normal ECG, echo next March. No syncope since 3/2024. No exertional symptoms.\n\nMeds: metoprolol succinate ER 50 mg daily. NKDA.\nSH: never smoker, alcohol occasional, no drugs.\nPHQ-9 2. AUDIT-C 2.\nROS negative.\n\nExam: vitals as charted. Well. HEENT normal. Neck supple, no nodes. Heart regular, systolic murmur LLSB, same as always. Lungs clear. Abdomen soft, nontender. Extremities no edema. Skin clear. Neuro nonfocal.\n\nA/P\n1. Obstructive HCM, stable. Continue.\n2. Syncope, none in over a year.\n3. HM: CBC, BMP. Tdap 2024. Flu and COVID in October.\nRTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "portal_message",
+          "start": "2025-08-27T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2025-08-27T12:10", "body": "Rowan, labs from Monday are all normal. Nothing to do."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-14T16:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-14T16:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunizations", "author": "RN", "date": "2025-10-14T16:50", "body": "Flu 2025-26 0.5 mL IM L deltoid; Pfizer 2025-26 COVID 0.3 mL IM R deltoid. Given lying down at pt's request as last year. No reaction, up and out after 15 min."}
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "pharmacy",
+          "start": "2025-11-24T10:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Insurance change at pharmacy", "author": "MA", "date": "2025-11-24T10:40", "body": "Pharmacy called: metoprolol fill rejected, new member ID on his mother's plan as of the plan year. Pt messaged a photo of the new card, updated in registration and called pharmacy with the new BIN/ID. Claim went through, 90 day supply filled."}
+          ]
+        }
+      ]
+    }
+  ]
+}

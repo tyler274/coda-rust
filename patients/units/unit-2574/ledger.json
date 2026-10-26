@@ -1,0 +1,4379 @@
+{
+  "unit": "unit-2574",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"penicillin V potassium 250 MG Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002574",
+      "given": "Darnell",
+      "family": "Grant",
+      "birth_date": "2000-02-24",
+      "address_line": "88 Saint James Avenue, Apt 2, Springfield, MA 01109",
+      "phone": "+1-802-555-0137",
+      "email": "darnell.grant@example.test",
+      "marital_status": "single",
+      "summary": "Young man with HbSS sickle cell disease, functional asplenia, right femoral head AVN and past acute chest syndrome who joins at 19 from pediatric care; hematology runs hydroxyurea. Outside care reaches the chart sparsely: crisis admissions, a folate lapse, an atraumatic splenic laceration with mononucleosis and a delayed hemolytic transfusion reaction.",
+      "events": [
+        {
+          "id": "2019-04-22a",
+          "kind": "establish_care",
+          "start": "2019-04-22T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring from pediatrics; sickle cell disease",
+          "conditions": [
+            {
+              "label": "Sickle-cell disease without crisis",
+              "action": "diagnosed",
+              "onset": "2000-06-01",
+              "note": "HbSS, diagnosed on newborn screen; followed by hematology"
+            },
+            {
+              "label": "Functional asplenia",
+              "action": "diagnosed",
+              "onset": "2004-01-01",
+              "icd10": "D73.0"
+            },
+            {
+              "label": "Avascular necrosis of right femoral head",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "found on x-ray at an outside orthopedic clinic in his teens",
+              "icd10": "M87.351"
+            },
+            {
+              "label": "History of recurrent acute chest syndrome",
+              "action": "history",
+              "onset": "2009-01-01",
+              "note": "several episodes in childhood and teens; two admissions in the past year included ACS",
+              "icd10": "D57.01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydroxyurea 500 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2 capsules (1000 mg) by mouth daily",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Sickle cell disease (prescribed by hematology)"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Sickle cell disease"
+            },
+            {
+              "drug_text": "penicillin V potassium 250 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Infection prophylaxis, functional asplenia (prescribed by hematology)"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              68
+            ],
+            "hr": 81,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 65.5,
+            "height_cm": 177.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 353
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 99
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.56
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 143
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 94
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Rarely, special occasions only; avoids because of dehydration"
+            },
+            {
+              "item": "Occupation",
+              "value": "Part-time library assistant; community college student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-04-22T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-04-22T10:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-04-22T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2019-04-22T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and physical note",
+              "title": "New Patient Visit",
+              "date": "2019-04-22T11:10",
+              "author": "PCP",
+              "body": "19 yo M establishing adult primary care. Aging out of his pediatric office; mother came with him to the first part of the visit, he did the rest on his own.\n\nHbSS sickle cell disease, picked up on newborn screen. Sees the adult sickle cell clinic at the regional hospital (moved over from pediatric hematology last year). On hydroxyurea 1000 mg daily for several years, folic acid 1 mg daily and penicillin VK 250 mg BID, all written by hematology. Says he takes the hydroxyurea most days, sometimes forgets the evening penicillin.\n\nRough year: four admissions for pain crises in the last 12 months, and two of those turned into acute chest syndrome. Last discharge was early this month. Feels back to himself now. Has had ACS several times going back to grade school. Told he has no working spleen. Right hip AVN was found on an x-ray at an orthopedic clinic when he was about 16; it aches now and then with a lot of walking but is not bothering him today.\n\nNo surgeries. NKDA.\nFH: both parents carry sickle trait; younger brother also has sickle cell disease.\nSH: lives in Springfield with his mother and brother. Part-time at a library circulation desk, taking classes at the community college. Never smoked. Drinks rarely, on a special occasion, and mostly avoids it since getting dry sets off pain. No drugs.\n\nROS: no fever, cough, chest pain, dyspnea, headache, vision change, priapism, leg ulcers. Mild right hip ache as above.\n\nExam: thin young man, comfortable. Sclerae anicteric today. Neck supple, no nodes. Lungs clear. Heart regular, no murmur. Abdomen soft, no tenderness, spleen and liver not felt. Right hip: full motion, mild discomfort at end internal rotation. Skin without ulcers. Neuro grossly normal.\n\nA/P\n1. HbSS sickle cell disease with frequent crises this year. Hematology owns hydroxyurea and its counts; he has a visit there in June. Drew a baseline CBC, CMP and urine albumin here so we have our own numbers. Hydration and cold-avoidance talk, he knows it well.\n2. Functional asplenia. Fever 38.3 or higher = ED same day, he knows this. Continue penicillin per hematology. Requested pediatric vaccine records; never had MenB as far as he knows, so first dose of Bexsero today, second in about a month.\n3. Right hip AVN. Stable symptoms. Watch.\n4. Hx ACS. No current symptoms.\n5. Health maintenance: HIV and hep C screening sent today, lipids. PHQ-2 0.\n\nReturn: nurse visit late May for MenB #2; see me after the hematology visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              118,
+              72
+            ],
+            "weight_kg": 66.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Bilirubin, Total": 2.4,
+              "Creatinine": 0.6,
+              "Hematocrit": 24.8,
+              "Hemoglobin": 8.3,
+              "Mean Corpuscular Volume": 99,
+              "Microalbumin/Creatinine Ratio": 8,
+              "Platelets": 360,
+              "White Blood Cells": 12.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2019-04-24a",
+          "kind": "portal_message",
+          "start": "2019-04-24T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Your lab results",
+              "date": "2019-04-24T16:40",
+              "author": "PCP",
+              "body": "Hi Darnell, your blood work from Monday is back. Your hemoglobin is about 8, which is in your usual sickle cell range, and your kidney numbers and urine protein look good. Bilirubin is a little high, which is expected with sickle cell. Cholesterol is fine. Your HIV and hepatitis C screens are both negative. Nothing to change. See you after your June hematology visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-04-30a",
+          "kind": "outside_records",
+          "start": "2019-04-30T13:15",
+          "reason": "Pediatric records received",
+          "immunizations": [
+            {
+              "vaccine": "Haemophilus influenzae type b (PRP-T)",
+              "date": "2001-02-26T10:00"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV13",
+              "date": "2010-08-16T10:00"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2010-10-18T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2011-03-07T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2011-03-07T10:10"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2011-03-07T10:20"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2015-10-19T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2016-03-07T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside records",
+              "title": "Pediatric Records Summary",
+              "date": "2019-04-30T13:15",
+              "author": "front desk",
+              "body": "Records from prior pediatric office received by fax, 14 pages, scanned to media. Immunization history abstracted to the vaccine record. Childhood series complete per their record, including Hib, PCV13, two doses of PPSV23, MenACWY with booster at 16, HPV series and Tdap at 11. No MenB on file. Last well visit there 2018. Problem list matches ours: sickle cell disease SS, asplenia, hip AVN, history of acute chest."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-28a",
+          "kind": "nurse_visit",
+          "start": "2019-05-28T15:30",
+          "reason": "MenB vaccine dose 2",
+          "vitals": {
+            "temp_c": 36.4
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-05-28T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2019-05-28T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunization",
+              "date": "2019-05-28T15:50",
+              "author": "RN",
+              "body": "Here for 2nd Bexsero. Afebrile, feels well. Given L deltoid, tolerated. Sore arm after first dose only. MenB series complete. Reminded him to bring the hematology letter or have it sent after his June appointment."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2019-06-14a",
+          "kind": "outside_records",
+          "start": "2019-06-14T10:30",
+          "reason": "Hematology letter",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-06-10T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 350
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 97
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.53
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-06-10T09:40",
+              "results": [
+                {
+                  "test": "Reticulocyte count",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-06-10T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin F",
+                  "loinc": "4576-5",
+                  "unit": "%",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Adult Sickle Cell Clinic Follow-up",
+              "date": "2019-06-14T10:30",
+              "author": "hematology",
+              "body": "Adult Sickle Cell Program, regional hospital hematology\nDate of visit: 06/10/2019\n\nDear colleague,\n\nI saw Darnell in follow-up for HbSS disease. It has been a hard twelve months: he counts four admissions for painful crises over that time, the most recent roughly two months back. He is doing well today.\n\nCurrent medicines: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg twice daily. Allergies: none known.\n\nVitals: T 37.2 C (99 F), BP 128/76, P 88, RR 16.\nWell appearing, not in distress. Spleen is not palpable.\n\nLabs today: Hgb 8.2 g/dL, Hct 24.5%, WBC 12,000, platelets 350,000, retic 10%, HbF 5%.\n\nImpression: HbSS disease at his usual hemoglobin with brisk reticulocytosis. Functional asplenia. Right femoral head AVN and prior acute chest syndrome by history.\n\nPlan: continue hydroxyurea 1000 mg daily, folic acid and penicillin without change. Return to clinic in 3-4 months, labs at that visit.\n\nThank you for sharing his care.\nAdult Sickle Cell Program"
+            }
+          ]
+        },
+        {
+          "id": "2019-09-16a",
+          "kind": "hospital_admission",
+          "start": "2019-09-16T06:50",
+          "end": "2019-09-19T12:30",
+          "service": "Emergency Medicine / Inpatient Medicine",
+          "reason": "Pain crisis",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "action": "diagnosed",
+              "onset": "2019-09-15",
+              "icd10": "D57.00"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2019-09-16T06:55",
+              "bp": [
+                128,
+                76
+              ],
+              "hr": 88,
+              "rr": 18,
+              "temp_c": 37.2,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-16T07:20",
+              "resulted": "2019-09-16T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 97
+                },
+                {
+                  "test": "Platelets",
+                  "value": 354
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.53
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-16T07:20",
+              "resulted": "2019-09-16T08:05",
+              "results": [
+                {
+                  "test": "Reticulocyte count",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-16T07:20",
+              "resulted": "2019-09-16T08:05",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 350
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-16T07:20",
+              "resulted": "2019-09-16T08:05",
+              "results": [
+                {
+                  "test": "Bilirubin, indirect",
+                  "loinc": "1971-1",
+                  "unit": "mg/dL",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-16T07:20",
+              "resulted": "2019-09-16T08:05",
+              "results": [
+                {
+                  "test": "Sickle cells, smear",
+                  "loinc": "801-1",
+                  "text": "Present"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2019-09-23T09:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, seen 09/16/2019.\n\n19M with HbSS, functional asplenia, R femoral head AVN. Came in with deep aching bone pain in both arms and legs, started after a cold rainy weekend at an outdoor event. Same kind of pain he has had since childhood, usually set off by cold or getting dehydrated. Hematology clinic visit about 3 months ago.\nMeds: folic acid 1 mg daily, penicillin VK 250 mg BID, hydroxyurea 1000 mg daily. NKDA.\nT 37.2 C, BP 128/76, HR 88, RR 18, SpO2 97% RA. Uncomfortable, mild distress. Lungs clear.\nHgb 8.2, Hct 24.5, retic 4.5%, LDH 350, indirect bili 2.1. Smear: sickled red cells.\nImp: vaso-occlusive pain crisis. IV fluids and IV analgesia per sickle cell pathway, admitted to medicine."
+            },
+            {
+              "type": "Discharge summary",
+              "title": "Discharge Summary",
+              "date": "2019-09-23T09:05",
+              "author": "hospital medicine",
+              "body": "Admitted 09/16/2019, discharged 09/19/2019.\nDx: sickle cell vaso-occlusive crisis.\nCourse: IV hydration and IV pain control, pain improved over three days, no fever, no chest symptoms, no oxygen requirement. Home on usual medicines.\nFollow-up: PCP within 1 week, hematology as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "office_visit",
+          "start": "2019-09-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, sickle cell crisis",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "action": "resolved",
+              "icd10": "D57.00"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              78
+            ],
+            "hr": 76,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 66.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-09-24T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2019-09-24T14:45",
+              "author": "PCP",
+              "body": "Post-hospital f/u. Admitted 9/16-9/19 at the regional hospital for a pain crisis after a cold, wet weekend outside. ED note and short discharge summary are in the chart. Pain is down to a 1-2 in his shins, off everything but his usual meds. Back at work Monday, classes started without him missing much.\nNo fever, cough, chest pain, SOB.\nOn hydroxyurea, folic acid, penicillin. Says he has been better about the penicillin since being in the hospital.\nExam: comfortable. Lungs clear. Heart regular. Abdomen soft, nontender. No bony tenderness in the legs.\nA/P: VOC, resolved. Talked through the cold-weather plan for the fall: layers, warm fluids, water bottle at work. Fever rule again. Flu shot next month at a nurse visit. Hematology in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T16:10",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-22T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-22T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2019-10-22T16:25",
+              "author": "RN",
+              "body": "Flu vaccine given R deltoid. Feeling well, no fever today. Waited in the office afterward, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-24a",
+          "kind": "portal_message",
+          "start": "2020-02-24T08:12",
+          "reason": "Patient reports hospital stay",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "action": "diagnosed",
+              "onset": "2020-02-20",
+              "note": "admitted 2/21-2/23 per patient; no outside records received",
+              "icd10": "D57.00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Was in the hospital",
+              "date": "2020-02-24T08:12",
+              "author": "patient",
+              "body": "Hi, just letting you know I was in the hospital Friday to Sunday for a pain crisis. It was the cold snap. Im home now and doing better. They said follow up with you. Do I need to come in?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Was in the hospital",
+              "date": "2020-02-24T10:30",
+              "author": "RN",
+              "body": "Glad you are home. A nurse will call you Wednesday to check in, and we will ask the hospital to send records. If the pain comes back strong, or you get a fever, chest pain or trouble breathing, go back to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-26a",
+          "kind": "telephone",
+          "start": "2020-02-26T11:05",
+          "reason": "Post-hospital nurse call",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "action": "resolved",
+              "icd10": "D57.00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2020-02-26T11:20",
+              "author": "RN",
+              "body": "Called pt. Two-night admission 2/21-2/23 for pain crisis, no chest involvement per pt. Pain resolved, no fever, eating and drinking well. Taking hydroxyurea, folic acid, penicillin. Records requested from the regional hospital, none received yet. He mentions R groin pain has been worse since around the holidays, especially walking across campus. Booked with PCP 3/9."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-09a",
+          "kind": "office_visit",
+          "start": "2020-03-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right groin pain",
+          "vitals": {
+            "bp": [
+              110,
+              76
+            ],
+            "hr": 73,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 65.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-03-09T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-ref-2020",
+              "action": "placed",
+              "order": "Orthopedic surgery referral",
+              "category": "referral",
+              "to": "Orthopedics",
+              "reason": "Right femoral head AVN with worsening groin pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hip Pain",
+              "date": "2020-03-09T11:25",
+              "author": "PCP",
+              "body": "S: R groin pain about 3 months, dull, worse the longer he walks, better sitting. No injury, no fever, no weight loss, no night sweats. Different from his crisis pain. Known R femoral head AVN from his teens; last saw ortho for it about 3 years ago. Also in hospital 2/21-2/23 for a crisis, now back to baseline (records never came).\nMeds: hydroxyurea 1000 daily, folic acid 1 mg, PCN VK 250 BID.\nO: gait normal in the office. R hip: full range, groin pain at end of internal rotation. No warmth or swelling. L hip normal. Back nontender.\nA/P: R hip pain, likely the known AVN. Referred back to orthopedics for reassessment and imaging there. Activity as tolerated, avoid long walks when he can. He will call if pain changes at rest or he gets fever."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "telephone",
+          "start": "2020-04-14T09:50",
+          "reason": "Orthopedics appointment postponed",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Update",
+              "date": "2020-04-14T09:55",
+              "author": "front desk",
+              "body": "Ortho office called, non-urgent visits on hold with the pandemic. Darnell's appointment moved to June 15. Pt notified by phone, ok with it. Classes went online, he is home most of the day."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-22a",
+          "kind": "outside_records",
+          "start": "2020-06-22T14:20",
+          "reason": "Orthopedics letter",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-06-15T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 450
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 95
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.75
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-06-15T11:30",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 20
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-06-15T11:30",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-ref-2020",
+              "action": "done",
+              "date": "2020-06-22T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Follow-up",
+              "date": "2020-06-22T14:20",
+              "author": "orthopedics",
+              "body": "Outside orthopedic group, visit 06/15/2020\n\nRe: Darnell Grant, 20 y/o M, HbSS, R femoral head osteonecrosis, seen again by us at the request of his PCP.\n\nHe describes six months of right groin pain, a dull ache that builds as he walks and eases when he rests. No injury, fevers or weight loss. He has been admitted twice in the last year with sickle cell pain crises.\nMeds: folic acid 1 mg daily, penicillin VK 250 mg BID, hydroxyurea 1000 mg daily. NKDA.\n\nExam R hip: range of motion full; internal rotation reproduces his pain. No warmth, erythema or swelling about the joint.\n\nLabs: Hgb 8.5, WBC 12,000, plt 450,000, ESR 20, CRP 2.0 mg/L.\nRadiographs R hip: irregular contour of the femoral head with subchondral sclerosis. No fracture, no dislocation.\n\nImpression: R femoral head AVN in sickle cell disease, symptomatic. Inflammatory markers do not suggest infection.\nPlan: activity modification, limit impact and prolonged walking. Return as needed if symptoms progress."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-20a",
+          "kind": "annual_physical",
+          "start": "2020-07-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              117,
+              79
+            ],
+            "hr": 82,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 66.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-07-20T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 413
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.73
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-07-20T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.57
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 144
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-07-20T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-07-20T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-07-20T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-07-20T09:50",
+              "author": "PCP",
+              "body": "Annual. Wearing a mask, screened at the door.\nInterval: crisis admissions Sept 2019 and Feb 2020. Saw ortho 6/15 for the R hip, letter reviewed: AVN with contour change and sclerosis on x-ray, conservative for now. Hip still aches on long walks; he has been taking the bus more. No crises since February. Hematology visits by phone this spring, he says counts were similar.\nMeds unchanged: hydroxyurea 1000 daily, folic acid 1 mg, penicillin VK 250 BID. NKDA.\nSH: still at the library part time, it reopened last month. Online classes. No tobacco, rare alcohol.\nROS negative otherwise.\nExam: well. Lungs clear. Heart regular, no murmur. Abdomen soft, no organomegaly. R hip with end-range internal rotation pain. Skin clear, no leg ulcers.\nPHQ-2 1.\nA/P: HbSS, at his baseline. Annual CBC, CMP and urine albumin today. Hip AVN per ortho. Flu shot in the fall. MenACWY booster due next year (5 years from his last at 16). Return in a year, or sooner for anything."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hematocrit": 25.1,
+              "Hemoglobin": 8.4,
+              "Platelets": 410
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T15:40",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-13T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2020-10-13T15:55",
+              "author": "RN",
+              "body": "Flu vaccine L deltoid. No fever or illness symptoms at screening. Tolerated well. Reviewed fever plan with asplenia, pt can recite it."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "pharmacy",
+          "start": "2021-01-19T10:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request",
+              "date": "2021-01-19T10:20",
+              "author": "MA",
+              "body": "Pharmacy faxed refill requests for hydroxyurea 500 mg caps and penicillin VK 250 mg. Both written by the sickle cell clinic, not us. Called pharmacy back and gave them the hematology clinic fax. Folic acid is on the same request with refills remaining, no action needed."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-12a",
+          "kind": "pharmacy",
+          "start": "2021-04-12T13:30",
+          "reason": "COVID-19 vaccine, dose 1",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-12T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization record",
+              "title": "Outside Immunization",
+              "date": "2021-04-14T09:00",
+              "author": "MA",
+              "body": "COVID-19 vaccine dose 1 (Pfizer) given at a community pharmacy 4/12/2021, per state immunization registry. Entered to the vaccine record."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-03a",
+          "kind": "pharmacy",
+          "start": "2021-05-03T13:45",
+          "reason": "COVID-19 vaccine, dose 2",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-03T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization record",
+              "title": "Outside Immunization",
+              "date": "2021-05-05T09:10",
+              "author": "MA",
+              "body": "Pfizer dose 2 on 5/3/2021 at the same pharmacy, from registry. Primary series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-07a",
+          "kind": "annual_physical",
+          "start": "2021-06-07T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              117,
+              76
+            ],
+            "hr": 73,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 66.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-06-07T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 10.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 441
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 101
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 6.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-07T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 141
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-07T09:20",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-06-07T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-06-07T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-06-07T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-06-07T09:30"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2021-06-07T09:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-06-07T09:45",
+              "author": "PCP",
+              "body": "Yearly visit. No admissions since Feb 2020, longest stretch he can remember. Got both COVID shots in April/May. Hip about the same, aches by the end of a library shift on his feet.\nHematology: saw them in the winter, no changes.\nMeds per his report: hydroxyurea 1000 mg daily, penicillin VK 250 BID, folic acid daily.\nNKDA. Never smoker, rare alcohol.\nROS neg.\nExam: well appearing. Lungs clear. Heart regular. Abdomen soft, no masses or organomegaly. R hip end-range IR discomfort. No edema, skin intact.\nPHQ-2 0.\nA/P: HbSS, quiet year. Yearly CBC, CMP, urine albumin. Tdap due (last 2011), given. MenACWY booster given for asplenia, next one 2026. Flu in fall. RTC 6 months for a sickle cell check, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "portal_message",
+          "start": "2021-06-08T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Results from your physical",
+              "date": "2021-06-08T12:15",
+              "author": "PCP",
+              "body": "Darnell, labs from yesterday: hemoglobin in your usual range, white count runs a little high for you as always, kidney and liver tests normal, no protein in the urine. Good report. Next one in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "office_visit",
+          "start": "2021-09-20T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sickle cell follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "telephone",
+          "start": "2021-09-21T10:00",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment Call",
+              "date": "2021-09-21T10:00",
+              "author": "front desk",
+              "body": "Pt missed 9/20 appt. Left voicemail to reschedule. Sent portal reminder."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T16:00",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2021-10-19T16:15",
+              "author": "RN",
+              "body": "Flu shot R arm. He apologized for missing September, said work schedule changed. Booked him with PCP for late November. No complaints today."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-29a",
+          "kind": "office_visit",
+          "start": "2021-11-29T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue and shortness of breath",
+          "conditions": [
+            {
+              "label": "Splenomegaly",
+              "action": "diagnosed",
+              "onset": "2021-11-29",
+              "note": "spleen tip 2 cm below left costal margin on exam",
+              "icd10": "R16.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Not taking; last pharmacy fill March 2021"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              71
+            ],
+            "hr": 67,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 66.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-29T14:30",
+              "resulted": "2021-11-29T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 102
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 23.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 427
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.29
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 34.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-29T14:30",
+              "resulted": "2021-11-29T16:10",
+              "results": [
+                {
+                  "test": "Reticulocyte count",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-29T14:30",
+              "resulted": "2021-11-30T09:15",
+              "results": [
+                {
+                  "test": "Folate",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-29T14:30",
+              "resulted": "2021-11-29T16:10",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 420
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2021-11-29T14:30",
+              "resulted": "2021-11-29T16:10",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.1
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-29T14:30",
+              "resulted": "2021-11-30T09:15",
+              "results": [
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "<10"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-11-29T13:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-11-29T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Fatigue",
+              "date": "2021-11-29T14:40",
+              "author": "PCP",
+              "body": "CC: tired, short of breath.\nS: Several weeks of steadily worse fatigue, now winded on one flight of stairs and walking from the bus. No pain crisis in the last 6 months. No fever, cough, chest pain, sick contacts. No bleeding, black stools or blood in urine. Eating the same as always. Taking hydroxyurea and penicillin. Asked about folic acid: \"I think I ran out a while ago.\" Fill history from the pharmacy shows last folic acid fill in March.\nO: Pale. Scleral icterus. Lungs clear, no crackles. Heart regular. Abdomen soft; spleen tip felt about 2 cm below the left costal margin, nontender. No edema.\nA/P\n1. Fatigue and exertional dyspnea, HbSS. More anemic-looking than his baseline, jaundiced. Concern for folate depletion off supplement on top of his hemolysis. CBC, retic, folate, LDH, bili, haptoglobin now.\n2. Palpable spleen, new on our exams. Add splenomegaly to the list, recheck on follow-up.\n3. Folic acid lapsed since spring; off the active list until labs are back, then I will send a new script.\nReturn precautions given: fever, chest pain, worsening SOB, pain crisis = ED."
+            },
+            {
+              "type": "Result note",
+              "title": "Same-day CBC",
+              "date": "2021-11-29T16:30",
+              "author": "PCP",
+              "body": "Hgb 7.8 (his usual is low 8s), MCV 102, retic only 1%, LDH 420, total bili 3.1 / direct 0.5. Retic is far lower than his usual 4-10%: marrow not keeping up. Waiting on folate and haptoglobin."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "telephone",
+          "start": "2021-11-30T10:05",
+          "reason": "Lab results, folate",
+          "conditions": [
+            {
+              "label": "Folate deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2021-09-01",
+              "icd10": "D52.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Folate deficiency anemia; sickle cell disease"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lab-recheck-2022-01",
+              "action": "placed",
+              "order": "CBC, reticulocyte count, folate",
+              "category": "lab",
+              "reason": "Recheck after folate repletion"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results Call",
+              "date": "2021-11-30T10:25",
+              "author": "PCP",
+              "body": "Folate 2 (low), haptoglobin <10. Called Darnell: folate deficiency from running out of folic acid, with his usual hemolysis, which explains the low retic and the fatigue. Sent folic acid 1 mg daily to his pharmacy with refills, asked him to set a phone alarm. Recheck CBC/retic/folate in about 5 weeks. No chest pain or fever today. Messaged the sickle cell clinic with the results."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "pharmacy",
+          "start": "2021-12-20T11:00",
+          "reason": "COVID-19 booster",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-20T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization record",
+              "title": "Outside Immunization",
+              "date": "2021-12-22T08:50",
+              "author": "MA",
+              "body": "COVID booster (Pfizer) 12/20/2021 at community pharmacy per registry."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-03a",
+          "kind": "lab_only",
+          "start": "2022-01-03T08:15",
+          "reason": "Recheck after folate repletion",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-01-03T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 98
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 412
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.68
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-01-03T08:15",
+              "results": [
+                {
+                  "test": "Reticulocyte count",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-01-03T08:15",
+              "results": [
+                {
+                  "test": "Folate",
+                  "value": 11.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-01-03T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lab-recheck-2022-01",
+              "action": "done",
+              "date": "2022-01-03T08:15"
+            }
+          ]
+        },
+        {
+          "id": "2022-01-04a",
+          "kind": "portal_message",
+          "start": "2022-01-04T13:20",
+          "reason": "Lab results",
+          "conditions": [
+            {
+              "label": "Folate deficiency anemia",
+              "action": "resolved",
+              "icd10": "D52.9"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Your recheck labs",
+              "date": "2022-01-04T13:20",
+              "author": "PCP",
+              "body": "Hi Darnell, good news. Folate is back to normal (11.4), hemoglobin is up to 8.6 and your retic count is 9%, so your marrow is working hard again like it should. Keep the folic acid every day. How is the energy?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Your recheck labs",
+              "date": "2022-01-04T19:02",
+              "author": "patient",
+              "body": "Way better. Stairs are fine now. The alarm thing works lol"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-16a",
+          "kind": "annual_physical",
+          "start": "2022-05-16T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              73
+            ],
+            "hr": 76,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 66.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-05-16T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 381
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 103
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.83
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-05-16T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 137
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-16T09:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-05-16T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-05-16T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-16T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-05-16T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-ref-2022",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "Dilated retinal exam, sickle cell disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-05-16T10:10",
+              "author": "PCP",
+              "body": "Annual exam.\nSince last year: folate deficiency anemia in Nov after running out of folic acid, repleted, recheck in January normal. Taking it daily now. Energy good. No crises, no admissions. Still at the library and taking classes.\nHematology visit in March, regimen unchanged per pt.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID. NKDA.\nROS: no chest pain, dyspnea, priapism, vision change.\nExam: well. Lungs clear. Heart regular. Abdomen soft, spleen tip just palpable, nontender. R hip unchanged. No leg ulcers.\nPHQ-2 0.\nA/P: HbSS, stable, hemoglobin should settle back near his usual on folate. Splenomegaly, small, unchanged. Annual labs. PCV20 today for asplenia. Hasn't had a sickle cell eye exam since peds; referral to ophthalmology for a dilated exam. Flu and COVID updates in the fall."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 2.5,
+              "Hematocrit": 26.8,
+              "Hemoglobin": 9.0,
+              "Mean Corpuscular Volume": 100,
+              "Platelets": 390,
+              "White Blood Cells": 11.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-08-22a",
+          "kind": "outside_records",
+          "start": "2022-08-22T11:00",
+          "reason": "Ophthalmology letter",
+          "orders": [
+            {
+              "id": "ophtho-ref-2022",
+              "action": "done",
+              "date": "2022-08-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Eye Examination Report",
+              "date": "2022-08-22T11:00",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology office. Exam date 08/15/2022.\nReason: retinal screening, HbSS sickle cell disease.\nVA 20/20 OU. Pupils equal, no APD. IOP normal both eyes. Anterior segment quiet.\nDilated fundus exam: optic nerves healthy, macula normal, peripheral retina without neovascularization, salmon patches, black sunbursts or vessel closure, both eyes.\nImpression: no sickle retinopathy.\nPlan: repeat dilated exam in 1-2 years."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T15:50",
+          "reason": "Influenza and COVID-19 vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T15:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T15:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2022-10-18T16:10",
+              "author": "RN",
+              "body": "Flu vaccine R deltoid, bivalent COVID booster L deltoid. Screening questions all no. Observed 15 min, fine. Sickle cell follow-up booked for 11/14."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-14a",
+          "kind": "office_visit",
+          "start": "2022-11-14T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sickle cell follow-up",
+          "vitals": {
+            "bp": [
+              117,
+              70
+            ],
+            "hr": 76,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 66.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-11-14T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Sickle Cell Follow-up",
+              "date": "2022-11-14T14:55",
+              "author": "PCP",
+              "body": "Routine 6-month check. Doing well. No crises this year. Eye exam in August normal per letter. Hip aches with long days, manageable with rest. Taking folic acid daily, hydroxyurea daily, penicillin most days.\nWinter plan reviewed: dress warm, keep hydrated, early ED for fever.\nExam: well. Lungs clear. Heart regular. Spleen tip palpable, nontender.\nA/P: HbSS stable. Labs were done in May and are at his steady state; no labs today, hematology checking counts next month. RTC in spring for his physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "outside_records",
+          "start": "2023-03-20T10:45",
+          "reason": "Hematology letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Sickle Cell Clinic Letter",
+              "date": "2023-03-20T10:45",
+              "author": "hematology",
+              "body": "Adult Sickle Cell Program\nVisit 03/13/2023\n\nBrief update for his primary care physician. Darnell continues to do well on hydroxyurea 1000 mg daily with folic acid and penicillin prophylaxis. No admissions over the past year. Counts reviewed at today's visit and at his steady state. No change to his regimen. We will see him again in six months.\n\nAdult Sickle Cell Program"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "annual_physical",
+          "start": "2023-06-12T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 56,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 67.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-06-12T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 389
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 102
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.67
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-12T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.62
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.6
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 138
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-12T09:30",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-06-12T08:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-12T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-06-12T09:40",
+              "author": "PCP",
+              "body": "23 y/o with HbSS here for his yearly exam.\nGood year. No ED visits or admissions. Hematology letter from March: stable, same regimen. Working more hours at the library this summer. Hip: some days worse than others, no rest pain, not waking him up.\nMeds: hydroxyurea 1000 daily, folic acid 1 mg daily (uses the alarm), penicillin VK 250 BID. NKDA.\nNo tobacco or vaping. Alcohol rarely.\nROS: negative except the hip.\nExam: lean, comfortable. HEENT unremarkable. Lungs clear. Heart regular, no murmur. Abdomen soft, spleen tip at the costal margin, no tenderness. R hip end-range IR pain, unchanged. Skin without ulcers.\nPHQ-2 1.\nA/P\n- HbSS: steady. Annual CBC, CMP, urine albumin.\n- Splenomegaly: small, stable on exam.\n- R femoral head AVN: stable symptoms; he knows to call ortho back if he gets rest pain or a new limp.\n- Health maintenance: vaccines current for asplenia, MenACWY next due 2026. Flu/COVID in fall.\nSee in 6 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hematocrit": 27.2,
+              "Hemoglobin": 9.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "portal_message",
+          "start": "2023-06-13T17:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Lab results",
+              "date": "2023-06-13T17:30",
+              "author": "PCP",
+              "body": "Labs from yesterday look like you: hemoglobin around 9, kidneys normal, no protein in the urine, liver tests fine. Nothing to do. Enjoy the long library hours."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T16:20",
+          "reason": "Influenza and COVID-19 vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T16:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2023-10-17T16:40",
+              "author": "RN",
+              "body": "Influenza (R) and 2023-24 COVID (L) given. Denies illness today. No reaction during the observation period."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-27a",
+          "kind": "office_visit",
+          "start": "2023-11-27T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sickle cell follow-up",
+          "vitals": {
+            "bp": [
+              116,
+              69
+            ],
+            "hr": 70,
+            "temp_c": 36.3,
+            "spo2": 98,
+            "weight_kg": 65.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-11-27T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Sickle Cell Follow-up",
+              "date": "2023-11-27T15:30",
+              "author": "PCP",
+              "body": "Six-month visit. No pain episodes needing care since early 2020. Saw hematology in September, unchanged. Folic acid refills running low, will send. Penicillin from hematology.\nThinks about the hip more in the cold. Stays warm, carries water.\nExam: well, comfortable. Lungs clear. Heart regular. Abdomen soft, spleen tip palpable, nontender.\nA/P: HbSS, doing well. Folic acid refilled for a year. Labs due with his physical in June. Fever plan reviewed for the winter."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "portal_message",
+          "start": "2023-12-04T09:40",
+          "reason": "Refill question",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Folic acid",
+              "date": "2023-12-04T09:40",
+              "author": "patient",
+              "body": "Pharmacy says they only got 30 days on the folic acid not the year. Can you check?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Folic acid",
+              "date": "2023-12-04T11:55",
+              "author": "MA",
+              "body": "Sorry about that, the refills did not go through with the first script. Resent 90 days with 3 refills just now. Should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "portal_message",
+          "start": "2024-01-22T12:05",
+          "reason": "School accommodation letter",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Letter for school",
+              "date": "2024-01-22T12:05",
+              "author": "patient",
+              "body": "Hi, the disability services office at school needs a letter that I have sickle cell so I can have water in class and miss without penalty if I'm in the hospital. Can you do that?"
+            },
+            {
+              "type": "Letter",
+              "title": "Letter - Medical Accommodation",
+              "date": "2024-01-23T15:10",
+              "author": "PCP",
+              "body": "To Disability Services:\n\nDarnell Grant is a patient of this practice with sickle cell disease, a lifelong condition. Episodes of severe pain can occur without warning and may require emergency care or hospitalization. Staying hydrated and warm lowers that risk.\n\nPlease allow him to keep water with him in class and to take restroom breaks as needed, to dress for warmth in cold rooms, and to make up work or exams missed for medical care.\n\nPlease contact our office with questions.\n\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "annual_physical",
+          "start": "2024-06-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              119,
+              66
+            ],
+            "hr": 78,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 65.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-06-10T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 367
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 102
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.79
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-10T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 136
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-10T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-06-10T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-10T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-06-10T09:50",
+              "author": "PCP",
+              "body": "Annual. Feels well. School letter went through in January. No crises, no ED. Hematology every 6 months, last in March, no changes. R hip ache stable.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID. NKDA.\nSH unchanged: library job, classes, lives with family. Never smoker. Alcohol rare.\nROS negative.\nExam: well. Lungs clear. Heart regular. Abdomen soft, spleen tip palpable. R hip as before. No edema. Skin clear.\nPHQ-2 0.\nA/P: HbSS, stable on hematology's regimen. Labs today. Eye exam due again (last 8/2022) - he will call the eye office himself. Vaccines up to date; flu/COVID in October. Six-month check by video in late summer if he prefers."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "portal_message",
+          "start": "2024-06-11T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Your labs",
+              "date": "2024-06-11T16:05",
+              "author": "PCP",
+              "body": "Darnell, your yearly labs are stable: hemoglobin near 9, white count at your usual, kidney function and urine protein normal. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "telehealth_visit",
+          "start": "2024-08-26T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sickle cell follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-08-26T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - Sickle Cell Follow-up",
+              "date": "2024-08-26T12:55",
+              "author": "PCP",
+              "body": "Video visit from his break room at work, two identifiers confirmed.\nNo pain crises. Energy fine. Taking all three meds. Fall semester starts next week; has his accommodation letter on file with school.\nNo fever, chest pain, breathing trouble.\nObservation on video: well appearing, speaking full sentences, no distress.\nA/P: HbSS stable. Reminded about the eye exam, he has not scheduled it yet. Flu and COVID in October at a nurse visit. Next in-person visit in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "nurse_visit",
+          "start": "2024-10-15T15:30",
+          "reason": "Influenza and COVID-19 vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-15T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-15T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-15T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2024-10-15T15:50",
+              "author": "RN",
+              "body": "2024-25 flu (R arm) and COVID (L arm). No acute complaints, afebrile by report. Stayed 15 minutes, left feeling fine."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-17a",
+          "kind": "office_visit",
+          "start": "2025-03-17T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sickle cell follow-up",
+          "vitals": {
+            "bp": [
+              121,
+              67
+            ],
+            "hr": 74,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 65.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-17T14:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 405
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 101
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.73
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-17T14:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-17T14:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Sickle Cell Follow-up",
+              "date": "2025-03-17T14:50",
+              "author": "PCP",
+              "body": "Spring check. Made it through the winter without a crisis. Hip unchanged. Hematology last seen in February, same plan per pt. Still has not booked the eye exam, gave him the number again.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 BID.\nExam: comfortable. Lungs clear. Heart regular. Abdomen soft, spleen tip palpable, nontender.\nA/P: HbSS stable. CBC today since hematology's results don't always reach us. Physical in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "portal_message",
+          "start": "2025-03-18T08:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "CBC",
+              "date": "2025-03-18T08:30",
+              "author": "PCP",
+              "body": "Hemoglobin is right around 9, same as the last couple of years. White count and platelets at your usual. All good."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-13a",
+          "kind": "hospital_admission",
+          "start": "2025-06-13T21:40",
+          "end": "2025-06-17T11:00",
+          "service": "Emergency Medicine / General Surgery",
+          "reason": "Left upper quadrant pain",
+          "conditions": [
+            {
+              "label": "Splenic laceration",
+              "action": "diagnosed",
+              "onset": "2025-06-13",
+              "note": "atraumatic, subcapsular hematoma, setting of infectious mononucleosis; managed nonoperatively",
+              "icd10": "S36.039A"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-06-13T21:45",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 37.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-13T22:05",
+              "resulted": "2025-06-13T22:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 99
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.97
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-06-13T22:05",
+              "resulted": "2025-06-13T22:45",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-13T22:05",
+              "resulted": "2025-06-13T22:45",
+              "results": [
+                {
+                  "test": "Monospot (heterophile antibody)",
+                  "loinc": "31418-7",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-06-13T23:10",
+              "text": "Limited abdominal ultrasound, ED. The spleen is enlarged. A hypoechoic area along the splenic margin is suggestive of a subcapsular hematoma. Liver of normal echotexture. Gallbladder without stones. Kidneys without hydronephrosis.",
+              "conclusion": "Enlarged spleen with a hypoechoic area suggestive of subcapsular hematoma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2025-06-19T10:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, 06/13/2025, evening.\n25 y/o M, HbSS, functional asplenia. Abrupt severe LUQ pain this evening going up into the L shoulder. For about a week before: sore throat, fevers, worn out, better with rest and fluids over the last couple of days. No fall, no blow to the abdomen, no sports.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, PCN VK 250 mg BID. NKDA.\nBP 90/60, HR 120, RR 22, T 37.8.\nPale, sweaty. Abd: LUQ tender with guarding; bowel sounds present and normal; no rebound, not rigid.\nHgb 9.8, WBC 15,000, plt 250,000. AST 45, ALT 50. Monospot positive.\nBedside/formal US: enlarged spleen, hypoechoic area c/w subcapsular hematoma.\nImp: atraumatic splenic laceration with subcapsular hematoma in the setting of recent infectious mononucleosis. Fluid resuscitation started, surgery consulted, admitted."
+            },
+            {
+              "type": "Discharge summary",
+              "title": "Discharge Summary",
+              "date": "2025-06-19T10:20",
+              "author": "general surgery",
+              "body": "Admit 06/13/2025 - Discharge 06/17/2025. Surgical service.\nDx: splenic laceration, subcapsular hematoma, nonoperative management. Recent mononucleosis.\nCourse: IV fluids, bed rest, serial hemoglobins, which held steady. Heart rate and blood pressure normalized within the first day. No transfusion. No operation. Hydroxyurea and home meds continued. Pain controlled and tolerating diet at discharge.\nInstructions: no lifting over 10 lb, no contact sports or strenuous activity until seen in surgery clinic. Return for worse abdominal pain, dizziness or fainting.\nFollow-up: PCP 1 week; surgery clinic 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "office_visit",
+          "start": "2025-06-24T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, splenic laceration",
+          "vitals": {
+            "bp": [
+              116,
+              75
+            ],
+            "hr": 83,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 66.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-24T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 384
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 105
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.65
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 34.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-06-24T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-06-24T11:05",
+              "author": "PCP",
+              "body": "TCM visit. Records from the regional hospital reviewed (ED note and discharge summary arrived 6/19; spoke with pt by phone 6/18 to set this up).\nAdmitted 6/13-6/17 with an atraumatic splenic laceration and subcapsular hematoma after a week of what turned out to be mono (monospot +). Managed without surgery, no transfusion.\nToday: LUQ soreness down to a 2, only with twisting. Sore throat gone, no fever since discharge. Eating fine. Staying off work this week, library is holding his hours.\nMeds unchanged, reconciled: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID.\nExam: tired-looking but comfortable. Abdomen soft, mild LUQ tenderness, no guarding; spleen not examined deeply.\nA/P\n1. Splenic laceration, healing, nonoperative. Repeat CBC today. Keep surgery's restrictions: no lifting over 10 lb, no contact or strenuous activity until surgery clinic (booked for August). Any sudden pain, dizziness or faint = ED.\n2. HbSS / asplenia: no changes. Fever rule as always.\nWork note given for this week."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "portal_message",
+          "start": "2025-08-18T18:20",
+          "reason": "Surgery clinic visit update",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Cleared",
+              "date": "2025-08-18T18:20",
+              "author": "patient",
+              "body": "Saw the surgeon today. He said my spleen is healed enough and I can go back to normal stuff. They didn't give me papers. Just letting you know."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Cleared",
+              "date": "2025-08-18T19:05",
+              "author": "RN",
+              "body": "Great news, thanks for telling us. We'll ask the surgery clinic for their note. See you for your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "annual_physical",
+          "start": "2025-09-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Splenic laceration",
+              "action": "resolved",
+              "icd10": "S36.039A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              73
+            ],
+            "hr": 68,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 66.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-08T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 354
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 107
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.68
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 35.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-08T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 133
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-08T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-08T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-08T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-ref-2025",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "Dilated retinal exam, sickle cell disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-08T09:55",
+              "author": "PCP",
+              "body": "Annual.\nInterval: June admission for atraumatic splenic laceration with mono, nonoperative. Surgery clinic cleared him in mid-August per his report (their note never came; re-requested). No abdominal pain now. Back at full hours at work and doing fall classes.\nNo crises this year.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID. NKDA.\nNever smoker, alcohol rare.\nROS negative.\nExam: well. Lungs clear. Heart regular. Abdomen soft, nontender, spleen tip palpable as on prior exams. R hip end-range IR pain as before.\nPHQ-2 1.\nA/P\n- Splenic laceration: resolved, cleared by surgery. Off the active list.\n- HbSS: stable. Annual labs including liver tests (AST/ALT were up a little with the mono).\n- Splenomegaly: unchanged.\n- Vaccines: flu and COVID in October. MenACWY booster due next June.\n- Eye exam overdue; referral placed so the eye office calls him."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "portal_message",
+          "start": "2025-09-09T13:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Labs from your physical",
+              "date": "2025-09-09T13:45",
+              "author": "PCP",
+              "body": "Your liver tests are back to normal after the mono, hemoglobin is near your usual 9, kidneys and urine fine."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T15:45",
+          "reason": "Influenza and COVID-19 vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2025-10-14T16:05",
+              "author": "RN",
+              "body": "Flu R deltoid, COVID L deltoid, both 2025-26 formulas. No complaints. Tolerated, observed, discharged."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "hospital_admission",
+          "start": "2025-12-12T15:20",
+          "end": "2025-12-14T13:00",
+          "service": "Emergency Medicine / Inpatient Medicine",
+          "reason": "Jaundice and dark urine after transfusion",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "action": "diagnosed",
+              "onset": "2025-11-29",
+              "note": "admitted 11/29-12/3 at the regional hospital with red cell transfusion 12/2, per patient and ED note; no records received",
+              "icd10": "D57.00"
+            },
+            {
+              "label": "Delayed hemolytic transfusion reaction",
+              "action": "diagnosed",
+              "onset": "2025-12-10",
+              "icd10": "T80.A19A"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-12-12T15:25",
+              "bp": [
+                130,
+                80
+              ],
+              "hr": 105,
+              "rr": 18,
+              "temp_c": 37.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-12T15:50",
+              "resulted": "2025-12-12T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 21.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 98
+                },
+                {
+                  "test": "Platelets",
+                  "value": 411
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.16
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-12-12T15:50",
+              "resulted": "2025-12-12T16:30",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T15:50",
+              "resulted": "2025-12-12T16:30",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 600
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T15:50",
+              "resulted": "2025-12-12T16:30",
+              "results": [
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "<10"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T15:50",
+              "resulted": "2025-12-12T16:30",
+              "results": [
+                {
+                  "test": "Reticulocyte count",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T15:50",
+              "resulted": "2025-12-12T16:30",
+              "results": [
+                {
+                  "test": "Direct antiglobulin test",
+                  "loinc": "1007-4",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2025-12-17T09:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, 12/12/2025.\n25 y/o M with HbSS and functional asplenia; splenic laceration about six months ago, managed without surgery. Two days of increasing fatigue, yellow eyes and dark urine. Was admitted here 11/29-12/3 for a pain crisis and got a red cell transfusion on 12/2, ten days ago.\nMeds: folic acid 1 mg daily, penicillin VK 250 mg BID, hydroxyurea 1000 mg daily. NKDA.\nT 37.8, BP 130/80, HR 105, RR 18.\nScleral icterus. Mild splenomegaly. No rash. No lymphadenopathy.\nHgb 7.0 (baseline about 9). T bili 3.5, direct 0.8. LDH 600. Haptoglobin <10. Retic 15%. DAT positive; negative before the transfusion.\nImp: delayed hemolytic transfusion reaction. Blood bank notified, hematology consulted. Admitted for monitoring; avoid further transfusion if at all possible."
+            },
+            {
+              "type": "Discharge summary",
+              "title": "Discharge Summary",
+              "date": "2025-12-17T09:35",
+              "author": "hospital medicine",
+              "body": "Admit 12/12/2025 - Discharge 12/14/2025.\nDx: delayed hemolytic transfusion reaction after 12/2 transfusion. HbSS.\nCourse: observed with daily labs; hemoglobin held without further transfusion. Blood bank antibody workup sent, results to his hematologist. Hematology saw him in house. Folic acid and hydroxyurea continued. No pain crisis during the stay.\nImportant: any future transfusion only after his hematologist and the blood bank are contacted.\nFollow-up: PCP within 1 week; hematology clinic early January."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-18a",
+          "kind": "office_visit",
+          "start": "2025-12-18T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, transfusion reaction",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "action": "resolved",
+              "icd10": "D57.00"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              74
+            ],
+            "hr": 72,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 65.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-18T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 23.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 391
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 102
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.26
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-12-18T11:40",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-12-18T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-18T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-12-18T11:50",
+              "author": "PCP",
+              "body": "TCM. ED note and discharge summary received yesterday and reviewed. We had no records from the 11/29-12/3 crisis admission; pt filled in the history: pain crisis in the cold, admitted, one unit of blood on 12/2. Then on 12/10 he started getting tired and yellow, and urine went dark, back to the ED 12/12. Delayed hemolytic transfusion reaction, DAT positive, no more blood given, home 12/14.\nToday: still tired but better each day. Eyes less yellow, urine lighter. Pain from the crisis gone. No fever, chest pain, SOB.\nMeds reconciled, unchanged: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID.\nExam: tired but comfortable. Mild scleral icterus. Lungs clear. Heart regular. Abdomen soft, spleen tip palpable, nontender.\nA/P\n1. DHTR, improving clinically. CBC and bili today. Recheck in 3-4 weeks. Added a transfusion alert to his chart: contact hematology and blood bank before any transfusion.\n2. VOC late Nov, resolved.\n3. HbSS: hematology early January.\nED for fever, worsening jaundice, chest pain or breathlessness."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 3.0,
+              "Hematocrit": 23.0,
+              "Hemoglobin": 7.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "portal_message",
+          "start": "2025-12-19T10:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Yesterday's labs",
+              "date": "2025-12-19T10:10",
+              "author": "PCP",
+              "body": "Hemoglobin is a bit higher than at the ED and bilirubin is coming down. That fits with the reaction settling. Recheck around January 12. Rest up over the holidays."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "lab_only",
+          "start": "2026-01-12T08:20",
+          "reason": "Recheck after transfusion reaction",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-12T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 370
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 98
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.79
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-12T08:20",
+              "results": [
+                {
+                  "test": "Reticulocyte count",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-12T08:20",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-12T08:20"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 2.6,
+              "Hematocrit": 26.5,
+              "Hemoglobin": 8.9
+            }
+          }
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T12:40",
+          "reason": "Lab results",
+          "conditions": [
+            {
+              "label": "Delayed hemolytic transfusion reaction",
+              "action": "resolved",
+              "note": "transfusion caution remains: contact hematology and blood bank before any transfusion",
+              "icd10": "T80.A19A"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Recheck labs",
+              "date": "2026-01-13T12:40",
+              "author": "PCP",
+              "body": "Darnell, hemoglobin is back to 8.9, retic 8%, bilirubin 2.6. That's basically your baseline, so the transfusion reaction has run its course. The transfusion warning stays on your chart for good. Did you get in to hematology?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Recheck labs",
+              "date": "2026-01-13T18:15",
+              "author": "patient",
+              "body": "Yes last Thursday. They said same meds and they have the antibody stuff on file. I feel normal again."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "office_visit",
+          "start": "2026-03-16T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sickle cell follow-up",
+          "vitals": {
+            "bp": [
+              113,
+              64
+            ],
+            "hr": 73,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 65.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-03-16T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Sickle Cell Follow-up",
+              "date": "2026-03-16T15:00",
+              "author": "PCP",
+              "body": "Routine. Feels well, energy back. No crises since November. Hematology in January: no changes, antibody results on file with them.\nEye office never reached him after the September referral; he called them himself last week and is waiting for a date.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID.\nExam: well. Lungs clear. Heart regular. Abdomen soft, spleen tip palpable, nontender.\nA/P: HbSS stable. Transfusion alert stays. Physical in June with yearly labs and MenACWY booster."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 2.5,
+              "Hematocrit": 26.9,
+              "Hemoglobin": 9.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-06-15a",
+          "kind": "annual_physical",
+          "start": "2026-06-15T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              66
+            ],
+            "hr": 80,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 65.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-15T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 10.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 352
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 99
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.63
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 6.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-15T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.58
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 138
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-15T09:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-06-15T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-06-15T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-15T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2026-06-15T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-06-15T10:10",
+              "author": "PCP",
+              "body": "Yearly exam, 26 y/o with HbSS.\nSince last physical: VOC admission with transfusion late Nov, then delayed hemolytic transfusion reaction in Dec, recovered by January. Nothing since. Splenic laceration last June, healed.\nEye appointment is set for July.\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg BID. NKDA. Transfusion alert on chart.\nSH: library part time, classes. Never smoker; alcohol rare.\nROS negative.\nExam: well. HEENT normal. Lungs clear. Heart regular. Abdomen soft, spleen tip palpable, nontender. R hip end-range IR pain, same as always. No leg ulcers.\nPHQ-2 0.\nA/P: HbSS stable. Annual CBC, CMP, urine albumin. MenACWY booster today (5 yr). Flu/COVID this fall; sickle cell visit in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T15:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Physical labs",
+              "date": "2026-06-16T15:30",
+              "author": "PCP",
+              "body": "All stable. Hemoglobin about 9, kidneys normal, urine protein negative. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "pharmacy",
+          "start": "2026-08-10T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request",
+              "date": "2026-08-10T09:15",
+              "author": "MA",
+              "body": "Folic acid 1 mg refill request from pharmacy, approved per protocol, 90 days x3. Hydroxyurea on the same fax redirected to hematology."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sickle cell follow-up and flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Avascular necrosis of right femoral head|M87.351": {
+        "code": "M87.351",
+        "display": "Other secondary osteonecrosis, right femur",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Delayed hemolytic transfusion reaction|T80.A19A": {
+        "code": "T80.A19A",
+        "display": "Non-ABO incompatibility with hemolytic transfusion reaction, unspecified, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Folate deficiency anemia|D52.9": {
+        "code": "D52.9",
+        "display": "Folate deficiency anemia, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Functional asplenia|D73.0": {
+        "code": "D73.0",
+        "display": "Hyposplenism",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of recurrent acute chest syndrome|D57.01": {
+        "code": "D57.01",
+        "display": "Hb-SS disease with acute chest syndrome",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Sickle cell disease with vaso-occlusive crisis|D57.00": {
+        "code": "D57.00",
+        "display": "Hb-SS disease with crisis, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Splenic laceration|S36.039A": {
+        "code": "S36.039A",
+        "display": "Unspecified laceration of spleen, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Splenomegaly|R16.1": {
+        "code": "R16.1",
+        "display": "Splenomegaly, not elsewhere classified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "hydroxyurea 500 MG Oral Capsule": {
+        "code": "197797",
+        "display": "hydroxyurea 500 MG Oral Capsule",
+        "ingredient": "hydroxyurea",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bilirubin, indirect": {
+        "code": "1971-1",
+        "display": "Bilirubin.indirect [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Direct antiglobulin test": {
+        "code": "1007-4",
+        "display": "Direct antiglobulin test.polyspecific reagent [Presence] on Red Blood Cells",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Haptoglobin": {
+        "code": "4542-7",
+        "display": "Haptoglobin [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hemoglobin F": {
+        "code": "4576-5",
+        "display": "Hemoglobin F/Hemoglobin.total in Blood",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lactate dehydrogenase": {
+        "code": "2532-0",
+        "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Monospot (heterophile antibody)": {
+        "code": "31418-7",
+        "display": "Heterophile Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Reticulocyte count": {
+        "code": "17849-1",
+        "display": "Reticulocytes/Erythrocytes in Blood by Automated count",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Sickle cells, smear": {
+        "code": "801-1",
+        "display": "Sickle cells [Presence] in Blood by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"penicillin V potassium 250 MG Oral Tablet\""
+    ]
+  }
+}

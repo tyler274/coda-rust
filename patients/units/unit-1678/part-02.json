@@ -1,0 +1,364 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001678",
+      "events": [
+        {
+          "id": "2019-07-02a",
+          "kind": "portal_message",
+          "start": "2019-07-02T06:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive pregnancy test",
+              "author": "patient",
+              "date": "2019-07-02T06:48",
+              "body": "Good morning! I took a home test this morning and it's positive. First day of my last period was May 31. I haven't started a prenatal vitamin yet (I know, I know). What should I do first - come see you or call an OB?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive pregnancy test",
+              "author": "RN",
+              "date": "2019-07-02T09:30",
+              "body": "Congratulations Robin! Please come in so we can confirm it and get you started on a prenatal vitamin and an OB referral. Front desk will call you with a time next week. Until then, any over-the-counter prenatal with folic acid is fine to start today."
+            }
+          ]
+        },
+        {
+          "id": "2019-07-09a",
+          "kind": "office_visit",
+          "start": "2019-07-09T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "diagnosed", "onset": "2019-05-31", "note": "LMP 2019-05-31, EDD 2020-03-06"}
+          ],
+          "medications": [
+            {"drug_text": "prenatal multivitamin with iron Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "pregnancy"}
+          ],
+          "state": {"weight_kg": 87.1},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2019-07-09T16:05", "results": [{"test": "Pregnancy Test, Urine", "text": "Positive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2019-07-09T16:00"}
+          ],
+          "orders": [
+            {"id": "ob-referral-2019", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "prenatal care, first pregnancy"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Pregnancy Confirmation",
+              "author": "PCP",
+              "date": "2019-07-09T16:00",
+              "body": "S: 28 y/o G1 here after a positive home test 7/2. LMP 5/31/19, regular cycles, so 5w4d today, EDD ~3/6/20. Planned. Mild nausea in the evenings, no vomiting. No bleeding or cramping. Hasn't started a prenatal yet. No meds. NKDA. No smoking, no alcohol.\n\nO: Vitals as charted. BMI 32. Well appearing. Abd soft, nontender.\nUrine hCG positive in office.\n\nA/P: Intrauterine pregnancy presumed, early, 5w4d.\n- Prenatal vitamin with iron daily, Rx sent.\n- Referral to OB for prenatal care; she would like the group closest to home. Front desk to fax.\n- Reviewed: no alcohol, limit caffeine, food safety, OK to keep walking. Small frequent meals for nausea.\n- Pre-pregnancy BMI 32 - OB will likely do early glucose screening; mentioned it.\n- Call for bleeding or severe pain."
+            }
+          ]
+        },
+        {
+          "id": "2019-07-11a",
+          "kind": "telephone",
+          "start": "2019-07-11T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "OB referral scheduled",
+              "author": "front desk",
+              "date": "2019-07-11T11:05",
+              "body": "OB referral faxed with visit note. OB office called back: new OB intake booked for 7/30. Patient informed by phone, she has the address."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T15:35"}],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2019-10-08T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2019-10-08T15:30",
+              "body": "Here for flu shot. Currently ~18 wks pregnant, OB recommends. Screening questions negative, no prior reactions. VIS given. Influenza quadrivalent 0.5 mL IM R deltoid. Tolerated, waited 15 min, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-05a",
+          "kind": "outside_records",
+          "start": "2019-11-05T10:40",
+          "conditions": [
+            {"label": "Cervical shortening, second trimester", "icd10": "O26.872", "action": "diagnosed", "onset": "2019-11-01", "note": "Cervical length 20 mm at 22 weeks on transvaginal ultrasound"}
+          ],
+          "orders": [
+            {"id": "ob-referral-2019", "action": "done", "date": "2019-11-05T10:40"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics prenatal visit, 22 weeks (visit date 11/01/2019)",
+              "author": "obstetrics",
+              "date": "2019-11-05T10:40",
+              "body": "OUTSIDE OB/GYN GROUP - PRENATAL VISIT\nDate of service: 11/01/2019\nPatient: Robin Parsons, DOB 02/17/1991\nG1P0 at 22w0d by LMP (5/31/19), consistent with 8-week ultrasound. EDD 03/06/2020.\n\nInterval: Pregnancy has gone smoothly to date. Denies vaginal bleeding, loss of fluid, or contractions. Good fetal movement.\n\nMedications: prenatal vitamin with iron, 1 tab PO daily.\nAllergies: NKDA.\nPMH: obesity, pre-pregnancy BMI 32. PSH: none.\nFamily history: maternal grandmother with type 2 DM. No family history of osteogenesis imperfecta or skeletal dysplasia.\nSocial: elementary school teacher. Never smoker, no alcohol.\nImmunizations up to date; influenza given 10/2019 at PCP.\n\nVitals: BP 120/78, HR 72.\nFHT normal, in the 140s by Doppler.\nPrenatal labs (initial OB panel) reviewed and unremarkable.\n\nTransvaginal ultrasound for cervical length: cervical length 20 mm. No funneling. Placenta posterior, no previa, no placental abnormality.\n\nAssessment: IUP at 22w0d. Short cervix (20 mm) on TVUS.\nPlan: Reviewed what a short cervix means and preterm labor warning signs - regular cramping, pelvic pressure, fluid or bleeding should prompt an L&D call. Continue prenatal vitamin. Routine follow-up per schedule; glucose screening at 24-28 weeks.\n\ncc: Primary care physician"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside OB note reviewed",
+              "author": "PCP",
+              "date": "2019-11-05T17:30",
+              "body": "OB 22-wk note reviewed: short cervix 20 mm on TVUS, no funneling. BP fine. Added to problem list. OB following."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-06a",
+          "kind": "portal_message",
+          "start": "2019-11-06T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about my OB visit",
+              "author": "patient",
+              "date": "2019-11-06T21:14",
+              "body": "Hi, I know you got the note from my OB. They told me my cervix is short and I keep googling and scaring myself. Should I be on bed rest? I'm on my feet all day with 7-year-olds. Sorry to bother you with an OB thing."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about my OB visit",
+              "author": "PCP",
+              "date": "2019-11-07T07:40",
+              "body": "Not a bother at all. I did see the note. Bed rest isn't something we recommend anymore for a short cervix - it hasn't been shown to help and it has its own risks. The main thing is knowing the warning signs your OB went over (regular cramping, pressure, fluid or bleeding) and calling L&D right away if they happen. Your OB is the right person for the day-to-day plan, including anything about work, so please bring the teaching question to your next visit there. I'm glad to talk anytime too."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-03a",
+          "kind": "outside_records",
+          "start": "2020-03-03T09:15",
+          "conditions": [
+            {"label": "Cervical shortening, second trimester", "icd10": "O26.872", "action": "resolved", "onset": "2019-11-01"},
+            {"label": "Pregnant state, incidental", "icd10": "Z33.1", "action": "resolved", "onset": "2019-05-31"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2020-01-09T10:20"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Delivery discharge summary (admitted 02/27/2020)",
+              "author": "obstetrics",
+              "date": "2020-03-03T09:15",
+              "body": "REGIONAL HOSPITAL - LABOR & DELIVERY DISCHARGE SUMMARY\nAdmit: 02/27/2020  Discharge: 02/29/2020\nPatient: Robin Parsons, 29 y/o\n\nAdmitting diagnosis: Intrauterine pregnancy at 38w6d, spontaneous labor.\nAntepartum course: Short cervix (20 mm) noted at 22 weeks; otherwise uncomplicated. Tdap given 01/09/2020. GBS negative.\n\nDelivery: Spontaneous vaginal delivery 02/27/2020 of a liveborn female, Apgars 8 and 9. Perineum intact. Placenta delivered intact. EBL 300 mL.\nPostpartum course: Uncomplicated. Ambulating, voiding, tolerating diet. Breastfeeding established.\n\nDischarge diagnosis: Term spontaneous vaginal delivery, healthy infant.\nDischarge medications: prenatal vitamin with iron daily.\nAllergies: NKDA.\nFollow-up: OB postpartum visit 6 weeks; newborn to pediatrics."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Delivery summary reviewed",
+              "author": "PCP",
+              "date": "2020-03-03T16:45",
+              "body": "Delivered 2/27 at 38w6d, uncomplicated SVD, healthy girl. Short cervix and pregnancy resolved on problem list. Tdap 1/2020 recorded. RN to call for a check-in."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-05a",
+          "kind": "telephone",
+          "start": "2020-03-05T13:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Postpartum check-in call",
+              "author": "RN",
+              "date": "2020-03-05T13:20",
+              "body": "Called pt to congratulate and check in, 1 week postpartum. She reports she is tired but well. Bleeding lighter, no fever, no calf pain, no headaches. Feeding going OK. Mood good, partner home for 2 weeks. Has OB postpartum visit scheduled. Offered PCP check-in after the OB visit; she'd like that in April. Will schedule."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in",
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-04-14T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - Postpartum Check-in",
+              "author": "PCP",
+              "date": "2020-04-14T10:30",
+              "body": "Video visit (in-person visits limited due to COVID-19). Pt at home, verbal consent obtained.\n\nRobin is 7 wks postpartum after an uncomplicated vaginal delivery 2/27. Had her OB postpartum visit by phone last week and was told everything looked fine. Bleeding stopped. Breastfeeding. Sleep fragmented but she's coping, husband helping. School went remote, she's on leave through June anyway.\n\nPHQ-9 2 (sleep, energy). No anhedonia. No SI.\nMeds: prenatal vitamin daily.\n\nExam limited to video: well appearing, smiling, baby audible in background. Normal speech and affect.\n\nA/P\n1. Postpartum, doing well. Mood screen reassuring. Reviewed signs of postpartum depression and how to reach us.\n2. Continue prenatal vitamin while breastfeeding.\n3. Health maintenance: physical and Pap later this year or next depending on COVID; will reach out.\n4. Weight: deferred, she asks to revisit once things settle."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-25a",
+          "kind": "portal_message",
+          "start": "2020-08-25T19:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill request",
+              "author": "patient",
+              "date": "2020-08-25T19:02",
+              "body": "Could you send a refill for the prenatal vitamin? Still nursing. Same pharmacy. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill request",
+              "author": "MA",
+              "date": "2020-08-26T08:44",
+              "body": "Done - sent 90 days with 3 refills to your pharmacy on file."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-06T16:12"}],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2020-10-06T16:12"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2020-10-06T16:10",
+              "body": "Curbside flu clinic. Masked. Screening negative, no COVID symptoms. Influenza quadrivalent 0.5 mL IM L deltoid. VIS reviewed. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-06a",
+          "kind": "portal_message",
+          "start": "2021-04-06T17:25",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-13T09:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-03T10:15"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine",
+              "author": "patient",
+              "date": "2021-04-06T17:25",
+              "body": "Teachers finally got our turn - I had both Pfizer shots, 3/13 and 4/3, at the pharmacy clinic. Uploading the card. Arm was sore and I felt flu-ish for a day after the second, fine now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine",
+              "author": "MA",
+              "date": "2021-04-07T08:30",
+              "body": "Thanks Robin, both doses are entered in your chart from the card."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-18a",
+          "kind": "office_visit",
+          "start": "2021-05-18T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2021-05-17a",
+          "kind": "telephone",
+          "start": "2021-05-17T18:02",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2021-05-17T18:02",
+              "body": "Pt left VM cancelling tomorrow's physical, daughter has a fever and daycare won't take her. Rebooked for September after school starts."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "annual_physical",
+          "start": "2021-09-21T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 88.9, "labs": {"Hemoglobin A1c": 5.2}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-21T16:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-21T16:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-21T16:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-21T16:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-21T16:35"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-09-21T15:50"},
+            {"procedure": "Venipuncture", "performed": "2021-09-21T16:40"},
+            {"procedure": "Immunization administration", "performed": "2021-09-21T16:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-09-21T15:50",
+              "body": "Annual exam. First in-person physical since before the pandemic.\n\nRobin is 30, daughter is 18 months and in daycare. Back to full in-person teaching this fall, masks in classrooms. Stopped breastfeeding in the spring. Still taking a prenatal daily - they may try for a second baby in the next year or so, so she'd like to stay on it.\n\nWeight up ~4 lb from her pre-pregnancy weight; hard to find time to exercise. Walks with the stroller on weekends.\n\nMeds: prenatal vitamin with iron daily. NKDA.\nSH: never smoker, no alcohol. Married.\nCOVID primary series done 3-4/2021.\nPHQ-2 0.\n\nExam: BMI 33. Well appearing. HEENT normal. Neck supple, no thyroid enlargement. Heart regular no murmur. Lungs clear. Abd soft nontender. Ext no edema. Skin no lesions of concern.\n\nA/P\n1. Annual: CBC, CMP, lipids, A1c, TSH. Flu shot today.\n2. Obesity class I, BMI 33. Same conversation as before; she wants to start with cutting sugary drinks and a weeknight walk. Revisit next year.\n3. Preconception: continue prenatal vitamin. Reviewed that her weight raises gestational diabetes risk; OB will screen early.\n4. COVID booster when eligible.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-23a",
+          "kind": "portal_message",
+          "start": "2021-09-23T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2021-09-23T12:15",
+              "body": "Hi Robin, your labs all look good. Blood counts, kidney, liver and thyroid normal. A1c (diabetes screen) normal. Cholesterol fine. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "portal_message",
+          "start": "2021-11-30T20:05",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-27T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster",
+              "author": "patient",
+              "date": "2021-11-30T20:05",
+              "body": "FYI got my Pfizer booster on Saturday 11/27 at the pharmacy. Card attached."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booster",
+              "author": "MA",
+              "date": "2021-12-01T08:10",
+              "body": "Got it, entered. Thank you!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,455 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001101",
+      "events": [
+        {
+          "id": "2021-01-20a",
+          "kind": "portal_message",
+          "start": "2021-01-20T18:33",
+          "reason": "COVID vaccine question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid shot",
+              "author": "patient",
+              "date": "2021-01-20T18:33",
+              "body": "Do I count as high risk for the covid vaccine because of my diabetes? Can I get it at your office? Thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid shot",
+              "author": "RN",
+              "date": "2021-01-21T10:05",
+              "body": "Hi Gary, yes - type 2 diabetes is on the state's list of conditions for the next phase. We are not giving the vaccine in the office right now; sign-up is through the state website and local pharmacies once your phase opens. Please let us know the dates once you have it so we can add it to your record."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-17a",
+          "kind": "office_visit",
+          "start": "2021-03-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {
+            "weight_kg": 99.0,
+            "labs": {
+              "Hemoglobin A1c": 8.4,
+              "Glucose": 168,
+              "Microalbumin/Creatinine Ratio": 48
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-17T09:40",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-03-17T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-2021",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "type 2 diabetes, A1c rising on metformin monotherapy"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-03-17T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes follow-up",
+              "author": "PCP",
+              "date": "2021-03-17T11:45",
+              "body": "Subjective\nSix months since last visit (pushed back once over the winter). Honest that the winter was not good for diet: more takeout, little walking. Sugars on his meter in the 160s-170s fasting the few times he checked. Taking metformin 1000 BID, amlodipine 5, atorvastatin 20, aspirin 81. No hypoglycemia. No chest pain or dyspnea. No foot pain, numbness or sores. Eyes checked in July, no retinopathy.\n\nObjective\nBP 134/77, HR 71, SpO2 96%, weight 99.5 kg.\nAlert, in good spirits. Chest clear. Heart regular. No edema.\nFeet: no lesions; monofilament felt at all sites; pulses palpable.\n\nPoint-of-care: none. Labs drawn.\n\nAssessment and plan\n1. T2DM with CKD 1 - A1c rising over the past year on metformin alone (7.6 -> 7.7 -> today pending, expect higher). Offered adding a second medicine today. He would rather see a diabetes specialist before adding anything and get a plan he can stick to. Referral to endocrinology placed. Diet log until then.\n2. HTN - on amlodipine 5, home readings at goal per pt.\n3. CKD stage 1 - UACR today.\n4. Hyperlipidemia - atorvastatin 20, lipids due.\n5. COVID vaccine - registering through the state site.\n\nF/u after endocrinology.\n\nAddendum 3/19: A1c 8.3%. Endo referral marked as soon as possible."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-19a",
+          "kind": "portal_message",
+          "start": "2021-03-19T08:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "author": "PCP",
+              "date": "2021-03-19T08:50",
+              "body": "Gary, your A1c is 8.3%, the highest it has been since you joined us. Kidney filtration is normal and the urine albumin is about the same (48). I asked endocrinology to see you soon. In the meantime keep the metformin twice daily with meals and try to get the walks going again now that it's warmer."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-05a",
+          "kind": "outside_records",
+          "start": "2021-05-05T13:20",
+          "reason": "COVID vaccination record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-03T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-24T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "COVID-19 vaccine card / state registry",
+              "author": "MA",
+              "date": "2021-05-05T13:20",
+              "body": "Pt uploaded photo of CDC vaccination card. Verified against state immunization registry.\nPfizer-BioNTech dose 1 04/03/2021, dose 2 04/24/2021, both given at a retail pharmacy.\nEntered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-12a",
+          "kind": "telephone",
+          "start": "2021-05-12T15:05",
+          "reason": "Referral status",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Endocrinology referral status",
+              "author": "front desk",
+              "date": "2021-05-12T15:05",
+              "body": "Pt called, has not heard from endocrinology. Called their office: referral received 3/22, earliest new patient slot is 7/21. Put on cancellation list. Pt informed and is ok with the date. No PA needed under his PPO."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-26a",
+          "kind": "outside_records",
+          "start": "2021-07-26T10:10",
+          "reason": "Endocrinology consult letter",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus with diabetic polyneuropathy",
+              "action": "diagnosed",
+              "onset": "2021-04-01",
+              "note": "per endocrinology 07/21/2021; numbness both feet, reduced vibration and monofilament"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-2021",
+              "action": "done",
+              "date": "2021-07-26T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation (visit 07/21/2021)",
+              "author": "endocrinology",
+              "date": "2021-07-26T10:10",
+              "body": "ENDOCRINOLOGY AND DIABETES CENTER\nConsultation letter\n\nDate of visit: 07/21/2021\nPatient: Gary Kowalczyk, DOB 05/11/1961\nReason for referral: type 2 diabetes, worsening control on metformin\n\nDear Colleague,\n\nThank you for asking us to see Mr. Kowalczyk, a 60-year-old man with type 2 diabetes of about 16 years' duration, hypertension, hyperlipidemia and early diabetic kidney disease.\n\nHistory: He has been treated with metformin alone since diagnosis. He acknowledges his diet has been irregular this past year. On questioning he reports that for the past few months both feet have felt numb, \"like they're half asleep,\" mostly at the toes and soles. He denies pain, burning or tingling. No foot ulcers. No claudication.\n\nCurrent medications (per patient list): metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 20 mg daily, aspirin 81 mg daily.\nAllergies: ACE inhibitors (cough).\nSocial: never smoker, no alcohol.\n\nExamination: Vital signs within normal limits. Feet: dry skin bilaterally with calluses over the metatarsal heads. Vibration sense decreased in both feet. Monofilament: reduced sensation at multiple sites on both feet. Dorsalis pedis and posterior tibial pulses palpable but diminished bilaterally. No ulceration or deformity.\n\nLaboratory (drawn in our lab this visit):\n  Hemoglobin A1c 8.2%\n  Fasting glucose 172 mg/dL\n  Creatinine 1.1 mg/dL\n  Total cholesterol 210 mg/dL\n  LDL cholesterol 130 mg/dL\n  HDL cholesterol 40 mg/dL\n  Triglycerides 250 mg/dL\n\nAssessment:\n1. Type 2 diabetes mellitus, suboptimally controlled.\n2. Diabetic peripheral neuropathy, both feet, with loss of protective sensation.\n3. Diminished pedal pulses - consider vascular assessment.\n\nRecommendations:\n- Structured dietary change with a focus on carbohydrate portions and gradual weight loss; referral information for nutrition counseling provided.\n- Continue metformin 1000 mg twice daily. No additional agent at this time; he is motivated to work on diet and weight first. We would reconsider if A1c is not improving in 3-6 months.\n- Daily foot inspection, moisturize dry skin, well-fitting shoes, no barefoot walking.\n- Suggest ankle-brachial index given the diminished pulses.\n\nWe are happy to see him again as needed.\n\nSincerely,\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2021-07-28a",
+          "kind": "telephone",
+          "start": "2021-07-28T11:25",
+          "reason": "Schedule ABI",
+          "orders": [
+            {
+              "id": "abi-2021",
+              "action": "placed",
+              "order": "Ankle-brachial index, in office",
+              "category": "procedure",
+              "reason": "diminished pedal pulses on endocrinology exam"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to schedule ABI",
+              "author": "RN",
+              "date": "2021-07-28T11:25",
+              "body": "Per PCP after reviewing endocrinology letter: schedule in-office ankle-brachial index and foot visit. Called pt. Booked 8/17 at 2:00 with PCP. Wear loose socks, no caffeine morning of. Pt also asked that we update his med list; he said the endo office printed lisinopril on their list but he stopped that last summer. Confirmed our list shows amlodipine. Will let PCP know."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "office_visit",
+          "start": "2021-08-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Ankle-brachial index; neuropathy follow-up",
+          "conditions": [
+            {
+              "label": "Peripheral arterial disease",
+              "action": "diagnosed",
+              "onset": "2021-08-17",
+              "note": "ABI 0.86 right, 0.88 left"
+            }
+          ],
+          "state": {
+            "weight_kg": 97.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "abi-2021",
+              "action": "done",
+              "date": "2021-08-17T14:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-08-17T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Ankle-brachial index",
+              "author": "MA",
+              "date": "2021-08-17T14:35",
+              "body": "ANKLE-BRACHIAL INDEX (in office, handheld Doppler)\nSupine 10 minutes before measurement.\nHighest brachial pressure used as denominator. Ankle pressure = higher of DP/PT on each side.\n\nRight ABI: 0.86\nLeft ABI: 0.88\n\nTo PCP for interpretation."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: ABI, neuropathy, endocrinology recs",
+              "author": "PCP",
+              "date": "2021-08-17T15:20",
+              "body": "S: Here for ABI and to go over the endocrinology letter (7/21). Feet still numb, toes and soles, no pain. No calf or buttock pain with walking; he walks 20-30 min most days now since the endo visit and has started following the carb portions they gave him. Down a few pounds. No foot sores. Corrected outside med list: lisinopril stopped 6/2020 for cough, on amlodipine 5.\n\nO: BP 135/80, HR 65, wt 98.2 kg.\nFeet: dry skin, calluses at metatarsal heads bilaterally, no ulcer or fissure. Monofilament reduced on both feet. DP/PT palpable but diminished bilaterally. Cap refill brisk, feet warm.\nABI today: R 0.86, L 0.88 (see procedure note).\n\nA/P:\n1. Peripheral arterial disease, mild, asymptomatic - ABI 0.86/0.88. Adding to problem list. Already on aspirin and a statin; continue both. Walking program is the best thing he can do. Report any leg pain with walking, non-healing sore, cold or discolored toes.\n2. Diabetic peripheral neuropathy with loss of protective sensation - endo findings confirmed. Foot care reviewed: daily inspection with a mirror, moisturizer (not between toes), never barefoot, check shoes before putting them on. Feet checked every visit.\n3. T2DM - endocrinology plan: diet and weight loss, continue metformin, no new agent for now. A1c in 3 months here.\n4. HTN, CKD 1, hyperlipidemia - no change.\n\nRTC November with labs."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-01a",
+          "kind": "outside_records",
+          "start": "2021-09-01T09:35",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Optometry diabetic eye exam (exam 08/27/2021)",
+              "author": "optometry",
+              "date": "2021-09-01T09:35",
+              "body": "Annual diabetic eye exam, 08/27/2021.\nVA cc 20/20 OD, 20/25 OS. IOP 15/15.\nDilated fundus: no retinopathy OU, no CSME.\nImpression: diabetes mellitus type 2 without ophthalmic manifestations.\nPlan: dilated exam yearly.\n- Optometry"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-14a",
+          "kind": "nurse_visit",
+          "start": "2021-10-14T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-14T08:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-14T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu shot",
+              "author": "MA",
+              "date": "2021-10-14T08:30",
+              "body": "Influenza quadrivalent 0.5 mL IM L deltoid, lot recorded. VIS given. Tolerated. Pt plans COVID booster at pharmacy next month."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-15a",
+          "kind": "outside_records",
+          "start": "2021-11-15T12:00",
+          "reason": "COVID booster record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-06T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "COVID-19 booster, pharmacy",
+              "author": "MA",
+              "date": "2021-11-15T12:00",
+              "body": "State registry update: Pfizer-BioNTech booster 11/06/2021 at retail pharmacy. Added to record."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "office_visit",
+          "start": "2021-11-18T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, annual labs",
+          "state": {
+            "weight_kg": 95.4,
+            "labs": {
+              "Hemoglobin A1c": 7.6,
+              "Glucose": 158,
+              "Low Density Lipoprotein": 127,
+              "Total Cholesterol": 211,
+              "Triglycerides": 246,
+              "High Density Lipoprotein": 41,
+              "Microalbumin/Creatinine Ratio": 45
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-11-18T08:55",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-11-18T08:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-18T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-18T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-11-18T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-11-18T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "DM follow-up",
+              "author": "PCP",
+              "date": "2021-11-18T10:05",
+              "body": "Interval: endo 7/21 (diet/weight, continue metformin), ABI 8/17 mild PAD. Flu shot 10/14, COVID booster 11/6.\n\nHe has stuck with the carb portions and walks most days, weather permitting. Weight 95.0 kg today, down from 99.5 in March. Feet still numb, unchanged, no pain. No claudication. No CP/SOB. Meds: metformin 1000 BID, amlodipine 5, atorvastatin 20, aspirin 81. No other meds.\n\nExam: BP 136/75, HR 79. Lungs clear, heart regular. Feet: calluses metatarsal heads, skin dry but intact, no ulcer; monofilament reduced bilaterally (as before); pedal pulses diminished.\n\nPlan:\n- T2DM: annual labs today - A1c, CMP, lipids, CBC, UACR. Continue current plan.\n- Neuropathy/PAD: foot care, keep walking.\n- HTN: amlodipine 5.\n- Lipids: atorvastatin 20.\nFollow-up 4 months.\n\nAddendum 11/19: A1c 7.8% (endo's 8.2 in July). LDL 128, TG 260. eGFR 98, UACR 45. CBC normal."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-19a",
+          "kind": "portal_message",
+          "start": "2021-11-19T13:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your November labs",
+              "author": "PCP",
+              "date": "2021-11-19T13:15",
+              "body": "Gary - good news on the A1c: 7.8%, down from 8.2 at endocrinology in July. The diet changes and the walking are working, and so is the weight loss. Kidney and liver tests normal; urine albumin 45, same range as before. Cholesterol: LDL 128, triglycerides 260. Blood count normal. Keep doing what you're doing. See you in March."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

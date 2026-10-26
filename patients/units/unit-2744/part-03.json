@@ -1,0 +1,850 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002744",
+   "events": [
+    {
+     "id": "2025-01-08a",
+     "kind": "lab_only",
+     "start": "2025-01-08T10:00",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-01-06T07:00",
+       "resulted": "2025-01-08T10:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2025",
+       "action": "done",
+       "date": "2025-01-08T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Stool test",
+       "author": "PCP",
+       "date": "2025-01-08T13:30",
+       "body": "Your FIT stool test is negative. We'll repeat it every year as your colon cancer screening. Thanks for getting it done."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-16a",
+     "kind": "portal_message",
+     "start": "2025-04-16T07:12",
+     "conditions": [
+      {
+       "label": "Supervision of elderly multigravida",
+       "icd10": "O09.529",
+       "action": "diagnosed",
+       "onset": "2025-03-24"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ob-referral",
+       "action": "placed",
+       "order": "Obstetrics referral",
+       "category": "referral",
+       "to": "Obstetrics",
+       "reason": "Intrauterine pregnancy, maternal age 45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Big news",
+       "author": "patient",
+       "date": "2025-04-16T07:12",
+       "body": "Well. Took two home tests this morning, both positive. Last period started March 10. Completely unplanned and I'm honestly still sitting on the bathroom floor. I'm 45, is this even safe? What do I do first? I'm still taking the prenatal vitamin, I never stopped."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Big news",
+       "author": "PCP",
+       "date": "2025-04-16T08:05",
+       "body": "Aisha, that is a lot to take in before 8 am. Plenty of women your age have healthy pregnancies, and you have done this four times before; it does mean you'll get closer monitoring, which is a good thing. By your dates you're about 5 weeks. Keep taking the prenatal vitamin. I'm sending a referral to obstetrics today so you can get in for a first visit and dating ultrasound in the next few weeks. Call or text me if you have bleeding or bad cramping, and grab time with me if you want to talk any of it through."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: RE: Big news",
+       "author": "patient",
+       "date": "2025-04-16T08:31",
+       "body": "Thank you. Breathing again."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-17a",
+     "kind": "telephone",
+     "start": "2025-04-17T11:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Referral sent",
+       "author": "front desk",
+       "date": "2025-04-17T11:00",
+       "body": "OB referral faxed with last office note and med list. Called pt to let her know; OB scheduling will reach out for an 8-10 week new OB appointment."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-21a",
+     "kind": "telehealth_visit",
+     "start": "2025-05-21T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Anxiety in pregnancy",
+     "surveys": [
+      {
+       "survey": "GAD-7 total score",
+       "value": 10
+      },
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2025-05-21T12:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ob-referral",
+       "action": "done",
+       "date": "2025-05-21T12:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2025-05-21T13:00",
+       "body": "Video visit, patient at home in her office, identity verified.\n\nAbout 10 weeks. Had her first OB visit last week, dating scan matched her period. Nausea manageable. She asked for this visit because the worry has been loud: about her age, about the baby, about the logistics with four kids. GAD-7 10, PHQ-9 4. Sleeping 6 hours. No panic attacks. No thoughts of self-harm.\n\nShe was offered first-trimester screening at OB and turned it down for now. She said she didn't want a number to obsess over yet. Her choice; told her she can always ask OB about what's still available later.\n\nMeds: prenatal vitamin. NKDA.\n\nA/P: GAD, more active in early pregnancy. Moderate range. Discussed options including counseling and, if needed, medication that is reasonable in pregnancy; she wants to keep going without meds for now and lean on her husband. Will check in at least once more this pregnancy. She knows to text."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-07a",
+     "kind": "specialist_visit",
+     "start": "2025-07-07T10:00",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Prenatal visit, 17 weeks",
+     "reports": [
+      {
+       "study": "Obstetric ultrasound, second trimester",
+       "loinc": "11525-3",
+       "performed": "2025-07-07T10:30",
+       "text": "Single live intrauterine pregnancy, cephalic. Fetal heart rate normal. Biometry consistent with 17 weeks 0 days by LMP. Nuchal fold thickened. Nasal bone hypoplastic. Femur length short for gestational age. Four-chamber view suspicious for an endocardial cushion defect; not well seen at this gestation. Placenta posterior, clear of the cervix. Amniotic fluid normal. Known intramural fibroids noted, not encroaching on the placenta or lower segment. Cervix closed.",
+       "conclusion": "Second-trimester soft markers (thickened nuchal fold, hypoplastic nasal bone, short femur) and a possible endocardial cushion defect. Findings raise concern for fetal aneuploidy. Genetic counseling recommended."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Prenatal Visit",
+       "author": "obstetrics",
+       "date": "2025-07-10T15:10",
+       "body": "Outside obstetrics group\nVisit: 07/07/2025\nPatient: Aisha Pierre, 45, G6P4014 at 17w0d by LMP (EDD 12/15/2025)\ncc: primary care\n\nReturning for routine prenatal care. She has stress urinary incontinence and a fibroid uterus, both evaluated by our department in 2022. This pregnancy was conceived spontaneously and has been uncomplicated to date. No bleeding, no abdominal pain, feels well.\n\nToday she is worried about a chromosomal condition given her age. She declined first-trimester screening earlier and now wants whatever testing is still open to her.\n\nMeds: prenatal vitamin. Allergies: NKDA.\nFH: mother with fibroids; no known chromosomal or genetic disorders, no Down syndrome in the family.\nSocial: no tobacco, no alcohol.\n\nExam: well appearing. Fetal heart tones present by Doppler. Fundus measuring at dates.\n\nUltrasound today (see report): thickened nuchal fold, hypoplastic nasal bone, short femur, and a possible endocardial cushion defect.\n\nAssessment/plan:\n- Advanced maternal age with ultrasound markers concerning for aneuploidy, trisomy 21 being the leading concern. We spent a long time on what the findings can and cannot tell us. She opted for second-trimester maternal serum (quad) screening, drawn today; this also gives a neural tube defect risk.\n- Referral to maternal-fetal medicine and genetic counseling to discuss diagnostic testing.\n- Next visit in about 3-4 weeks.\n\nAllergies: NKDA.\n\nObstetrics"
+      }
+     ]
+    },
+    {
+     "id": "2025-07-14a",
+     "kind": "outside_records",
+     "start": "2025-07-14T09:20",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Maternal serum quad screen",
+       "author": "obstetrics",
+       "date": "2025-07-14T09:20",
+       "body": "Second-trimester maternal serum screen (AFP, hCG, uE3, inhibin A)\nCollected 07/07/2025, reported 07/11/2025\nGestational age at collection: 17w0d by LMP\nMaternal age at EDD: 46\n\nTrisomy 21: SCREEN POSITIVE, risk 1 in 12\nTrisomy 18: screen negative\nOpen neural tube defect: screen negative, risk not increased\n\nComment: Diagnostic testing offered. Patient informed by phone 07/11; genetic counseling and MFM consultation already scheduled.\n\nAllergies: NKDA."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Screening result",
+       "author": "patient",
+       "date": "2025-07-14T20:48",
+       "body": "OB called Friday. The screen came back high risk for Down syndrome, 1 in 12. I have the genetic counselor and the amnio on Wednesday. Just wanted you to know. I'm OK, ish."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Screening result",
+       "author": "PCP",
+       "date": "2025-07-14T21:30",
+       "body": "Thank you for telling me. I'm sorry you are carrying this over a weekend. The amnio will give you a real answer instead of a probability. I'm here after Wednesday or before, text anytime, and I'll open a video slot for you whenever you want one."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-16a",
+     "kind": "specialist_visit",
+     "start": "2025-07-16T09:00",
+     "service": "Maternal-Fetal Medicine",
+     "reason": "Genetic counseling and amniocentesis",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Maternal-Fetal Medicine Consultation",
+       "author": "maternal-fetal medicine",
+       "date": "2025-07-21T11:45",
+       "body": "Outside maternal-fetal medicine\nDate: 07/16/2025\nPatient: Aisha Pierre, 45, G6P4014, 18w2d\n\nReason: genetic counseling and diagnostic testing after a screen-positive quad screen (trisomy 21 risk 1 in 12) and second-trimester ultrasound markers.\n\nCounseling: met with our genetic counselor with her husband present. Reviewed the screen, the markers, the difference between screening and diagnosis, and the options of amniocentesis, cell-free DNA, or no further testing. Family pedigree reviewed: four healthy children, one first-trimester loss; no known chromosomal or genetic conditions on either side. She chose amniocentesis.\n\nProcedure: transabdominal amniocentesis under continuous ultrasound guidance, spinal needle through a fundal window away from the placenta and fibroids, single pass. Clear amniotic fluid sent for rapid FISH and karyotype. Fetal heart activity normal afterward. She tolerated it well.\n\nPlan: FISH in 1-2 days, karyotype in 7-10 days. Pelvic rest 24 hours, call for fluid leakage, bleeding or fever.\n\nMedications: prenatal vitamin. Allergies: NKDA.\n\nMaternal-Fetal Medicine"
+      }
+     ]
+    },
+    {
+     "id": "2025-07-28a",
+     "kind": "outside_records",
+     "start": "2025-07-28T14:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prenatal cytogenetics report",
+       "author": "genetics laboratory",
+       "date": "2025-07-28T14:00",
+       "body": "Specimen: amniotic fluid, collected 07/16/2025\n\nInterphase FISH (13, 18, 21, X, Y), reported 07/18/2025: signal pattern consistent with three copies of chromosome 21. Results for 13, 18 and the sex chromosomes are normal.\n\nChromosome analysis (G-banding), reported 07/25/2025: 47 chromosomes in all cells examined, with an additional chromosome 21. Full (non-mosaic) trisomy 21.\n\nInterpretation: abnormal. Consistent with Down syndrome. Genetic counseling is recommended and has been arranged by the referring provider."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-29a",
+     "kind": "portal_message",
+     "start": "2025-07-29T08:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Thinking of you",
+       "author": "PCP",
+       "date": "2025-07-29T08:15",
+       "body": "Aisha, the amniocentesis report reached me yesterday. I know OB will go through it with you Thursday. I'm thinking of you, and I'm here for whatever you need afterward."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-31a",
+     "kind": "specialist_visit",
+     "start": "2025-07-31T13:20",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Prenatal visit, results review",
+     "conditions": [
+      {
+       "label": "Maternal care for chromosomal abnormality in fetus, trisomy 21",
+       "icd10": "O35.13X0",
+       "action": "diagnosed",
+       "onset": "2025-07-25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Prenatal Visit",
+       "author": "obstetrics",
+       "date": "2025-08-04T10:00",
+       "body": "Outside obstetrics group\nVisit: 07/31/2025\nPatient: Aisha Pierre, 45, G6P4014 at 20w3d\ncc: primary care\n\nHere for routine surveillance and to go over results. History of stress incontinence, fibroid uterus and generalized anxiety. Physically the pregnancy is going smoothly.\n\nResults reviewed together: quad screen positive for trisomy 21 (1 in 12); amniocentesis FISH and karyotype show full trisomy 21. The second-trimester ultrasound markers seen on 07/07 (thickened nuchal fold, hypoplastic nasal bone, short femur, possible endocardial cushion defect) fit with this.\n\nShe and her husband have had time with the genetic counselor and with MFM. She has decided to continue the pregnancy. She was tearful but clear. We talked about what the rest of the pregnancy will look like: growth scans, a fetal echocardiogram to look more closely at the heart, and delivery planning with pediatrics.\n\nMeds: prenatal vitamin. Allergies: NKDA.\n\nExam: BP normal, fetal heart tones present, fundal height appropriate.\n\nPlan:\n- Fetal trisomy 21, confirmed. Pregnancy continuing.\n- Fetal echocardiogram scheduled.\n- Offered social work and a Down syndrome parent support contact; she took the information.\n- Return in 4 weeks.\n\nAllergies: NKDA.\n\nObstetrics"
+      }
+     ]
+    },
+    {
+     "id": "2025-08-01a",
+     "kind": "portal_message",
+     "start": "2025-08-01T06:55",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Results",
+       "author": "patient",
+       "date": "2025-08-01T06:55",
+       "body": "It's confirmed, the baby has Down syndrome. We're keeping the pregnancy, that was never really a question for us, but my brain won't turn off. Can I get on your schedule next week? Video is fine."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Results",
+       "author": "PCP",
+       "date": "2025-08-01T07:40",
+       "body": "Of course. I have Wednesday at 12:30 open for video and put you in it. Until then, if a night gets bad, text me."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-06a",
+     "kind": "telehealth_visit",
+     "start": "2025-08-06T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Anxiety",
+     "surveys": [
+      {
+       "survey": "GAD-7 total score",
+       "value": 13
+      },
+      {
+       "survey": "PHQ-9 total score",
+       "value": 6
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2025-08-06T12:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "counsel-referral",
+       "action": "placed",
+       "order": "Behavioral health referral",
+       "category": "referral",
+       "to": "Behavioral Health",
+       "reason": "Perinatal counseling, generalized anxiety disorder"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2025-08-06T13:15",
+       "body": "Video, pt at home, identity confirmed.\n\n21 weeks. Amnio confirmed trisomy 21 last week; she and her husband are continuing the pregnancy. She is lying awake reading about heart defects and early intervention, feels on edge most days, irritable with the kids. Eating OK. Working, but slower. GAD-7 13, PHQ-9 6. Denies thoughts of harming herself. No panic attacks.\n\nShe has the fetal echo on 8/20. OB connected her with a parent support group.\n\nA/P: GAD, worsened with a stressful prenatal diagnosis. Moderate. Talked about counseling vs medication. She wants to start with a therapist who works with pregnant patients and hold off on medication, will reconsider if it isn't enough. Referral placed to a perinatal counselor. Check back in about a month, sooner if needed."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-20a",
+     "kind": "specialist_visit",
+     "start": "2025-08-20T10:00",
+     "service": "Pediatric Cardiology",
+     "reason": "Fetal echocardiogram",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Fetal Echocardiogram",
+       "author": "pediatric cardiology",
+       "date": "2025-08-26T09:15",
+       "body": "Outside fetal cardiology program\nStudy date: 08/20/2025\nMother: Aisha Pierre, 45, 23w2d\nIndication: fetal trisomy 21; possible endocardial cushion defect on the 17-week obstetric scan.\n\nFindings: situs solitus, levocardia. Normal four-chamber view with normal atrial and ventricular septa. Two separate atrioventricular valves with normal offset and no regurgitation. Normal outflow tracts with normal great artery relationship. Normal aortic arch. Ductal arch normal. Regular rhythm, normal rate. No pericardial effusion.\n\nImpression: structurally normal fetal heart. No atrioventricular septal defect seen; the possible endocardial cushion defect on the earlier scan is not confirmed.\n\nRecommendation: routine newborn echocardiogram after delivery, as for all infants with trisomy 21. No further fetal cardiac imaging needed.\n\nMaternal allergies: NKDA.\n\nPediatric Cardiology"
+      }
+     ]
+    },
+    {
+     "id": "2025-08-20b",
+     "kind": "portal_message",
+     "start": "2025-08-20T15:02",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Heart scan",
+       "author": "patient",
+       "date": "2025-08-20T15:02",
+       "body": "Heart looks normal!!! First good news in a month."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-10a",
+     "kind": "portal_message",
+     "start": "2025-09-10T17:20",
+     "orders": [
+      {
+       "id": "counsel-referral",
+       "action": "done",
+       "date": "2025-09-10T17:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Counselor",
+       "author": "patient",
+       "date": "2025-09-10T17:20",
+       "body": "Quick update: had my second session with the counselor today. She's good. Sleeping a little better. Also, can I come in for a flu shot? OB is giving Tdap at my next visit but they're out of flu vaccine."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Counselor",
+       "author": "RN",
+       "date": "2025-09-11T08:45",
+       "body": "So glad to hear it. Booked you for a nurse visit flu shot Wednesday 9/24 at 4 pm. Bring your Tdap date and we'll add it to your record."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-24a",
+     "kind": "nurse_visit",
+     "start": "2025-09-24T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-09-24T16:05"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-09-24T16:05"
+      },
+      {
+       "vaccine": "Tdap",
+       "date": "2025-09-22T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2025-09-24T16:15",
+       "body": "28 wks pregnant. Inactivated flu vaccine 0.5 mL IM L deltoid, preservative-free. No contraindications. Tolerated well. Tdap given by OB 9/22/25 per her visit summary; entered."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-24a",
+     "kind": "specialist_visit",
+     "start": "2025-10-24T11:10",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Decreased fetal movement, 32 weeks",
+     "conditions": [
+      {
+       "label": "Oligohydramnios, third trimester",
+       "icd10": "O41.03X0",
+       "action": "diagnosed",
+       "onset": "2025-10-24"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       120,
+       78
+      ],
+      "hr": 82
+     },
+     "reports": [
+      {
+       "study": "Obstetric ultrasound, amniotic fluid assessment",
+       "loinc": "11525-3",
+       "performed": "2025-10-24T11:40",
+       "text": "Single live intrauterine pregnancy, cephalic. Fetal cardiac activity present. Amniotic fluid index 3 cm (four-quadrant sum). Placenta posterior, no previa. Fibroids unchanged in appearance.",
+       "conclusion": "Oligohydramnios, AFI 3 cm."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Prenatal Visit",
+       "author": "obstetrics",
+       "date": "2025-10-29T08:30",
+       "body": "Outside obstetrics group\nVisit: 10/24/2025\nPatient: Aisha Pierre, 45, G6P4014 at 32w4d, fetal trisomy 21 (structurally normal heart on fetal echo)\ncc: primary care\n\nCame in for her scheduled visit and reported that the baby has been moving less over the past day. Otherwise the pregnancy has been followed closely here without other problems.\n\nMeds: prenatal vitamin. Allergies: NKDA.\n\nExam: BP 120/78, HR 82. Fetal heart rate 140.\n\nUltrasound: AFI 3 cm.\nNST: baseline 140, minimal variability, no accelerations, no decelerations.\n\nAssessment: oligohydramnios at 32 weeks with decreased fetal movement and a nonreactive NST.\n\nPlan: sent directly to labor and delivery triage for extended monitoring. Per the triage note, the tracing became reactive with accelerations and moderate variability after about an hour, no contractions, no decelerations, membranes intact. Discharged home with twice-weekly NSTs and amniotic fluid checks, daily kick counts, and strict return precautions. Delivery timing will be planned around 36-37 weeks if the fluid stays low.\n\nAllergies: NKDA.\n\nObstetrics"
+      }
+     ]
+    },
+    {
+     "id": "2025-10-24b",
+     "kind": "portal_message",
+     "start": "2025-10-24T19:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "FYI",
+       "author": "patient",
+       "date": "2025-10-24T19:30",
+       "body": "Spent the afternoon on the monitor at the hospital, low fluid. They sent me home. I'll be there twice a week now. Not sleeping tonight."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: FYI",
+       "author": "PCP",
+       "date": "2025-10-25T08:20",
+       "body": "I saw the note come through. Twice-weekly checks are exactly the right safety net, and the tracing looked good before they let you go. Text me if you need to vent between visits."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-21a",
+     "kind": "hospital_admission",
+     "start": "2025-11-21T10:40",
+     "end": "2025-11-24T12:00",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Decreased fetal movement with oligohydramnios, 36 weeks",
+     "conditions": [
+      {
+       "label": "Oligohydramnios, third trimester",
+       "icd10": "O41.03X0",
+       "action": "resolved"
+      },
+      {
+       "label": "Maternal care for chromosomal abnormality in fetus, trisomy 21",
+       "icd10": "O35.13X0",
+       "action": "resolved"
+      },
+      {
+       "label": "Supervision of elderly multigravida",
+       "icd10": "O09.529",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ibuprofen 600 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+       "dose": {
+        "value": 600,
+        "unit": "mg"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Postpartum pain"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-11-21T10:50",
+       "bp": [
+        122,
+        78
+       ],
+       "hr": 88
+      }
+     ],
+     "reports": [
+      {
+       "study": "Obstetric ultrasound, amniotic fluid assessment",
+       "loinc": "11525-3",
+       "performed": "2025-11-21T11:15",
+       "text": "Single live intrauterine pregnancy, cephalic presentation. Fetal heart rate 140. Amniotic fluid index 4 cm.",
+       "conclusion": "Persistent oligohydramnios, AFI 4 cm."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Obstetric Discharge Summary",
+       "author": "obstetrics",
+       "date": "2025-11-26T10:00",
+       "body": "Regional hospital, labor and delivery\nAdmitted: 11/21/2025  Discharged: 11/24/2025\nPatient: Aisha Pierre, 46 (birthday on the day of admission), G6 now P4115\n\nAdmission diagnosis: oligohydramnios at 36w4d with continued decreased fetal movement. Known fetal trisomy 21 with a structurally normal heart on fetal echocardiogram.\n\nHospital course: Seen from her twice-weekly testing for persistently reduced movement. BP 122/78, HR 88. Fetal heart rate 140. Ultrasound AFI 4 cm, confirming ongoing low fluid. Admitted for continuous fetal monitoring. Given oligohydramnios at 36 weeks, plan made for delivery; induction started that evening with oxytocin, followed by artificial rupture of membranes. Labor progressed normally. Spontaneous vaginal delivery 11/22/2025 of a liveborn infant at 36w5d. Intact perineum, no laceration. Placenta delivered spontaneously and complete; bleeding within normal limits. The infant was examined by pediatrics; features consistent with trisomy 21, as known prenatally. Newborn care, including the newborn echocardiogram, per the pediatric team.\n\nPostpartum course uneventful. Afebrile, vitals stable, ambulating, voiding, pain controlled with ibuprofen.\n\nDischarge diagnoses: vaginal delivery at 36w5d; oligohydramnios; fetal trisomy 21.\n\nDischarge medications:\n- Ibuprofen 600 mg every 6 hours as needed for pain\n- Prenatal vitamin daily\n\nAllergies: NKDA.\n\nFollow-up: obstetrics postpartum visit in 6 weeks; primary care within 1-2 weeks. Call for heavy bleeding, fever, severe headache or low mood.\n\nObstetrics"
+      }
+     ]
+    },
+    {
+     "id": "2025-11-23a",
+     "kind": "portal_message",
+     "start": "2025-11-23T14:02",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Baby's here",
+       "author": "patient",
+       "date": "2025-11-23T14:02",
+       "body": "Delivered yesterday morning! Induced Friday night for the low fluid. Everyone is OK. Peds is looking after the baby. Going home tomorrow probably."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Baby's here",
+       "author": "PCP",
+       "date": "2025-11-23T16:30",
+       "body": "Congratulations to all of you. Rest. Our nurse will call after you're home and we'll see you in the next week or two."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-26a",
+     "kind": "telephone",
+     "start": "2025-11-26T10:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-discharge call",
+       "author": "RN",
+       "date": "2025-11-26T10:40",
+       "body": "Called pt 2 days after discharge from L&D. Vaginal delivery 11/22, home 11/24. She feels sore but OK, bleeding lighter each day, no fever, no headache. Taking ibuprofen a few times a day and the prenatal vitamin. Baby is home with her and following with pediatrics. Mood: \"tired and emotional, but OK.\" Visit booked with PCP 12/3 at 10:20."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-03a",
+     "kind": "office_visit",
+     "start": "2025-12-03T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-discharge follow-up after delivery",
+     "state": {
+      "weight_kg": 76.5
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "GAD-7 total score",
+       "value": 12
+      },
+      {
+       "survey": "PHQ-9 total score",
+       "value": 5
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2025-12-03T10:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2026",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Routine breast cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Discharge Visit",
+       "author": "PCP",
+       "date": "2025-12-03T11:05",
+       "body": "Post-discharge visit, 11 days after vaginal delivery.\n\nHospital course reviewed from the discharge summary: admitted 11/21 at 36w4d for continued decreased movement with AFI 4 cm, induced with oxytocin, delivered vaginally 11/22 at 36w5d, no laceration, home 11/24. Baby has trisomy 21 as expected, and is followed by pediatrics.\n\nNow: lochia light, no fever, pain minimal, using ibuprofen once a day at most. Leaking with coughing about the same as before the pregnancy. Sleeping in pieces. Mood is up and down; she's teary sometimes but enjoying the baby, still seeing her counselor every other week. GAD-7 12, PHQ-9 5. No thoughts of harming herself or the baby. Husband home for another two weeks.\n\nMeds: prenatal vitamin; ibuprofen prn. NKDA.\n\nExam: vitals per flowsheet, BP normal. Weight up from her pre-pregnancy baseline as expected. Looks tired, smiling. Heart regular. Lungs clear. Abdomen soft, fundus nontender below the umbilicus. Calves soft, no swelling.\n\nA/P\n1. S/p vaginal delivery, recovering well. Postpartum visit with OB in early January.\n2. GAD, still moderate, and the early weeks are a high-risk time. Counseling continues. Reviewed warning signs of postpartum depression; she and her husband know to call. Will see her again by video in about two months.\n3. Mammogram order for the spring.\n4. Ibuprofen as needed, short term."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-05a",
+     "kind": "specialist_visit",
+     "start": "2026-01-05T14:00",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Postpartum visit",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Postpartum Visit",
+       "author": "obstetrics",
+       "date": "2026-01-09T12:00",
+       "body": "Outside obstetrics group\nVisit: 01/05/2026\nPatient: Aisha Pierre, 46, 6 weeks after vaginal delivery at 36w5d\ncc: primary care\n\nFeels well physically. Bleeding stopped at 4 weeks. No pain. Infant doing well with pediatrics.\n\nExam: BP normal. Breasts without masses. Abdomen soft, uterus involuting, irregular contour from known fibroids. Perineum healed. No tenderness.\n\nAssessment: routine postpartum course, uncomplicated.\nPlan: resume normal activity and pelvic floor exercises. Routine gynecologic follow-up.\n\nMeds: prenatal vitamin. Allergies: NKDA.\n\nObstetrics"
+      }
+     ]
+    },
+    {
+     "id": "2026-01-21a",
+     "kind": "telephone",
+     "start": "2026-01-21T11:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Postpartum check-in",
+       "author": "RN",
+       "date": "2026-01-21T11:30",
+       "body": "Called pt for mood check-in per PCP plan. Saw OB 1/5, cleared. Sleeping better, baby doing 4-hour stretches. Still seeing her counselor. Denies thoughts of self-harm. Video visit with PCP confirmed for 2/11."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-11a",
+     "kind": "telehealth_visit",
+     "start": "2026-02-11T12:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Anxiety follow-up",
+     "surveys": [
+      {
+       "survey": "GAD-7 total score",
+       "value": 10
+      },
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2026-02-11T12:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2026-02-11T13:05",
+       "body": "Video, pt at home, baby on her lap for the first half.\n\nAbout 11 weeks postpartum. Saw OB in January, all fine. Mood better than December. GAD-7 10, PHQ-9 4. Still seeing the counselor every two weeks, finds it worth the time. Baby feeding and growing per pediatrics. She's started taking a couple of client projects again from home.\n\nA/P: GAD, improving. Continue counseling, no medication. See her in person in late spring."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-11a",
+     "kind": "imaging",
+     "start": "2026-03-11T08:00",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2026-03-11T08:00",
+       "text": "Bilateral screening mammogram with tomosynthesis, compared with 2024 and earlier. Heterogeneously dense breasts. No suspicious mass, calcification or distortion.",
+       "conclusion": "BI-RADS 1: Negative."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2026",
+       "action": "done",
+       "date": "2026-03-11T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Mammogram result",
+       "author": "MA",
+       "date": "2026-03-12T09:30",
+       "body": "Your screening mammogram is normal. Next one in two years."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-08a",
+     "kind": "portal_message",
+     "start": "2026-04-08T09:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Letter request",
+       "author": "patient",
+       "date": "2026-04-08T09:10",
+       "body": "One of my bigger clients wants a note that I'm cleared to travel for an on-site in May (a two-day trip). Is that something you can write?"
+      },
+      {
+       "type": "Letter",
+       "title": "Fitness to travel",
+       "author": "PCP",
+       "date": "2026-04-08T14:30",
+       "body": "To whom it may concern: Ms. Aisha Pierre is under my care and is medically able to travel for work without restriction. Please contact the office with any questions."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Letter request",
+       "author": "PCP",
+       "date": "2026-04-08T14:32",
+       "body": "Letter is attached in your documents. Safe travels."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-10a",
+     "kind": "office_visit",
+     "start": "2026-06-10T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up anxiety; urinary leakage",
+     "state": {
+      "weight_kg": 73.9
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "GAD-7 total score",
+       "value": 8
+      },
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-06-10T15:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "urogyn-referral-2026",
+       "action": "placed",
+       "order": "Urogynecology referral",
+       "category": "referral",
+       "to": "Urogynecology",
+       "reason": "Stress urinary incontinence, persistent"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-06-10T16:00",
+       "body": "S: 6.5 months postpartum. Anxiety is the best it's been in a year, GAD-7 8. Counseling down to monthly. Baby is doing well.\nThe leakage with coughing and exercise is the same as before this pregnancy, not worse, but she's done living with it and wants to go back to urogynecology to talk about what else can be done. Still doing the exercises some days. No dysuria, no blood.\nMeds: prenatal vitamin. Done with ibuprofen. NKDA.\n\nO: vitals per flowsheet, weight trending down toward baseline. Well appearing. Abdomen soft, nontender. Mood good, affect full.\n\nA/P\n1. Stress urinary incontinence, persistent. Re-referral to urogynecology placed.\n2. GAD, improved. Continue counseling. No medication.\n3. Annual physical in October with labs."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-15a",
+     "kind": "portal_message",
+     "start": "2026-07-15T10:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical",
+       "author": "patient",
+       "date": "2026-07-15T10:20",
+       "body": "Can I get my physical on the books for October? Mornings are best."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Physical",
+       "author": "front desk",
+       "date": "2026-07-15T11:05",
+       "body": "You're set for Wednesday 10/14 at 8:30 am. Please come fasting for labs."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-05a",
+     "kind": "portal_message",
+     "start": "2026-08-05T20:45",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Urogyn referral",
+       "author": "patient",
+       "date": "2026-08-05T20:45",
+       "body": "Hi, I never heard from urogyn about the referral from June. Can you check on it?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Urogyn referral",
+       "author": "front desk",
+       "date": "2026-08-06T09:15",
+       "body": "Sorry about that, Aisha. Their office says the June fax never reached their queue. We resent the referral this morning with the visit note, and they will call you to schedule. Let us know if another week goes by."
+      }
+     ]
+    },
+    {
+     "id": "2026-10-14a",
+     "kind": "annual_physical",
+     "start": "2026-10-14T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

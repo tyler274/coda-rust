@@ -1,0 +1,731 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002045",
+      "events": [
+        {
+          "id": "2021-01-11a",
+          "kind": "portal_message",
+          "start": "2021-01-11T07:52",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2021-01-11T07:52",
+              "body": "Pharmacy says the atorvastatin and lisinopril are out of refills. Can you send new ones? Same pharmacy. Thanks, Eric"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills sent",
+              "author": "MA",
+              "date": "2021-01-11T10:30",
+              "body": "Lisinopril 10 mg and atorvastatin 20 mg, 90 days x 3 refills, sent per protocol. BP at last visit 132/84. Pt notified through portal. Due for follow-up in spring, he'll book."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-13a",
+          "kind": "office_visit",
+          "start": "2021-04-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine check-up",
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 78,
+            "rr": 16
+          },
+          "state": {
+            "bp": [
+              130,
+              85
+            ],
+            "labs": {
+              "Low Density Lipoprotein": 120,
+              "High Density Lipoprotein": 45,
+              "Triglycerides": 250,
+              "Total Cholesterol": 215
+            }
+          },
+          "measure": [
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-04-13T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-04-13T16:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 215
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 250
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 120
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-04-13T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-04-13T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2021-04-13T16:40",
+              "body": "47M here for his regular check on BP and cholesterol. Psoriasis is managed by dermatology and quiet on weekend clobetasol.\n\nNo complaints. What's on his mind is lung cancer. He read an article online tying cigarettes to lung cancer, and it talked about risk going up with the dose, which got him thinking about his own numbers. His dad got a lung cancer diagnosis at 55 and died of it at 60. He's smoked about a pack a day since he was 15.\n\nWent over it in plain terms: the more cigarettes a day and the more years, the higher the risk, and it isn't a threshold thing - every pack-year adds. The good news side of the same curve is that risk starts coming down after quitting and keeps dropping the longer he stays off. He listened closely. Not ready to pick a date, but said this is the first time he's really thought about it. CT screening for lung cancer starts at 50 for people with his history; we'll set that up when he's eligible.\n\nMeds: lisinopril 10, atorvastatin 20, olanzapine 10 qhs (psych), ibuprofen prn knee, clobetasol oint.\nNKDA.\n\nExam: BP 130/85, HR 78, RR 16. No distress. No cervical or supraclavicular nodes. Lungs clear throughout, good air movement. Heart regular. No clubbing. Knee unchanged.\n\nA/P\n- HTN: fine, continue lisinopril.\n- Lipids: fasting panel today on atorvastatin 20.\n- CBC today.\n- Tobacco: as above. Offered help any time - meds, quit line, both.\n- COVID vaccine: eligible now, he's booked at the pharmacy next week.\n- Colon screening: he'd like to do it after the summer."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-16a",
+          "kind": "portal_message",
+          "start": "2021-04-16T11:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Your results",
+              "author": "PCP",
+              "date": "2021-04-16T11:25",
+              "body": "Blood count is normal. Cholesterol: LDL 120, HDL 45, triglycerides 250. The triglycerides jumped since last year - sweets, white bread and beer all push that number. Worth cutting back where you can. We'll recheck at your physical."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "portal_message",
+          "start": "2021-04-20T18:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccine report",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Got my first shot",
+              "author": "patient",
+              "date": "2021-04-20T18:10",
+              "body": "Got the first Pfizer shot at the pharmacy today at lunch. Second one is booked for May 11. Arm is sore, otherwise fine."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Immunization entered",
+              "author": "MA",
+              "date": "2021-04-21T08:40",
+              "body": "Dose 1 Pfizer 04/20/21 entered from pharmacy record."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "portal_message",
+          "start": "2021-05-11T20:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccine report",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-11T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Second shot done",
+              "author": "patient",
+              "date": "2021-05-11T20:05",
+              "body": "Second shot done today. Tired tonight but ok."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-01a",
+          "kind": "office_visit",
+          "start": "2021-10-01T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Help quitting smoking",
+          "vitals": {
+            "weight_kg": 88.7
+          },
+          "state": {
+            "weight_kg": 88.7
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "medications": [
+            {
+              "drug": "24 HR bupropion hydrochloride 150 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning. Set quit date for the second week.",
+              "dose": {
+                "value": 150,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "smoking cessation"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-01T14:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-10-01T13:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-01T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Smoking Cessation Visit",
+              "author": "PCP",
+              "date": "2021-10-01T14:20",
+              "body": "Seeing him today for my colleague. 47 y/o with HTN, high cholesterol, metabolic syndrome, schizophrenia (stable), here because he wants to quit smoking - follows on from the April conversation about lung cancer.\n\nStill 1 ppd, has been since he was 15. Tried patches and gum more than once; each time the cravings and the irritability got him and he was back within a few weeks. Says this time he means it: he just became a grandfather and wants to be around and healthy. Two things matter to him: he doesn't want to put on weight, and he doesn't want anything that messes with his sleep - a friend told him one of the quit pills gives you awful dreams.\n\nScreening: no depression now, no seizures ever, no eating disorder. Schizophrenia has been stable for years on olanzapine with his psychiatrist. No head injury. BP and cholesterol controlled on his meds. Drinks socially, weekends.\n\nExam: vitals as charted, BMI 28. Alert, engaged, linear. Lungs clear.\n\nA/P\nTobacco dependence, motivated.\n- Bupropion XL 150 mg each morning. Talked about how it works on cravings, tends not to add weight, and taking it in the morning keeps it away from bedtime. Quit date in about 10 days once it's on board.\n- Pair with the quit line; number given. Plan for triggers (first cigarette with coffee, the drive home).\n- Will let his psychiatrist know he's starting it.\n- RN call in a month.\n- Flu shot today.\n\nBP/lipids: no changes."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Message to psychiatry",
+              "author": "PCP",
+              "date": "2021-10-01T16:45",
+              "body": "Left a voicemail and faxed a note to his psychiatrist: started bupropion XL 150 daily today for smoking cessation, olanzapine unchanged, asked them to call if they have concerns."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-03a",
+          "kind": "telephone",
+          "start": "2021-11-03T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Quit smoking check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cessation follow-up call",
+              "author": "RN",
+              "date": "2021-11-03T10:15",
+              "body": "Called as planned. On bupropion XL 150 each morning, no side effects, sleeping fine, mood steady. Didn't make it all the way on his quit date but is down to about 10 cigarettes a day from a pack. Hardest time is after work. Encouraged, reviewed quit line, he hasn't called yet. Will keep going and see PCP in December."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "portal_message",
+          "start": "2021-12-07T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccine report",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-07T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster",
+              "author": "patient",
+              "date": "2021-12-07T17:30",
+              "body": "Got my booster this morning at the pharmacy, Pfizer again. FYI for my chart."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up smoking cessation",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug": "24 HR bupropion hydrochloride 150 MG Extended Release Oral Tablet",
+              "action": "stop"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colonoscopy-2022",
+              "action": "placed",
+              "order": "Screening colonoscopy referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "colorectal cancer screening, average risk"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-12-14T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2021-12-14T09:05",
+              "body": "Back on the cigarettes, close to a pack a day again. Did well through mid-November at around 10 a day, then work got busy before the holidays and it crept back. Feels the bupropion isn't doing anything at this point and doesn't want to keep paying for it. Not up for another try right now - maybe after the new year, he says.\n\nNo side effects from it. Mood fine.\n\nVitals as charted.\n\nPlan: stop bupropion. No shame in a relapse; most people need several attempts. Will check in each visit. Ok to restart this or try something else whenever he wants.\n\nColon cancer screening - he's ready now. Referral to GI for screening colonoscopy, no family history of colon cancer, no symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "procedure_visit",
+          "start": "2022-03-24T07:30",
+          "service": "Gastroenterology",
+          "reason": "Screening colonoscopy",
+          "orders": [
+            {
+              "id": "colonoscopy-2022",
+              "action": "done",
+              "date": "2022-03-24T07:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2022-03-24T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy report",
+              "author": "gastroenterology",
+              "date": "2022-03-28T13:20",
+              "body": "Outside endoscopy center\nProcedure: screening colonoscopy, 03/24/2022\nPatient: Eric Strong, 48M\nIndication: average-risk colorectal cancer screening\nAllergies: NKDA\nSedation: monitored anesthesia care\n\nPrep: good. Cecum reached, identified by appendiceal orifice and ileocecal valve. Withdrawal time 9 minutes.\n\nFindings: normal mucosa throughout the colon and rectum. No polyps. Retroflexion in the rectum normal.\n\nImpression: normal screening colonoscopy.\nRecommendation: repeat in 10 years. Resume usual medications."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-13a",
+          "kind": "annual_physical",
+          "start": "2022-06-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 96.0
+          },
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 96.0,
+            "labs": {
+              "Glucose": 106,
+              "Low Density Lipoprotein": 132,
+              "High Density Lipoprotein": 38,
+              "Triglycerides": 230,
+              "Total Cholesterol": 216
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-13T08:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose",
+                  "value": 106
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-06-13T08:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 216
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 38
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 230
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-13T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "metabolic syndrome, weight gain on olanzapine"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-06-13T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-06-13T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-06-13T08:55",
+              "body": "Physical. 48 y/o.\n\nInterval: colonoscopy in March was normal, next in 10 years. Bupropion stopped in December, smoking a pack a day. Psoriasis quiet with weekend clobetasol. Knee the same, ibuprofen now and then.\n\nWeight is up - 96 kg today, about 7 kg more than in the fall. He doesn't think he's eating any differently. Olanzapine is the same dose it has been for years.\n\nMeds: lisinopril 10, atorvastatin 20, olanzapine 10 qhs, ibuprofen prn, clobetasol oint weekends. NKDA.\n\nROS negative except as above.\n\nExam: BP 134/84. Comfortable. HEENT normal. Neck without nodes or thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Knee: crepitus R, no effusion. Skin: a few faint plaques on the elbows. No edema.\n\nA/P\n1. Metabolic syndrome with weight gain on an antipsychotic - would like endocrinology's input on the metabolic side. Referral placed. CMP, lipids, CBC today.\n2. HTN at goal.\n3. Hyperlipidemia on atorvastatin 20.\n4. Tobacco: counseled again, not ready.\n5. Screening: colon done. PHQ-2 negative.\n6. Flu/COVID boosters in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-16a",
+          "kind": "portal_message",
+          "start": "2022-06-16T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2022-06-16T15:40",
+              "body": "Hi Eric - kidney and liver tests and blood count normal. Fasting sugar 106, slightly above normal. LDL 132, HDL 38, triglycerides 230. These fit with the weight change and are good things for the endocrinologist to look at with you. Their office will call to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-03a",
+          "kind": "telephone",
+          "start": "2022-08-03T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Referral status",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Endocrinology referral",
+              "author": "front desk",
+              "date": "2022-08-03T11:20",
+              "body": "Checked on the endocrinology referral. Their first new patient opening is 10/7. Patient aware and is on their cancellation list."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-07a",
+          "kind": "specialist_visit",
+          "start": "2022-10-07T09:20",
+          "service": "Endocrinology",
+          "reason": "Metabolic syndrome on olanzapine",
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "weight_kg": 101.4
+          },
+          "state": {
+            "bp": [
+              135,
+              85
+            ],
+            "weight_kg": 101.4,
+            "labs": {
+              "Glucose": 126,
+              "Hemoglobin A1c": 7.2,
+              "Low Density Lipoprotein": 145,
+              "High Density Lipoprotein": 35,
+              "Triglycerides": 250,
+              "Total Cholesterol": 230
+            }
+          },
+          "measure": [
+            "hr"
+          ],
+          "conditions": [
+            {
+              "label": "Antipsychotic-induced type 2 diabetes mellitus",
+              "icd10": "E09.9",
+              "action": "diagnosed",
+              "onset": "2022-10-07"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2022-10-07"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "type 2 diabetes"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "done",
+              "date": "2022-10-07T09:20"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-10-07T08:30",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 126
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-07T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 230
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 35
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 250
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 145
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "author": "endocrinology",
+              "date": "2022-10-12T14:05",
+              "body": "Endocrinology Clinic\nDate of visit: 10/07/2022\nRe: Eric Strong, 48 y/o man\n\nDear Doctor,\n\nThank you for asking me to see Mr. Strong about the metabolic effects of his olanzapine. He has taken olanzapine for schizophrenia for years, stable, through his psychiatrist, and carries diagnoses of metabolic syndrome, hypertension and hyperlipidemia.\n\nOver the past three months he has been thirsty much of the time and urinating more often, including at night, and has gained about 10 pounds over the same stretch. He has not changed what he eats or how active he is. His mother has type 2 diabetes.\n\nMedications: lisinopril 10 mg once daily, atorvastatin 20 mg once daily, ibuprofen 200-400 mg as needed for knee pain.\nAllergies: NKDA.\nSocial: smokes about a pack a day since age 15, roughly 30 pack-years. Social alcohol, 1-2 drinks on weekends. Office manager.\n\nExam: BP 135/85. BMI 32. He has a cushingoid appearance. Otherwise unremarkable.\n\nFasting labs this morning: glucose 126 mg/dL and A1c 7.2%. Total cholesterol 230, HDL 35, triglycerides 250, LDL 145 mg/dL.\n\nAssessment:\n1. Type 2 diabetes, new, in the setting of olanzapine and metabolic syndrome - antipsychotic-induced. Symptomatic hyperglycemia but A1c 7.2.\n2. Obesity, BMI 32.\n3. Dyslipidemia, as above.\n\nPlan:\n- Metformin 500 mg twice daily with meals; we'll titrate at the next visit.\n- Met with our diabetes educator today to go over food choices.\n- Return in 3 months with an A1c.\n\nI will keep you informed.\n\nSincerely,\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "portal_message",
+          "start": "2022-10-13T21:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medication list update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New medicine",
+              "author": "patient",
+              "date": "2022-10-13T21:14",
+              "body": "The endocrinologist says I have diabetes and started me on metformin 500 twice a day. Just letting you know so it's on my list. Also do I still need a flu shot?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Reply and med rec",
+              "author": "RN",
+              "date": "2022-10-14T09:10",
+              "body": "Metformin 500 mg BID added to med list per endocrinology letter. Advised to take with food. Scheduled nurse visit 10/18 for flu and the updated COVID booster."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T16:08"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2022-10-18T16:20",
+              "body": "Flu vaccine L deltoid, Pfizer bivalent booster R deltoid. No prior reactions. VIS/fact sheets given. Observed 15 minutes, fine."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

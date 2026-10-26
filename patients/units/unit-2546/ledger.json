@@ -1,0 +1,3759 @@
+{
+  "unit": "unit-2546",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002546/2018-09-11a: allergen \"Tree pollen\" not in catalog (text only)",
+    "MRN00002546/2018-09-11a: reaction \"Rhinoconjunctivitis\" not in catalog (text only)",
+    "MRN00002546/2018-09-11a: allergen \"Grass pollen\" not in catalog (text only)",
+    "MRN00002546/2018-09-11a: reaction \"Rhinoconjunctivitis\" not in catalog (text only)",
+    "MRN00002546/2020-06-23a: allergen \"Weed pollen\" not in catalog (text only)",
+    "MRN00002546/2020-06-23a: reaction \"Rhinoconjunctivitis\" not in catalog (text only)",
+    "MRN00002546/2026-07-03a: allergen \"Benztropine\" not in catalog (text only)",
+    "MRN00002546/2026-07-03a: reaction \"Anticholinergic toxicity\" not in catalog (text only)",
+    "left text-only (not verified): drug \"allergenic extract, grass, tree and weed pollen mix, injectable solution\"",
+    "left text-only (not verified): drug \"alpha 1-proteinase inhibitor, human 1000 MG Injection\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002546",
+      "given": "Tyler",
+      "family": "Boucher",
+      "birth_date": "1991-07-29",
+      "address_line": "14 Prospect Ct, Hatfield, MA 01038",
+      "phone": "+1-347-555-0132",
+      "email": "tyler.boucher@example.test",
+      "marital_status": "single",
+      "summary": "Thin never-smoking man who joins in 2018 with lifelong seasonal allergic rhinitis and exercise intolerance; allergen immunotherapy from 2020, mitochondrial myopathy diagnosed by neurology in 2021, PiZZ alpha-1 antitrypsin deficiency with lower-lobe emphysema and mildly raised transaminases diagnosed by pulmonology in 2023. Schizophrenia diagnosed at a June 2026 psychiatric admission, followed a week after discharge by an ED observation stay for benztropine anticholinergic toxicity; benztropine stopped, risperidone continues.",
+      "events": [
+        {
+          "id": "2018-08-28a",
+          "kind": "telephone",
+          "start": "2018-08-28T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2018-08-28T11:22",
+              "author": "front desk",
+              "body": "Caller: patient.\nCalling to establish primary care. Has Medicaid, card info taken and eligibility checked, active. Has not had a regular doctor in a few years, last care was at a pediatric/family practice he aged out of.\nBooked new patient visit Tue 9/11 9:20 with PCP.\nRecords release signed electronically for prior practice, request faxed today.\nReminded to bring any medications/sprays he uses. Membership agreement and welcome packet emailed to tyler.boucher@example.test."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-11a",
+          "kind": "establish_care",
+          "start": "2018-09-11T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {
+              "label": "Allergic rhinitis due to pollen",
+              "action": "history",
+              "onset": "1997-04-01",
+              "note": "Seasonal, spring and early fall, since childhood"
+            },
+            {
+              "label": "Exercise intolerance",
+              "action": "history",
+              "onset": "1999-01-01",
+              "note": "Tires sooner than peers since childhood",
+              "icd10": "R53.83"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily as needed for allergy symptoms",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Seasonal allergic rhinitis"
+            },
+            {
+              "drug": "fluticasone propionate 0.05 MG/ACTUAT Metered Dose Nasal Spray",
+              "action": "historical",
+              "sig": "Use 2 sprays in each nostril once daily",
+              "dose": {
+                "value": 2,
+                "unit": "spray"
+              },
+              "frequency": "DAILY",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Seasonal allergic rhinitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Tree pollen",
+              "reaction": "Rhinoconjunctivitis",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Grass pollen",
+              "reaction": "Rhinoconjunctivitis",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              75
+            ],
+            "hr": 68,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 65.2,
+            "height_cm": 179.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2018-09-11T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 224
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2018-09-11T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-09-11T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2018-09-11T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-09-11T10:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-09-11T10:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2018-09-11T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "MA Intake",
+              "date": "2018-09-11T09:32",
+              "author": "MA",
+              "body": "New pt rooming. Vitals per flowsheet: BP 116/75, HR 68, RR 15, T 36.8, SpO2 98% RA, wt 65.2 kg, ht 179.2 cm, BMI 20.3.\nMeds reviewed: cetirizine 10 mg as needed, fluticasone nasal spray daily.\nAllergies: tree and grass pollen (seasonal). No known drug allergies.\nPHQ-2: 0. AUDIT-C: 2.\nPt states last tetanus shot was 'in high school', prior records requested."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2018-09-11T10:40",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n27M here to establish care. No PCP for a few years since aging out of his childhood practice. Main thing he wants is to keep his allergy meds going.\n\nAllergies (nose/eyes): every spring and again in early fall since he was a kid. Sneezing fits, stuffy nose, itchy watery eyes, drip down the back of the throat. Uses cetirizine 10 mg on bad days and fluticasone 2 sprays each side daily through the season. Says these take the edge off but don't fully control it. Never seen an allergist, never skin tested.\n\nStamina: says he has always run out of gas before other people. Played sports as a kid and kept up for the most part, but was the first one winded and done. Works construction and gets through the day. Not something he came in about, mentions it when asked about exercise. No chest pain, no palpitations, no fainting.\n\nPMH: seasonal allergic rhinitis. Otherwise none.\nPSH: tonsillectomy at age 12.\nMeds: cetirizine 10 mg PO once daily PRN; fluticasone nasal 2 sprays/nostril daily.\nAllergies: tree pollen, grass pollen. NKDA.\n\nFamily hx:\n- Mother: mitochondrial myopathy; her symptoms started in her 30s.\n- Father: died in his mid-40s of cirrhosis, which the family put down to drinking. Pt recalls he had breathing problems for years.\n- Paternal grandmother: cirrhosis, cause never known.\n- Maternal uncle: schizophrenia.\n- Maternal side: several relatives with hearing loss starting young.\n- Identical twin brother, healthy.\n\nSocial: construction laborer. Never smoked, no vaping. Alcohol 1-2 drinks a week, social. No drugs. No pets.\n\nROS: negative except as above. No weight change, no fevers, no cough, no GI or urinary complaints.\n\nExam:\nBP 116/75, HR 68, RR 15, T 36.8, SpO2 98% RA. Wt 65.2 kg, Ht 179.2 cm, BMI 20.3.\nGen: thin, well appearing, NAD.\nHEENT: nasal mucosa pale and mildly boggy, no polyps. TMs clear. Oropharynx clear, tonsils surgically absent. Conjunctivae mildly injected.\nNeck: supple, no LAD, thyroid not enlarged.\nCV: RRR, no murmur.\nLungs: clear bilaterally, good air movement.\nAbd: soft, nontender, no organomegaly.\nExt: no edema.\nSkin: no rashes.\nNeuro: alert, CN grossly intact, strength and gait normal.\n\nA/P:\n1. Seasonal allergic rhinitis, pollen. Partial control on current regimen. Continue cetirizine PRN and daily fluticasone during the season. Can send Rx to pharmacy so Medicaid covers them. Discussed technique with the spray (aim away from septum).\n2. Exercise intolerance, lifelong by his description. Exam unremarkable today. Will keep an eye on it.\n3. Health maintenance: Tdap given today (last tetanus >10 yr by his report). One-time HIV and hep C screening offered and accepted, drawn with CBC and BMP. Flu shot when supply arrives next month. Never smoker.\n\nRTC 1 year for physical, sooner prn. He has the practice cell for texts."
+            },
+            {
+              "type": "Patient Instructions",
+              "title": "After Visit Summary",
+              "date": "2018-09-11T10:45",
+              "author": "PCP",
+              "body": "Thanks for coming in today, Tyler.\n\nWhat we did: tetanus/whooping cough booster (Tdap). Blood work: blood count, chemistry panel, HIV and hepatitis C screening. Results will come through the portal in a few days.\n\nYour medicines: keep using cetirizine 10 mg once a day when your allergies act up, and fluticasone nasal spray 2 sprays each side once a day during allergy season. Point the spray toward the outside of each nostril.\n\nNext steps: flu shot in October (nurse visit is fine). Yearly physical next September.\n\nYou can call or text the practice line any time."
+            }
+          ],
+          "state": {
+            "bp": [
+              110,
+              68
+            ],
+            "spo2": 97.5,
+            "weight_kg": 65.5,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2018-09-13a",
+          "kind": "portal_message",
+          "start": "2018-09-13T16:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results Released",
+              "date": "2018-09-13T16:05",
+              "author": "PCP",
+              "body": "Hi Tyler, your labs from Tuesday are all normal: blood counts normal (hemoglobin 14.8), kidney function and electrolytes normal (creatinine 0.97, sodium 141, potassium 4.1), glucose 89. HIV and hepatitis C screens are negative. Nothing to do here. Watch for a message from us about flu shots in October."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-18a",
+          "kind": "outside_records",
+          "start": "2018-09-18T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior practice records",
+          "procedures": [
+            {
+              "procedure": "Tonsillectomy",
+              "performed": "2004-02-10T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Practice",
+              "date": "2018-09-18T14:30",
+              "author": "front desk",
+              "body": "Records received by fax from patient's former pediatric/family practice, 38 pages, scanned to media.\n\nAbstracted by front desk for PCP review:\n- Routine well-child and adolescent visits through age 18. Growth along the lower percentiles for weight, normal development documented.\n- Childhood immunization series recorded complete. Td at age 16 (2007).\n- Tonsillectomy at age 12 (2004), no complications.\n- Seasonal allergy complaints noted at several spring visits, treated with OTC antihistamine and later a nasal steroid spray.\n- Sports physicals cleared every year.\n- No hospitalizations. No labs of note.\n\nPCP reviewed 9/19: nothing new. Tdap given 9/11 appropriately."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-16a",
+          "kind": "nurse_visit",
+          "start": "2018-10-16T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-16T16:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2018-10-16T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza Vaccine",
+              "date": "2018-10-16T16:52",
+              "author": "RN",
+              "body": "Came in after work for flu vaccine. Screening questions negative: no fever today, no egg allergy, no prior vaccine reactions. Quadrivalent inactivated influenza 0.5 mL IM L deltoid. VIS given. Tolerated well, left ambulatory after 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-26a",
+          "kind": "pharmacy",
+          "start": "2019-03-26T09:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Request: Fluticasone Nasal",
+              "date": "2019-03-26T09:12",
+              "author": "MA",
+              "body": "Electronic refill request from pharmacy for fluticasone propionate 50 mcg/actuation nasal spray, 1 bottle. Pt has been buying it OTC, pharmacy says Medicaid will cover with an Rx on file.\nRouted to PCP.\n\nPCP 3/26 11:40: approved, 16 g bottle, 2 sprays each nostril daily, refills x5."
+            }
+          ]
+        },
+        {
+          "id": "2019-04-09a",
+          "kind": "portal_message",
+          "start": "2019-04-09T20:47",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Allergy pill",
+              "date": "2019-04-09T20:47",
+              "author": "patient",
+              "body": "Hi, pollen is starting up again. Could you send in the cetirizine too like you did with the spray? The pharmacy said insurance pays if the doctor sends it. Thanks, Tyler"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Allergy pill",
+              "date": "2019-04-10T07:58",
+              "author": "PCP",
+              "body": "Sent: cetirizine 10 mg, one daily as needed, 90 tablets with refills. Let me know if this season is worse than usual."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "annual_physical",
+          "start": "2019-09-17T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "yearly physical",
+          "vitals": {
+            "bp": [
+              114,
+              69
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 66.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2019-09-17T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-09-17T09:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-17T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 158
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 78
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 100
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2019-09-17T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-17T09:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-17T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-09-17T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2019-09-17T09:45",
+              "author": "PCP",
+              "body": "ANNUAL PREVENTIVE VISIT\n\nTyler is 28, here for his yearly. Feels fine. Spring was a rough allergy season, used the spray every day and the cetirizine most days April through June, and the fall stretch is starting now. Still working construction. Same as last year with stamina, no change he can point to.\n\nMeds: cetirizine 10 mg PRN, fluticasone nasal daily in season.\nAllergies: tree/grass pollen. NKDA.\nSocial: never smoker, 1-2 drinks/wk, no drugs.\nPHQ-2: 0.\n\nVitals: BP 114/69, HR 78, RR 16, T 36.8, SpO2 97% RA, Wt 66.1 kg, BMI 20.6.\n\nExam:\nGen: thin, NAD.\nHEENT: turbinates pale and swollen, clear rhinorrhea. Oropharynx clear.\nNeck: no LAD.\nCV: regular, no murmur.\nResp: clear, no wheeze.\nAbd: soft, NT, no HSM.\nSkin: no lesions of concern.\nNeuro: nonfocal.\n\nAssessment/plan:\n- Well adult exam. Fasting lipids (first one), CBC, BMP drawn.\n- Allergic rhinitis, seasonal: same regimen, refills on file.\n- Exercise intolerance: stable by history.\n- Flu vaccine today.\n- Tdap done 2018.\n\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-09-19a",
+          "kind": "portal_message",
+          "start": "2019-09-19T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical Labs",
+              "date": "2019-09-19T12:20",
+              "author": "PCP",
+              "body": "Tyler, everything from your physical looks good. Cholesterol panel: total 158, LDL 84, HDL 58, triglycerides 78, all in a healthy range, no need to repeat for several years. Blood count, kidney numbers and sugar are normal too."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "portal_message",
+          "start": "2020-03-24T18:31",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refills during closure",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Are you guys open",
+              "date": "2020-03-24T18:31",
+              "author": "patient",
+              "body": "Hi, with everything shutting down is the office still open? Allergy season is about to hit and I want to make sure my spray and pills don't run out. Job sites are still going for now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Are you guys open",
+              "date": "2020-03-25T08:47",
+              "author": "MA",
+              "body": "Hi Tyler, we are open but doing most visits by video for now. You still have refills on both the fluticasone and cetirizine at your pharmacy, so just call them. If you need to be seen, text or message us and we will set up a video visit."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "pharmacy",
+          "start": "2020-04-14T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicaid days supply",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Pharmacy Call: Fluticasone Quantity",
+              "date": "2020-04-14T10:05",
+              "author": "MA",
+              "body": "Pharmacist called. Pt asked for 2 bottles of fluticasone at once ahead of the season, Medicaid rejected as early fill, plan only allows 1 bottle per 30 days at this sig. Pharmacy filled 1 bottle. Pt aware per pharmacist. No action needed from PCP."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-12a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-12T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "allergy symptoms",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-05-12T13:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-allergy-referral",
+              "action": "placed",
+              "order": "Otolaryngology and allergy referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "seasonal allergic rhinitis not controlled on antihistamine and nasal steroid; evaluate for testing and immunotherapy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-05-12T13:30",
+              "author": "PCP",
+              "body": "VIDEO VISIT (patient at home, verbal consent for telehealth obtained, audio and video)\n\nCC: allergies\n\nHPI: This spring has been the worst he can remember. Sneezing runs, nose blocked most mornings, eyes itching and watering, drip in the back of the throat. Taking cetirizine every day now and the fluticasone 2 sprays each side daily, technique sounds right. Both help some but not enough. It is getting in the way at work, hard to get through a shift outdoors on bad days. On the heaviest pollen days he sometimes gets a bit wheezy and short of breath, settles when he is indoors. No fever, no facial pain, no discolored drainage, no cough otherwise.\n\nMeds: cetirizine 10 mg daily (using daily), fluticasone nasal 2 sprays each nostril daily.\nAllergies: tree and grass pollen.\n\nExam (video): comfortable, speaking full sentences, no audible wheeze, no increased work of breathing. Eyes mildly red. Frequent sniffing.\n\nA/P: Seasonal allergic rhinitis, not well controlled on a second-generation antihistamine plus intranasal steroid, now affecting work.\n- Referral to ENT/allergy for skin testing and to discuss immunotherapy. He is interested.\n- Continue cetirizine and fluticasone.\n- Message us if symptoms change or he is not hearing about the referral in 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-15a",
+          "kind": "telephone",
+          "start": "2020-05-15T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "referral",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Sent",
+              "date": "2020-05-15T14:10",
+              "author": "front desk",
+              "body": "ENT/allergy referral faxed with last office note and med list to Mill River Ear, Nose & Throat and Allergy. Medicaid referral entered in plan portal, approved, valid 6 months. Their scheduler will call pt directly, they are booking in-person new patients again starting June. Called pt, LVM with their number 413-555-0174."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-16a",
+          "kind": "specialist_visit",
+          "start": "2020-06-16T10:30",
+          "service": "Otolaryngology",
+          "reason": "allergy consultation",
+          "medications": [
+            {
+              "drug_text": "allergenic extract, grass, tree and weed pollen mix, injectable solution",
+              "action": "historical",
+              "sig": "Subcutaneous injection at allergy office; weekly build-up then monthly maintenance per allergy schedule",
+              "frequency": "per allergy schedule",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Allergic rhinitis due to pollen"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-allergy-referral",
+              "action": "done",
+              "date": "2020-06-16T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology/Allergy Consultation Letter",
+              "date": "2020-06-18T09:15",
+              "author": "otolaryngology",
+              "body": "MILL RIVER EAR, NOSE & THROAT AND ALLERGY\nConsultation, seen 06/16/2020\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nThank you for sending Tyler to us for his nasal allergies.\n\nHe describes lifelong seasonal symptoms going back to boyhood: bouts of sneezing, a blocked nose, itchy eyes and mucus draining down the throat, worst in spring and then again in early fall. On heavy pollen days he will sometimes wheeze and feel short of breath. Cetirizine and fluticasone nasal spray give him only partial relief, and the symptoms are taking a toll on his work and his day-to-day life.\n\nPast history: allergic rhinitis. Tonsillectomy age 12.\nMedications: cetirizine 10 mg daily as needed; fluticasone propionate nasal spray 2 sprays per nostril daily.\nAllergies: tree and grass pollen. No drug allergies.\nSocial: never smoker, occasional alcohol.\n\nExamination: Pale, edematous inferior turbinates bilaterally with clear secretions. Septum midline. No polyps on anterior rhinoscopy. Oral cavity and oropharynx unremarkable, tonsils absent. Ears normal. Neck without adenopathy.\n\nSkin prick testing (antihistamine held 5 days, positive and negative controls appropriate): positive to grass pollens, tree pollens and weed pollens.\n\nImpression: Seasonal allergic rhinitis with sensitization to grass, tree and weed pollen.\n\nPlan: We went over the options, including continuing medications alone versus allergen immunotherapy. He has chosen to start subcutaneous immunotherapy with a long-term course of gradually escalating injections of his relevant pollens. Build-up will be weekly in our office starting in July, and our injection nurse will send a schedule. He should continue cetirizine and fluticasone as he is using them.\n\nWith thanks,\nOtolaryngology, Mill River ENT & Allergy\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2020-06-23a",
+          "kind": "telephone",
+          "start": "2020-06-23T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chart update from ENT letter",
+          "allergies": [
+            {
+              "substance": "Weed pollen",
+              "reaction": "Rhinoconjunctivitis",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Chart Update",
+              "date": "2020-06-23T11:40",
+              "author": "RN",
+              "body": "ENT/allergy consult letter reviewed with PCP. Skin testing also positive to weed pollen, added to allergy list. Immunotherapy (SC pollen extract, given at allergy office) added to med list as outside med. Called pt to let him know we got the letter, he confirms first build-up shot is booked for July. No questions."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-02a",
+          "kind": "outside_records",
+          "start": "2020-07-02T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunotherapy schedule",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Immunotherapy Build-Up Schedule",
+              "date": "2020-07-02T15:20",
+              "author": "otolaryngology",
+              "body": "MILL RIVER ENT & ALLERGY, Injection Clinic\n\nPatient: Tyler Boucher\nExtract: grass / tree / weed pollen mix, subcutaneous\n\nBuild-up phase: weekly injections starting 07/07/2020, dose escalated each visit per protocol. Expected to reach maintenance in roughly 6 to 7 months if no held doses.\nPatient waits 30 minutes in office after each injection.\nPlease let us know of any new beta-blocker prescription or any change in his health that affects shot visits.\n\nInjection Nurse, Mill River ENT & Allergy"
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "yearly physical",
+          "vitals": {
+            "bp": [
+              111,
+              77
+            ],
+            "hr": 66,
+            "rr": 17,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 65.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-09-22T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.28
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 11.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-09-22T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-09-22T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-22T09:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-22T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-22T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-09-22T10:05",
+              "author": "PCP",
+              "body": "Annual exam, 29M. Masked visit, screened negative at door.\n\nInterval: saw ENT/allergy in June, skin tests positive to grass, tree and weed pollen. Started weekly allergy shots in July, on schedule, no problems with the injections. Still on cetirizine and fluticasone. Fall pollen has been tolerable so far.\nWork: construction, still working through the pandemic. Same baseline stamina.\nNo new complaints.\n\nMeds: cetirizine 10 mg daily PRN, fluticasone nasal daily, SC pollen immunotherapy weekly at allergy office.\nAllergies: tree, grass, weed pollen. NKDA.\nPHQ-2 0. Never smoker. Alcohol 1-2/wk.\n\nVS: BP 111/77, HR 66, RR 17, T 37.0, SpO2 97% RA, wt 65.7 kg, BMI 20.5.\nGen: thin, well.\nENT: turbinates mildly swollen.\nCV: RRR, no m/r/g.\nLungs: CTA bilat.\nAbd: benign.\nExt: no edema.\nNeuro: grossly normal.\n\nAssessment/plan:\n1. Preventive: flu shot today. CBC/BMP. Lipids done last year, normal.\n2. Allergic rhinitis (pollen), on immunotherapy build-up via allergy. Continue meds.\n3. Exercise intolerance, unchanged.\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T13:02",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Results",
+              "date": "2020-09-24T13:02",
+              "author": "PCP",
+              "body": "Normal blood count and chemistry panel from Tuesday. Hgb 15.3, creatinine 0.94, glucose 84. See you next fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-11a",
+          "kind": "outside_records",
+          "start": "2021-02-11T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunotherapy update",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Immunotherapy: Maintenance Reached",
+              "date": "2021-02-11T10:50",
+              "author": "otolaryngology",
+              "body": "Mill River ENT & Allergy, Injection Clinic\n\nTyler Boucher has completed build-up for subcutaneous pollen immunotherapy (grass/tree/weed) and is moving to monthly maintenance injections as of this month. No local or systemic reactions during build-up. He continues cetirizine and fluticasone as needed. Next physician review in our office in 12 months.\n\nInjection Nurse"
+            }
+          ]
+        },
+        {
+          "id": "2021-03-09a",
+          "kind": "pharmacy",
+          "start": "2021-03-09T08:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refills",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Requests",
+              "date": "2021-03-09T08:55",
+              "author": "MA",
+              "body": "eRx renewal requests x2 from pharmacy, prior Rxs out of refills:\n- cetirizine 10 mg tab, 1 PO daily PRN, #90\n- fluticasone propionate 50 mcg nasal spray, 2 sprays each nostril daily, 16 g\nPended for PCP.\nPCP 3/9: both approved, 1 year of refills."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-06a",
+          "kind": "portal_message",
+          "start": "2021-04-06T21:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-03T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid shot",
+              "date": "2021-04-06T21:14",
+              "author": "patient",
+              "body": "Got my first covid shot Saturday at the mass vaccination site, Pfizer. Picture of the card attached. Second one is booked for the 24th. Arm was sore for a day, that's it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Covid shot",
+              "date": "2021-04-07T09:20",
+              "author": "MA",
+              "body": "Thanks Tyler, dose 1 (Pfizer, 4/3/21) entered in your record. Send the card again after dose 2."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "office_visit",
+          "start": "2021-04-20T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "weakness and double vision",
+          "vitals": {
+            "bp": [
+              110,
+              74
+            ],
+            "hr": 58,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 64.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-04-20T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neurology-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "progressive exertional limb weakness, intermittent diplopia, bilateral ptosis; mother with mitochondrial myopathy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-04-20T11:25",
+              "author": "PCP",
+              "body": "CC: getting weaker at work, seeing double sometimes\n\nHPI: 29M, construction laborer. Says for several years now he has been slipping further behind the other guys on the crew with anything physical, and it is getting harder to hide. In the last year or so his arms and legs give out more often, mostly after a few flights of stairs carrying material, has to stop and wait for them to come back. Every so often he sees double, comes and goes, more when he is tired. No headaches, no numbness or tingling, no trouble swallowing or talking, no bowel or bladder change. No falls, no head injury, no passing out. No dark urine. Breathing at baseline. Still has his lifelong low stamina on top of this.\nPt brings up that his mother's muscle disease started in her 30s and he is worried.\n\nMeds: cetirizine PRN, fluticasone nasal, monthly allergy shots (maintenance since Feb). COVID dose 1 on 4/3, dose 2 this Saturday.\nAllergies: tree/grass/weed pollen. NKDA.\n\nVS: BP 110/74, HR 58, RR 15, T 36.8, SpO2 98%, wt 64.5 kg, BMI 20.1.\nGen: thin, NAD.\nEyes: mild bilateral ptosis. Pupils equal and reactive.\nCV: RRR. Lungs: clear.\nNeuro: alert, speech normal, facial strength symmetric. Mild weakness of proximal arm and leg muscles bilaterally, distal strength normal. Reflexes 2+ and symmetric. Sensation intact. Gait normal, can rise from chair without using arms but slowly.\n\nA/P:\n1. Progressive exertional limb weakness with intermittent diplopia and mild bilateral ptosis, on a background of lifelong exercise intolerance, mother with mitochondrial myopathy. Needs a neuromuscular evaluation. Neurology referral placed, marked as soon as available. Told him to go to the ED for trouble swallowing or breathing, or weakness that does not recover with rest.\n2. Allergic rhinitis on SCIT, fine.\n\nF/u after neurology."
+            },
+            {
+              "type": "Patient Instructions",
+              "title": "After Visit Summary",
+              "date": "2021-04-20T11:30",
+              "author": "PCP",
+              "body": "Today we talked about the weakness in your arms and legs and the double vision.\n\nPlan: referral to neurology (nerve and muscle specialists). Our front desk will fax it and call you with the appointment.\n\nGo to the emergency department if you have trouble swallowing, trouble breathing, slurred speech, or weakness that does not get better with rest.\n\nFinish your second COVID shot on 4/24 as planned."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-04-22a",
+          "kind": "telephone",
+          "start": "2021-04-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "referral",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Neurology Referral Scheduled",
+              "date": "2021-04-22T09:30",
+              "author": "front desk",
+              "body": "Neurology referral faxed to Kestrel Hill Neurology with 4/20 note. Medicaid referral entered, approved. Their scheduler called back: first available neuromuscular new patient slot Tue 6/8 1:00. Pt notified by text, confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "portal_message",
+          "start": "2021-05-11T19:02",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-24T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Second shot",
+              "date": "2021-05-11T19:02",
+              "author": "patient",
+              "body": "Sorry forgot to send this, here is the card with the second one from April 24."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Second shot",
+              "date": "2021-05-12T08:31",
+              "author": "MA",
+              "body": "Got it, dose 2 entered. You are fully vaccinated. Neurology appointment is still 6/8 at 1:00."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-01a",
+          "kind": "telephone",
+          "start": "2021-06-01T15:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request From Neurology",
+              "date": "2021-06-01T15:05",
+              "author": "front desk",
+              "body": "Kestrel Hill Neurology called ahead of 6/8 new patient visit asking for problem list, med list, immunizations and recent labs. Faxed 4/20 note, 2020 physical with labs, med/allergy list. Confirmed received."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "specialist_visit",
+          "start": "2021-06-08T13:00",
+          "service": "Neurology",
+          "reason": "neuromuscular consultation",
+          "orders": [
+            {
+              "id": "neurology-referral",
+              "action": "done",
+              "date": "2021-06-08T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2021-06-11T08:40",
+              "author": "neurology",
+              "body": "KESTREL HILL NEUROLOGY, Neuromuscular Clinic\nNew patient consultation, 06/08/2021\n\nPatient: Tyler Boucher, 29-year-old man\nReferred by: PCP\n\nReason for referral: Several years of increasing difficulty keeping pace with coworkers at physical labor, with limb weakness and episodes of double vision.\n\nHistory: Mr. Boucher says that as a boy he could take part in most sports but always ran out of energy ahead of the other kids. Over the last year the weakness in his arms and legs has come on more often, chiefly after he climbs several flights of stairs. He also has spells of diplopia and trouble keeping his eyes focused for long stretches. He has never had a head injury, a seizure or a faint. He works in construction and reports no toxic or solvent exposures.\n\nPast medical history: seasonal allergic rhinitis on subcutaneous immunotherapy; lifelong exercise intolerance. Tonsillectomy age 12.\nMedications: cetirizine 10 mg daily as needed, fluticasone nasal spray daily, allergen immunotherapy injections monthly.\nAllergies: tree, grass and weed pollen. No drug allergies.\nFamily history: mother developed a similar picture in her 30s. Several maternal relatives with hearing loss beginning early in life.\nSocial: construction work. Never smoker. Alcohol 1-2 drinks weekly.\n\nExamination:\nGeneral: thin young man, in no distress.\nCardiac: regular rate and rhythm, no murmur. Lungs: clear.\nCranial nerves: bilateral ptosis. Extraocular movements limited in more than one direction of gaze. Pupils equal and reactive. Facial strength and bulbar function normal. Hearing grossly intact to conversation.\nMotor: normal bulk and tone. Mild weakness of the proximal limb muscles, upper and lower, symmetric. Distal strength full.\nReflexes: 2+ throughout, toes downgoing.\nSensory: intact to all modalities.\nCoordination and gait: normal.\n\nImpression: Slowly progressive proximal myopathy with ptosis and ophthalmoparesis and a lifelong history of early fatigue, with a similar history in his mother and early hearing loss on the maternal side. The picture raises concern for a mitochondrial myopathy.\n\nPlan:\n1. Creatine kinase, TSH, resting lactate on two occasions, and lactate after a brief standardized exertion.\n2. EMG/nerve conduction studies.\n3. Muscle biopsy with histochemistry.\nWe will write again once results are available.\n\nNeurology, Kestrel Hill Neurology\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2021-06-30a",
+          "kind": "portal_message",
+          "start": "2021-06-30T07:52",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "question before biopsy",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Biopsy next week",
+              "date": "2021-06-30T07:52",
+              "author": "patient",
+              "body": "Neurology is doing a muscle biopsy on my thigh next Tuesday. They said ask you if any of my meds need to stop. It's just the allergy pill, the spray and the shots."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Biopsy next week",
+              "date": "2021-06-30T12:10",
+              "author": "PCP",
+              "body": "None of those need to be stopped for the biopsy. Follow whatever instructions the neurology office gave you about eating beforehand and wound care. Hope it goes smoothly."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-20a",
+          "kind": "specialist_visit",
+          "start": "2021-07-20T14:00",
+          "service": "Neurology",
+          "reason": "results review",
+          "conditions": [
+            {
+              "label": "Mitochondrial myopathy",
+              "action": "diagnosed",
+              "onset": "2021-07-20",
+              "icd10": "G71.3"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-06-08T15:30",
+              "resulted": "2021-07-20T14:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 612
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Lactate",
+                  "value": 3.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-22T08:30",
+              "resulted": "2021-07-20T14:00",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 3.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-22T08:55",
+              "resulted": "2021-07-20T14:00",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 5.8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2021-06-29T09:00",
+              "text": "Kestrel Hill Neurology EMG Laboratory. Indication: proximal weakness, ptosis.\nNerve conduction studies: median, ulnar and peroneal motor and median, ulnar and sural sensory responses have normal latencies, amplitudes and conduction velocities bilaterally where tested. F-waves normal.\nRepetitive nerve stimulation not performed.\nNeedle EMG: deltoid, biceps, iliopsoas and vastus lateralis bilaterally show short-duration, low-amplitude, polyphasic motor unit potentials with early recruitment. No fibrillations or positive sharp waves. Distal muscles (first dorsal interosseous, tibialis anterior) normal.",
+              "conclusion": "Myopathic pattern in proximal muscles. No evidence of neuropathy.",
+              "issued": "2021-07-20T14:00"
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-07-06T10:30",
+              "text": "Specimen: skeletal muscle, left vastus lateralis, open biopsy.\nFrozen sections with routine and enzyme histochemistry.\nMicroscopic: fibers of irregular, uneven shape with mild variation in fiber size. Modified Gomori trichrome stain shows collections of abnormal mitochondria accumulated beneath the sarcolemma in scattered fibers. No inflammatory infiltrate. No necrosis. No vacuoles.",
+              "conclusion": "Skeletal muscle with subsarcolemmal accumulation of abnormal mitochondria on modified Gomori trichrome, consistent with a mitochondrial myopathy.",
+              "issued": "2021-07-20T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Results Letter",
+              "date": "2021-07-20T14:00",
+              "author": "neurology",
+              "body": "KESTREL HILL NEUROLOGY, Neuromuscular Clinic\nResults letter, 07/20/2021\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nI have now reviewed the full workup on Mr. Boucher, whom I saw on 06/08 for proximal weakness, ptosis and diplopia, and went over it with him by phone today.\n\nLaboratory:\n- Creatine kinase 612 U/L (elevated).\n- Lactate at rest 3.4 mmol/L (06/08) and 3.1 mmol/L (06/22), both high; 5.8 mmol/L after minimal exertion on 06/22, higher still.\n- TSH 1.8 mIU/L, normal.\n\nEMG/NCS (06/29): myopathic motor units in proximal muscles; nerve conduction normal.\n\nMuscle biopsy, left vastus lateralis (07/06): irregularly shaped fibers, with abnormal mitochondria collected under the fiber membrane on modified Gomori trichrome stain.\n\nDiagnosis: Mitochondrial myopathy. The persistently raised resting lactate that climbs further with exertion, the myopathic EMG and the biopsy findings fit together, and his mother's history supports a familial disorder. His lifelong exercise intolerance is part of the same condition.\n\nPlan: There is no disease-specific medication for this condition, and I am not starting a supplement. Because mitochondrial disease can involve the heart and hearing, and given the early hearing loss on his mother's side, I have arranged a baseline ECG and hearing test, and I will see him on 08/17 to go over them and set up a graded exercise program. After that I will review him yearly.\n\nI discussed the diagnosis with him and answered his questions. Reports enclosed.\n\nSincerely,\nNeurology, Kestrel Hill Neurology\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2021-07-23a",
+          "kind": "portal_message",
+          "start": "2021-07-23T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "neurology results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neurology letter",
+              "date": "2021-07-23T12:15",
+              "author": "PCP",
+              "body": "Hi Tyler, I got the letter from neurology. They confirmed what they told you on the phone: the muscle biopsy, EMG and lactate tests all point to a mitochondrial myopathy, the same family of condition your mom has. It also explains why you have always tired out early. I know that is a lot to take in. Happy to go over it at your physical in September or sooner if you want, just text."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neurology letter",
+              "date": "2021-07-23T18:40",
+              "author": "patient",
+              "body": "Thanks. Kind of expected it after my mom. I'll talk to you about it in September."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "specialist_visit",
+          "start": "2021-08-17T10:00",
+          "service": "Neurology",
+          "reason": "mitochondrial myopathy, baseline screening",
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2021-08-17T09:30",
+              "text": "Kestrel Hill Neurology. Resting 12-lead ECG.\nVentricular rate 62/min. PR 156 ms. QRS 90 ms. QTc 412 ms. Normal axis.\nSinus rhythm. No conduction abnormality. No ST or T wave changes.",
+              "conclusion": "Normal ECG."
+            },
+            {
+              "study": "Audiogram",
+              "performed": "2021-08-17T09:00",
+              "text": "Kestrel Hill Neurology, audiology. Pure-tone audiometry, both ears.\nAir-conduction thresholds 20 dB HL or better at 250, 500, 1000, 2000, 4000 and 8000 Hz in the right and left ears.",
+              "conclusion": "Normal hearing in both ears."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "date": "2021-08-17T16:30",
+              "author": "neurology",
+              "body": "KESTREL HILL NEUROLOGY, Neuromuscular Clinic\nFollow-up, 08/17/2021\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nI saw Mr. Boucher today to start his care for mitochondrial myopathy. He is much as he was in June: he tires early, his legs give out after several flights of stairs, and he has the occasional spell of double vision. He is still working construction and pacing himself.\n\nExamination unchanged: bilateral ptosis, eye movements limited in more than one direction of gaze, mild symmetric proximal limb weakness. Hearing normal to conversation.\n\nBaseline screening today:\n- 12-lead ECG: sinus rhythm 62/min, PR 156 ms, QRS 90 ms, QTc 412 ms. Normal.\n- Audiogram: thresholds 20 dB HL or better from 250 to 8000 Hz in both ears. Normal.\n\nPlan:\n1. No disease-specific medication; no supplement started.\n2. Referred to outpatient physical therapy for 8 weeks of supervised graded aerobic and light resistance exercise, twice a week from 08/24. After that, a home program of walking or stationary cycling for about 30 minutes most days, stopping short of exhaustion.\n3. Yearly neuromuscular review with an ECG; sooner for trouble swallowing or breathing, palpitations or fainting, or a change in hearing.\n\nSincerely,\nNeurology, Kestrel Hill Neurology\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "annual_physical",
+          "start": "2021-09-28T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "yearly physical",
+          "conditions": [
+            {
+              "label": "Exercise intolerance",
+              "action": "history",
+              "note": "Attributed to mitochondrial myopathy (neurology 07/2021)",
+              "icd10": "R53.83"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              64
+            ],
+            "hr": 59,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 64.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-09-28T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.13
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-09-28T08:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-09-28T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-28T08:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-28T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-28T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-09-28T09:20",
+              "author": "PCP",
+              "body": "Yearly physical. 30M.\n\nInterval history: Neurology (Kestrel Hill) diagnosed mitochondrial myopathy in July: CK 612, resting lactate 3.4 and 3.1 with a rise to 5.8 after exertion, TSH normal, myopathic EMG, biopsy with subsarcolemmal abnormal mitochondria on Gomori trichrome. We talked through the letter today. He has read about it and says it is a relief to have a name for it. Weakness and the occasional double vision about the same as in April, no swallowing or breathing trouble. Neurology saw him again 8/17: baseline ECG and hearing test both normal, no medication for this. He started physical therapy twice a week on 8/24, an 8-week graded exercise program, and likes it so far. Still working construction, paces himself.\nAllergies: on monthly maintenance shots without reactions, still uses cetirizine and spray.\n\nPMH: allergic rhinitis (pollen), mitochondrial myopathy (dx 07/2021), exercise intolerance (part of the myopathy).\nMeds: cetirizine PRN, fluticasone nasal, SC pollen immunotherapy monthly at allergy.\nAllergies: tree/grass/weed pollen.\nPHQ-2 0. Never smoker. 1-2 drinks/wk.\n\nVS: BP 109/64, HR 59, RR 15, T 37.0, SpO2 98%, wt 64.6 kg, BMI 20.1.\nGen: thin, NAD.\nEyes: mild bilateral ptosis, unchanged.\nCV: RRR, no murmur. Lungs: clear.\nAbd: soft, NT.\nNeuro: mild proximal limb weakness, same as April; distal strength, reflexes, sensation normal.\nSkin: biopsy site L thigh healed.\n\nA/P:\n1. Mitochondrial myopathy, newly diagnosed by neurology, exam stable. Exercise intolerance now attributed to it. PT through mid-October, then a home walking/cycling program; neurology yearly with ECG.\n2. Allergic rhinitis, on SCIT maintenance.\n3. Preventive: flu shot given. CBC/BMP today. COVID booster when he becomes eligible.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-30a",
+          "kind": "portal_message",
+          "start": "2021-09-30T11:48",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2021-09-30T11:48",
+              "author": "PCP",
+              "body": "CBC and basic panel normal (Hgb 15.3, WBC 5.3, creatinine 0.95, potassium 4.0). No changes."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "outside_records",
+          "start": "2021-12-07T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunization registry",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-04T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "State Registry Update",
+              "date": "2021-12-07T09:05",
+              "author": "MA",
+              "body": "State immunization registry query: COVID-19 Pfizer-BioNTech booster given 12/04/2021 at a retail pharmacy. Reconciled into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-15a",
+          "kind": "outside_records",
+          "start": "2022-02-15T13:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunotherapy annual review",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Allergy Immunotherapy Annual Review",
+              "date": "2022-02-15T13:25",
+              "author": "otolaryngology",
+              "body": "Mill River ENT & Allergy\nAnnual immunotherapy review, 02/15/2022\n\nTyler Boucher remains on monthly maintenance subcutaneous immunotherapy for grass, tree and weed pollen, now about 19 months into treatment. Injections have been given on schedule with no local or systemic reactions. He continues cetirizine as needed and fluticasone nasal spray. Plan to continue monthly maintenance and review again in one year.\n\nOtolaryngology, Mill River ENT & Allergy"
+            }
+          ]
+        },
+        {
+          "id": "2022-04-05a",
+          "kind": "portal_message",
+          "start": "2022-04-05T10:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill and work update",
+          "social": [
+            {
+              "item": "Occupation",
+              "value": "Freelance graphic designer, works from home"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill + new job",
+              "date": "2022-04-05T10:12",
+              "author": "patient",
+              "body": "Hi, pharmacy says the nasal spray needs a new script again. Also FYI I stopped doing construction in January, I'm doing freelance graphic design from home now. Same insurance. Address and phone the same."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill + new job",
+              "date": "2022-04-05T13:30",
+              "author": "MA",
+              "body": "Fluticasone renewal sent to your pharmacy, 1 year of refills. Updated your occupation in the chart. Good luck with the new work!"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "specialist_visit",
+          "start": "2022-08-16T10:00",
+          "service": "Neurology",
+          "reason": "mitochondrial myopathy, yearly review",
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2022-08-16T09:30",
+              "text": "Kestrel Hill Neurology. Resting 12-lead ECG.\nVentricular rate 64/min. PR 160 ms. QRS 88 ms. QTc 408 ms. Normal axis.\nSinus rhythm. No conduction abnormality. No ST or T wave changes.\nCompared with 08/17/2021: no change.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "date": "2022-08-16T16:30",
+              "author": "neurology",
+              "body": "KESTREL HILL NEUROLOGY, Neuromuscular Clinic\nYearly review, 08/16/2022\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nMr. Boucher finished his 8 weeks of physical therapy last October and has kept up the home program, walking or cycling most days. Since January he has worked from home as a freelance graphic designer. Stairs and limb strength are about the same as last year, and the double vision still comes and goes. No trouble swallowing, no palpitations or faints, no change in hearing.\nMedications: cetirizine as needed, fluticasone nasal spray, monthly allergen immunotherapy.\n\nExamination unchanged: bilateral ptosis, limited eye movements in more than one direction, mild proximal limb weakness.\n\nECG today: sinus rhythm 64/min, PR 160 ms, QRS 88 ms, QTc 408 ms. Normal and unchanged.\n\nPlan: continue the home exercise program. Review in a year with an ECG.\n\nSincerely,\nNeurology, Kestrel Hill Neurology\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "annual_physical",
+          "start": "2022-10-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "yearly physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "telephone",
+          "start": "2022-10-19T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Physical",
+              "date": "2022-10-19T10:05",
+              "author": "front desk",
+              "body": "Pt no-showed annual physical 10/18. Called, LVM to rebook, also sent text. 10/24: pt texted back, busy with a deadline, will call to schedule after the holidays."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "outside_records",
+          "start": "2022-11-08T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunization registry",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-11-05T12:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-11-05T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "State Registry Update",
+              "date": "2022-11-08T08:50",
+              "author": "MA",
+              "body": "Registry reconciliation: influenza (quadrivalent, inactivated) and COVID-19 Pfizer bivalent booster both given 11/05/2022 at a retail pharmacy. Added to immunization history. Flu outreach closed for this season."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "portal_message",
+          "start": "2023-02-21T14:44",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "date": "2023-02-21T14:44",
+              "author": "patient",
+              "body": "Hi, sorry I never rebooked the physical. Can I get in sometime this spring? I also want to ask about getting winded, it's been creeping up on me. Not urgent."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "date": "2023-02-21T16:02",
+              "author": "front desk",
+              "body": "No problem Tyler. Booked you Tue 4/11 at 11:00 with your PCP, 40 minute slot so there's time for both. If the breathing gets worse before then, text the practice line and we'll get you in sooner."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "outside_records",
+          "start": "2023-03-14T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunotherapy annual review",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Immunotherapy Review",
+              "date": "2023-03-14T11:30",
+              "author": "otolaryngology",
+              "body": "Mill River ENT & Allergy, annual SCIT review 03/2023.\nPatient: Tyler Boucher. Monthly maintenance injections, pollen mix (grass/tree/weed). Adherent. No reactions to any injection to date. Medications unchanged (cetirizine PRN, fluticasone nasal). Continue current maintenance schedule. Next review 1 year.\n\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "office_visit",
+          "start": "2023-04-11T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shortness of breath",
+          "vitals": {
+            "bp": [
+              109,
+              72
+            ],
+            "hr": 59,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 94,
+            "weight_kg": 64.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-04-11T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 230
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-11T11:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Occupation",
+              "value": "Freelance graphic designer, works from home"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-11T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-04-11T11:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulmonology-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "progressive exertional dyspnea, never smoker, prolonged expiration on exam, SpO2 94%; father with long-standing breathing problems"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-04-11T12:05",
+              "author": "PCP",
+              "body": "CC: short of breath\n\nHPI: 31M with mitochondrial myopathy and pollen allergic rhinitis, here for the breathing (also overdue for his physical, missed in October). About 16 months of getting more winded. Now has to stop after two blocks on a walk. He had assumed it was his muscles and let it go, but it has kept getting worse while the leg and arm weakness has not really changed. No chest pain. No fever. No leg swelling, no orthopnea.\nWork: freelance graphic designer from home since early 2022, so much less physical than construction.\nNever smoker, no vaping. Alcohol 1-2 drinks a week. No pets.\nFamily: father died mid-40s of cirrhosis blamed on alcohol, pt recalls he was always short of breath.\n\nMeds: cetirizine PRN, fluticasone nasal, monthly SCIT at allergy.\nAllergies: tree/grass/weed pollen. NKDA.\n\nVS: BP 109/72, HR 59, RR 16, T 36.9, SpO2 94% RA, wt 64.9 kg, BMI 20.2.\nGen: thin, comfortable at rest, speaking full sentences.\nEyes: mild bilateral ptosis, unchanged.\nCV: RRR, no murmur, no JVD.\nLungs: mildly prolonged expiration, no wheeze or crackles.\nExt: no edema, no clubbing.\nNeuro: mild proximal weakness unchanged from prior.\n\nA/P:\n1. Progressive exertional dyspnea, never smoker, prolonged expiratory phase, resting sat 94%. This looks like more than deconditioning or his myopathy. Pulmonology referral placed for full evaluation. CBC and BMP today.\n2. Mitochondrial myopathy, stable exam. Neurology review 8/2022 with a normal ECG; keeps up the home exercise program as best he can.\n3. Allergic rhinitis, on SCIT.\n4. Physical: overdue, will fold preventive items into the next visit.\nReturn precautions for chest pain or breathing at rest."
+            },
+            {
+              "type": "Patient Instructions",
+              "title": "After Visit Summary",
+              "date": "2023-04-11T12:10",
+              "author": "PCP",
+              "body": "Today: shortness of breath with walking.\n\nPlan: referral to pulmonology (lung specialists), who will likely do breathing tests. Blood count and chemistry panel drawn today, results in the portal.\n\nCall 911 or go to the ED for chest pain, trouble breathing at rest, or blue lips.\n\nWe still owe you a physical; we will catch up on that after the lung visit."
+            }
+          ],
+          "state": {
+            "spo2": 94.5,
+            "weight_kg": 63.9,
+            "labs": {
+              "Monocytes %": 6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-13a",
+          "kind": "telephone",
+          "start": "2023-04-13T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "referral",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pulmonology Referral",
+              "date": "2023-04-13T09:20",
+              "author": "front desk",
+              "body": "Pulm referral faxed to Sugarloaf Pulmonary Associates with 4/11 note and labs. Medicaid referral approved. Their first new-patient opening is Tue 6/13 9:30 including PFTs same morning. Pt notified, OK with date, on their cancellation list."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-13b",
+          "kind": "portal_message",
+          "start": "2023-04-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2023-04-13T15:40",
+              "author": "PCP",
+              "body": "Your blood count is normal (hemoglobin 15.0, no anemia to explain the breathlessness) and the chemistry panel is normal. Pulmonology appointment is 6/13."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "specialist_visit",
+          "start": "2023-06-13T09:30",
+          "service": "Pulmonology",
+          "reason": "dyspnea consultation",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-06-13T10:30",
+              "resulted": "2023-06-15T10:40",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 64
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2023-06-13T08:45",
+              "text": "Sugarloaf Pulmonary Associates imaging. PA and lateral chest.\nIndication: progressive dyspnea, never smoker.\nFindings: Both lungs are hyperlucent at the bases, lower lobes more than upper. Both hemidiaphragms are flattened. No focal consolidation, mass or nodule. No pleural effusion or pneumothorax. Cardiomediastinal silhouette normal in size. Osseous structures intact.",
+              "conclusion": "Bilateral lower-lobe hyperlucency with flattened diaphragms.",
+              "issued": "2023-06-15T10:40"
+            },
+            {
+              "study": "Spirometry",
+              "performed": "2023-06-13T08:00",
+              "text": "Pulmonary function laboratory: spirometry with lung volumes by plethysmography. Effort and reproducibility acceptable.\nFEV1/FVC: 0.58 (reduced).\nTotal lung capacity: 122% predicted (increased).\nResidual volume: 165% predicted (increased).",
+              "conclusion": "Airflow obstruction with increased total lung capacity and residual volume, consistent with hyperinflation and air trapping.",
+              "issued": "2023-06-15T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulmonology-referral",
+              "action": "done",
+              "date": "2023-06-13T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Consultation",
+              "date": "2023-06-15T10:40",
+              "author": "pulmonology",
+              "body": "SUGARLOAF PULMONARY ASSOCIATES\nNew consultation, 06/13/2023\n\nPatient: Tyler Boucher, 31 y/o M\nReferring: PCP\nReason: progressive dyspnea\n\nHPI: Mr. Boucher has had worsening shortness of breath for about 18 months and is now breathless with very little effort. He used to jog regularly at an easy pace; now two blocks of walking leave him winded. He occasionally feels a mild tightness in the chest. He denies chest pain, wheezing, cough or hemoptysis. He has never smoked.\n\nPMH: mitochondrial myopathy (neurology, 2021); seasonal allergic rhinitis on subcutaneous immunotherapy.\nPSH: tonsillectomy.\nMeds: cetirizine 10 mg PRN, fluticasone nasal 2 sprays each nostril daily, monthly allergen immunotherapy.\nAllergies: tree, grass and weed pollen; no drug allergies.\nFamily history: father died in his mid-40s of cirrhosis that was attributed to alcohol; the patient recalls his father having chronic breathing problems. Paternal grandmother with cirrhosis of unknown cause.\nSocial: freelance graphic designer, works from home. Never smoker. Drinks socially. No recreational drugs. No pets.\n\nExam:\nVital signs normal other than respiratory rate 22 and SpO2 94% on room air.\nGeneral: thin, mildly tachypneic at rest, no accessory muscle use.\nLungs: no crackles or wheeze; expiratory phase mildly prolonged; hyperresonant to percussion bilaterally.\nCardiac: regular rhythm, normal heart sounds, no murmur.\nExtremities: no clubbing, no cyanosis, no edema.\n\nData:\n- Labs today: ALT 64 U/L and AST 52 U/L, both mildly elevated. Remainder of hepatic panel normal.\n- Chest x-ray: hyperlucency of both lower lobes with flattened diaphragms.\n- PFTs: FEV1/FVC 0.58, reduced. TLC 122% predicted and RV 165% predicted, both increased.\n\nAssessment: Never-smoker in his early 30s with obstruction, hyperinflation and air trapping, a lower-lobe predominant pattern on chest film, mildly abnormal transaminases, and a father with lung trouble and cirrhosis at a young age. Alpha-1 antitrypsin deficiency needs to be excluded.\n\nPlan: Serum alpha-1 antitrypsin level and phenotype sent today. I will write with the results.\n\nPulmonology, Sugarloaf Pulmonary Associates\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "specialist_visit",
+          "start": "2023-06-27T15:00",
+          "service": "Pulmonology",
+          "reason": "results",
+          "conditions": [
+            {
+              "label": "Alpha-1-antitrypsin deficiency",
+              "action": "diagnosed",
+              "onset": "2023-06-27",
+              "note": "PiZZ, serum level 28 mg/dL; lower-lobe emphysema with obstruction and air trapping"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Alpha-1-antitrypsin deficiency with emphysema"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Results Letter",
+              "date": "2023-06-27T15:00",
+              "author": "pulmonology",
+              "body": "SUGARLOAF PULMONARY ASSOCIATES\n06/27/2023\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nFurther to my consultation of 06/13:\n\nSerum alpha-1 antitrypsin: 28 mg/dL (low).\nPhenotype: PiZZ.\n\nDiagnosis: Alpha-1 antitrypsin deficiency, ZZ phenotype. The lower-lobe emphysema pattern on his chest x-ray and the airflow obstruction with air trapping on PFTs represent the lung disease of his alpha-1 antitrypsin deficiency. His mildly raised transaminases on 06/13 (ALT 64, AST 52) are noted.\n\nTreatment:\n1. Albuterol HFA 90 mcg per puff, 2 puffs every 4 to 6 hours as needed for breathlessness. Prescription sent to his pharmacy.\n2. I recommend augmentation therapy with intravenous alpha-1 proteinase inhibitor (human), 60 mg/kg once weekly, which is 3,840 mg at his weight of 64 kg. We are submitting the Medicaid prior authorization through the specialty pharmacy; the infusions would be given at home by an infusion nurse.\n3. I will see him yearly with spirometry, sooner if his breathing changes.\n\nI called Tyler today with the results and the plan and answered his questions. In light of this result he wondered whether his father's illness was the same condition.\n\nSincerely,\nPulmonology, Sugarloaf Pulmonary Associates\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-29a",
+          "kind": "telephone",
+          "start": "2023-06-29T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pulmonology results",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call With Patient",
+              "date": "2023-06-29T17:25",
+              "author": "PCP",
+              "body": "Called Tyler after receiving the pulm letter: AAT 28, PiZZ, alpha-1 antitrypsin deficiency with emphysema. He had heard from pulm already. Pulm started an albuterol inhaler as needed and is applying to Medicaid for weekly augmentation infusions. Sounded okay, a lot of questions about what this means alongside the muscle diagnosis. He thinks his father must have had the same thing, which fits his father's story. Booked visit 7/18 to go through it and update vaccines."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "office_visit",
+          "start": "2023-07-18T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after pulmonology",
+          "vitals": {
+            "bp": [
+              106,
+              67
+            ],
+            "hr": 69,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 94,
+            "weight_kg": 63.5
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-07-18T10:15",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 60
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-18T10:15",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 538
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-18T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-07-18T10:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-07-18T10:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-07-18T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-07-18T10:30",
+              "author": "PCP",
+              "body": "F/U after pulmonology.\n\nSugarloaf Pulmonary letters 6/13 and 6/27 reviewed with patient:\n- RR 22, SpO2 94% at their visit; prolonged expiration, hyperresonance.\n- CXR: both lower lobes hyperlucent, flat diaphragms.\n- PFTs: FEV1/FVC 0.58, TLC 122%, RV 165%.\n- ALT 64, AST 52.\n- AAT 28 mg/dL, PiZZ. Dx alpha-1 antitrypsin deficiency, the emphysema being its lung disease.\n- Pulm plan: albuterol HFA 2 puffs q4-6h PRN, started 6/27; weekly IV alpha-1 proteinase inhibitor 60 mg/kg augmentation by home infusion, Medicaid PA submitted by pulm; yearly spirometry.\n\nTyler is taking it in stride. Breathing about the same as April, two blocks before he has to stop. Has used the albuterol a couple of times on longer walks. No cough. Working from home.\n\nFamily history updated today: his father's lung trouble and early death now read as alpha-1 antitrypsin deficiency with early-onset emphysema; died mid-40s of cirrhosis. Other family history unchanged (mother mitochondrial myopathy, maternal uncle schizophrenia, paternal grandmother cirrhosis unknown cause, maternal relatives with early hearing loss, identical twin brother healthy).\n\nMeds: cetirizine PRN, fluticasone nasal, monthly SCIT, albuterol HFA PRN (pulm).\nAllergies: tree/grass/weed pollen. NKDA.\nAlcohol 1-2/wk. Never smoker.\n\nVS: BP 106/67, HR 69, RR 17, T 36.7, SpO2 94% RA, wt 63.5 kg, BMI 19.8.\nGen: thin, NAD.\nLungs: mildly prolonged expiration, no wheeze.\nCV: RRR.\nAbd: soft, no HSM.\nEyes/neuro: mild ptosis and proximal weakness, unchanged.\n\nA/P:\n1. Alpha-1 antitrypsin deficiency (PiZZ) with lower-lobe emphysema, new dx by pulm. Pneumococcal vaccine (PCV20) today for chronic lung disease. Hepatic panel today to follow the transaminases. Albuterol PRN per pulm; augmentation infusions to start once the PA is approved.\n2. Mitochondrial myopathy: CK today as well, last one 612 in 2021. Neurology yearly review due next month.\n3. Allergic rhinitis on SCIT.\n4. Physical due in the fall."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 59,
+              "Aspartate Aminotransferase": 47,
+              "Creatine Kinase": 545
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-20a",
+          "kind": "portal_message",
+          "start": "2023-07-20T08:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver and Muscle Labs",
+              "date": "2023-07-20T08:55",
+              "author": "PCP",
+              "body": "Tyler, liver enzymes are still mildly up, ALT 60 and AST 47, close to the June values. CK (muscle enzyme) is 538, similar range to 2021. We will keep checking these once or twice a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-15a",
+          "kind": "specialist_visit",
+          "start": "2023-08-15T10:00",
+          "service": "Neurology",
+          "reason": "mitochondrial myopathy, yearly review",
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-08-15T09:30",
+              "text": "Kestrel Hill Neurology. Resting 12-lead ECG.\nVentricular rate 66/min. PR 152 ms. QRS 92 ms. QTc 415 ms. Normal axis.\nSinus rhythm. No conduction abnormality. No ST or T wave changes.\nCompared with 08/16/2022: no change.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "date": "2023-08-15T16:30",
+              "author": "neurology",
+              "body": "KESTREL HILL NEUROLOGY, Neuromuscular Clinic\nYearly review, 08/15/2023\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nSince I last saw Mr. Boucher, pulmonology has diagnosed alpha-1 antitrypsin deficiency (PiZZ) with emphysema, which accounts for the breathlessness he had put down to his muscles. He has an albuterol inhaler for as-needed use and his first weekly augmentation infusion is scheduled for this week. From the muscle side he is unchanged: stairs and limb strength as before, occasional double vision, no trouble swallowing, no palpitations or faints, no hearing change. He walks most days at a pace his breathing allows.\n\nExamination unchanged: bilateral ptosis, limited eye movements in more than one direction, mild proximal limb weakness.\n\nECG today: sinus rhythm 66/min, PR 152 ms, QRS 92 ms, QTc 415 ms. Normal and unchanged.\n\nPlan: continue the home exercise program within his breathing limits. Review in a year with an ECG.\n\nSincerely,\nNeurology, Kestrel Hill Neurology\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "outside_records",
+          "start": "2023-08-22T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pulmonology letter, augmentation started",
+          "medications": [
+            {
+              "drug_text": "alpha 1-proteinase inhibitor, human 1000 MG Injection",
+              "action": "historical",
+              "sig": "Infuse 60 mg/kg (3,840 mg) intravenously once weekly by home infusion",
+              "dose": {
+                "value": 60,
+                "unit": "mg/kg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Alpha-1-antitrypsin deficiency with emphysema"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Augmentation Therapy Started",
+              "date": "2023-08-22T14:10",
+              "author": "pulmonology",
+              "body": "SUGARLOAF PULMONARY ASSOCIATES\n08/22/2023\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nMedicaid approved augmentation therapy for Mr. Boucher. His first home infusion of alpha-1 proteinase inhibitor (human), 60 mg/kg IV (3,840 mg), was given on 08/17/2023 by the home-infusion nurse and he tolerated it without any reaction. Infusions will continue weekly on Thursdays. He continues albuterol as needed.\n\nI will see him in June with spirometry.\n\nPulmonology, Sugarloaf Pulmonary Associates\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine Visit",
+              "date": "2023-10-10T16:30",
+              "author": "RN",
+              "body": "Here for flu and updated COVID vaccines. Feeling well today, afebrile by report. No prior vaccine reactions. Influenza quadrivalent 0.5 mL IM R deltoid; Pfizer 2023-24 COVID 0.3 mL IM L deltoid. VIS for both provided. Observed 15 min without issue. Reminded him annual physical has not been rebooked, he will call."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "outside_records",
+          "start": "2024-02-27T12:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunotherapy annual review",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "SCIT Annual Review",
+              "date": "2024-02-27T12:40",
+              "author": "otolaryngology",
+              "body": "MILL RIVER ENT & ALLERGY\nAllergen immunotherapy, yearly review\n\nTyler Boucher. Subcutaneous grass/tree/weed pollen extract, monthly maintenance, continuing. We have reviewed his updated history including the diagnosis of alpha-1 antitrypsin deficiency he reports from pulmonology last year, with an albuterol inhaler as needed and weekly augmentation infusions at home; no change to his injection plan. No injection reactions. Continue cetirizine and fluticasone nasal as he uses them. Review in 12 months.\n\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "lab_only",
+          "start": "2024-03-19T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "liver enzymes and CK",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-03-19T08:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 60
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 46
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T08:10",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 484
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-19T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Lab Draw",
+              "date": "2024-03-19T08:16",
+              "author": "MA",
+              "body": "Lab-only visit. Hepatic panel and CK drawn per standing order, L antecubital, one stick. Tolerated well."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 61,
+              "Aspartate Aminotransferase": 46,
+              "Creatine Kinase": 520
+            }
+          }
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "portal_message",
+          "start": "2024-03-21T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2024-03-21T12:30",
+              "author": "PCP",
+              "body": "Hi Tyler, same story as last summer: ALT 60 and AST 46, mildly above normal and steady. CK 484, in your usual range. Nothing new to do."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab Results",
+              "date": "2024-03-21T19:05",
+              "author": "patient",
+              "body": "ok thanks"
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "pharmacy",
+          "start": "2024-04-16T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior authorization request",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "PA Request: Fluticasone Nasal",
+              "date": "2024-04-16T11:20",
+              "author": "MA",
+              "body": "Fax from pharmacy: Medicaid rejected fluticasone propionate nasal 16 g, 'quantity exceeds plan limit, PA required'.\nReviewed: sig is 2 sprays each nostril daily = 1 bottle per 30 days, within plan limit. Called pharmacy, claim had been entered as a 15-day supply. Pharmacist corrected to 30 days and claim paid. No PA needed. Pt picked up per pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "specialist_visit",
+          "start": "2024-06-18T09:30",
+          "service": "Pulmonology",
+          "reason": "alpha-1 antitrypsin deficiency, yearly review",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2024-06-18T08:30",
+              "text": "Pulmonary function laboratory: spirometry. Effort and reproducibility acceptable.\nFEV1/FVC: 0.57 (reduced).\nCompared with 06/13/2023 (FEV1/FVC 0.58): unchanged.",
+              "conclusion": "Airflow obstruction, unchanged from 06/2023."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up Letter",
+              "date": "2024-06-18T15:00",
+              "author": "pulmonology",
+              "body": "SUGARLOAF PULMONARY ASSOCIATES\nYearly review, 06/18/2024\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nMr. Boucher has had weekly augmentation infusions at home since 08/17/2023 without any infusion reaction. He uses the albuterol a few times a month, mostly on longer walks. His breathlessness is unchanged, at about two blocks of walking. No cough, no chest infections. Never smoker. Medications: augmentation weekly, albuterol as needed, cetirizine as needed, fluticasone nasal spray, monthly allergen immunotherapy.\n\nExamination: SpO2 95% on room air at rest. Thin, comfortable. Expiratory phase mildly prolonged, hyperresonant to percussion, no wheeze or crackles. Heart regular. No clubbing, cyanosis or edema.\n\nSpirometry today: FEV1/FVC 0.57, unchanged from 06/2023.\n\nAssessment: alpha-1 antitrypsin deficiency, PiZZ, with lower-lobe emphysema, stable on augmentation.\n\nPlan: continue alpha-1 proteinase inhibitor (human) 60 mg/kg IV weekly by home infusion and albuterol HFA 2 puffs every 4 to 6 hours as needed. Review in a year with spirometry.\n\nPulmonology, Sugarloaf Pulmonary Associates\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "specialist_visit",
+          "start": "2024-08-20T10:00",
+          "service": "Neurology",
+          "reason": "mitochondrial myopathy, yearly review",
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-08-20T09:30",
+              "text": "Kestrel Hill Neurology. Resting 12-lead ECG.\nVentricular rate 60/min. PR 162 ms. QRS 90 ms. QTc 410 ms. Normal axis.\nSinus rhythm. No conduction abnormality. No ST or T wave changes.\nCompared with 08/15/2023: no change.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "date": "2024-08-20T16:30",
+              "author": "neurology",
+              "body": "KESTREL HILL NEUROLOGY, Neuromuscular Clinic\nYearly review, 08/20/2024\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nMr. Boucher is stable. Weekly augmentation infusions for his alpha-1 antitrypsin deficiency since last August, albuterol as needed. Limb strength and stairs as before, occasional double vision, no trouble swallowing, no palpitations or faints, no hearing change. Still walking most days within his breathing limits.\n\nExamination unchanged: bilateral ptosis, limited eye movements in more than one direction, mild proximal limb weakness.\n\nECG today: sinus rhythm 60/min, PR 162 ms, QRS 90 ms, QTc 410 ms. Normal and unchanged.\n\nPlan: continue the home exercise program. Review in a year with an ECG.\n\nSincerely,\nNeurology, Kestrel Hill Neurology\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "yearly physical",
+          "vitals": {
+            "bp": [
+              111,
+              69
+            ],
+            "hr": 65,
+            "rr": 18,
+            "temp_c": 36.9,
+            "spo2": 95,
+            "weight_kg": 64.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-24T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 214
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 64
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 26
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 63
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-24T09:50",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 538
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-24T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T09:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-24T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-24T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-24T10:15",
+              "author": "PCP",
+              "body": "PREVENTIVE VISIT, 33M\n\nFirst full physical since 2021 (missed 2022, problem visits in 2023).\n\nInterval: Breathing about where it was last summer, winded at a couple of blocks, manages working from home. Weekly augmentation infusions at home since 8/2023, no reactions; albuterol a few times a month. Pulm review 6/18: spirometry unchanged (FEV1/FVC 0.57), continue the same. Neurology review 8/20: exam and ECG unchanged, keeps walking most days. No change in weakness or the ptosis. Still on monthly allergy shots at Mill River, no reactions, using cetirizine and the spray in season. No ED or urgent care visits. No new symptoms.\n\nProblems: allergic rhinitis due to pollen (SCIT since 2020); mitochondrial myopathy (2021) with exercise intolerance; alpha-1 antitrypsin deficiency, PiZZ, with lower-lobe emphysema (2023); transaminases mildly elevated since 2023.\nMeds: cetirizine 10 mg PRN, fluticasone nasal 2 sprays each nostril daily, SCIT monthly, albuterol HFA 2 puffs q4-6h PRN, alpha-1 proteinase inhibitor 60 mg/kg IV weekly (home infusion, pulm).\nAllergies: tree, grass, weed pollen. NKDA.\nFH: reviewed, unchanged from 7/2023.\nSocial: freelance graphic designer at home. Never smoker. AUDIT-C 2 (1-2 drinks/wk). No drugs.\nPHQ-2: 0.\n\nVS: BP 111/69, HR 65, RR 18, T 36.9, SpO2 95% RA, wt 64.9 kg, BMI 20.2.\nGen: thin, no distress.\nHEENT: mild turbinate edema. Eyes: mild bilateral ptosis.\nNeck: supple.\nCV: RRR, no murmur.\nLungs: mildly prolonged expiration, no wheeze, no crackles.\nAbd: soft, NT, no HSM.\nExt: no edema or clubbing.\nNeuro: mild proximal weakness, unchanged.\nSkin: no lesions.\n\nA/P:\n1. Preventive: flu vaccine today. PCV20 done 2023. Tdap 2018. HIV/HCV screened 2018. COVID per pharmacy this fall. CBC, CMP today.\n2. AATD with emphysema: stable symptoms, SpO2 at his recent baseline. Weekly augmentation and PRN albuterol per pulm.\n3. Transaminases / mitochondrial myopathy: CMP and CK today. Neurology following yearly.\n4. Allergic rhinitis on SCIT.\nRTC 1 year, labs again in 6 months."
+            },
+            {
+              "type": "Patient Instructions",
+              "title": "After Visit Summary",
+              "date": "2024-09-24T10:20",
+              "author": "PCP",
+              "body": "Annual physical today.\n\nVaccines: flu shot given. Get this fall's COVID shot at your pharmacy when convenient.\nLabs: blood count, metabolic panel with liver tests, and CK. Results in the portal.\nNext labs: liver tests and CK in about 6 months (lab visit, no appointment needed).\nMedicines: no changes."
+            }
+          ],
+          "state": {
+            "spo2": 94.5,
+            "weight_kg": 64.2,
+            "labs": {
+              "Monocytes %": 6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical Labs",
+              "date": "2024-09-26T09:40",
+              "author": "PCP",
+              "body": "Results from Tuesday: blood count normal (Hgb 15.0). Kidney function, electrolytes and sugar normal (creatinine 0.94, glucose 94). ALT 63 and AST 47, still mildly high and in the same range as the last year. CK 538, your usual. Next labs in March."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "outside_records",
+          "start": "2024-10-22T08:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunization registry",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-19T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Registry Reconciliation",
+              "date": "2024-10-22T08:35",
+              "author": "MA",
+              "body": "Registry pull: COVID-19 Pfizer 2024-25 formula, 10/19/2024, retail pharmacy. Entered."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "outside_records",
+          "start": "2025-02-25T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunotherapy annual review",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Immunotherapy Annual Letter",
+              "date": "2025-02-25T15:10",
+              "author": "otolaryngology",
+              "body": "Mill River ENT & Allergy, Injection Clinic\n\nAnnual update for Tyler Boucher, DOB 07/29/1991. Subcutaneous pollen immunotherapy (grass, tree, weed), maintenance every 4 weeks. All doses this year given without reaction. Medications per patient: cetirizine 10 mg as needed, fluticasone propionate nasal spray, albuterol inhaler as needed, weekly alpha-1 proteinase inhibitor infusions at home. No drug allergies. Plan: continue maintenance. Annual physician review again in 12 months.\n\nInjection Nurse / Otolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "lab_only",
+          "start": "2025-03-25T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "liver enzymes and CK",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-03-25T07:50",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 48
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 56
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-25T07:50",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 570
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-25T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Lab Visit",
+              "date": "2025-03-25T07:58",
+              "author": "MA",
+              "body": "Walk-in lab draw: hepatic panel and CK per PCP standing order. R arm. No issues."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-27a",
+          "kind": "portal_message",
+          "start": "2025-03-27T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2025-03-27T13:15",
+              "author": "PCP",
+              "body": "ALT 65, AST 48: mildly elevated, unchanged pattern. CK 570, within your usual range. See you at the physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "pharmacy",
+          "start": "2025-05-06T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refills",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Renewal Requests",
+              "date": "2025-05-06T08:40",
+              "author": "MA",
+              "body": "Pharmacy renewal requests:\n1. cetirizine 10 mg tablet, 1 daily as needed, #90\n2. fluticasone propionate 50 mcg/act nasal spray, 2 sprays each nostril daily, 16 g\nLast seen 9/2024, physical due 9/2025. Pended to PCP.\nPCP: approved both, 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "specialist_visit",
+          "start": "2025-06-17T09:30",
+          "service": "Pulmonology",
+          "reason": "alpha-1 antitrypsin deficiency, yearly review",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2025-06-17T08:30",
+              "text": "Pulmonary function laboratory: spirometry. Effort and reproducibility acceptable.\nFEV1/FVC: 0.58 (reduced).\nCompared with 06/13/2023 (FEV1/FVC 0.58): unchanged.",
+              "conclusion": "Airflow obstruction, unchanged from 06/2023."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up Letter",
+              "date": "2025-06-17T15:00",
+              "author": "pulmonology",
+              "body": "SUGARLOAF PULMONARY ASSOCIATES\nYearly review, 06/17/2025\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nMr. Boucher continues weekly augmentation infusions at home with no infusion reactions. He uses the albuterol a few times a month. Breathlessness unchanged, about two blocks of walking. No cough, no chest infections. Never smoker. Medications: augmentation weekly, albuterol as needed, cetirizine as needed, fluticasone nasal spray, monthly allergen immunotherapy.\n\nExamination: SpO2 94% on room air at rest. Thin, comfortable. Expiratory phase mildly prolonged, hyperresonant to percussion, no wheeze or crackles. Heart regular. No clubbing, cyanosis or edema.\n\nSpirometry today: FEV1/FVC 0.58, unchanged from 06/2023.\n\nAssessment: alpha-1 antitrypsin deficiency, PiZZ, with lower-lobe emphysema, stable on augmentation.\n\nPlan: continue alpha-1 proteinase inhibitor (human) 60 mg/kg IV weekly by home infusion and albuterol HFA 2 puffs every 4 to 6 hours as needed. Review in a year with spirometry.\n\nPulmonology, Sugarloaf Pulmonary Associates\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "specialist_visit",
+          "start": "2025-08-18T10:00",
+          "service": "Neurology",
+          "reason": "mitochondrial myopathy, yearly review",
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-08-18T09:30",
+              "text": "Kestrel Hill Neurology. Resting 12-lead ECG.\nVentricular rate 58/min. PR 158 ms. QRS 94 ms. QTc 418 ms. Normal axis.\nSinus rhythm. No conduction abnormality. No ST or T wave changes.\nCompared with 08/20/2024: no change.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "date": "2025-08-18T16:30",
+              "author": "neurology",
+              "body": "KESTREL HILL NEUROLOGY, Neuromuscular Clinic\nYearly review, 08/18/2025\n\nRe: Tyler Boucher, DOB 07/29/1991\n\nDear Doctor,\n\nMr. Boucher is unchanged from last year. He continues weekly augmentation infusions and albuterol as needed for his alpha-1 antitrypsin deficiency. Limb strength and stairs as before, occasional double vision, no trouble swallowing, no palpitations or faints, no hearing change. Walking most days.\n\nExamination unchanged: bilateral ptosis, limited eye movements in more than one direction, mild proximal limb weakness.\n\nECG today: sinus rhythm 58/min, PR 158 ms, QRS 94 ms, QTc 418 ms. Normal and unchanged.\n\nPlan: continue the home exercise program. Review in a year with an ECG.\n\nSincerely,\nNeurology, Kestrel Hill Neurology\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "yearly physical",
+          "vitals": {
+            "bp": [
+              117,
+              68
+            ],
+            "hr": 69,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 94,
+            "weight_kg": 63.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-16T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 212
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 64
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-16T11:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 57
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 48
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-16T11:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 502
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-16T10:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-16T10:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-16T11:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-16T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-16T11:30",
+              "author": "PCP",
+              "body": "Annual physical, 34-year-old man.\n\nSince last year: no new problems. Monthly allergy injections continue at Mill River, no reactions. Breathing unchanged, still a couple of blocks before he has to stop. Weekly augmentation infusions at home continue, albuterol now and then; pulm 6/17: spirometry unchanged. Neurology 8/18: stable, ECG normal. Muscle weakness and the droopy lids about the same. Working freelance design from home, steady. Sleeping fine. Mood good.\n\nActive problems:\n- Allergic rhinitis due to pollen, on SCIT\n- Mitochondrial myopathy, with exercise intolerance\n- Alpha-1 antitrypsin deficiency (PiZZ), lower-lobe emphysema; mild transaminase elevation\nMeds: cetirizine 10 mg PRN, fluticasone nasal daily, SCIT monthly (outside), albuterol HFA PRN, alpha-1 proteinase inhibitor 60 mg/kg IV weekly (home infusion, pulm).\nAllergies: tree/grass/weed pollen; NKDA.\nPHQ-9: 1.\nNever smoker; 1-2 drinks/wk.\n\nVitals: BP 117/68, HR 69, RR 15, T 36.9, SpO2 94% RA, wt 63.2 kg, BMI 19.7.\nGeneral: thin, comfortable.\nEyes: mild bilateral ptosis.\nENT: nasal mucosa slightly pale. Oropharynx clear.\nHeart: regular, no murmur.\nLungs: mild prolongation of expiration, clear otherwise.\nAbdomen: soft, nontender, no organomegaly.\nExtremities: no edema, no clubbing.\nNeuro: mild proximal weakness, stable.\nMood/affect: normal.\n\nAssessment and plan:\n1. Health maintenance: flu shot given in clinic today. Depression screen negative. Vaccines otherwise current. CBC, CMP, CK drawn.\n2. AATD with emphysema: stable on weekly augmentation, PRN albuterol, per pulm.\n3. Mitochondrial myopathy: stable, neurology yearly.\n4. Allergic rhinitis: continue SCIT and current meds.\nBack in 6 months for a check-in and labs."
+            },
+            {
+              "type": "Patient Instructions",
+              "title": "After Visit Summary",
+              "date": "2025-09-16T11:35",
+              "author": "PCP",
+              "body": "Annual physical today.\n\nFlu shot given. Labs drawn: blood count, metabolic panel, liver tests, CK.\nNo medication changes.\nPlease book a 6-month check-in for March with labs at that visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-18a",
+          "kind": "portal_message",
+          "start": "2025-09-18T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2025-09-18T14:20",
+              "author": "PCP",
+              "body": "Tyler, labs are stable. CBC normal, kidney function and glucose normal. ALT 57, AST 48, CK 502, all in the same range as the past two years. Front desk will reach out to book your March check-in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "March visit",
+              "date": "2025-09-19T09:05",
+              "author": "front desk",
+              "body": "Hi Tyler, you are booked for Tue 3/17/2026 at 10:40 for your 6-month check-in with labs. Reply here or text the practice line if you need to change it."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "outside_records",
+          "start": "2026-02-24T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "immunotherapy annual review",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Immunotherapy Annual Review",
+              "date": "2026-02-24T10:15",
+              "author": "otolaryngology",
+              "body": "Mill River ENT & Allergy\nYearly SCIT note, 02/2026\n\nTyler Boucher continues monthly maintenance injections of grass, tree and weed pollen extract, now in his sixth year of treatment. Every injection this year was given without a local or systemic reaction. Medications as before: cetirizine as needed, fluticasone propionate nasal spray, albuterol inhaler as needed and weekly alpha-1 proteinase inhibitor infusions at home. We will keep him on maintenance and review in a year.\n\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "office_visit",
+          "start": "2026-03-17T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6-month check-in with labs",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2026-03-18a",
+          "kind": "telephone",
+          "start": "2026-03-18T11:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-Show Follow-up",
+              "date": "2026-03-18T11:50",
+              "author": "front desk",
+              "body": "Pt did not come to 3/17 check-in. Called x1, voicemail full. Texted practice line message asking him to call to rebook. 3/25: no reply, sent portal message with scheduling link. Will leave for PCP to decide on further outreach at next touch."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-25a",
+          "kind": "portal_message",
+          "start": "2026-03-25T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "rebook missed visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2026-03-25T09:30",
+              "author": "front desk",
+              "body": "Hi Tyler, we missed you at your check-in on 3/17. When you have a minute, use the link below or text the practice line to pick a new time. Your labs can be drawn at the same visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "hospital_admission",
+          "start": "2026-06-09T16:30",
+          "end": "2026-06-26T11:00",
+          "service": "Inpatient Psychiatry",
+          "reason": "psychosis, stabilization",
+          "conditions": [
+            {
+              "label": "Schizophrenia",
+              "action": "diagnosed",
+              "onset": "2025-10-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "risperidone 2 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Schizophrenia"
+            },
+            {
+              "drug_text": "benztropine mesylate 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Prevention of extrapyramidal side effects of risperidone"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Admission Notification",
+              "date": "2026-06-10T09:25",
+              "author": "front desk",
+              "body": "Fax from Westmere Regional Hospital, Behavioral Health Unit: patient admitted 6/9/2026 to inpatient psychiatry. Unit requests med list and recent PCP notes. Sent last physical (9/2025), problem list, med and allergy list. Flagged to PCP."
+            },
+            {
+              "type": "H&P",
+              "title": "Psychiatric Admission Evaluation",
+              "date": "2026-06-12T14:00",
+              "author": "psychiatry",
+              "body": "WESTMERE REGIONAL HOSPITAL, BEHAVIORAL HEALTH UNIT\nPsychiatric Admission Evaluation\nDate of admission: 06/09/2026\n\nPatient: Tyler Boucher, 34-year-old man\n\nReason for admission: inpatient stabilization of psychotic symptoms.\n\nHistory of present illness: Over roughly the past 8 months Mr. Boucher has been hearing voices that others do not hear. His speech has become increasingly disorganized and difficult to follow, and he has withdrawn from the people around him. No prior psychiatric treatment or hospitalization.\n\nPsychiatric history: none prior.\nMedical history: alpha-1 antitrypsin deficiency (PiZZ) with emphysema; mitochondrial myopathy; seasonal allergic rhinitis on subcutaneous immunotherapy; exercise intolerance.\nSurgical: tonsillectomy.\nHome medications: cetirizine 10 mg daily as needed; fluticasone propionate nasal spray 2 sprays per nostril daily; monthly allergen immunotherapy (outside); albuterol HFA 2 puffs every 4 to 6 hours as needed; alpha-1 proteinase inhibitor (human) 60 mg/kg IV weekly by home infusion (pulmonology).\nAllergies: tree, grass and weed pollen. No known drug allergies.\nFamily history: maternal uncle with schizophrenia. Identical twin brother, well, with no psychiatric illness; he has been in touch with the team and has asked about his own chances of developing a similar illness. Mother has mitochondrial myopathy. Father, now deceased, had alpha-1 antitrypsin deficiency.\nSocial history: freelance graphic designer. Never smoker. Alcohol socially, 1-2 drinks per week. Denies recreational drug use.\n\nMental status examination: Alert and cooperative. Speech disorganized and at times hard to follow. Reports auditory hallucinations. Socially withdrawn on the unit. Denies suicidal or homicidal ideation. Oriented to person, place and time.\n\nAssessment: Symptoms meet DSM-5 criteria for schizophrenia.\n\nPlan:\n1. Admit to the behavioral health unit for stabilization.\n2. Start risperidone 2 mg by mouth daily.\n3. Start benztropine 1 mg by mouth twice daily.\n4. Continue cetirizine, fluticasone and albuterol as needed. Hold the weekly augmentation infusions during the admission; resume at home after discharge.\n5. Social work and family meeting; team to meet with his brother regarding his question.\n\nAttending Psychiatrist, Behavioral Health Unit"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "outside_records",
+          "start": "2026-06-26T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "psychiatric discharge summary",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Psychiatric Discharge Summary",
+              "date": "2026-06-26T15:45",
+              "author": "psychiatry",
+              "body": "WESTMERE REGIONAL HOSPITAL, BEHAVIORAL HEALTH UNIT\nDischarge Summary\n\nPatient: Tyler Boucher, DOB 07/29/1991\nAdmitted: 06/09/2026  Discharged: 06/26/2026\n\nDischarge diagnosis: Schizophrenia.\nOther diagnoses: alpha-1 antitrypsin deficiency with emphysema; mitochondrial myopathy; seasonal allergic rhinitis.\n\nHospital course: Admitted for stabilization after about eight months of auditory hallucinations, disorganized speech and social withdrawal; DSM-5 criteria for schizophrenia met. Started on risperidone 2 mg daily with benztropine 1 mg twice daily. Psychotic symptoms improved over the stay on risperidone. He was judged ready for discharge home with outpatient follow-up.\n\nFamily: During the admission his identical twin brother, who is well, asked the team about his own risk of developing schizophrenia. He was told that his risk is higher than that of the general population; no specific figures were given.\n\nDischarge medications:\n- Risperidone 2 mg by mouth daily (new)\n- Benztropine 1 mg by mouth twice daily (new)\n- Cetirizine 10 mg by mouth daily as needed (continued)\n- Fluticasone propionate 50 mcg nasal spray, 2 sprays per nostril once daily (continued)\n- Allergen immunotherapy injections, monthly at allergist (continued)\n- Albuterol HFA 90 mcg, 2 puffs every 4 to 6 hours as needed (continued)\n- Alpha-1 proteinase inhibitor (human) 60 mg/kg IV weekly by home infusion (held during the admission; resume)\nAllergies: tree, grass and weed pollen. No known drug allergies.\n\nFollow-up: outpatient psychiatry appointment arranged; details given to patient. PCP within 1 to 2 weeks.\n\nAttending Psychiatrist, Behavioral Health Unit\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "telephone",
+          "start": "2026-06-29T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2026-06-29T10:48",
+              "author": "RN",
+              "body": "Called pt after receiving discharge summary from Westmere Regional BHU (discharged 6/26, new dx schizophrenia).\nSpoke with Tyler. Has his discharge medications and is taking risperidone 2 mg daily and benztropine 1 mg twice a day. Reviewed list with him, matches summary; continues cetirizine, fluticasone, allergy shots and albuterol as needed. His weekly augmentation infusion resumes at home this Thursday 7/2; infusion nurse has the date. Has his outpatient psychiatry appointment. No questions about meds.\nOffered PCP visit this week or next; pt would rather wait until after his first psychiatry appointment, will call to book. Told to call or text the practice line any time.\nMed list reconciled: risperidone and benztropine added as outside meds. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-03a",
+          "kind": "ed_visit",
+          "start": "2026-07-03T14:25",
+          "end": "2026-07-04T11:30",
+          "service": "Emergency Medicine",
+          "reason": "confusion",
+          "conditions": [
+            {
+              "label": "Adverse effect of anticholinergic medication",
+              "action": "diagnosed",
+              "onset": "2026-07-01",
+              "note": "Benztropine",
+              "icd10": "T44.3X5A"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "benztropine mesylate 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Anticholinergic toxicity"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Benztropine",
+              "reaction": "Anticholinergic toxicity",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-07-03T14:32",
+              "bp": [
+                152,
+                88
+              ],
+              "hr": 104,
+              "rr": 18,
+              "temp_c": 38.1,
+              "spo2": 95
+            },
+            {
+              "time": "2026-07-03T20:10",
+              "bp": [
+                138,
+                82
+              ],
+              "hr": 96,
+              "rr": 16,
+              "temp_c": 37.6,
+              "spo2": 95
+            },
+            {
+              "time": "2026-07-04T07:45",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 95
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-07-03T14:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 233
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.95
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-03T14:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-03T14:50",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 549
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-07-03T15:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.012
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.9
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "date": "2026-07-06T08:10",
+              "author": "emergency medicine",
+              "body": "WESTMERE REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nProvider note, arrival 07/03/2026 14:25 (Friday)\n\nCC: confusion\n\nHPI: 34-year-old man, discharged from our behavioral health unit one week ago with a new diagnosis of schizophrenia, started there on risperidone 2 mg daily and benztropine 1 mg twice daily. Also has alpha-1 antitrypsin deficiency and mitochondrial myopathy. For the last two days he has been confused and restless, eating and drinking very little, and complains his vision is blurry. His roommate, who brought him, says he has been behaving strangely, talking to himself, and will not eat or drink. The patient says he feels much too hot. History limited by his mental status; obtained from roommate and our discharge records.\n\nMeds (per discharge list): risperidone 2 mg daily; benztropine 1 mg BID; cetirizine 10 mg PRN; fluticasone nasal; monthly allergen immunotherapy; albuterol PRN; alpha-1 proteinase inhibitor IV weekly by home infusion.\nAllergies on arrival: tree/grass/weed pollen; no drug allergies.\nPMH: schizophrenia (06/2026), AATD (PiZZ) with emphysema, mitochondrial myopathy, allergic rhinitis.\n\nExam:\nT 38.1 C (100.6 F), HR 104, BP 152/88, RR 18, SpO2 95% RA.\nGeneral: restless, not in respiratory distress.\nSkin: flushed, warm and dry. No rash.\nHEENT: mucous membranes dry. Pupils 5 mm bilaterally, sluggishly reactive to light.\nNeck: supple.\nCV: tachycardic, regular, no murmur.\nLungs: clear, no crackles.\nAbdomen: soft, nontender, bladder not palpable.\nNeuro: no rigidity, no clonus, no tremor. Moves all extremities. Inattentive; disoriented to time and place.\n\nWorkup:\n- CBC: within normal limits.\n- BMP: within normal limits.\n- CK 549 U/L; near his chronic baseline in the 500s with known mitochondrial myopathy.\n- Urinalysis: unremarkable.\n\nMDM: Delirium with fever, tachycardia, hypertension, flushed dry skin, dry mucosa, mydriasis and blurred vision, one week after starting benztropine: anticholinergic toxicity from benztropine. No rigidity and CK at his baseline make neuroleptic malignant syndrome unlikely. Labs otherwise reassuring.\n\nED course: benztropine held. IV normal saline. Cooling measures and a low-stimulation room. Placed in observation for serial reassessment.\n\nDiagnosis: Adverse effect of anticholinergic medication (benztropine) with delirium.\nBenztropine discontinued. Benztropine (anticholinergic toxicity) entered as a drug allergy.\n\nEmergency Medicine Attending\ncc: PCP"
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "ED Observation Discharge",
+              "date": "2026-07-06T08:10",
+              "author": "emergency medicine",
+              "body": "WESTMERE REGIONAL HOSPITAL, ED Observation Unit\nDischarge note, 07/04/2026 11:30\n\nObserved overnight on IV fluids and supportive care for benztropine anticholinergic toxicity. Temperature down by evening. By the morning of 07/04: afebrile (T 37.0), HR 84, BP 124/78, SpO2 95%. Alert, calm and oriented to person, place and time. Eating and drinking. Pupils normal size and reactive. Vision clear per patient.\n\nDisposition: discharged home with his roommate.\n\nMedication changes: STOP benztropine. Other home medications unchanged.\nNew allergy: Benztropine (anticholinergic toxicity).\n\nCommunication: our inpatient psychiatry team was informed of the visit and the benztropine reaction before discharge.\n\nFollow-up: outpatient psychiatry as scheduled; PCP in 1 to 2 weeks. Return for fever, confusion, stiffness or inability to eat or drink.\n\nED Observation Physician"
+            }
+          ],
+          "state": {
+            "spo2": 94.5,
+            "labs": {
+              "Creatine Kinase": 560,
+              "Monocytes %": 6
+            }
+          }
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "telephone",
+          "start": "2026-07-06T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-ED call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED Call",
+              "date": "2026-07-06T10:05",
+              "author": "RN",
+              "body": "ED and observation notes received this morning from Westmere Regional (7/3-7/4): anticholinergic toxicity from benztropine, benztropine stopped, added as drug allergy.\nCalled pt. He sounds clear and answers questions appropriately. No fever since discharge, eating and drinking normally, vision back to normal. He is not taking benztropine; still on risperidone 2 mg daily. Psychiatry is aware per ED.\nAllergy list updated: benztropine (anticholinergic toxicity). Benztropine removed from active med list.\nBooked PCP follow-up Tue 7/14 10:00. ED precautions reviewed."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Review",
+              "date": "2026-07-06T12:30",
+              "author": "PCP",
+              "body": "Reviewed BHU discharge summary and ED records. Agree with plan. Will see 7/14."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "office_visit",
+          "start": "2026-07-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED and psychiatric discharge",
+          "conditions": [
+            {
+              "label": "Adverse effect of anticholinergic medication",
+              "action": "resolved",
+              "icd10": "T44.3X5A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              68
+            ],
+            "hr": 63,
+            "rr": 13,
+            "temp_c": 36.7,
+            "spo2": 94,
+            "weight_kg": 64.2
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-07-14T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "risperidone-monitoring-labs",
+              "action": "placed",
+              "order": "Fasting glucose, hemoglobin A1c and lipid panel",
+              "category": "lab",
+              "reason": "metabolic monitoring on risperidone, draw at September visit"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2026-07-14T10:50",
+              "author": "PCP",
+              "body": "TCM visit after psychiatric admission and ED observation stay.\n\nTimeline from outside records:\n- 6/9 to 6/26 Westmere Regional BHU: schizophrenia diagnosed (about 8 months of symptoms), started risperidone 2 mg daily and benztropine 1 mg BID, improved, discharged with outpatient psychiatry follow-up.\n- 7/3 to 7/4 Westmere ED/obs: two days of confusion, restlessness, poor intake, blurred vision; febrile 38.1, HR 104, BP 152/88, flushed dry skin, dilated sluggish pupils, no rigidity. CBC, BMP, UA normal; CK 549 (his usual). Anticholinergic toxicity from benztropine. IV fluids, observed overnight, afebrile and oriented next morning. Benztropine stopped and added as an allergy.\n\nToday: Tyler says he feels like himself again since getting out of the ED, no fevers, eating and drinking normally, vision is fine. Taking risperidone every day, no benztropine since 7/3. Outpatient psychiatry is following him and he has seen them since discharge. Still on cetirizine, fluticasone and monthly allergy shots. Weekly augmentation infusions were held during the admission and restarted at home on 7/2; albuterol now and then.\n\nMeds: risperidone 2 mg daily; cetirizine 10 mg PRN; fluticasone nasal 2 sprays each nostril daily; SCIT monthly (outside); albuterol HFA PRN; alpha-1 proteinase inhibitor 60 mg/kg IV weekly (home infusion, pulm).\nAllergies: benztropine (anticholinergic toxicity); tree/grass/weed pollen.\n\nVS: BP 109/68, HR 63, RR 13, T 36.7, SpO2 94% RA, wt 64.2 kg, BMI 20.0.\nGen: calm, cooperative, NAD.\nSkin: normal color, not flushed, normal moisture.\nHEENT: pupils equal, normal size, briskly reactive. Mucous membranes moist. Mild bilateral ptosis as before.\nCV: RRR, no murmur.\nLungs: mildly prolonged expiration, otherwise clear.\nAbd: soft, NT.\nNeuro: alert, oriented to person, place, date and situation. Attention normal. No tremor or rigidity. Mild proximal weakness unchanged.\n\nA/P:\n1. Anticholinergic toxicity from benztropine: resolved. Benztropine on allergy list; he and psychiatry are aware not to restart it.\n2. Schizophrenia, new dx 6/2026: on risperidone 2 mg daily, continuing per psychiatry, who are following him. Med rec done with him today.\n3. Risperidone metabolic monitoring: fasting glucose or A1c, lipids and weight at a follow-up in September; lab order placed.\n4. AATD with emphysema on weekly augmentation, mitochondrial myopathy, allergic rhinitis: stable, no changes. Yearly neurology review is due; he will book it.\nTCM: discharge records reviewed, med reconciliation, interactive contact 7/6.\nRTC September (fasting)."
+            },
+            {
+              "type": "Patient Instructions",
+              "title": "After Visit Summary",
+              "date": "2026-07-14T10:55",
+              "author": "PCP",
+              "body": "Follow-up after your hospital stay and ED visit.\n\nMedicines:\n- Keep taking risperidone 2 mg once a day as prescribed by psychiatry.\n- Do NOT take benztropine. It is now listed as an allergy in your chart.\n- Cetirizine, fluticasone spray, allergy shots, albuterol inhaler and weekly augmentation infusions: no change.\n\nNext visit: September, fasting, for blood sugar, cholesterol and weight checks that go with risperidone.\nKeep your psychiatry appointments.\nCall or text us right away for fever, confusion, blurry vision or trouble eating or drinking."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "pharmacy",
+          "start": "2026-07-28T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Request: Risperidone",
+              "date": "2026-07-28T09:15",
+              "author": "MA",
+              "body": "eRx renewal request from pharmacy for risperidone 2 mg tab daily, addressed to PCP. Called pharmacy: outpatient psychiatry already sent a new risperidone Rx yesterday with refills, filled this morning. Request declined as duplicate, prescriber of record is psychiatry. Pt notified by text."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "scheduling follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sept appointment",
+              "date": "2026-08-18T16:20",
+              "author": "patient",
+              "body": "Hi, you said to come back in September for bloodwork for the risperidone. Can I get a morning appointment? Do I need to not eat before?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sept appointment",
+              "date": "2026-08-19T08:40",
+              "author": "front desk",
+              "body": "Hi Tyler, you are booked Tue 9/22 at 8:20 with your PCP. Yes, please fast (water and your usual morning meds are fine) for 8 hours before. Labs will be drawn at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "risperidone monitoring: fasting glucose or A1c, lipids, weight",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Adverse effect of anticholinergic medication|T44.3X5A": {
+        "code": "T44.3X5A",
+        "display": "Adverse effect of other parasympatholytics [anticholinergics and antimuscarinics] and spasmolytics, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Exercise intolerance|R53.83": {
+        "code": "R53.83",
+        "display": "Other fatigue",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Mitochondrial myopathy|G71.3": {
+        "code": "G71.3",
+        "display": "Mitochondrial myopathy, not elsewhere classified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "benztropine mesylate 1 MG Oral Tablet": {
+        "code": "885213",
+        "display": "benztropine mesylate 1 MG Oral Tablet",
+        "ingredient": "benztropine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "risperidone 2 MG Oral Tablet": {
+        "code": "312831",
+        "display": "risperidone 2 MG Oral Tablet",
+        "ingredient": "risperidone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "rejected": [
+      "drug \"allergenic extract, grass, tree and weed pollen mix, injectable solution\"",
+      "drug \"alpha 1-proteinase inhibitor, human 1000 MG Injection\""
+    ]
+  }
+}

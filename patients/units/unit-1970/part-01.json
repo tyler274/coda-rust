@@ -1,0 +1,593 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001970",
+      "given": "Scott",
+      "family": "Pomeroy",
+      "birth_date": "1970-09-23",
+      "address_line": "56 Lyman Road",
+      "phone": "+1-802-555-0100",
+      "email": "scott.pomeroy@example.test",
+      "marital_status": "married",
+      "summary": "Former construction laborer on disability with severe alcohol use disorder who joins in 2021 with hypertension and peptic ulcer disease, is found to have alcoholic cirrhosis in 2023, and decompensates with ascites, encephalopathy and variceal bleeding through 2026, ending with a TIPS and an open transplant evaluation.",
+      "events": [
+        {
+          "id": "2021-08-10a",
+          "kind": "telephone",
+          "start": "2021-08-10T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2021-08-10T10:20",
+              "body": "Wife phoned on his behalf. Their old PCP office stopped taking his plan and he has been out of refills twice this year. Medicaid card info taken, eligibility verified with the plan. Booked new patient appt next week, 40 min slot. Asked that he bring all pill bottles and the name of the old office so we can request records. Release form emailed to the address on file."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "establish_care",
+          "start": "2021-08-17T09:00",
+          "end": "2021-08-17T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care, blood pressure, refills",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2016-01-01",
+              "note": "on amlodipine since about 2016 per patient"
+            },
+            {
+              "label": "Peptic ulcer disease",
+              "action": "history",
+              "onset": "2017-01-01",
+              "note": "treated at prior practice; maintained on PPI"
+            },
+            {
+              "label": "Alcohol use disorder, severe",
+              "icd10": "F10.20",
+              "action": "diagnosed",
+              "onset": "2008-01-01"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "1992-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily before breakfast",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "peptic ulcer disease"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              90
+            ],
+            "weight_kg": 86.0,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "About six beers daily for roughly thirteen years"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer, on disability leave"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-08-17T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-08-17T09:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2021-est",
+              "action": "placed",
+              "order": "CBC, CMP, lipid panel, A1c, hepatitis C antibody, HIV screen",
+              "category": "lab",
+              "reason": "new patient baseline"
+            },
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Outside records request, prior primary care",
+              "category": "referral",
+              "to": "Prior primary care office",
+              "reason": "establish care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-08-17T09:50",
+              "body": "NEW PATIENT\n\n50 y/o man here to establish. Previous PCP office no longer took his insurance; he has been stretching his BP pills. Wife waited in the car.\n\nHTN: told he had high pressure around 2016, on amlodipine 5 since. Does not check at home. No headaches, chest pain, dyspnea.\n\nUlcer history: had an ulcer around 2017 at the old office, treated, has stayed on pantoprazole daily since. No current heartburn, no black stools, no vomiting.\n\nAlcohol: drinks beer every day, usually a six-pack, has for about 13 years, more on weekends. Has had stretches of cutting back that do not last. No withdrawal seizures or DTs he knows of. Has never been in a program. Not interested in a referral today, said he would try to cut down on his own.\n\nTobacco: about two-thirds of a pack a day since his early twenties. Tried quitting once with gum.\n\nWork: laborer on building crews for most of his life; out on disability leave now.\n\nFamily: father drank heavily and died of liver cirrhosis at 58. Mother has hypertension and type 2 diabetes. A brother also struggles with alcohol.\n\nMeds: amlodipine 5 mg daily, pantoprazole 40 mg daily.\nAllergies: none known.\n\nROS otherwise negative.\n\nExam: BP 142/90 seated, repeated similar. Well appearing, a little ruddy. Sclerae white. Heart regular, no murmur. Lungs clear, no wheeze. Abdomen soft, nontender, no mass felt, no distension. No edema. Gait steady.\n\nAUDIT-C 10. PHQ-2 1.\n\nA/P\n1. Hypertension, above goal on amlodipine 5. Away from meds on and off; refilled, recheck in a few months before changing anything.\n2. Peptic ulcer disease, history - continue pantoprazole.\n3. Alcohol use disorder, severe by history. Talked plainly about his dad's liver and what daily use does. He wants to try cutting down first. Gave the program list; door is open.\n4. Tobacco - advised to quit, he will think about it; offered patch or other aids.\n5. Health maintenance - Tdap today. Fasting labs ordered. Records request for old practice. Colon screening: says he did a stool card last year, will confirm with records.\n\nReturn 3-4 months."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              90
+            ],
+            "weight_kg": 86.0
+          }
+        },
+        {
+          "id": "2021-09-02a",
+          "kind": "outside_records",
+          "start": "2021-09-02T14:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "outside primary care",
+              "date": "2021-09-02T14:10",
+              "body": "Records received by fax, 14 pages, covering 2015-2021 (original visit dates 2015-03 through 2021-02).\n\nProblem list on their summary: Hypertension (since 2016). Peptic ulcer disease (2017), treated, on maintenance PPI. Tobacco use. Alcohol use.\nMedications: amlodipine 5 mg daily; pantoprazole 40 mg daily.\nAllergies: NKDA.\nScreening: FIT 2020-06, negative.\nLast visit 2021-02: BP 146/92, counseled on alcohol and smoking, refills given.\n\nScanned to chart under outside records. Reviewed by PCP."
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2021-09-02T14:10"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "portal_message",
+          "start": "2021-09-21T11:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab reminder",
+              "author": "MA",
+              "date": "2021-09-21T11:05",
+              "body": "Hi Scott, a reminder that the bloodwork ordered at your first visit has not been drawn yet. You can walk in to the lab any weekday morning; nothing to eat after midnight the night before. Reply here if you need the order resent."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-14a",
+          "kind": "nurse_visit",
+          "start": "2021-10-14T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu shot, pneumonia vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-14T13:35"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-10-14T13:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-14T13:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2021-10-14T13:45",
+              "body": "Here for flu vaccine. Per PCP standing order also given PCV20 (smoker, daily alcohol use). Flu 0.5 mL IM left deltoid, PCV20 0.5 mL IM right deltoid. Tolerated well, waited 15 min. FIT kit handed to pt with instructions since his last one was 2020. Reminded about fasting labs; he says he will go next week."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "lab_only",
+          "start": "2021-11-09T08:40",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-11-08T07:00",
+              "resulted": "2021-11-09T15:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "PCP",
+              "date": "2021-11-10T08:15",
+              "body": "FIT negative. Repeat in a year. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "office_visit",
+          "start": "2022-02-08T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "state": {
+            "bp": [
+              138,
+              88
+            ],
+            "weight_kg": 85.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-02-08T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-02-08T11:05",
+              "body": "F/u HTN.\n\nTaking amlodipine every day now that he has refills on auto-fill. No side effects, no ankle swelling. Still drinking most days, \"maybe a little less\" - roughly 5-6 cans. Still smoking. Labs from August never drawn, he keeps meaning to.\n\nBP 138/88. Heart RRR, lungs clear, no edema.\n\nA/P\n- HTN: closer. Stay on amlodipine 5. Recheck at physical.\n- Alcohol/tobacco: not ready for treatment; brief counseling again. He knows the number to call.\n- Labs: order still active; MA walked him to the scheduling desk to book a draw before his physical.\n\nPhysical in the fall."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ],
+            "weight_kg": 85.5
+          }
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "pharmacy",
+          "start": "2022-05-17T16:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2022-05-17T16:10",
+              "body": "Pharmacy fax: refill request amlodipine 5 mg #90 and pantoprazole 40 mg #90. Last visit 2/2022. Sent per protocol, 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-09-20b",
+          "kind": "telephone",
+          "start": "2022-09-20T11:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2022-09-20T11:50",
+              "body": "No-show for 8:30 physical. Reached wife, he forgot. Rebooked for next month; labs to be drawn the same morning."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "annual_physical",
+          "start": "2022-10-19T08:30",
+          "end": "2022-10-19T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "bp": [
+              138,
+              88
+            ],
+            "weight_kg": 85.0,
+            "labs": {
+              "Aspartate Aminotransferase": 76,
+              "Alanine Aminotransferase": 52,
+              "Platelets": 138,
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-19T08:05",
+              "resulted": "2022-10-19T15:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 76
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-10-19T08:05",
+              "resulted": "2022-10-19T13:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 138
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-19T08:05",
+              "resulted": "2022-10-19T15:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-19T08:05",
+              "resulted": "2022-10-20T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-10-19T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-19T09:10"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-10-19T09:12"
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2021-est",
+              "action": "done",
+              "date": "2022-10-19T08:05"
+            },
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "20 pack-year current smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-10-19T09:20",
+              "body": "ANNUAL PHYSICAL\n\n52 y/o man for yearly exam; rescheduled from last month. Fasting labs drawn this AM, finally.\n\nInterval: no ER visits. BP meds daily. Beer most days, about six. Smoking 2/3 ppd, figures 20 pack-years give or take. Sleeping ok. Mood fine, PHQ-9 3. Wife is after him to cut back.\n\nROS: no chest pain, no shortness of breath, no abdominal pain, no blood in stool, no vomiting blood, no swelling.\n\nMeds: amlodipine 5 daily, pantoprazole 40 daily. NKDA.\n\nExam: BP 138/88. Alert, conversant. Eyes anicteric. Oropharynx clear. Neck supple, no nodes. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organ enlargement appreciated, no fluid. Skin without rash. No edema. Neuro grossly normal.\n\nA/P\n- Preventive: flu and first Shingrix today. Lung screening CT ordered - meets criteria with his pack-years. FIT due next month; kit at front desk.\n- HCV and HIV screening sent with today's labs.\n- HTN: acceptable, continue amlodipine.\n- Alcohol: same conversation, same answer. Will look at the liver tests with him.\n- Tobacco: advised to stop.\n\nSee results note."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ],
+            "weight_kg": 85.0
+          }
+        },
+        {
+          "id": "2022-10-21a",
+          "kind": "portal_message",
+          "start": "2022-10-21T12:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical lab results",
+              "author": "PCP",
+              "date": "2022-10-21T12:30",
+              "body": "Scott - your labs are back. Kidney function, sugar and cholesterol are fine, and the hepatitis C and HIV tests are negative. Two things stand out: your liver enzymes are up (AST 76, ALT 52) and your platelet count is a little low at 138. That pattern fits with daily drinking stressing the liver. The best treatment is cutting way back or stopping. I would like to repeat these in about 3 months - the lab order is in. If you want help with the drinking, the program list I gave you still stands, or call me."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "imaging",
+          "start": "2022-11-29T10:00",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-11-29T10:00",
+              "issued": "2022-11-29T16:20",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (BASELINE)\nIndication: 52-year-old current smoker, approximately 20 pack-years.\nTechnique: Low-dose helical CT of the chest without contrast.\nFindings: Lungs are clear without nodule, mass or consolidation. No emphysema. Airways patent. No pleural effusion. Heart size normal, no pericardial effusion. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable. No acute osseous abnormality.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "done",
+              "date": "2022-11-29T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lung screening result",
+              "author": "PCP",
+              "date": "2022-11-30T09:10",
+              "body": "Lung screening CT clear, Lung-RADS 1. Repeat in one year. Still the best thing for these lungs is quitting. Released to portal."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

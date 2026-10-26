@@ -1,0 +1,588 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002007",
+      "events": [
+        {
+          "id": "2026-02-03a",
+          "kind": "office_visit",
+          "start": "2026-02-03T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure check",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-02-03b",
+          "kind": "telephone",
+          "start": "2026-02-03T11:05",
+          "reason": "appointment cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2026-02-03T11:05",
+              "body": "School let out early for the storm, pt doesn't want to drive in it — cancelled today's 3:45 BP check. Says home numbers are \"same as always, 120s.\" He'll send a log through the portal instead and rebook in the spring. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T09:35",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2026-02-10T09:35",
+              "body": "Mail-order renewal for atorvastatin 20 mg daily, 90 days x 3. Lipids 10/2025 stable. Approved per protocol. He also posted a week of home BPs to the portal — 118-128 / 74-80. PCP aware, no changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-14a",
+          "kind": "ed_visit",
+          "start": "2026-03-14T10:44",
+          "end": "2026-03-14T11:35",
+          "service": "Emergency Medicine",
+          "reason": "out-of-hospital cardiac arrest",
+          "conditions": [
+            {
+              "label": "Ventricular fibrillation",
+              "icd10": "I49.01",
+              "action": "diagnosed",
+              "onset": "2026-03-14",
+              "note": "refractory VF cardiac arrest, out of hospital"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-03-14T10:58",
+              "hr": 108
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-14T10:50",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-14T10:50",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-14T10:50",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 7.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-14T11:02",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 64
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-03-14T11:00",
+              "text": "Post-resuscitation 12-lead ECG. Sinus tachycardia, rate 108. Normal axis. QRS narrow. QTc 448 ms. No ST-segment elevation; no Brugada pattern; no pre-excitation.",
+              "conclusion": "Sinus tachycardia without ST elevation. QTc 448 ms."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-14b",
+          "kind": "hospital_admission",
+          "start": "2026-03-14T11:35",
+          "end": "2026-03-23T13:00",
+          "service": "Cardiology — Cardiac Intensive Care",
+          "reason": "post-cardiac arrest care after refractory ventricular fibrillation",
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ventricular fibrillation, secondary prevention with ICD"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-14T23:00",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 2310
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-16T05:00",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-16T05:00",
+              "results": [
+                {
+                  "test": "Magnesium"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cardiac catheterization study",
+              "loinc": "18745-0",
+              "performed": "2026-03-14T11:50",
+              "text": "EMERGENT CORONARY ANGIOGRAPHY\nIndication: Out-of-hospital VF arrest with ROSC; post-ROSC ECG without ST elevation.\nAccess: Right radial artery. Patient intubated and sedated.\nLeft main: Normal.\nLeft anterior descending: No obstructive disease.\nLeft circumflex: No obstructive disease.\nRight coronary artery: Dominant, no obstructive disease.\nNo dissection, thrombus or anomalous origin.\nHemostasis with radial band. No complications.",
+              "conclusion": "No obstructive coronary artery disease. No culprit lesion. No intervention."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-03-15T09:30",
+              "text": "TRANSTHORACIC ECHOCARDIOGRAM\nIndication: post-cardiac arrest.\nLeft ventricle: Normal size and wall thickness. LVEF 55% by biplane method. No regional wall-motion abnormality.\nRight ventricle: Normal size and systolic function.\nAtria: Normal size.\nValves: Structurally normal; no significant stenosis or regurgitation.\nPericardium: No effusion.\nAorta: Normal root dimension.",
+              "conclusion": "Normal LV size and function, LVEF 55%. Normal RV. No significant valve disease."
+            },
+            {
+              "study": "MR Heart WO and W contrast IV",
+              "loinc": "36357-2",
+              "performed": "2026-03-18T13:00",
+              "text": "CARDIAC MRI WITH AND WITHOUT GADOLINIUM\nIndication: Ventricular fibrillation arrest, coronary angiography without obstructive disease; evaluate for cardiomyopathy or scar.\nLV: Normal size, normal wall thickness, normal global and regional systolic function. LVEF 58%.\nRV: Normal size and function.\nT2-weighted imaging: No myocardial edema.\nLate gadolinium enhancement: None.\nValves and pericardium: Normal.",
+              "conclusion": "Normal biventricular size and function, LVEF 58%. No late gadolinium enhancement or edema. No structural substrate for ventricular arrhythmia identified."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "telephone",
+          "start": "2026-03-16T14:15",
+          "reason": "hospital notification",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from Hospital Case Manager",
+              "author": "RN",
+              "date": "2026-03-16T14:15",
+              "body": "Case manager from the regional hospital CICU called: our patient was admitted Saturday 3/14 after an out-of-hospital cardiac arrest at a gym, VF, bystander CPR, ROSC in the ED. Cath showed no blockages. He was cooled and was extubated this morning, waking up appropriately per her. EP is involved and an ICD is likely before discharge. They asked for a current med list and allergies — faxed. Requested records at discharge. PCP notified; will need a post-discharge visit within a week of going home."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "outside_records",
+          "start": "2026-03-24T08:40",
+          "reason": "cardiac arrest admission records received",
+          "conditions": [
+            {
+              "label": "Presence of automatic (implantable) cardiac defibrillator",
+              "action": "diagnosed",
+              "onset": "2026-03-20",
+              "note": "transvenous single-chamber ICD, left pectoral, secondary prevention"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2026-03-24T08:40",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT — PHYSICIAN RECORD\nDate of service: 03/14/2026, arrival 10:44\nPatient: Chad Whitney, 57 M\nAllergies: NKDA\n\nChief complaint: Cardiac arrest.\n\nHPI (from EMS and bystanders): Collapsed suddenly around 10:20 while playing a pickup basketball game at a local gym. Found unresponsive and not breathing. One bystander with basic life support training began chest compressions immediately while another called 911. EMS arrived to good-quality bystander CPR in progress. Initial rhythm VF. EMS delivered 3 defibrillations with epinephrine and amiodarone 300 mg IV; VF persisted. Transported with ongoing compressions.\nPMH per records: hypertension, hypercholesterolemia, chronic low back pain. Prior evaluation for orthostatic lightheadedness after starting antihypertensive (12/2024). Postoperative ileus after burn excision and grafting (2025).\nMeds: lisinopril 10 mg daily, atorvastatin 20 mg daily, acetaminophen 500 mg PRN.\nFHx: father with sudden cardiac death at 64, HTN; mother DM2, HLD; sibling HTN.\nSocial: high school science teacher; ex-smoker, 20 pack-years, quit about 7 years ago; alcohol 2-3 drinks/month.\n\nExam on arrival: Pulseless and apneic, compressions in progress. Monitor: ventricular fibrillation.\n\nED course:\n10:46 Defibrillation #4. Compressions resumed. Epinephrine.\n10:49 Amiodarone 150 mg IV. Defibrillation #5 — VF persists.\n10:50 Intubated, ETT position confirmed with waveform capnography. Labs sent.\n10:51 Lidocaine 100 mg IV. Pads changed to anterior-posterior.\n10:52 Defibrillation #6 (vector change). Organized rhythm, palpable pulse — ROSC about 32 minutes after collapse. Epinephrine 4 mg total, prehospital and ED.\n11:00 Post-ROSC 12-lead: sinus tachycardia 108, no ST elevation, QTc 448 ms.\nLabs: K 3.9, Mg 2.0, lactate 7.8, hs-troponin I 64 ng/L.\nCardiology at bedside; to cath lab emergently.\n\nImpression: Out-of-hospital cardiac arrest from refractory ventricular fibrillation, ROSC after 6 defibrillations.\nDisposition: Cardiac catheterization lab, then CICU."
+            },
+            {
+              "type": "Consult Note",
+              "title": "Electrophysiology Consultation",
+              "author": "electrophysiology",
+              "date": "2026-03-24T08:40",
+              "body": "CARDIAC ELECTROPHYSIOLOGY CONSULTATION (03/19/2026)\nReason: VF arrest, ICD evaluation.\n\n57M with HTN and hyperlipidemia, ex-smoker, who had a witnessed out-of-hospital arrest during basketball on 3/14. VF refractory to 5 shocks, ROSC after the 6th with a vector change. Angiography: no obstructive CAD. Echo LVEF 55%, cardiac MRI LVEF 58% with no LGE or edema. K and Mg normal on arrival. Post-ROSC ECG without ST elevation, QTc 448 ms; serial ECGs without Brugada pattern or pre-excitation. No ventricular ectopy of note on telemetry since ROSC. Off sedation, neurologically intact; no memory of the day.\n\nFamily history: father died suddenly at 64.\n\nImpression: VF cardiac arrest without an identified reversible cause or structural heart disease.\n\nRecommendations:\n1. Secondary-prevention ICD — transvenous single-chamber system, left pectoral; discussed risks, benefits and alternatives, he agrees. Planned 3/20.\n2. Metoprolol succinate 25 mg daily.\n3. Continue lisinopril and atorvastatin.\n4. Given his father's sudden death, offered referral for cardiac genetic counseling and testing. He would like time to think it over and talk to his sibling; no testing sent.\n5. No driving for 6 months from the arrest.\n6. Device clinic in 1 week, EP clinic in 4 weeks, remote monitoring enrollment."
+            },
+            {
+              "type": "Operative Note",
+              "title": "ICD Implantation",
+              "author": "electrophysiology",
+              "date": "2026-03-24T08:40",
+              "body": "PROCEDURE NOTE — date of procedure 03/20/2026\nProcedure: Implantation of transvenous single-chamber implantable cardioverter-defibrillator, left pectoral.\nIndication: Secondary prevention after VF cardiac arrest without reversible cause.\nAnesthesia: Moderate sedation and local anesthesia.\nDescription: Left axillary vein access under fluoroscopic guidance. Single-coil defibrillator lead positioned at the RV apical septum; sensing, impedance and threshold values satisfactory and stable. Lead secured, connected to generator placed in a left prepectoral pocket. Pocket irrigated, layered closure, skin adhesive.\nDefibrillation testing: not performed.\nProgramming: VF zone with shock therapy; VT monitor zone. \nComplications: None. Post-procedure chest film: lead in good position, no pneumothorax.\nPlan: Arm sling overnight; no lifting the left arm above the shoulder for 4 weeks. Device clinic wound check in 7-10 days."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Cardiology Discharge Summary",
+              "author": "cardiology",
+              "date": "2026-03-24T08:40",
+              "body": "REGIONAL HOSPITAL — CARDIOLOGY DISCHARGE SUMMARY\nAdmitted 03/14/2026   Discharged 03/23/2026\nPrincipal diagnosis: Out-of-hospital cardiac arrest due to refractory ventricular fibrillation.\nProcedures: Emergent coronary angiography (3/14). Transvenous single-chamber ICD (3/20).\nOther: Hypertension. Hypercholesterolemia. Chronic low back pain.\nAllergies: NKDA\n\nCourse:\nArrested during basketball 3/14; bystander CPR, 6 defibrillations in all, ROSC ~32 minutes after collapse (see ED record). Emergent angiography: no obstructive coronary disease. To CICU on the ventilator; temperature control at 36 C for 24 hours, then controlled normothermia. hs-troponin I 64 on arrival, peak 2,310 ng/L at 12 hours, consistent with CPR and multiple shocks in the absence of coronary disease. TTE 3/15: LVEF 55%, no regional abnormality. Extubated 3/16; by 3/17 awake, oriented, following commands, no focal neurological deficit; amnestic for the event. Cardiac MRI 3/18: normal size and function, LVEF 58%, no LGE or edema. No recurrent ventricular arrhythmia on telemetry after ROSC. Electrolytes normal throughout. EP: VF without identified reversible cause; secondary-prevention ICD placed 3/20 without complication. Metoprolol succinate started. Genetic evaluation offered; patient undecided.\n\nCondition at discharge: Good. Ambulating independently. Chest wall sore from CPR.\n\nDischarge medications:\n- Metoprolol succinate ER 25 mg daily — NEW\n- Lisinopril 10 mg daily\n- Atorvastatin 20 mg daily\n- Acetaminophen 500 mg 1-2 tabs every 6 hours as needed\n\nInstructions: No driving for 6 months (through 9/14/2026). No lifting left arm above shoulder for 4 weeks. Keep incision dry until the device clinic check. Carry device ID card. If you receive a shock and feel well, call the device clinic; if more than one shock or you feel unwell, call 911.\nFollow-up: PCP within 1 week. Device clinic 3/31. EP clinic in 4 weeks. Remote monitor set up before discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-26a",
+          "kind": "office_visit",
+          "start": "2026-03-26T10:30",
+          "end": "2026-03-26T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up after cardiac arrest",
+          "state": {
+            "bp": [
+              120,
+              76
+            ],
+            "weight_kg": 85.0
+          },
+          "vitals": {
+            "bp": [
+              118,
+              74
+            ],
+            "hr": 62
+          },
+          "measure": [
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-26T11:35",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-26T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-26T11:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit — Cardiac Arrest",
+              "author": "PCP",
+              "date": "2026-03-26T11:40",
+              "body": "TCM VISIT. Hospital 3/14-3/23. ED record, cath, echo, MRI, EP consult, ICD note and discharge summary all reviewed.\n\nSummary: Witnessed collapse playing basketball 3/14, bystander CPR right away, VF refractory to multiple shocks — ROSC after the 6th (~32 min). Cath: no obstructive CAD. Cooled 24 h. Echo EF 55%, MRI EF 58% with no scar. K/Mg normal. Neurologically intact. EP calls it VF without a reversible cause; transvenous single-chamber ICD 3/20 for secondary prevention, metoprolol succinate 25 added. Genetics offered given father's sudden death at 64 — he hasn't decided.\n\nToday: Came with a friend who drove. Tired, naps in the afternoon. Front of the chest is sore where they did compressions, a little better every day, worse rolling over in bed. No chest pressure with walking, no palpitations, no lightheadedness, no fainting, no shocks. Remembers nothing from the morning of the game until waking in the ICU. Sleep a bit broken. Mood \"grateful, a little rattled.\" Walking 10-15 minutes around the block.\n\nMeds reconciled: metoprolol succinate ER 25 mg daily (new), lisinopril 10 mg daily, atorvastatin 20 mg daily, acetaminophen prn. Allergies NKDA.\n\nExam: BP 118/74, HR 62 regular. Alert, conversant, recall of our past visits intact. Left prepectoral ICD pocket: incision closed with skin glue, no hematoma, no erythema. Sternal and parasternal tenderness to palpation, no crepitus. Heart regular, no murmur. Lungs clear. R wrist radial site healed. Abdomen: healed grafts. No edema. Neuro nonfocal.\nPHQ-9 4, GAD-7 3.\n\nA/P:\n# Out-of-hospital VF arrest, refractory, survived neurologically intact; ICD in place, on metoprolol. Device clinic 3/31, EP late April. Reviewed shock plan from discharge papers. Reviewed driving: none until 9/14 per EP.\n# Chest wall soreness after CPR — expected; acetaminophen as needed. Should keep easing.\n# HTN — BP and HR fine on lisinopril plus metoprolol. BMP today.\n# Hypercholesterolemia — atorvastatin 20.\n# Fatigue and adjustment after the arrest — normal screens today; talked about how common it is to feel shaken for a while. He knows to reach out.\n# Work — out of work for now; note given. Return date once EP has seen him.\nF/u 3 months or sooner."
+            },
+            {
+              "type": "Letter",
+              "title": "Work Excuse",
+              "author": "PCP",
+              "date": "2026-03-26T11:45",
+              "body": "To whom it may concern:\nMr. Chad Whitney has been under hospital and outpatient care since March 14, 2026, and is unable to work at this time. I anticipate an update on his return date after his cardiology appointment in late April.\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-27a",
+          "kind": "portal_message",
+          "start": "2026-03-27T08:50",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bloodwork",
+              "author": "PCP",
+              "date": "2026-03-27T08:50",
+              "body": "Chad — potassium and kidney function from yesterday are normal on the new combination. Nothing to change. Good to see you up and walking."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-31a",
+          "kind": "specialist_visit",
+          "start": "2026-03-31T09:00",
+          "service": "Cardiology — Device Clinic",
+          "reason": "ICD wound check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Device Clinic — Wound Check",
+              "author": "cardiology",
+              "date": "2026-04-01T10:15",
+              "body": "DEVICE CLINIC (03/31/2026)\nSingle-chamber transvenous ICD, implanted 03/20/2026, secondary prevention after VF arrest.\nIncision: well healed, no hematoma, no erythema or drainage.\nInterrogation: Battery and lead parameters normal and stable since implant. Underlying rhythm sinus. No arrhythmia episodes recorded; no therapies delivered.\nRemote monitor transmitting.\nPlan: Lift restriction left arm continues through 4 weeks post-implant. EP clinic as scheduled.\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "specialist_visit",
+          "start": "2026-04-21T14:00",
+          "service": "Cardiac Electrophysiology",
+          "reason": "follow-up after VF arrest and ICD",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Electrophysiology Clinic Follow-up",
+              "author": "electrophysiology",
+              "date": "2026-04-22T09:00",
+              "body": "EP CLINIC (04/21/2026)\n\nMr. Whitney returns one month after VF arrest and secondary-prevention ICD. He feels close to normal. Chest wall soreness from CPR has mostly gone. Walking 30-40 minutes daily without symptoms. No palpitations, presyncope or shocks. Tolerating metoprolol.\n\nDevice: normal function; no arrhythmia episodes; no therapies.\nExam: Regular, pocket healed.\n\nAssessment: Idiopathic VF arrest with ICD, stable.\nPlan:\n- May return to teaching 04/27/2026.\n- Driving restriction stands until 09/14/2026.\n- Continue walking and gradually build moderate exercise; hold off on competitive basketball for now, we will revisit.\n- Continue metoprolol succinate 25 mg daily.\n- Genetics: still undecided; referral remains available whenever he wants it.\n- Remote monitoring; EP visit with interrogation in 3 months.\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-23a",
+          "kind": "portal_message",
+          "start": "2026-04-23T07:30",
+          "reason": "return to work letter",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back to work",
+              "author": "patient",
+              "date": "2026-04-23T07:30",
+              "body": "The cardiologist cleared me to go back to school on Monday 4/27. HR needs a note from you since you wrote the first one. A colleague is driving me in until September. Thanks for everything."
+            },
+            {
+              "type": "Letter",
+              "title": "Return to Work Letter",
+              "author": "PCP",
+              "date": "2026-04-23T12:10",
+              "body": "To whom it may concern:\nMr. Chad Whitney may return to his teaching duties on Monday, April 27, 2026, without restriction in the classroom. He is not permitted to drive until September 14, 2026.\nPlease contact the office with any questions.\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "pharmacy",
+          "start": "2026-05-12T10:40",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2026-05-12T10:40",
+              "body": "Mail order wants a 90-day prescription for metoprolol succinate ER 25 mg (hospital wrote 30 days + 1 refill). Sent 90 x 3 per PCP. Cardiology following."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "outside_records",
+          "start": "2026-06-02T13:40",
+          "reason": "ICD remote transmission report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ICD Remote Monitoring Report",
+              "author": "cardiology",
+              "date": "2026-06-02T13:40",
+              "body": "DEVICE CLINIC — SCHEDULED REMOTE TRANSMISSION (received 06/01/2026)\nDevice: single-chamber transvenous ICD, implanted 03/20/2026.\nBattery: normal. Lead impedance, sensing and threshold trends: stable, within normal limits.\nEpisodes: none. Therapies: none.\nPresenting rhythm: sinus.\nImpression: Normal device function. No arrhythmia. Next remote transmission in 3 months; EP clinic in July.\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "office_visit",
+          "start": "2026-06-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, hypertension and lipids",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-16T16:20",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-16T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-16T16:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-16T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-16T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Follow-up",
+              "author": "PCP",
+              "date": "2026-06-16T16:25",
+              "body": "3-month f/u after VF arrest / ICD; HTN; HLD.\n\nBack teaching since late April, finishing the year next week. Energy back to about normal. Walking most days, some light cycling on a stationary bike. No chest pain, palpitations, lightheadedness or syncope. No shocks. CPR soreness gone since early May. Getting rides from a colleague until September. Mood good, sleeping fine.\n\nMeds: metoprolol succinate ER 25 daily, lisinopril 10 daily, atorvastatin 20 daily, acetaminophen rarely. NKDA.\n\nExam: BP at goal, HR in the 60s. Heart regular, no murmur. Lungs clear. ICD pocket well healed. No edema.\n\nA/P:\n# VF arrest s/p ICD — doing well; EP in July with interrogation.\n# HTN — controlled on lisinopril + metoprolol.\n# Hypercholesterolemia — fasting lipids with CMP and CBC today, continue atorvastatin.\n# Chronic LBP — quiet.\nPhysical in October; LDCT due then too."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T09:25",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "June labs",
+              "author": "PCP",
+              "date": "2026-06-18T09:25",
+              "body": "Your June labs are all in the usual range — kidney, liver, potassium and blood counts normal, cholesterol about where it's been on atorvastatin. No changes. Enjoy the summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "specialist_visit",
+          "start": "2026-07-14T10:30",
+          "service": "Cardiac Electrophysiology",
+          "reason": "3-month ICD follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Electrophysiology Clinic — Device Follow-up",
+              "author": "electrophysiology",
+              "date": "2026-07-15T08:45",
+              "body": "EP CLINIC WITH DEVICE INTERROGATION (07/14/2026)\nFour months after VF arrest, single-chamber ICD for secondary prevention.\nAsymptomatic. Exercising regularly at moderate intensity. No shocks.\nInterrogation: Battery and lead function normal. No ventricular arrhythmia episodes; no therapies since implant. Remote transmissions have been normal.\nMedications: metoprolol succinate 25 mg daily, lisinopril 10 mg daily, atorvastatin 20 mg daily.\nPlan: Continue metoprolol. Remote monitoring every 3 months; clinic in 6 months. Driving may resume after 09/14/2026 if no events. Return to basketball to be discussed at the next visit. Genetic referral still open if he wishes.\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T20:10",
+          "reason": "question about driving and exercise",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Driving and basketball",
+              "author": "patient",
+              "date": "2026-08-18T20:10",
+              "body": "Hi — quick ones. School starts back soon. Am I definitely OK to drive myself starting September 14? And the guys keep asking me to come back to Saturday basketball. The EP said we'd talk about it but my next visit isn't till January. Should I just call them? Chad"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Driving and basketball",
+              "author": "PCP",
+              "date": "2026-08-19T07:45",
+              "body": "Hi Chad. Yes — per your EP's note, driving can resume after September 14 as long as you've had no shocks or symptoms, which is the case so far. On basketball, please do call the EP office rather than waiting for January; that's their decision with your device and they may want to talk it through with you. Until then, keep up the walking and bike. See you at your physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "annual_physical",
+          "start": "2026-10-20T15:30",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

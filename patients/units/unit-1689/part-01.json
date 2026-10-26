@@ -1,0 +1,971 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001689",
+      "given": "Taylor",
+      "family": "Poirier",
+      "birth_date": "1991-07-28",
+      "address_line": "61 Old Mill Lane",
+      "phone": "+1-347-555-0155",
+      "email": "taylor.poirier@example.test",
+      "marital_status": "partnered",
+      "summary": "HR specialist with hypertension on HCTZ and Rh-negative blood type who joins in 2021, then has a ruptured hepatic adenoma (2022), a ruptured corpus luteum cyst (2023), hemorrhagic shock after a car crash (2024), and a 2025 pregnancy complicated by threatened preterm labor, PPROM, GBS colonization and uterine rupture at a classical scar. Now postpartum on HCTZ with a levonorgestrel IUD.",
+      "events": [
+        {
+          "id": "2021-08-17a",
+          "kind": "telephone",
+          "start": "2021-08-17T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2021-08-17T10:20",
+              "body": "Caller would like to become a patient. 30 y/o, works in HR, previous PCP retiring. Takes a BP pill and birth control. Explained membership and that insurance still covers labs/specialists/meds. New patient slot offered 9/14 at 9:00, accepted. Records release emailed to her, she will sign and send back. Asked her to bring med bottles."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:00",
+          "end": "2021-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2019-05-01"
+            },
+            {
+              "label": "Irregular menstrual cycles",
+              "icd10": "N92.6",
+              "action": "history",
+              "onset": "2009-01-01"
+            },
+            {
+              "label": "Rh(D)-negative blood type",
+              "icd10": "Z67.41",
+              "action": "history",
+              "onset": "1991-07-28"
+            },
+            {
+              "label": "Personal history of cholelithiasis",
+              "icd10": "Z87.19",
+              "action": "history",
+              "onset": "2014-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug_text": "levonorgestrel 0.15 MG / ethinyl estradiol 0.03 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Irregular menstrual cycles; contraception"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              82
+            ],
+            "weight_kg": 66.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin": 13.2,
+              "Total Cholesterol": 184,
+              "Hemoglobin A1c": 5.2,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Human resources specialist"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-14T09:00",
+              "body": "30 y/o woman transferring care; prior PCP retiring.\n\nHTN: found on routine checks in 2019 at the old practice, started HCTZ 25 then and has been on it since. Doesn't check at home. No headaches, CP, edema.\n\nGyn: periods have always been irregular, sometimes 6-8 wks apart. On a combined pill (levonorgestrel/EE) since about age 20, off only for her two pregnancies; mostly takes it for cycle control. Two C-sections. The second was a classical (vertical) uterine incision because the baby was lying transverse; that pregnancy was otherwise uneventful and the baby was healthy at term. She knows she is O negative and got Rh shots with both pregnancies.\n\nOther hx: gallstones on an ultrasound years ago, one bad attack, never had surgery, no symptoms since.\n\nMeds: HCTZ 25 daily; levonorgestrel 0.15/EE 0.03 daily.\nAllergies: PCN, hives as a child.\nFH: mother HTN. Father T2DM.\nSH: HR specialist. Partnered. Never smoker. ETOH 1-2 drinks a month. No drugs. Exercises a few days a week.\n\nROS otherwise negative.\n\nExam: well-appearing. BP as recorded. HEENT nl. Neck no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abd soft, low transverse-appearing skin scar, nontender. No edema. Skin no rashes.\n\nA/P\n1. HTN, controlled on HCTZ. Continue. CMP today for K/Na/Cr.\n2. Irregular cycles on combined OCP. Doing well, continue. BP is fine on it but we will keep an eye.\n3. O Rh-neg, noted for the problem list.\n4. Remote gallstones, asymptomatic.\n5. Health maintenance: CBC, CMP, lipids, A1c (dad with DM), TSH given cycles, one-time HIV and hep C screens; she agrees. Requesting old records for last Pap and vaccines. Flu shot when available next month.\n\nRTC 6 months or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-17a",
+          "kind": "portal_message",
+          "start": "2021-09-17T13:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2021-09-17T13:40",
+              "body": "Hi Taylor, all of your labs look good. Blood count, kidney function, potassium and liver tests are normal, cholesterol is in a healthy range, A1c is normal, and the thyroid test is fine. HIV and hepatitis C screens were negative. Nothing to change. See you in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "outside_records",
+          "start": "2021-10-05T11:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "front desk",
+              "date": "2021-10-05T11:15",
+              "body": "Records received from prior PCP office (42 pages) and scanned to chart.\n\nPCP abstraction:\n- BP elevated on 3 visits spring 2019 (140s-150s/90s). HCTZ 25 mg started 05/2019, BP 120s-130s/80s since.\n- Cervical cytology with HPV co-test 11/2020 at her OB-GYN: NILM, HPV negative. Next due 2025.\n- COVID-19 vaccine (Moderna) 2 doses, 03/2021 and 04/2021.\n- Prior labs unremarkable.\n- Allergy list PCN (hives). Surgical: cesarean x2.\nNothing new; problem list current."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-03-12T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-04-09T10:00"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T16:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "MA",
+              "date": "2021-10-19T16:35",
+              "body": "Here for seasonal flu vaccine. Afebrile, feeling well. Allergies reviewed (PCN), no egg allergy, no past vaccine reactions. Influenza quadrivalent 0.5 mL IM right deltoid. VIS provided. Waited 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "portal_message",
+          "start": "2021-12-07T20:12",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-12-04T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster",
+              "author": "patient",
+              "date": "2021-12-07T20:12",
+              "body": "Hi, just letting you know I got my covid booster (Moderna) at the pharmacy on Saturday 12/4. Can you add it to my record? Thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booster",
+              "author": "MA",
+              "date": "2021-12-08T09:05",
+              "body": "Thanks Taylor, it's been entered in your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "pharmacy",
+          "start": "2022-01-11T08:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2022-01-11T08:45",
+              "body": "Electronic refill request for hydrochlorothiazide 25 mg #90. BP fine at new pt visit in Sept, labs normal. Pended to PCP. -- Approved, 90 days x1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-09a",
+          "kind": "hospital_admission",
+          "start": "2022-02-09T14:10",
+          "end": "2022-02-14T12:30",
+          "service": "Emergency Medicine; Hepatobiliary Surgery",
+          "reason": "Acute right upper quadrant pain with hypotension",
+          "vitals": [
+            {
+              "time": "2022-02-09T14:15",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Ruptured hepatocellular adenoma",
+              "icd10": "D13.4",
+              "action": "diagnosed",
+              "onset": "2022-02-09"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "icd10": "D62",
+              "action": "diagnosed",
+              "onset": "2022-02-09"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "levonorgestrel 0.15 MG / ethinyl estradiol 0.03 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Hepatocellular adenoma; avoid estrogen"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Acute posthemorrhagic anemia"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-02-09T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ],
+              "resulted": "2022-02-09T15:15"
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-02-09T14:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ],
+              "resulted": "2022-02-09T15:15"
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-02-09T14:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                }
+              ],
+              "resulted": "2022-02-09T15:15"
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-02-14T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2022-02-09T15:00",
+              "text": "Urgent bedside-requested RUQ sonogram. In the right hepatic lobe there is a 5 cm hyperechoic lesion. Free fluid surrounds the liver. Gallbladder is normal in size without stones or wall thickening. Common bile duct not dilated. Right kidney unremarkable.",
+              "conclusion": "5 cm hyperechoic right hepatic lobe lesion with surrounding free fluid.",
+              "issued": "2022-02-09T15:20"
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2022-02-09T15:40",
+              "text": "Multiphase contrast-enhanced CT. A 5 cm mass in the right hepatic lobe with surrounding hemorrhage. Hemoperitoneum in the perihepatic space and pelvis. Remainder of the liver normal in enhancement. Gallbladder without radiopaque stones. Spleen, pancreas, adrenals and kidneys unremarkable. Uterus and adnexa unremarkable. No free air. Lung bases clear.",
+              "conclusion": "5 cm right hepatic lobe mass with surrounding hemorrhage and hemoperitoneum, consistent with a ruptured hepatic mass.",
+              "issued": "2022-02-09T16:10"
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-02-09T21:00",
+              "issued": "2022-02-12T15:00",
+              "text": "Specimen: liver, right partial hepatectomy. Gross: 5.0 cm well-circumscribed tan-brown mass with hemorrhage and a disrupted capsule. Microscopic: sheets of benign hepatocytes without portal tracts, scattered thin-walled arteries, no atypia, no mitotic activity; background liver unremarkable.",
+              "conclusion": "Hepatocellular adenoma, 5.0 cm, with hemorrhage and capsular rupture. No malignancy. Margins negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2022-02-15T09:00",
+              "body": "Outside ED record, visit 02/09/2022, received by fax.\n\nCC: abrupt severe right upper abdominal pain x2 h.\nHPI: 30F, sharp, constant RUQ pain beginning about two hours before arrival. Lightheaded. Nauseated several times, no emesis.\nPMH: HTN, irregular menses, O Rh negative. PSH: C-section x2 (last classical). Meds: HCTZ 25 daily; combined OCP (levonorgestrel/EE) for roughly 10 years. Allergy: PCN (hives). FH mother HTN, father DM2. SH never smoker, social ETOH, works in HR.\n\nVS on arrival: BP 90/60, HR 120.\nExam: pale, diaphoretic. RUQ tender to palpation with guarding.\n\nLabs: Hgb 9.8 (13.2 at her PCP in Sept), Hct 29.4 (was 40), plt 250, INR 1.0, AST 70, ALT 65, alk phos 90.\nRUQ US: 5 cm hyperechoic R hepatic lesion with surrounding free fluid. CT: 5 cm R lobe mass with hemorrhage, hemoperitoneum.\n\nED course: 2 large-bore IVs, crystalloid bolus, type and cross 2 units held. Hepatobiliary surgery consulted at bedside, to OR.\nImpression: hemorrhage from ruptured hepatic mass, suspected adenoma in setting of long-term OCP use."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report - Right partial hepatectomy",
+              "author": "hepatobiliary surgery",
+              "date": "2022-02-15T09:00",
+              "body": "Date of surgery: 02/09/2022\nPreop dx: ruptured right hepatic lobe mass with hemoperitoneum.\nProcedure: exploratory laparotomy, evacuation of hemoperitoneum, right partial (nonanatomic) hepatectomy.\nAnesthesia: general.\nFindings: hemoperitoneum with clot over the right lobe. 5 cm mass in the right lobe with a ruptured capsule, no active arterial bleeding once controlled. Remainder of liver soft and normal appearing. Gallbladder normal.\nThe mass was resected with a rim of normal parenchyma. Hemostasis achieved. Drain placed.\nTransfusion: none required.\nComplications: none. To PACU stable."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hepatobiliary surgery",
+              "date": "2022-02-15T09:00",
+              "body": "Admitted 02/09/2022, discharged 02/14/2022.\nPrincipal diagnosis: ruptured hepatocellular adenoma, s/p right partial hepatectomy 02/09.\nSecondary: acute blood loss anemia; hypertension; O Rh negative.\n\nCourse: uneventful post-op recovery. Drain removed POD3. Diet advanced. Pain controlled on oral meds. Pathology: hepatocellular adenoma 5.0 cm with hemorrhage and capsular rupture, benign, margins clear. Hgb 10.1 at discharge, no transfusion given.\n\nAdenomas are associated with estrogen exposure: combined OCP discontinued; she should avoid estrogen-containing contraception going forward. Discussed non-estrogen options; she will follow up with PCP/OB.\n\nDischarge meds: HCTZ 25 mg daily (continue). Ferrous sulfate 325 mg daily. Acetaminophen 1 g q8h PRN pain, no more than 3 g/day. STOP oral contraceptive.\nAllergy: penicillin (hives).\nFollow-up: PCP in 1 week with CBC and LFTs; surgery clinic in 3-4 weeks. No lifting >10 lb x 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-10a",
+          "kind": "telephone",
+          "start": "2022-02-10T08:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient in hospital",
+              "author": "RN",
+              "date": "2022-02-10T08:30",
+              "body": "Pt texted the office line this morning from the hospital: was admitted through the ED yesterday with bleeding from a liver mass and had surgery last night. Says she is sore but ok. Told her we will request records and see her within a week of discharge. PCP aware."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "office_visit",
+          "start": "2022-02-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after liver surgery",
+          "state": {
+            "bp": [
+              124,
+              80
+            ],
+            "weight_kg": 63.8,
+            "labs": {
+              "Hemoglobin": 10.6,
+              "Aspartate Aminotransferase": 44,
+              "Alanine Aminotransferase": 51,
+              "Hematocrit": 32.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-02-22T11:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-02-22T11:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2022-02-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2022-02-22T11:00",
+              "body": "Seen 8 days after discharge. Admitted 2/9-2/14 at the regional hospital for a ruptured R hepatic lobe mass with hemoperitoneum, taken for R partial hepatectomy the same night. Path came back hepatocellular adenoma 5 cm, benign, margins neg. No transfusion. D/c Hgb 10.1.\n\nToday: incision sore but improving, using acetaminophen once or twice a day. Eating fine. No fever, no jaundice, no dark urine. Mildly tired. Taking iron daily, some constipation.\n\nMeds: HCTZ 25, ferrous sulfate 325 daily, acetaminophen PRN. OCP stopped by surgery.\n\nExam: NAD. BP fine. Abdomen: R subcostal incision clean, dry, healing, no erythema; appropriately tender, soft. No scleral icterus.\n\nA/P\n1. Ruptured hepatocellular adenoma s/p resection. Recovering well. CBC/LFTs today. Surgery f/u already booked.\n2. Acute blood loss anemia. Continue iron, add stool softener prn. Recheck CBC ~8 wks.\n3. Contraception. No estrogen from here on given the adenoma. We went through progestin-only pill, IUD, implant, injection. She would rather not use hormones right now; will use condoms and revisit with OB.\n4. HTN, BP ok, continue HCTZ.\nOff work until surgeon clears her; note given."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-24a",
+          "kind": "portal_message",
+          "start": "2022-02-24T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Tuesday",
+              "author": "PCP",
+              "date": "2022-02-24T12:10",
+              "body": "Hi Taylor - hemoglobin is 10.6, up from 10.1 when you left the hospital, so heading the right way. Liver enzymes are only mildly up and trending down, which is expected a couple of weeks after surgery. Keep taking the iron. We'll recheck in April."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-01a",
+          "kind": "portal_message",
+          "start": "2022-03-01T10:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Work note",
+              "author": "patient",
+              "date": "2022-03-01T10:40",
+              "body": "Hi, my manager is asking when I can come back. I feel ready to at least work from home. Can you write something or do I need the surgeon?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Work note",
+              "author": "PCP",
+              "date": "2022-03-01T13:05",
+              "body": "Since the surgeon set your activity limits, it's best that their office clears you at your visit on 3/8. If they're ok with desk work I'm happy to write a note that day too - just message me."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "specialist_visit",
+          "start": "2022-03-08T14:00",
+          "service": "Hepatobiliary Surgery",
+          "reason": "Postoperative check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Surgery Clinic Letter",
+              "author": "hepatobiliary surgery",
+              "date": "2022-03-10T10:00",
+              "body": "Dear Doctor,\n\nI saw Ms. Poirier in clinic on 03/08/2022, four weeks after emergency right partial hepatectomy for a ruptured 5.0 cm hepatocellular adenoma (benign, margins negative). She is recovering as expected, walking daily, off analgesics most days. The wound has healed well.\n\nWe reviewed the link between adenomas and estrogen. She has stopped her combined pill and should not resume estrogen-containing products. We will obtain an MRI of the liver in about six months to confirm no residual or additional lesions. She may return to desk work now and full activity at six weeks.\n\nMedications: hydrochlorothiazide 25 mg daily, ferrous sulfate 325 mg daily.\nAllergies: penicillin (hives).\n\nSincerely,\nHepatobiliary Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "lab_only",
+          "start": "2022-04-19T08:10",
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.7,
+              "Aspartate Aminotransferase": 21,
+              "Alanine Aminotransferase": 19,
+              "Hematocrit": 38.1
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-04-19T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-04-19T08:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2022-04-21a",
+          "kind": "portal_message",
+          "start": "2022-04-21T09:30",
+          "conditions": [
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "icd10": "D62",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Anemia resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "April labs",
+              "author": "PCP",
+              "date": "2022-04-21T09:30",
+              "body": "Good news - hemoglobin is back to 12.7 and the liver tests are completely normal now. You can stop the iron. Next visit in June for blood pressure."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: April labs",
+              "author": "patient",
+              "date": "2022-04-21T18:02",
+              "body": "Great, thank you!! Happy to be done with those pills"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "office_visit",
+          "start": "2022-06-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "state": {
+            "bp": [
+              126,
+              80
+            ],
+            "weight_kg": 65.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-06-14T09:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-06-14T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2022-06-14T08:30",
+              "body": "HTN f/u. Back to full activity since late March, running again. Incision fine. No HA/CP/SOB.\nMeds: HCTZ 25 mg daily. Off iron.\nCycles irregular off the pill as expected, every 5-7 weeks. Using condoms.\nBP at goal. Heart RRR, lungs clear, no edema.\nA/P: HTN controlled, continue HCTZ, BMP today. Liver MRI with surgery in August. Physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "imaging",
+          "start": "2022-08-23T07:30",
+          "reports": [
+            {
+              "study": "MRI abdomen with and without contrast",
+              "loinc": "24556-3",
+              "performed": "2022-08-23T07:30",
+              "text": "MRI of the liver with and without IV gadolinium. Postsurgical change of right partial hepatectomy with expected margin appearance and no enhancing tissue at the resection bed. The remaining liver is normal in signal; no focal lesion on any sequence. No biliary dilatation. Gallbladder normal, no stones. Spleen, pancreas, adrenal glands and kidneys unremarkable. No ascites.",
+              "conclusion": "Post right partial hepatectomy. No residual or new hepatic lesion."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "specialist_visit",
+          "start": "2022-08-30T13:15",
+          "service": "Hepatobiliary Surgery",
+          "reason": "Surveillance imaging review",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Surgery Clinic Letter",
+              "author": "hepatobiliary surgery",
+              "date": "2022-09-01T10:00",
+              "body": "Dear Doctor,\n\nMs. Poirier returned 08/30/2022 to review her six-month liver MRI, which shows a clean resection bed and no other liver lesions. She feels well and has no abdominal complaints.\n\nWith a single adenoma completely resected and estrogen stopped, she does not need routine liver imaging going forward. We would ask that she continue to avoid estrogen-containing contraception and hormone therapy, and that any future pregnancy be followed by obstetrics with this history in mind. She is discharged from our clinic and is welcome back at any time.\n\nMedications: hydrochlorothiazide 25 mg daily.\nAllergies: penicillin.\n\nHepatobiliary Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "annual_physical",
+          "start": "2022-09-27T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              124,
+              78
+            ],
+            "weight_kg": 65.9,
+            "labs": {
+              "Hemoglobin": 13.5,
+              "Hematocrit": 40.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-27T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-27T08:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-27T08:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-27T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-27T08:00",
+              "body": "Annual exam, 31F.\n\nInterval: R partial hepatectomy 2/2022 for ruptured hepatocellular adenoma; August MRI clean, surgery has released her. Off estrogen. Feels back to normal.\nHTN on HCTZ 25 daily, no side effects.\nGyn: cycles still irregular, 5-7 weeks. Condoms. Co-test 11/2020 normal, due 2025.\n\nMeds: HCTZ 25 mg daily.\nAllergies: PCN (hives).\nSH unchanged; never smoker; ETOH ~1-2 drinks/month; exercise 3x/wk.\nPHQ-2 0.\n\nExam: well. BP at goal. HEENT wnl. Thyroid nl. Heart regular, no murmur. Lungs clear. Abd soft, healed R subcostal and lower transverse scars, nontender, no masses. Ext no edema. Skin normal.\n\nA/P\n- HTN: controlled, continue HCTZ. CMP.\n- Hx hepatic adenoma resected; no further imaging per surgery. No estrogen.\n- Health maintenance: CBC, CMP today. Lipids/A1c normal last year, repeat in 2-3 yrs. Flu shot today. Covid bivalent booster at pharmacy when convenient.\nRTC 6 mo for BP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "portal_message",
+          "start": "2022-10-25T19:45",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-22T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid booster",
+              "author": "patient",
+              "date": "2022-10-25T19:45",
+              "body": "Got the bivalent booster (Pfizer this time) at the pharmacy on 10/22. Also - are my labs from the physical ok? I didn't see a note."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Covid booster",
+              "author": "PCP",
+              "date": "2022-10-26T08:20",
+              "body": "Added the booster, thanks. Sorry I missed sending a note on those - your labs were all normal, hemoglobin 13.5, kidney function and potassium fine."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "pharmacy",
+          "start": "2022-12-13T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2022-12-13T09:10",
+              "body": "Pharmacy request HCTZ 25 mg, 90 day. Seen 9/27, BP at goal. Sent per protocol, 3 refills."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

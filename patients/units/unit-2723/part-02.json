@@ -1,0 +1,1181 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002723",
+      "events": [
+        {
+          "id": "2023-02-15a",
+          "kind": "office_visit",
+          "start": "2023-02-15T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; question about a research study",
+          "state": {
+            "bp": [
+              146,
+              90
+            ],
+            "hr": 70
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension above goal"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-02-15T11:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-02-15T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-15T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-ace-2023",
+              "action": "placed",
+              "order": "Basic metabolic panel in 2 weeks",
+              "category": "lab",
+              "reason": "new ACE inhibitor"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-02-15T12:05",
+              "body": "S: Overdue follow-up (last seen 9/2022). Two things today.\n1) She read about a cardiovascular prevention study recruiting locally, testing a new cholesterol drug against standard statin treatment, and wants to know if she should sign up. Her brother's heart attack at 52 is very much on her mind.\n2) BP readings at home creeping up this winter, mostly 140s/90ish. Taking all three BP meds every morning. No headache, CP, SOB.\nMood stable. No tremor.\n\nO: BP elevated today, recheck similar. Heart RRR, lungs clear, no edema.\n\nA/P:\n1. Hypertension above goal on metoprolol succinate 50, amlodipine 10, HCTZ 25. With diabetes, adding lisinopril 10 mg daily. Reviewed common side effects including cough and, rarely, lip or tongue swelling (stop and call). BMP in 2 weeks for potassium and creatinine.\n2. Research question: talked through what joining a randomized trial would mean, including that she could be assigned to the study drug in place of her atorvastatin or kept on standard treatment, that neither she nor I would choose, and that she can withdraw at any time. Gave her the study contact information to call herself. Fine to stay on atorvastatin 40 and aspirin either way.\n3. T2DM, diet: A1c today.\n4. Lithium level today (due), copy to psychiatry.\n\nRTC 3 months, BP log in the meantime."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-01a",
+          "kind": "lab_only",
+          "start": "2023-03-01T07:50",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-01T07:50",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-ace-2023",
+              "action": "done",
+              "date": "2023-03-01T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-03-01T15:30",
+              "body": "Potassium and kidney function are normal two weeks into the lisinopril. Keep taking it and keep the BP log going."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Lab Results",
+              "author": "patient",
+              "date": "2023-03-01T18:44",
+              "body": "Great. Readings are better already, mostly 130s. I left a message with the study people but haven't heard back."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "outside_records",
+          "start": "2023-03-14T09:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination Report",
+              "author": "optometry",
+              "date": "2023-03-14T09:15",
+              "body": "Comprehensive diabetic eye examination 03/09/2023, pupils dilated.\nBest corrected VA 20/20 OU. IOP normal. Lens clear. Fundus: optic nerves healthy, no hemorrhages, exudates or neovascularization; no diabetic retinopathy OU. No macular edema.\nPlan: annual dilated exam."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "office_visit",
+          "start": "2023-05-16T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Dry cough for two months",
+          "state": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 78,
+            "labs": {
+              "Creatinine": 1.0
+            }
+          },
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 78,
+            "rr": 16
+          },
+          "measure": [
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Adverse effect of angiotensin-converting-enzyme inhibitors",
+              "icd10": "T46.4X5A",
+              "action": "diagnosed",
+              "onset": "2023-03-15",
+              "note": "dry cough on lisinopril"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "ACE-inhibitor cough"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "ACE inhibitors",
+              "reaction": "Cough",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "intolerance"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-16T14:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-05-16T14:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-16T13:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2023",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "persistent cough"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: Cough",
+              "author": "PCP",
+              "date": "2023-05-16T14:30",
+              "body": "CC: cough x 2 months.\n\nHPI: Dry, tickly cough that started roughly 4 weeks after she began lisinopril in February and has not let up since, about two months now. Worse lying down and when talking on the phone at work. Nothing coming up. No fever, no shortness of breath, no wheezing, no chest pain. No heartburn. No new exposures at home or work. No lip, tongue or throat swelling at any point. Never smoked.\n\nMeds: lisinopril 10 (since 2/15), metoprolol succinate 50, amlodipine 10, HCTZ 25, atorvastatin 40, ASA 81, lithium 300 BID, sertraline 100.\n\nExam: BP 132/84, HR 78, RR 16, afebrile, sat normal. No distress, speaking full sentences with an occasional dry cough. Oropharynx clear. Lungs with good air movement, no wheezes, rales or rhonchi. Heart regular. No edema. Remainder unremarkable.\n\nA/P:\n1. Cough, almost certainly from the ACE inhibitor given the timing and a normal exam. Stop lisinopril today; it can take a few weeks to settle. ACE inhibitors added to her intolerance list. CXR to be thorough given two months of symptoms; CBC and BMP today.\n2. Hypertension: well controlled with lisinopril on board, so expect readings to rise off it. Continue the other three. Home log, BP visit in about 2 months.\nCall if cough is not clearly better in 3-4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16b",
+          "kind": "imaging",
+          "start": "2023-05-16T15:45",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2023-05-16T15:45",
+              "text": "PA and lateral chest. No prior for comparison. Lungs are clear without consolidation, mass or effusion. No pneumothorax. Heart size normal. Mediastinal contours and hila unremarkable. Osseous structures intact.",
+              "conclusion": "No acute cardiopulmonary process."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2023",
+              "action": "done",
+              "date": "2023-05-16T15:45"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "portal_message",
+          "start": "2023-05-17T09:30",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Test Results",
+              "author": "PCP",
+              "date": "2023-05-17T09:30",
+              "body": "Your chest x-ray is clear, and your blood counts, electrolytes and kidney function are normal (creatinine 1.0). That fits with the lisinopril being the cause of the cough. Stay off it and let me know how you are doing in a few weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "portal_message",
+          "start": "2023-06-06T20:12",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Cough and BP",
+              "author": "patient",
+              "date": "2023-06-06T20:12",
+              "body": "The cough is about 80% better, only a little in the mornings now. But my blood pressure has gone up since stopping the lisinopril, 148/94, 152/96, 150/92 this week. I'm taking the other three every day. Should I do anything?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Cough and BP",
+              "author": "RN",
+              "date": "2023-06-07T10:05",
+              "body": "Glad the cough is improving. Per the doctor, keep logging twice a day and bring the log to your July visit; no change for now unless you get readings over 180 or a headache, chest pain or vision changes, in which case call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "outside_records",
+          "start": "2023-06-27T11:45",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry Progress Letter",
+              "author": "psychiatry",
+              "date": "2023-06-27T11:45",
+              "body": "Re: Patricia Desrosiers\n\nFollow-up 06/20/2023. Bipolar I disorder, stable. No depressive or hypomanic episodes since last visit. Appetite and sleep normal. Mentions her blood pressure medicine was changed for a cough. Lithium levels from your office have been therapeutic. No changes: lithium carbonate 300 mg BID, sertraline 100 mg daily. Would appreciate a call before any new diuretic, ACE inhibitor/ARB or NSAID is started given lithium.\n\nOutpatient psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "office_visit",
+          "start": "2023-07-25T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "state": {
+            "bp": [
+              156,
+              96
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Adverse effect of angiotensin-converting-enzyme inhibitors",
+              "icd10": "T46.4X5A",
+              "action": "resolved",
+              "note": "cough resolved off lisinopril"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-07-25T15:45",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-25T15:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral",
+              "action": "placed",
+              "order": "Nephrology referral",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "hard-to-control hypertension on three drugs"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit: Hypertension",
+              "author": "PCP",
+              "date": "2023-07-25T16:00",
+              "body": "S: Cough gone completely. Home log since June: almost all readings 145-158 / 90-98 despite metoprolol succinate 50, amlodipine 10 and HCTZ 25 taken every morning; she shows me the pill organizer. Low salt at home. No headache, CP, palpitations or vision change. Mood fine.\n\nO: BP elevated, repeated after 5 min, similar. Lungs clear. Heart regular. No edema.\n\nA/P: Hypertension not controlled on three drugs at full dose including a diuretic after the lisinopril had to stop. Warrants a look for a secondary cause. Referring to nephrology. BMP today. Continue current regimen meanwhile. Physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-03a",
+          "kind": "telephone",
+          "start": "2023-08-03T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Scheduling",
+              "author": "front desk",
+              "date": "2023-08-03T10:20",
+              "body": "Nephrology referral faxed 7/26, confirmed received. First available new patient appt 10/11/23. Pt informed and placed on their cancellation list."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-19T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-19T08:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-19T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-19T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-19T09:30",
+              "body": "Annual exam.\n\nInterval: lisinopril stopped in May for cough, now resolved. BP running high since; nephrology appointment 10/11. Otherwise well. Psychiatry in June, no changes. Never heard back from the cholesterol study and has let it go for now.\n\nMeds: metoprolol succinate 50, amlodipine 10, HCTZ 25, atorvastatin 40, ASA 81, lithium 300 BID, sertraline 100.\nAllergies: shellfish; ACE inhibitors (cough).\nPHQ-9: 3.\n\nExam: well appearing. BP elevated again today. HEENT normal. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Feet with intact skin, pulses palpable, sensation normal. No tremor.\n\nA/P:\n- HTN, uncontrolled on three agents: nephrology next month. Continue for now.\n- T2DM, diet: A1c, UACR. Eye exam March, no retinopathy.\n- HLD: lipids.\n- Bipolar I: lithium, TSH, calcium, creatinine.\n- Flu and updated COVID vaccines today. Mammogram ordered. Colonoscopy due 2028. Pap/HPV due next year.\nRTC after nephrology."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T13:00",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-09-21T13:00",
+              "body": "Your physical labs: A1c steady, cholesterol at goal, thyroid and calcium normal, no protein in the urine, lithium in range. Kidney function is close to last year. I've copied these to nephrology ahead of your October visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "specialist_visit",
+          "start": "2023-10-11T09:00",
+          "service": "Nephrology",
+          "reason": "Hard-to-control hypertension",
+          "state": {
+            "bp": [
+              160,
+              98
+            ],
+            "labs": {
+              "Creatinine": 1.2,
+              "Potassium": 3.4,
+              "Blood Urea Nitrogen": 22
+            }
+          },
+          "vitals": {
+            "bp": [
+              162,
+              98
+            ]
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Renal artery stenosis",
+              "icd10": "I70.1",
+              "action": "diagnosed",
+              "note": "right; per nephrology"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-11T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 22
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-10-11T11:00",
+              "text": "Abdominal ultrasound with renal Doppler. Both kidneys measured in longitudinal axis: the right kidney is smaller than the left. No hydronephrosis, stones or masses in either kidney. Cortical echogenicity within normal limits. Liver, gallbladder, pancreas and spleen unremarkable. Abdominal aorta of normal caliber. Bladder unremarkable.",
+              "conclusion": "Right kidney smaller than left. No hydronephrosis or renal mass."
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral",
+              "action": "done",
+              "date": "2023-10-11T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Consultation",
+              "author": "nephrology",
+              "date": "2023-10-16T14:20",
+              "body": "Outside nephrology consultation, date of service 10/11/2023.\n\nReason for referral: resistant hypertension.\n\nThank you for referring Ms. Desrosiers, a 56-year-old woman with hypertension, diet-treated type 2 diabetes, hyperlipidemia and bipolar I disorder on lithium. Her pressures were well controlled earlier this year with lisinopril added, which was stopped in May because of cough. Over roughly the five months since, her readings have stayed high despite reliable use of metoprolol succinate, amlodipine and hydrochlorothiazide. She has no chest pain, palpitations or headaches.\n\nMedications: metoprolol succinate 50 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily, lithium carbonate 300 mg BID, sertraline 100 mg daily.\nAllergies: ACE inhibitors (cough); shellfish.\nFamily history: father with hypertension and diabetes; brother with MI at 52.\n\nExam: BP 162/98 seated. Comfortable. Heart regular. Lungs clear. Abdomen: a prominent bruit is heard just to the right of the umbilicus. No edema.\n\nData: creatinine 1.2 mg/dL (up from 1.0 in May), BUN 22, potassium 3.4 (low). Abdominal ultrasound with Doppler today: right kidney smaller than the left.\n\nAssessment: resistant hypertension with an abdominal bruit, an asymmetric small right kidney, low potassium on a thiazide and a creatinine rise. This is right renal artery stenosis until proven otherwise.\n\nPlan:\n1. Renal vein renin sampling with interventional radiology, and serum aldosterone.\n2. Continue current antihypertensives. Increase dietary potassium (bananas, potatoes, beans); recheck BMP in about 2 months with her PCP.\n3. Will see her again with results.\n\nOutside nephrology"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "procedure_visit",
+          "start": "2023-11-08T07:30",
+          "end": "2023-11-08T12:00",
+          "service": "Interventional Radiology",
+          "reason": "Renal vein renin sampling",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-08T08:40",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "text": "High (right renal vein sample)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-08T08:44",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "text": "Low (left renal vein sample)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-08T08:48",
+              "results": [
+                {
+                  "test": "Aldosterone",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Renal Vein Renin Sampling",
+              "author": "interventional radiology",
+              "date": "2023-11-10T09:00",
+              "body": "Outside interventional radiology procedure report, 11/08/2023.\n\nProcedure: selective bilateral renal vein and infrarenal IVC sampling for renin.\nAccess: right common femoral vein under ultrasound guidance, moderate sedation.\nSamples drawn from right renal vein, left renal vein and infrarenal IVC; serum aldosterone sent from IVC sample.\nResults: renin activity high in the right renal vein sample and low (suppressed) on the left. Serum aldosterone elevated.\nComplications: none. Hemostasis with manual compression. Discharged home after 2 hours of bed rest.\nImpression: lateralization of renin secretion to the right kidney."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-21a",
+          "kind": "specialist_visit",
+          "start": "2023-11-21T13:40",
+          "service": "Nephrology",
+          "reason": "Renin sampling results",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Follow-up Letter",
+              "author": "nephrology",
+              "date": "2023-11-24T10:10",
+              "body": "Outside nephrology follow-up, 11/21/2023, telephone.\n\nReviewed renal vein renin sampling with Ms. Desrosiers: renin is high from the right kidney and suppressed on the left, with elevated aldosterone. Together with the small right kidney and the bruit, this supports right renal artery stenosis as the driver of her hypertension.\n\nWe discussed management. For now, medical therapy: continue metoprolol succinate 50, amlodipine 10, hydrochlorothiazide 25, plus atorvastatin and aspirin. Low-salt, potassium-rich diet. Please check a BMP in December. Return to nephrology as needed or sooner if her kidney function changes.\n\nOutside nephrology"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-30a",
+          "kind": "imaging",
+          "start": "2023-11-30T08:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-30T08:30",
+              "text": "Bilateral screening mammogram with tomosynthesis. Compared with 2022 and 2021. Scattered fibroglandular density. No suspicious masses, calcifications or architectural distortion.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-11-30T08:30"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up after nephrology",
+          "state": {
+            "bp": [
+              156,
+              96
+            ],
+            "labs": {
+              "Potassium": 3.9,
+              "Creatinine": 1.15,
+              "Blood Urea Nitrogen": 18
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-12T11:35",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-12T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-12-12T12:10",
+              "body": "S: Here after nephrology workup. Renal vein sampling in November lateralized to the right; nephrology diagnosed right renal artery stenosis and recommends staying on the current three drugs. She's eating more potassium foods. Home BP still mostly 150s/90s. No CP, SOB, headache. Groin site from the procedure healed.\n\nO: BP high again. Heart regular. Lungs clear. No edema.\n\nA/P:\n- Right renal artery stenosis with hypertension: plan per nephrology, regimen unchanged. BMP today to recheck potassium and creatinine.\n- Problem list updated.\nRTC 2-3 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "portal_message",
+          "start": "2023-12-13T08:45",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-12-13T08:45",
+              "body": "Potassium is back to normal with the diet changes, and kidney function is about where it was at nephrology. Happy holidays."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "outside_records",
+          "start": "2023-12-19T13:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry Progress Letter",
+              "author": "psychiatry",
+              "date": "2023-12-19T13:10",
+              "body": "Re: Patricia Desrosiers\n\nSeen 12/14/2023. Euthymic. Some worry about her new kidney artery diagnosis, coping well. Sleep and appetite normal. No changes to lithium carbonate 300 mg BID or sertraline 100 mg daily. Return in 6 months.\n\nOutpatient psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-20T10:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-20T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-20T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "lipid-lowering trial screening; family history of premature CAD"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-02-20T10:45",
+              "body": "S: Routine follow-up. Feels fine. Home BP 150s/90s, unchanged. Taking everything. She found out the cholesterol drug study she asked about last year is being run through an outside cardiology group and would like a referral so she can at least hear the details in person; she still worries about her brother's history.\n\nO: BP above goal. Heart regular, lungs clear, no edema, no tremor.\n\nA/P:\n- Renal artery stenosis / HTN: on nephrology's plan, regimen unchanged. BMP.\n- T2DM, diet: A1c.\n- HLD, family history of premature CAD: referral to the cardiology group running the trial for screening and a preventive cardiology opinion.\nRTC 4-6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "outside_records",
+          "start": "2024-03-05T14:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination Report",
+              "author": "optometry",
+              "date": "2024-03-05T14:00",
+              "body": "Diabetic eye exam 02/29/2024, dilated. VA 20/20 OD, 20/20 OS. No diabetic retinopathy, no hypertensive retinal changes, maculae flat. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-12a",
+          "kind": "specialist_visit",
+          "start": "2024-04-12T10:30",
+          "service": "Cardiology",
+          "reason": "Lipid trial screening",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "done",
+              "date": "2024-04-12T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Research Clinic Letter",
+              "author": "cardiology",
+              "date": "2024-04-17T16:00",
+              "body": "Outside cardiology, research clinic visit 04/12/2024.\n\nDear colleague,\n\nI met Ms. Desrosiers, 57, at your referral to discuss our randomized study of an investigational lipid-lowering agent compared with standard statin therapy. She is motivated by her brother's myocardial infarction at 52. She has hypertension with right renal artery stenosis followed by nephrology, diet-controlled type 2 diabetes and hyperlipidemia on atorvastatin 40 mg, and takes aspirin 81 mg.\n\nShe denies exertional chest discomfort, dyspnea, palpitations or syncope.\n\nExam: well appearing. Heart regular, normal S1 and S2, no murmur or gallop. Lungs clear. No carotid bruits. No edema. Peripheral pulses intact.\n\nWe reviewed the protocol, the randomization, the visit schedule and the possibility of coming off atorvastatin if assigned to the study drug. After taking the consent documents home, she called on 04/16 to say she has decided not to enroll. That is entirely reasonable.\n\nRecommendations: continue atorvastatin 40 mg and aspirin 81 mg. Continued blood pressure management with you and nephrology. No cardiology follow-up needed unless symptoms arise.\n\nOutside cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "office_visit",
+          "start": "2024-06-25T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-25b",
+          "kind": "telephone",
+          "start": "2024-06-25T16:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "author": "front desk",
+              "date": "2024-06-25T16:05",
+              "body": "Pt missed 2:20 appt. Called, she apologized, end-of-quarter crunch at work and it slipped her mind. Rebooked 7/9 at 4:00."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-28a",
+          "kind": "outside_records",
+          "start": "2024-06-28T09:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry Progress Letter",
+              "author": "psychiatry",
+              "date": "2024-06-28T09:30",
+              "body": "Re: Ms. Desrosiers\n\nMedication management 06/24/2024. Euthymic. No episodes in the past year. Working, sleeping, and engaged socially. No tremor or GI side effects. Continue lithium carbonate 300 mg BID and sertraline 100 mg daily. Please continue lithium level every 6 months. Return in 6 months.\n\nOutpatient psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "office_visit",
+          "start": "2024-07-09T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-07-09T16:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-09T16:30",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-07-09T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-07-09T16:40",
+              "body": "Rescheduled from 6/25.\nS: Saw cardiology in April about the cholesterol study and decided against it; staying on atorvastatin. Home BP unchanged, 150s/90s. No symptoms. Psychiatry last month, stable.\nO: BP above goal. Exam unchanged, lungs clear, no edema, no tremor.\nA/P: HTN with right RAS on nephrology's plan, no change. Lithium level and BMP today. Physical in September with Pap."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "portal_message",
+          "start": "2024-07-10T11:25",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "author": "MA",
+              "date": "2024-07-10T11:25",
+              "body": "Hi Patricia, your lithium level and kidney function from yesterday are stable. The doctor has no changes. A copy went to your psychiatrist. See you in September for your physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T09:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-17T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-17T09:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-09-17T08:50",
+              "issued": "2024-09-23T12:00",
+              "text": "Specimen: cervical, liquid-based cytology. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-17T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-17T09:40",
+              "body": "PREVENTIVE VISIT, age 57.\n\nInterval: no hospital or ER visits. Decided not to join the cardiology lipid study. BP still above goal at home on the three-drug regimen nephrology advised. Mood stable.\n\nMeds: metoprolol succinate 50, amlodipine 10, HCTZ 25, atorvastatin 40, ASA 81, lithium 300 BID, sertraline 100.\nAllergies: shellfish; ACE inhibitors (cough).\nPHQ-9: 2. Never smoker, rare alcohol.\n\nExam: NAD. HEENT, neck normal. Heart RRR. Lungs clear. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesion, Pap/HPV collected. No edema. Feet normal, monofilament intact. No tremor.\n\nA/P:\n- Health maintenance: Pap/HPV today. Mammogram ordered. Colonoscopy 2028. Flu/COVID when she's back in October.\n- T2DM, diet: A1c, UACR.\n- HLD: lipids.\n- Bipolar I: TSH, calcium, creatinine (lithium level was July).\n- HTN/right RAS: unchanged plan.\nRTC October."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "portal_message",
+          "start": "2024-09-24T10:15",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Pap and Lab Results",
+              "author": "PCP",
+              "date": "2024-09-24T10:15",
+              "body": "Your Pap smear was normal and the HPV test was negative, so the next one isn't due for 5 years. Physical labs were mostly stable: A1c a little higher at 7.1, still fine without medication if you keep up with the diet; cholesterol in range, thyroid normal, no urine protein."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-18a",
+          "kind": "office_visit",
+          "start": "2024-10-18T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; question about a blood pressure study",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-18T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-18T14:02"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-10-18T13:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-18T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-10-18T14:20",
+              "body": "S: Follow-up. She saw an ad recruiting for a study of a new blood pressure pill against placebo and wanted to talk it over, since her BP has been hard to get down. No symptoms.\n\nO: BP above goal. Lungs clear, heart regular, no edema.\n\nA/P:\n1. Research question: explained that a placebo-controlled study means she might get an inactive pill for months, that her blood pressure has a known cause in the right renal artery stenosis, and that most such studies exclude secondary hypertension. Printed the listing for her to call with questions about eligibility; she is leaning against it. No enrollment.\n2. HTN / RAS: unchanged on nephrology's plan.\n3. Flu and COVID vaccines today.\nRTC January."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T11:15",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-11-12T11:15",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 2023 and 2022. Scattered fibroglandular tissue. No suspicious finding.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-11-12T11:15"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "outside_records",
+          "start": "2024-12-17T10:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry Progress Letter",
+              "author": "psychiatry",
+              "date": "2024-12-17T10:05",
+              "body": "Re: Patricia Desrosiers\n\nSeen 12/12/2024. Doing well, euthymic, enjoying the holidays with friends. Continue lithium carbonate 300 mg BID and sertraline 100 mg daily. Return in 6 months.\n\nOutpatient psychiatry"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

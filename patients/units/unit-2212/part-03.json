@@ -1,0 +1,306 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002212",
+      "events": [
+        {
+          "id": "2026-01-21a",
+          "kind": "specialist_visit",
+          "start": "2026-01-21T09:30",
+          "service": "Cardiology",
+          "reason": "Paroxysmal atrial fibrillation follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-01-21T09:40",
+              "text": "Sinus rhythm, rate 70. Normal intervals and axis. No ST-T changes.",
+              "conclusion": "Normal sinus rhythm."
+            }
+          ],
+          "orders": [
+            {"id": "ldct-2026", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up",
+              "author": "cardiology",
+              "date": "2026-01-22T15:10",
+              "body": "Cardiology follow-up letter\n\nDear colleague,\n\nI saw Mr. Kaminski back today. Since we met in September he had the October ED visit for rapid AF with hypotension, treated with electrical cardioversion. He reports no palpitations since then and feels well; walking daily.\n\nMedications: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily. No anticoagulant. NKDA.\n\nExam: vitals per flowsheet. Regular rhythm, no murmur, clear lungs, no edema.\nECG: sinus rhythm 70.\n\nAssessment: paroxysmal atrial fibrillation, one symptomatic episode requiring cardioversion. CHA2DS2-VASc 3.\n\nPlan: I again recommended apixaban 5 mg twice daily and explained that an episode can recur without warning. He continues to decline. He is also not interested in a daily rate-control medication while he feels well. We will see him in 6 months, sooner for recurrence.\n\nWith regards,\nOutpatient Cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "telephone",
+          "start": "2026-01-23T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling: lung screening CT",
+              "author": "front desk",
+              "date": "2026-01-23T10:05",
+              "body": "Annual lung screening CT order is in from the PCP. Called pt, booked 2/10 at 8:00. He asked to keep it early in the day."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "imaging",
+          "start": "2026-02-10T08:00",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2026-02-10T08:00",
+              "text": "INDICATION: Annual lung cancer screening.\nCOMPARISON: 01/21/2025, 01/16/2024.\nTECHNIQUE: Low-dose CT chest without contrast.\nFINDINGS: No pulmonary nodule. Lungs clear. No pleural effusion. Normal heart size. No adenopathy. Prior cholecystectomy. No aggressive bone lesion.",
+              "conclusion": "Lung-RADS 1, negative. Next annual screen in 12 months."
+            }
+          ],
+          "orders": [{"id": "ldct-2026", "action": "done", "date": "2026-02-10T08:00"}]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, hypertension, atrial fibrillation follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-10T14:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2026-03-10T14:30", "results": [{"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-10T14:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-03-10T14:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-03-10T14:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-03-10T14:40",
+              "body": "Chronic f/u.\n\nNo palpitations since October. Saw cardiology in January, sinus rhythm, still declined anticoagulation there; letter reviewed. LDCT Feb negative.\n\nMeds unchanged. NKDA.\n\nExam: BP, HR as charted; regular. Lungs clear. Feet: sensation and pulses intact.\n\nA/P\n- Paroxysmal AF: sinus. He is firm on no blood thinner; I said I'll keep asking and he laughed and said he knows.\n- HTN: continue lisinopril 20.\n- T2DM: A1c, BMP, urine microalbumin today. Metformin.\n- HLD: lipids today. Atorvastatin 40.\n\nRTC 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "pharmacy",
+          "start": "2026-05-05T08:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request: lisinopril, metformin",
+              "author": "MA",
+              "date": "2026-05-05T08:40",
+              "body": "Electronic refill request from pharmacy for lisinopril 20 mg and metformin 1000 mg, 90-day. Last visit 3/10, labs current. Approved per standing protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-04a",
+          "kind": "ed_visit",
+          "start": "2026-07-04T15:20",
+          "end": "2026-07-04T19:10",
+          "service": "Emergency Medicine",
+          "reason": "Left-sided weakness",
+          "vitals": {"bp": [180, 95], "hr": 78},
+          "measure": ["rr", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-04T15:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-04T15:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-07-04T15:35", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-07-04T15:40",
+              "text": "INDICATION: Acute left-sided weakness.\nTECHNIQUE: Axial non-contrast CT of the head.\nFINDINGS: No intracranial hemorrhage. No mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci appropriate for age. No extra-axial collection. Calvarium intact. Paranasal sinuses and mastoids clear.",
+              "conclusion": "No acute intracranial hemorrhage or mass effect."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-07-04T15:45",
+              "text": "Sinus rhythm, rate 78. Normal intervals. No acute ST-T changes.",
+              "conclusion": "Sinus rhythm."
+            }
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-07-04T15:20"}],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department physician record",
+              "author": "emergency medicine",
+              "date": "2026-07-09T09:00",
+              "body": "EMERGENCY DEPARTMENT RECORD\nDate of service: 07/04/2026 (copy received 07/09/2026 with discharge summary)\n\nCC: left side weak\n\nHPI: 69M with HTN, T2DM, hyperlipidemia and paroxysmal AF (not anticoagulated, by his choice) who developed abrupt weakness of the left arm and leg and a droop on the left side of his face late this morning. Waited to see if it would pass, then was driven in. No headache, no change in vision, no trouble getting words out.\n\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily. NKDA.\nSocial: former smoker, 30 pack-years.\n\nVitals: BP 180/95, HR 78, afebrile.\nNeuro: alert, oriented. Speech fluent, no dysarthria. Left lower facial droop. Left arm 3/5, left leg 3/5. Sensation intact to light touch and pinprick bilaterally. Finger-nose and heel-shin without ataxia. Fields full.\n\nCT head non-contrast: no hemorrhage, no mass effect.\nECG: sinus rhythm 78.\n\nImpression: acute ischemic stroke, pure motor syndrome on the left, likely lacunar.\nThrombolysis: last known well more than 4.5 hours before arrival; not a candidate. Not a thrombectomy candidate clinically.\nBP permitted up to 220/120 per protocol.\n\nDisposition: admitted to the stroke service.\n\nEmergency Medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-04b",
+          "kind": "hospital_admission",
+          "start": "2026-07-04T19:10",
+          "end": "2026-07-08T13:00",
+          "service": "Neurology — Stroke",
+          "reason": "Acute ischemic stroke",
+          "conditions": [
+            {"label": "Lacunar infarction", "icd10": "I63.81", "action": "diagnosed", "onset": "2026-07-04"}
+          ],
+          "medications": [
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "stop", "reason": "Dose increased"},
+            {"drug": "atorvastatin 80 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 80, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Secondary stroke prevention"},
+            {"drug": "apixaban 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Atrial fibrillation, stroke prevention"},
+            {"drug": "amlodipine 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+          ],
+          "state": {"bp": [136, 82]},
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2026-07-05T05:30", "results": [{"test": "Total Cholesterol", "value": 220}, {"test": "High Density Lipoprotein", "value": 35}, {"test": "Low Density Lipoprotein", "value": 160}, {"test": "Triglycerides", "value": 250}]},
+            {"panel": null, "collected": "2026-07-05T05:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2026-07-05T10:30",
+              "text": "INDICATION: Acute left hemiparesis.\nTECHNIQUE: Multiplanar multisequence MRI brain without contrast, including DWI, FLAIR and susceptibility-weighted imaging.\nFINDINGS: 12 mm focus of restricted diffusion in the posterior limb of the right internal capsule with corresponding FLAIR signal, consistent with acute infarct. No hemorrhage on susceptibility imaging. No other acute infarct. No mass. Ventricles normal in size. Normal flow voids.",
+              "conclusion": "Acute lacunar infarct, right posterior limb of the internal capsule, 12 mm. No hemorrhage."
+            },
+            {
+              "study": "Carotid duplex ultrasound",
+              "performed": "2026-07-05T14:00",
+              "text": "INDICATION: Acute ischemic stroke.\nFINDINGS: Right and left common, internal and external carotid arteries interrogated. Velocities within normal limits bilaterally. No hemodynamically significant plaque. Vertebral arteries antegrade bilaterally.",
+              "conclusion": "No hemodynamically significant carotid stenosis on either side."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-07-04T19:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-07-08T12:00"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "neurology",
+              "date": "2026-07-09T09:00",
+              "body": "DISCHARGE SUMMARY - Stroke Service\nAdmitted 07/04/2026, discharged 07/08/2026\n\nDischarge diagnosis: acute lacunar infarct, right posterior limb of internal capsule.\nOther: paroxysmal atrial fibrillation; hypertension; type 2 diabetes; hyperlipidemia; former smoker.\n\nPresentation: abrupt left face, arm and leg weakness (3/5) with intact sensation; BP 180/95 on arrival. Outside the thrombolysis window. Head CT without hemorrhage or mass effect.\n\nHospital course:\n- MRI: 12 mm acute infarct in the right posterior limb of the internal capsule, no hemorrhage.\n- Carotid duplex: no significant stenosis.\n- Telemetry: sinus rhythm throughout.\n- Fasting lipids 7/5: TC 220, HDL 35, LDL 160, TG 250. Atorvastatin increased to 80 mg.\n- Echo in August 2025 was normal; not repeated.\n- Anticoagulation: CHA2DS2-VASc now 5. After discussion with patient, who now agrees, apixaban 5 mg twice daily started on hospital day 4 (07/07) given small infarct size.\n- BP: permissive for 48 hours, then lisinopril resumed and amlodipine 5 mg added.\n- PT/OT: improving; safe for home with outpatient therapy.\n\nExam at discharge: left lower facial weakness, left arm and leg 4-/5, sensation intact, walking with standby assist.\n\nDischarge medications:\n- apixaban 5 mg twice daily (NEW)\n- atorvastatin 80 mg daily (CHANGED from 40 mg)\n- amlodipine 5 mg daily (NEW)\n- lisinopril 20 mg daily\n- metformin 1000 mg twice daily\nAllergies: NKDA\n\nFollow-up: PCP within 1 week; stroke neurology clinic in 6 weeks; outpatient PT/OT referral sent. Repeat lipids in 6-8 weeks.\n\nStroke Service attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "telephone",
+          "start": "2026-07-09T14:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2026-07-09T14:30",
+              "body": "Called within 2 business days of discharge. Pt home since 7/8. Says the left hand is \"clumsy\" but better each day. Picked up new meds yesterday: apixaban, atorvastatin 80, amlodipine; threw out the old 40 mg atorvastatin. Reviewed: take apixaban twice a day without skipping, watch for bleeding, call before any procedure. Stroke warning signs and 911 reviewed. PT eval booked 7/21. Appointment with PCP 7/14 confirmed. Neighbor is driving him."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "office_visit",
+          "start": "2026-07-14T10:20",
+          "end": "2026-07-14T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, stroke",
+          "vitals": {"bp": [138, 82]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-14T11:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2026-07-14T10:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional care visit: stroke",
+              "author": "PCP",
+              "date": "2026-07-14T11:20",
+              "body": "Hospital f/u, discharge summary and ED record reviewed.\n\nAdmitted 7/4-7/8 for a right internal capsule lacunar infarct, presenting with left face/arm/leg weakness. Not thrombolysed (outside window). Started apixaban 7/7, atorvastatin up to 80, amlodipine 5 added.\n\nToday: left hand still clumsy with buttons, leg feels heavy by evening. No new weakness, no headache. Taking every dose of apixaban; using a pill box. No bleeding or bruising. Mood ok, a bit shaken. Not driving.\n\nMeds reconciled: apixaban 5 BID, atorvastatin 80, amlodipine 5, lisinopril 20, metformin 1000 BID. NKDA.\n\nExam: BP 138/82. Regular rhythm. Mild left lower facial asymmetry. Left arm 4/5, left leg 4/5. Sensation intact. Walks without a device, slightly slow on the left.\n\nA/P\n1. Lacunar stroke, right internal capsule. Improving. Outpatient PT/OT starting 7/21. Neurology 8/18.\n2. Paroxysmal AF, now on apixaban. Full dose appropriate (age under 80, weight over 60 kg, Cr ~1). BMP today.\n3. HTN: 138/82 on lisinopril + new amlodipine. Goal under 130/80; recheck at next visit before adjusting.\n4. HLD: atorvastatin 80; lipids and LFTs in 6 weeks.\n5. T2DM: continue metformin.\n\nRTC after neurology."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "outside_records",
+          "start": "2026-07-23T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outpatient physical therapy initial evaluation",
+              "author": "physical therapy",
+              "date": "2026-07-23T11:00",
+              "body": "Outpatient Physical Therapy - Initial Evaluation\nDate: 07/21/2026\nReferral: stroke service, left hemiparesis after lacunar infarct.\n\nSubjective: left leg tires with longer walks; left hand fine motor slower.\nObjective: left hip flexion and knee extension 4/5, ankle dorsiflexion 4/5. Left grip reduced compared with right. Gait independent without device, mildly decreased left step length. Static and dynamic standing balance good.\nAssessment: mild left-sided weakness after stroke, good rehab potential.\nPlan: 2x/week for 8 weeks, strengthening, gait and balance training, home exercise program. OT for fine motor running alongside.\nPrecautions: on anticoagulant."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "specialist_visit",
+          "start": "2026-08-18T13:30",
+          "service": "Neurology",
+          "reason": "Post-stroke follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Stroke clinic follow-up",
+              "author": "neurology",
+              "date": "2026-08-19T16:00",
+              "body": "Stroke Neurology Clinic\n\nMr. Kaminski returns 6 weeks after a right internal capsule lacunar infarct. He has been doing PT and OT twice weekly and notes steady gains; buttons are easier. No new neurologic symptoms. Taking apixaban twice daily, atorvastatin 80 and amlodipine. No bleeding.\n\nExam: vitals per flowsheet. Alert, fluent. Faint left nasolabial flattening. Left arm 4+/5, left leg 4+/5. Sensation normal. Gait steady.\n\nAssessment: lacunar stroke with good recovery of left-sided weakness; paroxysmal AF now anticoagulated.\n\nRecommendations:\n1. Continue apixaban 5 mg twice daily long term.\n2. Continue atorvastatin 80 mg. LDL goal under 70; please repeat lipids now.\n3. BP goal under 130/80, per PCP.\n4. Continue PT/OT to complete course.\n5. Return to neurology in 6 months.\n\nThank you for allowing us to share in his care.\nStroke Neurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-21a",
+          "kind": "lab_only",
+          "start": "2026-08-21T08:10",
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2026-08-21T08:10", "pending": true, "results": [{"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-08-21T08:10", "pending": true, "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Lab draw",
+              "author": "MA",
+              "date": "2026-08-21T08:20",
+              "body": "Fasting lipid panel and liver panel drawn per PCP after statin increase, neurology also requesting. Left antecubital, tolerated well. Pressure held 3 min given apixaban; no bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T18:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cholesterol test and flu shot",
+              "author": "patient",
+              "date": "2026-08-24T18:45",
+              "body": "Hi, did the cholesterol test come back yet? Also when do you get flu shots in, I want to get it at the September appointment if I can. Stanley"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cholesterol test and flu shot",
+              "author": "RN",
+              "date": "2026-08-25T09:10",
+              "body": "Hi Mr. Kaminski, the lab hasn't sent the results yet; we'll message you when they're in. Flu vaccine usually arrives in early September, so we should have it for your 9/22 visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit and stroke follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

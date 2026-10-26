@@ -1,0 +1,1003 @@
+{
+  "unit": "unit-1876",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal vitamin Oral Tablet\"",
+    "left text-only (not verified): drug \"vitamin B complex Oral Tablet\"",
+    "left text-only (not verified): drug \"calcium citrate / cholecalciferol Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001876",
+      "given": "Nicole",
+      "family": "Cronin",
+      "birth_date": "1992-11-23",
+      "address_line": "118 Fearing Brook Road",
+      "phone": "+1-518-555-0169",
+      "email": "nicole.cronin@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher who joined in August 2025, about 17 months after a Roux-en-Y gastric bypass, with mouth, tongue and facial skin changes that GI diagnosed as riboflavin deficiency and treated to resolution. A prior pregnancy ended at 34 weeks for severe preeclampsia; she conceived again in spring 2026 and is in high-risk OB care on low-dose aspirin.",
+      "events": [
+        {
+          "id": "2025-08-25a",
+          "kind": "establish_care",
+          "start": "2025-08-25T09:20",
+          "end": "2025-08-25T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; sore mouth corners and facial rash",
+          "conditions": [
+            {
+              "label": "History of preeclampsia",
+              "action": "history",
+              "note": "Severe preeclampsia in prior pregnancy; delivered at 34 weeks"
+            },
+            {
+              "label": "Status post bariatric surgery",
+              "action": "history",
+              "onset": "2024-03-11",
+              "note": "Roux-en-Y gastric bypass"
+            },
+            {
+              "label": "Postsurgical malabsorption, not elsewhere classified",
+              "action": "history",
+              "onset": "2024-03-11",
+              "icd10": "K91.2"
+            },
+            {
+              "label": "Severe obesity due to excess calories",
+              "action": "diagnosed",
+              "note": "Morbid obesity before bypass"
+            },
+            {
+              "label": "Severe obesity due to excess calories",
+              "action": "resolved",
+              "note": "Resolved after bypass; about 150 lb lost since surgery"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal vitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "vitamin B complex Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "calcium citrate / cholecalciferol Oral Tablet",
+              "action": "historical",
+              "sig": "Take 600 mg/400 IU by mouth twice daily",
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              70
+            ],
+            "hr": 68,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 96.1,
+            "height_cm": 165.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None (abstinent)"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2025-08-25T10:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Angular cheilitis, glossitis and facial rash after Roux-en-Y gastric bypass"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2025-08-25T10:10",
+              "author": "PCP",
+              "body": "NEW PATIENT\n32 y/o F transferring her care from her prior primary care office. Wanted a doctor she can message between visits.\n\nCC: corners of the mouth cracking, tongue sore, rash next to her nose and in her eyebrows. About four weeks.\n\nHPI: Roux-en-Y gastric bypass March 2024, roughly 150 lb down since. Ever since surgery she has had nausea most days and throws up every so often; on the bad days she barely eats. The splits at the corners of her mouth sting with anything salty or acidic, and her tongue feels raw. Red, flaky patches beside the nose and through the brows, only mildly itchy. Vaseline on the lips hasn't helped. No fever, no mouth ulcers, no diarrhea. Says she takes her supplements most days, misses some when nauseated.\n\nPMH: severe preeclampsia with her prior pregnancy, delivered at 34 wk. Morbid obesity before the bypass, resolved. Malabsorption after bypass.\nPSH: RYGB 3/2024. Preterm delivery at 34 wk.\nMeds: prenatal vitamin daily; vitamin B complex daily; ferrous sulfate 325 mg daily; calcium citrate + vit D 600 mg/400 IU twice a day.\nAllergies: NKDA.\nFH: mother - severe preeclampsia. Maternal grandmother - chronic HTN. Father - type 2 DM.\nSH: elementary school teacher. Never smoked. No alcohol. No drugs.\n\nExam: vitals as charted. Comfortable, conversant.\nMouth: fissured, red skin at both oral commissures. Tongue red, smooth, a little swollen.\nSkin: erythematous patches with greasy scale in both nasolabial folds and the eyebrows.\nNeck supple, no adenopathy. Heart RRR. Lungs clear. Abdomen soft, nontender, small healed laparoscopic scars. Ext without edema.\nPHQ-2 0.\n\nA/P\n1. Angular cheilitis, glossitis and a seborrheic-looking facial rash in a bypass patient with poor intake. Suspect a vitamin deficiency. Referral to GI for bypass/nutrition evaluation and labs; keep taking all supplements daily.\n2. s/p RYGB with malabsorption, ongoing nausea and occasional vomiting. Small meals, sip fluids through the day.\n3. Hx severe preeclampsia - flagged for any future pregnancy.\n4. Hx morbid obesity, resolved after bypass.\n\nRecords release signed for prior PCP and the bariatric program. Will see her back after GI."
+            }
+          ],
+          "state": {
+            "weight_kg": 95.3,
+            "height_cm": 165.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "outside_records",
+          "start": "2025-09-03T14:10",
+          "reason": "Records from prior primary care office and bariatric program",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-09-20T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside Records Summary",
+              "date": "2025-09-03T14:10",
+              "author": "RN",
+              "body": "Outside records arrived from her previous primary care office and the bariatric surgery program at a regional hospital. 41 pages, scanned to media.\n\nHighlights:\n- Roux-en-Y gastric bypass, laparoscopic, March 2024.\n- Prior pregnancy with severe preeclampsia, delivered at 34 weeks.\n- Allergies: NKDA.\n- Supplement list matches what she reported at intake.\n- Tdap 9/20/2021.\n- Pap with HPV co-test 2023, both negative; next due 2028.\n\nAbstracted to health maintenance. Forwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-29a",
+          "kind": "specialist_visit",
+          "start": "2025-09-29T10:40",
+          "end": "2025-09-29T11:30",
+          "service": "Gastroenterology",
+          "reason": "Oral and facial changes after gastric bypass",
+          "conditions": [
+            {
+              "label": "Riboflavin deficiency",
+              "action": "diagnosed",
+              "onset": "2025-07-28",
+              "icd10": "E53.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "riboflavin 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Riboflavin deficiency"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              68
+            ],
+            "hr": 67,
+            "weight_kg": 95.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-29T11:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.25
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 298
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-09-29T11:35",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 80
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 300
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 27
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 82
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-29T11:35",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 400
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-29T11:35",
+              "results": [
+                {
+                  "test": "Folate",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-29T11:35",
+              "resulted": "2025-10-06T09:00",
+              "results": [
+                {
+                  "test": "Riboflavin [Moles/volume] in Serum or Plasma",
+                  "loinc": "49038-3",
+                  "unit": "nmol/L",
+                  "value": 2.4
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2025-09-29T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2025-10-08T13:25",
+              "author": "gastroenterology",
+              "body": "GASTROENTEROLOGY CONSULTATION\nDate of service: 09/29/2025\nRequested by: primary care\nQuestion: mouth, tongue and facial skin changes after gastric bypass\n\nMs. Cronin is a 32-year-old woman seen at your request. Over the last two months she has developed painful splitting at the angles of the mouth, a sore tongue, and a persistent rash around the nose and eyebrows. Her Roux-en-Y gastric bypass was about 18 months ago and she has lost close to 150 pounds. Nausea has persisted since surgery with occasional emesis, and by her account her diet has been poor as a result.\n\nPast history: severe preeclampsia in a previous pregnancy requiring delivery at 34 weeks; RYGB complicated by malabsorption; morbid obesity before surgery, now resolved.\nMedications: prenatal vitamin daily; vitamin B complex daily; ferrous sulfate 325 mg daily; calcium citrate/vitamin D 600 mg/400 IU twice daily.\nAllergies: no known drug allergies.\nFamily history: mother with severe preeclampsia; maternal grandmother with chronic hypertension; father with type 2 diabetes.\nSocial: teaches elementary school. Never smoker, abstains from alcohol.\n\nExamination: vitals per clinic intake. Bilateral angular cheilitis. The tongue is beefy red and swollen. Greasy, scaling erythematous eruption confined to the nasolabial folds and eyebrows. Abdomen soft and nontender with well-healed laparoscopic port sites.\n\nLaboratory (09/29/2025):\nHemoglobin 12.2 g/dL, MCV 84 fL, MCHC 32 g/dL\nIron 80 mcg/dL, TIBC 300 mcg/dL\nVitamin B12 400 pg/mL\nFolate 10 ng/mL\nPlasma riboflavin (resulted 10/06/2025) 2.4 nmol/L, reference 6.2-39.0, LOW\n\nImpression: Riboflavin (vitamin B2) deficiency following Roux-en-Y gastric bypass, from malabsorption compounded by poor oral intake. The cheilitis, glossitis and seborrheic-pattern dermatitis together are typical. Red cell indices are normocytic and iron, B12 and folate are within range.\n\nRecommendations:\n1. Riboflavin 100 mg by mouth once daily for approximately three months.\n2. Continue the prenatal vitamin, B complex, iron and calcium citrate with D.\n3. Small, protein-first meals spread through the day.\n4. Recheck plasma riboflavin at the end of the course; this can be drawn with her primary care labs.\n\nWe are happy to see her again if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "portal_message",
+          "start": "2025-10-09T07:45",
+          "reason": "GI consult follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI letter",
+              "date": "2025-10-09T07:45",
+              "author": "PCP",
+              "body": "Hi Nicole - GI's letter came in. Your riboflavin (vitamin B2) level was low, which explains the mouth corners, tongue and the rash. Their plan is riboflavin 100 mg once a day for about three months, on top of everything you already take. Did you get it started? We'll recheck the level at your physical in January."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI letter",
+              "date": "2025-10-09T15:52",
+              "author": "patient",
+              "body": "Yes, started it right after the appointment. Picked up a big bottle so I won't run out. Thanks for checking."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "nurse_visit",
+          "start": "2025-10-20T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-20T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-20T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-20T15:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2025-10-20T16:00",
+              "author": "RN",
+              "body": "In after school for vaccines. Denies fever or illness today. No prior vaccine reactions. NKDA.\nInfluenza (trivalent) 0.5 mL IM left deltoid.\nCOVID-19 mRNA (2025-26 formula) 0.3 mL IM right deltoid.\nVIS provided. Waited 15 min, tolerated well. Left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "office_visit",
+          "start": "2025-11-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after GI, riboflavin deficiency",
+          "vitals": {
+            "bp": [
+              122,
+              76
+            ],
+            "hr": 76,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 95.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-11-17T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-11-17T16:25",
+              "author": "PCP",
+              "body": "S: Back after GI. Seven weeks into riboflavin 100 mg daily. Mouth corners healed within a couple of weeks, tongue no longer sore, rash by the nose and brows gone. Still gets nauseated off and on, vomits rarely now. Taking all supplements daily, set a phone alarm.\nMeds: riboflavin 100 mg daily, prenatal vitamin, B complex, ferrous sulfate 325 mg, calcium citrate/D 600/400 BID. NKDA.\n\nO: vitals as charted. Commissures intact, no erythema. Tongue normal color and papillae. Face and brows clear. Heart RRR, lungs clear.\n\nA/P:\n1. Riboflavin deficiency - responding clinically. Finish the 3-month course; recheck level with January physical labs.\n2. s/p RYGB, intermittent nausea - unchanged. Same small-meal approach.\n\nPhysical in January, fasting labs that morning."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "annual_physical",
+          "start": "2026-01-12T07:50",
+          "end": "2026-01-12T08:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, fasting labs",
+          "vitals": {
+            "bp": [
+              114,
+              74
+            ],
+            "hr": 62,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 96.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-12T08:40",
+              "resulted": "2026-01-12T15:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Platelets",
+                  "value": 282
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-12T08:40",
+              "resulted": "2026-01-12T15:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-01-12T08:40",
+              "resulted": "2026-01-13T11:00",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 99
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 81
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 289
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 34
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-01-12T08:40",
+              "resulted": "2026-01-12T15:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-12T08:40",
+              "resulted": "2026-01-13T11:00",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 501
+                },
+                {
+                  "test": "Folate",
+                  "value": 11.7
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 34
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 54
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-12T08:40",
+              "resulted": "2026-01-13T11:00",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-12T08:40",
+              "resulted": "2026-01-16T10:30",
+              "results": [
+                {
+                  "test": "Riboflavin [Moles/volume] in Serum or Plasma",
+                  "loinc": "49038-3",
+                  "unit": "nmol/L",
+                  "value": 13.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-01-12T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-12T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-01-12T08:35",
+              "author": "PCP",
+              "body": "ANNUAL PREVENTIVE VISIT\n33F, fasting.\n\nInterval: mouth and skin have stayed clear. Still taking the riboflavin, holding off stopping until the recheck. Nausea comes and goes, no worse. Busy stretch at school, otherwise feeling well.\n\nPlanning: hopes to try for a pregnancy this year. She is now well past 18 months from the bypass. Already on a prenatal vitamin. Asked her to message us as soon as she has a positive test - with the severe preeclampsia last time she should be seen by OB early.\n\nMeds: riboflavin 100 mg daily, prenatal vitamin daily, vitamin B complex daily, ferrous sulfate 325 mg daily, calcium citrate/vit D 600 mg/400 IU BID. NKDA.\nSH unchanged: teacher, never smoker, no alcohol.\nPHQ-9 2.\n\nExam: vitals as charted. Well appearing. Oral mucosa moist, commissures and tongue normal. Neck without thyroid enlargement or adenopathy. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed port scars. Skin clear. No edema.\n\nHealth maintenance:\n- Cervical: co-test 2023 negative per outside records; next 2028.\n- Tdap 2021. Flu and COVID done October.\n- One-time hepatitis C and HIV screening today.\n\nA/P\n1. Preventive care as above.\n2. s/p RYGB with malabsorption - yearly bariatric labs today: CBC, CMP, iron studies, B12, folate, vit D, PTH.\n3. Riboflavin deficiency - repeat plasma B2 with today's draw; stop riboflavin if normal.\n4. Father with T2DM - A1c. Lipids, TSH.\n5. Hx severe preeclampsia - as above, early OB once pregnant.\n\nResults by portal."
+            }
+          ],
+          "state": {
+            "labs": {
+              "25-hydroxy Vitamin D": 33,
+              "Folate": 12.4,
+              "Hemoglobin": 12.9,
+              "Hemoglobin A1c": 5.2,
+              "Low Density Lipoprotein": 94,
+              "Mean Corpuscular Volume": 86,
+              "Parathyroid Hormone, Intact": 52,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Vitamin B12": 455
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "portal_message",
+          "start": "2026-01-16T16:20",
+          "reason": "Lab results",
+          "conditions": [
+            {
+              "label": "Riboflavin deficiency",
+              "action": "resolved",
+              "icd10": "E53.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "riboflavin 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Course complete; level normal"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your physical labs",
+              "date": "2026-01-16T16:20",
+              "author": "PCP",
+              "body": "Nicole, everything from Monday is back and it all looks good. Blood count, kidney and liver tests, iron, B12, folate, vitamin D and PTH are normal, so the bypass supplements are doing their job. Sugar, cholesterol and thyroid normal. Hepatitis C and HIV screens negative.\n\nThe riboflavin level that came back today is 13.6, now in the normal range (it was 2.4 in September). You can stop the riboflavin tablets. Keep the prenatal vitamin, B complex, iron and calcium with D going every day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your physical labs",
+              "date": "2026-01-16T19:04",
+              "author": "patient",
+              "body": "Great news, thank you! One less pill."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "pharmacy",
+          "start": "2026-03-04T10:15",
+          "reason": "Refill request, prenatal vitamin",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2026-03-04T10:15",
+              "author": "RN",
+              "body": "Pharmacy request: prenatal vitamin, 1 tab daily, #90 with 3 refills. Covered by her plan with a prescription. Last visit 1/12. Sent per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "office_visit",
+          "start": "2026-03-23T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in visit",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "portal_message",
+          "start": "2026-05-27T06:58",
+          "reason": "Positive home pregnancy test",
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Early pregnancy; history of severe preeclampsia with delivery at 34 weeks; status post Roux-en-Y gastric bypass"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant!",
+              "date": "2026-05-27T06:58",
+              "author": "patient",
+              "body": "Good morning! Two home tests both came out positive. First day of my last period was April 20. You said to let you know right away - what's the next step?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant!",
+              "date": "2026-05-27T08:12",
+              "author": "PCP",
+              "body": "Congratulations! By your dates you're a little over 5 weeks. Because of the preeclampsia last time and your bypass, I've put in a referral to a high-risk obstetrics practice so you're seen early - the front desk will call you once they have a date. Keep taking the prenatal vitamin and all your bypass supplements. Call us or OB if you have bleeding or bad pain."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-28a",
+          "kind": "telephone",
+          "start": "2026-05-28T13:30",
+          "reason": "OB appointment scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Scheduling",
+              "date": "2026-05-28T13:30",
+              "author": "front desk",
+              "body": "OB office called back on the referral. New prenatal visit Monday 6/29 at 9:30. Called pt, she has the date and address. Records sent ahead."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "specialist_visit",
+          "start": "2026-06-29T09:30",
+          "end": "2026-06-29T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "New prenatal visit",
+          "conditions": [
+            {
+              "label": "Supervision of pregnancy with other poor reproductive or obstetric history, first trimester",
+              "action": "diagnosed",
+              "onset": "2026-06-29",
+              "icd10": "O09.291"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily, starting at 12 weeks",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Reduce risk of recurrent preeclampsia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ],
+            "weight_kg": 95.7
+          },
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2026-06-29T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics New Prenatal Visit",
+              "date": "2026-07-06T11:40",
+              "author": "obstetrics",
+              "body": "OBSTETRICS - NEW PRENATAL VISIT\nVisit date: 06/29/2026\nReferred by: primary care\n\nMs. Cronin is a 33-year-old seen for her first prenatal visit, 10 weeks 0 days by LMP 04/20/2026, EDD 01/25/2027.\n\nShe comes to us with a prior pregnancy complicated by severe preeclampsia that required delivery at 34 weeks. She also had a Roux-en-Y gastric bypass in 2024 and was treated last fall for riboflavin deficiency, which has since resolved. This pregnancy has gone smoothly so far. She is taking her prenatal vitamin daily and describes a balanced diet. Her main question today was what else she can do to lower her chance of preeclampsia this time.\n\nMedications: prenatal vitamin daily; vitamin B complex daily; ferrous sulfate 325 mg daily; calcium citrate/vitamin D 600 mg/400 IU twice daily.\nAllergies: no known drug allergies.\nFamily history: mother - severe preeclampsia; maternal grandmother - chronic hypertension; father - type 2 diabetes.\nSocial: elementary school teacher; never smoker; no alcohol.\n\nVitals: BP 128/82 mmHg. BMI 35 kg/m2.\n\nAssessment: Pregnancy at 10 weeks, high risk on the basis of prior severe preeclampsia with preterm delivery and prior bariatric surgery.\n\nPlan:\n- Low-dose aspirin 81 mg by mouth daily, beginning at 12 weeks and continuing through the pregnancy, to reduce the risk of recurrent preeclampsia. Reviewed the rationale with her.\n- Continue prenatal vitamin and her bariatric supplements unchanged.\n- Return visit in 4 weeks.\n\nThank you for involving us in her care; we will keep you informed."
+            }
+          ],
+          "state": {
+            "weight_kg": 95.4
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "portal_message",
+          "start": "2026-07-08T20:41",
+          "reason": "Question about aspirin",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby aspirin question",
+              "date": "2026-07-08T20:41",
+              "author": "patient",
+              "body": "Hi - OB wants me to start a baby aspirin on Monday when I hit 12 weeks. I remember being told after the bypass to stay away from aspirin and ibuprofen. Is it OK to take?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby aspirin question",
+              "date": "2026-07-09T07:30",
+              "author": "PCP",
+              "body": "Good question, and you remembered right about the usual rule. This is a special case: the 81 mg dose during pregnancy is to lower the chance of preeclampsia coming back, and given what happened last time I agree with OB. Take it with food. If you get stomach pain, black stools or vomit blood, stop and call us or OB right away. I've added it to your list here as an OB prescription."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "portal_message",
+          "start": "2026-08-17T09:05",
+          "reason": "Immunization record request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization record",
+              "date": "2026-08-17T09:05",
+              "author": "patient",
+              "body": "Could I get a printout of my vaccine record? The district wants one on file before teachers go back."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunization record",
+              "date": "2026-08-17T11:20",
+              "author": "front desk",
+              "body": "Hi Nicole, your immunization record is attached to this message as a PDF. Let us know if the district needs a signed form as well."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-21a",
+          "kind": "office_visit",
+          "start": "2026-09-21T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: bariatric supplements in pregnancy",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Postsurgical malabsorption, not elsewhere classified|K91.2": {
+        "code": "K91.2",
+        "display": "Postsurgical malabsorption, not elsewhere classified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Riboflavin deficiency|E53.0": {
+        "code": "E53.0",
+        "display": "Riboflavin deficiency",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Supervision of pregnancy with other poor reproductive or obstetric history, first trimester|O09.291": {
+        "code": "O09.291",
+        "display": "Supervision of pregnancy with other poor reproductive or obstetric history, first trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "riboflavin 100 MG Oral Tablet": {
+        "code": "204625",
+        "display": "riboflavin 100 MG Oral Tablet",
+        "ingredient": "riboflavin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Riboflavin [Moles/volume] in Serum or Plasma": {
+        "code": "49038-3",
+        "display": "Riboflavin [Moles/volume] in Serum or Plasma",
+        "unit": "nmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal vitamin Oral Tablet\"",
+      "drug \"vitamin B complex Oral Tablet\"",
+      "drug \"calcium citrate / cholecalciferol Oral Tablet\""
+    ]
+  }
+}

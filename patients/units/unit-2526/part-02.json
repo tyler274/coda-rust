@@ -1,0 +1,1113 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002526",
+      "events": [
+        {
+          "id": "2020-02-19a",
+          "kind": "portal_message",
+          "start": "2020-02-19T20:14",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "author": "patient",
+              "date": "2020-02-19T20:14",
+              "body": "hi is it time for my yearly physical? i can do a monday morning, mondays are my office days"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "author": "front desk",
+              "date": "2020-02-20T08:47",
+              "body": "Hi Andre, yes it is. You're booked Monday 3/2 at 9:20. Please come fasting if you can."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-02a",
+          "kind": "annual_physical",
+          "start": "2020-03-02T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine check-up",
+          "state": {
+            "bp": [
+              124,
+              78
+            ],
+            "weight_kg": 83.0,
+            "labs": {
+              "Creatinine": 2.4,
+              "Blood Urea Nitrogen": 28
+            }
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-03-02T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Hepatitis B core antibody, total",
+                  "loinc": "16933-4",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-03-02T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-03-02T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-03-02T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-03-02T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2020-03-02T13:40",
+              "body": "ANNUAL EXAM\n\n35 y/o M here for his yearly check. Feels well, nothing new to report.\n\nPMH: chronic hep B on tenofovir; HTN; CKD 3b (attributed to heroin nephropathy); kappa light-chain myeloma in remission post ASCT 2017; opioid use disorder (heroin) and cocaine use disorder; s/p mitral valve repair.\nSubstance hx: IV use in his twenties. He tells me he has been clean for 8 years.\n\nMeds: tenofovir DF 300 mg daily, amlodipine 5 mg daily. Still misses doses of both here and there.\nAllergies: none known.\n\nSocial: safety compliance officer, at a desk most of the day, gets very little exercise. Pack a day. No alcohol.\nFamily: as previously documented.\n\nROS negative.\n\nVitals normal today, BP 124/78.\nExam: NAD. HEENT normal. No nodes. Heart RRR. Lungs clear bilaterally. Abd soft, no organomegaly. No edema. Skin clear. Neuro grossly intact.\nPHQ-2: 0.\n\nA/P\n1. Hep B - checking serologies today; haven't seen a panel since he joined.\n2. HTN - at goal today.\n3. CKD 3b - BMP.\n4. Myeloma - in remission, oncology q6mo.\n5. Tobacco - again advised to quit, he'll think about it.\n6. HM: lipids, CBC. Flu shot done in the fall.\n\nRTC 6 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Hepatitis B Panel",
+              "author": "PCP",
+              "date": "2020-03-03T17:25",
+              "body": "Hep B panel: surface antigen negative, surface antibody positive, core antibody positive. So the surface antigen has cleared and he has antibody - the pattern of past infection, not active disease. Question is whether he still needs tenofovir. Will call his oncologist before changing anything given the myeloma/transplant history. Creatinine 2.4, slightly up. CBC and lipids unremarkable."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              78
+            ]
+          }
+        },
+        {
+          "id": "2020-03-05a",
+          "kind": "telephone",
+          "start": "2020-03-05T12:45",
+          "reason": "Tenofovir question",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call With Hematology-Oncology",
+              "author": "PCP",
+              "date": "2020-03-05T12:45",
+              "body": "Spoke with his hematologist-oncologist re: hep B panel (sAg neg, sAb pos, core Ab pos). Their recommendation: keep him on tenofovir indefinitely given myeloma history and the risk of reactivation if he ever needs treatment again. Agree. Called pt, explained the result and why we are not stopping the medicine. He was relieved, said he'd 'gotten used to it.' Encouraged daily dosing."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-20a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-20T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up, refills",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-05-20T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2020-05-20T12:05",
+              "body": "Video visit, pt at home in South Hadley, consents to telehealth.\nWorking from home since March, says it's harder to get up and move. No home BP cuff. Feels fine, no swelling, no chest pain. Taking both meds 'better than before.' Still smoking, maybe a bit more with being home.\nOncology visit moved to June.\nA/P: HTN - no reading today; asked him to get a home cuff (Medicaid may cover, will send rx). Refilled amlodipine and tenofovir 90 days. CKD - labs at next in-person visit. Smoking - discussed, not ready.\nRTC 3-4 months in person."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-10a",
+          "kind": "specialist_visit",
+          "start": "2020-06-10T09:30",
+          "service": "Hematology-Oncology",
+          "reason": "Myeloma surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-06-10T09:10",
+              "results": [
+                {
+                  "test": "Monoclonal Protein Spike",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology-Oncology Follow-up Letter",
+              "author": "hematology-oncology",
+              "date": "2020-06-16T15:10",
+              "body": "Dear Doctor,\n\nMr. Jackson was seen for myeloma surveillance (visit delayed from spring due to the pandemic). Feels well.\n\nSPEP: no M-spike. Immunofixation negative. FLC ratio normal. CBC normal.\n\nContinued remission. As discussed by phone in March, please continue tenofovir. Return in 6 months.\n\nHematology-Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "office_visit",
+          "start": "2020-09-24T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg swelling",
+          "state": {
+            "bp": [
+              144,
+              96
+            ],
+            "weight_kg": 87.0,
+            "labs": {
+              "Creatinine": 2.8,
+              "Albumin": 2.4,
+              "Blood Urea Nitrogen": 30
+            }
+          },
+          "vitals": {
+            "bp": [
+              144,
+              96
+            ]
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-24T16:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2020-09-24T16:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "4+"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-24T16:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-24T16:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral-2020",
+              "action": "placed",
+              "order": "Nephrology referral",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "Leg swelling, heavy proteinuria, rising creatinine"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-09-24T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-24T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Leg Swelling",
+              "author": "PCP",
+              "date": "2020-09-24T17:05",
+              "body": "CC: swollen legs\n\nHPI: Noticed his ankles puffing up around the start of July. Has been creeping up since, now his socks leave deep marks and his work shoes are tight by afternoon. Weight up about 4-5 kg on our scale since March. No chest pain. Some extra effort walking up stairs, no orthopnea he can describe. Urine maybe foamy, not sure. Taking amlodipine and tenofovir most days.\n\nSubstance use: denies.\n\nExam: BP 144/96. Wt 87 kg. Heart regular. Lungs clear. Abdomen soft. Bilateral pitting edema of the ankles and shins.\n\nA/P\n1. Edema with rising weight in a man with CKD - worried about nephrotic-range protein. CMP and UA today. Amlodipine can cause ankle swelling but doesn't explain this much.\n2. CKD 3b - see above.\n3. Infectious screening - repeat HIV and hep C today given history.\n4. Flu shot given.\n\nNephrology referral now regardless of labs. Will message results."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-28a",
+          "kind": "portal_message",
+          "start": "2020-09-28T09:10",
+          "reason": "Results and referral",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs and kidney referral",
+              "author": "PCP",
+              "date": "2020-09-28T09:10",
+              "body": "Andre, your urine has a lot of protein (4+) and your blood albumin is low at 2.4. Creatinine is up to 2.8. This fits with the swelling - your kidneys are leaking protein. HIV and hepatitis C tests were negative again. The nephrology office has the referral; they'll call you, and if you don't hear by the end of next week let us know. Keep your feet up when you can and go easy on salt."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs and kidney referral",
+              "author": "patient",
+              "date": "2020-09-28T12:31",
+              "body": "got it. they called already, appointment is nov 6. is that too long to wait"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs and kidney referral",
+              "author": "PCP",
+              "date": "2020-09-28T13:02",
+              "body": "It's ok to wait as long as you aren't short of breath. If the swelling goes above your knees, or you get short of breath lying down, text me same day."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-06a",
+          "kind": "specialist_visit",
+          "start": "2020-11-06T10:00",
+          "service": "Nephrology",
+          "reason": "Leg and scrotal swelling",
+          "conditions": [
+            {
+              "label": "Nephrotic syndrome",
+              "action": "diagnosed",
+              "onset": "2020-07-01"
+            },
+            {
+              "label": "Chronic kidney disease, stage 3b",
+              "action": "resolved"
+            },
+            {
+              "label": "Chronic kidney disease, stage 4",
+              "action": "diagnosed"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Edema from nephrotic syndrome"
+            }
+          ],
+          "state": {
+            "weight_kg": 92.0,
+            "bp": [
+              148,
+              102
+            ],
+            "labs": {
+              "Creatinine": 3.1,
+              "Blood Urea Nitrogen": 34,
+              "Albumin": 2.1
+            }
+          },
+          "vitals": {
+            "temp_c": 37.2,
+            "bp": [
+              148,
+              102
+            ],
+            "hr": 98
+          },
+          "measure": [
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-11-06T09:30",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 34
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 3.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.1
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 32
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-11-06T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 305
+                },
+                {
+                  "test": "Complement C3",
+                  "loinc": "4485-9",
+                  "value": 63,
+                  "unit": "mg/dL"
+                },
+                {
+                  "test": "Complement C4",
+                  "loinc": "4498-2",
+                  "value": 22,
+                  "unit": "mg/dL"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2020-11-06T09:30",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "4+"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 40
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 10
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "1+"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral-2020",
+              "action": "done",
+              "date": "2020-11-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Consultation",
+              "author": "nephrology",
+              "date": "2020-11-10T16:20",
+              "body": "NEPHROLOGY CONSULTATION\n\nReferred by: primary care\nReason: edema, proteinuria, rising creatinine\n\nThank you for asking us to see Mr. Jackson, a 36-year-old man with chronic hepatitis B, hypertension, CKD previously attributed to heroin nephropathy, myeloma in remission and a prior mitral repair.\n\nHe describes swelling that began in his legs about four months ago and has spread up to his thighs and into the scrotum. He has gained about 9 kg (20 lb) over that time. His primary care office checked HIV and hepatitis C about six weeks ago; both were negative.\n\nSubstance use: when I asked directly he told me he has been injecting heroin daily for the last 8 years. Smokes a pack of cigarettes a day. No alcohol.\n\nMeds: tenofovir DF 300 mg daily, amlodipine 5 mg daily, both taken irregularly.\nAllergies: NKDA.\nFamily history: father with substance use disorder; maternal uncle with multiple myeloma; mother with hypertension.\n\nExam: T 37.2 C, BP 148/102, P 98. Heart sounds distant; holosystolic murmur at the apex radiating to the axilla. Breath sounds decreased at both bases. Abdomen distended with shifting dullness. 3+ pitting edema of both legs to the thighs; scrotum markedly edematous.\n\nLabs today: BUN 34, creatinine 3.1, albumin 2.1, total cholesterol 305, ALT 32, AST 98. C3 low at 63, C4 22. HIV Ag/Ab negative. HBsAg negative, anti-HBs positive. HCV antibody negative.\nUA: protein 4+, RBC 40/hpf, WBC 10/hpf, leukocyte esterase 1+, occasional granular casts, no RBC casts.\n\nAssessment:\n1. Nephrotic syndrome with advanced CKD (now stage 4). With daily heroin injection the leading consideration is heroin-associated nephropathy (FSGS pattern), but he has never had tissue and he has a myeloma history, so I recommend a kidney biopsy.\n2. Volume overload, marked.\n3. Hypertension, above goal.\n\nPlan:\n- Start furosemide 40 mg daily. Low-salt diet.\n- Percutaneous renal biopsy, scheduled 11/18.\n- Labs 1 week after biopsy.\n- Discussed his heroin use; he says he wants to cut down.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2020-11-18a",
+          "kind": "procedure_visit",
+          "start": "2020-11-18T07:30",
+          "end": "2020-11-18T14:00",
+          "service": "Nephrology",
+          "reason": "Renal biopsy",
+          "conditions": [
+            {
+              "label": "Focal segmental glomerulosclerosis secondary to heroin use",
+              "icd10": "N04.1",
+              "action": "diagnosed",
+              "note": "heroin-associated nephropathy, biopsy-proven"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2020-11-18T09:10",
+              "issued": "2020-11-24T13:00",
+              "text": "Specimen: kidney, left, percutaneous needle core biopsy (2 cores).\nLight microscopy: 21 glomeruli, several with segmental sclerosis of the tuft with adhesion to Bowman capsule. Tubules and interstitium without acute change. Arteries unremarkable. No casts, no crystals.\nImmunofluorescence: no immune-complex deposition; nonspecific segmental IgM and C3 in sclerotic areas. Kappa and lambda stain evenly.\nElectron microscopy: extensive podocyte foot process effacement. No electron-dense deposits.",
+              "conclusion": "Focal segmental glomerulosclerosis, consistent with heroin-associated nephropathy in this clinical setting. No evidence of light-chain disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Renal Biopsy - Outside Record",
+              "author": "nephrology",
+              "date": "2020-11-24T15:30",
+              "body": "Ultrasound-guided percutaneous biopsy of the left kidney, 2 cores obtained with an 18-gauge needle. Tolerated well, no hematoma on post-procedure ultrasound. Observed 6 hours, discharged home. Pathology: FSGS, consistent with heroin-associated nephropathy; no light-chain deposition. Continue furosemide. Follow up in nephrology clinic."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-30a",
+          "kind": "portal_message",
+          "start": "2020-11-30T08:02",
+          "reason": "Biopsy result question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "biopsy",
+              "author": "patient",
+              "date": "2020-11-30T08:02",
+              "body": "kidney dr said my biopsy was FSGS. what does that mean? also my legs are going down a lot with the water pill, peeing all morning"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: biopsy",
+              "author": "RN",
+              "date": "2020-11-30T11:48",
+              "body": "Hi Andre, FSGS means scarring in parts of the kidney filters, which is why protein is leaking. Your doctor will go over it in detail at your visit on 12/7. Good to hear the swelling is going down. Take the water pill in the morning so you aren't up at night."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-07a",
+          "kind": "office_visit",
+          "start": "2020-12-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after nephrology and biopsy",
+          "state": {
+            "bp": [
+              142,
+              90
+            ],
+            "weight_kg": 85.0,
+            "labs": {
+              "Albumin": 2.6,
+              "Blood Urea Nitrogen": 36
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-12-07T11:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-12-07T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2020-12-07T11:35",
+              "body": "Follow-up after nephrology consult and kidney biopsy.\n\nNephrology letter and pathology reviewed: nephrotic syndrome, creatinine 3.1, biopsy FSGS consistent with heroin-associated nephropathy. CKD now stage 4. Started furosemide 40 daily.\n\nHe told nephrology he has been injecting heroin daily for the last 8 years. That is different from what he has told us. I asked him about it plainly today; he said he 'didn't want it in the chart here.' I'm going with the nephrology history as the accurate one. We talked about what the heroin is doing to his kidneys. He listened, was quiet, said he is trying to use less. I told him I'm not going anywhere and he can bring this up any time.\n\nSwelling much better on furosemide. Weight 85 kg, down from 92 at nephrology. No dizziness. Still smoking a pack a day.\n\nExam: BP 142/90. Heart regular. Lungs clear. Trace ankle edema.\n\nA/P\n1. FSGS / nephrotic syndrome, CKD 4 - BMP today on furosemide. Nephrology follows.\n2. Opioid use disorder, active IV heroin use - as above.\n3. HTN - above goal.\n4. Hep B - tenofovir.\n5. Tobacco - counseled.\n\nRTC 3 months, physical in March."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              90
+            ],
+            "weight_kg": 85.0
+          }
+        },
+        {
+          "id": "2021-01-13a",
+          "kind": "pharmacy",
+          "start": "2021-01-13T14:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2021-01-13T14:20",
+              "body": "Pharmacy requesting furosemide 40 mg refill - original rx from nephrology had no refills. Nephrology office closed for the day. Sent 30 days with 2 refills per PCP; let nephrology know."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-03a",
+          "kind": "nurse_visit",
+          "start": "2021-03-03T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 vaccine dose 1",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-03T13:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-03-03T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "COVID-19 Vaccine",
+              "author": "RN",
+              "date": "2021-03-03T13:40",
+              "body": "Eligible as high risk (CKD 4, history of myeloma). Pfizer dose 1, 0.3 mL IM left deltoid. EUA fact sheet given. 15 min observation without reaction. Dose 2 booked 3/24."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-22a",
+          "kind": "annual_physical",
+          "start": "2021-03-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              138,
+              88
+            ],
+            "labs": {
+              "Creatinine": 3.0,
+              "Albumin": 2.9,
+              "Blood Urea Nitrogen": 33
+            }
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-22T09:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-03-22T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-03-22T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2021-03-22T09:45",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "3+"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-03-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-03-22T12:15",
+              "body": "Annual.\nGot COVID dose 1 here on 3/3, dose 2 Wednesday.\nSwelling controlled on furosemide. Sees nephrology in June. Says heroin use is 'way down' - would not quantify. Cigarettes a pack a day. No alcohol.\nMeds: tenofovir DF 300 daily, amlodipine 5 daily, furosemide 40 daily. NKDA.\nExam: BP 138/88. Well appearing. Neck supple. Heart regular, no murmur heard. Lungs clear. Abd soft. Trace ankle edema. Skin clear.\nPHQ-2 1.\nA/P\nFSGS/CKD 4: BMP, UA.\nHTN: upper 130s.\nHep B: tenofovir.\nMyeloma: remission, oncology May.\nOUD: active use by his report, discussed again.\nTobacco: counseled.\nRTC 6 months."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ]
+          }
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "nurse_visit",
+          "start": "2021-03-24T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 vaccine dose 2",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-24T13:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-03-24T13:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "COVID-19 Vaccine",
+              "author": "RN",
+              "date": "2021-03-24T13:45",
+              "body": "Pfizer dose 2, 0.3 mL IM L deltoid. Had a sore arm after dose 1, nothing else. Observed 15 minutes, fine. Card updated."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-12a",
+          "kind": "specialist_visit",
+          "start": "2021-05-12T10:00",
+          "service": "Hematology-Oncology",
+          "reason": "Myeloma surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-05-12T09:40",
+              "results": [
+                {
+                  "test": "Monoclonal Protein Spike",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology-Oncology Follow-up Letter",
+              "author": "hematology-oncology",
+              "date": "2021-05-18T11:00",
+              "body": "Dear Doctor,\n\nSurveillance visit. Since we last met he was diagnosed with FSGS on kidney biopsy; I reviewed the pathology, which showed no light-chain deposition. Free light chain ratio today is normal; no M-spike; immunofixation negative.\n\nMyeloma remains in remission. Continue tenofovir. Next visit 6 months.\n\nHematology-Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2021-06-09a",
+          "kind": "specialist_visit",
+          "start": "2021-06-09T14:00",
+          "service": "Nephrology",
+          "reason": "FSGS follow-up",
+          "state": {
+            "labs": {
+              "Albumin": 3.0,
+              "Blood Urea Nitrogen": 32
+            }
+          },
+          "measure": [
+            "bp",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-06-09T13:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Follow-up Letter",
+              "author": "nephrology",
+              "date": "2021-06-14T09:40",
+              "body": "Dear colleague,\n\nMr. Jackson returns for FSGS (heroin-associated) with CKD stage 4. Edema well controlled on furosemide 40 mg daily. Creatinine about 3.0, potassium normal. Albumin up to 3.0.\n\nHe reports reduced heroin use. Smoking continues.\n\nPlan: continue furosemide; labs every 3-4 months through your office or ours; return in 6 months.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "office_visit",
+          "start": "2021-09-22T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weight gain, weakness, bruising",
+          "state": {
+            "bp": [
+              148,
+              92
+            ],
+            "weight_kg": 91.0,
+            "labs": {
+              "Blood Urea Nitrogen": 34
+            }
+          },
+          "vitals": {
+            "bp": [
+              148,
+              92
+            ]
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-22T15:45",
+              "results": [
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-09-22T15:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2021",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Weight gain, proximal weakness, bruising, rounded face"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-09-22T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Weight Gain",
+              "author": "PCP",
+              "date": "2021-09-22T16:40",
+              "body": "CC: gaining weight, legs weak\n\nHPI: Since early July has been putting on weight - he says his face 'looks puffy in pictures.' Thighs feel weak, has to push off the railing to get up stairs and getting up from low chairs is hard. Bruises on his arms from bumping into things he barely remembers. Not more swelling in his legs than usual; taking furosemide. No chest pain. No new meds, no steroids, no supplements.\n\nExam: BP 148/92. Wt 91 kg (85 in December). Face fuller than at his last visits. Several small bruises on both forearms. Trouble rising from the chair without his arms. Heart regular. Lungs clear. Trace ankle edema.\n\nA/P\n1. Weight gain, proximal weakness, easy bruising, fuller face - this is a cortisol excess picture until proven otherwise. Referring to endocrinology for the workup. CBC today to make sure platelets are fine given the bruising. BMP.\n2. HTN - higher today, not changing meds until endo weighs in.\n3. FSGS/CKD 4 - stable symptoms.\n\nFlu shot and COVID booster at a nurse visit in 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-06a",
+          "kind": "nurse_visit",
+          "start": "2021-10-06T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID-19 booster",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-06T08:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-06T08:38"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-06T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2021-10-06T08:55",
+              "body": "Flu vaccine R deltoid, Pfizer booster L deltoid. VIS and fact sheet given. Observed, no reaction. Endocrinology appt 11/3, pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-03a",
+          "kind": "specialist_visit",
+          "start": "2021-11-03T10:30",
+          "service": "Endocrinology",
+          "reason": "Weight gain, proximal weakness, easy bruising",
+          "conditions": [
+            {
+              "label": "Cushing syndrome",
+              "action": "diagnosed",
+              "onset": "2021-07-01",
+              "note": "ACTH-independent; adrenal source suspected"
+            }
+          ],
+          "state": {
+            "bp": [
+              152,
+              94
+            ],
+            "weight_kg": 93.0
+          },
+          "vitals": {
+            "bp": [
+              152,
+              94
+            ]
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-10-25T08:00",
+              "results": [
+                {
+                  "test": "Corticotropin (ACTH), plasma",
+                  "loinc": "2141-0",
+                  "text": "Undetectable"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2021",
+              "action": "done",
+              "date": "2021-11-03T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "author": "endocrinology",
+              "date": "2021-11-08T14:15",
+              "body": "ENDOCRINOLOGY CONSULTATION\n\nReason for referral: possible hypercortisolism.\n\nMr. Jackson is a 37-year-old man with chronic hepatitis B, hypertension, opioid and cocaine use disorders, FSGS from heroin-associated nephropathy (biopsy November 2020) with CKD stage 4, and multiple myeloma in remission. Over the past four months he has gained weight steadily, his proximal muscles have weakened, and he bruises easily. He takes no glucocorticoids in any form.\n\nMeds: tenofovir DF 300 mg daily, amlodipine 5 mg daily, furosemide 40 mg daily. Allergies: NKDA.\nSocial: safety compliance officer; smokes 1 ppd; no alcohol.\nFamily: father with substance use disorder; maternal uncle with myeloma; mother with hypertension.\n\nExam: BP 152/94. Rounded face. Fat pads above both clavicles.\n\nWorkup to date (drawn before this visit): plasma ACTH undetectable. Serum cortisol is elevated on morning and late-day samples. Overnight low-dose dexamethasone does not suppress his cortisol.\n\nImpression: Cushing syndrome. With a suppressed ACTH the cortisol excess is ACTH-independent, which points to the adrenal gland rather than a pituitary or ectopic ACTH source.\n\nPlan:\n- High-dose dexamethasone suppression test given today, results to follow.\n- Adrenal CT (without contrast given his kidney function) - ordered.\n- Will see him back after imaging.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-17a",
+          "kind": "imaging",
+          "start": "2021-11-17T11:00",
+          "service": "Radiology",
+          "reason": "Adrenal imaging for Cushing syndrome",
+          "reports": [
+            {
+              "study": "CT abdomen without contrast",
+              "loinc": "36424-0",
+              "performed": "2021-11-17T11:10",
+              "text": "TECHNIQUE: Axial non-contrast CT of the abdomen with thin sections through the adrenal glands.\nCOMPARISON: None.\nFINDINGS: Left adrenal gland: well-circumscribed, smooth, homogeneous nodule measuring 3.4 cm, attenuation 8 HU. Right adrenal gland: normal. Liver, spleen and pancreas normal for a non-contrast study. Kidneys normal in size without hydronephrosis or calculi. No adenopathy. No ascites. Lung bases clear.",
+              "conclusion": "3.4 cm left adrenal nodule with lipid-rich (8 HU) attenuation, consistent with adenoma. Normal right adrenal."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "CT Abdomen - Outside Report Received",
+              "author": "front desk",
+              "date": "2021-11-19T10:00",
+              "body": "Outside CT abdomen report (11/17) received by fax and scanned. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-01a",
+          "kind": "specialist_visit",
+          "start": "2021-12-01T09:45",
+          "service": "Endocrinology",
+          "reason": "Cushing syndrome follow-up",
+          "measure": [
+            "bp",
+            "weight_kg"
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "author": "endocrinology",
+              "date": "2021-12-03T08:30",
+              "body": "Dear Doctor,\n\nMr. Jackson returned to review results.\n\nThe high-dose dexamethasone test did not suppress his cortisol. CT shows a 3.4 cm left adrenal nodule with attenuation of 8 HU and a normal right adrenal.\n\nDiagnosis: ACTH-independent Cushing syndrome due to a left adrenal adenoma.\n\nI have referred him to endocrine surgery for laparoscopic left adrenalectomy. After surgery his remaining adrenal will be suppressed and he will need hydrocortisone for some months; we will manage the taper here. He understands and wants to go ahead.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2021-12-08a",
+          "kind": "portal_message",
+          "start": "2021-12-08T21:20",
+          "reason": "Question about surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "surgery",
+              "author": "patient",
+              "date": "2021-12-08T21:20",
+              "body": "Surgery is jan 19 to take out the left adrenal. The surgeon said I'll be on steroids after. I thought steroids were the problem? Also can I keep taking my tenofovir and water pill before surgery"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: surgery",
+              "author": "PCP",
+              "date": "2021-12-09T07:55",
+              "body": "Good question. The tumor has been making too much cortisol, so your other adrenal gland has gone quiet. Once the tumor is out, your body won't make enough on its own for a while, so you take a small replacement dose (hydrocortisone) and come off it slowly as the other side wakes up. Very different from the high levels causing your symptoms now. The surgeon's team will tell you which pills to take the morning of surgery - generally keep the tenofovir going."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

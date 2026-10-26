@@ -1,0 +1,605 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002538",
+      "events": [
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after rhabdomyolysis; kidney recheck",
+          "conditions": [
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "resolved"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 0.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-11T16:15",
+              "resulted": "2025-02-11T19:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-11T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-11T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-02-11T19:55",
+              "body": "Follow-up after the December admission. Drew the BMP at the start of the visit and it came back this evening: creatinine 0.9, back at his baseline. Both rhabdo episodes now resolved by labs; off the active list.\n\nInterval: back at work since late December, mostly indoor framing this winter. No weakness, no dark urine. He describes one binge over the holidays, \"smaller than usual,\" and says he has stayed away from cocaine since December. Did not want to talk about opioids. Pack a day.\n\nExam: vitals as charted. Well appearing. Strength full, no muscle tenderness. Heart regular, lungs clear.\n\nA/P\n1. Recurrent rhabdomyolysis with AKI, resolved. Reviewed warning signs again.\n2. AUD severe, cocaine use disorder, OUD. Asked again about medication or a program. Still no. Respecting that, and I said I will keep asking.\n3. Tobacco. Advised quitting. Not ready.\n\nRTC April, physical in May."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "portal_message",
+          "start": "2025-02-12T08:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney test",
+              "author": "PCP",
+              "date": "2025-02-12T08:20",
+              "body": "Declan, your kidney function from yesterday is 0.9, completely back to normal for you. Potassium normal too. Nothing to change. See you in April."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "author": "front desk",
+              "date": "2025-04-08T16:30",
+              "body": "Pt did not arrive for 3:40 appt. Called cell, voicemail full. Sent portal message asking him to reschedule; physical in May still on the books."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "annual_physical",
+          "start": "2025-05-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 82.5,
+            "labs": {
+              "Total Cholesterol": 176,
+              "High Density Lipoprotein": 47,
+              "Triglycerides": 118,
+              "Low Density Lipoprotein": 106
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-20T08:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-20T08:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-05-20T08:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Binge drinking, 10-15 drinks per day during episodes"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-05-20T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-20T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-05-20T09:10",
+              "body": "33M here for a physical. Missed April; says his phone was off for a week.\n\nNo complaints. Working full time, outside again now that it is spring. Sleep okay. Mood \"fine,\" a bit worn down. PHQ-9 6, no thoughts of self-harm. AUDIT-C 10. Binges roughly every few weeks, same 10-15 drinks a day for a couple of days. He admits cocaine came back with the last one. Denies opioids. Pack a day, no change.\n\nMeds: none. Allergies: NKDA.\nFH unchanged: father AUD, maternal uncle OUD, mother depression.\nSH: same apartment, still on his own.\n\nVaccines: Tdap 2024, hep B series done, PCV20 done, flu last fall. Declines COVID vaccine.\n\nExam: vitals as charted, BP normal, weight up a little. Well appearing. HEENT unremarkable. Neck supple, no nodes or thyroid enlargement. Heart regular without murmur. Lungs clear, no wheeze. Abdomen soft, no tenderness, liver not enlarged. Extremities without edema, full strength. Skin clear, no track marks. Affect appropriate.\n\nA/P\n1. Health maintenance. CMP, CBC, lipids today. No colon or lung screening due at his age.\n2. AUD severe, cocaine use disorder, OUD. Same conversation, same answer. He knows the options. I asked him to keep the mood question open with me given his mother's history.\n3. Tobacco. Advised to quit.\n\nRTC 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "portal_message",
+          "start": "2025-05-21T12:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2025-05-21T12:45",
+              "body": "Hi Declan, everything from your physical came back normal: kidneys, liver tests, sugar, blood counts and cholesterol. Good to see you yesterday."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "ed_visit",
+          "start": "2025-10-09T06:50",
+          "end": "2025-10-09T13:20",
+          "service": "Emergency Medicine",
+          "reason": "Found unresponsive at home",
+          "conditions": [
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "diagnosed",
+              "onset": "2025-10-09"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "diagnosed",
+              "onset": "2025-10-09"
+            },
+            {
+              "label": "Hyperkalemia",
+              "icd10": "E87.5",
+              "action": "diagnosed",
+              "onset": "2025-10-09"
+            },
+            {
+              "label": "Hypocalcemia",
+              "icd10": "E83.51",
+              "action": "diagnosed",
+              "onset": "2025-10-09"
+            },
+            {
+              "label": "Hyperphosphatemia",
+              "icd10": "E83.39",
+              "action": "diagnosed",
+              "onset": "2025-10-09"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-09T06:55",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 55,
+              "rr": 8
+            },
+            {
+              "time": "2025-10-09T07:15",
+              "rr": 14
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-09T07:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 3.2
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.8
+                },
+                {
+                  "test": "Calcium",
+                  "value": 7.9
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 6.5
+                },
+                {
+                  "test": "Creatine Kinase",
+                  "value": 20000
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-10-09T08:00",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Dark brown"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "None seen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-09T06:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note (outside record)",
+              "author": "emergency medicine",
+              "date": "2025-10-15T09:00",
+              "body": "Regional hospital emergency department. Date of service 10/09/2025.\n\nCC: unresponsive.\n\nHPI: 34-year-old man brought by EMS after his roommate could not wake him this morning. Per the roommate he uses heroin and may have used an unknown amount last night. Known alcohol, cocaine and opioid use disorders, with two prior admissions here for substance-related rhabdomyolysis; this looks like more of the same. History limited by mental status.\n\nAllergies: NKDA.\nPMH: rhabdomyolysis 4/2024 and 12/2024; AUD, cocaine use disorder, OUD.\nSocial: pack a day; binge drinker, 10-15 drinks daily when drinking; construction laborer. Lives with a roommate.\nFamily: father AUD, maternal uncle OUD, mother depression.\n\nArrival vitals: RR 8, BP 90/60, HR 55.\n\nExam: Drowsy, rouses to voice. Left lower leg swollen and tender, pale and cool compared with the right. Urine dark brown. Heart slow, regular. Lungs clear but shallow.\n\nCourse: naloxone 0.4 mg IV; within minutes RR 14 and he was more awake and conversant. IV isotonic fluids started at high rate. Orthopedics called for the left leg; DP and PT signals present by Doppler.\n\nData: Cr 3.2 (baseline 0.9). K 5.8. Ca 7.9. Phos 6.5. CK 20,000. UA blood positive, no RBCs on microscopy.\n\nMDM: Opioid overdose with rhabdomyolysis and AKI, hyperkalemia, hypocalcemia and hyperphosphatemia. Left leg at risk for compartment syndrome, being evaluated by orthopedics. Admit to medicine for fluids, serial leg checks and monitoring for recurrent sedation.\n\nDisposition: admit, medicine, step-down."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09b",
+          "kind": "hospital_admission",
+          "start": "2025-10-09T13:20",
+          "end": "2025-10-14T11:00",
+          "service": "Internal Medicine — Inpatient",
+          "reason": "Opioid overdose with rhabdomyolysis and acute kidney injury",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-14T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.6
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatine Kinase",
+                  "value": 2900
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-09T15:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-14T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Surgery Consult (outside record)",
+              "author": "orthopedic surgery",
+              "date": "2025-10-15T09:01",
+              "body": "Regional hospital, orthopedic surgery consult, 10/09/2025. Asked by the ED to evaluate the left leg for compartment syndrome in a patient found down after opioid use with rhabdomyolysis.\n\nExam: Left leg swollen from knee to ankle, tender over the anterior and lateral compartments, pale and cool relative to the right. Sensation grossly intact on the dorsum and sole. DP and PT signals present by Doppler.\n\nCompartment pressures, left leg: anterior 22, lateral 18, deep posterior 16, superficial posterior 14 mmHg. Diastolic BP 60, giving a difference above 30 in every compartment.\n\nImpression: swollen left leg after prolonged lying, pressures below fasciotomy range at this time.\n\nPlan: no fasciotomy. Elevate to heart level, avoid compression. Neurovascular checks every 2 hours by nursing, our team to re-examine tonight and in the morning; call immediately for rising pain or new numbness."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (outside record)",
+              "author": "hospital medicine",
+              "date": "2025-10-15T09:02",
+              "body": "Regional hospital, inpatient medicine. Admitted 10/09/2025, discharged 10/14/2025. Copy to primary care physician.\n\nPrincipal diagnosis: rhabdomyolysis after opioid overdose (heroin) with prolonged down time.\nSecondary: acute kidney injury; hyperkalemia; hypocalcemia; hyperphosphatemia; opioid use disorder; alcohol use disorder; cocaine use disorder; tobacco use.\n\nCourse: Responded to a single dose of IV naloxone in the ED and did not re-sedate on monitoring. High-volume IV fluids for five days with good urine output. CK and creatinine trended down each day. Electrolytes normalized with fluids. The left leg was followed by orthopedics with serial exams; it never met criteria for fasciotomy, and the swelling and pallor were gone by hospital day 3. Walking without help at discharge.\n\nAddiction medicine saw him on day 2. Buprenorphine-naloxone induction was offered and he declined. Overdose prevention education given; naloxone 4 mg nasal spray kit dispensed at discharge.\n\nDischarge labs (10/14): Cr 1.3, K 4.3, Ca 8.6, Phos 4.0, CK 2,900.\n\nAllergies: NKDA.\nDischarge medications: naloxone 4 mg nasal spray, 1 spray in one nostril for suspected overdose, may repeat in 2-3 minutes.\n\nFollow-up: PCP within one week with BMP and CK. Outpatient addiction treatment strongly recommended."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "telephone",
+          "start": "2025-10-15T10:40",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge Call",
+              "author": "RN",
+              "date": "2025-10-15T10:55",
+              "body": "Discharge summary, ortho consult and ED note received from the regional hospital this morning; routed to PCP. Reached pt at home. Left leg \"almost normal,\" no numbness, walking fine. Urine normal color. Has the naloxone kit; his roommate knows where it is and how to use it. Booked PCP Tue 10/21 with labs, will give flu shot same day."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "office_visit",
+          "start": "2025-10-21T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, overdose and rhabdomyolysis",
+          "state": {
+            "weight_kg": 79.8,
+            "labs": {
+              "Creatinine": 1.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug": "naloxone hydrochloride 40 MG/ML Nasal Spray",
+              "action": "historical",
+              "sig": "Spray 4 mg (1 spray) into one nostril for suspected opioid overdose; may repeat in 2-3 minutes in the other nostril",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Opioid overdose risk"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-21T09:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-21T09:50",
+              "results": [
+                {
+                  "test": "Creatine Kinase"
+                },
+                {
+                  "test": "Phosphorus"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "orders": [
+            {
+              "id": "addiction-referral",
+              "action": "placed",
+              "order": "Referral to outpatient addiction treatment program",
+              "category": "referral",
+              "to": "Addiction Medicine",
+              "reason": "Opioid, alcohol and cocaine use disorders after overdose"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-10-21T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-21T09:50"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-10-21T10:30",
+              "body": "Third admission, and the first with an overdose. Records reviewed: found unresponsive by his roommate 10/9 after heroin, RR 8, woke with one dose of IV naloxone. CK 20,000, Cr 3.2, K 5.8, Ca 7.9, Phos 6.5. Left leg swollen, pale and cool; ortho measured compartment pressures and did not need to operate. Discharged 10/14 with Cr 1.3 and CK 2,900 and a naloxone kit. Declined buprenorphine in the hospital.\n\nToday he is quieter than I have seen him. Says he did not plan to use that much and does not remember the night. Left calf sore for a week, now fine. No numbness or weakness. Urine normal. Has not used or had a drink since discharge, one week.\n\nPHQ-9 8. Denies any intent to harm himself, and says the overdose was not on purpose; I believe him.\n\nExam: vitals as charted, down about 2 kg from May. Alert, cooperative. Left leg: no swelling, calf soft and nontender, skin warm and normal color, DP and PT pulses 2+, sensation and toe movement normal. Right leg the same. Heart regular, lungs clear.\n\nA/P\n1. Rhabdomyolysis with AKI, third episode, recovering. BMP, CK, phos today.\n2. OUD with overdose; AUD severe; cocaine use disorder. For the first time he is asking what the next step would be. He still does not want to start buprenorphine from me today, but agreed to a referral to the outpatient addiction program, which I placed with his number and permission to call. Naloxone from the hospital added to his list; reviewed use with him again.\n3. Mood. PHQ-9 up a little. Will watch at every visit.\n4. Flu shot today.\n5. Work note through 10/27.\n\nRTC 2-3 months, sooner if the program wants anything from me."
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Hyperkalemia",
+              "icd10": "E87.5",
+              "action": "resolved"
+            },
+            {
+              "label": "Hypocalcemia",
+              "icd10": "E83.51",
+              "action": "resolved"
+            },
+            {
+              "label": "Hyperphosphatemia",
+              "icd10": "E83.39",
+              "action": "resolved"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "portal_message",
+          "start": "2025-10-22T13:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood work from yesterday",
+              "author": "PCP",
+              "date": "2025-10-22T13:05",
+              "body": "Declan, the muscle enzyme is back to normal, and potassium, calcium and phosphorus are normal. Kidney function is 0.97, back near your usual. Keep up the water. The addiction program has your referral and should call you this week. Answer even if it is a number you don't know."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "telephone",
+          "start": "2025-12-09T14:20",
+          "reason": "Referral status",
+          "orders": [
+            {
+              "id": "addiction-referral",
+              "action": "cancelled",
+              "date": "2025-12-09T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Closed",
+              "author": "MA",
+              "date": "2025-12-09T14:35",
+              "body": "Call from the outpatient addiction program intake coordinator. Three phone attempts and a letter since 10/22, no response from pt. They have closed the referral and are happy to reopen if he calls them directly. Our own call to pt today went to voicemail; left a message with their intake number. Routed to PCP."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

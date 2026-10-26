@@ -1,0 +1,528 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001747",
+      "events": [
+        {
+          "id": "2026-01-01a",
+          "kind": "ed_visit",
+          "start": "2026-01-01T11:05",
+          "end": "2026-01-01T17:20",
+          "service": "Emergency Medicine",
+          "reason": "Fever, lower abdominal pain and vaginal discharge",
+          "vitals": [
+            {
+              "time": "2026-01-01T11:10",
+              "temp_c": 39.2,
+              "hr": 110,
+              "bp": [
+                100,
+                60
+              ],
+              "rr": 18,
+              "spo2": 98
+            },
+            {
+              "time": "2026-01-01T15:40",
+              "temp_c": 38.4,
+              "hr": 96,
+              "bp": [
+                104,
+                64
+              ],
+              "rr": 16,
+              "spo2": 99
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Pelvic inflammatory disease",
+              "icd10": "N73.9",
+              "action": "diagnosed",
+              "onset": "2025-12-30"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-01T11:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 80
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-01T11:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-01T11:30",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-01T12:05",
+              "resulted": "2026-01-02T14:20",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2026-01-01T14:10",
+              "issued": "2026-01-01T14:55",
+              "text": "EXAM: Pelvic ultrasound, transabdominal and transvaginal.\nINDICATION: Fever, lower abdominal pain, cervical motion and bilateral adnexal tenderness. Evaluate for tubo-ovarian abscess.\nCOMPARISON: None.\nFINDINGS: Uterus anteverted and normal in size and contour. Endometrium thin and uniform. Right ovary normal in size and appearance with normal follicles. Left ovary normal in size and appearance. No adnexal mass or complex collection. No dilated tubular structure. No free fluid.",
+              "conclusion": "Normal pelvic ultrasound. No tubo-ovarian abscess."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-01T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-01-05T10:20",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT — PHYSICIAN RECORD\nArrival 01/01/2026 11:05. Patient: Samantha Kimball, 24 F.\n\nChief complaint: fever, lower belly pain, discharge x2 days.\n\nHPI: 24 y/o F with gonococcal cervicitis in 12/2024 (ceftriaxone) and suspected PID in 3/2025 treated as an outpatient, who presents with two days of fever, diffuse lower abdominal pain and vaginal discharge. LMP about 3 weeks ago. States there is no chance she is pregnant. Multiple partners, condoms inconsistently.\n\nPMH: as above. Meds: none. Allergies: NKDA.\nSH: never smoker, occasional alcohol.\n\nTriage: T 39.2 C (102.5 F), HR 110, BP 100/60, RR 18, SpO2 98% RA.\n\nExam: uncomfortable, nontoxic. Mucous membranes moist. Heart tachycardic, regular. Lungs clear. Abdomen soft, diffusely tender across the lower abdomen, no rebound, no RUQ tenderness. Pelvic (chaperoned): mucopurulent discharge at the os; cervical motion tenderness; bilateral adnexal tenderness, no mass.\n\nLabs: WBC 15.0 K/uL with 80% neutrophils. Hgb 12.5. Platelets and BMP unremarkable. Urine hCG negative. GC/CT NAAT sent, pending at disposition.\nImaging: pelvic US (TA/TV) — normal uterus and ovaries, no TOA, no free fluid.\n\nED course: acetaminophen for fever. Ceftriaxone 1 g IV, doxycycline 100 mg and metronidazole 500 mg started. Repeat T 38.4, HR 96 at 15:40.\n\nImpression: acute pelvic inflammatory disease, febrile and tachycardic; no abscess on ultrasound.\nDisposition: admitted to gynecology for IV antibiotics.\n\nElectronically signed, ED attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-01b",
+          "kind": "hospital_admission",
+          "start": "2026-01-01T17:20",
+          "end": "2026-01-03T12:40",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Pelvic inflammatory disease, IV antibiotics",
+          "vitals": [
+            {
+              "time": "2026-01-01T22:00",
+              "temp_c": 38.1,
+              "hr": 92,
+              "bp": [
+                106,
+                64
+              ],
+              "rr": 16,
+              "spo2": 99
+            },
+            {
+              "time": "2026-01-02T08:00",
+              "temp_c": 37.3,
+              "hr": 80,
+              "bp": [
+                108,
+                66
+              ],
+              "rr": 16,
+              "spo2": 99
+            },
+            {
+              "time": "2026-01-03T08:00",
+              "temp_c": 36.8,
+              "hr": 74,
+              "bp": [
+                110,
+                68
+              ],
+              "rr": 14,
+              "spo2": 99
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.4
+            }
+          },
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 1000 MG Injection",
+              "action": "historical",
+              "sig": "1 g IV every 24 hours (inpatient)",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q24H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "pelvic inflammatory disease"
+            },
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily to complete 14 days total (through 1/14)",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "pelvic inflammatory disease"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain or fever",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "pelvic pain"
+            },
+            {
+              "drug_text": "metronidazole 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily to complete 14 days total (through 1/14); no alcohol",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "pelvic inflammatory disease"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-02T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.2
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-01-01T18:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-01-03T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary — Gynecology",
+              "author": "gynecology",
+              "date": "2026-01-05T10:25",
+              "body": "DISCHARGE SUMMARY\nAdmitted 01/01/2026 from the ED; discharged 01/03/2026. Service: gynecology.\nPatient: Samantha Kimball, DOB 04/29/2001. Allergies: NKDA.\n\nPrincipal diagnosis: acute pelvic inflammatory disease.\nHistory: gonococcal cervicitis 12/2024, treated with ceftriaxone; suspected PID 3/2025, outpatient treatment.\n\nPresentation: 2 days of fever, lower abdominal pain and discharge; febrile to 39.2 C with HR 110 and BP 100/60 in the ED. CMT, bilateral adnexal tenderness, mucopurulent cervical discharge. WBC 15.0, 80% neutrophils, Hgb 12.5. Urine hCG negative. Pelvic US without tubo-ovarian abscess.\n\nHospital course: admitted for parenteral therapy given fever and tachycardia. Ceftriaxone 1 g IV q24h, doxycycline 100 mg q12h and metronidazole 500 mg q12h. Fever broke overnight; afebrile from the morning of 1/2 with HR in the 70s-80s. CBC 1/2: WBC 9.2. Abdominal tenderness lessened steadily; tolerating diet. GC/CT NAAT from the ED returned 1/2 — both not detected.\n\nCondition at discharge: stable, afebrile, ambulating, pain controlled with acetaminophen.\n\nDischarge medications:\n- Doxycycline 100 mg PO BID through 1/14 (14 days total)\n- Metronidazole 500 mg PO BID through 1/14 (14 days total); no alcohol\n- Acetaminophen as needed\n\nInstructions: no intercourse until the course is finished and partners are evaluated and treated. Return for fever, worsening pain or vomiting. Follow up with PCP within one week; repeat GC/CT in about 3 months.\n\nDictated by gynecology attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-03a",
+          "kind": "portal_message",
+          "start": "2026-01-03T15:12",
+          "reason": "Hospital discharge",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "was in the hospital",
+              "author": "patient",
+              "date": "2026-01-03T15:12",
+              "body": "Hi, I went to the ER on New Year's with a high fever and pelvic pain and they kept me two nights for IV antibiotics — they said PID again. Home now and feeling a lot better, on doxycycline and metronidazole for another 11 days. They said to see you this week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: was in the hospital",
+              "author": "PCP",
+              "date": "2026-01-03T16:40",
+              "body": "Sorry you went through that — glad you're home and improving. I'll ask the hospital for the records Monday. Front desk will text you a time Wednesday. If the fever comes back or the pain worsens before then, text me or go back in."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "telephone",
+          "start": "2026-01-05T08:45",
+          "reason": "Hospital records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request — Hospital",
+              "author": "MA",
+              "date": "2026-01-05T08:50",
+              "body": "Called hospital health information management for ED record, imaging and discharge summary from 1/1-1/3 admission. Release on file from the patient's portal consent. Faxed over at 10:15; indexed and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-07a",
+          "kind": "office_visit",
+          "start": "2026-01-07T11:20",
+          "end": "2026-01-07T11:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, PID",
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-07T11:55",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-01-07T11:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-07T11:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Discharge Visit",
+              "author": "PCP",
+              "date": "2026-01-07T12:10",
+              "body": "Seen 4 days after discharge. ED record, pelvic US and discharge summary from 1/1-1/3 reviewed before the visit.\n\nS: Admitted 1/1-1/3 for PID (T 39.2, HR 110 on arrival, WBC 15.0, no TOA on US), IV ceftriaxone/doxy/metronidazole, home on oral doxy + metronidazole through 1/14. GC/CT from the ED negative. No fever since 1/2. Lower abdominal ache now mild and fading, acetaminophen once or twice a day. Taking both pills with food, no vomiting. Discharge lighter.\n\nMeds: doxycycline 100 BID, metronidazole 500 BID (both through 1/14). NKDA.\n\nO: afebrile, comfortable. Heart regular, normal rate. Lungs clear. Abdomen soft, minimal lower tenderness to deep palpation, no guarding or rebound.\n\nA/P: PID, third pelvic infection in about a year, improving on oral therapy.\n- Finish both antibiotics; no alcohol with metronidazole.\n- No sex until done and partners treated; condoms going forward.\n- CBC today to confirm the white count is back down.\n- Repeat GC/CT in early April — nurse visit, urine.\n- Return precautions reviewed. Message me when she finishes."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "portal_message",
+          "start": "2026-01-08T08:30",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2026-01-08T08:30",
+              "body": "Your white count from yesterday is back to normal, as are the other blood counts. Keep going with both antibiotics through the 14th."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08b",
+          "kind": "portal_message",
+          "start": "2026-01-08T13:17",
+          "reason": "Work note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "note for work",
+              "author": "patient",
+              "date": "2026-01-08T13:17",
+              "body": "My manager at the store needs a note for the shifts I missed (1/1 through 1/6). Can you do one? I can go back this weekend."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: note for work",
+              "author": "MA",
+              "date": "2026-01-08T15:40",
+              "body": "Work note covering 1/1-1/6, with clearance to return 1/10, is attached as a PDF. Let us know if your manager needs anything else."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "portal_message",
+          "start": "2026-01-21T18:05",
+          "reason": "Finished antibiotics",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "done with antibiotics",
+              "author": "patient",
+              "date": "2026-01-21T18:05",
+              "body": "Finished both on the 14th like you said. No pain at all now and no fever. Classes start Monday and I feel ready."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: done with antibiotics",
+              "author": "PCP",
+              "date": "2026-01-21T20:12",
+              "body": "That's great to hear. The front desk will set up the April urine retest with the nurse."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "nurse_visit",
+          "start": "2026-04-07T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Repeat gonorrhea/chlamydia testing",
+          "conditions": [
+            {
+              "label": "Pelvic inflammatory disease",
+              "icd10": "N73.9",
+              "action": "resolved"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-07T16:15",
+              "resulted": "2026-04-09T07:50",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, straightforward MDM",
+              "performed": "2026-04-07T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Retest",
+              "author": "RN",
+              "date": "2026-04-07T16:25",
+              "body": "3-month retest after January PID admission. Asymptomatic: no pelvic pain, discharge, fever or urinary symptoms. Urine GC/CT NAAT collected and sent. Condoms and testing with new partners reviewed again; pt receptive."
+            },
+            {
+              "type": "Result Note",
+              "title": "Retest Result",
+              "author": "PCP",
+              "date": "2026-04-09T08:20",
+              "body": "GC/CT 4/7 not detected. Symptom-free since mid-January and treatment complete — PID resolved on problem list. Annual due in September (Pap due then)."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-09a",
+          "kind": "portal_message",
+          "start": "2026-04-09T08:25",
+          "reason": "Retest result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your test",
+              "author": "PCP",
+              "date": "2026-04-09T08:25",
+              "body": "Hi Samantha — Tuesday's gonorrhea and chlamydia tests are both negative. Nothing more needed until your physical in the fall, when your Pap is also due."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T12:44",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "fall physical",
+              "author": "patient",
+              "date": "2026-08-18T12:44",
+              "body": "Hi! Trying to get my physical on the books before classes get crazy. Is there anything on a Tuesday in late September?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: fall physical",
+              "author": "front desk",
+              "date": "2026-08-18T14:02",
+              "body": "Tuesday 9/22 at 3:45 is yours. It will include your Pap, so plan on about 40 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive visit with Pap",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

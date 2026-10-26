@@ -1,0 +1,690 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002826",
+   "given": "Sandra",
+   "family": "Walsh",
+   "birth_date": "1953-05-05",
+   "address_line": "41 Pinebrook Lane, South Hadley, MA 01075",
+   "phone": "+1-646-555-0124",
+   "email": "sandra.walsh@example.test",
+   "marital_status": "single",
+   "summary": "Retiring remote administrative consultant who joined at 65 with hypertension on HCTZ and mild knee OA. Graves disease with thyrotoxic AF and osteoporosis found in 2021; 2023 fragility fracture-dislocation of the right shoulder; 2024 AF admission, warfarin skin necrosis with hypofibrinogenemia and warfarin rechallenge; 2026 milk-alkali syndrome, HCTZ replaced with lisinopril.",
+   "events": [
+    {
+     "id": "2018-09-04a",
+     "kind": "outside_records",
+     "start": "2018-09-04T14:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Prior primary care records received ahead of new-patient visit",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records received from prior primary care practice",
+       "author": "medical records",
+       "date": "2018-09-04T14:10",
+       "body": "Records request (signed release on file) returned by fax from her previous primary care office. 31 pages scanned to chart. Summary for the new-patient visit on 9/11:\n\nLast annual exam there: 10/2017.\n- Hypertension, on hydrochlorothiazide 25 mg daily for years. Pressures at that office documented as controlled.\n- Bilateral knee osteoarthritis, mild. No medication.\n- Lactose intolerance.\n- Left cataract extraction with lens implant (date not given in what was sent).\n- Height recorded 10/2017: 163 cm.\n- Screening: colonoscopy 2016, no polyps, repeat in 10 years. Screening mammograms yearly through 2017, all BI-RADS 1. Cervical cytology with HPV co-test 2017, negative; prior co-tests also negative per their flowsheet.\n- Allergies: none listed.\n- Immunizations on their record: influenza most years. No pneumococcal or zoster vaccine listed.\n\nNo bone density study found in the records sent."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-11a",
+     "kind": "establish_care",
+     "start": "2018-09-11T09:00",
+     "end": "2018-09-11T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient visit; Welcome to Medicare preventive visit",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "note": "on hydrochlorothiazide for years before joining"
+      },
+      {
+       "label": "Bilateral primary osteoarthritis of knee",
+       "action": "history",
+       "note": "mild, morning stiffness, no medication"
+      },
+      {
+       "label": "Lactose intolerance",
+       "icd10": "E73.9",
+       "action": "history",
+       "note": "avoids dairy"
+      },
+      {
+       "label": "Presence of intraocular lens, left eye",
+       "icd10": "Z96.1",
+       "action": "history",
+       "note": "left cataract extraction with lens implant, year not recorded"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Essential hypertension"
+      }
+     ],
+     "state": {
+      "bp": [
+       124,
+       76
+      ],
+      "weight_kg": 58.0,
+      "height_cm": 163.0,
+      "labs": {
+       "Calcium": 9.5,
+       "Total Cholesterol": 182,
+       "High Density Lipoprotein": 72,
+       "Triglycerides": 85,
+       "Low Density Lipoprotein": 93
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-09-11T10:05",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2018-09-12T11:20"
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2018-09-11T10:05",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ],
+       "resulted": "2018-09-12T11:20"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2018-09-11T10:05",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2018-09-11T15:40"
+      },
+      {
+       "panel": null,
+       "collected": "2018-09-11T10:05",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ],
+       "resulted": "2018-09-13T09:05"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 2
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Wine socially, 1-2 glasses a week; some stretches with none"
+      },
+      {
+       "item": "Occupation",
+       "value": "Administrative consultant, works remotely from home"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial preventive physical examination (Welcome to Medicare)",
+       "performed": "2018-09-11T09:00"
+      },
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2018-09-11T09:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2018-09-11T10:05"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2018",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "routine breast cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit / Initial Preventive Physical Exam",
+       "author": "PCP",
+       "date": "2018-09-11T12:30",
+       "body": "65 y/o woman establishing care. Turned 65 in May, new to Medicare Part B (Aetna supplement, Plan F); today doubles as her Welcome to Medicare visit. Prior office records reviewed before the visit (summary in chart 9/4).\n\nHPI / active issues\n1. Hypertension: on HCTZ 25 mg every morning for years, no side effects she can name. No home cuff. No headaches, chest pain, dyspnea or ankle swelling.\n2. Knees: both knees stiff first thing in the morning, loosens up within a few minutes of walking. No swelling, no locking, no pain at rest. Takes nothing for it and does not want anything.\n\nPMH: HTN; mild bilateral knee OA; lactose intolerance (has avoided dairy most of her life, so her calcium intake has been low for a long time).\nPSH: left cataract extraction with IOL (does not remember the year). No other surgery.\nOB/GYN: menopause at 45. Never on hormone therapy. Co-tests normal through 2017, the last at 64.\nMeds: hydrochlorothiazide 25 mg daily.\nAllergies: NKDA.\nFHx: mother with hypertension, broke her hip at 82 (osteoporosis). Father with atrial fibrillation and hypertension. Sister has Graves disease. Maternal grandmother had rheumatoid arthritis. No one with kidney stones that she knows of.\nSocial: lives in South Hadley on her own. Administrative consultant, remote, starting to scale back toward retirement. Never smoked. Wine socially, a glass or two most weeks, sometimes nothing for weeks at a time. Walks most days.\n\nROS: negative except knees as above. No palpitations, weight change, heat or cold intolerance, bowel change.\n\nExam\nVitals per flowsheet. Slim, well appearing. Eyes: left pseudophakic, right lens clear to penlight. Neck supple, thyroid not enlarged, no nodules. Heart regular rate and rhythm, S1 S2 normal, no murmur. Lungs clear. Abdomen soft, nontender. Knees: mild crepitus both sides, no effusion, full range. No edema. Gait normal, gets up from the chair without using her arms.\n\nWelcome to Medicare elements\n- Vision: reads the wall chart without difficulty with glasses. Hearing: passes whisper test both sides.\n- Depression screen PHQ-2: 0. Alcohol (AUDIT-C): 2.\n- Functional status: independent in all ADLs and IADLs. Home safety reviewed: no throw rugs, has grab bar in the shower. No falls in the past year.\n- Advance directive: she has not done one; information handout given, will think about naming a health care proxy.\n\nAssessment / plan\n1. HTN, controlled on HCTZ 25. Continue. BMP today.\n2. Knee OA, mild. Keep walking. Nothing else wanted.\n3. Prevention:\n   - Colon: colonoscopy 2016 normal, next due 2026.\n   - Breast: mammogram ordered.\n   - Cervical: stopping screening now that she is 65 with a run of normal co-tests; explained.\n   - Bone density: with early menopause, a mother with a hip fracture and years of low calcium intake she is a good candidate for a DXA. Offered it. She would rather not do it right now (\"I'll think about it next year\"). Will revisit at her wellness visit.\n   - Lipids, one-time HCV and HIV screening today.\n   - Vaccines: flu shot and Prevnar 13 when the flu vaccine arrives next month (nurse visit). Shingrix discussed, she will check pharmacy coverage. Unsure of last tetanus booster; Tdap next visit.\n4. Return in 6 months for BP, sooner as needed."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-13a",
+     "kind": "portal_message",
+     "start": "2018-09-13T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results released to patient",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your recent lab results",
+       "author": "PCP",
+       "date": "2018-09-13T16:20",
+       "body": "Hi Ms. Walsh,\n\nYour labs from Tuesday are all back and look good. Kidney function, potassium, sodium and calcium are normal on the water pill. Blood counts are normal. Cholesterol is in good shape: total 188, HDL (the protective kind) 75, LDL 89. No cholesterol medicine needed; we'll recheck in a few years. Hepatitis C and HIV screens were negative; those were one-time tests and don't need repeating.\n\nThe front desk will call to set up the flu shot / pneumonia vaccine nurse visit in October. Mammogram order is in.\n\nTake care,\nyour primary care physician"
+      }
+     ]
+    },
+    {
+     "id": "2018-10-16a",
+     "kind": "nurse_visit",
+     "start": "2018-10-16T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza and pneumococcal vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2018-10-16T10:35"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV13",
+       "date": "2018-10-16T10:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-10-16T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse visit - vaccines",
+       "author": "RN",
+       "date": "2018-10-16T10:50",
+       "body": "In for vaccines per PCP order. Feeling well today, no fever. No prior vaccine reactions.\nFluzone High-Dose given IM right deltoid. Prevnar 13 given IM left deltoid. VIS for each handed to pt.\nWaited 15 min in lobby, no reaction. Told her the pneumococcal series finishes with Pneumovax next fall."
+      }
+     ]
+    },
+    {
+     "id": "2018-11-08a",
+     "kind": "imaging",
+     "start": "2018-11-08T08:15",
+     "service": "Radiology",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2018-11-08T08:15",
+       "issued": "2018-11-09T13:00",
+       "text": "Bilateral CC and MLO views with tomosynthesis. Comparison: outside exams 2016 and 2017. The breasts are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications. No change from prior.",
+       "conclusion": "BI-RADS 1: negative. Routine screening recommended."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2018",
+       "action": "done",
+       "date": "2018-11-08T08:15"
+      }
+     ]
+    },
+    {
+     "id": "2019-03-12a",
+     "kind": "office_visit",
+     "start": "2019-03-12T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2019-03-12T14:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-03-12T14:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-03-12T14:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - HTN follow-up",
+       "author": "PCP",
+       "date": "2019-03-12T15:10",
+       "body": "S: 6-month BP check. Feels well. Taking HCTZ every morning. Winter was quiet; walking indoors at the mall when icy. Knees same as always, stiff for a few minutes in the morning.\nO: vitals reviewed (flowsheet). Heart regular, lungs clear, no edema.\nA/P:\n- HTN: at goal on HCTZ 25 mg. Continue. BMP due at the September wellness visit.\n- Knee OA: unchanged, no treatment wanted.\n- Tdap given today (last tetanus unknown).\n- Shingrix: she asked her pharmacy, they can give it; plans to go in the fall.\nF/u September for annual wellness."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-18a",
+     "kind": "pharmacy",
+     "start": "2019-06-18T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request - hydrochlorothiazide",
+       "author": "RN",
+       "date": "2019-06-18T09:40",
+       "body": "Pharmacy fax requesting 90-day supply of HCTZ 25 mg. Last BP visit 3/12, controlled. Sent 90 tabs + 1 refill per standing protocol."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-03a",
+     "kind": "annual_physical",
+     "start": "2019-09-03T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-09-03T10:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2019-09-04T10:45"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2019-09-03T09:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2019-09-03T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2019-09-03T11:40",
+       "body": "Medicare AWV (first after last year's IPPE).\n\nHealth risk assessment reviewed with patient. Self-rated health: very good. Independent in ADLs/IADLs. Lives alone, drives, manages own meds and finances. No falls in the past 12 months, not afraid of falling. Uses seat belt. Smoke detectors in the house.\nDiet: still no dairy (lactose intolerance); eats leafy greens a few times a week. Activity: walks 30-40 minutes most days.\nAlcohol: unchanged, occasional wine.\nCognition: no concerns from patient; recalls 3/3 words, clock drawing normal.\nPHQ-2: 0.\nVision/hearing: no change; eye doctor yearly.\n\nCurrent problems: HTN on HCTZ 25 (controlled), mild knee OA.\nMeds: hydrochlorothiazide 25 mg daily. No supplements.\n\nExam brief: BP and weight per flowsheet. Heart regular, lungs clear.\n\nPersonalized prevention plan:\n- BMP today (on thiazide).\n- Mammogram: had 11/2018, normal. Next fall 2020.\n- Colonoscopy: due 2026.\n- Bone density: brought up again with her risk factors (early menopause, mother's hip fracture, low lifelong calcium intake). She declines again for now. Encouraged dietary calcium from non-dairy sources.\n- Vaccines: flu + Pneumovax next month. Shingrix at pharmacy.\n- Advance care planning: has started thinking about a proxy; no document yet.\nWritten plan given. Next AWV in a year."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-05a",
+     "kind": "portal_message",
+     "start": "2019-09-05T12:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab result note",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2019-09-05T12:05",
+       "body": "Your kidney function and electrolytes on the hydrochlorothiazide are normal again this year. No changes. -PCP"
+      }
+     ]
+    },
+    {
+     "id": "2019-10-15a",
+     "kind": "nurse_visit",
+     "start": "2019-10-15T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza and pneumococcal vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2019-10-15T11:05"
+      },
+      {
+       "vaccine": "Pneumococcal polysaccharide PPSV23",
+       "date": "2019-10-15T11:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-15T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse visit - flu and Pneumovax",
+       "author": "MA",
+       "date": "2019-10-15T11:20",
+       "body": "High-dose flu R deltoid, Pneumovax 23 L deltoid. Tolerated. Screening questions negative. VIS given. Pneumococcal series now complete."
+      }
+     ]
+    },
+    {
+     "id": "2019-11-19a",
+     "kind": "pharmacy",
+     "start": "2019-11-19T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Outside vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-11-16T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy vaccine administration record",
+       "author": "pharmacy",
+       "date": "2019-11-19T15:30",
+       "body": "Community pharmacy notification: Shingrix (zoster vaccine recombinant, adjuvanted) dose 1 of 2 given 11/16/2019, left deltoid. Patient advised dose 2 in 2-6 months. Entered into immunization record by MA."
+      }
+     ]
+    },
+    {
+     "id": "2020-01-28a",
+     "kind": "pharmacy",
+     "start": "2020-01-28T10:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Outside vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2020-01-25T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy vaccine administration record",
+       "author": "pharmacy",
+       "date": "2020-01-28T10:15",
+       "body": "Shingrix dose 2 of 2 given 1/25/2020 at community pharmacy, right deltoid. Series complete. Abstracted by MA."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-17a",
+     "kind": "office_visit",
+     "start": "2020-03-17T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2020-03-26a",
+     "kind": "telehealth_visit",
+     "start": "2020-03-26T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up (video, in-person visits paused)",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2020-03-26T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit - HTN follow-up",
+       "author": "PCP",
+       "date": "2020-03-26T11:30",
+       "body": "Video visit; in-person visit from 3/17 was cancelled when the office moved routine care to telehealth. Patient at home, consents to video visit.\n\nDoing fine. Working from home anyway so not much has changed for her, though she has cut back her consulting hours. Walking outside in the neighborhood daily. No chest pain, headache or swelling. Does not own a BP cuff; no symptoms.\nTakes HCTZ every morning, has a 2-month supply.\n\nAppears well on video, speaking full sentences, no distress.\n\nA/P: HTN, previously controlled, asymptomatic. Continue HCTZ 25. Suggested buying a home upper-arm cuff if easy. BMP and in-person vitals at the September wellness visit. Call if anything changes."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-04a",
+     "kind": "annual_physical",
+     "start": "2020-09-04T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-09-04T10:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2020-09-05T09:30"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-09-04T10:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2020-09-04T16:10"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2020-09-04T10:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-09-04T10:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2020-09-04T12:15",
+       "body": "AWV, in person (masked, screened at door).\n\nHRA reviewed. Feels well. A bit more isolated with the pandemic, sees her sister outdoors; PHQ-2 1 (some days less interest), not depressed by her account. No falls. Independent. Still walking daily.\nWeight stable from last year. Says she bought a home cuff in the spring, readings \"fine\" (didn't bring log).\nMeds: HCTZ 25 mg. No supplements.\n\nExam: vitals as charted. Thyroid normal size. Heart regular, no murmur. Lungs clear. Knees with mild crepitus, no effusion.\n\nPlan:\n- HTN controlled. BMP + CBC today.\n- DXA: offered for the third time. She's not interested in \"going into a hospital building right now.\" Documented decline; will keep asking.\n- Mammogram due this fall - order placed.\n- Flu shot at nurse visit next month.\n- ACP: still thinking about proxy paperwork.\nNext AWV one year."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "routine screening"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 13.8,
+       "Mean Corpuscular Volume": 93
+      }
+     }
+    },
+    {
+     "id": "2020-10-13a",
+     "kind": "nurse_visit",
+     "start": "2020-10-13T09:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-10-13T09:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-13T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Flu vaccine",
+       "author": "MA",
+       "date": "2020-10-13T09:30",
+       "body": "Curbside/vestibule flu clinic. Fluzone HD quadrivalent IM L deltoid. No issues. VIS offered, pt declined paper copy."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-17a",
+     "kind": "imaging",
+     "start": "2020-11-17T09:00",
+     "service": "Radiology",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2020-11-17T09:00",
+       "issued": "2020-11-18T10:30",
+       "text": "Standard screening views with tomosynthesis, compared with 11/2018. Scattered fibroglandular tissue. No mass, distortion or suspicious microcalcifications.",
+       "conclusion": "BI-RADS 1: negative. Routine screening."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "done",
+       "date": "2020-11-17T09:00"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

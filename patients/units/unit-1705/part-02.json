@@ -1,0 +1,706 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001705",
+   "events": [
+    {
+     "id": "2023-01-05a",
+     "kind": "portal_message",
+     "start": "2023-01-05T19:12",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "eye doctor",
+       "author": "patient",
+       "date": "2023-01-05T19:12",
+       "body": "The eye doctor office called and I'm booked for Jan 24. They said to bring someone to drive because they might dilate and do a treatment the same day. Is that right?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: eye doctor",
+       "author": "RN",
+       "date": "2023-01-06T08:47",
+       "body": "Yes -- dilation makes vision blurry for a few hours, so plan on a ride. If they treat the spots in your retina that day it is usually done right in the office. Neurology and urology referrals have also been sent; their offices will reach out to schedule."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-24a",
+     "kind": "specialist_visit",
+     "start": "2023-01-24T09:15",
+     "service": "Ophthalmology",
+     "reason": "Retinal angiomas, VHL",
+     "orders": [
+      {
+       "id": "ophtho-referral-2022",
+       "action": "done",
+       "date": "2023-01-24T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology Consultation",
+       "author": "ophthalmology",
+       "date": "2023-01-27T12:30",
+       "body": "OPHTHALMOLOGY -- RETINA\nVisit 01/24/2023\n\nRe: Susan Strong, DOB 01/06/1989\n\nThank you for this referral. 34-year-old woman with newly diagnosed Von Hippel-Lindau syndrome and type 2 diabetes, intermittent blurring of the left eye.\n\nVisual acuity: 20/20 OD, 20/20 OS. Pupils equal, no APD. IOP 15 / 16. Anterior segments quiet.\nDilated fundus exam:\nOD -- normal disc, macula and vessels; no retinal angioma; no diabetic retinopathy.\nOS -- two small peripheral retinal capillary hemangioblastomas (angiomas) temporally with dilated feeder vessels, no exudate, no subretinal fluid, macula flat and dry. No diabetic retinopathy.\n\nImpression: VHL-associated retinal angiomas, left eye. No diabetic retinopathy either eye.\n\nProcedure: after consent, laser photocoagulation was applied to both lesions in the left eye. Tolerated well.\n\nPlan: return in one year for dilated exam, sooner for any change in vision. Diabetic eye exam satisfied for this year.\n\nMedications reviewed: metformin, lisinopril, metoprolol succinate. Allergies: NKDA.\n\nRetina Service"
+      }
+     ]
+    },
+    {
+     "id": "2023-02-07a",
+     "kind": "telephone",
+     "start": "2023-02-07T11:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior authorization - MRI abdomen",
+       "author": "front desk",
+       "date": "2023-02-07T11:35",
+       "body": "Urology office requested MRI abdomen w/wo prior to consult. MassHealth PA submitted under our office's referral, approved. Scheduled 2/13."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-13a",
+     "kind": "imaging",
+     "start": "2023-02-13T16:00",
+     "service": "Radiology",
+     "reports": [
+      {
+       "study": "MRI abdomen with and without contrast",
+       "loinc": "24557-1",
+       "performed": "2023-02-13T16:00",
+       "issued": "2023-02-14T10:15",
+       "text": "EXAM: MRI abdomen without and with IV gadolinium, renal protocol.\nINDICATION: VHL, solid right renal mass on ultrasound, solitary kidney.\nCOMPARISON: Ultrasound 12/12/2022.\nFINDINGS: Left kidney surgically absent; nephrectomy bed clear. Right kidney: 2.0 x 1.9 cm solid enhancing lesion in the interpolar cortex, T2 hyperintense, without renal vein involvement. Multiple simple cysts, largest 1.4 cm upper pole, none enhancing. No hydronephrosis. Adrenal glands normal. Pancreas normal in size and signal without cyst or mass. Liver and spleen unremarkable. No lymphadenopathy.",
+       "conclusion": "2.0 cm solid enhancing right renal lesion, consistent with clear cell renal cell carcinoma in VHL. Multiple simple right renal cysts. Adrenals and pancreas unremarkable."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-21a",
+     "kind": "specialist_visit",
+     "start": "2023-02-21T14:00",
+     "service": "Urology",
+     "reason": "Solid right renal mass, solitary kidney, VHL",
+     "orders": [
+      {
+       "id": "uro-referral-2022",
+       "action": "done",
+       "date": "2023-02-21T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology Consultation",
+       "author": "urology",
+       "date": "2023-02-24T09:00",
+       "body": "UROLOGY CONSULTATION -- 02/21/2023\n\nDear Doctor,\n\nI saw Ms. Strong today. She is a 34-year-old with VHL, s/p left radical nephrectomy in 2020 for clear cell RCC, now with a 2.0 cm solid enhancing lesion in her solitary right kidney on MRI 2/13/23, along with simple cysts.\n\nAllergies: NKDA. Meds: metformin, lisinopril, metoprolol.\n\nExam: well appearing, healed left flank incision, no CVA tenderness.\nCreatinine 1.0 on your recent labs.\n\nAssessment: VHL-associated renal tumor, 2.0 cm, solitary kidney.\nPlan: For VHL renal tumors we follow with active surveillance and consider nephron-sparing treatment when the largest solid lesion reaches 3 cm. Repeat MRI abdomen in 12 months. Avoid NSAIDs given solitary kidney. She understands and agrees.\n\nUrology"
+      }
+     ]
+    },
+    {
+     "id": "2023-03-14a",
+     "kind": "specialist_visit",
+     "start": "2023-03-14T10:30",
+     "service": "Neurology",
+     "reason": "Cerebellar and spinal hemangioblastomas",
+     "orders": [
+      {
+       "id": "neuro-referral-2022",
+       "action": "done",
+       "date": "2023-03-14T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Consultation",
+       "author": "neurology",
+       "date": "2023-03-20T15:45",
+       "body": "Neurology -- new consult, 3/14/2023\n\nReason: CNS hemangioblastomas in newly diagnosed VHL.\n\nMs. Strong reports intermittent frontal headaches over the past several months, a few days a week, relieved partly by acetaminophen. No vomiting, no gait trouble, no limb weakness or sensory change, no bladder symptoms. Left eye blurring was treated by retina in January.\n\nExam: alert, fluent. Cranial nerves intact. Strength full, reflexes 2+ and symmetric, toes down. Sensation intact. Finger-nose and heel-shin normal, tandem gait normal.\n\nImaging reviewed (12/14/22): left cerebellar 1.1 cm and vermian 0.6 cm hemangioblastomas without cyst or hydrocephalus; small C4 and T8 intramedullary lesions without syrinx.\n\nImpression: Asymptomatic-appearing small hemangioblastomas; headaches not localizing and not clearly attributable to the lesions.\nPlan: Observation. Repeat MRI brain in 12-18 months, sooner for new headache pattern, imbalance, weakness or numbness. Acetaminophen as needed; limit to a few days a week.\n\nNeurology"
+      }
+     ]
+    },
+    {
+     "id": "2023-03-21a",
+     "kind": "office_visit",
+     "start": "2023-03-21T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "weight_kg": 68.0,
+      "bp": [
+       140,
+       88
+      ],
+      "labs": {
+       "Hemoglobin A1c": 7.1,
+       "Glucose": 128
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-03-21T08:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2023-03-21T14:00"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-03-21T08:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ],
+       "resulted": "2023-03-21T14:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-03-21T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-03-21T08:55",
+       "body": "Routine f/u.\n\nSince last visit: saw retina 1/24 (laser to two L eye angiomas, no diabetic retinopathy), urology 2/21 (2.0 cm solid lesion R kidney -- surveillance MRI yearly), neurology 3/14 (observe hemangioblastomas, MRI in 12-18 mo). Endocrinology appointment is in June, earliest they had.\n\nFeels OK. Headaches unchanged, a couple a week. Fasting sugars 120s-130s. Weight has been creeping up over the winter -- says her face looks fuller to her. Taking all meds.\n\nExam: BP as charted. Heart RRR, lungs clear, no edema.\n\nA/P\nT2DM -- A1c today. Continue metformin 1000 BID.\nHTN -- BP 140s/80s today. Continue lisinopril/metoprolol, home cuff readings to bring next time.\nVHL -- specialists engaged; endo in June.\nBipolar I -- still on psychiatry waitlist. Mood OK.\nRTC 4 months for physical."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c 3/21",
+       "author": "PCP",
+       "date": "2023-03-21T16:30",
+       "body": "A1c 7.2, about where it was. Kidney function and potassium normal. Keep going with metformin."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-18a",
+     "kind": "portal_message",
+     "start": "2023-04-18T07:58",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "refill",
+       "author": "patient",
+       "date": "2023-04-18T07:58",
+       "body": "Can you send refills on all 3 of my meds to the pharmacy? The bottles say no refills left."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: refill",
+       "author": "MA",
+       "date": "2023-04-18T12:20",
+       "body": "Done -- metformin 1000 mg, lisinopril 10 mg and metoprolol succinate 50 mg sent for 90 days with 3 refills."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-30a",
+     "kind": "specialist_visit",
+     "start": "2023-05-30T13:00",
+     "service": "Psychiatry",
+     "reason": "Bipolar I disorder, establish care",
+     "state": {
+      "weight_kg": 71.7
+     },
+     "medications": [
+      {
+       "drug_text": "olanzapine 10 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth at bedtime",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "QHS",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Bipolar I disorder"
+      }
+     ],
+     "orders": [
+      {
+       "id": "psych-referral",
+       "action": "done",
+       "date": "2023-05-30T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry Intake",
+       "author": "psychiatry",
+       "date": "2023-06-02T10:00",
+       "body": "Community Behavioral Health -- Psychiatric Evaluation\nDate: 5/30/2023\n\nIdentifying: 34 y/o woman with longstanding bipolar I disorder referred by PCP to re-establish psychiatric care after several years without treatment due to lack of insurance.\n\nShe describes the illness as long-standing and has been off medication for years. Her mood has felt unsettled off treatment and she wants to be back on a mood stabilizer. No suicidal or homicidal ideation. No psychosis today.\n\nMedical: type 2 diabetes, hypertension, Von Hippel-Lindau syndrome, h/o RCC s/p left nephrectomy, PCOS.\nMeds: metformin, lisinopril, metoprolol succinate. NKDA.\nSubstances: never smoker, alcohol 1-2 drinks monthly, no drugs.\nFamily: maternal uncle with bipolar disorder.\n\nMSE: casually dressed, cooperative, speech normal rate, mood \"OK,\" affect full range, thought process linear, no SI/HI, insight and judgment fair.\n\nDx: Bipolar I disorder.\nPlan: Start olanzapine 10 mg at bedtime for mood stabilization. Discussed weight gain and blood sugar effects given her diabetes; she prefers this option and will keep her PCP labs up to date. Follow up in 6 months, sooner if needed; crisis line provided.\n\nPsychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2023-06-13a",
+     "kind": "specialist_visit",
+     "start": "2023-06-13T10:00",
+     "service": "Endocrinology",
+     "reason": "VHL, elevated normetanephrine, weight gain",
+     "conditions": [
+      {
+       "label": "Cushing syndrome",
+       "action": "diagnosed",
+       "onset": "2022-12-01"
+      }
+     ],
+     "state": {
+      "weight_kg": 72.0,
+      "bp": [
+       146,
+       92
+      ],
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Glucose": 126
+      }
+     },
+     "vitals": {
+      "bp": [
+       146,
+       92
+      ]
+     },
+     "measure": [
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-06-13T10:40",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 126
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-06-13T10:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "endo-referral-2022",
+       "action": "done",
+       "date": "2023-06-13T10:00"
+      },
+      {
+       "id": "dst-2023",
+       "action": "placed",
+       "order": "Dexamethasone suppression test, 1 mg overnight",
+       "category": "lab",
+       "reason": "Cushingoid features"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Consultation",
+       "author": "endocrinology",
+       "date": "2023-06-16T14:10",
+       "body": "ENDOCRINOLOGY\nConsultation 06/13/2023\n\nReferred for VHL with elevated plasma normetanephrine and diabetes.\n\nHPI: Over the past six months she has gained weight, bruises easily, and her periods have been irregular. She has noticed her face getting rounder and has new acne. Diabetes diagnosed last year, on metformin. PCOS diagnosed by gyn last fall. Hypertension on lisinopril and metoprolol. Started olanzapine with psychiatry two weeks ago.\n\nMeds: metformin 1000 mg BID, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, olanzapine 10 mg nightly.\nAllergies: NKDA.\nFH: father VHL; mother type 2 diabetes and hypertension; maternal uncle bipolar disorder.\nSH: never smoker; 1-2 drinks a month; works part time in an office.\n\nExam: BP 146/92. Central adiposity. Rounded facies with a dorsocervical fat pad. Skin thin, with purple striae across the lower abdomen. Acne on the cheeks. Thyroid normal.\n\nLabs today: fasting glucose 126 mg/dL, A1c 7.2%.\n\nAssessment:\n1. Clinical features of Cushing syndrome -- rounded face, dorsocervical fat pad, thin skin, violaceous striae, easy bruising, weight gain.\n2. VHL with elevated normetanephrine on PCP labs.\n3. Type 2 diabetes, fair control.\n\nPlan:\n- 1 mg overnight dexamethasone suppression test: dexamethasone 1 mg at 11 PM, cortisol at 8 AM next morning (lab slip given).\n- At follow-up in 3 months: ACTH, repeat plasma metanephrines.\n- Continue current diabetes and BP regimen for now.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2023-06-20a",
+     "kind": "lab_only",
+     "start": "2023-06-20T08:05",
+     "service": "Endocrinology",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-06-20T08:05",
+       "results": [
+        {
+         "test": "Cortisol, AM",
+         "value": 4.1
+        }
+       ],
+       "resulted": "2023-06-20T15:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "dst-2023",
+       "action": "done",
+       "date": "2023-06-20T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Addendum",
+       "author": "endocrinology",
+       "date": "2023-06-26T09:30",
+       "body": "ENDOCRINOLOGY -- ADDENDUM\n\n1 mg overnight dexamethasone suppression test 6/20/2023: 8 AM cortisol 4.1 mcg/dL (normal suppression <1.8).\nNon-suppressed cortisol, consistent with hypercortisolism. Will check ACTH and plan localization at her follow-up visit in September.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2023-07-18a",
+     "kind": "annual_physical",
+     "start": "2023-07-18T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 72.6,
+      "bp": [
+       138,
+       88
+      ],
+      "labs": {
+       "Hemoglobin A1c": 7.0,
+       "Glucose": 124
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+       "date": "2023-07-18T09:50"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-07-18T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ],
+       "resulted": "2023-07-18T16:00"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-07-18T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ],
+       "resulted": "2023-07-18T14:20"
+      },
+      {
+       "panel": null,
+       "collected": "2023-07-18T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2023-07-18T16:00"
+      },
+      {
+       "panel": null,
+       "collected": "2023-07-18T09:40",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ],
+       "resulted": "2023-07-19T11:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2023-07-18T09:30",
+       "issued": "2023-07-24T10:00",
+       "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation; endocervical/transformation zone component present.\nInterpretation: Negative for intraepithelial lesion or malignancy.\nHigh-risk HPV: Not detected.",
+       "conclusion": "NILM. High-risk HPV negative."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2023-07-18T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-07-18T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-07-18T10:30",
+       "body": "ANNUAL PREVENTIVE VISIT\n\n34 y/o F. Interval: endocrinology 6/13 -- told she has Cushing syndrome based on exam; dexamethasone test 6/20 was not suppressed (4.1). Endo follow-up in September for ACTH and next steps. Psychiatry finally saw her 5/30 and started olanzapine 10 at night; sleeping better, feels steadier. Gyn dx PCOS last fall; cycles still irregular.\n\nCurrent meds: metformin 1000 BID, lisinopril 10, metoprolol succ 50, olanzapine 10 qhs.\nAllergies: NKDA.\nSocial: still working part time. Never smoker. Rare alcohol.\n\nROS: headaches about the same. Bruises easily. No chest pain, dyspnea, urinary symptoms. No hypoglycemia.\n\nEXAM\nVitals as charted.\nGeneral: well, round facies.\nHEENT normal. Neck supple, no thyroid enlargement.\nHeart RRR, no murmur. Lungs clear.\nAbdomen soft, nontender; purple striae lower abdomen; healed left flank scar.\nPelvic: external genitalia normal, cervix without lesions, Pap with HPV collected.\nExt no edema. Skin thin, few ecchymoses on forearms.\nFeet: monofilament intact, pulses 2+, no ulcers or calluses.\nNeuro nonfocal.\n\nPHQ-9: 3.\n\nA/P\n1. Preventive: Pap/HPV today. Hep B vaccine series started (Heplisav #1, #2 in one month) given diabetes. Flu shot in the fall. Exercise and diet reviewed.\n2. T2DM -- A1c, CMP, urine microalbumin today. Retina exam done in January.\n3. HTN -- 151/88 today, higher than her usual. Continue current meds, recheck next visit.\n4. Cushing syndrome -- per endocrinology, follow-up in September.\n5. VHL -- urology MRI due Feb 2024; neurology MRI due 2024. Eye exam January.\n6. Bipolar I -- on olanzapine via psychiatry. Weight check at each visit.\n\nRTC 4-5 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-24a",
+     "kind": "portal_message",
+     "start": "2023-07-24T15:40",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Physical labs and Pap",
+       "author": "PCP",
+       "date": "2023-07-24T15:40",
+       "body": "Hi Susan -- your Pap smear is normal and the HPV test is negative, so the next one is in 5 years. A1c 7.1. Liver and kidney tests normal. Urine protein test normal. Blood count normal. See you for your second hepatitis B shot next month."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-22a",
+     "kind": "nurse_visit",
+     "start": "2023-08-22T16:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hepatitis B vaccine #2",
+     "immunizations": [
+      {
+       "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+       "date": "2023-08-22T16:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-08-22T16:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Hep B #2",
+       "author": "RN",
+       "date": "2023-08-22T16:20",
+       "body": "Heplisav-B dose 2 of 2 given R deltoid. Series complete. Tolerated well."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-19a",
+     "kind": "outside_records",
+     "start": "2023-09-19T12:00",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Missed appointment notice - Endocrinology",
+       "author": "endocrinology",
+       "date": "2023-09-21T09:00",
+       "body": "This is to notify the referring provider that Susan Strong did not arrive for her scheduled endocrinology follow-up on 09/19/2023. A letter has been mailed to the patient asking her to call to reschedule."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Endo missed appt",
+       "author": "MA",
+       "date": "2023-09-21T11:15",
+       "body": "Endo no-show notice scanned and routed to PCP. Left VM for pt to call endocrinology to reschedule; gave their number."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-17a",
+     "kind": "nurse_visit",
+     "start": "2023-10-17T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-17T08:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-07T12:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-17T08:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Flu Vaccine",
+       "author": "RN",
+       "date": "2023-10-17T08:40",
+       "body": "Influenza vaccine given L deltoid. Patient reports updated COVID vaccine at her pharmacy on 10/7 -- added to immunization record as reported."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-30a",
+     "kind": "specialist_visit",
+     "start": "2023-11-30T11:00",
+     "service": "Psychiatry",
+     "reason": "Bipolar I follow-up",
+     "state": {
+      "weight_kg": 76.2,
+      "bp": [
+       130,
+       85
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.8,
+       "Glucose": 126,
+       "Total Cholesterol": 210,
+       "High Density Lipoprotein": 35,
+       "Triglycerides": 250,
+       "Low Density Lipoprotein": 130
+      }
+     },
+     "vitals": {
+      "bp": [
+       130,
+       85
+      ]
+     },
+     "measure": [
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-11-30T11:40",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 126
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-11-30T11:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.8
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-11-30T11:40",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 210
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 35
+        },
+        {
+         "test": "Triglycerides",
+         "value": 250
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 130
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry Follow-up",
+       "author": "psychiatry",
+       "date": "2023-12-05T13:20",
+       "body": "Community Behavioral Health -- Medication Follow-up\nDate: 11/30/2023\n\n34 y/o woman with bipolar I disorder, Cushing syndrome and diabetes, on olanzapine 10 mg nightly since late May.\n\nShe feels more stable than she has in years: sleeping through the night, no racing thoughts, no irritability episodes, working her usual hours. She has gained about 10 pounds since starting olanzapine and notices she is thirstier. Denies vision changes, frequent urination or genital infections.\n\nMeds: olanzapine 10 mg qhs, metformin 1000 mg BID, lisinopril 10 mg daily, metoprolol succinate 50 mg daily.\nAllergies: NKDA.\n\nBP 130/85. BMI 28.\nMSE: calm, euthymic, linear, no SI/HI.\nExam otherwise unremarkable.\n\nMetabolic monitoring labs (fasting): glucose 126, A1c 6.8%, total cholesterol 210, HDL 35, triglycerides 250, LDL (calc) 130.\n\nAssessment: Bipolar I disorder, stable on olanzapine. Weight gain on olanzapine; diabetes followed by PCP.\nPlan: Continue olanzapine 10 mg qhs. Encouraged diet and activity. Copy of labs to PCP. Return in 6 months.\n\nPsychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2023-12-12a",
+     "kind": "office_visit",
+     "start": "2023-12-12T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "weight_kg": 76.5,
+      "bp": [
+       134,
+       86
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-12-12T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-12-12T14:10",
+       "body": "F/u DM, HTN.\n\nPsychiatry letter 11/30 reviewed: mood stable on olanzapine, 10 lb weight gain; A1c there 6.8, fasting glucose 126. Did not repeat A1c today.\n\nShe feels well, mood good. More thirsty since summer but not urinating more. Home fasting sugars 110s-130s. Missed endo follow-up in Sept and never rebooked -- MA called with her from the office today, rebooked 1/9. No episodes of shakiness or sweating.\n\nExam: BP 138/83. Weight up. Heart RRR, lungs clear, no edema.\n\nA/P\nT2DM -- A1c 6.8 at psych, fine. Continue metformin.\nHTN -- 138/83. Continue lisinopril 10, metoprolol 50.\nWeight gain on olanzapine -- diet and walking discussed.\nCushing syndrome -- endocrinology 1/9 for ACTH and next steps.\nUrology MRI due Feb; order will come from urology.\nRTC 3 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

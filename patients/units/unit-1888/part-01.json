@@ -1,0 +1,475 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001888",
+      "given": "Lisa",
+      "family": "Callahan",
+      "birth_date": "1992-05-20",
+      "address_line": "41 Silver Street, Apt 2",
+      "phone": "+1-413-555-0104",
+      "email": "lisa.callahan@example.test",
+      "marital_status": "single",
+      "summary": "Thirty-something marketing coordinator and fitness instructor, five years out from a total thyroidectomy for papillary thyroid cancer on levothyroxine and calcium. Joins the practice in mid-2024 and has two episodes of exogenous thyrotoxicosis managed by her outside endocrinologist, the second traced to online 'metabolism booster' products; both settle once the extra hormone stops.",
+      "events": [
+        {
+          "id": "2024-07-09a",
+          "kind": "telephone",
+          "start": "2024-07-09T10:20",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake",
+              "author": "front desk",
+              "date": "2024-07-09T10:20",
+              "body": "Pt called to join the practice. Looking for a practice where she can reach the doctor directly. Membership info emailed. Signed release for prior primary care records faxed to her old office today. She sees an outside endocrinologist for her thyroid and will keep doing that. New patient visit booked 7/23 at 9:00. Asked her to bring her pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "outside_records",
+          "start": "2024-07-19T14:05",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "MA",
+              "date": "2024-07-19T14:05",
+              "body": "Received 38 pages by fax from patient's previous primary care office, covering 2018 to early 2024. Abstracted for the PCP:\n\n- Papillary thyroid carcinoma found in 2019; total thyroidectomy with central neck dissection that spring at an outside surgical practice, with parathyroid tissue autotransplanted at the same operation. Followed since by outside endocrinology.\n- Postsurgical hypothyroidism on levothyroxine 112 mcg daily, managed by endocrinology.\n- Calcium carbonate 600 mg with vitamin D3 400 IU twice daily since surgery.\n- Pap 2022: negative for intraepithelial lesion.\n- Tdap 2021.\n- Allergies: none known.\n- Last physical there 03/2023, unremarkable.\n\nScanned to Media under outside records. Routed to PCP for the 7/23 visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "establish_care",
+          "start": "2024-07-23T09:00",
+          "end": "2024-07-23T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "History of thyroid cancer",
+              "action": "history",
+              "onset": "2019-03-20",
+              "note": "Papillary thyroid carcinoma; total thyroidectomy with central neck dissection 2019"
+            },
+            {
+              "label": "Postprocedural hypothyroidism",
+              "icd10": "E89.0",
+              "action": "diagnosed",
+              "onset": "2019-04-16",
+              "note": "After total thyroidectomy 2019; on levothyroxine"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.112 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 112,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Postsurgical hypothyroidism"
+            },
+            {
+              "drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (600 mg calcium / 400 IU vitamin D3) by mouth twice daily",
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "After thyroidectomy with parathyroid autotransplant"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Rare, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Marketing coordinator; part-time fitness instructor"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "state": {
+            "weight_kg": 74.8,
+            "height_cm": 167.6,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.4,
+              "Free Thyroxine": 1.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-07-23T09:55",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-23T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-07-23T09:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-23T09:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-07-23T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-23T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-07-23T09:00",
+              "body": "32F here to establish. Prior records reviewed (abstract in chart).\n\nS: Feels well. No complaints today. Energy good, sleeping fine, weight steady. Teaches 3-4 fitness classes a week on top of her marketing job.\n\nPMH: papillary thyroid ca 2019, total thyroidectomy + central neck dissection, parathyroid autotransplant at the same surgery. Postsurgical hypothyroidism. Endocrinology (outside) follows her yearly and writes the levothyroxine.\nMeds: levothyroxine 112 mcg qAM, takes it 30 min before coffee. Calcium carbonate 600 mg / D3 400 IU BID.\nAllergies: NKDA.\nFH: mother HTN. Father T2DM. No thyroid disease or endocrine cancers in the family.\nSH: never smoker, drinks rarely (a drink or two a month), no drugs. Single, shares an apartment in town with a roommate.\n\nO: Vitals per flowsheet. Pleasant, fit-appearing. Neck: well-healed low collar incision, no masses or adenopathy. Heart RRR, no murmur. Lungs clear. Abd soft. Skin warm, no rash. No tremor. Chvostek negative.\n\nA/P:\n1. Hx papillary thyroid ca / postsurgical hypothyroidism: stable on current dose per endo. TSH, free T4 today for a baseline; endo stays primary for dosing. Will share results.\n2. On calcium/D since surgery: calcium on CMP.\n3. Health maintenance: CBC, CMP, lipids. One-time HIV and hep C screen, she agrees. Pap 2022 normal, next due 2025. Tdap 2021. Flu/COVID in the fall. PHQ-2 0.\n\nRTC for physical next spring, sooner prn."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 74.8,
+            "height_cm": 167.6
+          }
+        },
+        {
+          "id": "2024-07-25a",
+          "kind": "portal_message",
+          "start": "2024-07-25T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2024-07-25T16:40",
+              "body": "Hi Lisa, everything from Tuesday came back fine: blood counts, kidney and liver tests, calcium, cholesterol, and your thyroid levels are all in range on the 112 mcg. HIV and hepatitis C screens were negative. I'll copy your endocrinologist so they have it. Good to meet you!"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-27a",
+          "kind": "portal_message",
+          "start": "2024-09-27T21:12",
+          "reason": "Palpitations and weight loss",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Heart racing",
+              "author": "patient",
+              "date": "2024-09-27T21:12",
+              "body": "Hi, for the last month or two my heart has been pounding a lot, even sitting at my desk, and I'm hot all the time when everyone else is fine. I've also dropped weight even though I'm eating more than usual. I don't feel sick exactly, just wired. Should I come in? My endo appointment isn't until November."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Heart racing",
+              "author": "RN",
+              "date": "2024-09-28T08:35",
+              "body": "Hi Lisa, thanks for letting us know. The doctor would like to see you Monday 9/30 at 1:20. If you get chest pain, fainting, or shortness of breath before then, please call us right away or go to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-30a",
+          "kind": "office_visit",
+          "start": "2024-09-30T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Palpitations, heat intolerance, weight loss",
+          "state": {
+            "weight_kg": 70.6
+          },
+          "vitals": {
+            "hr": 104,
+            "bp": [
+              132,
+              82
+            ],
+            "weight_kg": 70.6
+          },
+          "measure": [
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-30T13:50",
+              "resulted": "2024-09-30T17:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 2.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-30T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-30T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-09-30T13:20",
+              "body": "CC: palpitations, feeling hot, wt loss.\n\nHPI: Started maybe early August, hard to pin down. Heart pounding at rest and at night, hot and sweaty when others aren't, appetite up but about 9 lb down since July by her scale (our scale agrees, 74.8 -> 70.6). No CP, no syncope, no SOB beyond what she'd expect teaching class. No change in bowels. Hair the same. Says she takes the levothyroxine 112 every morning, nothing extra that she can think of. No new meds.\n\nExam: HR 104 regular, BP 132/82. Afebrile. Looks well, a bit restless. Fine tremor of outstretched hands. Neck: scar healed, no mass or nodes. Heart regular, tachycardic, no murmur. Lungs clear. Skin warm and moist.\n\nA/P: Symptoms sound like too much thyroid hormone. TSH and free T4 now. Not changing her dose on my own since endo manages it; will call their office tomorrow with results and try to get her in sooner. Return/ED precautions reviewed.\n\nAddendum 17:45: TSH <0.01, free T4 2.4. Called pt, explained. Will call endo in the AM."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "telephone",
+          "start": "2024-10-01T09:10",
+          "reason": "Coordination with endocrinology",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to endocrinology",
+              "author": "PCP",
+              "date": "2024-10-01T09:10",
+              "body": "Spoke with the covering nurse at pt's endocrinology office, faxed yesterday's TSH/free T4 and my note. They moved her up to Wed 10/9 and want her to keep taking 112 mcg as prescribed until they see her. Called Lisa and gave her the new date; she'll take a half day off work. Knows to call if she feels worse."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "specialist_visit",
+          "start": "2024-10-09T10:30",
+          "service": "Endocrinology",
+          "reason": "Palpitations, heat intolerance, weight loss",
+          "conditions": [
+            {
+              "label": "Thyrotoxicosis factitia",
+              "icd10": "E05.40",
+              "action": "diagnosed",
+              "onset": "2024-08-05",
+              "note": "Exogenous thyroid hormone excess"
+            }
+          ],
+          "state": {
+            "weight_kg": 70.3
+          },
+          "vitals": {
+            "hr": 102,
+            "bp": [
+              135,
+              85
+            ],
+            "weight_kg": 70.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-09T11:15",
+              "resulted": "2024-10-10T15:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 2.6
+                },
+                {
+                  "test": "Free Triiodothyronine",
+                  "value": 6.1
+                },
+                {
+                  "test": "Thyroglobulin",
+                  "loinc": "3013-0",
+                  "unit": "ng/mL",
+                  "text": "<0.1"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Radioactive iodine uptake, 24-hour",
+              "loinc": "81582-9",
+              "performed": "2024-10-10T10:45",
+              "text": "INDICATION: Thyrotoxicosis, status post total thyroidectomy.\nTECHNIQUE: Oral I-123 capsule administered 10/09/2024 at 11:40. Uptake measured over the neck with a thyroid probe at 24 hours, background corrected.\nFINDINGS: 24-hour uptake 0.7% (reference 10-30%). No focal uptake in the thyroid bed.",
+              "conclusion": "Low 24-hour radioiodine uptake, 0.7%."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Visit Letter",
+              "author": "endocrinology",
+              "date": "2024-10-14T11:20",
+              "body": "Outside endocrinology, regional endocrine group\nDate of visit: 10/09/2024\n\nDear Doctor,\n\nThank you for calling about Ms. Callahan and for sending her labs. I saw her on 10/09.\n\nShe describes about two months of a racing heartbeat, intolerance of heat, and a 10 lb weight loss she was not trying for, while eating more than usual. She has noticed no change in bowel pattern or in the texture of her hair.\n\nBackground: total thyroidectomy with central neck dissection for papillary thyroid carcinoma in 2019, parathyroid autotransplantation at the same operation, hypothyroid since. Levothyroxine 112 mcg daily, which works out to about 1.6 mcg/kg, and calcium carbonate 600 mg / vitamin D3 400 IU twice a day. No drug allergies. No thyroid disease or endocrine cancer in the family; her mother has hypertension and her father type 2 diabetes. Never smoker, alcohol a drink or two a month. She works in marketing and teaches fitness classes part time.\n\nExam: pulse 102, BP 135/85. Fine tremor of the outstretched hands. Nothing palpable in the neck, no goiter or nodule; the thyroidectomy scar is well healed and I find nothing to suggest local recurrence.\n\nResults: TSH <0.01, free T4 2.6 ng/dL, free T3 6.1 pg/mL, thyroglobulin <0.1 ng/mL. 24-hour radioiodine uptake 0.7%.\n\nImpression: Thyrotoxicosis from exogenous thyroid hormone (thyrotoxicosis factitia). With no thyroid tissue, an undetectable thyroglobulin and a negligible uptake, there is no endogenous source; this is hormone coming from outside. Her prescribed dose is appropriate for her weight. She tells me she takes only the prescribed tablet and no supplements.\n\nPlan:\n- Continue levothyroxine 112 mcg daily exactly as prescribed, no doubling up after a missed dose.\n- No other thyroid, metabolism or weight-loss products of any kind; we went over how often these contain thyroid hormone.\n- Repeat TSH and free T4 in about 6 weeks. Order placed; she prefers to have it drawn at your office.\n- I will see her for her usual yearly surveillance next fall, sooner if the recheck is off.\n\nAllergies: NKDA\n\nSincerely,\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T16:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2024-10-22T16:30",
+              "body": "Here after work for flu and COVID shots. Screening questions answered no. Flu vaccine IM left deltoid, COVID (2024-25 formula) IM right deltoid. Tolerated both. She says the racing heart is better since she saw endo but not gone. Waited 15 min, left without problems."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "lab_only",
+          "start": "2024-11-20T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid recheck per endocrinology",
+          "conditions": [
+            {
+              "label": "Thyrotoxicosis factitia",
+              "icd10": "E05.40",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "weight_kg": 73.1,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9,
+              "Free Thyroxine": 1.2
+            }
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-11-20T07:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-20T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Thyroid recheck",
+              "author": "PCP",
+              "date": "2024-11-21T12:10",
+              "body": "TSH and free T4 back in range. MA weighed her at the draw, 73.1 kg, up from 70.3 in October. She tells MA the pounding and sweats are gone. Faxed to endo; their nurse called back that they're happy, no change to 112 mcg, see her next fall. Taking thyrotoxicosis off the active list. Pt notified via portal."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 73.1
+          }
+        }
+      ]
+    }
+  ]
+}

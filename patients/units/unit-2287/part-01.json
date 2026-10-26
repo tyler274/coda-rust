@@ -1,0 +1,428 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002287",
+      "given": "Stanley",
+      "family": "Allard",
+      "birth_date": "1960-12-01",
+      "address_line": "27 Kendall Ridge Rd",
+      "phone": "+1-518-555-0197",
+      "email": "stanley.allard@example.test",
+      "summary": "Retired construction foreman with long-standing poorly controlled insulin-treated type 2 diabetes, CKD 3a, hypertension and left knee osteoarthritis who joins the practice in 2023. In 2026 he has MSSA septic arthritis of the left knee treated with washout and antibiotics, then six months later MSSA lumbar vertebral osteomyelitis on home IV cefazolin at today.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T10:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2023-08-29T10:40",
+              "body": "Caller is Mr. Allard, wants to transfer his primary care here. Reports he has diabetes on insulin, plus blood pressure and kidney issues he says his old doctor watched. Booked new patient visit Tue 9/12 at 9:00 with PCP. Release of information signed electronically, faxed to his previous office with request for last 3 years of notes, labs and immunizations. Asked him to bring his insulin pens and every pill bottle to the visit and to come fasting if he can."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-07a",
+          "kind": "outside_records",
+          "start": "2023-09-07T14:15",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records Abstract",
+              "author": "MA",
+              "date": "2023-09-07T14:15",
+              "body": "Fax in today from Mr. Allard's former primary care office, 38 pages, scanned to Media. Notes run from 2020 through his last visit there in June 2023.\n\nAbstracted for PCP before the 9/12 new patient visit:\n- Diagnoses carried on their list: type 2 diabetes, uncontrolled, on basal plus mealtime insulin; CKD stage 3a; hypertension; osteoarthritis of the left knee.\n- Med list (last updated 06/2023): Lantus 30 units nightly, Humalog per sliding scale with meals, lisinopril 10 mg daily, atorvastatin 40 mg daily, Tylenol 500 mg every 6 hours as needed.\n- Allergies: none recorded.\n- Colonoscopy 2019 by outside GI: normal, no polyps, repeat in 10 years.\n- Former smoker per their social history.\n- No surgical history listed.\nOriginal documents dated 2020-2023."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T09:00",
+          "end": "2023-09-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; diabetes, CKD, hypertension",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with hyperglycemia", "action": "history"},
+            {"label": "Chronic kidney disease, stage 3a", "action": "history"},
+            {"label": "Essential hypertension", "action": "history"},
+            {"label": "Primary osteoarthritis of left knee", "action": "history"},
+            {"label": "History of tobacco dependence", "action": "history"}
+          ],
+          "medications": [
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 30 units under the skin at bedtime", "dose": {"value": 30, "unit": "[iU]"}, "frequency": "QHS", "route": "Subcutaneous", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "3 ML insulin lispro 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject under the skin before meals per sliding scale", "frequency": "TID", "route": "Subcutaneous", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for pain", "dose": {"value": 500, "unit": "mg"}, "frequency": "Q6H", "route": "Oral", "course": "chronic", "reason": "Left knee osteoarthritis"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [136, 82], "weight_kg": 88.0, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 9.4, "Glucose": 188, "Creatinine": 1.5, "Low Density Lipoprotein": 82, "Total Cholesterol": 158, "Microalbumin/Creatinine Ratio": 14}},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": null, "collected": "2023-09-12T09:50", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T09:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T09:50", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-12T09:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-09-12T09:50", "results": [{"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": null, "collected": "2023-09-12T09:50", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-09-12T09:50", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 2}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Retired construction foreman"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per week"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-09-12T09:00"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T09:50"},
+            {"procedure": "Immunization administration", "performed": "2023-09-12T09:45"}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-09-12T09:45"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-12T09:45"}
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Former smoker, 30 pack-years, quit 2018"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-12T10:05",
+              "body": "62 y/o man transferring care. Retired construction foreman. Outside records reviewed before today (abstract in chart).\n\nHe has had type 2 diabetes for a long time and has been on insulin for years. Takes glargine 30 units at bedtime and lispro before meals off the sliding scale his last office gave him. Checks sugars most mornings, says fasting numbers run high, often 170s to 200s. No lows he knows of. Admits he eats late and does not always dose lispro before dinner. Was told his kidneys are 'stage 3' and his old doctor kept him on lisinopril for that and the pressure. Left knee has bothered him for years from the job, worse on stairs and after a long day on his feet; Tylenol takes the edge off. No chest pain, no dyspnea, no claudication, no numbness in his feet, no vision change.\n\nPMH: T2DM on insulin, CKD 3a, HTN, L knee OA.\nPSH: none.\nMeds: glargine 30 u qhs, lispro SSI AC, lisinopril 10 daily, atorvastatin 40 daily, acetaminophen 500 q6h prn.\nAllergies: NKDA.\nFH: father had type 2 diabetes. Mother had osteoarthritis. Brother has chronic kidney disease.\nSH: smoked for years, about 30 pack-years, quit in 2018. Drinks occasionally, one or two a week. No other substances. Retired.\n\nExam: well-appearing. BP a bit above where I want it for him but acceptable today. HEENT unremarkable. No thyromegaly. Heart regular rate and rhythm without murmur. Lungs clear. Abdomen benign. Left knee with bony enlargement and medial joint line tenderness, crepitus, no effusion, no warmth, full extension, flexion a little limited. Feet: skin intact, no calluses or ulcers, monofilament intact bilaterally, DP pulses 2+.\n\nA/P\n1. T2DM, poorly controlled by his own logs. A1c, CMP, UACR today. Went over timing of lispro with meals and the late dinners. Keep glargine 30 for now and see where the A1c lands.\n2. CKD 3a: creatinine/eGFR and UACR today. Continue ACE inhibitor. Avoid NSAIDs; he says he mostly sticks to Tylenol.\n3. HTN: continue lisinopril 10.\n4. Lipids: on atorvastatin 40 with his diabetes; lipid panel, continue.\n5. L knee OA: acetaminophen as needed, stay active.\n6. Health maintenance: PCV20 and flu shot today. Hep C and HIV screens with labs. Colonoscopy 2019 normal, next 2029. Meets criteria for lung cancer screening (30 pack-years, quit 2018): low-dose CT ordered. Optometry for a diabetic eye exam this year; he will call his usual eye office.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2023-09-14T16:20",
+              "body": "Mr. Allard, your results from Tuesday are back. Your A1c is above 9, which fits the high morning sugars you described, so diabetes is the main thing for us to work on. Kidney function is in the stage 3a range, as your old office had it, and potassium is fine. Urine protein is normal, which is good news. Cholesterol is well controlled on atorvastatin. Blood counts are normal. Hepatitis C and HIV screens were both negative.\n\nPlease try to take the lispro before each meal, including dinner, and send me your morning readings in a month. We will go over everything at your December visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "pharmacy",
+          "start": "2023-10-12T11:30",
+          "reason": "Vaccine given at pharmacy",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-12T11:30"}
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy Vaccine Notification",
+              "author": "MA",
+              "date": "2023-10-13T08:45",
+              "body": "Retail pharmacy report: 2023-2024 Pfizer COVID-19 vaccine given 10/12/2023, left deltoid. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "imaging",
+          "start": "2023-10-17T13:00",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-17T13:00",
+              "text": "INDICATION: Annual lung cancer screening. 62-year-old former smoker, 30 pack-years, quit 2018. Baseline exam.\nTECHNIQUE: Low-dose helical CT of the chest without IV contrast.\nCOMPARISON: None.\nFINDINGS: Lungs: No pulmonary nodules. No consolidation or effusion. Airways patent. Mediastinum: No adenopathy. Heart size normal. Upper abdomen: Unremarkable. Bones: No aggressive osseous lesion.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening with low-dose CT in 12 months."
+            }
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "done", "date": "2023-10-17T13:00"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT Result",
+              "author": "PCP",
+              "date": "2023-10-18T12:10",
+              "body": "Screening CT negative, Lung-RADS 1. Portal message sent. Repeat next October."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-12-12T14:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-12-12T14:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-12-12T14:20"},
+            {"procedure": "Venipuncture", "performed": "2023-12-12T14:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-12-12T15:00",
+              "body": "S: Here for 3 month check. Brought his meter. Morning readings mostly 160-210, a couple in the 140s. Says he has been better about lispro at dinner 'about half the time.' Weekends are the hardest. Knee unchanged, Tylenol once or twice a day on bad days. No hypoglycemia. Taking everything else as listed.\n\nO: Vitals reviewed. Comfortable. Heart RRR, lungs clear. No edema. Feet without lesions.\n\nPoint-of-care draw today; A1c back while he was here, still above 9.\n\nA/P:\n- T2DM, poorly controlled. Discussed that his numbers are not where they need to be. He would like another few months working on meal timing and portion size before we change anything. Reasonable; continue glargine 30 u qhs and lispro sliding scale. Dietitian handout given.\n- CKD 3a: creatinine stable compared with September.\n- HTN: continue lisinopril.\n- Knee OA: stable.\nRecheck in 3 months with A1c and BMP."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "pharmacy",
+          "start": "2024-02-20T09:10",
+          "reason": "Insulin refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2024-02-20T09:10",
+              "body": "Pharmacy fax requesting new Rx for insulin glargine pens and insulin lispro pens; old prescriptions written by previous PCP are out of refills. Pen needles also. Sent to PCP queue.\n\nPCP: approved, 90-day supply with 3 refills each, sent electronically."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.8, "Glucose": 172}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-03-19T10:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-19T10:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-19T10:40"},
+            {"procedure": "Venipuncture", "performed": "2024-03-19T10:30"},
+            {"procedure": "Immunization administration", "performed": "2024-03-19T11:10"}
+          ],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-03-19T11:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Care Visit",
+              "author": "PCP",
+              "date": "2024-03-19T11:20",
+              "body": "Diabetes, CKD, BP recheck.\n\nDoing a bit better with dinner doses since January. Fasting numbers more often in the 150s now. Still has some higher days. No lows. Knee about the same; he walks most days when the weather allows.\n\nExam: NAD. RRR. Clear lungs. No edema.\n\nA1c improved some but still not at goal. Creatinine stable, K normal.\n\nPlan:\n- DM: some progress. Same glargine and lispro. Keep logging.\n- CKD 3a, HTN: unchanged, continue lisinopril 10.\n- Shingrix #1 today. Nurse visit in 2-3 months for the second dose.\nRTC 6 months for physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "outside_records",
+          "start": "2024-05-21T15:30",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry Diabetic Eye Exam",
+              "author": "optometry",
+              "date": "2024-05-21T15:30",
+              "body": "Diabetic eye examination report. Date of exam: 05/16/2024.\nPatient: Stanley Allard. Allergies: NKDA.\nBest corrected acuity 20/25 OD, 20/25 OS. Pupils normal. IOP within normal limits both eyes. Dilated fundus exam: no diabetic retinopathy either eye, no macular edema.\nImpression: Type 2 diabetes without retinopathy.\nRecommend repeat dilated exam in 12 months.\nPlease contact our office with any questions. — Optometry"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "nurse_visit",
+          "start": "2024-06-11T09:30",
+          "reason": "Shingrix dose 2",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "nurse_visit",
+          "start": "2024-06-25T09:15",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-06-25T09:20"}
+          ],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-06-25T09:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2024-06-25T09:35",
+              "body": "Here for second Shingrix; missed the 6/11 slot, said he forgot. First dose 3/19, had a sore arm and felt tired for a day. No fever today, no new allergies. Shingrix 0.5 mL IM right deltoid, lot recorded. Waited 15 min, fine. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "portal_message",
+          "start": "2024-07-23T19:05",
+          "reason": "Knee pain question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Knee",
+              "author": "patient",
+              "date": "2024-07-23T19:05",
+              "body": "Hi doc. Left knee has been barking more with this humid weather. Tylenol helps some. Is it ok to take it 4 times a day for a while or is that bad for my kidneys? Stan"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Knee",
+              "author": "PCP",
+              "date": "2024-07-24T08:15",
+              "body": "Hi Stan, yes, acetaminophen up to 500 mg four times a day is fine for your kidneys and is the safer choice for you than ibuprofen or naproxen, which I'd avoid. If the knee swells up, gets hot, or you can't put weight on it, call us. Otherwise we'll look at it at your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 9.3, "Glucose": 186}},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": null, "collected": "2024-09-24T08:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T08:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-24T08:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T08:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2024-09-24T08:20", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-24T08:30"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T08:20"},
+            {"procedure": "Immunization administration", "performed": "2024-09-24T09:15"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-24T09:15"},
+            {"vaccine": "Tdap", "date": "2024-09-24T09:15"}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual lung cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-24T09:30",
+              "body": "Annual exam, 63 y/o M.\n\nInterval: no ER visits or hospital stays. Diabetes control slipped over the summer, he says, cookouts and a lot of ice cream. Fasting sugars back up near 200 some mornings. Knee about the same as always, Tylenol a few times a week. Eye exam in May, no retinopathy (report in chart). Mood good. Sleeping fine.\n\nROS: negative for chest pain, dyspnea, palpitations, GI or GU complaints, foot numbness.\n\nMeds unchanged: glargine 30 u qhs, lispro SSI with meals, lisinopril 10, atorvastatin 40, acetaminophen prn. NKDA.\n\nExam: Pleasant, in no distress. HEENT normal, TMs clear. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, no masses. No edema. Left knee: bony hypertrophy and crepitus, no effusion. Feet: monofilament intact both feet, pulses good, skin intact. Skin: no concerning lesions.\n\nAssessment/plan\n- Preventive: Tdap and flu today. Shingrix complete. PCV20 done 2023. RSV vaccine is recommended for him with diabetes and kidney disease; he'll get it with his COVID shot at the pharmacy. Colonoscopy due 2029. Annual LDCT ordered for October.\n- T2DM, uncontrolled: A1c pending today. Back to basics on dinner lispro and portions. Continue doses.\n- CKD 3a: CMP and UACR today.\n- HTN: continue lisinopril 10.\n- Lipids: on atorvastatin 40, panel today.\n- L knee OA: stable.\nF/u December."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T12:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical Results",
+              "author": "PCP",
+              "date": "2024-09-26T12:45",
+              "body": "Hi Stan, labs from your physical: A1c went back up, above 9 again, matching what you said about the summer. Kidney numbers steady at the same stage 3a level, potassium normal, liver tests normal. Cholesterol still good. Urine protein normal. Blood count normal. Let's keep at the dinner insulin and talk again in December."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical Results",
+              "author": "patient",
+              "date": "2024-09-26T18:30",
+              "body": "Thanks. Yeah I figured. I'll do better. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "pharmacy",
+          "start": "2024-10-08T15:00",
+          "reason": "Vaccines given at pharmacy",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T15:00"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2024-10-08T15:05"}
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy Vaccine Notification",
+              "author": "MA",
+              "date": "2024-10-09T09:00",
+              "body": "Pharmacy notification received: COVID-19 2024-2025 Pfizer, left arm, and Arexvy RSV, right arm, both 10/08/2024. Added to immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "imaging",
+          "start": "2024-10-22T11:15",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-10-22T11:15",
+              "text": "INDICATION: Annual lung cancer screening, former smoker, 30 pack-years, quit 2018.\nTECHNIQUE: Low-dose non-contrast CT chest.\nCOMPARISON: 10/17/2023.\nFINDINGS: No pulmonary nodules. Lungs clear. No pleural effusion. No mediastinal or hilar lymphadenopathy. Heart and great vessels normal in size. Visualized upper abdomen unremarkable. No suspicious osseous lesion.",
+              "conclusion": "Lung-RADS 1. Negative. Continue annual screening."
+            }
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "done", "date": "2024-10-22T11:15"}
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "office_visit",
+          "start": "2024-12-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-12-17T15:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-12-17T15:40"},
+            {"procedure": "Venipuncture", "performed": "2024-12-17T15:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-12-17T16:10",
+              "body": "DM f/u. Holidays coming, he knows. Sugars about the same as September per meter, 170-220 fasting. Not missing glargine. Lispro still hit or miss at dinner. LDCT in Oct negative. RSV and COVID shots done at pharmacy.\nExam: RRR, lungs clear, no edema.\nA1c today about the same as fall, still over 9.\nA/P: T2DM uncontrolled, regimen unchanged for now; set a goal of lispro with every dinner and a 10-minute walk after. HTN and CKD stable, continue lisinopril. Return March with BMP and A1c beforehand."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

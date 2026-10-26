@@ -1,0 +1,282 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002109",
+      "given": "Adam",
+      "family": "Upton",
+      "birth_date": "1966-11-06",
+      "address_line": "1430 Federal Street",
+      "phone": "+1-413-555-0165",
+      "email": "adam.upton@example.test",
+      "marital_status": "married",
+      "summary": "Belchertown cattle rancher who joins in 2019 with stage 4 CKD, anemia of CKD and an asymptomatic doxorubicin cardiomyopathy after a 2014 thigh sarcoma. He starts hemodialysis by catheter in 2020, gets a left forearm fistula in 2022, develops right carpal tunnel syndrome, and his cardiomyopathy becomes symptomatic HFrEF with a 2025 admission for decompensation.",
+      "events": [
+        {
+          "id": "2019-09-03a",
+          "kind": "outside_records",
+          "start": "2019-09-03T10:20",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records (partial)",
+              "author": "front desk",
+              "date": "2019-09-03T10:20",
+              "body": "Nine pages faxed from the patient's previous primary care office ahead of his new-patient visit next week. Contents: last two office notes (2018), a medication list, an immunization record that lists a tetanus shot \"more than 10 years ago\" without a date, and a colonoscopy report from 2017.\n\nColonoscopy 2017 (outside, screening): complete to the cecum, good prep, no polyps, otherwise normal. Recommended repeat in 10 years.\n\nOffice notes mention kidney disease followed by nephrology, a heart condition followed by cardiology after chemotherapy, and a thigh sarcoma treated in 2014. No nephrology or cardiology letters were included.\n\nScanned to chart for the PCP to review at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T08:40",
+          "end": "2019-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Chronic kidney disease, stage 4", "action": "diagnosed", "onset": "2017-06-01", "note": "Followed by outside nephrology"},
+            {"label": "Anemia in chronic kidney disease", "icd10": "D63.1", "action": "diagnosed", "onset": "2018-03-01", "note": "On epoetin from nephrology"},
+            {"label": "Hyperphosphatemia", "icd10": "E83.39", "action": "diagnosed", "onset": "2018-03-01", "note": "On calcium acetate from nephrology"},
+            {"label": "Cardiomyopathy due to drug and external agent", "icd10": "I42.7", "action": "diagnosed", "onset": "2015-04-01", "note": "Doxorubicin; asymptomatic LV dysfunction, LVEF 45% on 2015 echo; followed by outside cardiology"},
+            {"label": "Personal history of malignant neoplasm of soft tissue", "icd10": "Z85.831", "action": "history", "onset": "2014-02-01", "note": "Soft-tissue sarcoma right thigh, wide local excision and doxorubicin 2014, in remission"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Cardiomyopathy"},
+            {"drug": "furosemide 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Fluid, kidney disease"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug_text": "calcium acetate 667 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth three times daily with meals", "dose": {"value": 667, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "Hyperphosphatemia"},
+            {"drug_text": "epoetin alfa 10000 UNT/ML Injectable Solution", "action": "historical", "sig": "Inject 10,000 units under the skin once monthly (given by nephrology)", "dose": {"value": 10000, "unit": "[iU]"}, "frequency": "MONTHLY", "route": "Subcutaneous", "course": "chronic", "reason": "Anemia of CKD"},
+            {"drug_text": "multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth as needed for pain", "dose": {"value": 500, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "Back soreness"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"bp": [132, 76], "weight_kg": 86.2, "height_cm": 180.0, "labs": {"Creatinine": 3.6, "Blood Urea Nitrogen": 41, "Hemoglobin": 10.8, "Phosphorus": 5.0, "Potassium": 4.9, "Bicarbonate": 21}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Rare, holidays only, 1-2 drinks"},
+            {"item": "Occupation", "value": "Rancher (beef cattle)"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-10T09:35", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}, {"test": "Bicarbonate"}, {"test": "Calcium"}, {"test": "Albumin"}]},
+            {"panel": "CBC with Differential", "collected": "2019-09-10T09:35", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2019-09-10T09:35", "results": [{"test": "Phosphorus"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-10T09:35", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-09-10T09:35", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "Hepatitis B Surface Antigen", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 40-64", "performed": "2019-09-10T08:40"}, {"procedure": "Venipuncture", "performed": "2019-09-10T09:35"}],
+          "documents": [
+            {
+              "type": "History and physical note",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2019-09-10T09:40",
+              "body": "52M rancher establishing care. Previous PCP retired; wife found us through a neighbor. Partial records from the prior office reviewed (colonoscopy 2017 clean, repeat 2027).\n\nHPI / history as he tells it:\n- Kidneys: told about \"weak kidneys\" around 2017. Sees an outside nephrology group every 3 months. They give him a monthly epoetin shot in clinic and started a phosphate binder (calcium acetate) last year. He knows the word dialysis has come up as \"down the road\" and that they want him to think about access. No uremic symptoms he can name: appetite fine, no itching, no nausea. Makes good urine.\n- Heart: 2014 sarcoma of the right thigh, wide local excision then doxorubicin at a cancer center. About a year later an echo showed his pumping was down (EF 45% by his cardiology papers from that time, which he brought). No symptoms then or now. Cardiology started lisinopril 10 and sees him every year or two. Furosemide 40 daily came from either nephrology or cardiology; he isn't sure which.\n- Sarcoma: in remission, still sees oncology yearly with a chest CT.\n- Aspirin 81 since \"a long time ago\", MVI, Tylenol for back soreness after chores. Avoids ibuprofen because nephrology told him to.\n\nPMH: as above. PSH: right thigh wide local excision 2014. No chest radiation.\nMeds: lisinopril 10 daily, furosemide 40 daily, ASA 81, calcium acetate 667 TID w/ meals, epoetin alfa 10,000 units SC monthly (nephrology), MVI, acetaminophen 500 prn.\nAllergies: NKDA.\nFHx: father HTN, MI at 68, died in his late 80s. Mother living, type 2 diabetes, CKD, osteoarthritis. Brother high cholesterol. Paternal grandfather CHF. No known HCM or sudden death in the family.\nSocial: married, runs a small beef herd outside town. Never smoked. Drinks maybe twice a year. No drugs. Black coffee, plain cooking.\n\nROS: no chest pain, no dyspnea at his usual work, no orthopnea, no edema lately, no bleeding. Otherwise negative.\n\nExam: vitals per flowsheet. Weathered, well-appearing. HEENT unremarkable. Neck supple, JVP not elevated. Heart regular, no murmur or gallop. Lungs clear. Abdomen soft, nontender. Right lateral thigh with a well-healed longitudinal scar, no mass. Ext: no edema, pulses 2+. Skin: no rash. Neuro: grossly nonfocal. PHQ-2 0.\n\nA/P:\n1. CKD stage 4, followed by nephrology. Labs today; will ask nephrology for their last note. Renally dose everything, no NSAIDs.\n2. Anemia of CKD on monthly epoetin per nephrology. CBC today.\n3. Hyperphosphatemia on calcium acetate. Phos today.\n4. Doxorubicin cardiomyopathy, asymptomatic, on lisinopril. Euvolemic today. Continue cardiology follow-up.\n5. Hx soft-tissue sarcoma R thigh 2014, in remission. Oncology surveillance continues.\n6. Health maintenance: colonoscopy up to date (2017). Tdap and flu next month at a nurse visit. Hep B vaccine series given likely dialysis in the future; start at the nurse visit. One-time HIV and hep C, plus hep B surface antigen today. Lipids today.\n\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2019-09-12T16:05",
+              "body": "Hi Adam, your labs from Tuesday are back. Kidney numbers and blood count are in the range I'd expect with your kidney disease and look similar to what your nephrologist has been seeing. Phosphorus is a little high, which is what the calcium acetate is for, so keep taking it with meals. Cholesterol is fine. HIV, hepatitis B and hepatitis C screens were all negative. I'll send a copy to your kidney doctor. See you at the nurse visit for your shots."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T10:20"},
+            {"vaccine": "Tdap", "date": "2019-10-08T10:22"},
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2019-10-08T10:24"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T10:20"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Immunizations",
+              "author": "RN",
+              "date": "2019-10-08T10:35",
+              "body": "Here for vaccines per PCP plan. Feels well today, no fever. Screening questions negative. Influenza 0.5 mL IM left deltoid, Tdap 0.5 mL IM right deltoid, Heplisav-B 0.5 mL IM left deltoid (dose 1 of 2). Lots recorded. Tolerated without issue, waited 15 min. Dose 2 of hep B due in 1 month; scheduled for 11/12 at front desk. Patient asked that we avoid Mondays/Wednesdays/Fridays when possible since nephrology may move him to a dialysis schedule eventually; noted in scheduling."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-12a",
+          "kind": "nurse_visit",
+          "start": "2019-11-12T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "immunizations": [{"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2019-11-12T10:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-11-12T10:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Heplisav-B #2",
+              "author": "RN",
+              "date": "2019-11-12T10:45",
+              "body": "Heplisav-B dose 2 of 2, 0.5 mL IM right deltoid. Arm was a bit sore for a day after the October shots, nothing more. No reaction today. Series complete. PCP wants a surface antibody drawn in a couple of months; added to the next lab order."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-17a",
+          "kind": "office_visit",
+          "start": "2019-12-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Kidney disease follow-up",
+          "state": {"labs": {"Creatinine": 4.1, "Blood Urea Nitrogen": 46}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-12-17T09:30", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}, {"test": "Bicarbonate"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-12-17T09:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2019-12-17T09:30", "results": [{"test": "Phosphorus"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-12-17T09:00"}, {"procedure": "Venipuncture", "performed": "2019-12-17T09:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2019-12-17T09:35",
+              "body": "S: Three-month follow-up. Feeling okay, a bit more tired at the end of the day with feeding the herd in the cold, which he puts down to the season. Appetite fine. No itching, nausea or swelling. Saw nephrology in November; they talked again about access planning and he is \"thinking about it.\" Shot monthly at their clinic.\n\nO: Vitals per flowsheet. Well-appearing. JVP flat. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P:\n- CKD 4: BMP today. Creatinine creeping. Encouraged him to keep the access conversation going with nephrology.\n- Anemia of CKD: CBC today.\n- Phos: on binder, recheck.\n- Cardiomyopathy: no symptoms, continue lisinopril.\nRTC 2 months; hep B surface antibody at that draw."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "office_visit",
+          "start": "2020-02-11T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, kidney follow-up",
+          "state": {"labs": {"Creatinine": 4.9, "Blood Urea Nitrogen": 52, "Hemoglobin": 10.4, "Potassium": 5.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-02-11T09:50", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}, {"test": "Bicarbonate"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-02-11T09:50", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2020-02-11T09:50", "results": [{"test": "Hepatitis B Surface Antibody", "text": "Reactive, immune"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-02-11T09:20"}, {"procedure": "Venipuncture", "performed": "2020-02-11T09:50"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2020-02-11T09:55",
+              "body": "S: Wife came along. Over the last month he is more worn out, needs to sit after chores he used to do straight through. Some mornings he doesn't feel like eating breakfast. No vomiting, no itching, no chest pain, no shortness of breath. Nephrology saw him two weeks ago and told him his numbers are close to needing dialysis; they want him to start in the spring and are setting it up. Fistula surgery was raised but not booked yet.\n\nO: Vitals per flowsheet. Tired-looking but in no distress. Heart regular. Lungs clear. No edema, no asterixis.\n\nA/P:\n- CKD 4, progressing (creatinine about 4.9 today). Fatigue and poor morning appetite fit. Nephrology is planning dialysis start; I agree with their timing. Discussed what in-center dialysis looks like and that he can keep ranching around it.\n- Anemia of CKD, stable on epoetin per nephrology.\n- Hep B surface antibody drawn today after the 2-dose series.\n- Will forward today's labs to nephrology.\nRTC after dialysis starts, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "telephone",
+          "start": "2020-04-14T13:40",
+          "reason": "Wife calls: dialysis started",
+          "conditions": [
+            {"label": "End stage renal disease", "action": "diagnosed", "onset": "2020-04-06"},
+            {"label": "Dependence on renal dialysis", "icd10": "Z99.2", "action": "diagnosed", "onset": "2020-04-06", "note": "In-center hemodialysis MWF via tunneled right IJ catheter"},
+            {"label": "Chronic kidney disease, stage 4", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug_text": "sevelamer carbonate 800 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times daily with meals", "dose": {"value": 800, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "Hyperphosphatemia"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone call from patient's wife",
+              "author": "RN",
+              "date": "2020-04-14T13:55",
+              "body": "Wife calling to update us. Adam started hemodialysis last Monday (4/6) at an outpatient dialysis unit, Mon/Wed/Fri mornings. Running through a catheter in the right side of his neck for now; the fistula surgery is still to be scheduled. Nephrology added a second phosphate binder, sevelamer 800 mg with meals, on top of the calcium acetate. Everything else the same. He's tired after sessions but managing. She wanted to know if his April 28 appointment should be moved given the virus situation; offered video visit instead, she accepted for June. Med list and problem list updated per PCP. Routed to PCP.\n\nPCP addendum: Thanks. Converted to ESRD on HD on the problem list. Glad the start went smoothly. Video visit in June is fine."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telephone",
+          "start": "2020-04-21T11:10",
+          "reason": "Insurance update",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Insurance updated",
+              "author": "front desk",
+              "date": "2020-04-21T11:10",
+              "body": "Patient's wife called with new coverage information. Medicare now primary (ESRD), Blue Cross Blue Shield plan kept as supplemental. Cards scanned from her email photos. Registration updated; old commercial policy inactivated."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-16a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after dialysis start",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2020-06-16T14:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2020-06-16T14:30",
+              "body": "Video visit, patient at home in the kitchen with his wife, identity confirmed, consent for video given.\n\nS: Ten weeks into in-center HD, Mon/Wed/Fri. Says he feels better than in the winter: eating again, more energy on non-dialysis days. Washed out the afternoon of a session. Catheter site fine per the unit nurses; he keeps it dry with a cover when he showers. Nephrology hasn't scheduled fistula surgery yet, says elective surgery is backed up. Still taking all meds; binders with every meal \"most of the time.\" Making some urine. No chest pain, breathlessness or swelling. No fever.\n\nO: Appears well on video, talking in full sentences, no visible distress. Catheter dressing visible at right upper chest, clean. No facial puffiness.\n\nA/P:\n- ESRD on HD via tunneled catheter. Doing well. Labs per dialysis unit; asked him to have the unit fax us a recent lab sheet when convenient.\n- Anemia of CKD on epoetin, hyperphosphatemia on calcium acetate and sevelamer, per nephrology.\n- Cardiomyopathy: no symptoms, lisinopril and furosemide unchanged.\nIn-person visit in the fall with flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-06T10:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-06T10:05"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza",
+              "author": "RN",
+              "date": "2020-10-06T10:15",
+              "body": "Flu vaccine 0.5 mL IM right deltoid (avoid left arm per patient, fistula planned on that side eventually). Screening negative, mask on, temperature checked at door. Tolerated well. Reminded of his November follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "office_visit",
+          "start": "2020-11-17T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"labs": {"Creatinine": 6.4, "Blood Urea Nitrogen": 54, "Hemoglobin": 10.3, "Phosphorus": 5.4, "Potassium": 5.0}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-11-17T09:40", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}, {"test": "Calcium"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-11-17T09:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2020-11-17T09:40", "results": [{"test": "Phosphorus"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-11-17T09:10"}, {"procedure": "Venipuncture", "performed": "2020-11-17T09:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2020-11-17T09:45",
+              "body": "S: First in-person visit since dialysis started. Doing his three sessions a week without missing. Wife drives on bad-weather days. Energy reasonable. No breathlessness, no swelling, no chest pain. Catheter has had no infections. Fistula still not booked; nephrology says early next year at the earliest. The dialysis unit never sent us labs, so drawing a few today on his off day.\n\nO: Vitals per flowsheet. Comfortable. Tunneled catheter right upper chest, dressing clean, no erythema. JVP not elevated. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P:\n- ESRD on HD: creatinine and BUN as expected for an interdialytic draw. Phos a bit above goal; reinforced taking binders with meals. Copy to nephrology.\n- Anemia of CKD: hemoglobin steady on epoetin.\n- Cardiomyopathy: asymptomatic; continue lisinopril, furosemide.\n- Wellness visit in the spring (Medicare)."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

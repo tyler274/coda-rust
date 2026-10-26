@@ -1,0 +1,291 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001949",
+      "events": [
+        {
+          "id": "2024-05-07a",
+          "kind": "office_visit",
+          "start": "2024-05-07T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fear of flying",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "GAD-7 total score", "value": 4}
+          ],
+          "orders": [
+            {"id": "psych-referral-2024", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "fear of flying with avoidance of air travel"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-05-07T15:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-05-07T15:55",
+              "body": "S: Came in to talk about flying. She has been afraid to fly for about ten years, since around the end of high school, and has not been on a plane at all in that time. She has skipped family gatherings out of state and passed on work trips that would have meant a flight. She knows the numbers, that flying is safer than the drive here, and says it makes no sense to her either. Just picturing being on a plane, her heart races, she sweats and gets a feeling that something terrible is about to happen. Otherwise she feels fine day to day; no worry spilling into the rest of life, sleep okay. What brings her in now: her company has offered her a regional sales rep position, which she really wants, and it means flying regularly.\nNo meds. NKDA. Mother has anxiety, an uncle on dad's side is afraid of heights.\n\nO: Vitals reviewed. Comfortable, talkative, good eye contact. Heart regular, lungs clear. Mood good, affect full.\nPHQ-9 2, GAD-7 4.\n\nA/P: long-standing fear of flying with full avoidance, now costing her a job opportunity. Reads like a specific phobia; rest of the picture is reassuring.\n- Referral to psychiatry for evaluation and treatment options; she prefers that to starting with a therapist cold.\n- Did not start anything today.\n- She'll message if the wait is long."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-09a",
+          "kind": "telephone",
+          "start": "2024-05-09T11:02",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Referral scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Psychiatry referral scheduled",
+              "author": "front desk",
+              "date": "2024-05-09T11:02",
+              "body": "Outside psychiatry group called back, referral received. Pt has a new patient evaluation 6/24 at 10:00. Pt notified by phone, she has the address."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "specialist_visit",
+          "start": "2024-06-24T10:00",
+          "end": "2024-06-24T11:00",
+          "service": "Psychiatry",
+          "reason": "Psychiatric evaluation, fear of flying",
+          "conditions": [
+            {"label": "Specific phobia, situational type (fear of flying)", "icd10": "F40.248", "action": "diagnosed", "onset": "2014-06-01"}
+          ],
+          "orders": [
+            {"id": "psych-referral-2024", "action": "done", "date": "2024-06-24T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Consultation",
+              "author": "psychiatry",
+              "date": "2024-06-28T09:30",
+              "body": "OUTPATIENT PSYCHIATRY — INITIAL EVALUATION\nDate of evaluation: 06/24/2024\nReferred by: primary care\n\nReason for referral: fear of flying.\n\nHistory: Ms. Hossain is a 28-year-old woman who describes roughly a decade of severe fear of air travel. She has avoided flying completely over that period, at the cost of family gatherings she wanted to attend and opportunities at work. She is clear that the fear is out of proportion and that commercial flying carries very little risk; nonetheless the idea of boarding a plane brings on a pounding heart, sweating and a strong sense of dread. She is seeking treatment now because she has been offered a position she very much wants that would involve frequent flying.\n\nPast medical history: none of significance.\nMedications: none.\nAllergies: no known drug allergies.\nFamily history: mother with generalized anxiety disorder; paternal uncle with acrophobia.\nSocial history: works as a sales support coordinator at a medical device company. Never smoker. Drinks socially, one or two drinks a month.\n\nExamination: general physical examination unremarkable. Mental status: well groomed, cooperative, normal speech, mood 'a little nervous talking about it', affect congruent, thought process linear, no suicidal or homicidal ideation, insight and judgment good.\n\nImpression: Specific phobia, situational type (flying).\n\nRecommendations:\n1. Exposure-based cognitive behavioral therapy is the treatment of choice. Provided a list of therapists in the area who do this work.\n2. No medication recommended at this time.\n3. Follow up here in about six months.\n\nThank you for the referral.\nAllergies: NKDA"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "portal_message",
+          "start": "2024-07-10T20:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Therapist search",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Therapist list",
+              "author": "patient",
+              "date": "2024-07-10T20:14",
+              "body": "Hi, I saw psychiatry last month and they gave me a list of therapists for the flying thing. I've called five so far and either they're full or not in my network. Do you happen to know anyone who does this kind of therapy? No rush."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Therapist list",
+              "author": "PCP",
+              "date": "2024-07-11T07:46",
+              "body": "Thanks for the update, and I got the psychiatry letter. Your insurance's member line can pull a list of in-network therapists filtered for anxiety/CBT, which is often faster than calling down a list. If you get stuck, send me what you've got and we'll help look."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 1},
+            {"survey": "GAD-7 total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T08:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T08:50", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2024-09-24T08:35", "issued": "2024-09-27T14:00", "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-24T08:45"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-24T08:00"},
+            {"procedure": "Immunization administration", "performed": "2024-09-24T08:45"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T08:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-24T09:00",
+              "body": "Annual visit, Pap due.\n\nInterval: saw psychiatry in June for the fear of flying, diagnosed with a specific phobia, CBT recommended, no meds. She has been trying to find a therapist; still on a couple of wait lists. Psych follow-up is in December. Otherwise well, no new symptoms. No medications. NKDA. Never smoker, alcohol rare.\n\nROS negative.\n\nExam: well, NAD. Vitals reviewed. Neck without adenopathy or thyromegaly. Lungs clear. Heart RRR, no murmur. Abdomen soft, nontender. Pelvic: normal external genitalia, vaginal walls and cervix normal in appearance, no discharge; Pap collected. Skin normal. Affect bright.\n\nPHQ-9 1, GAD-7 3.\n\nA/P:\n1. Preventive: Pap today. CBC, CMP. Flu vaccine given. COVID vaccine at pharmacy.\n2. Specific phobia, flying: following with psychiatry; encouraged her to keep after the therapist search.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-30a",
+          "kind": "portal_message",
+          "start": "2024-09-30T12:18",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and blood work",
+              "author": "PCP",
+              "date": "2024-09-30T12:18",
+              "body": "Hi Deepa, your Pap came back normal and last week's blood tests were all fine. Next one is due in 2027; once you are past 30 we can move to HPV-based testing, which is spaced out to every five years."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-18a",
+          "kind": "pharmacy",
+          "start": "2024-10-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside immunization reported",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-12T13:20"}
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "author": "MA",
+              "date": "2024-10-18T10:40",
+              "body": "Registry reconciliation: Pfizer 2024-25 COVID vaccine 10/12/24, pharmacy administered. Added."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-23a",
+          "kind": "specialist_visit",
+          "start": "2024-12-23T14:00",
+          "service": "Psychiatry",
+          "reason": "Psychiatry follow-up, fear of flying",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "author": "psychiatry",
+              "date": "2024-12-30T10:15",
+              "body": "OUTPATIENT PSYCHIATRY — FOLLOW-UP\nDate of visit: 12/23/2024\n\nMs. Hossain returns about six months after her initial evaluation for specific phobia of flying. The main issue now is work. Her current job involves travel that she manages to avoid, and she has turned down a promotion because the new role would have meant getting on planes. Her description of the fear is unchanged: she knows air travel is safe, yet the prospect of a flight still brings racing heart, sweating and a sense of dread. She feels her career is being held back and wants to go over what treatment involves.\n\nShe has not yet started therapy; she could not find an in-network therapist with openings.\n\nMedications: none. Allergies: NKDA.\nFamily and social history unchanged from June.\n\nExamination: physical exam unremarkable. Mental status: calm, engaged, mood 'frustrated with myself', affect appropriate, no suicidal ideation, insight good.\n\nAssessment: Specific phobia, situational type (flying), unchanged.\n\nPlan:\n- Reviewed what exposure-based CBT looks like in practice, including stepwise exposure and virtual-reality programs used for flying. Remains the recommended treatment. Additional names provided.\n- No medication.\n- Return as needed or once therapy is under way.\n\nAllergies: NKDA"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2025-09-15T16:40",
+              "body": "Pt called, needs to cancel tomorrow morning, a customer meeting got moved. Rebooked for Tuesday 10/7 at 8:20."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 57.2},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 1},
+            {"survey": "GAD-7 total score", "value": 4}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-07T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-07T09:00", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-10-07T09:00", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T08:55"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-10-07T08:20"},
+            {"procedure": "Immunization administration", "performed": "2025-10-07T08:55"},
+            {"procedure": "Venipuncture", "performed": "2025-10-07T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-07T09:10",
+              "body": "Physical, rescheduled from September.\n\nInterval: no new issues. Psychiatry follow-up last December; still hasn't started therapy for the flying phobia and still isn't flying. Says work has been talking about more travel and she knows she'll need to deal with it; plans to get back to psychiatry. No meds. NKDA. Habits unchanged.\n\nROS: negative.\n\nExam: NAD. Vitals reviewed. HEENT normal. No thyromegaly. Lungs clear to auscultation. Regular rhythm, no murmurs. Abdomen soft. Skin clear. Calm, appropriate.\n\nPHQ-9 1, GAD-7 4.\n\nA/P:\n- Preventive: CBC, CMP, lipids. Flu shot given. Pap current (2024). Tdap due 2027.\n- Fear of flying: encouraged her to book the psychiatry visit; she will call them this week.\nReturn in a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "portal_message",
+          "start": "2025-10-09T15:22",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2025-10-09T15:22",
+              "body": "Deepa, all normal again, including cholesterol. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-03a",
+          "kind": "pharmacy",
+          "start": "2025-11-03T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside immunization reported",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-28T17:45"}
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "author": "MA",
+              "date": "2025-11-03T09:50",
+              "body": "Pt reported via portal: Moderna 2025-26 COVID vaccine on 10/28/25 at her pharmacy. Confirmed in state registry and entered."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "specialist_visit",
+          "start": "2025-12-29T09:00",
+          "service": "Psychiatry",
+          "reason": "Psychiatry follow-up, fear of flying",
+          "orders": [
+            {"id": "psychology-referral-2025", "action": "placed", "order": "Psychology referral", "category": "referral", "to": "Psychology", "reason": "exposure-based CBT for specific phobia of flying"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "author": "psychiatry",
+              "date": "2026-01-06T11:00",
+              "body": "OUTPATIENT PSYCHIATRY — RETURN VISIT\nDate of visit: 12/29/2025\nSeen by a different psychiatrist in our group than at her prior visits.\n\nMs. Hossain, 29, comes back for her fear of flying, first assessed here in June 2024 and seen again in December 2024. Things are harder now. Her role at work has changed so that she is expected to fly often, and she is still not getting on planes at all, which is creating real pressure at her job. She describes the same pattern: she knows flying is safe, but even starting to book a ticket sets off palpitations, sweating and a feeling of looming catastrophe. She reports no frightening flight experience of her own and none in her family. She has also been offered a substantial promotion that would require air travel, and she wants to be able to take it.\n\nMedications: none. Allergies: NKDA.\n\nVital signs: within normal limits.\nExamination: no abnormal findings. Mental status: anxious when discussing travel, otherwise euthymic; linear thinking; denies suicidal ideation; good insight.\n\nAssessment: Specific phobia, situational type (flying), with increased impairment from new occupational demands.\n\nPlan:\n- Referral placed to a psychologist in our network who provides exposure-based CBT, including virtual-reality exposure for flying. Our staff will help with scheduling so this does not stall again.\n- No medication.\n- Follow up here as needed.\n\nAllergies: NKDA"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

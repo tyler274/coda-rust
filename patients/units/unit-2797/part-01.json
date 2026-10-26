@@ -1,0 +1,593 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001103",
+   "given": "Kristen",
+   "family": "Marchetti",
+   "birth_date": "1983-09-20",
+   "address_line": "41 Linseed Road",
+   "phone": "+1-413-555-0188",
+   "email": "kristen.marchetti@example.test",
+   "summary": "Hatfield high school math teacher who joined in 2018 with new hypertension on HCTZ; in 2020 resistant pressures with hypokalemia and high renin/aldosterone led to renal artery imaging, cardiology diagnosis of fibromuscular dysplasia, and an ED visit for transient right-eye vision loss. Losartan added in 2021 after a CTA showed multifocal right renal FMD; pressures since in the 130s-140s.",
+   "events": [
+    {
+     "id": "2018-04-17a",
+     "kind": "establish_care",
+     "start": "2018-04-17T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2018-04-17"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      }
+     ],
+     "state": {
+      "bp": [
+       158,
+       100
+      ],
+      "hr": 80,
+      "weight_kg": 70.4,
+      "height_cm": 166.0,
+      "labs": {
+       "Glucose": 88,
+       "Total Cholesterol": 177,
+       "High Density Lipoprotein": 63,
+       "Triglycerides": 86,
+       "Low Density Lipoprotein": 95
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg",
+      "height_cm",
+      "temp_c",
+      "spo2"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "Occupation",
+       "value": "High school mathematics teacher"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Wine, 1-2 glasses per month"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-04-17T16:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2018-04-18T09:10"
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2018-04-17T16:35",
+       "resulted": "2018-04-18T09:10",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2018-04-17T15:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2018-04-17T16:55",
+       "body": "NEW PATIENT — ESTABLISH CARE\n\n34 y/o woman, teaches math at the high school. Has not had a regular PCP for several years (prior office in another town; records release signed today). Here to get set up. Feels well.\nROS: no headaches she'd call unusual, no chest pain, palpitations, dyspnea, leg swelling. Menses regular. Sleeping ok.\n\nIntake BP 166/97. I rechecked after she sat quietly for ~10 min, both arms — still well into the 160s/90s. She does not know of any prior readings.\n\nPMH: none\nPSH: none\nMeds: none\nAllergies: NKDA\nFH: mother has had high blood pressure since her mid-40s (dx at 45). A maternal aunt had an ischemic stroke at 52. Father — hyperlipidemia.\nSH: never smoker. Wine 1-2 glasses a month. No drug use. Teaches high school mathematics.\n\nExam: HR 77, T 36.2, SpO2 98%. Wt 70.3 kg, ht 165.7 cm, BMI 25.6.\nPleasant, in no distress. Thyroid not enlarged. Heart regular, no murmur or gallop. Chest clear. Abdomen soft, nontender. No peripheral edema. Radial and pedal pulses 2+.\n\nA/P\n1. Hypertension, new, stage 2 range on repeated office readings. Strong maternal history. She is young for essential HTN — if it proves hard to control, will look for a secondary cause. Start hydrochlorothiazide 25 mg every morning. Salt, activity reviewed; alcohol already minimal. BMP and lipids today. Nurse BP check with BMP in about 5 weeks. Buy a validated upper-arm cuff and bring it in so we can compare.\n2. Health maintenance: cervical screening due; she prefers to do it at a physical rather than today. Will check immunization history once old records arrive."
+      },
+      {
+       "type": "Administrative Note",
+       "title": "Records Request",
+       "author": "front desk",
+       "date": "2018-04-17T17:20",
+       "body": "Release signed by pt. Request for complete records faxed to prior primary care office. Will scan on receipt."
+      }
+     ]
+    },
+    {
+     "id": "2018-04-18a",
+     "kind": "portal_message",
+     "start": "2018-04-18T12:20",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2018-04-18T12:20",
+       "body": "Hi Kristen — your labs from yesterday are fine. Potassium 4.1, sodium 139, kidney function normal (creatinine 0.73). Cholesterol looks good: total 180, LDL 96, HDL 64, triglycerides 99.\nStart the hydrochlorothiazide tomorrow morning. You may urinate more for the first week or so. Nurse BP check in about 5 weeks — front desk will call to book."
+      }
+     ]
+    },
+    {
+     "id": "2018-05-09a",
+     "kind": "outside_records",
+     "start": "2018-05-09T10:05",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior Primary Care Records",
+       "author": "front desk",
+       "date": "2018-05-09T10:05",
+       "body": "Records received by fax from pt's previous primary care office, 14 pages: office notes and annual exams 2011-2014, immunization list (no Tdap date listed). No chronic diagnoses or medications on their list. Scanned to media tab and sent to PCP inbox.\nPCP review 5/10: nothing that changes current plan. No Tdap on file — offer at physical."
+      }
+     ]
+    },
+    {
+     "id": "2018-05-24a",
+     "kind": "nurse_visit",
+     "start": "2018-05-24T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure check on hydrochlorothiazide",
+     "state": {
+      "bp": [
+       146,
+       94
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-05-24T15:45",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2018-05-25T08:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2018-05-24T15:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - BP Check",
+       "author": "RN",
+       "date": "2018-05-24T15:55",
+       "body": "BP check, ~5 wks on HCTZ 25 mg daily. Takes it each morning before school, has not missed doses. Urinating more the first week, settled now. No dizziness, no cramps.\nBP 161/94 R arm seated after 5 min rest, HR 87. Pt's home cuff checked against ours on the L arm — within a few points of each other.\nBMP drawn. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2018-05-25a",
+     "kind": "portal_message",
+     "start": "2018-05-25T12:40",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2018-05-25T12:40",
+       "body": "Your bloodwork on the hydrochlorothiazide is fine — potassium 4.1, sodium 139, kidney function normal. The pressure at the nurse visit (161/94) is still higher than I'd like. Give it more time with the salt and activity changes, and send me a set of home readings in a few weeks. I'd like to see you in the fall once school is back in session."
+      }
+     ]
+    },
+    {
+     "id": "2018-07-30a",
+     "kind": "pharmacy",
+     "start": "2018-07-30T09:15",
+     "documents": [
+      {
+       "type": "Pharmacy Request",
+       "title": "Refill Request",
+       "author": "MA",
+       "date": "2018-07-30T09:15",
+       "body": "Pharmacy refill request: hydrochlorothiazide 25 mg tab, asking for 90-day supply. Last BP visit 5/24/18, labs 5/24 normal. Sent #90 with 1 refill per protocol. Pt reminded by phone to book fall BP follow-up."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-27a",
+     "kind": "office_visit",
+     "start": "2018-09-27T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-09-27T16:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2018-09-28T09:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2018-09-27T16:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2018-09-27T15:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-09-27T16:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Hypertension",
+       "author": "PCP",
+       "date": "2018-09-27T16:30",
+       "body": "S: BP follow-up. School started; busy but ok. Takes HCTZ 25 every morning. Home log (about a dozen readings in Sept) mostly mid-140s over ~90. Walking after school 3-4 days a week. No cramps, lightheadedness or headaches.\nO: BP 144/90, HR 84, wt 70.8 kg. CV: regular, no murmur. Lungs clear. Ankles without edema.\nA: HTN, better on thiazide but above goal (<130/80).\nP: Discussed adding a second agent vs. more time on lifestyle. She'd rather work on sodium first (takeout and school cafeteria lunches are her weak spots). Agreed — recheck in the spring, sooner if home numbers climb. BMP today. Flu vaccine today."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2018-09-28T11:05",
+       "body": "BMP normal on HCTZ: Na 139, K 3.9, Cr 0.70. No change in dose. Pt notified through portal."
+      }
+     ]
+    },
+    {
+     "id": "2018-12-03a",
+     "kind": "portal_message",
+     "start": "2018-12-03T20:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Home BP readings",
+       "author": "patient",
+       "date": "2018-12-03T20:15",
+       "body": "Hi, I've been checking at home a few times a week like you asked. Most are around 145-150 on top and low 90s on the bottom, a couple in the 140s. Is that okay or should I come in before spring?\nKristen"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Home BP readings",
+       "author": "RN",
+       "date": "2018-12-04T10:30",
+       "body": "Hi Kristen, thanks for sending these. The doctor reviewed them — no change for now, keep logging. Your spring BP visit is booked for Wed 3/20 at 3:30. Call sooner for headaches, chest pain or readings over 180/110."
+      }
+     ]
+    },
+    {
+     "id": "2019-03-20a",
+     "kind": "office_visit",
+     "start": "2019-03-20T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Administrative Note",
+       "title": "No-Show",
+       "author": "front desk",
+       "date": "2019-03-20T16:10",
+       "body": "Pt did not arrive for 3:30 BP follow-up. Called cell, left VM to reschedule.\n3/21: pt called back — mixed up the date. Rebooked Tue 4/16 10:20 (school vacation week)."
+      }
+     ]
+    },
+    {
+     "id": "2019-04-16a",
+     "kind": "office_visit",
+     "start": "2019-04-16T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up",
+     "state": {
+      "bp": [
+       152,
+       96
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-04-16T10:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2019-04-16T16:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-04-16T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Hypertension",
+       "author": "PCP",
+       "date": "2019-04-16T11:05",
+       "body": "BP f/u, rescheduled from March. Vacation week.\nOn HCTZ 25 daily, adherent. Home readings 140s-150s/90s. Admits the sodium changes didn't really stick over the winter. Denies headache, chest pain, SOB, visual change.\nBP 157/98, HR 81, wt 70.6 kg. Heart regular, no murmur. Chest clear. Legs without swelling.\n\nA/P: HTN not controlled on thiazide alone, a year in. I recommended adding a second agent today. She wants one more try first — a few colleagues are starting an after-school walking group — and would like to revisit at her physical in August. Accepted with a deadline: if still over 140/90 at the physical, we add a medication. BMP today."
+      }
+     ]
+    },
+    {
+     "id": "2019-04-17a",
+     "kind": "portal_message",
+     "start": "2019-04-17T07:55",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2019-04-17T07:55",
+       "body": "Labs from yesterday are normal — potassium 4.1, sodium 139, creatinine 0.80. See you in August for your physical."
+      }
+     ]
+    },
+    {
+     "id": "2019-08-21a",
+     "kind": "annual_physical",
+     "start": "2019-08-21T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg",
+      "temp_c",
+      "spo2"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-08-21T09:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2019-08-21T15:20"
+      },
+      {
+       "panel": null,
+       "collected": "2019-08-21T09:40",
+       "resulted": "2019-08-22T14:00",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2019-08-21T09:30",
+       "issued": "2019-08-26T13:00",
+       "text": "SPECIMEN: Cervix, liquid-based preparation.\nADEQUACY: Satisfactory for evaluation; endocervical/transformation zone component present.\nINTERPRETATION: Negative for intraepithelial lesion or malignancy.\nHIGH-RISK HPV (reflexed co-test): Not detected.",
+       "conclusion": "Negative for intraepithelial lesion or malignancy; high-risk HPV not detected."
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2019-08-21T09:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2019-08-21T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-08-21T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2019-08-21T10:15",
+       "body": "ANNUAL PHYSICAL\n35 y/o F, summer break, feels well. HTN on HCTZ 25 mg; home readings \"about the same,\" 140s-150s/90s. The walking group lasted about a month.\nROS: negative except as above. Menses regular, no gyn concerns.\nMeds: hydrochlorothiazide 25 mg daily. NKDA.\nFH/SH: unchanged from intake. Never smoker, rare wine.\n\nPrevention:\n- Cervical: last Pap ~2014 per old records. Co-test today.\n- HIV and hepatitis C one-time screening offered — accepts.\n- Tdap: none on record — given today.\n- PHQ-2: 0.\n\nExam: BP 157/94, HR 76, T 36.7, SpO2 98%, wt 70.7 kg, BMI 25.7.\nGeneral: well. HEENT: TMs and oropharynx normal. Neck: thyroid normal size, no nodes. CV: regular, no murmur. Lungs: clear. Breasts: symmetric, no masses or discharge. Abdomen: soft, no organomegaly. Pelvic: vulva and vagina unremarkable; cervix normal in appearance, cytology/HPV sample taken. Extremities: no edema. Skin: no concerning lesions.\n\nA/P\n1. Health maintenance as above. BMP today.\n2. HTN, still above goal. Per our April agreement I again recommended a second agent (ACE inhibitor or amlodipine). She is reluctant to add a daily pill and asked for one more stretch with home monitoring through the fall. I documented my recommendation; she will send readings in October and we will add then if not under 140/90."
+      }
+     ]
+    },
+    {
+     "id": "2019-08-27a",
+     "kind": "portal_message",
+     "start": "2019-08-27T13:15",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Results",
+       "author": "PCP",
+       "date": "2019-08-27T13:15",
+       "body": "Kristen — your Pap and HPV test are both normal, so the next co-test is due in 5 years. HIV and hepatitis C screens are negative. Kidney function and potassium normal. The Tdap you got is good for 10 years.\nDon't forget to send me home BP readings in October."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-04a",
+     "kind": "nurse_visit",
+     "start": "2019-10-04T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-04T15:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-04T15:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Influenza Vaccine",
+       "author": "RN",
+       "date": "2019-10-04T15:35",
+       "body": "Quadrivalent flu vaccine 0.5 mL IM, L deltoid. VIS reviewed; no prior reactions. Waited 15 min in lobby without problems.\nAsked about October BP readings — she has been checking but hasn't sent them; will send this weekend."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-10a",
+     "kind": "portal_message",
+     "start": "2019-12-10T21:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "BP question",
+       "author": "patient",
+       "date": "2019-12-10T21:40",
+       "body": "Hi — I know I was supposed to send numbers in October and I never did, school got away from me. They've been creeping up. Lots of 150s and some in the 160s over 100. I feel fine otherwise. Should I come in?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: BP question",
+       "author": "front desk",
+       "date": "2019-12-11T09:20",
+       "body": "Hi Kristen, the doctor would like to see you. First after-school opening after the break is Tue 1/21 at 3:30 — booked. Please bring your cuff and log.\nNote from Dr: keep taking the HCTZ. If you get readings over 180/110, a severe headache, chest pain or vision change before then, call us the same day."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

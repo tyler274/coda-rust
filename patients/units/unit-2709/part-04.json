@@ -1,0 +1,1258 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002709",
+   "events": [
+    {
+     "id": "2026-01-12a",
+     "kind": "hospital_admission",
+     "start": "2026-01-12T21:30",
+     "end": "2026-01-16T13:00",
+     "service": "Cardiology",
+     "reason": "Acute decompensated heart failure",
+     "state": {
+      "bp": [
+       146,
+       88
+      ],
+      "weight_kg": 76.2
+     },
+     "vitals": [
+      {
+       "time": "2026-01-12T21:40",
+       "bp": [
+        146,
+        88
+       ],
+       "hr": 94,
+       "rr": 22,
+       "spo2": 93,
+       "temp_c": 36.8
+      },
+      {
+       "time": "2026-01-15T08:00",
+       "bp": [
+        132,
+        80
+       ],
+       "hr": 78,
+       "rr": 16,
+       "spo2": 97,
+       "temp_c": 36.6
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Heart failure with reduced ejection fraction",
+       "action": "diagnosed",
+       "onset": "2026-01-01"
+      },
+      {
+       "label": "Acute systolic (congestive) heart failure",
+       "icd10": "I50.21",
+       "action": "diagnosed",
+       "onset": "2026-01-05"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "furosemide 40 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth once daily in the morning",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Heart failure with reduced ejection fraction"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-01-12T22:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-01-12T22:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-01-12T22:00",
+       "results": [
+        {
+         "test": "Troponin I, High Sensitivity",
+         "value": 9
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-01-16T06:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2026-01-12T22:15",
+       "text": "Portable AP view. Cardiac silhouette upper normal. Interstitial edema with small bilateral pleural effusions. Median sternotomy wires intact.",
+       "conclusion": "Pulmonary edema with small bilateral effusions."
+      },
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2026-01-13T10:00",
+       "text": "Left ventricle mildly dilated with global hypokinesis. LVEF 35% by biplane Simpson. No regional wall motion pattern. Left atrium without mass; septal patch intact. No significant valve disease. Estimated RV systolic function normal.",
+       "conclusion": "Reduced LV systolic function, LVEF 35%, global hypokinesis. No recurrent atrial mass."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Cardiology Discharge Summary",
+       "author": "cardiology",
+       "date": "2026-01-19T09:00",
+       "body": "DISCHARGE SUMMARY — Cardiology, regional hospital\nAdmitted 01/12/2026   Discharged 01/16/2026\n\nDiagnosis: acute decompensated heart failure; new heart failure with reduced ejection fraction (LVEF 35%).\n\nHistory: 55-year-old with prior left atrial myxoma excised 5/2025 (post-op LVEF 60%), aneurysmal SAH coiled 11/2025, PE 11/2024, hypertension, type 2 diabetes, ADPKD. About a week of increasing breathlessness, needing two pillows to sleep, and ankle swelling.\nCourse: chest film with interstitial edema and small effusions. TTE: LVEF 35% with global hypokinesis, no recurrent myxoma. Troponin flat. Coronary CT angiogram: no obstructive coronary artery disease; cardiomyopathy felt to be nonischemic. Diuresed with IV furosemide, then transitioned to oral. Breathing at baseline by day 3.\nDischarge creatinine 1.2 (her baseline).\n\nDischarge medications:\n- furosemide 40 mg by mouth once daily (NEW)\n- lisinopril 20 mg daily\n- hydrochlorothiazide 12.5 mg daily\n- metformin 1000 mg twice daily\n- omeprazole 20 mg daily\n- clobetasol ointment as needed\nAllergies: NKDA.\n\nInstructions: 2 g sodium diet, daily weights, call for gain of 3 lb in a day or 5 lb in a week.\nFollow-up: cardiology clinic in 2-3 weeks with labs; PCP within 1 week.\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2026-01-21a",
+     "kind": "office_visit",
+     "start": "2026-01-21T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up, heart failure",
+     "state": {
+      "weight_kg": 73.1,
+      "bp": [
+       142,
+       86
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-01-21T15:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-01-21T14:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-01-21T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Hospital Follow-up",
+       "author": "PCP",
+       "date": "2026-01-21T15:30",
+       "body": "Post-discharge, admitted 1/12-1/16 with acute decompensated HF. New EF 35%, global hypokinesis, coronary CTA without obstructive disease. Started furosemide 40 daily. Summary reviewed.\nHer son is staying with her this month; he came today and has taken over the pill box and the daily weights log. She is tired, short of breath on one flight of stairs, sleeping on one pillow again. Ankles better. Had gone back to half days at school the week before admission; out again now.\nMed rec with son: furosemide 40 mg daily (new), lisinopril 20, HCTZ 12.5, metformin 1000 BID, omeprazole 20, clobetasol prn. NKDA. The discharge paperwork lists furosemide twice in different places; went through it with them, it is 40 mg once each morning.\nExam: weight down from admission. BP a little above goal. JVP not elevated. Few crackles at the right base, otherwise clear. Heart regular. Trace ankle edema.\nA/P\n1. HFrEF, new, nonischemic — on furosemide. Daily weights, low-salt diet. Cardiology appt 2/2. BMP today.\n2. HTN — slightly high today, cardiology will review meds at their visit.\n3. T2DM, ADPKD — BMP.\nExtended FMLA paperwork done. RTC after cardiology."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-02a",
+     "kind": "specialist_visit",
+     "start": "2026-02-02T09:20",
+     "service": "Cardiology",
+     "reason": "Follow-up after heart failure admission",
+     "vitals": {
+      "bp": [
+       150,
+       90
+      ],
+      "hr": 88,
+      "rr": 22
+     },
+     "measure": [
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Creatinine": 1.8,
+       "Potassium": 3.2
+      }
+     },
+     "medications": [
+      {
+       "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Hypokalemia and creatinine rise on combined loop and thiazide diuretics"
+      },
+      {
+       "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily with food",
+       "dose": {
+        "value": 20,
+        "unit": "meq"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypokalemia on furosemide"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-02T09:00",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 138
+        },
+        {
+         "test": "Potassium",
+         "value": 3.2
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.8
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-02-02T09:00",
+       "results": [
+        {
+         "test": "B-type natriuretic peptide",
+         "loinc": "30934-4",
+         "unit": "pg/mL",
+         "value": 580
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-recheck",
+       "action": "placed",
+       "order": "Basic metabolic panel in one week",
+       "category": "lab",
+       "reason": "potassium and creatinine recheck"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up",
+       "author": "cardiology",
+       "date": "2026-02-04T11:00",
+       "body": "CARDIOLOGY CLINIC — post-hospital follow-up\nDate: 02/02/2026\nPatient: Valerie Slattery, 55\n\nSeen after discharge 1/16 for acute decompensated heart failure; LVEF 35%, nonischemic by coronary CTA, prior left atrial myxoma excised 5/2025. Since discharge she has felt more tired than she expected. Her son brought the medication list; the furosemide dose is written differently in two places and it is not clear she has been taking it as prescribed.\n\nMedications as brought: furosemide, lisinopril 20 mg daily, hydrochlorothiazide 12.5 mg daily, metformin 1000 mg twice daily, omeprazole 20 mg daily, clobetasol ointment.\nAllergies: NKDA.\n\nVitals: BP 150/90, HR 88, RR 22.\nExam: slightly dyspneic in conversation. Neck veins not distended. Lungs clear. Regular rhythm, no murmur. No significant edema.\n\nLabs today: sodium 138, potassium 3.2, creatinine 1.8 (baseline 1.2), BNP 580.\n\nAssessment: HFrEF, euvolemic to slightly dry on exam, with hypokalemia and a creatinine rise on two diuretics.\nPlan:\n1. Stop hydrochlorothiazide.\n2. Furosemide 40 mg once every morning only — written schedule given to her son.\n3. Potassium chloride 20 mEq daily.\n4. Repeat BMP in one week at her PCP's office.\n5. Daily weights, sodium restriction. Return in 6-8 weeks.\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2026-02-10a",
+     "kind": "lab_only",
+     "start": "2026-02-10T08:10",
+     "state": {
+      "labs": {
+       "Creatinine": 1.3,
+       "Potassium": 4.1
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-10T08:10",
+       "results": [
+        {
+         "test": "Potassium",
+         "value": 4.1
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.3
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-recheck",
+       "action": "done",
+       "date": "2026-02-10T08:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-02-10T08:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "BMP after diuretic change",
+       "author": "PCP",
+       "date": "2026-02-10T16:40",
+       "body": "Potassium back to normal on KCl, creatinine down to 1.3 a week after stopping HCTZ. Copied to cardiology. Portal message sent: keep the current plan, recheck at her visit later this month."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-24a",
+     "kind": "office_visit",
+     "start": "2026-02-24T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Heart failure, diabetes and hypertension follow-up",
+     "state": {
+      "bp": [
+       130,
+       80
+      ],
+      "labs": {
+       "Creatinine": 1.2,
+       "Potassium": 4.3,
+       "Hemoglobin A1c": 6.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Acute systolic (congestive) heart failure",
+       "icd10": "I50.21",
+       "action": "resolved"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-24T16:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-02-24T16:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-02-24T15:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-02-24T16:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-02-24T16:45",
+       "body": "F/u HF, DM, HTN.\nCardiology 2/2 stopped HCTZ, added KCl, clarified furosemide 40 once daily. K and creatinine improved on 2/10.\nFeels better than a month ago, less tired. One flight of stairs fine. Weights steady on her log. Son went home last week; she fills the pill box on Sundays and he checks in by video. Back to school full time this week.\nMeds: furosemide 40 qAM, KCl 20 mEq daily, lisinopril 20, metformin 1000 BID, omeprazole 20, clobetasol prn. NKDA.\nExam: BP better than January. No JVD. Lungs clear. Heart regular. No edema.\nA/P\n1. HFrEF — compensated, decompensation resolved. Continue furosemide and lisinopril per cardiology. BMP today.\n2. T2DM — A1c today.\n3. HTN — better today with volume controlled; continue lisinopril.\n4. Health maintenance — screening mammogram due, ordered for March.\nRTC 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-02a",
+     "kind": "pharmacy",
+     "start": "2026-03-02T09:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2026-03-02T09:40",
+       "body": "Pharmacy request: 90-day supplies of furosemide 40 mg daily and potassium chloride 20 mEq daily (cardiology wrote 30 days). Recent BMP 2/24 reviewed. Sent per protocol. Pharmacy also asked to inactivate the old hydrochlorothiazide prescription; done."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-10a",
+     "kind": "imaging",
+     "start": "2026-03-10T07:40",
+     "orders": [
+      {
+       "id": "dx-breast-imaging",
+       "action": "placed",
+       "order": "Diagnostic mammogram and left breast ultrasound",
+       "category": "imaging",
+       "reason": "BI-RADS 0 screening mammogram"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2026-03-10T07:40",
+       "text": "Bilateral CC and MLO views with tomosynthesis, compared with 2023-2025. Scattered fibroglandular density. New irregular mass in the left breast, upper outer quadrant, middle depth, not present in 2025. Right breast negative.",
+       "conclusion": "BI-RADS 0: Incomplete. New left breast mass; recall for diagnostic mammogram and ultrasound."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Mammogram recall",
+       "author": "PCP",
+       "date": "2026-03-11T12:10",
+       "body": "Called Valerie about the screening mammogram: a new area in the left breast needs a closer look. Diagnostic mammogram and ultrasound ordered; imaging center has her on 3/17. Mother's history noted. She was calm and asked good questions; will call me after."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-17a",
+     "kind": "imaging",
+     "start": "2026-03-17T09:00",
+     "orders": [
+      {
+       "id": "dx-breast-imaging",
+       "action": "done",
+       "date": "2026-03-17T09:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Diagnostic mammogram",
+       "performed": "2026-03-17T09:00",
+       "text": "Left diagnostic mammogram with spot compression views. The irregular mass at 2 o'clock persists with spiculated margins on spot views. No associated calcifications. No other findings.",
+       "conclusion": "Persistent irregular spiculated left breast mass at 2 o'clock, highly suggestive of malignancy. BI-RADS 5."
+      },
+      {
+       "study": "Breast ultrasound",
+       "performed": "2026-03-17T09:40",
+       "text": "Targeted left breast ultrasound. At 2 o'clock, 6 cm from the nipple: irregular hypoechoic mass with angular margins, 2.3 cm in greatest dimension, corresponding to the mammographic finding. Left axilla: normal lymph nodes with fatty hila.",
+       "conclusion": "2.3 cm irregular left breast mass at 2 o'clock, BI-RADS 5. Normal left axilla. Ultrasound-guided core biopsy recommended."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-20a",
+     "kind": "procedure_visit",
+     "start": "2026-03-20T10:30",
+     "service": "Breast Imaging",
+     "reason": "Ultrasound-guided core biopsy, left breast",
+     "conditions": [
+      {
+       "label": "Malignant neoplasm of breast",
+       "action": "diagnosed",
+       "onset": "2026-03-10",
+       "note": "left breast, invasive ductal carcinoma, ER+/PR+/HER2-"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2026-03-20T10:45",
+       "issued": "2026-03-23T11:00",
+       "text": "Specimen: left breast, 2 o'clock, ultrasound-guided 14-gauge core biopsy x4. Invasive ductal carcinoma, Nottingham grade 2. Estrogen receptor positive (95%, strong). Progesterone receptor positive (70%, moderate). HER2 IHC 1+ (negative). Clip placed; post-procedure mammogram confirms clip at the biopsy site.",
+       "conclusion": "Left breast invasive ductal carcinoma, grade 2, ER positive, PR positive, HER2 negative (IHC 1+)."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Ultrasound-guided Breast Biopsy",
+       "author": "breast imaging",
+       "date": "2026-03-20T13:00",
+       "body": "BREAST IMAGING PROCEDURE NOTE\nDate: 03/20/2026\nProcedure: ultrasound-guided core needle biopsy, left breast mass at 2 o'clock, with clip placement.\nConsent obtained. Allergies: NKDA. Not on anticoagulants.\nLocal lidocaine. Four 14-gauge cores obtained. Clip deployed; post-biopsy mammogram shows the clip in good position. Hemostasis with manual pressure. No complications.\nPathology to the ordering physician; patient will be called by the breast nurse navigator.\nBreast Imaging"
+      }
+     ]
+    },
+    {
+     "id": "2026-03-23a",
+     "kind": "telephone",
+     "start": "2026-03-23T17:10",
+     "orders": [
+      {
+       "id": "breast-surgery-referral",
+       "action": "placed",
+       "order": "Breast surgery referral",
+       "category": "referral",
+       "to": "Breast Surgery",
+       "reason": "left breast invasive ductal carcinoma"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Breast biopsy result",
+       "author": "PCP",
+       "date": "2026-03-23T17:10",
+       "body": "Called her with the biopsy: invasive ductal carcinoma of the left breast, grade 2, ER and PR positive, HER2 negative. The breast nurse navigator had already reached her this morning. Referral to breast surgery placed; appointment 3/31. Her partner is with her this evening and her son is coming for the surgery consult.\nReviewed that cardiology needs to be part of planning given her EF. Will send records to the breast team. She asked about her mother's cancer and what it means for her; told her the surgeon will discuss."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-31a",
+     "kind": "specialist_visit",
+     "start": "2026-03-31T13:00",
+     "service": "Breast Surgery",
+     "reason": "Left breast cancer",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "breast-surgery-referral",
+       "action": "done",
+       "date": "2026-03-31T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Breast Surgery Consultation",
+       "author": "breast surgery",
+       "date": "2026-04-03T10:00",
+       "body": "BREAST SURGERY CONSULTATION\nDate: 03/31/2026\n56-year-old woman with a 2.3 cm left breast mass at 2 o'clock on ultrasound found on screening; core biopsy shows invasive ductal carcinoma, grade 2, ER+/PR+/HER2-negative. Axilla normal on ultrasound.\nHistory: HFrEF (LVEF 35%, 1/2026), left atrial myxoma excised 5/2025, ruptured right MCA aneurysm coiled 11/2025, PE 11/2024, right frontal meningioma resected 5/2024, stage IA vulvar SCC excised 12/2023, hypertension, type 2 diabetes, ADPKD. Mother had breast cancer at 62.\nMedications: furosemide 40 mg daily, potassium chloride 20 mEq daily, lisinopril 20 mg daily, metformin 1000 mg BID, omeprazole 20 mg daily, clobetasol ointment. Allergies: NKDA.\nExam: palpable firm mass in the left upper outer quadrant, mobile, with a small biopsy bruise. No skin changes. No axillary or supraclavicular nodes. Right breast normal.\nAssessment: clinical T2 N0 left breast IDC, hormone receptor positive, HER2 negative.\nPlan: left lumpectomy with sentinel lymph node biopsy. Cardiology and anesthesia input before surgery given her EF. Afterward, medical oncology and radiation oncology referrals; whole-breast radiation will follow lumpectomy. Surgery planned for 4/16.\nBreast Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2026-04-07a",
+     "kind": "telehealth_visit",
+     "start": "2026-04-07T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Pre-operative evaluation",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2026-04-07T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth Visit — Pre-operative",
+       "author": "PCP",
+       "date": "2026-04-07T16:40",
+       "body": "Video visit, she is at home after school, identity checked with DOB.\nPre-op for left lumpectomy + SLNB on 4/16 (general anesthesia, outpatient).\nSince Feb: no HF symptoms beyond mild fatigue, sleeps flat, weights steady per log. No chest pain, syncope or palpitations. Can climb a flight of stairs carrying groceries.\nCardiology reviewed by phone last week and is comfortable with outpatient surgery; echo from January (EF 35%) is current.\nMeds: furosemide 40 qAM, KCl 20, lisinopril 20, metformin 1000 BID, omeprazole 20, clobetasol prn. NKDA. Not on anticoagulants.\nLabs: BMP from 2/24 acceptable; pre-op labs per anesthesia.\nA/P\nLow-risk breast surgery in a patient with compensated HFrEF and good functional capacity — acceptable risk, proceed. Hold metformin the morning of surgery and furosemide the morning of surgery, resume when eating. Take lisinopril as usual unless anesthesia says otherwise. Letter sent to the surgeon."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-16a",
+     "kind": "procedure_visit",
+     "start": "2026-04-16T07:00",
+     "end": "2026-04-16T15:00",
+     "service": "Breast Surgery",
+     "reason": "Left lumpectomy with sentinel lymph node biopsy",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2026-04-16T09:30",
+       "issued": "2026-04-21T14:00",
+       "text": "A. Left breast, lumpectomy (oriented, clip present): invasive ductal carcinoma, Nottingham grade 2, 2.4 cm. No lymphovascular invasion. Margins negative for invasive carcinoma and DCIS; closest margin 4 mm (superior). B. Left axillary sentinel lymph nodes: two lymph nodes negative for metastatic carcinoma (0/2). Biomarkers per core biopsy: ER positive, PR positive, HER2 negative.",
+       "conclusion": "Left breast invasive ductal carcinoma, grade 2, 2.4 cm, margins negative; 0/2 sentinel nodes. pT2 N0 (sn), stage IIA."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Left lumpectomy and sentinel node biopsy",
+       "author": "breast surgery",
+       "date": "2026-04-22T10:00",
+       "body": "OPERATIVE SUMMARY — outside breast surgery\nDate: 04/16/2026\nProcedure: left breast lumpectomy (ultrasound-localized to clip) with sentinel lymph node biopsy using radiotracer and blue dye.\nAnesthesia: general, uneventful. Allergies: NKDA. Discharged home the same day.\nFinal pathology 4/21: IDC grade 2, 2.4 cm, margins negative, 0/2 sentinel nodes. pT2 N0, stage IIA. ER+/PR+/HER2-.\nTumor sent for 21-gene recurrence score.\nPlan: post-op visit in 2 weeks. Medical oncology consult and port placement are being arranged in case chemotherapy is recommended. Radiation oncology after systemic therapy.\nBreast Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2026-04-28a",
+     "kind": "outside_records",
+     "start": "2026-04-28T10:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Recurrence score result",
+       "author": "medical oncology",
+       "date": "2026-04-28T15:30",
+       "body": "MEDICAL ONCOLOGY — note to referring physicians\nThe 21-gene assay on Ms. Slattery's left breast IDC (pT2 N0, ER+/PR+/HER2-) returned a recurrence score of 31. In a postmenopausal woman with node-negative disease this score supports adjuvant chemotherapy followed by endocrine therapy. I met with her and her son on 4/24 to review; she wishes to proceed. Because of her LVEF of 35% we will avoid anthracyclines and plan docetaxel/cyclophosphamide for 4 cycles. Port placement 4/30, cycle 1 on 5/7.\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2026-04-30a",
+     "kind": "procedure_visit",
+     "start": "2026-04-30T08:00",
+     "end": "2026-04-30T11:00",
+     "service": "Interventional Radiology",
+     "reason": "Port placement",
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Port Placement",
+       "author": "interventional radiology",
+       "date": "2026-04-30T12:00",
+       "body": "INTERVENTIONAL RADIOLOGY PROCEDURE NOTE\nDate: 04/30/2026\nProcedure: placement of right internal jugular single-lumen chest port under ultrasound and fluoroscopic guidance.\nIndication: adjuvant chemotherapy for breast cancer.\nModerate sedation. Allergies: NKDA.\nRight IJ accessed with ultrasound. Catheter tip at the cavoatrial junction. Port pocket in the right upper chest. Flushes and aspirates well. Incisions closed with absorbable suture and skin glue. No complications.\nPort may be accessed immediately.\nInterventional Radiology"
+      }
+     ]
+    },
+    {
+     "id": "2026-05-07a",
+     "kind": "specialist_visit",
+     "start": "2026-05-07T08:30",
+     "end": "2026-05-07T13:30",
+     "service": "Hematology & Oncology",
+     "reason": "Adjuvant chemotherapy, cycle 1",
+     "measure": [
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-05-07T08:15",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 7.8
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-05-07T08:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 20
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 22
+        },
+        {
+         "test": "Bilirubin, Total",
+         "value": 0.8
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Medical Oncology — Cycle 1",
+       "author": "medical oncology",
+       "date": "2026-05-07T17:00",
+       "body": "MEDICAL ONCOLOGY — treatment visit, cycle 1 day 1\nDate: 05/07/2026\nPatient: Valerie Slattery, 56\n\nHere to begin adjuvant chemotherapy for recently diagnosed left breast IDC, pT2 N0, stage IIA, grade 2, ER+/PR+/HER2-, recurrence score 31. Lumpectomy with SLNB 4/16 (3 weeks ago); right chest port placed 4/30 (1 week ago).\nOther history: HFrEF (LVEF 35%, nonischemic), left atrial myxoma excised 5/2025, ruptured right MCA aneurysm coiled 11/2025, PE 11/2024 (completed anticoagulation), DVT 2021, right frontal meningioma resected 5/2024, stage IA vulvar SCC 12/2023, hypertension, type 2 diabetes, ADPKD, GERD.\nMedications: furosemide 40 mg daily, potassium chloride 20 mEq daily, lisinopril 20 mg daily, metformin 1000 mg BID, omeprazole 20 mg daily, clobetasol ointment as needed.\nAllergies: NKDA.\n\nVitals within normal limits. Exam unremarkable apart from healing lumpectomy, axillary and port incisions without erythema.\nLabs: hemoglobin 13.2, WBC 7.8, platelets 250, AST/ALT 20/22, bilirubin 0.8; renal function at her baseline.\n\nPlan:\n- Docetaxel 75 mg/m2 and cyclophosphamide 600 mg/m2 IV every 21 days x 4 cycles, given today. No anthracycline because of her ejection fraction.\n- Pegfilgrastim on-body injector applied today.\n- Dexamethasone 8 mg twice daily for 3 days starting the day before each docetaxel dose (taken yesterday), for fluid retention and reactions. Expect higher sugars on those days.\n- Ondansetron 8 mg every 8 hours as needed for nausea.\n- Next cycle 5/28. Radiation oncology after chemotherapy, then endocrine therapy.\nMedical Oncology"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       124,
+       76
+      ],
+      "hr": 72
+     },
+     "medications": [
+      {
+       "drug_text": "dexamethasone 4 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets (8 mg) by mouth twice daily for 3 days, starting the day before each docetaxel treatment",
+       "dose": {
+        "value": 8,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Docetaxel premedication"
+      },
+      {
+       "drug_text": "ondansetron 8 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every 8 hours as needed for nausea",
+       "dose": {
+        "value": 8,
+        "unit": "mg"
+       },
+       "frequency": "Q8H PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Chemotherapy-related nausea"
+      }
+     ]
+    },
+    {
+     "id": "2026-05-11a",
+     "kind": "telephone",
+     "start": "2026-05-11T09:20",
+     "conditions": [
+      {
+       "label": "Nausea with vomiting, unspecified",
+       "icd10": "R11.2",
+       "action": "diagnosed",
+       "onset": "2026-05-08",
+       "note": "chemotherapy-induced nausea and vomiting"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "olanzapine 5 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth at bedtime on days 1-4 of each chemotherapy cycle, starting with cycle 2",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "QHS",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Chemotherapy-induced nausea and vomiting"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Nausea and vomiting after cycle 1",
+       "author": "oncology RN",
+       "date": "2026-05-11T10:30",
+       "body": "ONCOLOGY NURSE TELEPHONE NOTE (copy to PCP)\nMs. Slattery called this morning. Nausea started the day after cycle 1 and she vomited several times on days 2 through 4, worst on Saturday. Ondansetron helped for a few hours at a time. Now keeping down fluids and toast, urinating normally, no fever, no diarrhea. Weight per her log down a little, not dizzy on standing.\nReviewed with the oncologist: chemotherapy-induced nausea and vomiting after cycle 1. Plan olanzapine 5 mg at bedtime on days 1-4 starting with cycle 2, plus ondansetron as needed. Okay to skip furosemide on a day she cannot keep fluids down; call cardiology if weight rises. Call back if vomiting returns, unable to drink, or fever 100.4 or higher.\nOncology Nursing"
+      }
+     ]
+    },
+    {
+     "id": "2026-05-28a",
+     "kind": "specialist_visit",
+     "start": "2026-05-28T08:30",
+     "end": "2026-05-28T13:30",
+     "service": "Hematology & Oncology",
+     "reason": "Adjuvant chemotherapy, cycle 2",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-05-28T08:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-05-28T08:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Medical Oncology — Cycle 2",
+       "author": "medical oncology",
+       "date": "2026-05-28T17:00",
+       "body": "MEDICAL ONCOLOGY — cycle 2 day 1\nDate: 05/28/2026\nCycle 1 complicated by nausea and vomiting on days 2-4; olanzapine added for this cycle. Fatigue days 3-6, then recovered. No fever. Weight steady, no edema, breathing at her usual.\nMedications: furosemide 40 mg daily, potassium chloride 20 mEq daily, lisinopril 20 mg daily, metformin 1000 mg BID, omeprazole 20 mg daily, dexamethasone premedication, ondansetron as needed, olanzapine 5 mg nights 1-4, clobetasol ointment.\nAllergies: NKDA.\nExam: port site clean. Lungs clear. No edema. No mucositis.\nLabs acceptable for treatment.\nPlan: cycle 2 TC with pegfilgrastim. Olanzapine nights 1-4. Next cycle 6/18.\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2026-05-29a",
+     "kind": "portal_message",
+     "start": "2026-05-29T19:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Steroids and my sugar",
+       "author": "patient",
+       "date": "2026-05-29T19:40",
+       "body": "Quick question. The oncology nurse said my sugar was up on yesterday's labs and that it's from the dexamethasone. Should I be doing anything different with the metformin on those days? I feel fine and the nausea is much better this time."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Steroids and my sugar",
+       "author": "PCP",
+       "date": "2026-05-30T08:50",
+       "body": "Glad this cycle is going better. Dexamethasone does raise blood sugar for a day or two around each treatment, and it settles once the doses are done. With only four cycles, no change to your metformin is needed. Drink plenty of water those days. We'll check your A1c at your June visit."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-11a",
+     "kind": "imaging",
+     "start": "2026-06-11T17:30",
+     "reports": [
+      {
+       "study": "MRI brain with and without contrast",
+       "loinc": "24590-2",
+       "performed": "2026-06-11T17:30",
+       "text": "MRI brain with and without contrast and time-of-flight MR angiography of the circle of Willis. Coil mass at the right MCA bifurcation with expected susceptibility artifact; no flow within the aneurysm sac and no neck remnant. Parent and branch vessels patent. Stable postoperative changes of right frontotemporal craniotomy with no nodular enhancement. No new parenchymal abnormality.",
+       "conclusion": "Stable, completely occluded coiled right MCA aneurysm without recanalization. No recurrent meningioma."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "office_visit",
+     "start": "2026-06-16T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up during chemotherapy",
+     "state": {
+      "weight_kg": 72.0,
+      "labs": {
+       "Hemoglobin A1c": 7.8
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-06-16T16:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-06-16T15:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-06-16T16:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-06-16T16:55",
+       "body": "Check-in between cycles 2 and 3 of TC. Nausea controlled on olanzapine + ondansetron with cycle 2. Tired the first week after each cycle, then okay. Finished the school year on a reduced schedule.\nMRI/MRA 6/11: coiled aneurysm stable, no recurrence of the meningioma.\nHF: weights steady, no orthopnea, no edema. BMP with oncology labs each cycle.\nMeds: furosemide 40 qAM, KCl 20, lisinopril 20, metformin 1000 BID, omeprazole 20, dexamethasone premed, ondansetron prn, olanzapine nights 1-4, clobetasol prn. NKDA.\nExam: weight down slightly. BP at goal. Port site clean. Lungs clear. Heart regular. No edema.\nA/P\n1. Breast cancer, stage IIA — on adjuvant TC, cycle 3 on 6/18. Radiation to follow.\n2. CINV — controlled with the added olanzapine.\n3. T2DM — A1c running higher this year than in 2024-25, partly the steroid days; no change during chemo.\n4. HFrEF — stable on furosemide/lisinopril. Renal function per oncology labs at baseline.\n5. Hx SAH, meningioma — imaging reassuring.\nRTC late August."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-18a",
+     "kind": "specialist_visit",
+     "start": "2026-06-18T08:30",
+     "end": "2026-06-18T13:30",
+     "service": "Hematology & Oncology",
+     "reason": "Adjuvant chemotherapy, cycle 3",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-06-18T08:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-06-18T08:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Medical Oncology — Cycle 3",
+       "author": "medical oncology",
+       "date": "2026-06-18T17:00",
+       "body": "MEDICAL ONCOLOGY — cycle 3 day 1\nDate: 06/18/2026\nTolerated cycle 2 much better: mild nausea only on day 2, no vomiting with olanzapine. Fatigue for about 5 days. No fevers or infections. No neuropathy. Weight stable, no new swelling.\nMedications unchanged. Allergies: NKDA.\nExam: alopecia. Port clean. Lungs clear. No edema.\nLabs acceptable.\nPlan: cycle 3 TC with pegfilgrastim. Next and final cycle 7/9. Radiation oncology referral placed for late July.\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2026-07-09a",
+     "kind": "specialist_visit",
+     "start": "2026-07-09T08:30",
+     "end": "2026-07-09T13:30",
+     "service": "Hematology & Oncology",
+     "reason": "Adjuvant chemotherapy, cycle 4",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-07-09T08:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-07-09T08:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Medical Oncology — Cycle 4",
+       "author": "medical oncology",
+       "date": "2026-07-09T17:00",
+       "body": "MEDICAL ONCOLOGY — cycle 4 day 1 (final)\nDate: 07/09/2026\nCycle 3 went smoothly; nausea controlled. Energy returns by the second week. No fever. No edema; weights stable per her log.\nMedications unchanged. Allergies: NKDA.\nExam: port clean. Lungs clear. No edema.\nLabs acceptable.\nPlan: fourth and final cycle of TC today with pegfilgrastim. After this cycle's doses she can stop dexamethasone, olanzapine and ondansetron. Radiation oncology consult 7/23. Letrozole 2.5 mg daily to start after radiation is complete; we will see her then. Port can be removed after radiation.\nMedical Oncology"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "dexamethasone 4 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Chemotherapy complete after cycle 4"
+      },
+      {
+       "drug_text": "olanzapine 5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Chemotherapy complete after cycle 4"
+      },
+      {
+       "drug_text": "ondansetron 8 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Chemotherapy complete after cycle 4"
+      }
+     ]
+    },
+    {
+     "id": "2026-07-14a",
+     "kind": "pharmacy",
+     "start": "2026-07-14T10:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2026-07-14T10:30",
+       "body": "Refill request from pharmacy for metformin 1000 mg BID, lisinopril 20 mg and omeprazole 20 mg, 90 days each. A1c 6/16 reviewed with PCP, okay to refill unchanged. Sent."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-23a",
+     "kind": "specialist_visit",
+     "start": "2026-07-23T13:00",
+     "service": "Radiation Oncology",
+     "reason": "Radiation planning after lumpectomy",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Nausea with vomiting, unspecified",
+       "icd10": "R11.2",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Radiation Oncology Consultation",
+       "author": "radiation oncology",
+       "date": "2026-07-27T09:30",
+       "body": "RADIATION ONCOLOGY CONSULTATION\nDate: 07/23/2026\n56-year-old with left breast IDC, pT2 N0, stage IIA, ER+/PR+/HER2-, after lumpectomy with negative margins and negative sentinel nodes (4/2026), and four cycles of docetaxel/cyclophosphamide completed 7/9. Nausea resolved since the last cycle.\nRelevant history: HFrEF with LVEF 35%, left atrial myxoma excised 2025, coiled cerebral aneurysm 2025.\nMedications: furosemide, potassium chloride, lisinopril, metformin, omeprazole, clobetasol. Allergies: NKDA.\nExam: healed lumpectomy and axillary incisions, no seroma, full arm range of motion.\nRecommendation: whole-breast radiation to the left breast, 40 Gy in 15 daily fractions. Deep-inspiration breath hold to keep the heart out of the field given her cardiac history. CT simulation next week; treatment to start 8/10. Endocrine therapy with letrozole after radiation per medical oncology.\nRadiation Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2026-08-10a",
+     "kind": "specialist_visit",
+     "start": "2026-08-10T08:00",
+     "service": "Radiation Oncology",
+     "reason": "Start of whole-breast radiation",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Radiation Oncology — Start of Treatment",
+       "author": "radiation oncology",
+       "date": "2026-08-12T10:00",
+       "body": "RADIATION ONCOLOGY — on-treatment note\nDate: 08/10/2026\nFraction 1 of 15, left whole breast, 40 Gy total, with deep-inspiration breath hold. Setup verified with imaging. Tolerated well.\nSkin care reviewed: fragrance-free moisturizer twice daily, loose cotton clothing.\nWeekly on-treatment visits. Expected completion 8/28. Medical oncology to start letrozole afterward.\nRadiation Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2026-08-25a",
+     "kind": "lab_only",
+     "start": "2026-08-25T07:50",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-08-25T07:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "pending": true
+      },
+      {
+       "panel": null,
+       "collected": "2026-08-25T07:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "pending": true
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-08-25T07:50"
+      }
+     ]
+    },
+    {
+     "id": "2026-09-15a",
+     "kind": "office_visit",
+     "start": "2026-09-15T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up: diabetes, heart failure, after radiation",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

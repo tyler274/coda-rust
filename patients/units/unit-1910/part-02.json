@@ -1,0 +1,258 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001910",
+      "events": [
+        {
+          "id": "2025-06-05a",
+          "kind": "office_visit",
+          "start": "2025-06-05T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right foot pain",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-06-05T10:40"}],
+          "orders": [
+            {"id": "sportsmed-foot", "action": "placed", "order": "Sports medicine referral", "category": "referral", "to": "Orthopedics & Sports Medicine", "reason": "right foot pain in a runner, possible stress injury"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit — Right Foot Pain", "author": "PCP", "date": "2025-06-05T11:10", "body": "S: Texted yesterday about her right foot, seen today. About a week of pain on top of the right forefoot/midfoot. Started a more intense training block a couple of weeks ago, running several miles every day. No fall, no twist, nothing she can point to. Hurts more the longer she runs and on stairs, better when she rests it. Has been taking OTC ibuprofen, says it barely touches it.\n\nNo meds otherwise. NKDA.\n\nO: Vitals as charted. Walks without a limp. R foot: no swelling, no bruising, skin normal. Tender over the shaft of the 2nd metatarsal, the rest of the forefoot and the ankle nontender. Full ankle and toe ROM. Pulses normal, sensation intact.\n\nA/P: R foot pain in a runner after a jump in volume, focal 2nd metatarsal tenderness. Worried about a stress injury.\n- Referral to sports medicine, they have a slot next week and can image there.\n- No running until she's seen. Bike or pool is fine if it doesn't hurt.\n- Supportive shoes, no barefoot walking."}
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "specialist_visit",
+          "start": "2025-06-11T13:20",
+          "service": "Orthopedics & Sports Medicine",
+          "reason": "Right foot pain",
+          "conditions": [
+            {"label": "Stress fracture of right second metatarsal", "icd10": "M84.374A", "action": "diagnosed", "onset": "2025-05-28"}
+          ],
+          "reports": [
+            {"study": "Foot X-ray", "performed": "2025-06-11T13:35", "text": "RIGHT FOOT, 3 VIEWS. Indication: right forefoot pain in a runner. Findings: No fracture line, periosteal reaction or cortical irregularity. Metatarsals and phalanges intact. Joint spaces preserved and alignment normal. Soft tissues unremarkable.", "conclusion": "Normal right foot radiographs."}
+          ],
+          "orders": [
+            {"id": "sportsmed-foot", "action": "done", "date": "2025-06-13T09:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Sports Medicine Consultation", "author": "sports medicine", "date": "2025-06-13T09:00", "body": "Outside Orthopedics & Sports Medicine\nDate of service: 06/11/2025\nRe: Megan Foster, DOB 05/13/2001\n\nThank you for referring Ms. Foster, a 24-year-old graduate student and distance runner, for evaluation of right foot pain.\n\nHistory: Two weeks of worsening right foot pain. It came on soon after she began a demanding training plan that has her running multiple miles every day. She recalls no injury. Activity brings it on and rest eases it. Over-the-counter ibuprofen has helped very little. Otherwise healthy, takes no other medications. No known drug allergies. No significant family history. Never smoker, does not drink.\n\nExamination: The midfoot is tender to palpation, maximal over the second metatarsal. No swelling, redness or warmth. Neurovascularly intact.\n\nImaging: Three views of the right foot obtained in clinic, read as normal.\n\nAssessment: Right second metatarsal stress fracture, diagnosed clinically. Plain films are frequently negative this early, and her point tenderness and history are typical.\n\nPlan:\n1. No running for about 6 weeks. Non-impact cross-training (cycling, pool running) as tolerated without pain.\n2. Stiff-soled shoe for daily walking; walking boot provided for use as needed if walking is painful.\n3. Acetaminophen for pain as needed; we suggested she avoid ibuprofen while this heals.\n4. Follow up here in about 5 weeks to assess return to running.\n\nAllergies: NKDA.\n\nPlease call with any questions.\nOrthopedics & Sports Medicine"}
+          ]
+        },
+        {
+          "id": "2025-06-16a",
+          "kind": "portal_message",
+          "start": "2025-06-16T07:52",
+          "documents": [
+            {"type": "Patient message", "title": "Boot Question", "author": "patient", "date": "2025-06-16T07:52", "body": "Hi, sports med said it's a stress fracture in my foot. Do I really need the boot to walk to campus? The stiff shoes seem ok. And is tylenol fine to take with nothing else?"},
+            {"type": "Patient message", "title": "RE: Boot Question", "author": "PCP", "date": "2025-06-16T12:30", "body": "I got their letter. Their plan was the boot only if walking hurts, so if you're comfortable in the stiff shoes that's fine. Acetaminophen is fine, up to 1000 mg at a time and no more than 3000 mg a day. Hang in there with the no-running part, it matters most."}
+          ]
+        },
+        {
+          "id": "2025-07-16a",
+          "kind": "specialist_visit",
+          "start": "2025-07-16T10:00",
+          "service": "Orthopedics & Sports Medicine",
+          "reason": "Follow-up right second metatarsal stress fracture",
+          "conditions": [
+            {"label": "Stress fracture of right second metatarsal", "icd10": "M84.374A", "action": "resolved", "onset": "2025-05-28"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Sports Medicine Follow-up", "author": "sports medicine", "date": "2025-07-18T08:45", "body": "Outside Orthopedics & Sports Medicine\nDate of service: 07/16/2025\nRe: Megan Foster, DOB 05/13/2001\n\nFollow-up of right second metatarsal stress fracture, five weeks out. She held off running and has been cycling. Walking without pain for the past two weeks; stopped the boot early. No medications. NKDA.\n\nExam: No tenderness along the second metatarsal or elsewhere in the forefoot. No swelling. Pain-free single-leg hop on the right.\n\nAssessment: Healed clinically.\n\nPlan: Gradual return to running, starting with walk-run intervals every other day and building mileage slowly over 4 to 6 weeks. Back off if pain returns. Follow up as needed.\n\nOrthopedics & Sports Medicine"}
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "annual_physical",
+          "start": "2025-09-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-17T09:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-17T09:30", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": null, "collected": "2025-09-17T09:30", "results": [{"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}]},
+            {"panel": null, "collected": "2025-09-17T09:30", "results": [{"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-17T09:35"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-17T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-09-17T09:30"},
+            {"procedure": "Immunization administration", "performed": "2025-09-17T09:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-09-17T09:40", "body": "Annual exam, 24 yo.\n\nInterval: R 2nd metatarsal stress fracture in June, sports med cleared her in July. Built back up over the summer without trouble, now training for a marathon in December. Foot doesn't bother her. No meds. NKDA. Never smoker, no alcohol. Menses regular.\n\nROS negative.\n\nExam: vitals as charted. Well appearing. HEENT normal. Thyroid normal. Heart regular. Lungs clear. Abdomen soft. R foot nontender, no swelling. Skin fine.\n\nPHQ-2 0.\n\nA/P:\n- Metatarsal stress fracture, resolved.\n- Ramping mileage for the marathon: talked about building gradually and not stacking big jumps, and to message early if any bone pain starts.\n- CBC, CMP, urine GC/CT.\n- Flu shot today. Covid at pharmacy.\n- Pap due next year.\n- RTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2025-09-19a",
+          "kind": "portal_message",
+          "start": "2025-09-19T13:05",
+          "documents": [
+            {"type": "Patient message", "title": "Lab Results", "author": "PCP", "date": "2025-09-19T13:05", "body": "Hi Megan, all your labs are normal, and the urine tests were negative. Good luck with the training."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "portal_message",
+          "start": "2025-10-14T18:22",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-11T10:30"}],
+          "documents": [
+            {"type": "Patient message", "title": "Covid Vaccine", "author": "patient", "date": "2025-10-14T18:22", "body": "Got the covid vaccine at the pharmacy Saturday (10/11), Moderna again."},
+            {"type": "Patient message", "title": "RE: Covid Vaccine", "author": "MA", "date": "2025-10-15T08:50", "body": "Recorded, thank you."}
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "portal_message",
+          "start": "2025-11-06T21:40",
+          "orders": [
+            {"id": "sportsmed-tibia", "action": "placed", "order": "Sports medicine referral", "category": "referral", "to": "Orthopedics & Sports Medicine", "reason": "right shin pain in a runner, prior metatarsal stress fracture"}
+          ],
+          "documents": [
+            {"type": "Patient message", "title": "Shin Pain", "author": "patient", "date": "2025-11-06T21:40", "body": "Hi, my right shin has been hurting for about 2 weeks, low down, since I bumped up my long runs for the marathon. It's worse when I run and better if I take a day off. I didn't fall or hit it. I'm worried it's the same thing as my foot. Can I go back to sports med?"},
+            {"type": "Patient message", "title": "RE: Shin Pain", "author": "PCP", "date": "2025-11-07T08:15", "body": "Yes, good that you messaged early. I sent a referral back to sports medicine and asked them to see you next week. Please stop running until they see you."},
+            {"type": "Administrative note", "title": "Referral Scheduled", "author": "front desk", "date": "2025-11-07T10:02", "body": "Sports medicine referral faxed. Appt 11/12 at 2:40. Pt notified by text."}
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "specialist_visit",
+          "start": "2025-11-12T14:40",
+          "service": "Orthopedics & Sports Medicine",
+          "reason": "Right shin pain",
+          "conditions": [
+            {"label": "Stress fracture of right distal tibia", "icd10": "M84.361A", "action": "diagnosed", "onset": "2025-10-22"}
+          ],
+          "reports": [
+            {"study": "Tibia and fibula X-ray", "loinc": "26165-1", "performed": "2025-11-12T14:55", "text": "RIGHT TIBIA AND FIBULA, 2 VIEWS. Indication: distal right shin pain in a runner. Findings: No acute fracture or dislocation. Cortices smooth without periosteal reaction. Ankle and knee joints aligned. Soft tissues unremarkable.", "conclusion": "No acute fracture or dislocation of the right tibia or fibula."}
+          ],
+          "orders": [
+            {"id": "sportsmed-tibia", "action": "done", "date": "2025-11-14T08:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Sports Medicine Consultation", "author": "sports medicine", "date": "2025-11-14T08:30", "body": "Outside Orthopedics & Sports Medicine\nDate of service: 11/12/2025\nRe: Megan Foster, DOB 05/13/2001\n\nMs. Foster is back with us five months after we saw her for right foot pain, this time for three weeks of right shin pain. It started after she lengthened her runs ahead of a marathon she has coming up. Running makes it worse, rest makes it better. No falls or other injury. No medications. NKDA. Past history notable for a right second metatarsal stress fracture this June, healed.\n\nExamination: The distal third of the right tibia is mildly swollen, with a focal spot that is tender on palpation. Skin is not red or warm. Ankle moves through a full, normal range.\n\nImaging: Two views of the right tibia and fibula today show no acute fracture or dislocation.\n\nAssessment: Right distal tibial stress fracture, a clinical diagnosis with negative early films. Second bone stress injury this year.\n\nPlan:\n1. No running for 6 to 8 weeks. Low-impact cross-training as long as it is pain-free.\n2. Walking boot if walking is painful.\n3. We recommended she withdraw from the upcoming marathon; she was disappointed and said she would think about it.\n4. Follow up in about 8 weeks.\n\nThank you for the referral.\nOrthopedics & Sports Medicine"}
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "portal_message",
+          "start": "2025-11-17T12:20",
+          "orders": [
+            {"id": "vitd-2025", "action": "placed", "order": "25-hydroxy Vitamin D", "category": "lab", "reason": "second stress fracture"}
+          ],
+          "documents": [
+            {"type": "Patient message", "title": "Sports Med Visit", "author": "PCP", "date": "2025-11-17T12:20", "body": "Hi Megan, I read the sports medicine note about your shin. Since this is the second one this year, a couple of questions: are your periods still regular, and are you eating enough for the miles you've been doing? I'd also like to check a vitamin D level. The order is in, you can stop by the lab any morning."},
+            {"type": "Patient message", "title": "RE: Sports Med Visit", "author": "patient", "date": "2025-11-17T19:48", "body": "Periods are regular, every month. I eat normally, three meals plus snacks, I'm not trying to lose weight. I'll come in Wednesday for the blood test."}
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "lab_only",
+          "start": "2025-11-19T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vitamin D level",
+          "labs": [
+            {"panel": null, "collected": "2025-11-19T08:10", "results": [{"test": "25-hydroxy Vitamin D", "value": 34}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2025-11-19T08:10"}],
+          "orders": [
+            {"id": "vitd-2025", "action": "done", "date": "2025-11-19T08:10"}
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "portal_message",
+          "start": "2025-11-20T15:30",
+          "documents": [
+            {"type": "Patient message", "title": "Vitamin D Result", "author": "PCP", "date": "2025-11-20T15:30", "body": "Your vitamin D came back at 34, which is normal. No supplement needed. Keep following sports medicine's plan for the shin."}
+          ]
+        },
+        {
+          "id": "2025-12-07a",
+          "kind": "ed_visit",
+          "start": "2025-12-07T13:05",
+          "end": "2025-12-07T17:35",
+          "service": "Emergency Medicine",
+          "reason": "Collapse and confusion at marathon finish",
+          "conditions": [
+            {"label": "Accidental hypothermia", "icd10": "T68.XXXA", "action": "diagnosed", "onset": "2025-12-07"}
+          ],
+          "vitals": [
+            {"time": "2025-12-07T13:08", "temp_c": 34.5, "hr": 58, "bp": [100, 60], "rr": 16, "spo2": 98},
+            {"time": "2025-12-07T15:05", "temp_c": 35.9, "hr": 66, "bp": [106, 64], "rr": 16, "spo2": 99},
+            {"time": "2025-12-07T17:10", "temp_c": 36.8, "hr": 72, "bp": [112, 70], "rr": 14, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-07T13:20", "results": [{"test": "Sodium", "value": 140}, {"test": "Potassium", "value": 4.2}, {"test": "Creatinine", "value": 0.9}, {"test": "Glucose", "value": 90}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-07T13:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2025-12-07T13:05"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-12-08T09:30", "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nVisit date: 12/07/2025, arrival 13:05\nPatient: Megan Foster, 24F, DOB 05/13/2001\n\nCC: Collapsed after crossing the marathon finish, confused.\n\nHPI: 24 yo female runner brought from the race medical tent after collapsing at the finish line. On arrival she is shivering, disoriented and her speech is slurred. Friends with her say she was dressed sensibly for the weather but was clearly having a hard time over the final miles. History of right metatarsal and right tibial stress fractures. Takes no medications. NKDA.\n\nTriage vitals: T 34.5 C (94.1 F), HR 58, BP 100/60, RR 16, SpO2 98% RA.\n\nExam: Skin cold to touch, extremities pale. Cap refill 3 sec. Lungs clear, heart regular. Abdomen soft. No signs of trauma. Moves all extremities. Remainder of exam unremarkable.\n\nLabs: Na 140, K 4.2, Cr 0.9, glucose 90. CBC within normal limits.\n\nED course: Wet race clothing removed, warm blankets and forced-air warming blanket applied, 1 L warmed normal saline IV. Shivering eased over the first hour. At 2 h T 35.9 C, HR 66, BP 106/64, now answering questions appropriately. At 4 h T 36.8 C, HR 72, BP 112/70, RR 14, SpO2 99%, alert and oriented x3, speech clear, tolerating fluids by mouth, walking steadily.\n\nImpression: Accidental hypothermia, mild, after marathon. Rewarmed.\n\nDisposition: Discharged home 17:35 with friends. Warm fluids, rest, and avoid running until cleared. Return for confusion, fainting, or chest pain. Follow up with primary care this week.\n\nEmergency Medicine"}
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "telephone",
+          "start": "2025-12-08T11:20",
+          "documents": [
+            {"type": "Telephone encounter", "title": "Post-ED Call", "author": "RN", "date": "2025-12-08T11:20", "body": "ED record received from yesterday (hypothermia after the marathon). Called pt. She says she feels fine today, tired and sore but thinking clearly, eating and drinking normally, no dizziness. Booked with PCP Wed 12/10 for follow-up. Told her to call sooner for any confusion or fainting."}
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "office_visit",
+          "start": "2025-12-10T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, hypothermia",
+          "conditions": [
+            {"label": "Accidental hypothermia", "icd10": "T68.XXXA", "action": "resolved", "onset": "2025-12-07"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-12-10T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit — ED Follow-up", "author": "PCP", "date": "2025-12-10T16:05", "body": "Seen after ED visit Sunday for hypothermia at the finish of her marathon. She ran the race despite the shin. Rewarmed in the ED over about 4 hrs and was sent home the same day. Since then she feels back to normal: no confusion, no headache, no dizziness, eating and sleeping fine. Hasn't run since.\n\nNo meds. NKDA.\n\nExam: vitals as charted, temp normal. Alert, oriented, speech normal, conversational and appropriate. Skin warm, normal color, no cold injury to fingers or toes. Heart regular. Lungs clear. Neuro nonfocal, gait normal.\n\nA/P:\n1. Accidental hypothermia, mild, resolved. Reviewed ED labs, normal. Talked about layers and a dry change at the finish for cold races, and having someone meet her.\n2. R distal tibial stress fracture, sports med following, she has her appt in January. No running till then, per their plan.\nFollow up as needed."}
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "specialist_visit",
+          "start": "2026-01-14T09:20",
+          "service": "Orthopedics & Sports Medicine",
+          "reason": "Follow-up right distal tibial stress fracture",
+          "conditions": [
+            {"label": "Stress fracture of right distal tibia", "icd10": "M84.361A", "action": "resolved", "onset": "2025-10-22"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Sports Medicine Follow-up", "author": "sports medicine", "date": "2026-01-16T10:10", "body": "Outside Orthopedics & Sports Medicine\nDate of service: 01/14/2026\nRe: Megan Foster, DOB 05/13/2001\n\nFollow-up of right distal tibial stress fracture, about 9 weeks from diagnosis. She ran the December marathon and was treated in an ED afterward for hypothermia, now recovered. No running since then; cycling and swimming. Walking without pain. No medications. NKDA.\n\nExam: Distal right tibia nontender, no swelling. Pain-free single-leg hop on the right. Ankle and knee normal.\n\nAssessment: Healed clinically.\n\nPlan: Graded walk-run return over the next several weeks, mileage increased slowly, no more than one hard change per week. Stop and contact us if bone pain returns. Follow up as needed.\n\nOrthopedics & Sports Medicine"}
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "portal_message",
+          "start": "2026-03-04T10:12",
+          "documents": [
+            {"type": "Patient message", "title": "New Insurance Card", "author": "patient", "date": "2026-03-04T10:12", "body": "Hi, the student health plan sent me a new card for the spring term with a different member number. I uploaded a photo of the front and back."},
+            {"type": "Patient message", "title": "RE: New Insurance Card", "author": "front desk", "date": "2026-03-04T13:40", "body": "Got it, your insurance is updated in our system. Thanks Megan."}
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T16:03",
+          "documents": [
+            {"type": "Patient message", "title": "Physical", "author": "patient", "date": "2026-08-19T16:03", "body": "Can I book my yearly physical for mid-September? Afternoons work best once classes start."},
+            {"type": "Patient message", "title": "RE: Physical", "author": "front desk", "date": "2026-08-20T09:25", "body": "You're booked Wednesday 9/16 at 2:00 for your physical. You're also due for a Pap, so that will be done at the same visit."}
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "annual_physical",
+          "start": "2026-09-16T14:00",
+          "reason": "Annual physical, Pap due",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

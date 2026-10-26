@@ -1,0 +1,2873 @@
+{
+  "unit": "unit-1688",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001688/2022-09-13a: reaction \"Contact dermatitis\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001688",
+      "given": "Tessa",
+      "family": "Turcotte",
+      "birth_date": "1991-05-27",
+      "address_line": "41 Larkhill Road",
+      "phone": "+1-774-555-0194",
+      "email": "tessa.turcotte@example.test",
+      "summary": "Thirty-one-year-old HR coordinator with chronic hypertension on labetalol and an anxiety disorder who joins in 2022 while planning pregnancy. Over three pregnancies she has a placental abruption delivered by emergency cesarean (2023), an amniotic fluid embolism with DIC after a vaginal delivery (2025), and a recurrent amniotic fluid embolism with DIC and shock after a precipitous delivery (2026), recovering each time.",
+      "events": [
+        {
+          "id": "2022-08-24a",
+          "kind": "telephone",
+          "start": "2022-08-24T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2022-08-24T10:12",
+              "author": "front desk",
+              "body": "Caller Tessa Turcotte, DOB 05/27/1991, would like to join the practice. Currently sees a PCP in another town and wants someone closer to home and work. Has high blood pressure, on one BP med. Insurance is a PPO through her employer, card info taken. Booked new patient physical 9/13 at 8:30. Records release sent to her email to sign for the old office."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-07a",
+          "kind": "outside_records",
+          "start": "2022-09-07T14:30",
+          "reason": "Records from prior primary care practice",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2022-09-07T14:30",
+              "author": "outside primary care",
+              "body": "Records received by fax from prior primary care office, 38 pages. Summary of contents:\n\nProblem list: chronic hypertension; anxiety disorder.\nMedications: labetalol 200 mg twice daily; prenatal multivitamin with DHA once daily; folic acid 1 mg once daily.\nAllergies: sulfa antibiotics (rash); latex (contact dermatitis).\nSurgical history: laparoscopic appendectomy, 2015.\nPreventive: cervical cytology with HPV cotesting 06/2021, negative for intraepithelial lesion or malignancy, high-risk HPV not detected. COVID-19 primary series 2021.\nMost recent office note 03/2022: BP controlled on labetalol, which had been chosen with a future pregnancy in mind; prenatal vitamin and folic acid started for the same reason. Anxiety described as long-standing and manageable without medication.\n\nScanned to chart. Forwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T08:30",
+          "end": "2022-09-13T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, new patient physical",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "note": "chronic hypertension, on labetalol before joining"
+            },
+            {
+              "label": "Anxiety disorder, unspecified",
+              "action": "diagnosed",
+              "note": "long-standing, no medication",
+              "icd10": "F41.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "labetalol hydrochloride 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chronic hypertension"
+            },
+            {
+              "drug_text": "alpha tocopherol 30 UNT / ascorbic acid 28 MG / cholecalciferol 400 UNT / docosahexaenoic acid 300 MG / docusate sodium 55 MG / ferrous fumarate 27 MG / folic acid 1.25 MG / pyridoxine hydrochloride 25 MG / tricalcium phosphate 160 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "capsule"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "prenatal vitamin with DHA, preconception"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "preconception"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Latex",
+              "reaction": "Contact dermatitis",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              87
+            ],
+            "hr": 93,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 67.6,
+            "height_cm": 165.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-13T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 108
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 196
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-09-13T09:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Human resources coordinator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-13T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-13T09:45",
+              "author": "PCP",
+              "body": "31F new to the practice, coming from a PCP in the next town over. Prior records reviewed (received 9/7).\n\nHTN: told she had high BP in her late twenties. Prior PCP put her on labetalol because she is hoping to conceive in the next year and wanted something she could stay on in pregnancy. Takes 200 mg BID, no missed doses, no side effects she notices. Doesn't check at home.\n\nAnxiety: long-standing, says she has always been a worrier. Has never taken medication for it and doesn't want to. Works, sleeps OK, no panic attacks lately. GAD-7 6, PHQ-9 3 today.\n\nPreconception: on prenatal vitamin with DHA and folic acid 1 mg daily for several months already.\n\nPMH: chronic HTN, anxiety disorder.\nPSH: laparoscopic appendectomy 2015 (age 24).\nMeds: labetalol 200 mg PO BID; prenatal vitamin with DHA 1 cap daily; folic acid 1 mg daily.\nAllergies: sulfa antibiotics - rash. Latex - contact dermatitis (gloves).\nFH: mother - preeclampsia in her pregnancies, chronic HTN since. Father - essential HTN. Maternal aunt - placental abruption.\nSH: HR coordinator. Former smoker, quit 2019. Alcohol 1-2 drinks a month, plans to stop once pregnant. No drug use.\nPreventive: Pap with HPV 6/2021 normal at prior office. COVID primary series 2021.\n\nExam: vitals as charted, repeat BP similar. Well appearing, a little nervous but chatty. HEENT unremarkable, thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed laparoscopic port scars. No edema. Skin no rashes. Mood fine, affect anxious at baseline.\n\nA/P\n1. Chronic hypertension - acceptable on labetalol, keep 200 BID. Fine for pregnancy. Home cuff recommended, goal under 130/80 at home. CMP, UA.\n2. Anxiety disorder - stable, no meds per her preference.\n3. Preconception - continue PNV + folic acid. Told her to message as soon as she has a positive test so we can make sure she gets in with OB early given the BP.\n4. Health maintenance - CBC, CMP, lipids, TSH, one-time HIV and hep C. Pap not due until 2026. Flu and COVID boosters next month at a nurse visit.\n\nRTC 3 months for BP."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              84
+            ],
+            "weight_kg": 68.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin": 12.0,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2022-09-15T16:40",
+              "author": "PCP",
+              "body": "Hi Tessa, everything from Tuesday came back fine: blood count, kidney function, potassium, liver tests, thyroid and cholesterol are all where they should be, the urine had no protein, and the HIV and hepatitis C screens were negative. Nothing to change. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T12:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T12:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, bivalent",
+              "date": "2022-10-04T12:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2022-10-04T12:30",
+              "author": "RN",
+              "body": "Here on lunch break for flu and COVID booster. Screening questions negative, not pregnant, no prior reactions. Latex allergy noted, non-latex gloves used. Fluzone quadrivalent 0.5 mL IM right deltoid. Moderna bivalent booster IM left deltoid. VIS given. Observed 15 minutes, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              136,
+              82
+            ],
+            "hr": 88,
+            "weight_kg": 68.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-06T16:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-12-06T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hypertension Follow-up",
+              "date": "2022-12-06T17:05",
+              "author": "PCP",
+              "body": "S: BP check. Bought a home cuff, readings mostly 120s-130s over low 80s. Taking labetalol twice a day, occasional missed evening dose. Busy season at work with open enrollment, some extra worry but coping. Still trying to conceive, on PNV and folate.\nO: BP and HR as charted. Heart regular, lungs clear, no edema.\nA/P: Chronic HTN, reasonably controlled on labetalol 200 BID - no change. Phone alarm for the evening dose. BMP today. Anxiety stable, GAD-7 5, no meds.\nRTC 6 months or sooner once pregnant."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-06a",
+          "kind": "portal_message",
+          "start": "2023-03-06T07:58",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "diagnosed",
+              "onset": "2023-02-20",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "date": "2023-03-06T07:58",
+              "author": "patient",
+              "body": "Good morning! I got a positive home pregnancy test this weekend. Last period started around Feb 6. Should I keep taking the labetalol? And who should I call for OB? Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "date": "2023-03-06T12:31",
+              "author": "PCP",
+              "body": "Congratulations! Yes - keep taking labetalol 200 mg twice a day, along with the prenatal vitamin and folic acid. Please don't stop it on your own. I've sent a referral note to the obstetric group we work with and asked that they see you early because of your blood pressure; their office will call you. Keep logging home readings and send them if they run over 140/90."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "telephone",
+          "start": "2023-03-20T11:05",
+          "reason": "Medication refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2023-03-20T11:05",
+              "author": "RN",
+              "body": "Pt called asking to switch labetalol to a 90-day supply through mail order, insurance prefers it. Confirmed taking 200 mg BID. Pended labetalol 200 mg #180 with 1 refill for PCP; PCP signed. Pt aware. Also asked about folic acid refills - has two months left, will request when low."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-12a",
+          "kind": "outside_records",
+          "start": "2023-05-12T10:00",
+          "reason": "Obstetric prenatal letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Obstetrics Prenatal Care Letter",
+              "date": "2023-05-12T10:00",
+              "author": "obstetrics",
+              "body": "Dear Colleague,\n\nWe are following your patient Tessa Turcotte (DOB 05/27/1991) for prenatal care. She is G1 at 13 weeks by an early dating ultrasound consistent with her LMP of 02/06/2023, EDD 11/13/2023.\n\nHer pregnancy is complicated by chronic hypertension. We are continuing labetalol 200 mg twice daily; office pressures have been in an acceptable range and she is sending home logs. Initial prenatal labs, including blood type and antibody screen, CBC, rubella, hepatitis B, HIV, syphilis and urine culture, were within normal limits. Baseline hemoglobin 12.\n\nShe continues her prenatal vitamin with DHA and folic acid 1 mg. Allergies to sulfa (rash) and latex (contact dermatitis) noted; our L&D unit has been flagged latex-free.\n\nWe will see her every four weeks for now and send an update after delivery.\n\nSincerely,\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "nurse_visit",
+          "start": "2023-09-26T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines in pregnancy",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-26T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-26T08:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-09-26T08:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2023-09-26T08:25",
+              "author": "RN",
+              "body": "Pt is 33 wks pregnant, OB asked her to get flu and the updated COVID shot here before work. Had Tdap at OB in August. No fever, no prior reactions. Latex-free supplies. Flu quadrivalent 0.5 mL IM L deltoid, Moderna 2023-24 formula IM R deltoid. VIS given. Tolerated well, left after 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-13a",
+          "kind": "ed_visit",
+          "start": "2023-10-13T14:52",
+          "end": "2023-10-13T16:05",
+          "service": "Emergency Medicine",
+          "reason": "Abdominal pain and vaginal bleeding in pregnancy",
+          "conditions": [
+            {
+              "label": "Premature separation of placenta, unspecified, third trimester",
+              "action": "diagnosed",
+              "onset": "2023-10-13",
+              "icd10": "O45.93"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-10-13T14:55",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-13T15:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 150
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.14
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-13T15:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14
+                },
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 35
+                },
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 200
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2023-10-13T14:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2023-10-18T09:20",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD (received 10/18/2023; date of service 10/13/2023)\n\nCC: abdominal pain and vaginal bleeding, pregnant.\n\nHPI: 32 y/o G1 at approximately 35 weeks with chronic hypertension on labetalol arrives by private car with one hour of abrupt, severe abdominal pain and vaginal bleeding. Pain is steady and sharp across the abdomen, does not travel. Per patient, the pregnancy has been uncomplicated aside from mildly elevated pressures treated with labetalol.\n\nPMH: chronic hypertension; anxiety disorder. PSH: laparoscopic appendectomy at 24.\nMeds: labetalol 200 mg BID, prenatal vitamin with DHA daily, folic acid 1 mg daily.\nAllergies: sulfa drugs (rash), latex (contact dermatitis).\nFH: mother with preeclampsia and chronic HTN; father with HTN; maternal aunt had a placental abruption.\nSH: HR coordinator; quit smoking four years ago, before this pregnancy; social alcohol of 1-2 drinks a month outside pregnancy.\n\nExam: BP 90/60, HR 120. Pale and sweaty. Abdomen tender throughout; uterus firm and contracted. FHT 140 bpm. Speculum: moderate amount of dark red blood in the vault.\n\nLabs: Hgb 9.0 g/dL (baseline 12 per OB records). Plt 150K. PT 14 sec (control 12). aPTT 35 sec (control 30). Fibrinogen 200 mg/dL (ref 400-600 in pregnancy).\n\nMDM: Presentation consistent with placental abruption with hemodynamic compromise and early fall in fibrinogen. Two large-bore IVs, fluids started, type and crossmatch sent. OB at bedside within minutes; taken directly to L&D for delivery.\n\nDx: placental abruption, third trimester.\nDisposition: admitted to obstetrics."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-13b",
+          "kind": "hospital_admission",
+          "start": "2023-10-13T16:05",
+          "end": "2023-10-17T12:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Placental abruption, emergency cesarean delivery",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2023-10-18T09:25",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY (received 10/18/2023)\nAdmitted 10/13/2023. Discharged 10/17/2023.\n\nAdmission diagnosis: placental abruption at 35 weeks 4 days.\nProcedure: emergency low transverse cesarean section, 10/13/2023. Latex-free precautions.\n\nCourse: Transferred from the ED to L&D with abdominal pain, bleeding, maternal tachycardia and hypotension. Fetal heart tones were reassuring on arrival. Given the abruption and maternal instability she was taken for emergency cesarean. Liveborn infant delivered. Maternal hemodynamics stabilized after delivery with fluids. Recovery was otherwise routine; ambulating, tolerating diet, incision clean, and pressures controlled on her home labetalol by discharge.\n\nDischarge medications: labetalol 200 mg PO BID; prenatal vitamin with DHA daily; folic acid 1 mg daily.\nAllergies: sulfonamides (rash); latex (contact dermatitis).\n\nFollow-up: obstetrics incision check in 1-2 weeks and postpartum visit at 6 weeks. PCP visit within 2 weeks for blood pressure and repeat blood count."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "telephone",
+          "start": "2023-10-19T13:40",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2023-10-19T13:40",
+              "author": "RN",
+              "body": "Called pt after discharge summary came in. Home since 10/17 after emergency c-section for abruption. Sore at the incision, managing. Bleeding tapering. Home BPs 120s-130s/80s on labetalol 200 BID. Taking PNV and folic acid. Reviewed when to call OB vs go to ED (heavy bleeding, chest pain, severe headache, BP over 160/110). Scheduled with PCP 10/26 with CBC."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "office_visit",
+          "start": "2023-10-26T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "conditions": [
+            {
+              "label": "Premature separation of placenta, unspecified, third trimester",
+              "action": "resolved",
+              "icd10": "O45.93"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              141,
+              80
+            ],
+            "hr": 68,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 72.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-26T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-26T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "date": "2023-10-26T11:35",
+              "author": "PCP",
+              "body": "Hospital follow-up, 13 days after emergency cesarean for placental abruption at 35w4d (ED and OB discharge records reviewed). Baby born alive, home with her.\n\nShe is shaken by how fast it happened but sleeping when the baby sleeps. Incision pain improving, no fever, lochia decreasing. Saw OB for incision check 10/24, fine. Taking labetalol 200 BID, PNV, folic acid.\n\nExam: vitals as charted. Tired appearing but comfortable. Heart regular, lungs clear. Low transverse incision healing, no erythema or drainage. Calves soft, no edema.\nPHQ-9 4. GAD-7 8, a bit above her usual.\n\nA/P\n1. Placental abruption s/p emergency cesarean 10/13 - resolved. Hgb was 9 in the ED; CBC today. Obstetric follow-up as planned.\n2. Chronic HTN - acceptable postpartum on labetalol, no change. Keep checking at home.\n3. Anxiety disorder - understandably more on edge. We talked about it; she does not want medication. Will recheck at the physical.\n4. Past surgical history updated: cesarean section 10/2023.\nCall with fever, heavy bleeding, or BP above 150/100."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              86
+            ],
+            "weight_kg": 72.5,
+            "labs": {
+              "Hemoglobin": 10.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-27a",
+          "kind": "portal_message",
+          "start": "2023-10-27T09:15",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood Count Result",
+              "date": "2023-10-27T09:15",
+              "author": "PCP",
+              "body": "Hi Tessa, your hemoglobin is 10.6, up from 9 in the ED, and platelets are normal. That's the direction we want and it should keep climbing on its own over the next couple of months. We'll recheck at your physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-01a",
+          "kind": "outside_records",
+          "start": "2023-12-01T15:10",
+          "reason": "Obstetric postpartum letter",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-16T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Obstetrics Postpartum Visit",
+              "date": "2023-12-01T15:10",
+              "author": "obstetrics",
+              "body": "Dear Colleague,\n\nTessa Turcotte was seen for her six-week postpartum visit on 11/28/2023 following emergency cesarean delivery for placental abruption on 10/13/2023. Incision well healed. Bleeding has stopped. Blood pressure in the low 130s over 80s on labetalol 200 mg twice daily, which we will leave with you to manage. We discussed the history of abruption for any future pregnancy and recommend early obstetric care if she conceives again.\n\nFor your records, Tdap was given in our office on 08/16/2023.\n\nSincerely,\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "portal_message",
+          "start": "2023-12-12T20:44",
+          "reason": "Return-to-work form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Work paperwork",
+              "date": "2023-12-12T20:44",
+              "author": "patient",
+              "body": "Hi, my employer's leave company needs a form filled out by a doctor for my return date (planning Jan 22). I'm uploading it here. OB said they did the medical leave part, this one asks about blood pressure restrictions. Sorry for the hassle!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Work paperwork",
+              "date": "2023-12-13T11:20",
+              "author": "MA",
+              "body": "Hi Tessa, PCP completed the form - return 1/22 with no restrictions. It's been faxed to the number on the form and a copy is in your documents tab."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "office_visit",
+          "start": "2024-01-09T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2024-01-08T16:30",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's physical, the baby has a cold. Rebooked 2/6 at 7:45, first slot so she can get to work after."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "annual_physical",
+          "start": "2024-02-06T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              136,
+              75
+            ],
+            "hr": 84,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 70.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-06T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.07
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-02-06T08:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-02-06T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-02-06T08:40",
+              "author": "PCP",
+              "body": "Annual. Back at work since late January, adjusting. Baby is 3.5 months, doing fine per her.\n\nInterval: placental abruption 10/13/23 with emergency C-section at 35 wks. Postpartum OB visit 11/28 unremarkable. Hgb 10.6 on 10/26.\n\nHTN: home readings low 130s/80s. Labetalol 200 BID. Still on PNV and folic acid, plans to keep taking them for now.\nAnxiety: busier, more worry about the baby than before, but sleeping when she can and functioning. GAD-7 7, PHQ-9 2. No meds wanted.\n\nROS otherwise negative.\nMeds: labetalol 200 mg BID, PNV w/ DHA daily, folic acid 1 mg daily. Allergies: sulfa (rash), latex (contact dermatitis).\nSH: former smoker, none since 2019. Alcohol rare.\n\nExam: vitals as charted. Well. HEENT normal, thyroid normal. Heart RRR no murmur. Lungs clear. Abdomen soft, nontender, transverse C-section scar well healed. No edema. Skin normal. Neuro grossly normal.\n\nA/P\n- Chronic HTN: at goal-ish on labetalol, continue. CMP.\n- Anxiety: stable, no meds, revisit as needed.\n- History of abruption: noted for any future pregnancy - early OB care.\n- Recheck CBC.\n- HM: Pap with HPV due 2026. Flu and COVID done in the fall.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0,
+            "labs": {
+              "Hemoglobin": 12.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-08a",
+          "kind": "portal_message",
+          "start": "2024-02-08T12:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical Labs",
+              "date": "2024-02-08T12:05",
+              "author": "PCP",
+              "body": "Tessa - your hemoglobin has recovered fully, back to your usual 12. Kidney, liver and electrolytes are normal too. No changes. Have a good week."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-13a",
+          "kind": "portal_message",
+          "start": "2024-05-13T06:52",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "diagnosed",
+              "onset": "2024-04-23",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant again",
+              "date": "2024-05-13T06:52",
+              "author": "patient",
+              "body": "Hi - positive test again yesterday, LMP was April 9. A little sooner than we planned! I called the OB office already and they're seeing me next week. Same plan with the labetalol?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant again",
+              "date": "2024-05-13T13:10",
+              "author": "PCP",
+              "body": "Congratulations. Yes, same plan: labetalol 200 mg twice daily, prenatal vitamin and folic acid. Good that OB is seeing you next week - make sure they know about the abruption and the C-section in October, though they'll have the records. Send me your home pressures if they start creeping up."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "pharmacy",
+          "start": "2024-06-18T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Pharmacy Refill Request",
+              "date": "2024-06-18T09:30",
+              "author": "MA",
+              "body": "Electronic refill request from mail-order pharmacy: labetalol 200 mg tab #180 (90 days), folic acid 1 mg #90, prenatal vitamin with DHA #90. Last seen 2/6/24, BP stable. Pended to PCP. PCP approved all three with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "outside_records",
+          "start": "2024-08-21T11:40",
+          "reason": "Obstetric prenatal letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Obstetrics Prenatal Update",
+              "date": "2024-08-21T11:40",
+              "author": "obstetrics",
+              "body": "Dear Colleague,\n\nUpdate on your patient Tessa Turcotte, now G2P1 at 19 weeks (LMP 04/09/2024, EDD 01/14/2025, consistent with first-trimester ultrasound).\n\nHer history includes chronic hypertension on labetalol 200 mg twice daily and a placental abruption at 35 weeks in October 2023 delivered by emergency low transverse cesarean. Pressures have been well controlled this pregnancy. Prenatal labs are within normal limits.\n\nAfter counseling she has chosen a trial of labor after cesarean, and we agree she is a candidate. We will plan delivery on our labor and delivery unit with a latex-free setup.\n\nAllergies: sulfa (rash), latex (contact dermatitis).\n\nRegards,\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "nurse_visit",
+          "start": "2024-10-01T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines in pregnancy",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-01T17:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-01T17:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-01T17:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-01T17:25",
+              "author": "RN",
+              "body": "25 wks pregnant, here for flu and 2024-25 COVID. Feeling well, no fever. No reactions to past vaccines. Latex-free. Flu (trivalent) 0.5 mL IM L deltoid, Pfizer 2024-25 IM R deltoid. VIS given, observed 15 min, fine. She'll get Tdap at OB later this month."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-07a",
+          "kind": "hospital_admission",
+          "start": "2025-01-07T01:20",
+          "end": "2025-01-14T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Term labor; postpartum respiratory distress and coagulopathy",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Amniotic fluid embolism in childbirth",
+              "action": "diagnosed",
+              "onset": "2025-01-07",
+              "icd10": "O88.12"
+            },
+            {
+              "label": "Disseminated intravascular coagulation",
+              "action": "diagnosed",
+              "onset": "2025-01-07",
+              "icd10": "D65"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-07T05:30",
+              "results": [
+                {
+                  "test": "Peripheral blood smear",
+                  "loinc": "5909-7",
+                  "text": "Fragmented red cells (schistocytes) present"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-01-07T05:15",
+              "text": "Limited bedside study, intubated patient. Left ventricle normal in size with normal systolic function. Right ventricular systolic function is reduced, consistent with acute right ventricular dysfunction. No pericardial effusion.",
+              "conclusion": "Acute right ventricular dysfunction. Normal left ventricular systolic function."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-01-07T01:20"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-01-14T11:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-10-24T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric and ICU Discharge Summary",
+              "date": "2025-01-15T08:50",
+              "author": "obstetrics",
+              "body": "DISCHARGE SUMMARY (received 01/15/2025)\nAdmitted 01/07/2025, discharged 01/14/2025.\nPatient: Tessa Turcotte, 33 y/o, G2P2.\n\nHistory: chronic hypertension on labetalol; anxiety disorder; placental abruption at 35 weeks in 10/2023 with emergency cesarean; laparoscopic appendectomy. Uneventful pregnancy this time with normal prenatal labs. Tdap given in our office 10/24/2024.\nAllergies: sulfonamides (rash), latex (contact dermatitis).\n\nDelivery: Admitted in spontaneous labor at term for a planned trial of labor after cesarean. Uncomplicated vaginal birth after cesarean on 01/07/2025; liveborn infant.\n\nEvent: Right after the placenta delivered she became acutely short of breath and visibly anxious. Started on supplemental oxygen and IV fluids, but she worsened: heart rate climbed quickly and she became hypotensive. She was intubated for respiratory distress and moved to the ICU. Within minutes she was oozing from IV sites and her gums. The uterus was firm and well contracted with no atony on pelvic exam, yet blood loss was soaking her perineal pads. Lungs with bilateral rales; skin cool and clammy.\n\nWork-up: peripheral smear with schistocytes. Urine output fell and creatinine rose over the first day. Stat echo showed acute right ventricular dysfunction with normal LV function.\n\nDiagnoses: amniotic fluid embolism; disseminated intravascular coagulation.\n\nICU course: supportive care with blood product replacement for the coagulopathy. Extubated 01/09. Bleeding stopped, coagulation studies normalized, urine output returned and creatinine came back to normal before transfer out of the ICU. Recovered on the postpartum floor and went home 01/14.\n\nDischarge medications: labetalol 200 mg PO BID; prenatal vitamin with DHA daily; folic acid 1 mg daily.\n\nRecommendations: repeat transthoracic echocardiogram in about 6 weeks to confirm RV recovery. PCP follow-up within 1-2 weeks with CBC, BMP and coagulation studies. Obstetric postpartum visit at 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-15a",
+          "kind": "telephone",
+          "start": "2025-01-15T15:20",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2025-01-15T15:20",
+              "author": "RN",
+              "body": "TCM call within 2 business days of discharge (home 1/14 after delivery complicated by amniotic fluid embolism, ICU stay, intubated 2 days). Pt answered, sounds tired but clear. Breathing comfortably at home, walking around the house. Bleeding light. No bleeding from gums now. Taking labetalol 200 BID, PNV, folic acid - no new meds from the hospital. Home BP in the 120s/80s. She says she is \"still processing it.\" Booked TCM visit with PCP 1/21, labs same day. ED precautions reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Transitional care visit after ICU admission",
+          "conditions": [
+            {
+              "label": "Amniotic fluid embolism in childbirth",
+              "action": "resolved",
+              "icd10": "O88.12"
+            },
+            {
+              "label": "Disseminated intravascular coagulation",
+              "action": "resolved",
+              "icd10": "D65"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              89
+            ],
+            "hr": 76,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 72.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-21T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-21T14:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-01-21T14:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-01-21T13:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "tte-2025",
+              "action": "placed",
+              "order": "Transthoracic echocardiogram",
+              "category": "imaging",
+              "to": "Echocardiography",
+              "reason": "follow-up of acute RV dysfunction after amniotic fluid embolism"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2025-01-21T14:40",
+              "author": "PCP",
+              "body": "TCM visit, discharged 1/14. Discharge summary reviewed in full.\n\nSummary: TOLAC at term 1/7, uncomplicated VBAC, then right after the placenta she developed acute respiratory distress, hypotension and DIC (bleeding from IV sites and gums, schistocytes on smear), with a rise in creatinine and acute RV dysfunction on echo. Diagnosed with amniotic fluid embolism. Intubated, ICU, blood products, extubated 1/9. Kidney function and coags back to normal before discharge.\n\nToday: two weeks out. Breathing back to normal, can do stairs. No chest pain. Bleeding is light spotting only. No bruising, gums fine. Baby well. Sleep broken by the baby; says she keeps replaying the delivery. Not wanting medication or counseling right now but appreciated talking it through.\n\nMeds: labetalol 200 mg BID, PNV w/ DHA, folic acid 1 mg. No new meds. Allergies: sulfa, latex.\n\nExam: vitals as charted, SpO2 normal on RA. Tired but well appearing. No petechiae or bruising. Gums normal. Heart regular, no murmur, no JVD. Lungs clear throughout, no rales. Abdomen soft, uterus not palpable above the pubis. No calf tenderness or edema.\nGAD-7 9, PHQ-9 4.\n\nA/P\n1. Amniotic fluid embolism with DIC, recovered - resolved clinically. CBC, BMP, PT/INR today to confirm.\n2. Acute RV dysfunction on the ICU echo - repeat TTE in ~6 weeks per discharge recs, ordered.\n3. Chronic HTN - postpartum pressures OK on labetalol 200 BID, continue.\n4. Anxiety disorder - higher than her usual, as expected after this. Will check in by portal and see her in April; she knows she can reach me any time.\nTCM: medication reconciliation done, no changes."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              86
+            ],
+            "weight_kg": 72.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "portal_message",
+          "start": "2025-01-22T10:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from yesterday",
+              "date": "2025-01-22T10:45",
+              "author": "PCP",
+              "body": "Good news, Tessa: blood count, platelets, kidney function and clotting tests from yesterday are all normal. The echo is scheduled for Feb 26 - the scheduling office will confirm by text."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "imaging",
+          "start": "2025-02-26T09:00",
+          "service": "Echocardiography",
+          "reason": "Follow-up of right ventricular function",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-02-26T09:00",
+              "text": "Indication: follow-up of acute right ventricular dysfunction during amniotic fluid embolism, 01/2025. Technically adequate study. Left ventricle normal in size and wall thickness with normal systolic function. Normal diastolic function. Right ventricle normal in size with normal systolic function; TAPSE normal. Atria normal in size. Valves structurally normal without significant regurgitation or stenosis. Estimated RV systolic pressure normal. Inferior vena cava normal with normal respiratory variation. No pericardial effusion.",
+              "conclusion": "Normal right ventricular size and systolic function. Normal left ventricular size and systolic function. No pericardial effusion."
+            }
+          ],
+          "orders": [
+            {
+              "id": "tte-2025",
+              "action": "done",
+              "date": "2025-02-26T09:00"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T08:30",
+          "reason": "Echo result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Echo result",
+              "date": "2025-02-27T08:30",
+              "author": "PCP",
+              "body": "Hi Tessa, your echo from yesterday is completely normal. The right side of the heart, which was strained during the January event, has fully recovered, and the left side is normal too. No further heart testing needed."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Echo result",
+              "date": "2025-02-27T19:02",
+              "author": "patient",
+              "body": "That is such a relief, thank you. I'll see you in April."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "portal_message",
+          "start": "2025-03-11T21:15",
+          "reason": "Leave paperwork",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leave form",
+              "date": "2025-03-11T21:15",
+              "author": "patient",
+              "body": "Hi again, my leave is through the end of March and HR (ironic, I know) needs the return to work form from you since the ICU part was medical, not just maternity. Uploaded it. I'd like to go back April 7."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leave form",
+              "date": "2025-03-12T14:00",
+              "author": "MA",
+              "body": "Form completed and signed by PCP: cleared to return 4/7, no restrictions. Faxed to your employer's leave administrator and saved to your documents."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "office_visit",
+          "start": "2025-04-22T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension and anxiety follow-up",
+          "vitals": {
+            "bp": [
+              134,
+              81
+            ],
+            "hr": 81,
+            "spo2": 98,
+            "weight_kg": 69.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-22T17:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-22T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-04-22T17:20",
+              "author": "PCP",
+              "body": "Back at work two weeks. Feels physically recovered - walks with the stroller daily, no breathlessness. Echo 2/26 normal. OB postpartum visit done in Feb.\nHTN: home 120s-130s/80s on labetalol 200 BID. Continues PNV and folic acid.\nAnxiety: GAD-7 7 (9 in Jan). Fewer intrusive thoughts about the delivery. Still declines meds.\nExam: vitals as charted. Heart RRR no murmur, lungs clear, no edema.\nA/P: Chronic HTN controlled, continue. BMP. Anxiety disorder improving. Physical due - she'll book for later in the year. RTC 4-5 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              84
+            ],
+            "weight_kg": 70.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "portal_message",
+          "start": "2025-07-08T12:20",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "diagnosed",
+              "onset": "2025-06-17",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "News",
+              "date": "2025-07-08T12:20",
+              "author": "patient",
+              "body": "I wanted you to hear it from me - I'm pregnant again, test was positive Saturday. LMP June 3. Honestly nervous after last time. OB is sending me to the high-risk group and I have an appointment on the 22nd. Still taking everything the same."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: News",
+              "date": "2025-07-08T17:45",
+              "author": "PCP",
+              "body": "Thank you for telling me, Tessa. Being nervous makes complete sense. I'm glad you're already booked with maternal-fetal medicine. Keep the labetalol 200 mg twice daily, prenatal vitamin and folic acid as you are. I'll send them our notes and the echo. Message me anytime, and let's still do your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-19T10:30",
+          "reason": "Maternal-fetal medicine consultation letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Maternal-Fetal Medicine Consultation",
+              "date": "2025-08-19T10:30",
+              "author": "maternal-fetal medicine",
+              "body": "Dear Colleague,\n\nWe saw Ms. Turcotte on 07/22/2025 and again 08/12/2025, G3P2 at 10 weeks (LMP 06/03/2025, EDD 03/10/2026, confirmed by ultrasound).\n\nObstetric history: placental abruption at 35 weeks (10/2023) delivered by emergency cesarean; vaginal birth after cesarean at term (01/2025) complicated immediately after placental delivery by amniotic fluid embolism with DIC, ICU care and intubation, with a normal follow-up echocardiogram in 02/2025. Chronic hypertension on labetalol 200 mg twice daily, well controlled. Anxiety disorder.\n\nWe reviewed her history at length with her. Prenatal labs today are within normal limits. She continues labetalol, her prenatal vitamin with DHA and folic acid 1 mg. We will co-manage with her obstetric group with visits every 2-4 weeks and will plan her delivery at our center.\n\nAllergies: sulfa drugs (rash); latex (contact dermatitis).\n\nSincerely,\nMaternal-Fetal Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              142,
+              85
+            ],
+            "hr": 78,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 73.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 234
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-16T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-16T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-16T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-16T08:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-16T09:10",
+              "author": "PCP",
+              "body": "Annual exam. 15 weeks pregnant, followed by MFM and OB (letter 8/19 reviewed).\n\nFeels well physically - nausea gone. BP at MFM visits fine. On labetalol 200 BID, PNV with DHA, folic acid 1 mg. No other meds or supplements.\nAnxiety: GAD-7 8. Worried about delivery, which is fair; she says MFM spent a long time with her and that helped. Declines meds and therapy referral for now.\nPHQ-9 2.\nOB hx: abruption 10/2023 (emergency C/S at 35 wk); VBAC 1/2025 complicated by amniotic fluid embolism and DIC, ICU, recovered; echo 2/2025 normal.\nSH: HR coordinator, full time. No tobacco since 2019. No alcohol in pregnancy.\nFH unchanged.\n\nExam: vitals as charted. Well, pleasant. Thyroid normal. Heart RRR, no murmur. Lungs clear. Abdomen gravid, nontender. No edema. Skin no rash.\n\nA/P\n- Health maintenance: CBC, CMP. Flu and 2025-26 COVID given today (both fine in pregnancy). Pap with HPV due 2026 - after delivery.\n- Chronic HTN in pregnancy: office BP a little higher today than her MFM and home readings, which are at goal. MFM managing, continue labetalol.\n- Anxiety disorder: elevated with the pregnancy, monitoring.\n- History of AFE: delivery planning per MFM.\nRTC after delivery."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T08:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Pharmacy Refill Request",
+              "date": "2025-12-09T08:45",
+              "author": "MA",
+              "body": "Mail order requesting labetalol 200 mg #180. Pt 27 wks pregnant, MFM following, last PCP visit 9/16. Pended. PCP approved, 1 refill. PNV and folic acid still have refills on file."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "telephone",
+          "start": "2026-01-20T14:05",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2026-01-20T14:05",
+              "author": "front desk",
+              "body": "Maternal-fetal medicine office called for our records ahead of pt's delivery planning (problem list, med list, 2025 TCM note, 2/2025 echo). Release on file from pt dated 7/2025. Faxed 14 pages, confirmation received."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "ed_visit",
+          "start": "2026-03-10T05:38",
+          "end": "2026-03-10T07:30",
+          "service": "Emergency Medicine",
+          "reason": "Dyspnea and seizures after delivery before arrival",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Amniotic fluid embolism in childbirth",
+              "action": "diagnosed",
+              "onset": "2026-03-10",
+              "note": "recurrent",
+              "icd10": "O88.12"
+            },
+            {
+              "label": "Disseminated intravascular coagulation",
+              "action": "diagnosed",
+              "onset": "2026-03-10",
+              "icd10": "D65"
+            },
+            {
+              "label": "Hypovolemic shock",
+              "action": "diagnosed",
+              "onset": "2026-03-10",
+              "icd10": "R57.1"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-03-10T05:40",
+              "bp": [
+                70,
+                40
+              ],
+              "hr": 120,
+              "rr": 30,
+              "spo2": 85
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-10T05:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 50
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.05
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-10T05:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 18
+                },
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 40
+                },
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 100
+                },
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-03-10T06:05",
+              "text": "Bedside point-of-care study during resuscitation. Left ventricle with normal systolic function. Right ventricle normal in size with normal systolic function; no septal flattening. No pericardial effusion.",
+              "conclusion": "No evidence of right heart strain."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-03-10T05:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-03-19T09:10",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD (received 03/19/2026; date of service 03/10/2026)\n\nCC: shortness of breath and seizure after delivery.\n\nHPI: 34 y/o G3, term, brought in by EMS about half an hour after a rapid spontaneous vaginal delivery before arrival (liveborn infant). Shortly after the birth she became acutely dyspneic and had seizures witnessed by EMS. Background of chronic hypertension on labetalol, a placental abruption in 2023, and amniotic fluid embolism after her delivery in 01/2025.\nAllergies: sulfa (rash), latex (contact dermatitis) - latex-free room.\nMeds: labetalol 200 mg BID, prenatal vitamin with DHA, folic acid 1 mg.\n\nExam: BP 70/40, HR 120, RR 30, SpO2 85% on room air. Not protecting her airway. Rales throughout both lung fields. Petechiae across the chest and both arms.\n\nCourse: intubated for airway protection. Labs: Hgb 9.0 g/dL (ref 12-16), platelets 50K (ref 150-400K), PT 18 s (ref 12-15), aPTT 40 s (ref 30-40), fibrinogen 100 mg/dL (ref 200-400), D-dimer elevated. Bedside echo: no right heart strain. Aggressive crystalloid and blood product resuscitation, yet she continued to decline. OB and critical care at bedside.\n\nImpression: recurrent amniotic fluid embolism with disseminated intravascular coagulation and hypovolemic shock.\nDisposition: ICU."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10b",
+          "kind": "hospital_admission",
+          "start": "2026-03-10T07:30",
+          "end": "2026-03-18T14:00",
+          "service": "Critical Care",
+          "reason": "Recurrent amniotic fluid embolism with DIC and shock",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-10T07:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-03-18T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-03-19T09:15",
+              "author": "critical care",
+              "body": "DISCHARGE SUMMARY (received 03/19/2026)\nAdmitted 03/10/2026 via the ED. Discharged 03/18/2026.\n\nPrincipal diagnosis: amniotic fluid embolism, recurrent (prior episode 01/2025).\nSecondary: disseminated intravascular coagulation; hypovolemic shock.\nBackground: chronic hypertension; anxiety disorder; placental abruption 10/2023 with emergency cesarean; laparoscopic appendectomy.\nAllergies: sulfonamides - rash; latex - contact dermatitis.\n\nHospital course: Arrived intubated from the ED after a precipitous term delivery before arrival, with hypoxemia, seizures, shock and consumptive coagulopathy. In the ICU, resuscitation with blood products continued until bleeding and coagulation studies corrected; blood pressure recovered over the first day. No further seizure activity. Extubated 03/12 without difficulty. Moved to the postpartum unit 03/14 and progressed well. Hemoglobin stable on the last two checks before discharge.\n\nDischarge medications (unchanged): labetalol 200 mg PO BID; prenatal vitamin with DHA daily; folic acid 1 mg daily.\n\nFollow-up: primary care within 1 week with CBC, CMP and coagulation studies; obstetric postpartum visit at 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "telephone",
+          "start": "2026-03-19T11:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2026-03-19T11:30",
+              "author": "RN",
+              "body": "TCM outreach, discharged yesterday after second amniotic fluid embolism (ICU 3/10, extubated 3/12). Spoke with pt. Breathing OK at rest, gets winded on the stairs but improving. Light bleeding, no clots. No bruising or gum bleeding. No seizures since the hospital. Taking labetalol, PNV, folic acid; no new prescriptions. Tearful at times on the call, says it is a lot. Booked TCM with PCP 3/24 with labs. Reviewed ED precautions."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "office_visit",
+          "start": "2026-03-24T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Transitional care visit after ICU admission",
+          "conditions": [
+            {
+              "label": "Amniotic fluid embolism in childbirth",
+              "action": "resolved",
+              "icd10": "O88.12"
+            },
+            {
+              "label": "Disseminated intravascular coagulation",
+              "action": "resolved",
+              "icd10": "D65"
+            },
+            {
+              "label": "Hypovolemic shock",
+              "action": "resolved",
+              "icd10": "R57.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              82
+            ],
+            "hr": 78,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 71.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-24T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.37
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-24T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-03-24T11:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2026-03-24T12:05",
+              "author": "PCP",
+              "body": "TCM, discharged 3/18. ED record and discharge summary reviewed.\n\nWhat happened: precipitous term delivery 3/10 before reaching the hospital; within minutes dyspnea and seizures, arrived hypotensive 70/40, sat 85%, rales, petechiae. Plt 50K, fibrinogen 100, PT 18, Hgb 9. Bedside echo without RV strain (different from 2025). Recurrent AFE with DIC and hypovolemic shock. Intubated, products, extubated 3/12, home 3/18. Baby born alive.\n\nNow: two weeks postpartum. Stairs easier each day. No chest pain, no bleeding beyond light lochia, no bruising. No more seizures. Tired. She cries when she talks about it and said she thought she wasn't going to wake up this time. Still declines medication; says talking with me and her OB helps.\n\nMeds unchanged: labetalol 200 mg BID, PNV w/ DHA, folic acid 1 mg. Allergies: sulfa (rash), latex (contact dermatitis).\n\nExam: vitals as charted, SpO2 normal RA. Pale-ish, tired, appropriate. No petechiae now. Heart RRR no murmur. Lungs clear, no rales. Abdomen soft, nontender. Calves soft, no edema. Neuro nonfocal.\nPHQ-9 4, GAD-7 9.\n\nA/P\n1. Recurrent amniotic fluid embolism with DIC and hypovolemic shock - recovered; resolved. CBC, CMP, PT/INR today.\n2. Postpartum Hgb - recheck today, then in about 6 weeks.\n3. Chronic HTN - office BP a bit high today, home readings 120s-130s/80s; continue labetalol 200 BID and recheck in May.\n4. Anxiety disorder - worse after this. Supportive visit; will see her in May and sooner by portal if needed.\nMed rec done, no changes."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              86
+            ],
+            "weight_kg": 72.0,
+            "labs": {
+              "Hemoglobin": 10.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-25a",
+          "kind": "portal_message",
+          "start": "2026-03-25T13:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2026-03-25T13:20",
+              "author": "PCP",
+              "body": "Hi Tessa - hemoglobin is 10.2, which is good recovery from 9 in the ED, and your platelets, clotting tests, kidney and liver numbers are all normal now. No iron needed; your blood count should keep coming up. We'll check it again in May."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "portal_message",
+          "start": "2026-04-14T20:30",
+          "reason": "Leave paperwork",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leave form again",
+              "date": "2026-04-14T20:30",
+              "author": "patient",
+              "body": "Third time doing this form, at least I know the drill. Leave administrator needs the medical portion for the hospitalization, with an expected return in mid-June. Attached. Thank you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leave form again",
+              "date": "2026-04-15T10:40",
+              "author": "MA",
+              "body": "Done - PCP filled out the medical portion with an expected return date of 6/15. Faxed this morning and copy saved to your chart."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "outside_records",
+          "start": "2026-04-28T09:50",
+          "reason": "Obstetric postpartum letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Postpartum Visit",
+              "date": "2026-04-28T09:50",
+              "author": "obstetrics",
+              "body": "Dear Colleague,\n\nTessa Turcotte was seen on 04/22/2026 for her postpartum visit after delivery on 03/10/2026 complicated by recurrent amniotic fluid embolism with DIC and shock requiring ICU care. She is recovering well. Lochia has resolved and her exam is unremarkable. Blood pressure is controlled on labetalol 200 mg twice daily, which remains under your management.\n\nAllergies: sulfa (rash), latex (contact dermatitis).\n\nThank you for sharing her care.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hospitalization",
+          "vitals": {
+            "bp": [
+              138,
+              86
+            ],
+            "hr": 79,
+            "spo2": 97,
+            "weight_kg": 71.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-12T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 235
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.14
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-12T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-05-12T16:05",
+              "author": "PCP",
+              "body": "Two months after the March admission. OB postpartum letter reviewed. Energy is mostly back. Walking most days, no dyspnea. No seizures. Planning to go back to work 6/15.\nHTN: home readings 120s-130s/80s, labetalol 200 BID, still on PNV and folate.\nAnxiety: GAD-7 7, down from 9. Sleeping better as the baby does.\nExam: vitals as charted. Color better. Heart regular, lungs clear, no edema.\nA/P: Postpartum anemia - CBC today, expect near baseline. Chronic HTN controlled, continue. Anxiety disorder improving. Physical and Pap in July."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              84
+            ],
+            "weight_kg": 71.0,
+            "labs": {
+              "Hemoglobin": 12.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "portal_message",
+          "start": "2026-05-13T08:55",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2026-05-13T08:55",
+              "author": "PCP",
+              "body": "Your hemoglobin is back to your normal of 12, and platelets are normal. Nothing else needed for this."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "annual_physical",
+          "start": "2026-07-14T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "vitals": {
+            "bp": [
+              135,
+              88
+            ],
+            "hr": 71,
+            "rr": 19,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 70.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-14T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.17
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-14T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-07-14T08:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 189
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 67
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-07-14T08:40",
+              "text": "Specimen: liquid-based cervical cytology. Satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM. High-risk HPV negative.",
+              "issued": "2026-07-20T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-07-14T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-07-14T09:20",
+              "author": "PCP",
+              "body": "Annual + Pap. Back at work a month, part of the week from home.\n\nInterval: 3/2026 precipitous term delivery complicated by recurrent amniotic fluid embolism with DIC and hypovolemic shock, ICU, recovered. Hgb back to 12 in May. OB postpartum visit 4/22 fine.\n\nHTN: home 120s-130s/80s, labetalol 200 BID. Still on PNV with DHA and folic acid.\nAnxiety: GAD-7 6, PHQ-9 2. Better than spring; occasional bad nights.\nROS negative.\n\nPMH: chronic HTN; anxiety disorder; placental abruption 2023; amniotic fluid embolism 2025 and 2026 with DIC.\nPSH: lap appendectomy 2015; emergency C/S 10/2023.\nMeds: labetalol 200 mg BID; PNV w/ DHA daily; folic acid 1 mg daily.\nAllergies: sulfa (rash); latex (contact dermatitis).\nSH: HR coordinator. Former smoker, quit 2019. Alcohol 1-2 drinks a month.\nFH: mother preeclampsia and chronic HTN, father HTN, maternal aunt placental abruption.\n\nExam: vitals as charted. Well appearing. HEENT normal, thyroid normal. Heart RRR, no murmur. Lungs clear. Breasts: no masses, no skin changes. Abdomen soft, nontender, transverse scar healed. Pelvic: normal external genitalia, vagina and cervix normal, Pap with HPV collected with latex-free speculum and gloves. No edema. Skin normal.\n\nA/P\n- HM: Pap with HPV sent. CBC, CMP, lipids. Flu and COVID in the fall.\n- Chronic HTN: controlled on labetalol, continue. Recheck in October.\n- Anxiety disorder: stable/improving, no meds.\n- History of abruption and recurrent AFE: on the problem history.\nRTC October for BP."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "portal_message",
+          "start": "2026-07-20T15:40",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "date": "2026-07-20T15:40",
+              "author": "PCP",
+              "body": "Hi Tessa, your Pap is normal and HPV negative, so the next one isn't due for five years. Blood count, kidney and liver tests, and cholesterol are all normal. See you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Pharmacy Refill Request",
+              "date": "2026-08-11T09:05",
+              "author": "MA",
+              "body": "Mail order request: labetalol 200 mg #180, folic acid 1 mg #90, PNV with DHA #90. Seen 7/14. Pended to PCP; approved, 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-13a",
+          "kind": "office_visit",
+          "start": "2026-10-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Amniotic fluid embolism in childbirth|O88.12": {
+        "code": "O88.12",
+        "display": "Amniotic fluid embolism in childbirth",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Anxiety disorder, unspecified|F41.9": {
+        "code": "F41.9",
+        "display": "Anxiety disorder, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Disseminated intravascular coagulation|D65": {
+        "code": "D65",
+        "display": "Disseminated intravascular coagulation [defibrination syndrome]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypovolemic shock|R57.1": {
+        "code": "R57.1",
+        "display": "Hypovolemic shock",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state, incidental|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Premature separation of placenta, unspecified, third trimester|O45.93": {
+        "code": "O45.93",
+        "display": "Premature separation of placenta, unspecified, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "alpha tocopherol 30 UNT / ascorbic acid 28 MG / cholecalciferol 400 UNT / docosahexaenoic acid 300 MG / docusate sodium 55 MG / ferrous fumarate 27 MG / folic acid 1.25 MG / pyridoxine hydrochloride 25 MG / tricalcium phosphate 160 MG Oral Capsule": {
+        "code": "1043300",
+        "display": "alpha tocopherol 30 UNT / ascorbic acid 28 MG / cholecalciferol 400 UNT / docosahexaenoic acid 300 MG / docusate sodium 55 MG / ferrous fumarate 27 MG / folic acid 1.25 MG / pyridoxine hydrochloride 25 MG / tricalcium phosphate 160 MG Oral Capsule",
+        "ingredient": "alpha",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "labetalol hydrochloride 200 MG Oral Tablet": {
+        "code": "896762",
+        "display": "labetalol hydrochloride 200 MG Oral Tablet",
+        "ingredient": "labetalol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "14979-9",
+        "display": "aPTT in Platelet poor plasma by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "D-dimer": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrinogen": {
+        "code": "3255-7",
+        "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Peripheral blood smear": {
+        "code": "5909-7",
+        "display": "Blood smear finding [Identifier] in Blood by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

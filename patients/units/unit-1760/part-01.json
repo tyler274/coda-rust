@@ -1,0 +1,203 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001760",
+      "given": "Melissa",
+      "family": "Pereira",
+      "birth_date": "1989-04-04",
+      "address_line": "28 Orchard Hill Lane",
+      "phone": "+1-917-555-0132",
+      "email": "melissa.pereira@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with a history of recurrent chlamydia and PID who develops tubal factor infertility, then endometriosis treated with suppression and laparoscopy, and later a ruptured right tubal ectopic pregnancy managed with salpingectomy. Primary care carries preventive care, the referrals and the follow-up around her outside gynecology and reproductive care.",
+      "events": [
+        {
+          "id": "2019-08-20a",
+          "kind": "establish_care",
+          "start": "2019-08-20T08:40",
+          "end": "2019-08-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "conditions": [
+            {"label": "History of recurrent Chlamydia trachomatis infection", "icd10": "Z86.19", "action": "history", "onset": "2012-06-01", "note": "Two treated episodes in her twenties at prior clinics"},
+            {"label": "History of pelvic inflammatory disease", "icd10": "Z87.42", "action": "history", "onset": "2014-03-01", "note": "One episode treated as an outpatient"},
+            {"label": "History of intravenous drug use", "icd10": "Z87.898", "action": "history", "onset": "2010-01-01", "note": "Remote, early twenties, none since"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 glasses of wine per week"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "state": {"weight_kg": 62.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-08-20T09:35", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-08-20T09:35", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2019-08-20T09:35", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-08-20T09:35", "results": [
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2019-08-20T09:10", "issued": "2019-08-23T14:10", "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy. High-risk HPV DNA: not detected.", "conclusion": "Negative for intraepithelial lesion or malignancy. HPV negative."}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-08-20T09:25"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2019-08-20T08:40"},
+            {"procedure": "Immunization administration", "performed": "2019-08-20T09:25"},
+            {"procedure": "Venipuncture", "performed": "2019-08-20T09:35"}
+          ],
+          "orders": [
+            {"id": "records-prior-pcp", "action": "placed", "order": "Request records from prior primary care office", "category": "procedure", "reason": "establishing care"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit and Physical", "author": "PCP", "date": "2019-08-20T09:30", "body": "30 yo woman, elementary school teacher, new to the practice. Was seeing a primary care office closer to her old apartment; she and her husband bought a house in Belchertown this spring. Wants a doctor she can actually reach. Feels well, no complaints today.\n\nPMH: chlamydia twice in her twenties, both treated at the clinic she used then. One episode of PID around 24 or 25, treated with oral antibiotics, never admitted. Periods regular, about monthly, not painful, no bleeding between. Using condoms with husband for now; they talk about kids \"in a year or so.\"\nPSH: none.\nMeds: none. Allergies: NKDA.\nFH: mom had endometriosis and ended up with a hysterectomy at 42. Mom's sister never could get pregnant, no cause ever found. Dad has high blood pressure.\nSH: teaches 2nd grade. Never smoked. Wine once or twice a week, a glass. She told me without being asked that she used IV drugs for a stretch in her early twenties and has not since; no treatment program, no relapses. We talked about screening for HIV and hep C and she was glad to do it.\n\nROS: negative except as above.\nExam: vitals as charted, BP normal. Well appearing, relaxed. HEENT normal, no thyroid enlargement or nodules. Heart regular rate, no murmur. Lungs clear. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap/HPV collected, bimanual without tenderness or masses. Skin without lesions. Mood bright.\n\nA/P\n1. Preventive: Pap with HPV co-test today (age 30). Tdap today, last one she can remember was high school. CBC, CMP, lipids.\n2. STI history: GC/chlamydia NAAT today; HIV and hepatitis C screening given her history.\n3. Remote IV drug use: in remission for many years, nothing to do beyond screening.\n4. Records release signed for prior office.\nReturn in a year, sooner if needed."}
+          ]
+        },
+        {
+          "id": "2019-08-23a",
+          "kind": "portal_message",
+          "start": "2019-08-23T16:05",
+          "reason": "Results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your results", "author": "PCP", "date": "2019-08-23T16:05", "body": "Hi Melissa, everything from Tuesday is back and normal: blood counts, kidney and liver tests, cholesterol, and the HIV, hepatitis C, gonorrhea and chlamydia tests were all negative. Your Pap and HPV test were normal too, so you won't need another one for five years. Nice to have you in the practice."},
+            {"type": "Patient Message", "title": "RE: Your results", "author": "patient", "date": "2019-08-23T19:42", "body": "Thank you so much, that's a relief. Have a good weekend!"}
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "outside_records",
+          "start": "2019-09-10T11:20",
+          "reason": "Records from prior primary care office",
+          "orders": [{"id": "records-prior-pcp", "action": "done", "date": "2019-09-10T11:20"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "outside primary care", "date": "2019-09-10T11:20", "body": "Records received by fax, 23 pages: office notes 2012 to 2019, lab results, immunization record.\n\nSummary of relevant items:\n- 2012: chlamydia NAAT positive on routine screen; azithromycin given; partner notified.\n- 2014: lower abdominal pain, cervical motion tenderness, treated as PID with IM ceftriaxone and two weeks of oral doxycycline; improved at recheck. Not admitted.\n- 2016: chlamydia NAAT positive; treated with azithromycin; repeat test at 3 months negative.\n- 2016: Pap at age 27 negative for intraepithelial lesion.\n- Allergies: NKDA. No surgeries.\nImmunization record shows childhood series complete; no Tdap on file after adolescence.\n\nScanned to chart. Reviewed by PCP; history already reflected in the problem list."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:40",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T15:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T15:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit — Influenza Vaccine", "author": "RN", "date": "2019-10-08T15:50", "body": "Came in after school for flu vaccine. No fever today, no prior reaction to flu shots. Quadrivalent given left deltoid, VIS provided. Tolerated well, left ambulatory."}
+          ]
+        },
+        {
+          "id": "2020-04-27a",
+          "kind": "telephone",
+          "start": "2020-04-27T07:15",
+          "reason": "Pelvic pain and fever",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Phone Call — Pelvic Pain, Fever", "author": "RN", "date": "2020-04-27T07:25", "body": "Pt called the on-call line early this morning. Lower belly pain since Saturday, much worse overnight, fever 102 at home, threw up twice and can't keep down water or ibuprofen. Says it feels like the PID she had years ago but worse. Discussed with PCP: needs to be seen in person today and can't take pills, so ED rather than office. Husband driving her to the regional hospital ED now. Told her to call us when she's home."},
+            {"type": "Telephone Encounter", "title": "PCP addendum", "author": "PCP", "date": "2020-04-27T07:40", "body": "Agree. Likely PID given history, with vomiting and fever; needs IV treatment and imaging to rule out abscess. Will follow."}
+          ]
+        },
+        {
+          "id": "2020-04-30a",
+          "kind": "hospital_admission",
+          "start": "2020-04-27T08:30",
+          "end": "2020-04-30T12:00",
+          "service": "Gynecology — Inpatient (outside)",
+          "reason": "Pelvic inflammatory disease",
+          "conditions": [
+            {"label": "Chlamydial female pelvic inflammatory disease", "icd10": "A56.11", "action": "diagnosed", "onset": "2020-04-25"}
+          ],
+          "vitals": [
+            {"time": "2020-04-27T08:40", "temp_c": 38.6, "hr": 108, "bp": [114, 70], "rr": 18, "spo2": 98},
+            {"time": "2020-04-29T08:00", "temp_c": 37.0, "hr": 78, "bp": [112, 68], "rr": 16, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2020-04-27T09:00", "results": [{"test": "White Blood Cells", "value": 14.2}]},
+            {"panel": null, "collected": "2020-04-27T09:00", "results": [
+              {"test": "Pregnancy Test, Urine", "text": "Negative"},
+              {"test": "Chlamydia trachomatis NAAT", "text": "Detected", "resulted": "2020-04-28T13:00"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected", "resulted": "2020-04-28T13:00"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2020-04-27T11:10", "text": "Transabdominal and transvaginal technique. Uterus retroverted, normal in size, with a normal endometrial stripe. Right ovary normal in size and appearance. Left ovary normal in size and appearance. No tubo-ovarian abscess, no complex adnexal collection. No hydrosalpinx. No free fluid.", "conclusion": "No tubo-ovarian abscess. Normal pelvic ultrasound."}
+          ],
+          "medications": [
+            {"drug": "doxycycline hyclate 100 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily to complete 14 days total", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Pelvic inflammatory disease"},
+            {"drug_text": "metronidazole 500 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily to complete 14 days total; no alcohol", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Pelvic inflammatory disease"}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2020-04-27T13:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2020-04-30T11:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary — Gynecology", "author": "hospital gynecology", "date": "2020-05-01T10:15", "body": "Regional hospital, Department of Obstetrics and Gynecology\nAdmission 04/27/2020, discharge 04/30/2020\nAllergies: NKDA\n\nAdmitting diagnosis: acute pelvic inflammatory disease.\nDischarge diagnosis: pelvic inflammatory disease, chlamydial.\n\nHistory: 31 yo G0 with prior chlamydia and an outpatient-treated PID episode presented with two days of lower abdominal pain, fever and vomiting, unable to tolerate oral intake. SARS-CoV-2 screening negative on arrival.\n\nCourse: T 38.6 C, HR 108 on arrival. Bilateral lower abdominal tenderness without peritonitis; cervical motion tenderness and bilateral adnexal tenderness on bimanual. WBC 14.2. Urine hCG negative. Pelvic ultrasound without tubo-ovarian abscess. Admitted for parenteral therapy: cefoxitin 2 g IV every 6 hours plus doxycycline 100 mg every 12 hours. Afebrile by 48 hours, tolerating diet, tenderness much improved. Cervical NAAT returned positive for Chlamydia trachomatis, negative for gonorrhea.\n\nDischarge medications: doxycycline 100 mg PO BID and metronidazole 500 mg PO BID to complete a 14-day course.\nInstructions: no intercourse until treatment complete and partner treated; partner referred for treatment. Retest for chlamydia in 3 months. Follow up with PCP within one week.\n\nHospitalist and gynecology teams. Copy to primary care physician."}
+          ]
+        },
+        {
+          "id": "2020-05-04a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, PID",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-05-04T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit — Post-Hospital Follow-Up", "author": "PCP", "date": "2020-05-04T16:25", "body": "Video visit from home, school is remote so she is home anyway. Discharge summary reviewed: chlamydial PID, no abscess on ultrasound, IV cefoxitin/doxy, home on doxy + metronidazole to finish 14 days.\n\nToday day 8 of antibiotics. No fever since the hospital. Pain down to a dull ache low on both sides, maybe 2/10, using nothing for it. Eating normally. Some nausea with the metronidazole, takes it with food and it's fine. No alcohol on it. Husband was seen and treated last week.\n\nAppears well on video, comfortable, no distress.\n\nA/P: chlamydial PID, improving on oral therapy. Finish the course. Abstain until both done. Recheck chlamydia/gonorrhea at her physical in August (3 months). Call if fever, worsening pain or vomiting.\n\nDiscussed that repeated pelvic infections can affect the tubes and later fertility; she asked, and we left it that if pregnancy is slow to happen we evaluate early."}
+          ]
+        },
+        {
+          "id": "2020-08-18a",
+          "kind": "annual_physical",
+          "start": "2020-08-18T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {"label": "Chlamydial female pelvic inflammatory disease", "icd10": "A56.11", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug_text": "prenatal multivitamin with folic acid Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Preconception"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-08-18T10:55", "results": [{"test": "Glucose"}]},
+            {"panel": null, "collected": "2020-08-18T10:55", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-08-18T10:20"},
+            {"procedure": "Venipuncture", "performed": "2020-08-18T10:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-08-18T10:50", "body": "Annual. Masks on, she's nervous about going back into a classroom in a few weeks but the district has a hybrid plan.\n\nInterval: admitted in April with chlamydial PID, finished the 14 days of doxy/metronidazole, no pain since mid-May. Periods regular every 28-30 days, no cramping to speak of.\n\nShe and her husband have decided to stop using condoms and start trying to get pregnant this month. Asked what she should be doing. Already bought a prenatal vitamin with folic acid last week and is taking it daily.\n\nMeds: prenatal vitamin daily. NKDA.\nSH: unchanged, wine maybe once a week now.\n\nExam: vitals as charted. Well. Thyroid normal. Heart RRR, lungs clear. Abdomen soft, nontender, no adnexal tenderness on bimanual, no CMT.\n\nA/P\n1. PID, resolved. Repeat GC/chlamydia NAAT today (3 months post-treatment).\n2. Preconception: continue prenatal vitamin with folic acid. Limit alcohol once trying. If no pregnancy after 12 months, or sooner if cycles change, we'll start an evaluation, earlier than usual given the PID history.\n3. Health maintenance: Pap up to date (2019). BMP today. Flu shot in October.\nReturn 1 year."}
+          ]
+        },
+        {
+          "id": "2020-08-20a",
+          "kind": "portal_message",
+          "start": "2020-08-20T12:30",
+          "reason": "Results",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2020-08-20T12:30", "body": "Your chlamydia and gonorrhea tests are negative, so the infection is cleared, and your chemistry panel is normal. Good luck to you both."}
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T15:30",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-13T15:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-13T15:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit — Influenza Vaccine", "author": "MA", "date": "2020-10-13T15:40", "body": "Screened at door, no COVID symptoms. Possibly pregnant? Pt says no, period started last week. Flu vaccine quadrivalent R deltoid. VIS given. No issues."}
+          ]
+        }
+      ]
+    }
+  ]
+}

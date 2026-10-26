@@ -1,0 +1,188 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002744",
+      "events": [
+        {
+          "id": "2023-01-06a",
+          "kind": "specialist_visit",
+          "start": "2023-01-06T09:40",
+          "service": "Urogynecology",
+          "reason": "Worsening stress urinary incontinence",
+          "vitals": {"weight_kg": 70.8},
+          "measure": ["bp", "hr", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2023-01-06T09:50", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "urogyn-referral", "action": "done", "date": "2023-01-06T09:40"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Urogynecology Consultation", "author": "urogynecology", "date": "2023-01-11T16:20", "body": "Outside urogynecology practice\nVisit date: 01/06/2023\nPatient: Aisha Pierre, 43 y/o\nReferred by: her gynecologist; copy to primary care\n\nHPI: Seen by gynecology in July and October for leakage. She reports that losing urine with coughing and exercise has steadily progressed over roughly the last six months in spite of pelvic floor exercises. Menses are regular. No hot flashes or other menopausal symptoms.\n\nOB history: four term vaginal deliveries, the last with a prolonged second stage; one first-trimester miscarriage treated with D&C.\nOther history: generalized anxiety disorder; fibroid uterus on ultrasound in October.\nMedications: prenatal vitamin. Allergies: NKDA.\nFamily history: maternal fibroids.\nSocial: never smoker, no alcohol, marketing consultant.\n\nVitals: weight 70.8 kg, height 165 cm, BMI 26.\nAbdomen: soft, nontender, no masses felt.\nCough stress test with a comfortably full bladder: positive, with leakage synchronous with cough.\nUrinalysis: negative.\n\nAssessment: stress urinary incontinence, confirmed on exam.\n\nRecommendations:\n1. Continue daily pelvic floor muscle training. Reviewed technique; she is isolating the right muscles.\n2. Return to this clinic as needed if she would like to discuss further options.\n\nAllergies: NKDA.\n\nUrogynecology"}
+          ]
+        },
+        {
+          "id": "2023-01-12a",
+          "kind": "portal_message",
+          "start": "2023-01-12T08:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Urogyn note", "author": "PCP", "date": "2023-01-12T08:10", "body": "Hi Aisha, I got the urogynecology note from last week. They confirmed stress incontinence and want you to keep up the pelvic floor exercises for now, and you can go back to them whenever you want to talk about other options. Let me know if you have questions."}
+          ]
+        },
+        {
+          "id": "2023-03-08a",
+          "kind": "imaging",
+          "start": "2023-03-08T08:15",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-03-08T08:15", "text": "Bilateral screening mammogram with tomosynthesis compared with 2022 and 2021. Heterogeneously dense breasts. No suspicious masses, calcifications or areas of distortion.", "conclusion": "BI-RADS 1: Negative."}
+          ],
+          "orders": [
+            {"id": "mammo-2023", "action": "done", "date": "2023-03-08T08:15"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Mammogram", "author": "MA", "date": "2023-03-09T10:40", "body": "Hi Aisha, your mammogram from yesterday was normal. No follow-up needed until next year."}
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "telephone",
+          "start": "2023-06-12T09:25",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Scheduling", "author": "front desk", "date": "2023-06-12T09:25", "body": "Pt called to move her fall physical from 10/4 to later in the month due to a client trip. Rebooked 10/18 at 8:30. Fasting reminder given."}
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "annual_physical",
+          "start": "2023-10-18T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 71.2, "labs": {"Hemoglobin": 12.8, "Hematocrit": 38.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-18T09:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-10-18T09:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-10-18T09:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 7},
+            {"survey": "PHQ-9 total score", "value": 2}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-10-18T08:30"},
+            {"procedure": "Venipuncture", "performed": "2023-10-18T09:05"},
+            {"procedure": "Immunization administration", "performed": "2023-10-18T09:10"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-18T09:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-18T09:12"}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Routine breast cancer screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-10-18T09:40", "body": "Annual exam, 43F.\n\nInterval: saw urogyn in January, positive cough stress test, confirmed SUI. Plan was to keep doing the exercises. She has been fairly faithful, leakage is \"livable\", still wears a liner on workout days. Not ready to talk about anything more.\nFibroids: periods still heavy the first couple days, no worse. No lightheadedness.\nAnxiety: GAD-7 7. Steady. The walking group helps.\n\nMeds: prenatal vitamin. NKDA.\n\nExam: vitals in flowsheet. Weight about where it was. Throat clear. Thyroid smooth, normal size. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Ext no edema. Skin normal. Calm, organized.\n\nPlan\n- Routine labs.\n- Flu + updated covid today.\n- Mammogram order for winter.\n- Pap/HPV due next year.\n- See you next October."}
+          ]
+        },
+        {
+          "id": "2023-10-20a",
+          "kind": "portal_message",
+          "start": "2023-10-20T11:45",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2023-10-20T11:45", "body": "All of your labs came back normal, Aisha, including the blood count. Same plan as before."}
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "imaging",
+          "start": "2024-02-21T07:50",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2024-02-21T07:50", "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison 2023, 2022 and 2021. Heterogeneously dense parenchyma, unchanged. No suspicious finding.", "conclusion": "BI-RADS 1: Negative. Continue routine screening."}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "done", "date": "2024-02-21T07:50"}
+          ]
+        },
+        {
+          "id": "2024-03-27a",
+          "kind": "portal_message",
+          "start": "2024-03-27T21:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Check in", "author": "patient", "date": "2024-03-27T21:15", "body": "Hi, can I come in sometime in April just to talk about stress? Work has been a lot since January and I've been waking up at 3am running through lists. Not an emergency."},
+            {"type": "Patient Message", "title": "RE: Check in", "author": "front desk", "date": "2024-03-28T09:00", "body": "Of course. You are booked Wednesday 4/10 at 1:40 with your doctor. Reply here if that time doesn't work."}
+          ]
+        },
+        {
+          "id": "2024-04-10a",
+          "kind": "office_visit",
+          "start": "2024-04-10T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-04-11a",
+          "kind": "portal_message",
+          "start": "2024-04-11T08:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Missed appointment", "author": "RN", "date": "2024-04-11T08:30", "body": "Hi Aisha, we missed you yesterday afternoon. Do you want to reschedule? You can also text the office line and we can set up a video visit if that is easier."},
+            {"type": "Patient Message", "title": "RE: Missed appointment", "author": "patient", "date": "2024-04-11T12:52", "body": "So sorry, client call ran over and I completely forgot. Things have calmed down since the big project wrapped up last week. I'm OK to wait until my physical, I'll reach out if it ramps up again."}
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "annual_physical",
+          "start": "2024-10-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 70.4},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-16T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-16T08:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-10-16T08:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-10-16T08:30", "resulted": "2024-10-22T14:00", "results": [{"test": "High-risk HPV DNA", "text": "Not detected"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2024-10-16T08:30", "text": "Liquid-based cervical cytology. Specimen adequate; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 9},
+            {"survey": "PHQ-9 total score", "value": 3}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-10-16T08:00"},
+            {"procedure": "Venipuncture", "performed": "2024-10-16T08:40"},
+            {"procedure": "Immunization administration", "performed": "2024-10-16T08:45"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-16T08:45"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-16T08:47"}
+          ],
+          "orders": [
+            {"id": "fit-2025", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "Average-risk colorectal cancer screening, starting at 45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-10-16T09:20", "body": "Annual, 44F, turns 45 next month.\n\nSpring was rough with work (missed her April visit). Better since then but the baseline worry is a notch higher this year, GAD-7 9. Sleeping OK now. We talked about meds and therapy again; she'd rather keep using what works for her and check back in. Fair.\nSUI: unchanged, manages with liners and the exercises.\nFibroids: heavy first two days, unchanged.\nNo GI issues.\n\nMeds: prenatal vitamin. NKDA. Never smoker, no alcohol.\n\nExam: vitals per flowsheet. Ears and throat fine. Neck without nodes or thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap and HPV collected. Bimanual: uterus enlarged and irregular, as known; no adnexal fullness. No edema.\n\nPlan\n- Pap with HPV collected.\n- Labs: CBC, CMP, lipids.\n- Colon screening: she turns 45 in November; prefers the stool test. FIT kit given, do after her birthday.\n- Flu and covid today.\n- Mammogram is on an every-other-year schedule now, next early 2026.\n- GAD: monitor; reach out anytime."}
+          ]
+        },
+        {
+          "id": "2024-10-18a",
+          "kind": "portal_message",
+          "start": "2024-10-18T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your labs", "author": "PCP", "date": "2024-10-18T16:05", "body": "Labs from Wednesday are all normal. Pap result will take another few days."}
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "portal_message",
+          "start": "2024-10-23T10:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap result", "author": "PCP", "date": "2024-10-23T10:20", "body": "Your Pap smear is normal and the HPV test is negative. With both normal, the next one isn't due for five years."}
+          ]
+        }
+      ]
+    }
+  ]
+}

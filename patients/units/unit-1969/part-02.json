@@ -1,0 +1,1062 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001969",
+   "events": [
+    {
+     "id": "2022-01-18a",
+     "kind": "telephone",
+     "start": "2022-01-18T09:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Reschedule physical",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Reschedule",
+       "author": "front desk",
+       "date": "2022-01-18T09:50",
+       "body": "Pt called; physical was booked for 2/8, inventory week at work. Moved to Fri 3/25 8:00, with fasting labs Tue 3/22. Confirmed."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-22a",
+     "kind": "lab_only",
+     "start": "2022-03-22T07:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fasting labs before physical",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-03-22T07:10",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 98
+        },
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.2
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-03-22T07:10",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 190
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 40
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 120
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-03-22T07:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-03-22T07:10",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-03-22T07:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Fasting lab draw",
+       "author": "MA",
+       "date": "2022-03-22T07:15",
+       "body": "Fasting since 9 pm. Venipuncture L antecubital, one attempt. Labs per standing order for Friday's physical."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-25a",
+     "kind": "annual_physical",
+     "start": "2022-03-25T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "vitals": {
+      "bp": [
+       138,
+       90
+      ]
+     },
+     "state": {
+      "bp": [
+       140,
+       88
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.2,
+       "Low Density Lipoprotein": 120,
+       "Triglycerides": 150,
+       "High Density Lipoprotein": 40
+      }
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2021-10-19"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Essential hypertension"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-03-25T08:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2022-03-25T08:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-03-25T08:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-lis",
+       "action": "placed",
+       "order": "Basic metabolic panel 2 weeks after ACE inhibitor start",
+       "category": "lab",
+       "reason": "Lisinopril start"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-03-25T08:55",
+       "body": "ANNUAL PHYSICAL — 50 y/o M\n\nNo complaints today. Here for his yearly exam.\n\nDiabetes: metformin 1000 mg BID, takes it reliably. Labs from Tuesday: fasting glucose 98, A1c 6.2. Well controlled.\nLipids on atorvastatin 20: total 190, HDL 40, LDL 120, TG 150.\n\nActivity: mostly at a desk or walking the floor at the warehouse, drives in, no regular exercise. Diet heavy on takeout.\nAlcohol: social, per pt. Never smoker.\nFH reviewed: father T2DM and gout, mother hypertension, paternal uncle with alcohol problems.\n\nExam\nBP 138/90 today, HR normal. In October it was 142/92. BMI 32, weight carried centrally. General: comfortable. HEENT normal. Neck no thyromegaly. CV regular, no murmur. Lungs clear. Abdomen obese, soft, nontender. Ext no edema. Feet: sensation intact, pulses 2+. Skin normal. PHQ-2 0.\n\nAssessment and plan\n1. Essential hypertension: two elevated readings on separate days, diabetic. Start lisinopril 20 mg daily. BMP in 2 weeks (K, creatinine). Home cuff if he can get one.\n2. T2DM: at goal, continue metformin.\n3. Lipids: continue atorvastatin 20.\n4. Weight/central obesity: we set concrete goals together — walking 30 minutes 5 days a week, swapping soda and takeout lunches, aiming for 5% weight loss over 6 months. Recheck in 3 months.\n5. Shingrix #1 today, #2 in 2 to 6 months.\n6. Colonoscopy 2021 normal. Eye exam 12/2021 no retinopathy.\n\nRTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-08a",
+     "kind": "nurse_visit",
+     "start": "2022-04-08T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "BMP after starting lisinopril",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-04-08T07:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-lis",
+       "action": "done",
+       "date": "2022-04-08T07:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, straightforward MDM",
+       "performed": "2022-04-08T07:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-04-08T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "BP check and lab draw",
+       "author": "RN",
+       "date": "2022-04-08T07:40",
+       "body": "Two weeks on lisinopril 20. Denies cough, lightheadedness, swelling of lips or tongue. Taking it mornings. BP recorded in flowsheet. BMP drawn."
+      },
+      {
+       "type": "Result Note",
+       "title": "BMP after lisinopril",
+       "author": "PCP",
+       "date": "2022-04-08T15:20",
+       "body": "Potassium and creatinine fine on lisinopril. Continue. Portal note sent to pt."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-16a",
+     "kind": "lab_only",
+     "start": "2022-06-16T07:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Labs before follow-up",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-06-16T07:05",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 158
+        },
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.8
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-06-16T07:05",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 210
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 35
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 140
+        },
+        {
+         "test": "Triglycerides",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-06-16T07:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-06-16T07:05"
+      }
+     ]
+    },
+    {
+     "id": "2022-06-20a",
+     "kind": "office_visit",
+     "start": "2022-06-20T16:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Weight follow-up",
+     "vitals": {
+      "bp": [
+       142,
+       88
+      ]
+     },
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.8,
+       "Low Density Lipoprotein": 140,
+       "Triglycerides": 250,
+       "High Density Lipoprotein": 35
+      }
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Obesity, unspecified",
+       "action": "diagnosed",
+       "onset": "2019-09-12"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-06-20T17:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-06-20T16:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-06-20T17:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up: weight, diabetes, BP",
+       "author": "PCP",
+       "date": "2022-06-20T17:10",
+       "body": "S: Back at three months as planned to go over the weight plan. Honest that it hasn't gone well. The walking lasted about a week. Says the list of goals felt like too much at once and he got discouraged when the scale didn't move. Has been \"trying to eat healthier\" — fewer fries — but no weight change. Taking metformin, lisinopril and atorvastatin.\nLabs 6/16: fasting glucose 158, A1c 7.8 (was 6.2 in March). Lipids TC 210, HDL 35, LDL 140, TG 250.\n\nO: BP 142/88. Weight unchanged, BMI 32. Exam unchanged, no edema.\n\nA/P\n1. Obesity, BMI 32: added to the problem list. Pared the plan down to one goal he picked: a 20-minute walk after dinner on weekdays. Offered nutrition referral, he'd like to wait.\n2. T2DM: A1c up a lot. He thinks it's the spring schedule. Continue metformin 1000 BID, recheck in the fall.\n3. HTN: on lisinopril 20. Continue, recheck.\n4. Lipids: continue atorvastatin 20.\n5. Shingrix #2 today, series complete.\nRTC 4 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-02a",
+     "kind": "portal_message",
+     "start": "2022-08-02T21:03",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Refill",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lisinopril refill",
+       "author": "patient",
+       "date": "2022-08-02T21:03",
+       "body": "Can you send the blood pressure pill for 90 days instead of 30. My insurance charges me the same copay either way."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Lisinopril refill",
+       "author": "MA",
+       "date": "2022-08-03T09:12",
+       "body": "Done — lisinopril 20 mg, 90-day supply with 3 refills sent to your pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "office_visit",
+     "start": "2022-10-18T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-10-18T16:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-10-18T16:40",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-10-18T16:40",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-18T16:35"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2022-10-18T16:36"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-10-18T16:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-18T16:35"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-10-18T16:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes / HTN Follow-up",
+       "author": "PCP",
+       "date": "2022-10-18T16:35",
+       "body": "Subjective: Walking after dinner \"most nights\" through the summer, less now that it's dark early. No weight change to speak of. On metformin, lisinopril, atorvastatin, no side effects. No cough on the lisinopril.\n\nObjective: BP still a little above goal per flowsheet. HR normal. Wt stable. Lungs clear, heart RRR, feet intact with good pulses.\n\nAssessment/Plan:\n- T2DM: A1c today. Continue metformin.\n- HTN on lisinopril 20: continue.\n- Obesity: keep walking; we'll try an indoor option for winter (the warehouse floor counts).\n- Vaccines: flu today, and PCV20 given his diabetes.\n- Urine albumin today.\nRTC spring for physical."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-21a",
+     "kind": "pharmacy",
+     "start": "2022-11-21T11:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Outside vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-11-17T17:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "COVID-19 bivalent booster, outside",
+       "author": "MA",
+       "date": "2022-11-21T11:30",
+       "body": "State registry query shows Pfizer bivalent booster 11/17/2022 at a retail pharmacy. Added to immunization history. (Earlier 2021 booster per pt was never confirmed in registry; not entered.)"
+      }
+     ]
+    },
+    {
+     "id": "2022-12-13a",
+     "kind": "outside_records",
+     "start": "2022-12-13T14:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Eye exam report",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2022-12-13T14:40",
+       "body": "Darren Upton, exam 12/08/2022. Dilated fundus exam: no signs of diabetic retinopathy OU; maculae normal. Pressures normal. Recheck one year.\nOptometry"
+      }
+     ]
+    },
+    {
+     "id": "2023-01-24a",
+     "kind": "nurse_visit",
+     "start": "2023-01-24T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "BP check",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2023-03-14a",
+     "kind": "annual_physical",
+     "start": "2023-03-14T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.4,
+       "Low Density Lipoprotein": 134
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-03-14T08:50",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-03-14T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-03-14T08:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2023-03-14T08:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-03-14T08:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-dysphagia",
+       "action": "placed",
+       "order": "Gastroenterology referral",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "Dysphagia"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-03-14T08:50",
+       "body": "Annual physical.\n\nNew issue: since around the holidays food has been \"getting stuck\" partway down when he swallows. Points to the middle of his chest. Worse with bread and meat, has had to stop and drink water to get things down. Sometimes liquids too. Brings some up undigested now and then. No pain with swallowing, no heartburn to speak of, no weight loss, no vomiting blood, no black stools. Never had this before.\n\nChronic: metformin, lisinopril 20, atorvastatin 20. No changes. Alcohol: \"a few on weekends.\" Never smoker.\n\nExam: vitals per flowsheet. Weight stable at about 104 kg. Oropharynx normal. Neck without masses or nodes. Heart and lungs normal. Abdomen soft, nontender, no masses. Feet normal. PHQ-2 0.\n\nA/P\n1. Dysphagia, about 3 months, solids more than liquids, with regurgitation. Needs endoscopic evaluation. GI referral placed, asked for the earliest slot. Eat slowly, small bites, upright after meals. Call if he can't keep liquids down or loses weight.\n2. T2DM, HTN, lipids: labs today, meds unchanged.\n3. Prevention: colonoscopy 2021 normal, vaccines current except the fall ones."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-11a",
+     "kind": "portal_message",
+     "start": "2023-04-11T12:44",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "GI appointment",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "GI appointment",
+       "author": "patient",
+       "date": "2023-04-11T12:44",
+       "body": "GI office called, first appointment is June 5. That's almost two months. Still having trouble with steak and bread but I'm managing."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: GI appointment",
+       "author": "PCP",
+       "date": "2023-04-11T17:20",
+       "body": "I asked our referral coordinator to get you on their cancellation list. Keep cutting food small and eating slowly. If you get to the point where water won't go down, or food gets stuck and won't pass, go to the emergency room rather than waiting."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-05a",
+     "kind": "specialist_visit",
+     "start": "2023-06-05T09:30",
+     "service": "Gastroenterology",
+     "reason": "Dysphagia",
+     "vitals": {
+      "bp": [
+       138,
+       86
+      ],
+      "hr": 78
+     },
+     "state": {
+      "bp": [
+       138,
+       86
+      ]
+     },
+     "measure": [
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-06-05T09:00",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-06-05T09:00",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 152
+        },
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 2.5
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-06-05T09:00",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-dysphagia",
+       "action": "done",
+       "date": "2023-06-05T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology consultation and upper endoscopy",
+       "author": "gastroenterology",
+       "date": "2023-06-26T10:15",
+       "body": "GASTROENTEROLOGY CONSULTATION\nPatient: Darren Upton   DOB: 07/10/1971   Date of visit: 06/05/2023\nReferring: primary care physician\n\nReason for referral: difficulty swallowing.\n\nHistory: 51-year-old man followed by his PCP for hypertension and elevated weight, also with type 2 diabetes. About six months of swallowing trouble that has steadily worsened, now with both solid food and liquids. Describes a sense of food hanging up behind the mid-sternum after he eats, and intermittent regurgitation of food that comes back up unchanged. He has not lost a meaningful amount of weight. No vomiting. Bowel habits unchanged.\n\nMedications: metformin, lisinopril, atorvastatin. Allergies: NKDA.\nSocial: never smoker; alcohol per patient, social.\n\nExam: BP 138/86, HR 78. BMI 32. Comfortable. Heart regular, lungs clear. Abdomen soft without hepatosplenomegaly or masses.\n\nLabs drawn today: hemoglobin 14.2 g/dL, fasting glucose 152 mg/dL, creatinine 1.0 mg/dL, TSH 2.5 uIU/mL, electrolytes normal.\n\nUPPER ENDOSCOPY (same day, monitored anesthesia care):\nEsophagus dilated, with retained food debris in the lumen despite fasting. No mass. No stricture. Mucosa otherwise unremarkable after lavage. The scope passed into the stomach with gentle pressure at the gastroesophageal junction. Stomach and duodenum normal.\n\nImpression: dysphagia with a dilated, food-retaining esophagus and no obstructing lesion; a primary motility disorder is suspected.\nPlan: high-resolution esophageal manometry, scheduled. Liquid-heavy diet the day before procedures. We will send results.\n\nGastroenterology"
+      }
+     ]
+    },
+    {
+     "id": "2023-06-14a",
+     "kind": "procedure_visit",
+     "start": "2023-06-14T08:00",
+     "service": "Gastroenterology",
+     "reason": "Esophageal manometry",
+     "conditions": [
+      {
+       "label": "Achalasia",
+       "action": "diagnosed",
+       "onset": "2022-12-15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "High-resolution esophageal manometry",
+       "author": "gastroenterology",
+       "date": "2023-06-26T10:16",
+       "body": "ESOPHAGEAL MANOMETRY REPORT\nPatient: Darren Upton   Study date: 06/14/2023\nIndication: dysphagia; dilated esophagus with retained food on endoscopy 06/05/2023.\n\nCatheter placed transnasally without difficulty. Ten wet swallows analyzed.\nFindings: aperistalsis of the esophageal body on all swallows. Incomplete relaxation of the lower esophageal sphincter with elevated integrated relaxation pressure.\nInterpretation: findings consistent with achalasia.\n\nPlan from GI: treatment options reviewed with patient (pneumatic dilation versus surgical myotomy versus endoscopic myotomy). He prefers balloon dilation; being scheduled.\nGastroenterology"
+      }
+     ]
+    },
+    {
+     "id": "2023-06-27a",
+     "kind": "portal_message",
+     "start": "2023-06-27T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "GI results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your GI results",
+       "author": "PCP",
+       "date": "2023-06-27T08:40",
+       "body": "Hi Darren, I received the GI report yesterday. The swallowing study shows achalasia: the muscle at the bottom of the esophagus doesn't relax when you swallow and the esophagus itself isn't squeezing food down. That explains the food sticking. The scope showed no growth or narrowing, which is reassuring. The GI team says you chose the balloon stretching procedure. That's a good first-line option. Let me know when it's scheduled and how it goes."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-14a",
+     "kind": "portal_message",
+     "start": "2023-08-14T18:25",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Update after GI procedure",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Had the balloon procedure",
+       "author": "patient",
+       "date": "2023-08-14T18:25",
+       "body": "Had the balloon stretch done last Wednesday the 9th. Sore throat for a day. Food is going down way better, I had a sandwich today with no problem. They said they'd send you something."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Had the balloon procedure",
+       "author": "PCP",
+       "date": "2023-08-14T20:02",
+       "body": "That's great news. Haven't received their report yet, I'll keep an eye out. Any chest pain, fever, or trouble breathing in the days after a dilation should be checked right away. Glad you can eat a sandwich again."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-17a",
+     "kind": "office_visit",
+     "start": "2023-10-17T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "weight_kg": 97.4,
+      "labs": {
+       "Hemoglobin A1c": 7.3
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "AUDIT-C total score",
+       "value": 10
+      }
+     ],
+     "social": [
+      {
+       "item": "History of alcohol use",
+       "value": "About 6 beers daily, per patient"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-10-17T16:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-10-17T16:45",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-10-17T16:45",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-17T16:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-10-17T16:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-17T16:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-10-17T16:45"
+      }
+     ],
+     "orders": [
+      {
+       "id": "psych-aud",
+       "action": "placed",
+       "order": "Psychiatry referral, outpatient addiction",
+       "category": "referral",
+       "to": "Psychiatry",
+       "reason": "Heavy daily alcohol use, wants help stopping"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2023-10-17T16:45",
+       "body": "S: Diabetes follow-up, first visit since the achalasia diagnosis. Had pneumatic dilation in August at GI; swallowing much improved, eating normally, only rare hesitation with dry bread. No GI report received yet.\nDown about 6 kg since spring — eating smaller meals over the months when swallowing was hard, and has kept portions down.\n\nWhen I asked about alcohol today he was more open than before. Says it's really about six beers every night and has been for years, more than he's told us. Has tried to stop on his own more than once and it doesn't last. It's causing friction at home and he's worried about work. He wants help. No morning drinking he admits, no withdrawal seizures, no DUI. No other substances.\n\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 20.\n\nO: Vitals per flowsheet, weight 97.4 kg, BMI 30. Alert, appropriate. No tremor. Heart, lungs normal. Abdomen soft. Feet normal. AUDIT-C 10.\n\nA/P\n1. Heavy daily alcohol use, wants to stop. Referred to outpatient psychiatry (addiction). Discussed not stopping abruptly on his own given the amount without talking to them, and to call us or go to the ED for shakes, sweats or confusion if he cuts down.\n2. Achalasia s/p dilation: doing well. Requesting the procedure note from GI.\n3. T2DM: A1c, BMP, urine albumin today. Continue metformin.\n4. HTN: continue lisinopril 20.\n5. Flu vaccine today."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-30a",
+     "kind": "specialist_visit",
+     "start": "2023-11-30T13:00",
+     "service": "Psychiatry",
+     "reason": "Alcohol use",
+     "vitals": {
+      "bp": [
+       138,
+       85
+      ],
+      "hr": 78
+     },
+     "measure": [
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Aspartate Aminotransferase": 45,
+       "Alanine Aminotransferase": 52
+      }
+     },
+     "conditions": [
+      {
+       "label": "Alcohol use disorder, moderate",
+       "icd10": "F10.20",
+       "action": "diagnosed",
+       "onset": "2013-11-01"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-11-30T12:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2023-11-30T12:40",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 45
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 52
+        },
+        {
+         "test": "Alkaline Phosphatase",
+         "value": 85
+        },
+        {
+         "test": "Bilirubin, Total",
+         "value": 1.2
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-11-30T12:40",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 0.9
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "psych-aud",
+       "action": "done",
+       "date": "2023-11-30T13:00"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "AUDIT-C total score",
+       "value": 10
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Psychiatric diagnostic evaluation with medical services",
+       "performed": "2023-11-30T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Outpatient psychiatry evaluation",
+       "author": "psychiatry",
+       "date": "2023-12-14T11:30",
+       "body": "OUTPATIENT PSYCHIATRY — ADDICTION SERVICES\nInitial evaluation, date of service 11/30/2023\nPatient: Darren Upton, 52 M. Referred by PCP.\n\nChief concern: wants to stop drinking.\n\nHistory: Recently diagnosed with achalasia and treated with dilation; also followed for diabetes and hypertension (on metformin and lisinopril). Reports drinking six beers a day for about the last ten years. Several attempts to quit on his own, none sustained beyond a couple of weeks. Motivated now because drinking is straining his family life and he feels it is affecting his performance as a shift supervisor. Denies illicit drug use. Has never been prescribed opioids. No history of withdrawal seizures or delirium. No prior treatment.\n\nMedications: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 20 mg daily. Allergies: NKDA.\nFamily: paternal uncle with alcohol use disorder.\n\nExam: BP 138/85, HR 78, BMI 30. Calm, cooperative, good eye contact, euthymic, linear thought process, no SI/HI, no perceptual disturbance. Insight and judgment fair to good. No tremor. Liver edge palpable about 2 cm below the right costal margin. No jaundice, no ascites, no spider angiomas.\n\nLabs: CBC within normal limits. AST 45 U/L (mildly high), ALT 52 U/L, alkaline phosphatase 85 U/L, total bilirubin 1.2 mg/dL, creatinine 0.9 mg/dL.\n\nAssessment: Alcohol use disorder, moderate.\n\nPlan:\n- Referred to our intensive outpatient counseling program; intake information given.\n- Discussed medication to reduce craving (naltrexone). He would like to try counseling first and revisit medication if he struggles.\n- Gradual reduction discussed with return precautions for withdrawal symptoms.\n- Follow-up with us as needed through the counseling program.\n\nPsychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2023-12-12a",
+     "kind": "outside_records",
+     "start": "2023-12-12T09:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Eye exam report",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Annual diabetic eye exam",
+       "author": "optometry",
+       "date": "2023-12-12T09:50",
+       "body": "Re: Darren Upton. Examined 12/07/2023. Dilated retinal exam normal both eyes, no diabetic retinopathy or macular edema. Glasses prescription unchanged. Next exam in a year.\nOptometry"
+      }
+     ]
+    },
+    {
+     "id": "2023-12-14a",
+     "kind": "telephone",
+     "start": "2023-12-14T15:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Psychiatry letter received",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Psychiatry evaluation received",
+       "author": "PCP",
+       "date": "2023-12-14T15:05",
+       "body": "Psychiatry eval from 11/30 in. AUD, moderate. Plan counseling, declined naltrexone for now. Liver enzymes mildly up (AST 45). Added AUD to problem list. Called pt, left message that I got the letter and am glad he went; call back if he wants to talk about it."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

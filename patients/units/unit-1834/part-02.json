@@ -1,0 +1,320 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001834",
+      "events": [
+        {
+          "id": "2022-01-18a",
+          "kind": "outside_records",
+          "start": "2022-01-18T13:05",
+          "reason": "GI follow-up letter",
+          "documents": [
+            {"type": "Outside Records", "title": "Gastroenterology follow-up letter", "author": "gastroenterology", "date": "2022-01-18T13:05", "body": "Gastroenterology clinic, annual visit 01/11/2022.\n\nUlcerative colitis remains quiet: formed stools once or twice a day, no blood, no nocturnal symptoms. She tells us she had parathyroid surgery in November and has new lung and skin findings under evaluation for sarcoidosis by her primary care physician.\n\nMedications: mesalamine 1.2 g twice daily. Allergies: none known.\n\nAbdomen soft and nontender.\n\nImpression: UC in remission on mesalamine. Plan: continue current dose. Surveillance colonoscopy to be scheduled in a future year based on disease duration. Return in 12 months."}
+          ]
+        },
+        {
+          "id": "2022-02-07a",
+          "kind": "telephone",
+          "start": "2022-02-07T09:40",
+          "reason": "records request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request, endocrine surgery", "author": "front desk", "date": "2022-02-07T09:40", "body": "Second request faxed to the outside endocrine surgery group for the 11/30/21 operative note, pathology and the sestamibi report. Their records line says it was sent to the wrong fax number in December. Resending this week."}
+          ]
+        },
+        {
+          "id": "2022-02-14a",
+          "kind": "outside_records",
+          "start": "2022-02-14T15:30",
+          "reason": "surgical records",
+          "conditions": [{"label": "Hyperparathyroidism, primary", "action": "resolved", "note": "single left inferior adenoma removed 2021-11-30"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2021-11-30T09:40", "issued": "2021-12-02T16:00", "text": "Specimen: left inferior parathyroid, excision. Gross: a single tan-brown ovoid nodule received fresh. Microscopic: hypercellular parathyroid tissue composed predominantly of chief cells with a compressed rim of normal parathyroid tissue at the edge; no atypia, capsular or vascular invasion. Margins not applicable.", "conclusion": "Parathyroid adenoma."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Endocrine surgery records packet", "author": "endocrine surgery", "date": "2022-02-14T15:30", "body": "Outside endocrine surgery group. Records packet: imaging, operative report and pathology.\n\nParathyroid sestamibi SPECT/CT, 11/03/2021: a single persistent focus of tracer retention at the lower pole of the left thyroid lobe, compatible with a left inferior parathyroid adenoma. No ectopic focus.\n\nOperative report, 11/30/2021. Procedure: focused left inferior parathyroidectomy under general anesthesia with intraoperative PTH monitoring. Indication: primary hyperparathyroidism with hypercalciuria and osteopenia, age under 50. Findings: an enlarged left inferior gland, excised intact. Intraoperative PTH fell by more than half from baseline at ten minutes. Estimated blood loss minimal. No complications. Discharged home the same day.\n\nPost-operative check, 12/14/2021: incision healing well; voice normal. Serum calcium remains elevated; PTH appropriately low. Persistent hypercalcemia with suppressed PTH is not explained by residual parathyroid disease; patient advised to see her primary care physician for further evaluation.\n\nAllergies: no known drug allergies."}
+          ]
+        },
+        {
+          "id": "2022-03-21a",
+          "kind": "office_visit",
+          "start": "2022-03-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "sarcoidosis recheck",
+          "state": {"labs": {"Calcium": 11.4}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-03-21T16:15", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}]}
+          ],
+          "orders": [{"id": "derm-referral", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "erythema nodosum, recurrent tender shin nodules"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-21T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-03-21T16:40", "body": "3-month recheck, presumed sarcoidosis.\n\nCough is still there, dry, worse talking all day at school. Winded on the stairs but managing. The shin bumps faded in January and two new ones came up this month, sore when she bumps them on a desk. No joint pain, no eye symptoms. Energy maybe slightly better since surgery. No supplements.\n\nSurgery records arrived last month: single left inferior adenoma removed, path confirmed adenoma; their post-op check found calcium still up with a low PTH.\n\nExam: vitals fine. Lungs with a few fine crackles at both bases, unchanged. Two tender erythematous nodules on the right shin, one on the left. Neck scar well healed.\n\nA/P:\n1. Sarcoidosis, lung and hilar nodes, clinical dx. Symptoms smoldering. CMP today for calcium. She would like someone to look at the shin nodules since they keep recurring; dermatology referral placed. If cough not better by summer, pulmonology.\n2. Hyperparathyroidism treated, resolved.\n3. UC stable.\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2022-03-23a",
+          "kind": "portal_message",
+          "start": "2022-03-23T07:55",
+          "documents": [
+            {"type": "Patient Message", "title": "Calcium result", "author": "PCP", "date": "2022-03-23T07:55", "body": "Your calcium is still elevated, about where it was in December. Kidney function is normal. Keep up the water and keep avoiding calcium and vitamin D supplements. We will recheck at your next visit."}
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "pharmacy",
+          "start": "2022-05-17T11:10",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2022-05-17T11:10", "body": "Pharmacy refill request for mesalamine DR 1.2 g, #180 for 90 days. GI prescriber's script ran out of refills and GI office closed for a staff day. Per PCP OK to send one 90-day fill as a bridge. Sent. Pt informed and reminded to have GI renew."}
+          ]
+        },
+        {
+          "id": "2022-06-07a",
+          "kind": "office_visit",
+          "start": "2022-06-07T15:50",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-07-05a",
+          "kind": "portal_message",
+          "start": "2022-07-05T20:14",
+          "orders": [{"id": "pulm-referral", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "sarcoidosis with persistent cough and dyspnea"},
+                     {"id": "derm-referral", "action": "done", "date": "2022-06-27T10:00"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Dermatology visit", "author": "patient", "date": "2022-07-05T20:14", "body": "Sorry I missed my June appointment, last week of school was chaos. I did see the dermatologist on June 27. She said the shin bumps are erythema nodosum from the sarcoid and they're mild right now. They did a chest x-ray there too and she said the lymph nodes in my chest are still big but nothing in the lungs. Blood work showed my calcium is still high. She said I should see a lung specialist to get a biopsy and confirm everything. The cough is still around and I get tired easily. Can you send a referral?"},
+            {"type": "Patient Message", "title": "RE: Dermatology visit", "author": "PCP", "date": "2022-07-06T07:45", "body": "Thanks for the update, and no problem about June. Pulmonology referral placed today; their office will call you to schedule. We have not received the dermatology note, so we will request it. Let's set up a visit before school starts."}
+          ]
+        },
+        {
+          "id": "2022-07-06a",
+          "kind": "telephone",
+          "start": "2022-07-06T10:30",
+          "reason": "records request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Dermatology records request", "author": "front desk", "date": "2022-07-06T10:30", "body": "Requested 6/27/22 visit note from outside dermatology. Their front desk says note is not finalized; will fax when signed."}
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "annual_physical",
+          "start": "2022-08-30T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-30T08:55", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "CBC with Differential", "collected": "2022-08-30T08:55", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Lymphocytes %"}]},
+            {"panel": "Urinalysis", "collected": "2022-08-30T08:55", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-08-30T08:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-08-30T09:20", "body": "Annual exam. Back to school next week, her 10th year teaching.\n\nInterval: dermatology 6/27 (note never came; by her report EN from sarcoid, CXR with hilar nodes and clear lungs, calcium high, advised pulmonology). Pulmonology referral placed 7/6; first available is 12/19.\n\nCough steady, not worse. Mild dyspnea on stairs. No fevers. Shins clear this month. Bowels normal. Mood OK, PHQ-2 1.\n\nMeds: mesalamine 1.2 g BID. NKDA.\n\nExam: well. Eyes clear. Neck scar fine, no adenopathy. Heart regular. Lungs: faint bibasilar crackles. Abd soft. Skin: no nodules on the shins today. No edema.\n\nPlan: CMP, CBC with diff, UA. Flu and COVID booster in October. Pap next year. Keep the 12/19 pulmonology appointment; call if breathing worsens and we can push for sooner."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T15:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T15:42"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T15:40"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2022-10-04T15:55", "body": "Flu IM left deltoid and bivalent COVID booster IM right deltoid. Screening questions negative. Observed 15 minutes, fine. Expect a sore arm and maybe a tired day; Tylenol ok."}
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "specialist_visit",
+          "start": "2022-12-19T13:30",
+          "service": "Pulmonology",
+          "reason": "sarcoidosis",
+          "vitals": {"temp_c": 37.8, "bp": [120, 75], "hr": 80, "rr": 18},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-19T14:20", "results": [{"test": "Calcium", "value": 10.8}]},
+            {"panel": null, "collected": "2022-12-19T14:20", "results": [{"test": "Angiotensin converting enzyme", "loinc": "2742-5", "unit": "U/L", "text": "Elevated"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-12-19T14:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2022-12-19T14:20", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alkaline Phosphatase"}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2022-12-19T14:00", "text": "PA and lateral chest. Bilateral hilar adenopathy persists. New fine reticular opacities in both lungs. No effusion. Cardiomediastinal silhouette otherwise normal.", "conclusion": "Bilateral hilar adenopathy with reticular opacities, consistent with known sarcoidosis."}
+          ],
+          "orders": [{"id": "pulm-referral", "action": "done", "date": "2022-12-19T13:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology consultation", "author": "pulmonology", "date": "2023-01-04T10:20", "body": "Outside pulmonary clinic. New consultation 12/19/2022.\n\nReason: sarcoidosis, referred by primary care.\n\nShe is a 35-year-old teacher with ulcerative colitis, a parathyroid adenoma removed in 11/2021, and a clinical diagnosis of sarcoidosis since 12/2021. For the past three months she reports a dry cough, mild breathlessness and some evenings with low fevers. No travel. Never smoker.\n\nMedications: mesalamine. Allergies: NKDA.\n\nT 37.8 C, BP 120/75, HR 80, RR 18. Fine crackles at both lung bases. No rash on the skin today; no palpable peripheral lymph nodes.\n\nLabs: calcium 10.8 mg/dL; ACE elevated; CBC and liver tests within normal limits. Tuberculin skin test placed and read here: negative.\nChest radiograph: bilateral hilar adenopathy and reticular opacities.\n\nImpression: pulmonary sarcoidosis with hilar adenopathy and parenchymal involvement, mildly symptomatic.\nPlan: observation for now. Return in six months with repeat chest film. If imaging or symptoms progress, tissue sampling of the mediastinal nodes would be the next step.\n\nThank you for the referral."}
+          ]
+        },
+        {
+          "id": "2023-01-05a",
+          "kind": "portal_message",
+          "start": "2023-01-05T16:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Lung doctor note", "author": "PCP", "date": "2023-01-05T16:30", "body": "We received the pulmonology note from December. They see the sarcoid in the chest nodes and some in the lung tissue, and want to watch it for now and see you again in about six months. The TB skin test was negative. Let me know if the cough or fevers get worse before then."}
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "telehealth_visit",
+          "start": "2023-03-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cough follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2023-03-14T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2023-03-14T16:25", "body": "Video, she is at home after school; two identifiers confirmed.\n\nCough about the same. Fevers have stopped. Breathing OK on flat ground. Pants a bit looser, she thinks a few pounds down this winter, not trying. No night sweats. Eating normally.\n\nObserved: speaking full sentences, no cough during the call, no distress.\n\nA/P: stable symptomatic sarcoidosis, on observation per pulmonology. Possible weight loss; come in for weight and labs in the spring. Pulmonology return in June."}
+          ]
+        },
+        {
+          "id": "2023-05-10a",
+          "kind": "office_visit",
+          "start": "2023-05-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "weight loss, cough",
+          "state": {"weight_kg": 67.6, "labs": {"Calcium": 11.1}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-05-10T16:15", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "CBC with Differential", "collected": "2023-05-10T16:15", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2023-05-10T16:15", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "orders": [{"id": "rheum-referral", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "multisystem sarcoidosis with weight loss"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-05-10T15:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-05-10T16:50", "body": "Weight check and cough.\n\nDown about 10 lb from her usual, 67.6 kg today. Not dieting. Dry cough for months, worse again since March, more tired than she was in the winter. No fevers now, no night sweats, no hemoptysis. Bowels normal, no blood; UC quiet. No joint pain.\n\nExam: thinner. Lungs: fine crackles both bases. No lymph nodes in neck, axillae or groin. Heart regular. Shins clear.\n\nA/P:\n1. Sarcoidosis with weight loss and ongoing cough. CMP, CBC with diff, TSH. Pulmonology has her back in June but she has now had lung, skin and calcium involvement and is losing weight; referring to rheumatology for a multisystem evaluation as well. She is fine with that.\n2. Hypercalcemia, sarcoid-related, persistent; labs today.\n3. UC in remission."}
+          ]
+        },
+        {
+          "id": "2023-05-12a",
+          "kind": "portal_message",
+          "start": "2023-05-12T08:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2023-05-12T08:10", "body": "Calcium is still high, a little lower than last year. Blood counts, kidney function and thyroid are normal. Rheumatology should call you about an appointment."}
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "specialist_visit",
+          "start": "2023-06-21T09:30",
+          "service": "Rheumatology",
+          "reason": "sarcoidosis",
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-06-21T10:20", "results": [{"test": "Calcium", "value": 11.2}, {"test": "Creatinine", "value": 0.9}]},
+            {"panel": null, "collected": "2023-06-21T10:20", "results": [
+              {"test": "Angiotensin converting enzyme", "loinc": "2742-5", "unit": "U/L", "text": "Elevated"},
+              {"test": "1,25-dihydroxyvitamin D", "loinc": "62290-2", "unit": "pg/mL", "text": "Elevated"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2023-06-21T10:00", "text": "PA and lateral. Bilateral hilar lymphadenopathy. Reticulonodular infiltrates in both lungs. No pleural effusion. Heart size normal.", "conclusion": "Bilateral hilar lymphadenopathy with reticulonodular infiltrates."}
+          ],
+          "orders": [{"id": "rheum-referral", "action": "done", "date": "2023-06-21T09:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology consultation", "author": "rheumatology", "date": "2023-08-14T11:00", "body": "Outside rheumatology practice. Consultation, date of service 06/21/2023.\n\nMs. Washington, 36, referred for sarcoidosis with weight loss. Pulmonology saw her six months ago. Over the last three months she has had a dry cough, fatigue and an unintended loss of about ten pounds. She denies fever, night sweats and coughing blood. No joint pain or swelling, no eye complaints today.\n\nPast history: ulcerative colitis; primary hyperparathyroidism; sarcoidosis.\nMedications: mesalamine 1.2 g twice daily. Allergies: NKDA.\nFamily history: maternal aunt with sarcoidosis, mother with lupus, father with type 2 diabetes, a paternal cousin with ulcerative colitis.\n\nAfebrile, vital signs normal. Bibasilar crackles. No palpable lymphadenopathy. No synovitis. Skin clear.\n\nLabs: calcium 11.2 mg/dL, creatinine 0.9 mg/dL, ACE elevated, 1,25-dihydroxyvitamin D elevated.\nChest radiograph: bilateral hilar lymphadenopathy with reticulonodular infiltrates.\n\nAssessment: sarcoidosis with pulmonary, nodal, cutaneous and calcium involvement, now with constitutional symptoms. No tissue diagnosis to date.\nRecommendations: mediastinal lymph node biopsy to establish the diagnosis histologically; I have contacted her pulmonologist, who will arrange EBUS. Follow up with us as needed afterward."}
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "procedure_visit",
+          "start": "2023-07-18T08:00",
+          "end": "2023-07-18T12:30",
+          "service": "Pulmonology",
+          "reason": "mediastinal lymph node biopsy",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-07-18T09:15", "issued": "2023-07-21T15:00", "text": "Specimen: mediastinal lymph node (subcarinal), endobronchial ultrasound-guided transbronchial needle aspiration with cell block. Microscopic: multiple well-formed noncaseating epithelioid granulomas with scattered multinucleated giant cells in a background of lymphocytes. No necrosis. AFB and GMS stains negative for organisms. No malignant cells.", "conclusion": "Noncaseating granulomatous inflammation, consistent with sarcoidosis."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "EBUS procedure and pathology", "author": "pulmonology", "date": "2023-07-27T13:40", "body": "Outside pulmonology. Procedure note 07/18/2023: flexible bronchoscopy with endobronchial ultrasound-guided transbronchial needle aspiration of the subcarinal lymph node station under moderate sedation. Airways normal. Enlarged subcarinal and hilar nodes visualized; subcarinal node sampled with several passes. No complications; discharged home the same day.\n\nPathology: noncaseating granulomas, special stains negative, no malignancy.\n\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2023-07-28a",
+          "kind": "portal_message",
+          "start": "2023-07-28T10:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Biopsy result", "author": "PCP", "date": "2023-07-28T10:05", "body": "Hi Tamika, the pathology from your bronchoscopy came in yesterday. It shows the granulomas typical of sarcoidosis, with no infection and no cancer. So the diagnosis we suspected is now confirmed. Your pulmonologist will go over next steps; let's talk at your physical in September."},
+            {"type": "Patient Message", "title": "RE: Biopsy result", "author": "patient", "date": "2023-07-28T13:22", "body": "Thank you, that's a relief honestly. See you in September."}
+          ]
+        },
+        {
+          "id": "2023-08-14b",
+          "kind": "telephone",
+          "start": "2023-08-14T11:20",
+          "reason": "records received",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Rheumatology note received", "author": "MA", "date": "2023-08-14T11:20", "body": "Rheumatology consult from 6/21 finally received after two requests. Scanned and routed to PCP."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "annual_physical",
+          "start": "2023-09-12T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T08:50", "results": [{"test": "Calcium"}, {"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2023-09-12T08:40", "issued": "2023-09-19T12:00", "text": "Specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-12T08:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-12T09:15", "body": "Annual. School started last week.\n\nSarcoid: EBUS 7/18 confirmed noncaseating granulomas. Rheumatology letter (6/21) recommended the biopsy and has her follow as needed. Pulmonology continuing to observe. Cough lingers, weight has held. No fever.\nUC: no flares; she did not see GI this year, plans to call them.\n\nMeds: mesalamine. NKDA. PHQ-2 1.\n\nExam: well. Lungs: soft bibasilar crackles. Heart regular. Breasts without masses. Pelvic: normal external genitalia, cervix normal, Pap with HPV collected. Shins clear. No edema.\n\nPlan: CMP, lipids. Pap/HPV sent. Flu and updated COVID next month. GI follow-up reminder."}
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "portal_message",
+          "start": "2023-09-20T17:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap and labs", "author": "PCP", "date": "2023-09-20T17:00", "body": "Your Pap and HPV test are normal, so the next one is due in 5 years. Cholesterol is fine. Calcium is still mildly high, as expected with the sarcoid."}
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-03T15:34"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T15:36"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T15:34"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2023-10-03T15:50", "body": "Influenza IM right deltoid, 2023-24 COVID IM left deltoid. No contraindications. Observed 15 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "office_visit",
+          "start": "2023-12-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, blurry vision",
+          "state": {"weight_kg": 68.4, "labs": {"Calcium": 11.3}},
+          "vitals": {"temp_c": 36.8, "bp": [122, 80], "hr": 78, "rr": 14},
+          "measure": ["spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-12-13T16:10", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": null, "collected": "2023-12-13T16:10", "results": [{"test": "Parathyroid Hormone, Intact", "value": 7}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2023-12-13T16:30", "text": "PA and lateral. Prominent bilateral hilar fullness. No lung infiltrate. No pleural effusion. Heart size normal.", "conclusion": "Prominent bilateral hilar fullness without infiltrate or effusion."}
+          ],
+          "orders": [{"id": "ophtho-referral", "action": "placed", "order": "Ophthalmology referral", "category": "referral", "to": "Ophthalmology", "reason": "blurry vision and dry irritated eyes in sarcoidosis"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-12-13T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-12-13T17:05", "body": "F/u sarcoid and calcium.\n\nHalf a year of feeling weak and worn down, achy in a vague way through the muscles and joints without any swelling, mild headaches now and then. Vision goes blurry on and off, mostly reading student work at her desk. Harder to concentrate, says she is slower getting report cards done. Mild breathlessness carrying groceries up to her apartment. No cough lately, no wheeze, no fevers or sweats. Last few weeks her eyes feel dry and gritty.\n\nMeds: mesalamine 1.2 g BID. NKDA.\n\nT 36.8, BP 122/80, P 78, RR 14.\nExam: eyes without redness, pupils equal and reactive. Heart regular, no murmur. Lungs clear today. Neuro: strength 5/5 throughout, reflexes 2+ and symmetric. Skin: scattered firm, mildly tender red nodules over both anterior shins.\n\nA/P:\n1. Sarcoidosis with fatigue, eye symptoms and recurrent erythema nodosum. Eye symptoms in sarcoid need an eye exam to look for inflammation; ophthalmology referral. CXR today.\n2. Hypercalcemia: CMP and PTH.\n3. UC stable.\nAddendum: CXR with prominent hilar fullness, no infiltrate or effusion. Calcium still elevated, renal function normal, PTH 7 (suppressed), unchanged picture."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,886 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002079",
+      "given": "Philip",
+      "family": "Hickey",
+      "birth_date": "1966-09-09",
+      "address_line": "203 Main Street",
+      "phone": "+1-774-555-0120",
+      "email": "philip.hickey@example.test",
+      "summary": "Long-haul truck driver and heavy smoker who joins in 2022 with knee osteoarthritis, chronic bronchitis, constipation and mild iron deficiency anemia. A right lower lobe adenocarcinoma is found in 2023 after he defers screening and then bronchoscopy; stage IIIB, treated with chemoradiation in 2024, complicated by TRALI during a transfusion for anemia, then sigmoid diverticulitis in 2025 and Guillain-Barré syndrome in 2026.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "telephone",
+          "start": "2022-08-30T10:42",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2022-08-30T10:42",
+              "body": "Caller wants to transfer primary care here. Drives long-haul, says he is home most weekends and some Mondays/Tuesdays. Prior PCP office is closing its adult panel. Booked new patient visit 9/13 at 8:20 AM (first slot, he leaves for a run that afternoon). Release of information form emailed for prior records. Insurance BCBS through employer, card to be scanned at visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T08:20",
+          "end": "2022-09-13T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Chronic constipation",
+              "action": "diagnosed",
+              "onset": "2018-06-01",
+              "note": "Long-standing; manages with psyllium and MiraLAX."
+            },
+            {
+              "label": "Bilateral primary osteoarthritis of knee",
+              "action": "diagnosed",
+              "onset": "2017-01-01"
+            },
+            {
+              "label": "Chronic bronchitis",
+              "icd10": "J42",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "Productive cough most mornings, PRN albuterol."
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "1986-09-01",
+              "note": "Started at 20, about 1.5 ppd now, 40 pack-years."
+            },
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2021-04-01",
+              "note": "Per prior PCP, attributed to chronic ibuprofen."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "psyllium 3.4 G Powder for Oral Suspension",
+              "action": "historical",
+              "sig": "Mix 1 packet (3.4 g) in 8 oz water and drink once daily",
+              "dose": {
+                "value": 3.4,
+                "unit": "g"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic constipation"
+            },
+            {
+              "drug_text": "ibuprofen 400 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 to 8 hours as needed for knee pain",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "Q6-8H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Knee osteoarthritis"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Chronic bronchitis"
+            },
+            {
+              "drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution",
+              "action": "historical",
+              "sig": "Mix 17 g in 8 oz liquid and drink once daily as needed for constipation",
+              "dose": {
+                "value": 17,
+                "unit": "g"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic constipation"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 103.0,
+            "height_cm": 175.0,
+            "labs": {
+              "Hemoglobin": 13.5,
+              "Ferritin": 18,
+              "Total Cholesterol": 196,
+              "Transferrin Saturation": 14,
+              "Hemoglobin A1c": 5.1,
+              "Iron": 50,
+              "Total Iron-Binding Capacity": 360
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-13T09:05",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T09:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-09-13T09:05",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 50
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 360
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 14
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Long-haul truck driver"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 beers on weekends"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-13T09:00"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-09-13T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Current smoker, 40 pack-years, age 56"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-13T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-13T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-13T09:10",
+              "body": "56M establishing care, transferring from his prior primary care office. Long-haul truck driver, usually out Wed-Sat.\n\nPMH (per pt, prior records requested):\n- Chronic constipation for years. Metamucil packet daily, MiraLAX when he gets backed up on the road. Gets maybe 3 BMs/week when driving, better at home.\n- Bilateral knee OA. Worse climbing in and out of the cab. Takes ibuprofen 400 mg most days, sometimes 2-3x/day on long runs.\n- Chronic bronchitis. Morning productive cough most days, albuterol a few times a week, more in cold weather.\n- Iron deficiency anemia, told about it last year by prior PCP, told to cut back on Advil-type pills. Never took iron.\n- Tobacco: started at 20, about a pack and a half a day now, ~40 pack-years. Tried OTC patches this spring for a few weeks, went back. Thinking about a quit-smoking group at a community health center this fall.\nPSH: none.\nMeds: psyllium 3.4 g daily; ibuprofen 400 mg q6-8h prn knees; albuterol HFA 2 puffs q4-6h prn wheeze; PEG 3350 17 g daily prn.\nAllergies: NKDA.\nFH: father had lung cancer, diagnosed at 62, died of it. Mother has diverticulosis. Maternal uncle had Guillain-Barré after an infection.\nSH: lives in Leeds. Drinks 1-2 beers on weekends only. No drugs.\n\nROS: chronic AM cough, no hemoptysis, no weight change he has noticed, no chest pain, no melena or blood in stool. Knees ache, no locking.\n\nExam: Well-appearing, smells of smoke. HEENT unremarkable. Neck supple, no LAD. Lungs: no wheeze or crackles, good air movement. CV regular, no murmur. Abd soft, NT, no masses. Knees: no effusion, no warmth, full ROM with discomfort at end flexion. No edema. Skin normal.\n\nA/P:\n1. Tobacco use - discussed at length; he wants to try the group on his own schedule. Not interested in Rx today. Eligible for lung cancer screening (56, 40 pk-yr, current smoker) - LDCT ordered, explained it is a yearly low-dose scan. He will call radiology to schedule around his runs.\n2. Chronic bronchitis - continue albuterol prn.\n3. Knee OA - discussed limiting ibuprofen given anemia history; take with food, lowest dose that works.\n4. Constipation - continue fiber + PEG prn.\n5. IDA - CBC, iron studies today.\n6. HCM - CMP, lipids, A1c, HCV and HIV screens today. Tdap and PCV20 given. Flu/COVID/Shingrix at a nurse visit next month when the fall vaccines are in. Colonoscopy per prior records (pending).\nRTC 6 months, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2022-09-15T16:20",
+              "body": "Mr. Hickey - your labs are back. Your hemoglobin is at the low end of normal and your iron stores are low, which fits the iron deficiency your last doctor found. It's mild. The best thing for it is cutting down the ibuprofen as we talked about. Kidney and liver tests, cholesterol and sugar (A1c) look fine. Hepatitis C and HIV screens are negative. Have a safe trip."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "outside_records",
+          "start": "2022-09-21T11:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "MA",
+              "date": "2022-09-21T11:05",
+              "body": "Received 14 pages by fax from patient's previous primary care office, covering 2016-2022. Abstracted:\n- 04/2021 routine labs: mild anemia, low ferritin. Assessed as iron deficiency from chronic NSAID use. Advised to reduce ibuprofen. No iron prescribed.\n- 06/2021 screening colonoscopy (age 54): normal to the cecum, no polyps. Repeat in 10 years.\n- Problem list on their end: knee OA, chronic bronchitis, constipation, tobacco use, anemia.\n- Med list matches what patient reported here.\n- Vaccines: no record of Tdap or pneumococcal.\nScanned to media tab. Colonoscopy entered in health maintenance, next due 2031."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "telephone",
+          "start": "2022-09-27T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lung screening CT scheduling",
+              "author": "RN",
+              "date": "2022-09-27T14:10",
+              "body": "Radiology reports no call back from pt re: screening LDCT. Called pt - he was driving, outside Harrisburg. Said he forgot, will call when he's back Monday. Gave radiology scheduling number again."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T07:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T07:56"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-10-18T07:58"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2022-10-18T08:10",
+              "body": "Here before his run. Flu (quadrivalent) L deltoid, COVID bivalent R deltoid, Shingrix #1 L deltoid below flu site. Screening questions negative, no prior reactions. Warned Shingrix can make him achy for a day or two. Observed 15 min, fine. Shingrix #2 due in 2-6 months, he'd like it at his March visit.\nAsked about the lung screening CT - he hasn't scheduled it. Says after the holidays. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "portal_message",
+          "start": "2022-12-06T19:32",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler refill",
+              "author": "patient",
+              "date": "2022-12-06T19:32",
+              "body": "Hi need my albuterol inhaler refilled, the old Rx was from my other doctor and the pharmacy says it ran out of refills. Thanks Phil"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Inhaler refill",
+              "author": "PCP",
+              "date": "2022-12-07T08:15",
+              "body": "Sent a new prescription with refills to your pharmacy. If you are needing it more than a few times a week this winter, let me know."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "office_visit",
+          "start": "2023-02-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2023-02-13T17:05",
+              "body": "Pt called to cancel tomorrow's 3:40 - dispatcher added a load to Ohio. Rebooked 3/17 at 8:00 AM."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-17a",
+          "kind": "office_visit",
+          "start": "2023-03-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Smoking cessation",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-03-17T08:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-17T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-17T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - tobacco",
+              "author": "PCP",
+              "date": "2023-03-17T08:40",
+              "body": "S: Here to talk about smoking, which we set up last fall. Over the last year he has tried to stop twice. Spring 2022 with OTC nicotine patches, then in the fall the group program at the community health center. Each time he made it several weeks. Both times the cravings came back hard when work got stressful (tight delivery windows, nights in the truck) and he was back to a pack and a half a day. He is clear that he knows it's bad for him, especially with the bronchitis. But today: \"I'm not ready to go at it again right now. Maybe someday.\"\n\nWe spent most of the visit on what matters to him. He brought up his father, who smoked and died of lung cancer in his 60s. He wants to keep driving till he can retire on his terms. Smoking is tied up with staying awake on long hauls and with the breaks at truck stops. Asked what would need to be different for a third try to stick; he said a slower stretch at work, and maybe something for the cravings that isn't a patch. I told him the decision is his and the door is open whenever he wants; we can talk about varenicline or bupropion when he's ready. He did not want a prescription today.\n\nAsked again about the lung screening CT - still not done. He would rather do it when he has a week off in the summer. Reviewed why it matters with his history.\n\nOther: knees same, still on ibuprofen most days. Bowels OK with fiber. Cough unchanged, his usual morning cough.\nMeds/allergies reviewed, NKDA. FH unchanged.\n\nO: vitals reviewed. Comfortable, NAD. Lungs without wheeze. Heart regular.\n\nA/P:\n- Tobacco use disorder, precontemplation-to-contemplation. Autonomy-supportive conversation; no drug started. Revisit each visit.\n- Lung cancer screening - LDCT order still open, he will schedule in summer.\n- Shingrix #2 given today.\nRTC 6 mo."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "portal_message",
+          "start": "2023-05-30T20:11",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Knees",
+              "author": "patient",
+              "date": "2023-05-30T20:11",
+              "body": "Knees have been rough the last couple weeks, lot of loading and unloading on this route. Taking the ibuprofen 3 times a day. Is that ok for a while or is there something better"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Knees",
+              "author": "PCP",
+              "date": "2023-05-31T07:48",
+              "body": "Sorry the knees are acting up. Short stretches of ibuprofen three times a day with food are OK, but please don't keep it up for weeks given your iron levels - it can irritate the stomach and cause slow blood loss. Ice after a long day helps. If it's not settling in two weeks, come in and we can look at other options, including an injection."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "office_visit",
+          "start": "2023-08-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cough and weight loss",
+          "state": {
+            "weight_kg": 99.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-21T16:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-21T16:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "cancelled",
+              "date": "2023-08-21T16:30"
+            },
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "Chronic cough with unintentional weight loss, 40 pack-year smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-21T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-08-21T16:45",
+              "body": "CC: cough, weight loss\n\nS: The cough has been worse for several months - more of it, through the day now, not just mornings. He figured it was his bronchitis and kept using the albuterol, but it hasn't let up, which is why he came in. He's also lost weight without trying; belt is a notch tighter. Appetite so-so. No fevers. Denies blood in sputum. Still 1.5 ppd. Never got to the screening CT.\n\nO: Wt 99.5 kg, down from 103 last fall. Afebrile. Lungs: no wheeze, no focal findings I can appreciate. No clubbing noted. No LAD.\n\nA/P: Persistent cough + unintentional weight loss in a 56 y/o with 40 pack-years and a father with lung cancer. This needs a real workup, not a screening scan - cancelling the LDCT order and sending him to pulmonology for evaluation and imaging. Asked them to see him soon. CBC/CMP today. Talked frankly about what we are looking for; he understands. Will call him when the referral is scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "specialist_visit",
+          "start": "2023-09-05T10:30",
+          "service": "Pulmonology",
+          "reason": "Chronic cough and weight loss",
+          "conditions": [
+            {
+              "label": "Suspected malignant neoplasm of lung",
+              "icd10": "R91.8",
+              "action": "diagnosed",
+              "onset": "2023-09-05",
+              "note": "3.5 cm RLL mass on CT, tissue diagnosis pending."
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2023-09-05T09:40",
+              "text": "CT CHEST WITH IV CONTRAST\nIndication: Chronic cough, weight loss, heavy smoking history.\nTechnique: Axial images from the thoracic inlet through the upper abdomen after IV contrast; coronal and sagittal reformats.\nFindings: Right lower lobe mass measuring 3.5 cm in greatest dimension on axial images. Airways otherwise patent. No pleural effusion. Heart size normal, no pericardial effusion. Visualized upper abdomen unremarkable. No acute osseous abnormality.\n",
+              "conclusion": "3.5 cm right lower lobe mass, suspicious for primary lung malignancy. Tissue sampling recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2023-09-05T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology consultation",
+              "author": "pulmonology",
+              "date": "2023-09-07T13:20",
+              "body": "OUTSIDE PULMONOLOGY CONSULTATION\nDate of visit: 09/05/2023\n\nDear Doctor,\nThank you for sending Mr. Hickey, 56, for evaluation of persistent cough and weight loss.\n\nHe has coughed for years and carries a label of chronic bronchitis. Over the past several months the cough has become constant and he has lost weight without trying. He assumed it was more of the same bronchitis and only came in because it would not ease up. Current smoker, about 40 pack-years. Father died of lung cancer. Works as a long-haul driver.\nMedications: psyllium daily, ibuprofen 400 mg as needed for knees (uses it most days), albuterol as needed, MiraLAX as needed. NKDA.\n\nImaging: CT chest obtained today is positive - a 3.5 cm right lower lobe mass.\n\nImpression: On his risk factors alone (age, heavy ongoing smoking, first-degree relative) I would have put his chance of a lung cancer at around 30% before imaging. A CT showing a mass of this kind moves that substantially higher; I think it is more likely than not that this is a primary lung cancer, and it needs tissue.\n\nPlan:\n1. Bronchoscopy with endobronchial ultrasound for sampling of the mass and nodal staging - our scheduler will contact him.\n2. Continue albuterol as needed.\n3. Smoking cessation strongly advised.\nI will write again once we have pathology.\n\nPulmonary and Critical Care\nAllergies: NKDA"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "telephone",
+          "start": "2023-09-19T11:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Bronchoscopy cancelled",
+              "author": "RN",
+              "date": "2023-09-19T11:25",
+              "body": "Pulmonology scheduler called - pt cancelled bronchoscopy set for 9/21, didn't rebook. Reached pt on his cell. He's on a run through the 29th, says he can't lose the week right now. Explained the CT finding needs a biopsy and delays matter. He'll call pulmonology to rebook for October. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Bronchoscopy cancelled",
+              "author": "PCP",
+              "date": "2023-09-19T17:40",
+              "body": "Thanks. Will call him myself if it isn't on the books by mid-October."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "pharmacy",
+          "start": "2023-10-10T18:15",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T18:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T18:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine administration report",
+              "author": "pharmacy",
+              "date": "2023-10-11T06:00",
+              "body": "Community pharmacy immunization report: influenza quadrivalent 0.5 mL IM left deltoid and COVID-19 mRNA 2023-2024 formula 0.3 mL IM right deltoid administered 10/10/2023. No adverse events reported at time of administration."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "telephone",
+          "start": "2023-10-24T12:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to patient - bronchoscopy",
+              "author": "PCP",
+              "date": "2023-10-24T12:50",
+              "body": "Pulmonology let us know he cancelled the rebooked bronchoscopy (10/19). Called him. He is coughing more, says he's been putting it off because he doesn't want to hear it. I told him plainly that the mass on the CT is very likely cancer, that finding out sooner gives him more options, and that I'd help him clear the time. He listened. Says he will talk to his dispatcher about taking two weeks in November. Will see him in clinic in November regardless; front desk to book."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-27a",
+          "kind": "office_visit",
+          "start": "2023-11-27T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worsening cough and shortness of breath",
+          "state": {
+            "weight_kg": 91.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "heme-onc-referral",
+              "action": "placed",
+              "order": "Hematology-oncology referral (urgent)",
+              "category": "referral",
+              "to": "Hematology & Oncology",
+              "reason": "Right lower lobe lung mass, worsening symptoms, weight loss"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2023-11-27T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-11-27T10:05",
+              "body": "S: Last three months the breathing has gotten worse - winded walking across the truck stop lot. Cough constant, and the last few weeks he's seen streaks of blood in the sputum now and then. Losing weight. Albuterol not helping much. He has not had the bronchoscopy. He's scared and says he's ready to deal with it now; he's taken the next two weeks off.\nStill smoking about 1.5 ppd.\n\nO: Wt 91 kg (99.5 in Aug). Looks tired, thinner in the face. Speaking full sentences. Lungs: no wheeze; nothing focal on my exam. Heart regular. No LAD in neck.\n\nA/P: RLL mass on CT in Sept, now with hemoptysis, dyspnea and 8+ kg weight loss, no tissue diagnosis yet. Spoke directly with the hematology-oncology office - they'll see him within two weeks and coordinate bronchoscopy from there. Urgent referral placed. He agrees. Reviewed ED precautions for heavy bleeding or bad shortness of breath. Will touch base after his oncology visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-11a",
+          "kind": "specialist_visit",
+          "start": "2023-12-11T13:00",
+          "service": "Hematology & Oncology",
+          "reason": "Lung mass",
+          "state": {
+            "weight_kg": 89.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-11T12:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-11T12:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Calcium",
+                  "value": 10.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-11T12:30",
+              "results": [
+                {
+                  "test": "Carcinoembryonic Antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2023-12-11T11:45",
+              "text": "PA and lateral views of the chest. Mass in the right lower lobe. Heart size within normal limits. No pneumothorax. Bones intact.",
+              "conclusion": "Right lower lobe mass."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2023-12-11T12:10",
+              "text": "CT CHEST WITH IV CONTRAST\nComparison: CT chest 09/05/2023.\nFindings: Right lower lobe mass now measures 4.0 cm in greatest axial dimension (previously 3.5 cm). Associated mediastinal lymphadenopathy. No pleural effusion. Heart and great vessels normal in caliber. Imaged upper abdomen unremarkable. No suspicious osseous lesion.",
+              "conclusion": "4 cm right lower lobe mass with associated lymphadenopathy, enlarged since 09/2023. Findings concerning for primary lung carcinoma with nodal involvement."
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-onc-referral",
+              "action": "done",
+              "date": "2023-12-11T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology & Oncology new patient consultation",
+              "author": "hematology-oncology",
+              "date": "2023-12-13T09:10",
+              "body": "OUTSIDE HEMATOLOGY & ONCOLOGY CONSULTATION\nDate of visit: 12/11/2023\n\nReason: right lower lobe lung mass.\n\nHistory: 57-year-old man with tobacco use disorder, chronic bronchitis, knee osteoarthritis, constipation and iron deficiency anemia, seen in pulmonology in September for cough and weight loss with a positive chest CT. Bronchoscopy was booked but not done. Since then, three months of increasing shortness of breath, ongoing cough with intermittent blood-streaked sputum, and 10 kg of weight loss he cannot explain, despite continuing his usual bronchitis treatment. No recent travel, no sick contacts.\nFamily: father with lung cancer.\nSocial: smokes, 40 pack-years. Long-haul driver.\nMedications: psyllium daily, ibuprofen 400 mg PRN (chronic), albuterol PRN, MiraLAX PRN. Allergies: NKDA.\n\nExam: Weight 89 kg. Thin. Hypertrophic changes of the skin and nails with clubbing of the fingers. Decreased breath sounds and dullness to percussion at the right lung base. Heart regular. Abdomen benign. No palpable lymphadenopathy.\n\nData today: Hgb 13.5 g/dL (slightly low), WBC 7.5, platelets 250. Na 140, K 4.2, Ca 10.2 (upper limit of normal), alk phos 120 (normal). CEA elevated.\nChest radiograph shows a right lower lobe mass; CT the same afternoon shows the mass at 4 cm with associated lymph node enlargement.\n\nAssessment: Presentation highly suspicious for non-small cell lung cancer with nodal disease.\nPlan: EBUS bronchoscopy with sampling of mass and nodes, arranged with interventional pulmonology for 12/19. PET-CT and brain MRI for staging. Return after pathology.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "procedure_visit",
+          "start": "2023-12-19T07:30",
+          "end": "2023-12-19T12:00",
+          "service": "Interventional Pulmonology",
+          "reason": "EBUS bronchoscopy",
+          "conditions": [
+            {
+              "label": "Suspected malignant neoplasm of lung",
+              "icd10": "R91.8",
+              "action": "resolved"
+            },
+            {
+              "label": "Malignant neoplasm of lung",
+              "action": "diagnosed",
+              "onset": "2023-12-19",
+              "note": "Adenocarcinoma, right lower lobe, mediastinal nodes positive."
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-12-19T09:00",
+              "issued": "2023-12-21T15:30",
+              "text": "SPECIMENS: (A) Right lower lobe mass, EBUS-guided transbronchial needle aspiration and core. (B) Mediastinal lymph node, EBUS-TBNA.\nMICROSCOPIC: (A) Malignant glandular epithelium infiltrating fibrous stroma. Immunostains: TTF-1 positive, napsin A positive, p40 negative. (B) Lymphoid tissue with metastatic carcinoma of the same morphology.\nMolecular testing sent.",
+              "conclusion": "(A) Adenocarcinoma, consistent with lung primary. (B) Mediastinal lymph node positive for metastatic adenocarcinoma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Bronchoscopy with endobronchial ultrasound",
+              "author": "pulmonology",
+              "date": "2023-12-22T08:30",
+              "body": "OUTSIDE PROCEDURE REPORT, received 12/22/2023\nDate of procedure: 12/19/2023\nProcedure: flexible bronchoscopy with linear EBUS, transbronchial needle sampling of right lower lobe mass and mediastinal lymph node.\nAnesthesia: moderate sedation. Airway inspection: no endobronchial lesion seen. Samples obtained with rapid on-site evaluation showing malignant cells. Estimated blood loss minimal. No complications; discharged home same day.\nPathology (finalized 12/21): adenocarcinoma of lung origin; sampled mediastinal node positive. Molecular studies pending.\nAllergies: NKDA. Copy to primary care and hematology-oncology."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-22a",
+          "kind": "telephone",
+          "start": "2023-12-22T16:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to patient - pathology",
+              "author": "PCP",
+              "date": "2023-12-22T16:30",
+              "body": "Called Phil after the pathology came through. Oncology had already told him on Wednesday - adenocarcinoma, lymph node involved. He was quieter than usual but asked good questions: whether it had spread (staging scans set for 1/3 and 1/4), whether he can keep working (one step at a time). Asked how he is coping - says he isn't sleeping much. Offered to see him before treatment starts and he accepted; front desk to book early January. Reminded him we're reachable by phone or portal anytime."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

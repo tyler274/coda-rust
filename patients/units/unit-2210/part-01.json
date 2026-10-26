@@ -1,0 +1,156 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002210",
+      "given": "Howard",
+      "family": "Marino",
+      "birth_date": "1955-01-19",
+      "address_line": "214 Linden Street",
+      "phone": "+1-413-555-0175",
+      "email": "howard.marino@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal worker with CAD after a 2016 STEMI and stent, hypertension, type 2 diabetes, hyperlipidemia and CKD 3b who joins in 2020. Ischemic cardiomyopathy with an LV aneurysm and HFrEF are found in 2022, followed by three admissions (decompensation after running out of pills, flash pulmonary edema, hyponatremia to 118) and a PEA arrest in April 2026 that he survives intact.",
+      "events": [
+        {
+          "id": "2020-08-26a",
+          "kind": "telephone",
+          "start": "2020-08-26T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2020-08-26T10:20",
+              "body": "Mr. Marino called asking to join the practice. Retired from the post office, on Medicare, says his old doctor's office is closing its panel to Medicare patients and he would rather move now than wait. Explained the membership model and the fee; he and his wife already talked it over. Booked a new patient visit 9/14 at 9:00 (60 min). Records release signed over the phone, faxed to his prior primary care office today with request for last 5 years of notes, labs, hospital records and immunizations. Asked him to bring all his pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-03a",
+          "kind": "outside_records",
+          "start": "2020-09-03T14:05",
+          "reason": "Prior primary care records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "MA",
+              "date": "2020-09-03T14:05",
+              "body": "Fax received, 41 pages, from his previous primary care office. Scanned to chart. Abstract for the new patient visit:\n\nProblem list on their records: hypertension; type 2 diabetes; hyperlipidemia; coronary artery disease; history of STEMI 2016; coronary stent; chronic kidney disease stage 3.\n\nCardiac: hospital discharge paperwork from May 2016 included in the packet. Admitted through an outside emergency department with an ST-elevation MI, taken for PCI with one drug-eluting stent. Discharged on aspirin, a beta blocker, an ACE inhibitor and a high-intensity statin. Later office notes say he finished the second antiplatelet agent after a year.\n\nMed list as of their last visit (06/2020): aspirin 81 mg daily, metoprolol succinate ER 50 mg daily, lisinopril 20 mg daily, atorvastatin 40 mg daily, metformin 1000 mg twice a day.\n\nScreening: colonoscopy 2014, normal exam, repeat in 10 years.\nImmunizations listed: flu shots most years, last 10/2019. No pneumococcal or shingles vaccine documented.\nAllergies: NKDA.\n\nOriginals filed under Media."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-14a",
+          "kind": "establish_care",
+          "start": "2020-09-14T09:00",
+          "end": "2020-09-14T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2008-06-01", "note": "Known before joining"},
+            {"label": "Hyperlipidemia", "action": "diagnosed", "onset": "2008-06-01", "note": "Known before joining"},
+            {"label": "Type 2 diabetes mellitus without complications", "action": "diagnosed", "onset": "2011-03-01", "note": "Known before joining"},
+            {"label": "Coronary artery disease", "action": "diagnosed", "onset": "2016-05-09", "note": "Known before joining"},
+            {"label": "Old myocardial infarction", "action": "history", "onset": "2016-05-09", "note": "STEMI 2016 treated with PCI"},
+            {"label": "Presence of coronary artery stent", "action": "history", "onset": "2016-05-09", "note": "Drug-eluting stent 2016"},
+            {"label": "Chronic kidney disease, stage 3b", "action": "diagnosed", "onset": "2019-01-01", "note": "Known before joining"}
+          ],
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"},
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"},
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes mellitus"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [134, 80], "weight_kg": 88.0, "height_cm": 175.0, "labs": {"Hemoglobin A1c": 7.2, "Creatinine": 1.7, "Low Density Lipoprotein": 74, "High Density Lipoprotein": 39, "Triglycerides": 172, "Microalbumin/Creatinine Ratio": 14}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-14T10:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-14T10:10", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-14T10:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2020-09-14T10:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2020-09-14T10:10", "results": [{"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": null, "collected": "2020-09-14T10:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2020-09-14T10:10", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "No alcohol use"},
+            {"item": "Occupation", "value": "Retired postal service worker"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-09-14T09:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2020-09-14T10:40",
+              "body": "NEW PATIENT\n\nCC: transferring care.\n\nHPI: 65M here to establish. Retired letter carrier, 30-some years walking a route, retired in 2019. Comes with a bag of bottles and a typed med list his wife made. Feels well. Walks most days, no limitation. No chest pain since his heart attack. Prior office records reviewed (fax 9/3): STEMI in May 2016 at an outside hospital, PCI with a single drug-eluting stent, finished dual antiplatelet therapy after a year. Diabetes since about 2011, on metformin only, never on insulin. Kidney function has been 'a little off' for a couple of years per his old doctor. Has not seen cardiology in a few years; says the group told him to follow up as needed once he was stable.\n\nPMH: HTN, HLD, T2DM, CAD s/p STEMI and DES 2016, CKD 3.\nPSH: PCI with stent 2016.\nMeds (bottles reconciled): aspirin 81 daily, metoprolol succinate 50 daily, lisinopril 20 daily, atorvastatin 40 daily, metformin 1000 BID.\nAllergies: NKDA.\nFH: father had CAD, MI at 62. Mother T2DM and HTN. Older brother high cholesterol.\nSH: married, lives with his wife. Never smoked. Doesn't drink. No drugs.\nScreening: colonoscopy 2014 normal per records.\n\nROS: negative in detail, including no dyspnea, orthopnea, edema, claudication, urinary symptoms, numbness in feet.\n\nExam: well-appearing, pleasant. Neck no JVD, no bruits. Heart RRR, normal S1 S2, no murmur. Lungs clear. Abdomen soft, nontender. Ext no edema, DP and PT pulses 2+ bilaterally. Feet: skin intact, no calluses, monofilament sensation intact both feet. Neuro grossly nonfocal.\n\nA/P:\n1. HTN: a touch above goal today, rechecked similar. Continue lisinopril 20, metoprolol. Home cuff readings next visit.\n2. T2DM: A1c today. Continue metformin. Foot exam normal. Needs a diabetic eye exam; gave him the optometry list.\n3. CAD s/p STEMI/DES: asymptomatic. Continue aspirin, beta blocker, statin.\n4. HLD: lipid panel today.\n5. CKD 3b by his old labs: CMP, urine albumin today. Avoid NSAIDs, discussed.\n6. HM: hep C and HIV screen today (once). Flu shot next month when the high-dose arrives. Pneumococcal and shingles discussed, will plan. Colonoscopy due 2024.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-16a",
+          "kind": "portal_message",
+          "start": "2020-09-16T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2020-09-16T16:40",
+              "body": "Hi Mr. Marino, your labs from Monday are back. Your A1c is 7.7, a little above where I'd like it; let's recheck in March after the holidays. LDL cholesterol is 69, good on the atorvastatin. Kidney function is in the same range your old office was seeing, stage 3, and your urine protein test is normal. Hepatitis C and HIV screens were negative. Blood counts normal. No changes for now. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-08a",
+          "kind": "nurse_visit",
+          "start": "2020-10-08T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-10-08T13:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-08T13:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2020-10-08T13:45",
+              "body": "High-dose influenza vaccine 0.7 mL IM given in the left deltoid. Screened: no prior reaction, not ill today. VIS given. Waited 15 min, fine. Asked about pneumonia vaccine; told him the doctor will go over it in December."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-10a",
+          "kind": "office_visit",
+          "start": "2020-12-10T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"bp": [128, 78]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-12-10T14:40", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-12-10T14:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2020-12-10T14:35",
+              "body": "3 month f/u HTN, DM, CKD.\n\nDoing fine. Brought home BP log, mostly 120s-130s over 70s, checked mornings. Taking everything, uses a weekly pillbox his wife fills. Walking less with the cold, does the mall loop twice a week. No CP, SOB, edema. No hypoglycemia symptoms.\n\nMeds unchanged: ASA 81, metoprolol succ 50, lisinopril 20, atorva 40, metformin 1000 BID.\n\nExam: NAD. BP at goal today. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P\nHTN at goal, home log matches. Continue.\nT2DM: A1c done in Sept, repeat in March.\nCKD 3b: BMP today for K and creatinine on the ACE inhibitor.\nCAD stable.\nRTC March."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

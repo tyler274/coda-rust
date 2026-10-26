@@ -1,0 +1,3431 @@
+{
+  "unit": "unit-1793",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001793",
+      "given": "Sophia",
+      "family": "Labrie",
+      "birth_date": "1999-04-09",
+      "address_line": "214 Northampton Street, Apt 3",
+      "phone": "+1-617-555-0164",
+      "email": "sophia.labrie@example.test",
+      "marital_status": "single",
+      "summary": "Young woman with borderline personality disorder, depression and bulimia nervosa who joins in 2023 with hypokalemic alkalosis from surreptitious vomiting. Over three years she has self-harm ED visits, then sertraline, acetaminophen and two tricyclic overdoses with ICU and inpatient psychiatric stays, while primary care keeps her prevention, labs and safety follow-up going.",
+      "events": [
+        {
+          "id": "2023-09-13a",
+          "kind": "establish_care",
+          "start": "2023-09-13T09:30",
+          "end": "2023-09-13T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; weakness and palpitations for two months",
+          "conditions": [
+            {
+              "label": "Borderline personality disorder",
+              "action": "history",
+              "onset": "2023-06-16",
+              "note": "diagnosed by outside psychiatry June 2023"
+            },
+            {
+              "label": "Major depressive disorder, single episode, unspecified",
+              "action": "history",
+              "icd10": "F32.9"
+            },
+            {
+              "label": "Bulimia nervosa",
+              "action": "history",
+              "note": "reported as past; no current eating-disorder treatment",
+              "icd10": "F50.20"
+            },
+            {
+              "label": "Urinary tract infection",
+              "action": "history",
+              "note": "recurrent"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            },
+            {
+              "drug_text": "ethinyl estradiol 0.035 MG / norethindrone 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Contraception"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 88,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 50.1,
+            "height_cm": 165.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-13T10:20",
+              "resulted": "2023-09-13T16:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 2.9
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 32
+                },
+                {
+                  "test": "Chloride",
+                  "value": 88
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-13T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-13T10:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                },
+                {
+                  "test": "Magnesium",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-13T10:20",
+              "resulted": "2023-09-13T16:30",
+              "results": [
+                {
+                  "test": "Chloride [Moles/volume] in Urine",
+                  "loinc": "2078-4",
+                  "unit": "mmol/L",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 14
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Part-time administrative assistant"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-09-13T10:05",
+              "text": "Normal sinus rhythm at 86 bpm. PR, QRS and QT intervals normal; QTc 438 ms. Normal axis. No ST-segment or T-wave changes.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-13T09:30"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2023-09-13T10:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-13T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-13T11:40",
+              "author": "PCP",
+              "body": "24F new to the practice. Transferring from her prior PCP; records requested today.\n\nCC: feels weak and has had her heart 'flutter' on and off since around mid-July, so about two months. Fluttering comes at rest, lasts seconds to a minute, no syncope, no chest pain. Weakness is generalized, worse late in the day. No fevers, no weight loss she's noticed.\n\nPMH per patient: depression for years, on sertraline 100 mg from her old PCP. Had an eating disorder (bulimia) as a teen/early 20s, says that is in the past and she is not getting any treatment for it. Recurrent bladder infections, a few a year at her worst. Saw a psychiatrist in June who told her she has borderline personality disorder; she sees a therapist weekly and has for about a year, says it hasn't helped much. History of cutting when overwhelmed.\nMeds: sertraline 100 daily, combined OCP (1/35) daily. Asked directly: no OTC meds, no laxatives, no water pills, no supplements.\nAllergies: NKDA.\nSurgical: none.\nFH: mom with depression. Dad with substance use problems. Maternal uncle died by suicide.\nSH: works part time as an administrative assistant. Never smoked, doesn't drink, denies drugs.\n\nExam: thin young woman, NAD, conversant. BP 120/75, HR 88 regular. Wt 50.0 kg, ht 165 cm, BMI 18.4. Mouth moist, no parotid swelling noted, dentition fine. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema. Skin: several healed linear scars on both forearms, nothing fresh. Neuro grossly nonfocal, strength 5/5.\nPHQ-9 14. Denies SI today; asked about plan or intent, none. Knows how to reach her therapist and the crisis line.\nECG in office: NSR 86, QTc 438, normal.\n\nA/P\n1. Weakness + palpitations in a thin woman with a bulimia history. ECG reassuring. Check BMP, Mg, CBC, TSH, and a spot urine chloride while she's here. Will call with results.\n2. Depression / BPD - continue sertraline 100. Continue weekly therapy. Will get the psychiatry note with the old records.\n3. Recurrent UTIs - none active.\n4. Contraception - continue OCP, BP fine.\nFollow up 2 weeks, sooner depending on labs."
+            }
+          ],
+          "state": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 88,
+            "weight_kg": 50.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Bicarbonate": 32,
+              "Chloride": 88,
+              "Free Thyroxine": 1.2,
+              "Magnesium": 2.0,
+              "Potassium": 2.9,
+              "Thyroid Stimulating Hormone": 1.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-13b",
+          "kind": "telephone",
+          "start": "2023-09-13T17:10",
+          "reason": "Lab results",
+          "conditions": [
+            {
+              "label": "Vomiting, unspecified",
+              "action": "diagnosed",
+              "onset": "2023-09-13",
+              "note": "surreptitious, self-induced; patient denies",
+              "icd10": "R11.10"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Low potassium"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result Call",
+              "date": "2023-09-13T17:25",
+              "author": "PCP",
+              "body": "Called pt with afternoon labs. K 2.9, bicarb 32, Cl 88. Spot urine chloride 15, which is very low. CBC, TSH, Mg normal.\n\nThis is a hypokalemic metabolic alkalosis with a low urine chloride, and with no diuretic use that pattern points to ongoing vomiting. Explained that to her plainly. She says she is not making herself throw up and isn't sick to her stomach. Did not push it further on the phone.\n\nStarting KCl ER 20 mEq BID with food. ER/ED precautions for worsening palpitations, chest pain, fainting or profound weakness. Repeat BMP at her visit in 2 weeks. Added surreptitious vomiting to the problem list. Rx sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "portal_message",
+          "start": "2023-09-18T21:04",
+          "reason": "Question about potassium pills",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "potassium",
+              "date": "2023-09-18T21:04",
+              "author": "patient",
+              "body": "Hi, the potassium pills are really big. Is it ok to cut them in half? Also do I take them at the same time as my other meds. Thanks, Sophia"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: potassium",
+              "date": "2023-09-19T08:52",
+              "author": "RN",
+              "body": "Hi Sophia, please don't cut or crush them, they're extended release. You can take them with breakfast and dinner with a full glass of water, and it's fine to take them at the same time as your sertraline and birth control. If you can't swallow them let us know and we can switch to a different form. See you on the 27th."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "outside_records",
+          "start": "2023-09-20T14:00",
+          "reason": "Prior primary care and psychiatry records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2011-05-10T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2023-09-20T14:00",
+              "author": "outside primary care",
+              "body": "Records from prior primary care office, 2017 through 2023 (summary pages).\n\nProblem list: Major depressive disorder. Bulimia nervosa, history of. Recurrent urinary tract infections.\nMedications: Sertraline 100 mg daily. Ethinyl estradiol 0.035 mg / norethindrone 1 mg, 1 tablet daily.\nAllergies: NKDA.\n\nHealth maintenance: HPV vaccine series completed in adolescence. Tdap 05/2011. Cervical cytology 2020: negative for intraepithelial lesion or malignancy.\nUrine cultures 2019-2022: several, each growing E. coli, treated as uncomplicated cystitis.\n\nLast office note (02/2023): mood 'up and down,' continues sertraline, sees therapist. Referred to psychiatry for diagnostic evaluation."
+            },
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Consultation",
+              "date": "2023-09-20T14:00",
+              "author": "psychiatry",
+              "body": "Outpatient Psychiatry - Consultation\nDate of service: 06/16/2023\nReason for referral: diagnostic evaluation, longstanding interpersonal and mood difficulties.\n\nMs. Labrie is a 24-year-old woman whose close relationships swing between seeing a partner or friend as perfect and then as worthless. She lives with a constant dread of being left and describes hurting herself, mostly by cutting, when distress peaks. She feels empty most of the time and has bursts of anger she struggles to rein in. She has been in weekly psychotherapy for roughly a year and feels it has changed little.\n\nPsychiatric/medical history: major depressive disorder; bulimia nervosa; recurrent UTIs.\nMedications: sertraline 100 mg daily; combined oral contraceptive daily.\nAllergies: NKDA.\nFamily history: maternal depression; paternal substance use disorder; maternal uncle completed suicide.\nSubstances: denies.\n\nExamination: physical and mental status examination unremarkable apart from the history above.\n\nImpression: Borderline personality disorder. Major depressive disorder.\n\nRecommendations: continue sertraline 100 mg daily. Continue psychotherapy. Return to this clinic as needed; will see her for follow-up.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "office_visit",
+          "start": "2023-09-27T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up low potassium",
+          "vitals": {
+            "bp": [
+              107,
+              76
+            ],
+            "hr": 89,
+            "weight_kg": 50.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-27T15:10",
+              "resulted": "2023-09-27T17:45",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.6
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 29
+                },
+                {
+                  "test": "Chloride",
+                  "value": 97
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-09-27T15:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-27T15:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-27T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-27T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ed-program-referral",
+              "action": "placed",
+              "order": "Eating disorder program referral",
+              "category": "referral",
+              "to": "Outpatient eating disorder program",
+              "reason": "Surreptitious vomiting, bulimia history"
+            },
+            {
+              "id": "ed-program-referral",
+              "action": "cancelled",
+              "date": "2023-09-27T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-09-27T16:10",
+              "author": "PCP",
+              "body": "F/u K. Taking KCl twice a day, no GI upset. Palpitations less often, maybe twice this week. Still tired.\n\nWent over last labs again in person and why the urine chloride matters. I told her I wasn't judging her and that the numbers only make sense one way. She got quiet, said she 'doesn't do that anymore,' and changed the subject. Offered a referral to an outpatient eating disorder program, which she declined; she'd rather bring it up with her therapist. Told her the door stays open.\n\nOld records came in, including the psychiatry consult from June; matches what she told me.\n\nExam: well appearing, thin. Vitals as charted. Heart regular.\nRepeat BMP drawn.\nFlu shot today.\n\nA/P\n- Hypokalemia from purging: continue KCl 20 BID, BMP again in 4 weeks.\n- Depression/BPD: stable for her, continue sertraline and therapy.\n- Eating disorder referral declined (cancelled order)."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP Result",
+              "date": "2023-09-28T08:15",
+              "author": "PCP",
+              "body": "K 3.6, bicarb 29, Cl 97. Better. Stay on KCl and recheck late October."
+            }
+          ],
+          "state": {
+            "bp": [
+              114,
+              72
+            ],
+            "labs": {
+              "Bicarbonate": 29,
+              "Chloride": 97,
+              "Potassium": 3.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "portal_message",
+          "start": "2023-10-17T19:30",
+          "reason": "Vaccine update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-14T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid shot",
+              "date": "2023-10-17T19:30",
+              "author": "patient",
+              "body": "FYI I got the new covid vaccine at the pharmacy on Saturday the 14th, pfizer. Not sure if you need that for my chart."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid shot",
+              "date": "2023-10-18T09:12",
+              "author": "MA",
+              "body": "Thanks Sophia, added it to your record."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-25a",
+          "kind": "lab_only",
+          "start": "2023-10-25T08:10",
+          "reason": "Repeat potassium",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-25T08:10",
+              "resulted": "2023-10-25T13:20",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-25T08:10"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bicarbonate": 26,
+              "Chloride": 101,
+              "Potassium": 4.1
+            }
+          }
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "portal_message",
+          "start": "2023-10-26T07:55",
+          "reason": "Lab result and potassium plan",
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "Potassium normal"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP Result",
+              "date": "2023-10-26T07:55",
+              "author": "PCP",
+              "body": "Hi Sophia - potassium 4.1 and bicarbonate 26, both normal now. You can stop the potassium tablets. If the weakness or fluttering comes back, let me know and we'll recheck. I'd like to see you in December either way."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BMP Result",
+              "date": "2023-10-26T12:40",
+              "author": "patient",
+              "body": "ok thank you!!"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "pharmacy",
+          "start": "2023-11-20T10:15",
+          "reason": "Refill request sertraline",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline Refill",
+              "date": "2023-11-20T10:15",
+              "author": "MA",
+              "body": "Pharmacy fax: sertraline 100 mg #90 requested, last fill under prior PCP. Pended to PCP.\n\nPCP: approved #90 with 1 refill. Seen 9/27."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-21a",
+          "kind": "ed_visit",
+          "start": "2023-12-21T22:40",
+          "end": "2023-12-22T03:15",
+          "service": "Emergency Medicine",
+          "reason": "Self-inflicted laceration left forearm",
+          "vitals": [
+            {
+              "time": "2023-12-21T22:45",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 96,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-21T23:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-21T23:20",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-21T23:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2023-12-21T22:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-12-22T00:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2023-12-22T09:30",
+              "author": "emergency medicine",
+              "body": "Emergency department, community hospital\nSeen 12/21/2023 at 22:40\n\nHPI: 24 y/o F, seen earlier this year by her PCP for weakness/palpitations and by psychiatry for relationship difficulties, presents with a superficial cut to the L forearm. She says she cut herself during a fight with her boyfriend tonight; it was 'the only thing that made the feeling stop.' Denies wanting to die, denies SI now. Says this has happened before, usually after a conflict with someone close. Describes stretches of intense anger when she has thrown and broken things and yelled at people she loves. Under extreme stress she sometimes hears voices briefly; they go away on their own. Relationships described as intense and up and down.\n\nPMH: borderline personality disorder, MDD, bulimia nervosa, recurrent UTI, surreptitious vomiting (per PCP records).\nMeds: sertraline 100 mg daily; ethinyl estradiol/norethindrone daily.\nAllergies: NKDA.\nFH: mother MDD, father substance use disorder, maternal uncle suicide.\n\nExam: VS as recorded. Anxious, mood shifts during interview, cooperative. L volar forearm: superficial linear laceration, edges well approximated, no tendon involvement, neurovascularly intact. Multiple older healed scars on both forearms.\n\nLabs: CBC, CMP, TSH and free T4 within normal limits. Urine toxicology screen negative.\n\nED course: wound irrigated and closed with tissue adhesive. Last tetanus 2011, Tdap given. Seen by ED behavioral health; no SI, future oriented, has a therapist; safe for discharge with outpatient follow-up.\n\nDx: Superficial laceration of left forearm, self-inflicted. Borderline personality disorder.\nDisposition: home with roommate. Follow up PCP and therapist this week. Return for signs of infection or any thoughts of suicide."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-28a",
+          "kind": "office_visit",
+          "start": "2023-12-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, forearm laceration",
+          "vitals": {
+            "bp": [
+              129,
+              72
+            ],
+            "hr": 93,
+            "temp_c": 36.9,
+            "weight_kg": 50.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 15
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2023-12-28T12:05",
+              "author": "PCP",
+              "body": "S: Here after the ED visit on the 21st for a self-inflicted cut to the L forearm after a fight with her boyfriend. Wound glued, tetanus updated there. She is embarrassed about it. Still with the boyfriend, says things are 'fine right now.' Has seen her therapist once since. No SI, no intent or plan; she named two friends and her therapist as people she'd reach out to. Tells me about the voices she sometimes hears under stress, brief, none this week. Eating 'ok.' Denies vomiting.\n\nO: Vitals as charted, weight stable. L forearm laceration healing, glue mostly off, no erythema or drainage. Older scars noted.\nPHQ-9 15.\n\nA/P\n- Self-harm, BPD: wrote out a safety plan together today, copy given. She'll ask her therapist about a more skills-based approach. Crisis line numbers reviewed.\n- MDD: continue sertraline 100.\n- Wound: healing well, nothing to do.\nRTC 2-3 months for physical, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "portal_message",
+          "start": "2024-01-16T13:22",
+          "reason": "Release of information for therapist",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "therapist",
+              "date": "2024-01-16T13:22",
+              "author": "patient",
+              "body": "My therapist asked if she can get a copy of my last visit with you and the ER paperwork. Do I need to sign something?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: therapist",
+              "date": "2024-01-16T15:05",
+              "author": "front desk",
+              "body": "Hi Sophia, yes - I've sent a release form to your portal. Once it's signed we'll fax the records over. Thank you!"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records Released",
+              "date": "2024-01-18T10:30",
+              "author": "front desk",
+              "body": "Signed authorization received. 12/28/23 office note and 12/21/23 ED record faxed to patient's outpatient therapist."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "annual_physical",
+          "start": "2024-03-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              79
+            ],
+            "hr": 88,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 50.7,
+            "height_cm": 164.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-14T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-14T09:15",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-14T09:15",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-14T09:05",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 12
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-03-14T09:05",
+              "text": "Specimen: cervical, liquid-based. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM.",
+              "issued": "2024-03-18T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-03-14T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-14T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-03-14T10:20",
+              "author": "PCP",
+              "body": "Annual exam, 24F.\n\nInterval: no ED visits since December. Still in weekly therapy. Mood 'so-so most days.' No self-harm since December by her report. Denies purging; says she eats three meals 'mostly.' No palpitations since the fall. Periods regular on the pill. Sexually active with one male partner.\nMeds: sertraline 100 daily, OCP daily. NKDA.\n\nExam: well appearing, thin, weight stable. Vitals as charted, BP normal. HEENT unremarkable. Neck supple, no adenopathy. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender. Pelvic: normal external genitalia, vagina and cervix normal, Pap obtained with GC/CT swab. Skin: forearm scars, all healed. Neuro nonfocal. Affect constricted but appropriate.\nPHQ-9 12, item 9 zero. No SI.\n\nA/P\n- Health maintenance: Pap today (last 2020). HIV and hep C screening once - both sent. GC/CT. Tdap done in the ED Dec 2023. Flu and COVID done this season. HPV complete.\n- Purging history: CMP to check K.\n- Depression/BPD: continue sertraline and therapy; safety plan still on her phone.\n- Contraception: continue, BP fine.\nRTC 3 months or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-03-18a",
+          "kind": "portal_message",
+          "start": "2024-03-18T16:40",
+          "reason": "Physical results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual Labs and Pap",
+              "date": "2024-03-18T16:40",
+              "author": "PCP",
+              "body": "Hi Sophia, all of your results from the physical are normal: blood counts, kidney and liver tests, and potassium. HIV and hepatitis C negative. Gonorrhea/chlamydia negative. Your Pap is normal, so the next one is due in 3 years (2027). Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-22a",
+          "kind": "pharmacy",
+          "start": "2024-04-22T09:40",
+          "reason": "Refill oral contraceptive",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Oral Contraceptive Refill",
+              "date": "2024-04-22T09:40",
+              "author": "MA",
+              "body": "Electronic refill request: ethinyl estradiol 0.035 mg / norethindrone 1 mg, 3 packs. BP 3/14 normal. Sent to PCP.\nPCP: approved, 3 packs x 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-13a",
+          "kind": "ed_visit",
+          "start": "2024-06-13T23:05",
+          "end": "2024-06-14T14:30",
+          "service": "Emergency Medicine",
+          "reason": "Self-inflicted forearm lacerations",
+          "vitals": [
+            {
+              "time": "2024-06-13T23:10",
+              "bp": [
+                120,
+                75
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 99
+            },
+            {
+              "time": "2024-06-14T08:00",
+              "bp": [
+                116,
+                72
+              ],
+              "hr": 74,
+              "rr": 14,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-06-13T23:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-06-17T11:00",
+              "author": "emergency medicine",
+              "body": "Emergency Department - Physician Record\nArrival 06/13/2024 23:05. Departure 06/14/2024 14:30.\n\nBrought in by her roommate after cutting both forearms tonight. Last seen here about six months ago for a similar cut. She talks about feeling hollow and being terrified people will leave her; her relationships are stormy. She has had several ED visits in the past for self-harm and for suicidal thoughts. She has never made a suicide attempt.\n\nPMH: borderline personality disorder, MDD, bulimia nervosa, recurrent UTI.\nMeds: sertraline 100 mg daily, ethinyl estradiol/norethindrone daily.\nAllergies: NKDA. Never smoker, no alcohol, works part time as an admin assistant.\n\nVS on arrival: T 37.0, BP 120/75, HR 80, RR 16.\nExam: several superficial lacerations across both forearms, none gaping, no deep structure involvement, distal neurovascular exam intact. Otherwise normal.\n\nCourse: wounds irrigated and dressed; none needed closure. Held overnight in the department for psychiatric evaluation. Over the night she told some nurses they were the only people who understood her and accused others of trying to hurt her; staff noted the split and kept consistent messaging. Psychiatry evaluated in the morning: no current suicidal intent, chronic self-harm in setting of BPD, does not meet inpatient criteria.\n\nDisposition: discharged 06/14 to home. Outpatient psychiatry and therapist follow-up; PCP within a week. Wound care instructions given."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "office_visit",
+          "start": "2024-06-19T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "vitals": {
+            "bp": [
+              113,
+              74
+            ],
+            "hr": 84,
+            "weight_kg": 50.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 16
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-19T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-06-19T15:30",
+              "author": "PCP",
+              "body": "Seen after overnight ED stay 6/13-14 for cutting both forearms. Roommate brought her in. She says it followed a blowup with someone close to her. Feels empty, sleeping a lot. No SI today; no intent or plan; agreed to call her therapist or the crisis line if that changes. Psychiatry appt next month.\n\nExam: tired appearing. Forearms with healing superficial cuts, clean, no signs of infection. Weight unchanged.\nPHQ-9 16.\n\nPlan: wound care reviewed. Continue sertraline 100. Reviewed safety plan, updated contacts. I'll send today's note to psychiatry with her OK. Back in 2 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "outside_records",
+          "start": "2024-07-23T11:15",
+          "reason": "Psychiatry follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "date": "2024-07-23T11:15",
+              "author": "psychiatry",
+              "body": "Dear colleague,\n\nI saw Ms. Labrie in follow-up on 07/18/2024, about a month after her ED visit for forearm cutting. She remains in individual psychotherapy. Mood low, sleep long, no current suicidal thoughts. Diagnoses unchanged: borderline personality disorder and major depressive disorder. I have kept sertraline at 100 mg daily and made no other medication changes. Follow-up here in about 3 months.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "office_visit",
+          "start": "2024-08-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up mood",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T09:05",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed you yesterday",
+              "date": "2024-08-22T09:05",
+              "author": "front desk",
+              "body": "Hi Sophia, we missed you at your 10:00 appointment yesterday. Please reply or call to reschedule. If you're having a hard time, you can message the doctor directly here."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed you yesterday",
+              "date": "2024-08-22T18:47",
+              "author": "patient",
+              "body": "sorry I totally forgot, work changed my hours. I'm ok. can I just come in for the flu shot in october and see her then"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed you yesterday",
+              "date": "2024-08-23T07:30",
+              "author": "PCP",
+              "body": "Glad you're ok. Yes - flu shots start the first week of October, the nurse can do it. Let's still do a visit before the end of the year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "vitals": {
+            "temp_c": 36.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu Vaccine",
+              "date": "2024-10-08T16:45",
+              "author": "RN",
+              "body": "Here for seasonal flu vaccine. Afebrile, feeling well, no prior vaccine reactions. VIS given. Influenza trivalent 0.5 mL IM L deltoid, lot recorded. Tolerated, waited 15 min without issue. She plans to get her COVID shot at the pharmacy."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "portal_message",
+          "start": "2024-10-29T20:10",
+          "reason": "COVID vaccine update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-26T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "vaccine",
+              "date": "2024-10-29T20:10",
+              "author": "patient",
+              "body": "got the 2024 covid vaccine at the pharmacy saturday (moderna). arm hurt for a day"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: vaccine",
+              "date": "2024-10-30T08:40",
+              "author": "MA",
+              "body": "Got it, thanks - it's in your chart now."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "telephone",
+          "start": "2024-11-12T08:45",
+          "reason": "Urinary symptoms",
+          "medications": [
+            {
+              "drug": "nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 5 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Urinary tract infection"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-11-12T11:30",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "11-20"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.013
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-12T11:30",
+              "resulted": "2024-11-14T10:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Escherichia coli >100,000 CFU/mL. Susceptible to nitrofurantoin."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse Triage",
+              "date": "2024-11-12T08:55",
+              "author": "RN",
+              "body": "Pt calling with burning with urination and frequency since yesterday. Feels like her usual bladder infections. No fever, no back or flank pain, no vaginal discharge, no blood seen. Not pregnant per pt, on OCP. Will drop off urine this morning. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Note",
+              "date": "2024-11-12T12:10",
+              "author": "PCP",
+              "body": "UA + LE and nitrite. Typical cystitis in a woman with recurrent E. coli UTIs, no red flags. Nitrofurantoin 100 BID x5 days sent. Culture pending. Call if fever, flank pain or not better in 48 h."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "portal_message",
+          "start": "2024-11-14T13:30",
+          "reason": "Urine culture result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Urine Culture",
+              "date": "2024-11-14T13:30",
+              "author": "PCP",
+              "body": "Your urine culture grew E. coli, which the nitrofurantoin covers. Please finish all 5 days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Urine Culture",
+              "date": "2024-11-14T17:02",
+              "author": "patient",
+              "body": "already feeling better, thanks"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "pharmacy",
+          "start": "2025-01-21T11:20",
+          "reason": "Refill request sertraline",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline Refill",
+              "date": "2025-01-21T11:20",
+              "author": "MA",
+              "body": "Refill request from pharmacy: sertraline 100 mg tab, 90-day supply. Last seen 6/19/24, missed 8/21. Pended to PCP with a note that she is overdue for a visit.\n\nPCP: 90 days sent. Front desk please offer her an appointment in February."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "hospital_admission",
+          "start": "2025-02-03T19:50",
+          "end": "2025-02-05T13:00",
+          "service": "Emergency Medicine / Internal Medicine",
+          "reason": "Altered mental status after sertraline overdose",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "action": "diagnosed",
+              "onset": "2025-02-03",
+              "note": "intentional sertraline overdose",
+              "icd10": "G25.79"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-02-03T19:55",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 110,
+              "rr": 16,
+              "temp_c": 37.3,
+              "spo2": 98
+            },
+            {
+              "time": "2025-02-04T07:30",
+              "bp": [
+                122,
+                78
+              ],
+              "hr": 92,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 99
+            },
+            {
+              "time": "2025-02-05T08:00",
+              "bp": [
+                114,
+                72
+              ],
+              "hr": 78,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-03T20:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-03T20:10",
+              "resulted": "2025-02-03T22:40",
+              "results": [
+                {
+                  "test": "Ethanol",
+                  "loinc": "5643-2",
+                  "unit": "mg/dL",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Salicylate",
+                  "loinc": "4024-6",
+                  "unit": "mg/dL",
+                  "text": "Undetectable"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-02-03T19:50"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-02-04T01:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-02-05T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2025-02-06T10:00",
+              "author": "emergency medicine",
+              "body": "ED PHYSICIAN NOTE - 02/03/2025 19:50\n\n25-year-old woman with borderline personality disorder, depression and bulimia nervosa, previously seen here for self-inflicted cuts, brought in by her roommate, who found her sleepy and confused with an empty sertraline bottle beside her.\n\nHome meds per pharmacy fill history: ethinyl estradiol/norethindrone daily. (Sertraline - see HPI.)\nNKDA. Never smoker, no EtOH.\n\nVitals: HR 110, BP 130/85, RR 16.\nExam: somnolent, rouses to voice, follows simple commands. Pupils dilated, reactive. Mucous membranes dry. Tachycardic, regular. Lungs clear. Abdomen soft.\n\nLabs: Na 140, K 4.0, Cl 100, HCO3 24, BUN 18, Cr 0.9, glucose 90. Ethanol not detected. Urine drug screen negative for common drugs of abuse. Salicylate pending at time of this note.\n\nImpression: intentional sertraline ingestion with serotonin toxicity.\nPlan: IV fluids, lorazepam IV as needed for agitation, cardiac monitoring, poison center consulted, admit to medicine. Psychiatry to see when medically appropriate."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-02-06T10:00",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmitted 02/03/2025 - Discharged 02/05/2025\nService: Hospital Medicine\n\nPrincipal diagnosis: Serotonin syndrome following intentional sertraline overdose.\nOther: borderline personality disorder; major depressive disorder; bulimia nervosa; recurrent UTI.\n\nCourse: Admitted from the ED after ingesting a bottle of sertraline. Salicylate level returned undetectable. Managed with IV fluids, telemetry and as-needed lorazepam. Mental status cleared and heart rate settled within about 24 hours. Sertraline was held during the stay. Psychiatry consultation on 02/04: impulsive overdose in the setting of chronic emotional dysregulation, no ongoing suicidal intent, safety plan completed with the patient, outpatient follow-up appropriate. Psychiatry recommended resuming sertraline 100 mg at discharge.\n\nDischarge medications: sertraline 100 mg daily (resume); ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\nAllergies: NKDA.\nFollow-up: PCP within 1 week; outpatient psychiatry within 2 weeks.\n\nHospital Medicine"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bicarbonate": 24,
+              "Blood Urea Nitrogen": 18,
+              "Chloride": 100,
+              "Creatinine": 0.9,
+              "Glucose": 90,
+              "Potassium": 4.0,
+              "Sodium": 140
+            }
+          }
+        },
+        {
+          "id": "2025-02-07a",
+          "kind": "telephone",
+          "start": "2025-02-07T10:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2025-02-07T10:45",
+              "author": "RN",
+              "body": "Called within 2 business days of discharge. Pt home, roommate there. Has her discharge paperwork, restarted sertraline yesterday as instructed. Denies confusion, tremor, fever. Denies SI. Psychiatry appt 2/18. Confirmed PCP visit Monday 2/10 at 1:30."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "office_visit",
+          "start": "2025-02-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, sertraline overdose",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "action": "resolved",
+              "icd10": "G25.79"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              70
+            ],
+            "hr": 95,
+            "temp_c": 37.1,
+            "weight_kg": 50.3
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 18
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-02-10T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2025-02-10T14:40",
+              "author": "PCP",
+              "body": "Post-hospital visit. Admitted 2/3-2/5 for serotonin syndrome after taking her bottle of sertraline. Discharge summary reviewed.\n\nShe remembers little of that evening. Says she was 'done with everything' after a bad week but now says she didn't really want to die. Back on sertraline 100 since discharge. No tremor, sweats, or confusion. Sleep poor. Not back at work yet, going back Thursday.\n\nExam: alert, tearful at times, oriented. HR normal, no clonus, reflexes normal, pupils normal. Vitals as charted.\nPHQ-9 18. Asked about current SI: passive at times, no plan or intent today. She agreed to the safety plan from the hospital and we went through it line by line. Roommate is helping hold onto medications.\n\nA/P\n1. Serotonin syndrome - resolved.\n2. Intentional overdose / MDD / BPD - continue sertraline 100 per psychiatry; will now send 30-day supplies only, no auto-refill. Psychiatry 2/18. Therapist this week.\n3. TCM: medication reconciliation done, records reviewed.\nRTC 1 month, call anytime."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "outside_records",
+          "start": "2025-03-25T14:45",
+          "reason": "Psychiatry follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "date": "2025-03-25T14:45",
+              "author": "psychiatry",
+              "body": "Re: Sophia Labrie\n\nSeen 02/18 and 03/20/2025 after her February admission for serotonin syndrome. She is engaged with individual therapy again and her mood is slowly improving; she denies current suicidal thinking. Diagnoses: borderline personality disorder, major depressive disorder. Medication: sertraline 100 mg daily, unchanged. Return here in 2 months.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "annual_physical",
+          "start": "2025-04-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              69
+            ],
+            "hr": 89,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 49.9,
+            "height_cm": 165.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-17T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.78
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 227
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-17T08:45",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 13
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-04-17T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-17T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-04-17T09:30",
+              "author": "PCP",
+              "body": "Yearly visit, just turned 26.\n\nSince last year: overnight ED stay June 2024 for cutting; admission Feb 2025 for sertraline overdose with serotonin syndrome. Seeing psychiatry every 1-2 months and therapy weekly. Mood 'better than February.' No self-harm since February. No purging per her. No urinary symptoms since November.\nMeds: sertraline 100 mg daily (30-day fills), OCP daily. NKDA.\nSH: back at work part time. No tobacco, no alcohol.\n\nExam: thin, well groomed, weight stable. Vitals as charted. Eyes and ears normal. Thyroid nonpalpable. Heart regular rate and rhythm, no murmurs. Lungs clear. Abdomen soft, no tenderness or masses. Skin with old forearm scars, nothing new. Normal gait.\nPHQ-9 13. No SI.\n\nA/P\n- Preventive: Pap normal 2024, next 2027. HIV/HCV done. Flu and COVID this fall.\n- Purging history: CBC, CMP today.\n- MDD/BPD: continue current plan, psychiatry managing.\n- OCP: BP normal, continue.\nRTC in a few months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-04-21a",
+          "kind": "portal_message",
+          "start": "2025-04-21T12:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual Labs",
+              "date": "2025-04-21T12:05",
+              "author": "PCP",
+              "body": "Sophia, your blood count and chemistry panel are normal, including potassium and kidney function. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T09:00",
+          "reason": "Refill oral contraceptive",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Oral Contraceptive Refill",
+              "date": "2025-06-10T09:00",
+              "author": "MA",
+              "body": "Pharmacy requesting ethinyl estradiol 0.035 / norethindrone 1 mg, 3-month supply. BP normal 4/17/25. Approved per PCP protocol, sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "hospital_admission",
+          "start": "2025-08-21T16:15",
+          "end": "2025-08-22T15:00",
+          "service": "Emergency Medicine / Internal Medicine",
+          "reason": "Acetaminophen ingestion, suicide attempt",
+          "conditions": [
+            {
+              "label": "Acetaminophen toxicity",
+              "action": "diagnosed",
+              "onset": "2025-08-21",
+              "icd10": "T39.1X2A"
+            },
+            {
+              "label": "Suicide attempt",
+              "action": "diagnosed",
+              "onset": "2025-08-21",
+              "icd10": "T14.91XA"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-08-21T16:20",
+              "bp": [
+                118,
+                72
+              ],
+              "hr": 78,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2025-08-22T06:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 72,
+              "rr": 14,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-21T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-08-21T16:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-08-21T16:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-21T16:30",
+              "resulted": "2025-08-21T17:20",
+              "results": [
+                {
+                  "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
+                  "loinc": "3298-7",
+                  "unit": "ug/mL",
+                  "value": 150
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-21T18:15",
+              "resulted": "2025-08-21T19:05",
+              "results": [
+                {
+                  "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
+                  "loinc": "3298-7",
+                  "unit": "ug/mL",
+                  "value": 162
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-08-22T12:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-08-22T12:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-08-21T16:15"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-08-21T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-08-22T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-08-22T16:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT\nArrived 08/21/2025 16:15\n\nChief concern: took acetaminophen to end her life, about 2 hours prior.\n\n26F, BPD, MDD, bulimia nervosa, prior ED visits for cutting and an admission in February for sertraline overdose. She swallowed 'a handful' of extra-strength 500 mg acetaminophen around 14:15. Roommate found the empty bottle, which held 50 tablets, and drove her in. No symptoms. She says she regrets it.\n\nMeds on file: ethinyl estradiol/norethindrone daily. NKDA. No tobacco or alcohol.\n\nVitals normal. Exam: alert and oriented x3, no distress, no RUQ tenderness, otherwise unremarkable.\n\nLabs: acetaminophen 150 mcg/mL at 16:30 (about 2 h after ingestion) - too early to plot. CBC, LFTs, INR sent. Repeat level at 4 h: 162 mcg/mL, above the treatment line. AST/ALT and INR normal.\n\nPlan: IV N-acetylcysteine, standard 21-hour regimen, started 19:20. 1:1 sitter. Admit to medicine. Poison center aware. Psychiatry once medically clear."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Medical Discharge Summary",
+              "date": "2025-08-22T16:30",
+              "author": "hospital medicine",
+              "body": "Hospital Medicine Discharge / Transfer Summary\nAdmit 08/21/2025 - Transfer 08/22/2025\n\nDiagnoses: acetaminophen toxicity, intentional (suicide attempt). Borderline personality disorder. Major depressive disorder.\n\nCourse: 4-hour acetaminophen level 162 mcg/mL. Completed the 21-hour IV N-acetylcysteine protocol without reaction. AST, ALT and INR normal on arrival and again at completion. No hepatotoxicity. Continuous observation throughout.\n\nMedically cleared 08/22. Transferred to the inpatient psychiatric unit for suicide attempt.\nHome medications (per patient): sertraline 100 mg daily; ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\n\nHospital Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-22a",
+          "kind": "hospital_admission",
+          "start": "2025-08-22T15:30",
+          "end": "2025-08-29T11:00",
+          "service": "Inpatient Psychiatry",
+          "reason": "Suicide attempt by acetaminophen ingestion",
+          "procedures": [
+            {
+              "procedure": "Psychiatric diagnostic evaluation with medical services",
+              "performed": "2025-08-22T17:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Psychiatric Discharge Summary",
+              "date": "2025-09-02T09:15",
+              "author": "inpatient psychiatry",
+              "body": "INPATIENT PSYCHIATRY - DISCHARGE SUMMARY\nAdmission 08/22/2025. Discharge 08/29/2025.\n\nReason for admission: suicide attempt by acetaminophen overdose, transferred from medicine after N-acetylcysteine treatment.\n\nHistory: 26-year-old woman with borderline personality disorder and major depressive disorder, chronic self-injury, a February 2025 sertraline overdose, and bulimia nervosa. Family history of maternal depression, paternal substance use and suicide of a maternal uncle.\n\nHospital course: participated in groups and individual sessions; developed a written crisis plan; family meeting with roommate by phone. Mood improved over the week; by discharge she denied suicidal ideation, intent or plan and was future oriented. No medication changes were made.\n\nDischarge diagnoses: borderline personality disorder; major depressive disorder; suicide attempt.\nDischarge medications: sertraline 100 mg daily; ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\nAllergies: NKDA.\nFollow-up: outpatient psychiatry 09/04; therapist 09/02; PCP within 1 week. Medications to be held by roommate.\n\nInpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "office_visit",
+          "start": "2025-09-03T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital visit",
+          "conditions": [
+            {
+              "label": "Acetaminophen toxicity",
+              "action": "resolved",
+              "icd10": "T39.1X2A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              78
+            ],
+            "hr": 92,
+            "temp_c": 37.1,
+            "weight_kg": 50.3
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-09-03T12:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 15
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-09-03T11:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-03T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2025-09-03T12:40",
+              "author": "PCP",
+              "body": "TCM visit. Acetaminophen overdose 8/21, NAC, LFTs never rose; then a week on the inpatient psych unit, home 8/29. Both summaries reviewed today.\n\nShe was quiet but talked more as the visit went on. Says this was the first time she 'actually meant it.' Now: no SI, no intent, no plan; names her roommate and therapist as supports, saw therapist yesterday, psychiatry tomorrow. Roommate keeping her meds and there's no acetaminophen in the apartment now.\nNo RUQ pain, no nausea, no jaundice.\n\nExam: no scleral icterus, abdomen soft and nontender, liver edge not felt. Vitals as charted.\nPHQ-9 15.\n\nA/P\n1. Acetaminophen toxicity - treated, no liver injury in hospital; hepatic panel today to close the loop. Resolved.\n2. Suicide attempt, MDD, BPD - sertraline 100 continues, 30 days at a time. Crisis plan from the unit in her chart. I'll check in by phone in 2 weeks.\n3. Med rec done."
+            },
+            {
+              "type": "Result Note",
+              "title": "Hepatic Panel",
+              "date": "2025-09-04T08:00",
+              "author": "PCP",
+              "body": "Liver tests normal. Sent pt a short note."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "telephone",
+          "start": "2025-09-17T16:00",
+          "reason": "Check-in after hospitalization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in Call",
+              "date": "2025-09-17T16:15",
+              "author": "PCP",
+              "body": "Called as promised. She's back at work three mornings a week. Saw psychiatry 9/4, no changes. No SI. Sleeping better. She asked if she can do her flu shot in October - yes, nurse visit. Next PCP visit December."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza Immunization",
+              "date": "2025-10-14T16:00",
+              "author": "RN",
+              "body": "Flu vaccine given, 0.5 mL IM R deltoid. Screening questions negative, afebrile. VIS reviewed. No reaction during observation."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "outside_records",
+          "start": "2025-10-21T10:30",
+          "reason": "Psychiatry follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "date": "2025-10-21T10:30",
+              "author": "psychiatry",
+              "body": "Dear Doctor,\n\nUpdate on our mutual patient after her August acetaminophen overdose and psychiatric admission. I have seen her three times since discharge, most recently 10/16/2025. She attends weekly therapy. Mood fair, no suicidal ideation reported, crisis plan in place. Diagnoses: borderline personality disorder; major depressive disorder. Sertraline remains 100 mg daily. Next visit in 6 weeks.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "portal_message",
+          "start": "2025-11-04T18:25",
+          "reason": "COVID vaccine update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-11-01T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid vaccine",
+              "date": "2025-11-04T18:25",
+              "author": "patient",
+              "body": "Just letting you know I got this year's covid shot at the pharmacy on 11/1 (Pfizer)."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Covid vaccine",
+              "date": "2025-11-05T08:20",
+              "author": "MA",
+              "body": "Thanks Sophia, recorded."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up depression",
+          "vitals": {
+            "bp": [
+              121,
+              72
+            ],
+            "hr": 86,
+            "weight_kg": 50.1
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-09T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-12-09T14:55",
+              "author": "PCP",
+              "body": "Routine f/u. Steadier this fall. Work going ok, picked up an extra morning. Psychiatry every 6 wks, therapy weekly. No self-harm since the summer. Eating regular meals, denies purging. Holidays are a hard time for her; she has a plan for them with her therapist.\nMeds: sertraline 100 (30-day fills, roommate holds the bottle), OCP.\n\nVitals as charted, weight stable. Calm, good eye contact, linear thought.\nPHQ-9 12. No SI.\n\nA/P: MDD/BPD - continue. Physical in the spring. Call or text if things slip."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T09:30",
+          "reason": "Refill sertraline",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline 30-day Refill",
+              "date": "2026-01-13T09:30",
+              "author": "MA",
+              "body": "Monthly sertraline 100 mg #30 due. Per PCP standing plan, 30 tablets, no refills. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "hospital_admission",
+          "start": "2026-02-18T21:30",
+          "end": "2026-02-21T12:00",
+          "service": "Emergency Medicine / Critical Care",
+          "reason": "Tricyclic antidepressant overdose with seizures",
+          "conditions": [
+            {
+              "label": "Tricyclic antidepressant overdose",
+              "action": "diagnosed",
+              "onset": "2026-02-18",
+              "icd10": "T43.012A"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-02-18T21:35",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 20,
+              "temp_c": 37.6,
+              "spo2": 96
+            },
+            {
+              "time": "2026-02-19T07:00",
+              "bp": [
+                108,
+                68
+              ],
+              "hr": 98,
+              "rr": 16,
+              "temp_c": 37.1,
+              "spo2": 98
+            },
+            {
+              "time": "2026-02-21T08:00",
+              "bp": [
+                114,
+                72
+              ],
+              "hr": 80,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-18T21:45",
+              "resulted": "2026-02-18T22:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-18T21:45",
+              "resulted": "2026-02-18T22:30",
+              "results": [
+                {
+                  "test": "pH of Blood",
+                  "loinc": "11558-4",
+                  "unit": "[pH]",
+                  "value": 7.31
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-02-18T21:40",
+              "text": "Sinus tachycardia, rate 120. QRS duration 120 ms. Occasional premature ventricular complexes.",
+              "conclusion": "Sinus tachycardia with QRS widening to 120 ms and occasional PVCs, consistent with sodium channel blockade.",
+              "issued": "2026-02-18T22:00"
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-02-19T07:15",
+              "text": "Sinus rhythm, rate 98. QRS duration 98 ms. No ectopy.",
+              "conclusion": "QRS narrowed to 98 ms after bicarbonate.",
+              "issued": "2026-02-19T08:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-18T21:30"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-19T00:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-02-21T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-02-23T13:00",
+              "author": "emergency medicine",
+              "body": "ED Record\n02/18/2026 21:30\n\nFriends brought her in after finding her at home confused and agitated. They say she has been down lately and think she may have overdosed on 'her medication.' Known to us: BPD, prior ED visits for self-harm and overdose (sertraline 02/2025, acetaminophen 08/2025).\n\nHome meds (records): sertraline 100 mg daily; ethinyl estradiol/norethindrone daily. NKDA.\n\nArrival: HR 120, BP 90/60.\nExam: confused, agitated, tachycardic. Pupils dilated. Skin dry. Brief generalized seizures, on and off, in the department.\n\nLabs: Na 140, K 4.0, HCO3 22, Cr 1.0. Blood pH 7.31. Urine drug screen positive for tricyclic antidepressants.\nECG: QRS 120 ms with occasional PVCs.\n\nAssessment: tricyclic antidepressant overdose with seizures, QRS widening and hypotension.\nTreatment: IV lorazepam for seizures, IV sodium bicarbonate in boluses then infusion, IV fluids. Poison center consulted. Admit ICU.\nSource of the tricyclic not established."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "ICU and Hospital Discharge Summary",
+              "date": "2026-02-23T13:00",
+              "author": "critical care",
+              "body": "Critical Care / Medicine Discharge Summary\n02/18/2026 - 02/21/2026\n\nPrincipal diagnosis: tricyclic antidepressant overdose, intentional, with seizures, QRS prolongation and hypotension.\n\nICU course (02/18-02/20): bicarbonate boluses followed by infusion. QRS 98 ms on the morning ECG of 02/19 and stayed narrow. No seizures after the ED. Blood pressure recovered with fluids alone. Mental status normal by 02/20. Moved to the medical floor 02/20.\nFloor (02/20-02/21): stable. Psychiatry consulted; recommended inpatient psychiatric admission.\n\nNo tricyclic was on her medication list, and where the tablets came from was not determined.\n\nTransfer medications: sertraline 100 mg daily (held in ICU, restarted 02/21 per psychiatry); ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\nAllergies: NKDA.\nTransferred to inpatient psychiatry 02/21/2026.\n\nCritical Care"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bicarbonate": 22,
+              "Creatinine": 1.0,
+              "Potassium": 4.0,
+              "Sodium": 140
+            }
+          }
+        },
+        {
+          "id": "2026-02-21a",
+          "kind": "hospital_admission",
+          "start": "2026-02-21T13:00",
+          "end": "2026-03-03T10:30",
+          "service": "Inpatient Psychiatry",
+          "reason": "Intentional tricyclic overdose",
+          "procedures": [
+            {
+              "procedure": "Psychiatric diagnostic evaluation with medical services",
+              "performed": "2026-02-21T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Psychiatric Discharge Summary",
+              "date": "2026-03-05T11:20",
+              "author": "inpatient psychiatry",
+              "body": "Inpatient Psychiatric Unit - Discharge\nAdmitted 02/21/2026 from medicine after intentional tricyclic overdose. Discharged 03/03/2026.\n\nThird overdose in a year (sertraline 02/2025, acetaminophen 08/2025). Background of borderline personality disorder, major depressive disorder and bulimia nervosa; maternal uncle died by suicide.\n\nCourse: low mood and hopelessness on admission that lifted over the stay. Engaged in individual and group therapy; updated safety plan reviewed with two friends who will check in daily. At discharge, denies suicidal ideation, intent or plan.\n\nDischarge diagnoses: borderline personality disorder; major depressive disorder.\nDischarge medications: sertraline 100 mg daily; ethinyl estradiol 0.035 mg / norethindrone 1 mg daily. No changes.\nFollow-up: outpatient psychiatry 03/06/2026; therapist this week; PCP within 7 days.\n\nInpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "telephone",
+          "start": "2026-03-04T09:40",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2026-03-04T09:55",
+              "author": "RN",
+              "body": "TCM call. Home since yesterday, a friend staying with her this week. Has sertraline, taking it. No seizures, palpitations or confusion. No SI. Psych appt Friday. PCP visit Monday 3/9 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "office_visit",
+          "start": "2026-03-09T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital visit, tricyclic overdose",
+          "conditions": [
+            {
+              "label": "Tricyclic antidepressant overdose",
+              "action": "resolved",
+              "icd10": "T43.012A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              104,
+              74
+            ],
+            "hr": 76,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 49.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 17
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-09T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2026-03-09T11:20",
+              "author": "PCP",
+              "body": "TCM. ICU 2/18-2/20 for a tricyclic overdose with seizures and a wide QRS, bicarbonate, then 2/21-3/3 inpatient psych. Read both summaries.\n\nTired, low, but came on time with her friend. No SI now; no intent or plan. Saw psychiatry Friday, no med changes. Therapy tomorrow.\nNo palpitations, no further seizures, no headaches.\n\nExam: alert, oriented, flat affect. Heart regular, normal rate. Lungs clear. Neuro nonfocal. Vitals as charted.\nPHQ-9 17.\n\nA/P\n1. TCA overdose - medically recovered. Resolved.\n2. MDD / BPD / prior suicide attempt - sertraline 100 continues, 30 days at a time, friends checking in daily. Safety plan reviewed and updated with her today.\n3. TCM: meds reconciled.\nSee her for the annual in April; message anytime."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-23a",
+          "kind": "annual_physical",
+          "start": "2026-04-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 94,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 50.5,
+            "height_cm": 164.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-23T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-23T09:10",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 18
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 14
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-04-23T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-23T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-04-23T09:45",
+              "author": "PCP",
+              "body": "Annual, 27 this month.\n\nInterval: Feb 2026 TCA overdose, ICU, then inpatient psych to 3/3. Since then psychiatry every 3-4 weeks, therapy weekly. Some better weeks. No self-harm since February. Denies purging. No UTIs this year. Working part time.\nMeds: sertraline 100 daily (30-day fills), OCP daily. NKDA. Never smoker, no alcohol.\n\nExam: thin, weight unchanged. Vitals as charted. Oropharynx clear. No lymphadenopathy. Heart: normal S1 S2, no murmur. Lungs clear. Abdomen benign. Skin: old forearm scars only. Neuro nonfocal.\nPHQ-9 14. No SI today.\n\nA/P\n- Prevention: Pap 2027. Flu/COVID in fall. HIV/HCV done once.\n- Purging history - CBC, CMP.\n- MDD/BPD - keep current plan with psychiatry.\n- Contraception - BP normal, refill OCP.\nNext in about 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "portal_message",
+          "start": "2026-04-24T15:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2026-04-24T15:10",
+              "author": "PCP",
+              "body": "Hi Sophia, blood counts and chemistries from yesterday are all in the normal range. Nothing to change."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab Results",
+              "date": "2026-04-24T19:31",
+              "author": "patient",
+              "body": "good, thanks. also can the birth control be sent to the pharmacy near work instead? same chain, the one on main st"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab Results",
+              "date": "2026-04-25T09:00",
+              "author": "MA",
+              "body": "Done - pharmacy updated and the refill is there."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "hospital_admission",
+          "start": "2026-06-08T06:40",
+          "end": "2026-06-11T13:00",
+          "service": "Critical Care",
+          "reason": "Unresponsive, amitriptyline overdose",
+          "conditions": [
+            {
+              "label": "Tricyclic antidepressant overdose",
+              "action": "diagnosed",
+              "onset": "2026-06-08",
+              "note": "amitriptyline",
+              "icd10": "T43.012A"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-08T06:45",
+              "bp": [
+                85,
+                50
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 39.1,
+              "spo2": 95
+            },
+            {
+              "time": "2026-06-08T09:30",
+              "bp": [
+                108,
+                66
+              ],
+              "hr": 106,
+              "rr": 18,
+              "temp_c": 38.3,
+              "spo2": 97
+            },
+            {
+              "time": "2026-06-09T07:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.1,
+              "spo2": 98
+            },
+            {
+              "time": "2026-06-11T08:00",
+              "bp": [
+                110,
+                68
+              ],
+              "hr": 76,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-08T07:00",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-08T07:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 234
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-06-08T06:50",
+              "text": "Sinus tachycardia, rate 120. QRS duration 120 ms.",
+              "conclusion": "Sinus tachycardia with QRS 120 ms.",
+              "issued": "2026-06-08T07:10"
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-06-08T10:00",
+              "text": "Sinus tachycardia, rate 104. QRS duration 104 ms.",
+              "conclusion": "QRS 104 ms after sodium bicarbonate.",
+              "issued": "2026-06-08T10:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-08T06:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-06-08T08:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-06-11T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Critical Care Discharge Summary",
+              "date": "2026-06-12T14:00",
+              "author": "critical care",
+              "body": "MEDICAL ICU - DISCHARGE / TRANSFER SUMMARY\nAdmission 06/08/2026, transfer to psychiatry 06/11/2026\n\nPresentation: 27-year-old woman with borderline personality disorder and several prior overdoses, among them a tricyclic overdose about four months ago, brought in by friends who found her unresponsive at home next to an empty bottle labeled amitriptyline.\n\nHome medications (records): sertraline 100 mg daily; ethinyl estradiol/norethindrone daily. NKDA.\n\nOn arrival: T 39.1 C, BP 85/50, HR 120, RR 22. Drowsy, rouses to voice. Pupils dilated. Bowel sounds diminished. ECG with QRS 120 ms.\n\nCourse: sodium bicarbonate boluses then infusion; 2 L IV crystalloid; external cooling. BP 108/66 after fluids and QRS 104 ms on repeat ECG that morning. Afebrile by 06/09. No seizures. Bicarbonate weaned 06/10. Mentation back to baseline 06/10. Psychiatry consulted.\n\nDiagnosis: tricyclic antidepressant (amitriptyline) overdose, intentional. Where the amitriptyline came from was not established.\nTransfer medications: sertraline 100 mg daily (resumed 06/11 per psychiatry); ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\nTransferred to inpatient psychiatry 06/11/2026.\n\nMedical ICU"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-11a",
+          "kind": "hospital_admission",
+          "start": "2026-06-11T14:00",
+          "end": "2026-06-24T11:00",
+          "service": "Inpatient Psychiatry",
+          "reason": "Intentional amitriptyline overdose",
+          "procedures": [
+            {
+              "procedure": "Psychiatric diagnostic evaluation with medical services",
+              "performed": "2026-06-11T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Psychiatric Discharge Summary",
+              "date": "2026-06-26T10:40",
+              "author": "inpatient psychiatry",
+              "body": "PSYCHIATRY INPATIENT SERVICE - DISCHARGE SUMMARY\n06/11/2026 to 06/24/2026\n\nAdmitted after medical ICU care for an intentional amitriptyline overdose, her second tricyclic overdose this year.\n\nCourse: two-week stay. Initially withdrawn, then engaged in daily individual sessions and group programming. Crisis plan rebuilt with her outpatient therapist joining by video; friends again agreed to hold medications. At discharge she denies suicidal ideation, intent or plan.\n\nDischarge diagnoses: borderline personality disorder; major depressive disorder.\nDischarge medications: sertraline 100 mg daily; ethinyl estradiol 0.035 mg / norethindrone 1 mg daily.\nAllergies: NKDA.\nFollow-up: outpatient psychiatry 06/26; therapist 06/25; PCP within 7 days.\n\nPsychiatry Inpatient Service"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-25a",
+          "kind": "telephone",
+          "start": "2026-06-25T11:15",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2026-06-25T11:30",
+              "author": "RN",
+              "body": "Spoke with pt, discharged yesterday. Friend with her. Taking sertraline, friend has the bottle. No fever, no palpitations. No SI. Therapy today at 2, psychiatry tomorrow. PCP visit 6/29 at 9:00 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "office_visit",
+          "start": "2026-06-29T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital visit, amitriptyline overdose",
+          "conditions": [
+            {
+              "label": "Tricyclic antidepressant overdose",
+              "action": "resolved",
+              "icd10": "T43.012A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              73
+            ],
+            "hr": 85,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 49.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-29T09:40",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 17
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 16
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-06-29T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-29T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2026-06-29T10:05",
+              "author": "PCP",
+              "body": "TCM after ICU 6/8-6/11 (amitriptyline overdose, fever, low BP, QRS 120 -> bicarb, fluids, cooling) and inpatient psych 6/11-6/24. Summaries reviewed.\n\nShe's flat but present. Says the last two weeks on the unit were 'actually useful,' especially having her therapist on the calls. No SI today, no intent, no plan. Friends holding meds. Psychiatry saw her 6/26, no medication changes.\nNo palpitations, no confusion, eating.\n\nExam: afebrile, heart regular, lungs clear, abdomen soft with normal bowel sounds. Neuro grossly normal. Weight about the same.\nPHQ-9 16.\nBMP today.\n\nA/P\n1. Amitriptyline overdose - recovered. Resolved.\n2. MDD/BPD/suicide attempt - sertraline 100, 30-day supplies, plan per psychiatry and therapist. Safety plan reviewed.\n3. Recheck in a month."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP",
+              "date": "2026-06-29T17:20",
+              "author": "PCP",
+              "body": "BMP normal. No action."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "outside_records",
+          "start": "2026-07-14T13:30",
+          "reason": "Psychiatry follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "date": "2026-07-14T13:30",
+              "author": "psychiatry",
+              "body": "Dear colleague,\n\nI saw Ms. Labrie 06/26 and 07/10/2026 after her June admission. She is attending therapy weekly and has her friends' support with medication storage. She denies current suicidal ideation. Diagnoses are unchanged: borderline personality disorder and major depressive disorder. She continues sertraline 100 mg daily; no other medications were started. I will see her every 2-3 weeks for now.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "office_visit",
+          "start": "2026-07-28T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up depression",
+          "vitals": {
+            "bp": [
+              118,
+              67
+            ],
+            "hr": 91,
+            "weight_kg": 50.1
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 13
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-28T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-07-28T16:20",
+              "author": "PCP",
+              "body": "1-month f/u. A bit brighter today. Back at work two mornings a week. Psychiatry every 2-3 wks, therapy weekly. No self-harm, no purging per her. Sleep ok.\n\nVitals as charted, weight steady. Better eye contact than last month.\nPHQ-9 13. No SI, no plan or intent.\n\nA/P: MDD/BPD - continue sertraline 100, 30 days at a time. Keep psych and therapy. See me in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T20:15",
+          "reason": "Refill and appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "refill + appt",
+              "date": "2026-08-18T20:15",
+              "author": "patient",
+              "body": "Hi, my sertraline runs out next week. Also can I move my september appointment to a thursday, my work schedule changed again."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: refill + appt",
+              "date": "2026-08-19T09:10",
+              "author": "front desk",
+              "body": "Hi Sophia, you're now booked Thursday 9/10 at 3:30. The doctor will handle the refill."
+            },
+            {
+              "type": "Refill Request",
+              "title": "Sertraline 30-day Refill",
+              "date": "2026-08-19T12:30",
+              "author": "PCP",
+              "body": "Sertraline 100 mg #30, no refills, sent. Saw her 7/28."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T15:30",
+          "reason": "Follow-up depression and borderline personality disorder",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acetaminophen toxicity|T39.1X2A": {
+        "code": "T39.1X2A",
+        "display": "Poisoning by 4-Aminophenol derivatives, intentional self-harm, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Bulimia nervosa|F50.20": {
+        "code": "F50.20",
+        "display": "Bulimia nervosa, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Major depressive disorder, single episode, unspecified|F32.9": {
+        "code": "F32.9",
+        "display": "Major depressive disorder, single episode, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Serotonin syndrome|G25.79": {
+        "code": "G25.79",
+        "display": "Other drug induced movement disorders",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Suicide attempt|T14.91XA": {
+        "code": "T14.91XA",
+        "display": "Suicide attempt, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tricyclic antidepressant overdose|T43.012A": {
+        "code": "T43.012A",
+        "display": "Poisoning by tricyclic antidepressants, intentional self-harm, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Vomiting, unspecified|R11.10": {
+        "code": "R11.10",
+        "display": "Vomiting, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ethinyl estradiol 0.035 MG / norethindrone 1 MG Oral Tablet": {
+        "code": "312033",
+        "display": "ethinyl estradiol 0.035 MG / norethindrone 1 MG Oral Tablet",
+        "ingredient": "ethinyl",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Acetaminophen [Mass/volume] in Serum or Plasma": {
+        "code": "3298-7",
+        "display": "Acetaminophen [Mass/volume] in Serum or Plasma",
+        "unit": "ug/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Chloride [Moles/volume] in Urine": {
+        "code": "2078-4",
+        "display": "Chloride [Moles/volume] in Urine",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ethanol": {
+        "code": "5643-2",
+        "display": "Ethanol [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Salicylate": {
+        "code": "4024-6",
+        "display": "Salicylates [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Blood": {
+        "code": "11558-4",
+        "display": "pH of Blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

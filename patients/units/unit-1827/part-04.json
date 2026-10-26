@@ -1,0 +1,732 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001827",
+   "events": [
+    {
+     "id": "2026-01-08a",
+     "kind": "pharmacy",
+     "start": "2026-01-08T09:10",
+     "reason": "Prior authorization renewal",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Mycophenolate PA, new plan year",
+       "author": "MA",
+       "date": "2026-01-08T09:10",
+       "body": "Pharmacy reports mycophenolate claim rejected for the new plan year, PA required again. Resubmitted with nephrology letter 12/9/25 and biopsy report. Approved same day for 12 months. Also fluticasone HFA PA renewed through 2/2027 while in the portal."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-20a",
+     "kind": "specialist_visit",
+     "start": "2026-01-20T15:00",
+     "service": "Rheumatology",
+     "reason": "SLE follow-up",
+     "medications": [
+      {
+       "drug": "prednisone 10 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Taper complete to maintenance dose"
+      },
+      {
+       "drug": "prednisone 5 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Systemic lupus erythematosus with lupus nephritis"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2026-01-22T09:40",
+       "body": "RHEUMATOLOGY — FOLLOW-UP\nDate of service: 01/20/2026\n\nMs. Williams returns for SLE with class IV lupus nephritis, about six months from presentation. No rash since the fall, no joint pain or swelling, no mouth sores. Energy good. Nephrology in December: creatinine 0.9, UPCR 0.8 g/g, complements normal, anti-dsDNA lower.\n\nMedications: mycophenolate mofetil 1000 mg twice daily; hydroxychloroquine 200 mg daily; losartan 25 mg daily; prednisone, near the end of the taper.\nAllergies: hydrochlorothiazide (photosensitivity); seasonal pollens.\n\nExam: BP 131/77, HR 86, weight 67.0 kg. No malar rash. No oral ulcers. Joints: full range, no synovitis. No edema.\n\nAssessment: SLE, clinically quiet; renal parameters improving.\n\nPlan:\n1. Prednisone 5 mg daily, and hold at that dose.\n2. Mycophenolate, hydroxychloroquine and losartan unchanged.\n3. Return in 6 months.\n\nRheumatology"
+      }
+     ]
+    },
+    {
+     "id": "2026-01-22a",
+     "kind": "outside_records",
+     "start": "2026-01-22T16:15",
+     "reason": "Rheumatology letter reviewed",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Rheumatology letter reviewed",
+       "author": "PCP",
+       "date": "2026-01-22T16:15",
+       "body": "Prednisone now 5 mg daily, to be held there. Med list updated."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-10a",
+     "kind": "office_visit",
+     "start": "2026-02-10T09:40",
+     "end": "2026-02-10T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lupus follow-up, Shingrix dose 2, cervical screening",
+     "vitals": [
+      {
+       "time": "2026-02-10T09:45",
+       "bp": [
+        118,
+        76
+       ],
+       "hr": 72,
+       "rr": 14,
+       "temp_c": 36.6,
+       "spo2": 99,
+       "weight_kg": 66.4
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-02-10T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-10T10:10",
+       "results": [
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2026-02-10T10:00",
+       "issued": "2026-02-16T14:10",
+       "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+       "conclusion": "NILM. High-risk HPV not detected."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-02-10T09:40"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2026-02-10T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit — lupus follow-up",
+       "author": "PCP",
+       "date": "2026-02-10T12:45",
+       "body": "Lupus follow-up, Shingrix #2, co-test.\n\nRheum 1/20: prednisone down to 5 mg daily and staying there. Feels well. No rash, no joint pain, no swelling. Tolerating MMF, HCQ, losartan.\nAsthma fine through the winter; albuterol once after shoveling. ACT above 20.\nMigraine: one or two a month, sumatriptan works. Anxiety steady on sertraline 100.\n\nMeds: prednisone 5 mg daily; mycophenolate 1000 mg BID; hydroxychloroquine 200 mg daily; losartan 25 mg daily; fluticasone HFA 44 2 puffs BID; albuterol PRN; sertraline 100 mg daily; sumatriptan 50 mg PRN.\nAllergies: hydrochlorothiazide (photosensitivity); seasonal tree and grass pollens.\n\nBP 118/76, HR 72, RR 14, T 36.6, SpO2 99%. Wt 66.4 kg.\nWell. No malar rash. Oropharynx normal. Lungs clear. Heart regular. Joints normal. No edema. Pelvic: normal external genitalia, vagina and cervix; co-test collected.\n\nA/P\n1. SLE with lupus nephritis — quiet. CBC and BMP today. Nephrology labs and visit due June.\n2. Health maintenance, immunosuppressed: Shingrix #2 today, series complete. Cervical co-test collected.\n3. Asthma, migraine, anxiety — stable.\nRTC 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-17a",
+     "kind": "portal_message",
+     "start": "2026-02-17T07:50",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Labs and co-test",
+       "author": "PCP",
+       "date": "2026-02-17T07:50",
+       "body": "All good news. Blood count normal (white count 7.1, hemoglobin 13.3, platelets 253). Creatinine 0.72, potassium 4.5. Your Pap and HPV test are normal again. Because you're on medicines that suppress the immune system, we'll do cervical screening more often than the usual schedule; I'll remind you when it's due."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-12a",
+     "kind": "ed_visit",
+     "start": "2026-03-12T18:05",
+     "end": "2026-03-13T11:40",
+     "service": "Emergency Medicine",
+     "reason": "Altered behavior, agitation, hyperthermia after outdoor music festival",
+     "conditions": [
+      {
+       "label": "Serotonin syndrome",
+       "icd10": "G25.79",
+       "action": "diagnosed"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "dextromethorphan hydrobromide 2 MG/ML Oral Solution",
+       "action": "historical",
+       "sig": "OTC cough syrup, taken occasionally for throat irritation",
+       "route": "Oral",
+       "course": "chronic"
+      },
+      {
+       "drug_text": "dextromethorphan hydrobromide 2 MG/ML Oral Solution",
+       "action": "stop",
+       "reason": "Serotonin syndrome"
+      },
+      {
+       "drug": "sertraline 100 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Held: serotonin syndrome"
+      },
+      {
+       "drug": "sumatriptan 50 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Held: serotonin syndrome"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2026-03-12T18:10",
+       "bp": [
+        168,
+        94
+       ],
+       "hr": 120,
+       "rr": 24,
+       "temp_c": 39.7,
+       "spo2": 97
+      },
+      {
+       "time": "2026-03-12T19:30",
+       "bp": [
+        152,
+        88
+       ],
+       "hr": 108,
+       "rr": 20,
+       "temp_c": 38.6,
+       "spo2": 98
+      },
+      {
+       "time": "2026-03-12T22:00",
+       "bp": [
+        134,
+        82
+       ],
+       "hr": 94,
+       "rr": 18,
+       "temp_c": 37.6,
+       "spo2": 99
+      },
+      {
+       "time": "2026-03-13T06:00",
+       "bp": [
+        124,
+        78
+       ],
+       "hr": 80,
+       "rr": 16,
+       "temp_c": 37.0,
+       "spo2": 99
+      },
+      {
+       "time": "2026-03-13T10:30",
+       "bp": [
+        120,
+        76
+       ],
+       "hr": 76,
+       "rr": 16,
+       "temp_c": 36.8,
+       "spo2": 99
+      }
+     ],
+     "state": {
+      "labs": {
+       "Creatine Kinase": 150
+      }
+     },
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-03-12T18:25",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Lymphocytes %",
+         "value": 28
+        },
+        {
+         "test": "Eosinophils %",
+         "value": 1
+        }
+       ],
+       "resulted": "2026-03-12T19:10"
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-03-12T18:25",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 0.9
+        }
+       ],
+       "resulted": "2026-03-12T19:25"
+      },
+      {
+       "panel": null,
+       "collected": "2026-03-12T18:25",
+       "results": [
+        {
+         "test": "Creatine Kinase"
+        }
+       ],
+       "resulted": "2026-03-12T19:30"
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2026-03-12T18:40",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        }
+       ],
+       "resulted": "2026-03-12T19:05"
+      },
+      {
+       "panel": null,
+       "collected": "2026-03-12T18:30",
+       "results": [
+        {
+         "test": "Blood Culture",
+         "text": "No growth at 5 days (2 sets)",
+         "resulted": "2026-03-17T08:10"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-03-12T18:40",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "No growth",
+         "resulted": "2026-03-14T09:30"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2026-03-12T19:00",
+       "text": "Portable AP chest. Lungs clear. No focal consolidation, effusion or pneumothorax. Heart size and mediastinal contours normal. Osseous structures intact.",
+       "conclusion": "No acute cardiopulmonary process."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2026-03-12T18:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department provider note",
+       "author": "emergency medicine",
+       "date": "2026-03-12T23:40",
+       "body": "EMERGENCY DEPARTMENT — PROVIDER NOTE\nArrival: 03/12/2026 18:05, brought in by friends.\n\nHPI: 34 year old woman brought in for strange behavior after spending the day at an outdoor music festival. Friends say she was dancing wildly, kept saying she was overheating, and drank very little water. History is limited by agitation; obtained from friends and, later, the patient. Medications include sertraline and sumatriptan, and she takes an over-the-counter dextromethorphan cough syrup now and then for a long-standing throat irritation. She has lupus and is on immunosuppressive therapy. Friends deny alcohol or drugs at the festival; patient later confirms.\n\nPMH: anxiety/OCD, migraine, asthma, SLE with kidney involvement.\nHome medications (from our system): albuterol HFA as needed; fluticasone HFA 44 mcg 2 puffs twice daily; hydrochlorothiazide 25 mg daily.\nAllergies: seasonal pollens; no known drug allergies.\n\nExam: T 39.7 C (103.5 F), HR 120, BP 168/94, RR 24, SpO2 97% RA.\nAwake, agitated, intermittently combative. Pupils dilated. Profuse sweating. Bowel sounds increased. Neuro: inducible clonus at both ankles, hyperreflexia in both lower extremities, mild rigidity. Neck supple. No photophobia. Lungs clear. Heart tachycardic, regular. No rash.\nFingerstick glucose normal.\n\nMDM: Clinical picture of serotonin toxicity (clonus, hyperreflexia, hyperthermia, agitation, mydriasis, diaphoresis) in a patient on sertraline and sumatriptan with dextromethorphan use, plus heat and dehydration. Because she is immunosuppressed and febrile, infection was evaluated as well: CBC, CMP, CK, urinalysis, blood and urine cultures and chest x-ray.\n\nResults: CBC normal. CMP normal, creatinine 0.9. CK normal. Urinalysis bland. Chest x-ray clear. Cultures pending.\n\nTreatment: active external cooling, IV fluids, IV benzodiazepine for agitation, cyproheptadine by mouth (loading dose, then scheduled). Sertraline and sumatriptan held. Dextromethorphan stopped.\n\nCourse: by 22:00 temperature 37.6, HR 94, calmer, clonus diminishing.\n\nDiagnosis: serotonin syndrome.\nDisposition: ED observation overnight.\n\nEmergency Medicine"
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "ED observation discharge",
+       "author": "emergency medicine",
+       "date": "2026-03-13T11:40",
+       "body": "ED OBSERVATION — DISCHARGE NOTE\nObservation 03/12/2026 to 03/13/2026\n\nDiagnosis: serotonin syndrome.\n\nCourse: cooled, IV fluids, benzodiazepine and cyproheptadine. Temperature normal since midnight. Agitation resolved; alert and oriented, appropriate. Clonus resolved on morning exam; reflexes normal. Tolerating food and fluids. 10:30 vitals: T 36.8, HR 76, BP 120/76, RR 16, SpO2 99%.\nBlood and urine cultures no growth so far; final results to PCP.\n\nInstructions:\n- Do NOT take dextromethorphan (in many cough and cold products).\n- Hold sertraline and sumatriptan until reviewed by your PCP and psychiatrist.\n- Hydrate, rest, avoid heat today.\n- Follow up with PCP within 1 week.\n- Return for fever, confusion, muscle stiffness or twitching.\n\nEmergency Medicine"
+      }
+     ]
+    },
+    {
+     "id": "2026-03-13a",
+     "kind": "telephone",
+     "start": "2026-03-13T15:20",
+     "reason": "Post-ED call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-ED follow-up call",
+       "author": "RN",
+       "date": "2026-03-13T15:41",
+       "body": "ED discharge summary received this afternoon (serotonin syndrome, observation overnight).\nCalled pt. Home, partner with her. Tired and sore but thinking clearly. No fever since this morning, no twitching or stiffness. Drinking well.\nConfirmed: no sertraline, no sumatriptan, no cough syrup until she sees PCP. She threw the cough syrup out. She is taking her lupus medicines as usual; told her to keep doing that. She has messaged psychiatry.\nNoted ED's med list was out of date (HCTZ listed, lupus meds missing); our list is current.\nAppt Tue 3/17 10:00 with PCP."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-17a",
+     "kind": "office_visit",
+     "start": "2026-03-17T10:00",
+     "end": "2026-03-17T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, serotonin syndrome",
+     "medications": [
+      {
+       "drug": "sumatriptan 50 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth at migraine onset; may repeat once in 2 hours. Max 200 mg per day. Use on no more than a few days a month. Never with dextromethorphan or other serotonergic over-the-counter products",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Migraine without aura"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Dextromethorphan",
+       "reaction": "Serotonin syndrome (with sertraline and sumatriptan)",
+       "severity": "severe",
+       "criticality": "high",
+       "type": "intolerance"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2026-03-17T10:05",
+       "bp": [
+        124,
+        78
+       ],
+       "hr": 74,
+       "rr": 14,
+       "temp_c": 36.7,
+       "spo2": 99,
+       "weight_kg": 66.2
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-03-17T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "ED follow-up — serotonin syndrome",
+       "author": "PCP",
+       "date": "2026-03-17T12:50",
+       "body": "ED FOLLOW-UP\n\nSeen in the ED 3/12 with serotonin syndrome after a day at an outdoor music festival: hyperthermic, agitated, clonus. On sertraline 100 and using sumatriptan, plus an OTC dextromethorphan cough syrup now and then. Cooled, fluids, benzodiazepine, cyproheptadine, observed overnight, home 3/13.\n\nToday: back to normal. No fever, no muscle twitching or stiffness, thinking clearly, sleeping well. Has not taken sertraline, sumatriptan or any cough syrup since. One mild headache, rode it out. Psychiatry has her scheduled next week. The cough syrup was for a scratchy throat she's had for a long time.\nLupus meds taken throughout.\n\nResults: ED CBC, CMP (creatinine 0.9), CK, UA normal; chest x-ray clear; urine culture no growth; blood cultures final no growth at 5 days.\n\nMeds now: prednisone 5 mg daily; mycophenolate 1000 mg BID; hydroxychloroquine 200 mg daily; losartan 25 mg daily; fluticasone HFA 44 2 puffs BID; albuterol PRN. Sertraline and sumatriptan on hold. ED list was outdated; ours reconciled.\nAllergies: hydrochlorothiazide (photosensitivity); seasonal tree and grass pollens. Adding dextromethorphan today.\n\nBP 124/78, HR 74, RR 14, T 36.7, SpO2 99%. Wt 66.2 kg.\nCalm, alert, oriented, normal affect. Pupils equal and normal size, reactive. No tremor. Tone normal. Reflexes 2+ and symmetric, no clonus at the ankles. Strength and gait normal. Skin dry. Lungs clear. Heart regular.\n\nA/P\n1. Serotonin syndrome, resolved.\n - Dextromethorphan added to allergy list (serotonin syndrome with sertraline and sumatriptan). Avoid every product that contains it; went through label reading together (\"DM\", \"cough\", \"nighttime\" cold formulas).\n - Sumatriptan OK to use again as needed: no more than a few days a month, and never together with dextromethorphan or other serotonergic OTC products.\n - Sertraline: leaving the restart and dose to psychiatry (appt 3/24). Sent them this note.\n2. Throat irritation — long-standing, the reason for the cough syrup. Noted.\n3. SLE with lupus nephritis — stable on current regimen.\nRTC as planned in summer; sooner as needed."
+      },
+      {
+       "type": "Patient Instructions",
+       "title": "After Visit Summary",
+       "author": "PCP",
+       "date": "2026-03-17T10:45",
+       "body": "What happened: your symptoms in the ED were serotonin syndrome, from too much serotonin activity. The combination of sertraline, sumatriptan and dextromethorphan (the cough syrup) can cause it, and heat and dehydration made it worse.\n\nFrom now on:\n- Never take dextromethorphan. Check labels for \"dextromethorphan\" or \"DM\". Many cough, cold and \"nighttime\" products contain it. It is now on your allergy list.\n- Sumatriptan is OK again for migraines, but only a few days a month, and never with cough/cold products like these.\n- Sertraline: psychiatry will restart it at your appointment on 3/24. Don't restart it on your own.\n- Keep taking all your lupus medicines.\n\nCall us any time with questions about an over-the-counter product before you take it."
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Serotonin syndrome",
+       "icd10": "G25.79",
+       "action": "resolved"
+      }
+     ]
+    },
+    {
+     "id": "2026-03-24a",
+     "kind": "specialist_visit",
+     "start": "2026-03-24T13:00",
+     "service": "Psychiatry",
+     "reason": "Follow-up after serotonin syndrome",
+     "medications": [
+      {
+       "drug": "sertraline 50 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Generalized anxiety disorder; obsessive-compulsive disorder"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry follow-up",
+       "author": "psychiatry",
+       "date": "2026-03-26T10:30",
+       "body": "OUTPATIENT PSYCHIATRY — FOLLOW-UP\nDate of service: 03/24/2026\n\n34 year old woman with GAD and OCD, on sertraline 100 mg daily until 3/12/2026, when she was treated in the ED for serotonin syndrome in the setting of sertraline, sumatriptan and over-the-counter dextromethorphan, plus heat exposure. Sertraline has been held since. Her PCP has put dextromethorphan on her allergy list and allowed limited sumatriptan.\n\nOff sertraline for 12 days. Physically recovered. No compulsions. No suicidal ideation. She would like to resume treatment.\nAllergies: dextromethorphan (serotonin syndrome); hydrochlorothiazide (photosensitivity); seasonal pollens.\n\nMental status: cooperative, mildly anxious, logical, no suicidal ideation.\n\nPlan:\n1. Restart sertraline at 50 mg daily.\n2. Reviewed warning signs of serotonin toxicity; no dextromethorphan; sumatriptan sparingly as her PCP advised.\n3. Return in about 8 weeks to consider returning to 100 mg.\n\nPsychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2026-04-21a",
+     "kind": "portal_message",
+     "start": "2026-04-21T18:25",
+     "reason": "OTC allergy medicine question",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Allergy pill question",
+       "author": "patient",
+       "date": "2026-04-21T18:25",
+       "body": "Pollen season is back and I'm sneezing nonstop. Is my usual plain antihistamine still ok? I'm paranoid now after the ER. The store also has a 'cold and allergy' version, is that the same?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Allergy pill question",
+       "author": "PCP",
+       "date": "2026-04-22T07:40",
+       "body": "Your usual plain antihistamine tablet is fine. Skip the \"cold and allergy\" and any \"DM\" or cough versions: combination products often add dextromethorphan or decongestants. If the box lists more than one active ingredient, send me a photo before you buy it. Good instinct to ask."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-19a",
+     "kind": "specialist_visit",
+     "start": "2026-05-19T13:30",
+     "service": "Psychiatry",
+     "reason": "Psychiatry follow-up",
+     "medications": [
+      {
+       "drug": "sertraline 50 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Dose increase"
+      },
+      {
+       "drug": "sertraline 100 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Generalized anxiety disorder; obsessive-compulsive disorder"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry follow-up",
+       "author": "psychiatry",
+       "date": "2026-05-21T09:05",
+       "body": "OUTPATIENT PSYCHIATRY — FOLLOW-UP\nDate of service: 05/19/2026\n\nEight weeks back on sertraline 50 mg after the March serotonin syndrome. No recurrence: no fever, tremor, twitching or agitation. No dextromethorphan. Sumatriptan used twice for migraine, without problems. She feels the 50 mg dose is not holding her worry as well as 100 mg did. No compulsions. No suicidal ideation.\n\nMental status: calm, cooperative, logical, mildly anxious.\n\nPlan:\n1. Increase sertraline to 100 mg daily, her previous dose.\n2. Continue to avoid dextromethorphan and other serotonergic over-the-counter products.\n3. Return in 3 months.\n\nPsychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "specialist_visit",
+     "start": "2026-06-16T09:10",
+     "service": "Nephrology",
+     "reason": "Lupus nephritis follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Creatinine": 0.8,
+       "Albumin": 4.1,
+       "Total Protein": 7.0
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-06-16T08:40",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 0.8
+        },
+        {
+         "test": "Albumin",
+         "value": 4.1
+        },
+        {
+         "test": "Total Protein"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-06-16T08:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology clinic letter",
+       "author": "nephrology",
+       "date": "2026-06-18T14:30",
+       "body": "NEPHROLOGY CLINIC\nDate of service: 06/16/2026\n\nRe: Fatou Williams, 34\nDiagnosis: SLE, lupus nephritis ISN/RPS class IV (biopsy 7/1/2025)\n\nAbout a year from presentation. Feels well. No swelling, no rash. ED visit in March for serotonin syndrome, unrelated to the kidneys; creatinine there 0.9.\n\nCurrent therapy: prednisone 5 mg daily; mycophenolate mofetil 1000 mg twice daily; hydroxychloroquine 200 mg daily; losartan 25 mg daily.\nAllergies: dextromethorphan; hydrochlorothiazide (photosensitivity); seasonal pollens.\n\nVitals: BP 112/79, HR 73, weight 66.3 kg. No edema.\n\nLabs 6/16: creatinine 0.8 mg/dL; albumin 4.1 g/dL; urine protein/creatinine ratio 0.3 g/g; C3 and C4 normal; urine sediment bland. CBC normal.\n\nAssessment: complete renal response.\n\nPlan: regimen unchanged: prednisone 5 mg, mycophenolate 1000 mg twice daily, hydroxychloroquine 200 mg, losartan 25 mg. Labs and visit in 6 months.\n\nNephrology"
+      }
+     ]
+    },
+    {
+     "id": "2026-06-19a",
+     "kind": "portal_message",
+     "start": "2026-06-19T08:05",
+     "reason": "Nephrology letter reviewed",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Nephrology letter reviewed",
+       "author": "PCP",
+       "date": "2026-06-19T08:05",
+       "body": "Complete renal response per nephrology: Cr 0.8, albumin 4.1, UPCR 0.3, complements normal, bland sediment. No changes. Sent her a congratulations note."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-14a",
+     "kind": "office_visit",
+     "start": "2026-07-14T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lupus follow-up",
+     "vitals": [
+      {
+       "time": "2026-07-14T08:45",
+       "bp": [
+        120,
+        74
+       ],
+       "hr": 70,
+       "rr": 14,
+       "temp_c": 36.8,
+       "spo2": 99,
+       "weight_kg": 66.0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-07-14T09:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-07-14T09:10",
+       "results": [
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-07-14T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit — lupus follow-up",
+       "author": "PCP",
+       "date": "2026-07-14T11:20",
+       "body": "Lupus follow-up.\n\nNephrology 6/16: complete renal response, no changes. Psychiatry back to sertraline 100 in May, no recurrence of the March reaction. Anxiety steady.\nFeels well. No rash, no joint pain, no swelling. Wearing sunscreen and a hat outdoors. Migraine twice since March, sumatriptan worked, no cough or cold products. Asthma: no albuterol since the once in February. ACT above 20.\n\nMeds: prednisone 5 mg daily; mycophenolate 1000 mg BID; hydroxychloroquine 200 mg daily; losartan 25 mg daily; sertraline 100 mg daily; fluticasone HFA 44 2 puffs BID; albuterol PRN; sumatriptan 50 mg PRN (limited).\nAllergies: dextromethorphan (serotonin syndrome); hydrochlorothiazide (photosensitivity); seasonal tree and grass pollens.\n\nBP 120/74, HR 70, RR 14, T 36.8, SpO2 99%. Wt 66.0 kg.\nWell. No malar rash, no oral ulcers. Lungs clear. Heart regular. Joints normal. No edema.\n\nA/P\n1. SLE with lupus nephritis — complete renal response; BP at goal on losartan. CBC and BMP today.\n2. Mild persistent asthma — well controlled.\n3. Migraine — sumatriptan use within limits.\n4. GAD/OCD — psychiatry, sertraline 100.\nYearly physical booked 9/16 with flu shot."
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 13.7,
+       "Mean Corpuscular Volume": 88
+      }
+     }
+    },
+    {
+     "id": "2026-07-16a",
+     "kind": "portal_message",
+     "start": "2026-07-16T07:35",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "July labs",
+       "author": "PCP",
+       "date": "2026-07-16T07:35",
+       "body": "July labs normal: white count 7.0, hemoglobin 13.0, platelets 248; creatinine 0.9, potassium 4.4. See you 9/16."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-18a",
+     "kind": "portal_message",
+     "start": "2026-08-18T12:10",
+     "reason": "Appointment confirmation",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical next month",
+       "author": "front desk",
+       "date": "2026-08-18T12:10",
+       "body": "Reminder: yearly physical Wed 9/16/2026 at 8:20. Flu vaccine will be given at the visit. Reply C to confirm."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Physical next month",
+       "author": "patient",
+       "date": "2026-08-18T12:44",
+       "body": "C. Thanks!"
+      }
+     ]
+    },
+    {
+     "id": "2026-09-16a",
+     "kind": "annual_physical",
+     "start": "2026-09-16T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Yearly physical, influenza vaccine",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

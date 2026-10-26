@@ -1,0 +1,1559 @@
+{
+  "unit": "unit-1895",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"multivitamin with minerals Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001895",
+      "given": "Sophia",
+      "family": "Roy",
+      "birth_date": "2000-11-20",
+      "address_line": "58 Linden Street, Apt 2",
+      "phone": "+1-603-555-0167",
+      "email": "sophia.roy@example.test",
+      "marital_status": "single",
+      "summary": "Healthy young woman who works at an artisan bakery and is on a university student plan; joined in 2022 with functional constipation managed on psyllium. Two uncomplicated cystitis episodes in 2025, each treated with nitrofurantoin; otherwise routine preventive care.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "telephone",
+          "start": "2022-08-30T10:12",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2022-08-30T10:12",
+              "author": "front desk",
+              "body": "Caller: patient (Sophia Roy, DOB 11/20/2000).\n\nWants to establish with the practice. Has been seen at her previous primary care office since childhood and would like to move closer to where she lives and works now. Mentioned she has a university student health plan as primary and her parents' PPO as secondary - both cards to be scanned at the visit.\n\nScheduled new patient physical 9/8 at 8:30. Membership agreement and intake forms sent to portal. Records release signed electronically; request faxed to prior office for immunizations and last visit notes.\n\nNo current concerns per pt."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "establish_care",
+          "start": "2022-09-08T08:30",
+          "end": "2022-09-08T09:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, new patient physical",
+          "conditions": [
+            {
+              "label": "Functional constipation",
+              "action": "history",
+              "note": "Longstanding per patient; manages with fiber as needed.",
+              "icd10": "K59.04"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "psyllium husk 3.4 GM Oral Powder",
+              "action": "historical",
+              "sig": "1 tablespoon in a glass of water by mouth as needed for constipation",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Functional constipation"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              103,
+              77
+            ],
+            "hr": 75,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 59.2,
+            "height_cm": 164.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-08T09:10",
+              "resulted": "2022-09-09T06:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.55
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-08T09:10",
+              "resulted": "2022-09-09T06:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-08T09:10",
+              "resulted": "2022-09-09T06:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 80
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 106
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-08T09:10",
+              "resulted": "2022-09-09T06:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.75
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-08T09:10",
+              "resulted": "2022-09-10T11:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks on weekends"
+            },
+            {
+              "item": "Occupation",
+              "value": "Bakery associate at a local artisan bakery"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-08T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-08T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-08T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-08T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit - Establish Care",
+              "date": "2022-09-08T08:30",
+              "author": "PCP",
+              "body": "NEW PATIENT - ESTABLISHING CARE\n\n21 y/o woman here to start with us. Grew up in the area, was followed at her previous primary care office until now. Works at an artisan bakery in town (early shifts) and is enrolled at the university, which is where her primary insurance comes from. Feels well. No acute concerns.\n\nPMH: Constipation - functional, has had it for years. Goes a few days at a time without a BM when her schedule gets busy, otherwise fine. No blood, no weight loss, no night symptoms. Uses psyllium powder when she needs it, roughly a tablespoon in water, and that works for her. Never had a workup and never needed a prescription.\nNo other medical problems. No hospitalizations.\nPSH: none.\n\nMeds: psyllium powder PRN. No prescription meds. No supplements.\nAllergies: NKDA.\n\nFH: Mom has had a lot of bladder infections over the years. Dad has high blood pressure. Nobody with kidney disease or kidney stones that she knows of.\n\nSH: Lives in Holyoke. Bakery associate, student. Never smoked. Alcohol socially on weekends, a drink or two. Denies drug use.\n\nROS: Negative except as above. Periods regular.\n\nExam:\nVitals as recorded. BMI normal.\nGen: well-appearing, pleasant.\nHEENT: TMs clear, oropharynx without lesions. Neck supple, thyroid normal size, no lymphadenopathy.\nCV: RRR, no murmur.\nLungs: CTA bilaterally.\nAbd: soft, NT/ND, normal bowel sounds, no masses or HSM.\nExt: warm, no edema.\nSkin: no rashes.\nNeuro/psych: grossly nonfocal; mood and affect normal.\n\nPHQ-2: 0. AUDIT-C: 2.\n\nAssessment/Plan:\n1. Health maintenance, new patient. Baseline CBC, CMP, lipids. HIV and hep C one-time screens offered and accepted. Tdap today - last one at 11 per her recollection, will confirm against outside records. Flu shot once supply is in, nurse visit next month. Cervical screening to start at her next physical.\n2. Functional constipation - longstanding, no alarm features. TSH and calcium with today's labs. Keep using psyllium; talked about fluids and not putting off the bathroom on long shifts.\n\nReturn in 1 year for physical, sooner as needed. She has my cell for anything in between."
+            }
+          ],
+          "state": {
+            "bp": [
+              110,
+              70
+            ],
+            "weight_kg": 59.8,
+            "height_cm": 165.0,
+            "labs": {
+              "Hematocrit": 37.6,
+              "Hemoglobin": 14.0,
+              "High Density Lipoprotein": 62,
+              "Low Density Lipoprotein": 88,
+              "Thyroid Stimulating Hormone": 1.74,
+              "Total Cholesterol": 168,
+              "Triglycerides": 82
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "portal_message",
+          "start": "2022-09-12T07:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results - New Patient Labs",
+              "date": "2022-09-12T07:48",
+              "author": "PCP",
+              "body": "Hi Sophia,\n\nAll of your bloodwork from last week came back normal - blood counts, kidney and liver tests, calcium, thyroid and cholesterol. The HIV and hepatitis C screening tests were both negative. Nothing to change.\n\nTalk soon,\nYour primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T14:30",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2012-01-10T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2012-01-10T10:05"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2012-01-10T10:10"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2012-08-14T15:20"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2017-03-02T16:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-12T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-03T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "date": "2022-09-20T14:30",
+              "author": "front desk",
+              "body": "Records received by fax, 9 pages. Scanned to media.\n\nSummary entered by staff:\n- Immunization record: childhood series complete (DTaP/IPV/Hib/HepB/MMR/varicella per the printout). Adolescent: Tdap and MenACWY 01/2012, MenACWY booster 03/2017, HPV quadrivalent x2 (01/2012, 08/2012). COVID-19 Pfizer primary series 04/2021 and 05/2021.\n- Last well visit there 2021: well, constipation noted, fiber suggested.\n- Allergies on their list: NKDA.\n- No screening labs or Pap on file.\n\nImmunizations abstracted to chart. Tdap date matches what pt told us - the 9/8 Tdap is the 10-year booster."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "nurse_visit",
+          "start": "2022-10-19T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-19T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-19T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-19T16:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2022-10-19T16:20",
+              "author": "RN",
+              "body": "In after her bakery shift for flu and COVID booster. Screening questions negative; no prior vaccine reactions. VIS/EUA fact sheet given.\n\nInfluenza quadrivalent 0.5 mL IM left deltoid.\nPfizer bivalent booster 0.3 mL IM right deltoid.\n\nObserved 15 min, tolerated well, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "portal_message",
+          "start": "2023-03-07T19:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Constipation question",
+              "date": "2023-03-07T19:41",
+              "author": "patient",
+              "body": "Hi! Quick question, not urgent. We've had a lot of long shifts at the bakery lately and I basically don't get a real break, so I've been going like 3-4 days without going. The psyllium still works when I take it but I keep forgetting until it's already bad. Is it ok to just take it every day? Or should I be doing something else?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Constipation question",
+              "date": "2023-03-08T07:15",
+              "author": "PCP",
+              "body": "Hi Sophia - yes, taking the psyllium every day during the busy stretches is completely fine, and honestly works better that way than waiting until you're backed up. Same dose, lots of water with it. A water bottle at your station helps, and try to give yourself a few minutes in the morning before your shift, since that's when the gut is most active. If you start having pain, blood, or it stops responding to the fiber, let me know and we'll take a closer look."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "annual_physical",
+          "start": "2023-08-24T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              108,
+              71
+            ],
+            "hr": 57,
+            "rr": 17,
+            "temp_c": 37.1,
+            "spo2": 100,
+            "weight_kg": 59.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-08-24T13:35",
+              "resulted": "2023-08-26T09:20",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-08-24T13:30",
+              "text": "Specimen: cervical, liquid-based preparation.\nSpecimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present.\nInterpretation: Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM).",
+              "issued": "2023-08-29T15:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-24T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2023-08-24T13:00",
+              "author": "PCP",
+              "body": "Annual physical.\n\nS: Doing well. Still at the bakery, more hours this summer. Constipation better since she started taking the psyllium daily on heavy weeks - most weeks now regular. No other concerns. Sexually active; reviewed STI screening, agreeable. LMP 2 weeks ago, regular.\nMeds: psyllium PRN/daily on busy weeks. Allergies: NKDA.\nSH: never smoker, a drink or two on weekends.\n\nO: Vitals reviewed, normal.\nGeneral: well.\nNeck: no thyromegaly or nodes.\nHeart RRR without murmur; lungs clear.\nAbdomen soft, nontender.\nPelvic: normal external genitalia; speculum exam with normal-appearing cervix, Pap collected. Tolerated with some nerves - first one, talked her through it.\nSkin: no concerning lesions.\n\nPHQ-2 0. AUDIT-C 2.\n\nA/P:\n- Health maintenance: first Pap today (age 22). Urine GC/CT. Tdap current (2022). Flu and COVID this fall, nurse visit.\n- Functional constipation: stable on fiber.\n\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-30a",
+          "kind": "portal_message",
+          "start": "2023-08-30T08:02",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap and STI screening results",
+              "date": "2023-08-30T08:02",
+              "author": "PCP",
+              "body": "Hi Sophia, your Pap came back normal, and the chlamydia and gonorrhea tests were negative. With a normal Pap at your age the next one is in 3 years (2026). Thanks for getting through the first one!"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T15:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T15:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2023-10-11T15:50",
+              "author": "MA",
+              "body": "Flu + 2023-24 COVID today. Denies fever or illness; no reactions to last year's shots other than a sore arm. VIS reviewed.\nFlu quadrivalent 0.5 mL IM L deltoid, lot recorded.\nCOVID (Pfizer, updated) 0.3 mL IM R deltoid, lot recorded.\nWaited 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "portal_message",
+          "start": "2024-01-17T12:26",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "University immunization form",
+              "date": "2024-01-17T12:26",
+              "author": "patient",
+              "body": "Hi, my university is asking for an updated immunization form before spring registration (they say they don't have my meningitis dates). I uploaded the form here. Can someone fill it out and sign it? Thank you!"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Form completed",
+              "date": "2024-01-18T10:40",
+              "author": "front desk",
+              "body": "University immunization compliance form completed from chart immunization record (MenACWY 2012 and 2017, Tdap 2022, MMR/varicella/hep B series per prior office record). Signed by PCP. Uploaded back to portal and copy to media. Pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "annual_physical",
+          "start": "2024-08-27T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              107,
+              76
+            ],
+            "hr": 64,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 60.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-08-27T08:30",
+              "resulted": "2024-08-28T16:45",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks on weekends"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-27T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2024-08-27T08:00",
+              "author": "PCP",
+              "body": "Physical, age 23.\n\nNo complaints. Bowels okay - uses the psyllium on and off, more when work is hectic. Sleeping fine, mood good. Sexually active, wants the yearly STI urine test again.\n\nMeds: psyllium powder as needed. NKDA.\nNever smoker. Weekend drinks only, 1-2.\n\nExam: vitals normal. Well-appearing. HEENT unremarkable, no nodes, thyroid normal. Heart regular, no murmurs. Lungs clear to auscultation. Abdomen soft, nontender, no masses. No edema. Skin unremarkable.\n\nScreens: PHQ-2 0, AUDIT-C 2.\n\nPlan:\n- Urine GC/CT today.\n- Pap last year normal - next due 2026.\n- Flu in October; she'll think about the COVID booster.\n- Constipation: stable, continue fiber.\nSee her next summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "portal_message",
+          "start": "2024-08-29T07:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "STI screen result",
+              "date": "2024-08-29T07:30",
+              "author": "PCP",
+              "body": "Chlamydia and gonorrhea both negative. All set until next year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "nurse_visit",
+          "start": "2024-10-16T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-16T16:44"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-16T16:44"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2024-10-16T16:40",
+              "author": "RN",
+              "body": "Here for flu shot. Offered 2024-25 COVID vaccine; she declines for now, says she may get it later in the season. Well today, no allergies, no prior reactions.\nInfluenza trivalent 0.5 mL IM left deltoid. VIS given. Observed, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "portal_message",
+          "start": "2025-02-25T07:34",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Burning when I pee",
+              "date": "2025-02-25T07:34",
+              "author": "patient",
+              "body": "Hi, since Sunday it burns every time I pee and I feel like I have to go constantly, plus kind of an ache low in my belly. No fever. I think it's a UTI? Can I be seen today? I'm off at 11."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RN Triage - Urinary Symptoms",
+              "date": "2025-02-25T08:05",
+              "author": "RN",
+              "body": "Called pt back re: portal message. Dysuria, frequency and lower abdominal ache x2 days. Denies fever, back/flank pain, vaginal discharge or bleeding. Not pregnant to her knowledge. Tolerating fluids.\nNo red flags. Booked same-day with PCP at 11:40; asked her not to void right before arriving so we can get a clean-catch sample."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25b",
+          "kind": "office_visit",
+          "start": "2025-02-25T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Dysuria, urinary frequency, suprapubic pain",
+          "conditions": [
+            {
+              "label": "Acute cystitis without hematuria",
+              "action": "diagnosed",
+              "onset": "2025-02-23"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ascorbic acid 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Self-started for immune support"
+            },
+            {
+              "drug_text": "multivitamin with minerals Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (multivitamin with zinc) by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Self-started for immune support"
+            },
+            {
+              "drug": "nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily with food for 5 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute uncomplicated cystitis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              97,
+              67
+            ],
+            "hr": 70,
+            "rr": 12,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 60.0
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-02-25T11:45",
+              "resulted": "2025-02-25T12:05",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": ">10 /HPF"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "0-2 /HPF"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-25T11:45",
+              "resulted": "2025-02-25T12:05",
+              "results": [
+                {
+                  "test": "Bacteria, urine sediment",
+                  "loinc": "25145-4",
+                  "text": "Many; Gram-negative rods"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-25T11:45",
+              "resulted": "2025-02-25T11:55",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-25T11:45",
+              "resulted": "2025-02-27T09:10",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-25T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit - Urinary Symptoms",
+              "date": "2025-02-25T11:40",
+              "author": "PCP",
+              "body": "CC: burning with urination\n\nHPI: 24F, two days of dysuria with frequency and a suprapubic ache. Started Sunday. No vaginal discharge, no vaginal bleeding. No fever, no back or flank pain. First time she's had this. One partner currently; condoms some of the time but not consistently.\n\nPMH: functional constipation.\nMeds: psyllium powder PRN. Since January also taking vitamin C 500 mg daily and a multivitamin with zinc daily - read about it for immune support during the winter.\nNKDA.\nFH notable for mom with recurrent UTIs; dad HTN; no kidney disease or stones in the family.\n\nExam: Vitals WNL, afebrile.\nUncomfortable but well-appearing.\nAbd: mild tenderness over the suprapubic area. No rebound, no guarding. No CVA tenderness.\nPelvic: offered, she is not comfortable with it today - deferred.\n\nClean-catch UA (in office): LE positive, nitrite positive, WBC >10/hpf, RBC 0-2/hpf, many gram-negative rods.\nUrine hCG negative.\n\nA/P:\n1. Acute uncomplicated cystitis. Classic symptoms, positive dip and micro, no upper tract features. Nitrofurantoin 100 mg BID x5 days. Push fluids.\n2. Sexually active, under 25, inconsistent condoms - urine GC/CT sent since she declined the pelvic. Will message results.\n3. Supplements noted and added to med list.\n\nIf fever, back pain, vomiting, or not better in 48 h, call or text me."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T12:18",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "STI test results",
+              "date": "2025-02-27T12:18",
+              "author": "PCP",
+              "body": "Sophia - chlamydia and gonorrhea tests from Tuesday were negative. How are the bladder symptoms doing?"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-03a",
+          "kind": "portal_message",
+          "start": "2025-03-03T18:52",
+          "conditions": [
+            {
+              "label": "Acute cystitis without hematuria",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RE: STI test results",
+              "date": "2025-03-03T18:52",
+              "author": "patient",
+              "body": "Sorry just seeing this! Thank you. Bladder stuff was better by day 2 and I finished all the pills yesterday. All good now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: STI test results",
+              "date": "2025-03-04T07:20",
+              "author": "PCP",
+              "body": "Great, glad it cleared. Reach out if it comes back."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "annual_physical",
+          "start": "2025-07-08T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Appointment Cancelled",
+              "date": "2025-07-07T15:12",
+              "author": "front desk",
+              "body": "Pt texted - picked up an extra shift tomorrow morning, needs to cancel physical. Rescheduled to 7/29 at 7:45 (before her shift). Lab order to be drawn at that visit."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "annual_physical",
+          "start": "2025-07-29T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 70,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 61.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-29T08:15",
+              "resulted": "2025-07-29T14:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.55
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-07-29T08:15",
+              "resulted": "2025-07-29T14:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-07-29T07:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-29T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2025-07-29T07:45",
+              "author": "PCP",
+              "body": "24 y/o here for physical (rescheduled from 7/8).\n\nInterval: one episode of cystitis in Feb, treated with nitrofurantoin, resolved quickly, none since. Bowels fine lately. Working a lot. No new concerns.\n\nMed rec: psyllium PRN; vitamin C 500 mg daily; multivitamin with zinc daily. No Rx meds. NKDA.\nSocial: never smoker, 1-2 drinks on weekends.\n\nPE: vitals normal; weight up a little from last year. Well. HEENT normal. No adenopathy, thyroid normal. RRR, no murmur. Lungs clear. Abdomen soft, nontender. Extremities no edema. Skin clear.\nPHQ-2 0. AUDIT-C 2.\n\nA/P:\n- Preventive: CBC and CMP today (none since 2022). GC/CT done in Feb, negative. Pap due 2026. Flu this fall.\n- Functional constipation: stable.\n- Hx cystitis x1: no recurrence."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "labs": {
+              "Hematocrit": 40.6,
+              "Hemoglobin": 13.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-30a",
+          "kind": "portal_message",
+          "start": "2025-07-30T07:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2025-07-30T07:05",
+              "author": "PCP",
+              "body": "Hi Sophia, yesterday's labs (blood count, kidney, liver, electrolytes) are all normal. Nice seeing you."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "portal_message",
+          "start": "2025-10-22T06:58",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "I think the UTI is back",
+              "date": "2025-10-22T06:58",
+              "author": "patient",
+              "body": "Hi, I'm pretty sure I have another UTI, same thing as February. It's been 3 days - burning, have to go urgently, sore above my pubic bone. No fever. Any chance I can come in today?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Same-day scheduling",
+              "date": "2025-10-22T07:40",
+              "author": "MA",
+              "body": "Per PCP, ok for same-day. Called pt, scheduled 10:20 today. Advised to arrive with a full bladder for urine sample."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22b",
+          "kind": "office_visit",
+          "start": "2025-10-22T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Dysuria, urinary urgency, suprapubic discomfort",
+          "conditions": [
+            {
+              "label": "Acute cystitis without hematuria",
+              "action": "diagnosed",
+              "onset": "2025-10-19"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ascorbic acid 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Patient no longer taking"
+            },
+            {
+              "drug": "nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily with food for 5 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute uncomplicated cystitis, recurrent episode"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              72
+            ],
+            "hr": 82,
+            "rr": 17,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 60.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-22T10:25",
+              "resulted": "2025-10-22T10:40",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-22T10:25",
+              "resulted": "2025-10-22T10:35",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-22T10:25",
+              "resulted": "2025-10-24T08:50",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Escherichia coli, >100,000 CFU/mL. Susceptible: nitrofurantoin, trimethoprim-sulfamethoxazole, cefazolin."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-22T10:25",
+              "resulted": "2025-10-23T17:30",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Occupation",
+              "value": "Bakery associate at a local artisan bakery, full-time"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-10-22T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit - Recurrent Urinary Symptoms",
+              "date": "2025-10-22T10:20",
+              "author": "PCP",
+              "body": "CC: dysuria again\n\nHPI: 24F with functional constipation and one prior cystitis (Feb 2025) back with 3 days of painful urination, urgency and discomfort above the pubic bone - says it feels just like February. No fever or chills. No flank pain. No vaginal discharge.\nROS otherwise negative: no nausea or vomiting, no back pain, no vaginal irritation, no abnormal bleeding. Hasn't been sick recently. Got her flu shot at a vaccine day through her university last month (mid-September).\nBowels: still has the occasional mild constipation when breaks at work are irregular - she's full-time at the bakery now - but nothing different lately.\n\nMeds: psyllium PRN, multivitamin with zinc daily. Stopped the vitamin C recently. No prescription meds.\nNKDA.\nSH: never smoker, social drinker. One partner for the last four months.\nFH: mother with recurrent UTIs; father HTN; no renal disease/stones.\n\nExam: T 37.1, BP 112/72, P 82.\nNAD. Abdomen soft, mild suprapubic tenderness, otherwise nontender, no CVA tenderness. Rest of exam unremarkable.\n\nUA dip: LE positive, nitrite positive. Urine hCG negative.\n\nA/P:\n1. Acute cystitis, second episode in 8 months. Uncomplicated - afebrile, no flank pain. Urine culture sent this time. Nitrofurantoin 100 mg BID x5 days again, worked well last time. Will adjust if culture says otherwise.\n2. New partner since summer, under 25 - urine GC/CT added.\n3. Med list updated: vitamin C off.\n4. Flu 9/2025 recorded from patient report.\n\nReturn precautions reviewed. Message me in a few days with how she's doing."
+            }
+          ],
+          "measure": [
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-22c",
+          "kind": "outside_records",
+          "start": "2025-10-22T13:15",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, unspecified",
+              "date": "2025-09-18T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Immunization History Updated",
+              "date": "2025-10-22T13:15",
+              "author": "MA",
+              "body": "Per patient at today's visit: influenza vaccine received 9/18/2025 at a university vaccination event. Product and lot not known to patient. Entered as historical; state registry query shows a 2025-26 influenza dose on that date."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "portal_message",
+          "start": "2025-10-24T12:02",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Urine culture and STI results",
+              "date": "2025-10-24T12:02",
+              "author": "PCP",
+              "body": "Hi Sophia - your urine culture grew E. coli, the usual bladder-infection bacteria, and it is sensitive to the nitrofurantoin you're taking, so finish the course as planned. Chlamydia and gonorrhea were negative."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "portal_message",
+          "start": "2025-10-27T20:15",
+          "conditions": [
+            {
+              "label": "Acute cystitis without hematuria",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Feeling better",
+              "date": "2025-10-27T20:15",
+              "author": "patient",
+              "body": "Finished the antibiotic today, everything's back to normal. Is there anything I can do so this doesn't keep happening? My mom used to get these all the time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Feeling better",
+              "date": "2025-10-28T07:32",
+              "author": "PCP",
+              "body": "Glad you're better. Two in a year is common and doesn't mean anything is wrong. The things with the best track record are simple: drink plenty of water through the day (hard at work, I know), don't hold it for long stretches, and pee soon after sex. Keeping the constipation under control helps too. If you get a third one within a year we'd talk about other options, so let me know."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "portal_message",
+          "start": "2026-01-21T13:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New insurance card",
+              "date": "2026-01-21T13:10",
+              "author": "patient",
+              "body": "Hi, the student health plan sent new cards for the spring semester (same plan, new member number). Pictures of front and back attached. My parents' PPO is the same as before."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Insurance updated",
+              "date": "2026-01-22T09:05",
+              "author": "front desk",
+              "body": "Primary coverage updated with new student plan member ID from uploaded card images. Secondary (parental PPO) unchanged. Eligibility verified."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "portal_message",
+          "start": "2026-03-11T21:03",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cranberry pills?",
+              "date": "2026-03-11T21:03",
+              "author": "patient",
+              "body": "Random question - my mom swears by cranberry pills for bladder infections. Since I've had two, should I be taking them? No symptoms right now, just wondering."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cranberry pills?",
+              "date": "2026-03-12T07:44",
+              "author": "PCP",
+              "body": "Good question. The research on cranberry is mixed - some studies show a small benefit for women who get frequent infections, others show nothing. You've had two, months apart, and you're doing all the right things, so I wouldn't push it. If you want to try it, it's very unlikely to hurt, but let me know so I can put it on your list. The water and voiding habits matter more."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "annual_physical",
+          "start": "2026-07-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              104,
+              62
+            ],
+            "hr": 65,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 61.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks on weekends"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-07-16T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2026-07-16T07:30",
+              "author": "PCP",
+              "body": "Annual exam, 25 y/o.\n\nFeeling well. No urinary symptoms since last October - two cystitis episodes total (2/2025, 10/2025), both nitrofurantoin-responsive, culture last time E. coli. Didn't start cranberry. Constipation quiet; psyllium a few times a month. Still full-time at the bakery.\n\nMeds: psyllium PRN, multivitamin with zinc daily. NKDA.\nNever smoker; 1-2 drinks on weekends.\n\nExam: vitals normal. Well-appearing young woman. HEENT clear. Neck without adenopathy, thyroid not enlarged. Heart regular rate and rhythm. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema. Skin without lesions of concern.\nPHQ-2 0, AUDIT-C 2.\n\nA/P:\n- Cervical screening due (Pap 8/2023 normal). She'd rather not do it today - prefers a dedicated visit; will book for September and do her flu shot then.\n- Labs: CBC/CMP normal last summer; nothing needed this year.\n- Functional constipation: stable.\n- Hx cystitis x2: no recurrence. Reviewed prevention habits.\nNext physical summer 2027."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-16b",
+          "kind": "telephone",
+          "start": "2026-07-16T08:20",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Appointment Scheduled",
+              "date": "2026-07-16T08:20",
+              "author": "front desk",
+              "body": "At checkout: booked Pap + flu vaccine visit with PCP Thu 9/17 at 3:30 (after her shift). Flu supply expected by then. Reminder will go out the week before."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T11:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment time",
+              "date": "2026-08-19T11:47",
+              "author": "patient",
+              "body": "Hi, is my September appointment still at 3:30? My schedule at work changed and I want to make sure I can make it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment time",
+              "date": "2026-08-19T14:02",
+              "author": "front desk",
+              "body": "Hi Sophia, yes - Thursday 9/17 at 3:30 with your physician. If that no longer works just reply here and we'll move it."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T15:30",
+          "reason": "Pap smear and flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Functional constipation|K59.04": {
+        "code": "K59.04",
+        "display": "Chronic idiopathic constipation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ascorbic acid 500 MG Oral Tablet": {
+        "code": "282402",
+        "display": "ascorbic acid 500 MG Oral Tablet",
+        "ingredient": "ascorbic",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "psyllium husk 3.4 GM Oral Powder": {
+        "code": "824586",
+        "display": "psyllium 3400 MG Powder for Oral Suspension",
+        "ingredient": "psyllium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bacteria, urine sediment": {
+        "code": "25145-4",
+        "display": "Bacteria [Presence] in Urine sediment by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"multivitamin with minerals Oral Tablet\""
+    ]
+  }
+}

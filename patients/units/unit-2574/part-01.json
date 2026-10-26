@@ -1,0 +1,889 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002574",
+      "given": "Darnell",
+      "family": "Grant",
+      "birth_date": "2000-02-24",
+      "address_line": "88 Saint James Avenue, Apt 2, Springfield, MA 01109",
+      "phone": "+1-802-555-0137",
+      "email": "darnell.grant@example.test",
+      "marital_status": "single",
+      "summary": "Young man with HbSS sickle cell disease, functional asplenia, right femoral head AVN and past acute chest syndrome who joins at 19 from pediatric care; hematology runs hydroxyurea. Outside care reaches the chart sparsely: crisis admissions, a folate lapse, an atraumatic splenic laceration with mononucleosis and a delayed hemolytic transfusion reaction.",
+      "events": [
+        {
+          "id": "2019-04-22a",
+          "kind": "establish_care",
+          "start": "2019-04-22T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring from pediatrics; sickle cell disease",
+          "conditions": [
+            {
+              "label": "Sickle-cell disease without crisis",
+              "action": "diagnosed",
+              "onset": "2000-06-01",
+              "note": "HbSS, diagnosed on newborn screen; followed by hematology"
+            },
+            {
+              "label": "Functional asplenia",
+              "icd10": "D73.0",
+              "action": "diagnosed",
+              "onset": "2004-01-01"
+            },
+            {
+              "label": "Avascular necrosis of right femoral head",
+              "icd10": "M87.351",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "found on x-ray at an outside orthopedic clinic in his teens"
+            },
+            {
+              "label": "History of recurrent acute chest syndrome",
+              "icd10": "D57.01",
+              "action": "history",
+              "onset": "2009-01-01",
+              "note": "several episodes in childhood and teens; two admissions in the past year included ACS"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydroxyurea 500 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2 capsules (1000 mg) by mouth daily",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Sickle cell disease (prescribed by hematology)"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Sickle cell disease"
+            },
+            {
+              "drug_text": "penicillin V potassium 250 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Infection prophylaxis, functional asplenia (prescribed by hematology)"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Rarely, special occasions only; avoids because of dehydration"
+            },
+            {
+              "item": "Occupation",
+              "value": "Part-time library assistant; community college student"
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0,
+            "height_cm": 178.0,
+            "bp": [
+              118,
+              72
+            ],
+            "labs": {
+              "Hemoglobin": 8.3,
+              "Hematocrit": 24.8,
+              "White Blood Cells": 12.1,
+              "Platelets": 360,
+              "Mean Corpuscular Volume": 99,
+              "Bilirubin, Total": 2.4,
+              "Creatinine": 0.6,
+              "Microalbumin/Creatinine Ratio": 8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-04-22T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2019-04-22T10:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-04-22T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-04-22T10:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-04-22T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and physical note",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2019-04-22T11:10",
+              "body": "19 yo M establishing adult primary care. Aging out of his pediatric office; mother came with him to the first part of the visit, he did the rest on his own.\n\nHbSS sickle cell disease, picked up on newborn screen. Sees the adult sickle cell clinic at the regional hospital (moved over from pediatric hematology last year). On hydroxyurea 1000 mg daily for several years, folic acid 1 mg daily and penicillin VK 250 mg BID, all written by hematology. Says he takes the hydroxyurea most days, sometimes forgets the evening penicillin.\n\nRough year: four admissions for pain crises in the last 12 months, and two of those turned into acute chest syndrome. Last discharge was early this month. Feels back to himself now. Has had ACS several times going back to grade school. Told he has no working spleen. Right hip AVN was found on an x-ray at an orthopedic clinic when he was about 16; it aches now and then with a lot of walking but is not bothering him today.\n\nNo surgeries. NKDA.\nFH: both parents carry sickle trait; younger brother also has sickle cell disease.\nSH: lives in Springfield with his mother and brother. Part-time at a library circulation desk, taking classes at the community college. Never smoked. Drinks rarely, on a special occasion, and mostly avoids it since getting dry sets off pain. No drugs.\n\nROS: no fever, cough, chest pain, dyspnea, headache, vision change, priapism, leg ulcers. Mild right hip ache as above.\n\nExam: thin young man, comfortable. Sclerae anicteric today. Neck supple, no nodes. Lungs clear. Heart regular, no murmur. Abdomen soft, no tenderness, spleen and liver not felt. Right hip: full motion, mild discomfort at end internal rotation. Skin without ulcers. Neuro grossly normal.\n\nA/P\n1. HbSS sickle cell disease with frequent crises this year. Hematology owns hydroxyurea and its counts; he has a visit there in June. Drew a baseline CBC, CMP and urine albumin here so we have our own numbers. Hydration and cold-avoidance talk, he knows it well.\n2. Functional asplenia. Fever 38.3 or higher = ED same day, he knows this. Continue penicillin per hematology. Requested pediatric vaccine records; never had MenB as far as he knows, so first dose of Bexsero today, second in about a month.\n3. Right hip AVN. Stable symptoms. Watch.\n4. Hx ACS. No current symptoms.\n5. Health maintenance: HIV and hep C screening sent today, lipids. PHQ-2 0.\n\nReturn: nurse visit late May for MenB #2; see me after the hematology visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-04-24a",
+          "kind": "portal_message",
+          "start": "2019-04-24T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2019-04-24T16:40",
+              "body": "Hi Darnell, your blood work from Monday is back. Your hemoglobin is about 8, which is in your usual sickle cell range, and your kidney numbers and urine protein look good. Bilirubin is a little high, which is expected with sickle cell. Cholesterol is fine. Your HIV and hepatitis C screens are both negative. Nothing to change. See you after your June hematology visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-04-30a",
+          "kind": "outside_records",
+          "start": "2019-04-30T13:15",
+          "reason": "Pediatric records received",
+          "immunizations": [
+            {
+              "vaccine": "Haemophilus influenzae type b (PRP-T)",
+              "date": "2001-02-26T10:00"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV13",
+              "date": "2010-08-16T10:00"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2010-10-18T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2011-03-07T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2011-03-07T10:10"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2011-03-07T10:20"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2015-10-19T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2016-03-07T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside records",
+              "title": "Pediatric Records Summary",
+              "author": "front desk",
+              "date": "2019-04-30T13:15",
+              "body": "Records from prior pediatric office received by fax, 14 pages, scanned to media. Immunization history abstracted to the vaccine record. Childhood series complete per their record, including Hib, PCV13, two doses of PPSV23, MenACWY with booster at 16, HPV series and Tdap at 11. No MenB on file. Last well visit there 2018. Problem list matches ours: sickle cell disease SS, asplenia, hip AVN, history of acute chest."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-28a",
+          "kind": "nurse_visit",
+          "start": "2019-05-28T15:30",
+          "reason": "MenB vaccine dose 2",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2019-05-28T15:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-05-28T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2019-05-28T15:50",
+              "body": "Here for 2nd Bexsero. Afebrile, feels well. Given L deltoid, tolerated. Sore arm after first dose only. MenB series complete. Reminded him to bring the hematology letter or have it sent after his June appointment."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-14a",
+          "kind": "outside_records",
+          "start": "2019-06-14T10:30",
+          "reason": "Hematology letter",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-06-10T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 350
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-06-10T09:40",
+              "results": [
+                {
+                  "test": "Reticulocyte count",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-06-10T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin F",
+                  "loinc": "4576-5",
+                  "unit": "%",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Adult Sickle Cell Clinic Follow-up",
+              "author": "hematology",
+              "date": "2019-06-14T10:30",
+              "body": "Adult Sickle Cell Program, regional hospital hematology\nDate of visit: 06/10/2019\n\nDear colleague,\n\nI saw Darnell in follow-up for HbSS disease. It has been a hard twelve months: he counts four admissions for painful crises over that time, the most recent roughly two months back. He is doing well today.\n\nCurrent medicines: hydroxyurea 1000 mg daily, folic acid 1 mg daily, penicillin VK 250 mg twice daily. Allergies: none known.\n\nVitals: T 37.2 C (99 F), BP 128/76, P 88, RR 16.\nWell appearing, not in distress. Spleen is not palpable.\n\nLabs today: Hgb 8.2 g/dL, Hct 24.5%, WBC 12,000, platelets 350,000, retic 10%, HbF 5%.\n\nImpression: HbSS disease at his usual hemoglobin with brisk reticulocytosis. Functional asplenia. Right femoral head AVN and prior acute chest syndrome by history.\n\nPlan: continue hydroxyurea 1000 mg daily, folic acid and penicillin without change. Return to clinic in 3-4 months, labs at that visit.\n\nThank you for sharing his care.\nAdult Sickle Cell Program"
+            }
+          ]
+        },
+        {
+          "id": "2019-09-16a",
+          "kind": "hospital_admission",
+          "start": "2019-09-16T06:50",
+          "end": "2019-09-19T12:30",
+          "service": "Emergency Medicine / Inpatient Medicine",
+          "reason": "Pain crisis",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "icd10": "D57.00",
+              "action": "diagnosed",
+              "onset": "2019-09-15"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2019-09-16T06:55",
+              "temp_c": 37.2,
+              "bp": [
+                128,
+                76
+              ],
+              "hr": 88,
+              "rr": 18,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-16T07:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.5
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ],
+              "resulted": "2019-09-16T08:05"
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-16T07:20",
+              "results": [
+                {
+                  "test": "Reticulocyte count",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "value": 4.5
+                }
+              ],
+              "resulted": "2019-09-16T08:05"
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-16T07:20",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 350
+                }
+              ],
+              "resulted": "2019-09-16T08:05"
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-16T07:20",
+              "results": [
+                {
+                  "test": "Bilirubin, indirect",
+                  "loinc": "1971-1",
+                  "unit": "mg/dL",
+                  "value": 2.1
+                }
+              ],
+              "resulted": "2019-09-16T08:05"
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-16T07:20",
+              "results": [
+                {
+                  "test": "Sickle cells, smear",
+                  "loinc": "801-1",
+                  "text": "Present"
+                }
+              ],
+              "resulted": "2019-09-16T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2019-09-23T09:00",
+              "body": "Regional hospital ED, seen 09/16/2019.\n\n19M with HbSS, functional asplenia, R femoral head AVN. Came in with deep aching bone pain in both arms and legs, started after a cold rainy weekend at an outdoor event. Same kind of pain he has had since childhood, usually set off by cold or getting dehydrated. Hematology clinic visit about 3 months ago.\nMeds: folic acid 1 mg daily, penicillin VK 250 mg BID, hydroxyurea 1000 mg daily. NKDA.\nT 37.2 C, BP 128/76, HR 88, RR 18, SpO2 97% RA. Uncomfortable, mild distress. Lungs clear.\nHgb 8.2, Hct 24.5, retic 4.5%, LDH 350, indirect bili 2.1. Smear: sickled red cells.\nImp: vaso-occlusive pain crisis. IV fluids and IV analgesia per sickle cell pathway, admitted to medicine."
+            },
+            {
+              "type": "Discharge summary",
+              "title": "Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2019-09-23T09:05",
+              "body": "Admitted 09/16/2019, discharged 09/19/2019.\nDx: sickle cell vaso-occlusive crisis.\nCourse: IV hydration and IV pain control, pain improved over three days, no fever, no chest symptoms, no oxygen requirement. Home on usual medicines.\nFollow-up: PCP within 1 week, hematology as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "office_visit",
+          "start": "2019-09-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, sickle cell crisis",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "icd10": "D57.00",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-09-24T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2019-09-24T14:45",
+              "body": "Post-hospital f/u. Admitted 9/16-9/19 at the regional hospital for a pain crisis after a cold, wet weekend outside. ED note and short discharge summary are in the chart. Pain is down to a 1-2 in his shins, off everything but his usual meds. Back at work Monday, classes started without him missing much.\nNo fever, cough, chest pain, SOB.\nOn hydroxyurea, folic acid, penicillin. Says he has been better about the penicillin since being in the hospital.\nExam: comfortable. Lungs clear. Heart regular. Abdomen soft, nontender. No bony tenderness in the legs.\nA/P: VOC, resolved. Talked through the cold-weather plan for the fall: layers, warm fluids, water bottle at work. Fever rule again. Flu shot next month at a nurse visit. Hematology in October."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T16:10",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-22T16:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-22T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2019-10-22T16:25",
+              "body": "Flu vaccine given R deltoid. Feeling well, no fever today. Waited in the office afterward, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-24a",
+          "kind": "portal_message",
+          "start": "2020-02-24T08:12",
+          "reason": "Patient reports hospital stay",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "icd10": "D57.00",
+              "action": "diagnosed",
+              "onset": "2020-02-20",
+              "note": "admitted 2/21-2/23 per patient; no outside records received"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Was in the hospital",
+              "author": "patient",
+              "date": "2020-02-24T08:12",
+              "body": "Hi, just letting you know I was in the hospital Friday to Sunday for a pain crisis. It was the cold snap. Im home now and doing better. They said follow up with you. Do I need to come in?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Was in the hospital",
+              "author": "RN",
+              "date": "2020-02-24T10:30",
+              "body": "Glad you are home. A nurse will call you Wednesday to check in, and we will ask the hospital to send records. If the pain comes back strong, or you get a fever, chest pain or trouble breathing, go back to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-26a",
+          "kind": "telephone",
+          "start": "2020-02-26T11:05",
+          "reason": "Post-hospital nurse call",
+          "conditions": [
+            {
+              "label": "Sickle cell disease with vaso-occlusive crisis",
+              "icd10": "D57.00",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2020-02-26T11:20",
+              "body": "Called pt. Two-night admission 2/21-2/23 for pain crisis, no chest involvement per pt. Pain resolved, no fever, eating and drinking well. Taking hydroxyurea, folic acid, penicillin. Records requested from the regional hospital, none received yet. He mentions R groin pain has been worse since around the holidays, especially walking across campus. Booked with PCP 3/9."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-09a",
+          "kind": "office_visit",
+          "start": "2020-03-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right groin pain",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "orders": [
+            {
+              "id": "ortho-ref-2020",
+              "action": "placed",
+              "order": "Orthopedic surgery referral",
+              "category": "referral",
+              "to": "Orthopedics",
+              "reason": "Right femoral head AVN with worsening groin pain"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-03-09T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hip Pain",
+              "author": "PCP",
+              "date": "2020-03-09T11:25",
+              "body": "S: R groin pain about 3 months, dull, worse the longer he walks, better sitting. No injury, no fever, no weight loss, no night sweats. Different from his crisis pain. Known R femoral head AVN from his teens; last saw ortho for it about 3 years ago. Also in hospital 2/21-2/23 for a crisis, now back to baseline (records never came).\nMeds: hydroxyurea 1000 daily, folic acid 1 mg, PCN VK 250 BID.\nO: gait normal in the office. R hip: full range, groin pain at end of internal rotation. No warmth or swelling. L hip normal. Back nontender.\nA/P: R hip pain, likely the known AVN. Referred back to orthopedics for reassessment and imaging there. Activity as tolerated, avoid long walks when he can. He will call if pain changes at rest or he gets fever."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "telephone",
+          "start": "2020-04-14T09:50",
+          "reason": "Orthopedics appointment postponed",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Update",
+              "author": "front desk",
+              "date": "2020-04-14T09:55",
+              "body": "Ortho office called, non-urgent visits on hold with the pandemic. Darnell's appointment moved to June 15. Pt notified by phone, ok with it. Classes went online, he is home most of the day."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-22a",
+          "kind": "outside_records",
+          "start": "2020-06-22T14:20",
+          "reason": "Orthopedics letter",
+          "orders": [
+            {
+              "id": "ortho-ref-2020",
+              "action": "done",
+              "date": "2020-06-22T14:20"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-06-15T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 450
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-06-15T11:30",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 20
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-06-15T11:30",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Follow-up",
+              "author": "orthopedics",
+              "date": "2020-06-22T14:20",
+              "body": "Outside orthopedic group, visit 06/15/2020\n\nRe: Darnell Grant, 20 y/o M, HbSS, R femoral head osteonecrosis, seen again by us at the request of his PCP.\n\nHe describes six months of right groin pain, a dull ache that builds as he walks and eases when he rests. No injury, fevers or weight loss. He has been admitted twice in the last year with sickle cell pain crises.\nMeds: folic acid 1 mg daily, penicillin VK 250 mg BID, hydroxyurea 1000 mg daily. NKDA.\n\nExam R hip: range of motion full; internal rotation reproduces his pain. No warmth, erythema or swelling about the joint.\n\nLabs: Hgb 8.5, WBC 12,000, plt 450,000, ESR 20, CRP 2.0 mg/L.\nRadiographs R hip: irregular contour of the femoral head with subchondral sclerosis. No fracture, no dislocation.\n\nImpression: R femoral head AVN in sickle cell disease, symptomatic. Inflammatory markers do not suggest infection.\nPlan: activity modification, limit impact and prolonged walking. Return as needed if symptoms progress."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-20a",
+          "kind": "annual_physical",
+          "start": "2020-07-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "labs": {
+              "Hemoglobin": 8.4,
+              "Hematocrit": 25.1,
+              "Platelets": 410
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-07-20T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-07-20T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-07-20T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-07-20T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-07-20T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2020-07-20T09:50",
+              "body": "Annual. Wearing a mask, screened at the door.\nInterval: crisis admissions Sept 2019 and Feb 2020. Saw ortho 6/15 for the R hip, letter reviewed: AVN with contour change and sclerosis on x-ray, conservative for now. Hip still aches on long walks; he has been taking the bus more. No crises since February. Hematology visits by phone this spring, he says counts were similar.\nMeds unchanged: hydroxyurea 1000 daily, folic acid 1 mg, penicillin VK 250 BID. NKDA.\nSH: still at the library part time, it reopened last month. Online classes. No tobacco, rare alcohol.\nROS negative otherwise.\nExam: well. Lungs clear. Heart regular, no murmur. Abdomen soft, no organomegaly. R hip with end-range internal rotation pain. Skin clear, no leg ulcers.\nPHQ-2 1.\nA/P: HbSS, at his baseline. Annual CBC, CMP and urine albumin today. Hip AVN per ortho. Flu shot in the fall. MenACWY booster due next year (5 years from his last at 16). Return in a year, or sooner for anything."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T15:40",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T15:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-13T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2020-10-13T15:55",
+              "body": "Flu vaccine L deltoid. No fever or illness symptoms at screening. Tolerated well. Reviewed fever plan with asplenia, pt can recite it."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

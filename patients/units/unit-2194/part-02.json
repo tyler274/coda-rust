@@ -1,0 +1,878 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002194",
+      "events": [
+        {
+          "id": "2025-10-11a",
+          "kind": "ed_visit",
+          "start": "2025-10-11T13:40",
+          "end": "2025-10-11T18:20",
+          "service": "Emergency Medicine",
+          "reason": "Left leg swelling and pain after long flight",
+          "vitals": {
+            "temp_c": 37.1,
+            "bp": [
+              132,
+              78
+            ],
+            "hr": 84,
+            "rr": 16
+          },
+          "measure": [
+            "spo2"
+          ],
+          "conditions": [
+            {
+              "label": "Acute embolism and thrombosis of left popliteal vein",
+              "icd10": "I82.432",
+              "action": "diagnosed",
+              "onset": "2025-10-09"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-11T14:05",
+              "results": [
+                {
+                  "test": "Platelets"
+                }
+              ],
+              "resulted": "2025-10-11T14:52"
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-11T14:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ],
+              "resulted": "2025-10-11T14:52"
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-10-11T14:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ],
+              "resulted": "2025-10-11T14:52"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Lower extremity venous duplex",
+              "performed": "2025-10-11T15:30",
+              "text": "VENOUS DUPLEX ULTRASOUND, LEFT LOWER EXTREMITY\nIndication: Left calf swelling, redness and pain after prolonged air travel.\nTechnique: Grayscale compression, color and spectral Doppler of the left common femoral, femoral, popliteal and calf veins; right common femoral vein for comparison.\nFindings: The left popliteal vein is noncompressible and distended with echogenic intraluminal thrombus and no color flow, consistent with occlusive thrombus. The left common femoral and femoral veins are fully compressible with normal phasic flow. Visualized posterior tibial and peroneal veins compress normally. Right common femoral vein compressible with normal respiratory phasicity. No Baker cyst.",
+              "conclusion": "Occlusive acute deep vein thrombosis of the left popliteal vein."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-11T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-10-13T08:45",
+              "body": "Regional hospital emergency department. Date of service 10/11/2025.\nAllergies: NKDA.\n\nCC: L lower leg swelling and pain.\n\nHPI: 72 y/o M with COPD, HTN, CAD, CKD 3a, and influenza this past April, here with two days of left calf swelling, redness and an aching pain that came on gradually. Symptoms started after he got home from a 14-hour international flight on which he was seated most of the time. No chest pain, no new dyspnea, no hemoptysis. No prior clots. No recent surgery.\n\nMeds: lisinopril, metoprolol, aspirin, atorvastatin per pt.\nHome med list on file: metoprolol succinate 50 mg daily, tiotropium 18 mcg inhaled daily, albuterol 90 mcg q4-6h prn wheezing.\n\nSH: former smoker, 25 pack-years. Social alcohol.\n\nExam: T 37.1 C (98.8 F), BP 132/78, P 84, RR 16. Comfortable. Left calf visibly swollen and red, mildly warm, tender along the back of the calf; Homans positive. Right leg normal. DP/PT pulses intact both sides. Skin intact, no ulcers. Heart regular, no murmur. Lungs clear.\n\nData: CBC, BMP and PT/INR unremarkable, creatinine at his known CKD baseline. Venous duplex: occlusive thrombus in the left popliteal vein.\n\nMDM: Acute proximal DVT, L popliteal, provoked by long-haul travel. Hemodynamically stable, no PE symptoms. Renal function adequate for weight-based LMWH. Discussed heparin drip vs LMWH with medicine; stable and able to take SC injections, so LMWH. Given age, comorbidities and limited mobility at home, admitted to medicine for initiation.\n\nDispo: admit, hospital medicine. Enoxaparin first dose given in ED."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-11b",
+          "kind": "hospital_admission",
+          "start": "2025-10-11T18:20",
+          "end": "2025-10-20T11:30",
+          "service": "Hospital Medicine",
+          "reason": "Acute left popliteal DVT",
+          "conditions": [
+            {
+              "label": "Pneumonia, unspecified organism",
+              "icd10": "J18.9",
+              "action": "diagnosed",
+              "note": "hospital-onset, hospital day 3 (10/14/2025), right lower lobe"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.8 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 80 mg subcutaneously every 12 hours",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "Acute DVT, left popliteal vein"
+            },
+            {
+              "drug_text": "cefepime 2000 MG Injection",
+              "action": "historical",
+              "sig": "2 g IV every 12 hours for 7 days",
+              "dose": {
+                "value": 2,
+                "unit": "g"
+              },
+              "frequency": "Q12H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Pneumonia"
+            },
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Acute DVT, left popliteal vein; planned 3 months"
+            }
+          ],
+          "state": {
+            "labs": {
+              "White Blood Cells": 13.8
+            }
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-14T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-14T05:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-10-14T09:10",
+              "text": "PORTABLE CHEST, SINGLE AP VIEW\nIndication: New fever and productive cough, hospitalized patient.\nComparison: None available.\nFindings: Patchy airspace opacity in the right lower lobe. No pleural effusion. No pneumothorax. Cardiomediastinal silhouette within normal limits for technique. Lines/tubes: none.",
+              "conclusion": "Right lower lobe infiltrate, consistent with pneumonia in the appropriate clinical setting."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-11T19:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-20T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-10-21T13:20",
+              "body": "Regional hospital, Medicine service.\nAdmitted 10/11/2025. Discharged 10/20/2025 to short-term rehabilitation.\nAllergies: NKDA.\n\nPrincipal diagnosis: Acute DVT, left popliteal vein, provoked (prolonged air travel).\nSecondary: Hospital-onset pneumonia, right lower lobe. COPD. HTN. CAD, stable. CKD stage 3a.\n\nHospital course:\n1. L popliteal DVT. Admitted from ED after duplex showed occlusive popliteal thrombus. Weight 82 kg, CrCl above 30, so enoxaparin 80 mg SC q12h. Leg pain and swelling improved steadily. No signs of PE. After 9 days of enoxaparin, transitioned to apixaban 5 mg BID on day of discharge. Planned duration 3 months given a clear transient provoking factor; PCP to decide on stopping. Aspirin 81 continued for CAD; bleeding precautions reviewed.\n2. Pneumonia. On hospital day 3 (10/14) new temp 38.4 C and a productive cough. WBC 13.8. Portable CXR with RLL infiltrate. Started cefepime 2 g IV q12h, 7-day course through 10/20. Needed 2 L nasal cannula for about two days, weaned to room air by 10/17. Never required higher support or ICU. Afebrile since 10/16.\n3. Deconditioning. Weak after the pneumonia; PT evaluated and recommended short-term rehab before home, where he lives alone. Pt agreed.\n4. COPD, HTN, CAD, CKD: home regimen continued. Creatinine stable at baseline.\n\nDischarge medications:\n- apixaban 5 mg PO BID (NEW)\n- lisinopril 20 mg daily\n- metoprolol succinate 50 mg daily\n- aspirin 81 mg daily\n- atorvastatin 40 mg qhs\n- tiotropium 18 mcg inhaled daily\n- albuterol HFA 1-2 puffs q4-6h prn\nCefepime completed 10/20.\n\nFollow-up: PCP within 1-2 weeks of rehab discharge, re: anticoagulation duration."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-13a",
+          "kind": "telephone",
+          "start": "2025-10-13T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient Call From Hospital",
+              "author": "RN",
+              "date": "2025-10-13T11:05",
+              "body": "Pt called from his hospital room to let PCP know he was admitted Saturday with a blood clot in his left leg after his flight home. On blood thinner shots, leg already feels a little better. ED record received this am and routed. Told him we'll watch for the discharge paperwork and to call when he's out."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "telephone",
+          "start": "2025-10-23T14:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rehab Facility Call",
+              "author": "RN",
+              "date": "2025-10-23T14:15",
+              "body": "Nurse from the short-term rehab facility called to confirm med list for pt admitted there 10/20. Reviewed against hospital d/c summary: apixaban 5 BID, lisinopril 20, metoprolol succ 50, ASA 81, atorva 40 qhs, tiotropium daily, albuterol prn. Antibiotic finished in hospital 10/20. Confirmed ASA continues with apixaban per hospital team. She reports he is working with PT twice a day, walking the hallway with a walker. Expected stay 2-3 weeks. Asked them to send their summary at discharge."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "outside_records",
+          "start": "2025-11-10T09:30",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Rehabilitation Facility Discharge Summary",
+              "author": "rehabilitation",
+              "date": "2025-11-10T09:30",
+              "body": "Short-term rehabilitation discharge summary.\nAdmit 10/20/2025, discharge 11/07/2025 to home.\nAllergies: NKDA.\n\nReason for stay: deconditioning after hospitalization for left popliteal DVT complicated by pneumonia.\n\nCourse: Participated in PT/OT daily. Progressed from rolling walker to independent ambulation on level surfaces and one flight of stairs with rail. Independent in ADLs at discharge. Lungs clear by end of stay, on room air throughout. Left leg swelling much improved. Apixaban taken without bleeding.\n\nDischarge meds: apixaban 5 mg BID, lisinopril 20 mg daily, metoprolol succinate 50 mg daily, aspirin 81 mg daily, atorvastatin 40 mg qhs, tiotropium 18 mcg daily, albuterol prn.\n\nHome exercise program provided. No home services needed per pt. PCP follow-up to be arranged by patient."
+            }
+          ],
+          "service": "Rehabilitation"
+        },
+        {
+          "id": "2025-11-10b",
+          "kind": "telephone",
+          "start": "2025-11-10T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Rehab Scheduling",
+              "author": "front desk",
+              "date": "2025-11-10T10:20",
+              "body": "Called pt after rehab summary came in. He got home Friday, says he's glad to be in his own bed. Booked f/u with PCP 11/18 at 10:30."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "telephone",
+          "start": "2025-11-14T16:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Diarrhea",
+              "author": "RN",
+              "date": "2025-11-14T16:40",
+              "body": "Pt called: watery diarrhea since Tues, lots of it, \"going all day,\" maybe 8-10 times. No blood that he's seen. Crampy belly. Feels weak and lightheaded getting up. Drinking but can't keep up. No fever that he's checked.\n\nRecent IV antibiotics in hospital last month + rehab stay, on apixaban, CKD. Concerned for C. diff and dehydration. Discussed with PCP: needs evaluation tonight - ED for stool testing, labs and fluids. Pt reluctant to go on a Friday night, says he'll go first thing if it doesn't settle. Advised strongly to go sooner if dizzy, any blood, fever, or making little urine. He verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-15a",
+          "kind": "ed_visit",
+          "start": "2025-11-15T08:50",
+          "end": "2025-11-15T14:10",
+          "service": "Emergency Medicine",
+          "reason": "Profuse watery diarrhea",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "conditions": [
+            {
+              "label": "Enterocolitis due to Clostridioides difficile, not specified as recurrent",
+              "icd10": "A04.72",
+              "action": "diagnosed",
+              "onset": "2025-11-11",
+              "note": "severe, without toxic megacolon"
+            }
+          ],
+          "state": {
+            "labs": {
+              "White Blood Cells": 17.2,
+              "Creatinine": 1.72
+            }
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-11-15T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-15T09:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-15T09:40",
+              "results": [
+                {
+                  "test": "Clostridioides difficile toxin A+B, stool",
+                  "loinc": "34713-8",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal X-ray, 2 views",
+              "loinc": "36641-9",
+              "performed": "2025-11-15T10:30",
+              "text": "ABDOMEN, SUPINE AND UPRIGHT\nIndication: Severe diarrhea, evaluate for colonic dilatation.\nFindings: Nonobstructive bowel gas pattern. No colonic dilatation; transverse colon caliber within normal limits. No free intraperitoneal air. No pneumatosis. Osseous structures unremarkable for age.",
+              "conclusion": "No colonic dilatation. No evidence of toxic megacolon."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-11-15T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-11-17T08:30",
+              "body": "Regional hospital emergency department. Date of service 11/15/2025.\nAllergies: NKDA.\n\nCC: diarrhea.\n\nHPI: 72-year-old man with COPD, HTN, CAD and CKD stage 3a, treated for a left popliteal DVT about a month ago (that admission complicated by pneumonia treated with IV antibiotics), then a short rehab stay. Since shortly after getting home from rehab 11/7 he has had profuse watery diarrhea, onset 11/11, many episodes daily, crampy lower abdominal pain, weakness and lightheadedness on standing. No hematochezia. No vomiting.\n\nHome meds (as entered at triage): lisinopril 20 mg daily, metoprolol succinate 50 mg daily, aspirin 81 mg daily, atorvastatin 40 mg qhs, tiotropium 18 mcg inh daily, albuterol 90 mcg prn.\n\nSH: former smoker, 25 pk-yr, quit about 8 yrs ago. Social drinker. Retired postal worker.\n\nExam: vitals per flowsheet. Tired, dry mucous membranes. Abdomen soft, mildly tender throughout, not distended, bowel sounds active, no rebound or guarding. Lungs clear. Heart regular. Left calf without significant swelling.\n\nData: WBC 17.2. Creatinine 1.72 (baseline about 1.5). Stool C. difficile toxin positive. Abdominal films: no colonic dilatation.\n\nMDM: C. difficile infection, severe by leukocytosis, after recent antibiotic exposure. No ileus, no megacolon, hemodynamically stable. IV fluids started. Oral vancomycin 125 mg QID started in ED. Lisinopril held given volume depletion. Contact precautions.\n\nDispo: admit to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-15b",
+          "kind": "hospital_admission",
+          "start": "2025-11-15T14:10",
+          "end": "2025-11-19T12:00",
+          "service": "Hospital Medicine",
+          "reason": "Severe C. difficile infection",
+          "medications": [
+            {
+              "drug_text": "vancomycin 125 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth four times daily for 10 days (started 11/15)",
+              "dose": {
+                "value": 125,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "C. difficile infection"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.58,
+              "White Blood Cells": 10.9
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-19T05:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-19T05:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-15T15:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-11-19T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-11-20T09:10",
+              "body": "Regional hospital, Medicine service.\nAdmitted 11/15/2025. Discharged 11/19/2025 to home.\nAllergies: NKDA.\n\nPrincipal diagnosis: Severe Clostridioides difficile infection, initial episode, without toxic megacolon.\nOther: recent L popliteal DVT on apixaban; recent pneumonia; COPD; HTN; CAD; CKD 3a.\n\nCourse: Presented with profuse watery diarrhea after recent IV antibiotics. WBC 17.2, creatinine 1.72 on arrival; stool toxin positive; abdominal films without colonic dilatation. Treated with oral vancomycin 125 mg QID (day 1 = 11/15) and IV fluids. Stool frequency fell from double digits to 2-3 soft stools daily by 11/18, cramping resolved, tolerating diet. WBC 10.9 and creatinine 1.58 on the morning of discharge. Lisinopril held on admission for volume depletion; resumed at discharge as he is eating and drinking well and creatinine is near baseline. Apixaban continued throughout. No new antibiotics.\n\nDischarge medications:\n- vancomycin 125 mg PO QID - continue through 11/24 to complete 10 days\n- apixaban 5 mg PO BID\n- lisinopril 20 mg daily (resume)\n- metoprolol succinate 50 mg daily\n- aspirin 81 mg daily\n- atorvastatin 40 mg qhs\n- tiotropium 18 mcg inhaled daily\n- albuterol HFA prn\n\nInstructions: wash hands with soap and water; bleach-based cleaning of bathroom. Return for recurrent diarrhea, fever, abdominal swelling or pain. PCP follow-up within one week with BMP and CBC."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-rehab follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "telephone",
+          "start": "2025-11-20T10:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional Care Call",
+              "author": "RN",
+              "date": "2025-11-20T10:50",
+              "body": "TCM call, discharged yesterday. Pt home, says he feels \"wrung out but human.\" Two soft BMs since getting home, no watery stool. No fever. Eating small meals, drinking water and broth. Has vancomycin caps, taking 4x/day, last dose 11/24. Taking apixaban BID. Restarted lisinopril today per d/c instructions. Reviewed handwashing with soap (sanitizer doesn't kill the spores), bleach wipes for the bathroom. Missed 11/18 appt while inpatient; PCP visit booked Mon 11/24 with labs. Reviewed when to call."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "office_visit",
+          "start": "2025-11-24T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "state": {
+            "weight_kg": 78.0,
+            "labs": {
+              "Creatinine": 1.52,
+              "White Blood Cells": 7.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Pneumonia, unspecified organism",
+              "icd10": "J18.9",
+              "action": "resolved"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-24T13:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-24T13:55",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-11-24T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-24T13:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-11-24T14:10",
+              "body": "Hospital f/u. Rough fall: L popliteal DVT 10/11 after flight home from abroad, admitted, enoxaparin -> apixaban, pneumonia in hospital treated with cefepime, rehab 10/20-11/7. Then C. diff 11/11, admitted 11/15-11/19 on oral vanc. Both discharge summaries and ED records reviewed.\n\nToday: stools formed, once or twice a day, since about Friday. No cramping, no fever. Appetite coming back. Last vanc doses today. Leg: swelling basically gone, occasional ache in the calf at end of day. Breathing at his baseline, no cough. No bleeding on apixaban - no black stools, no blood in urine, gums ok.\n\nMeds reconciled: apixaban 5 BID, vancomycin 125 QID through today, lisinopril 20 (back on since 11/20), metoprolol succ 50, ASA 81, atorva 40, tiotropium, albuterol prn.\n\nExam: vitals as charted. Down ~4 kg since summer. Looks tired but much better than he sounded on the phone. Lungs clear, no crackles at the R base. Heart RRR. Abd soft, NT, ND, normal BS. L calf soft, nontender, no meaningful asymmetry. No edema.\n\nA/P\n1. C. diff, severe, initial episode - clinically resolving, completing vanc today. Reviewed recurrence signs; call right away with watery diarrhea. Avoid unneeded antibiotics going forward.\n2. L popliteal DVT, provoked - apixaban 5 BID. Plan 3 months total -> mid-January. Continue ASA per hospital; will revisit when apixaban stops.\n3. Pneumonia - treated, lungs clear. Resolved.\n4. CKD 3a - BMP today. Back on lisinopril.\n5. Weight loss from illness - expect it back as he eats.\nRTC mid-Jan."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "portal_message",
+          "start": "2025-11-25T09:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2025-11-25T09:40",
+              "body": "Vern - yesterday's labs look good. White count is back to normal, and your kidney number is back to where it usually runs, so the dehydration has cleared. Potassium fine on the lisinopril. Keep eating and drinking. See you in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "portal_message",
+          "start": "2025-12-03T19:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "author": "patient",
+              "date": "2025-12-03T19:25",
+              "body": "Hi. Just letting you know I finished the vancomycin last Monday like you said. Bathroom is back to normal, eating good, got a couple pounds back. Leg feels fine. Do I still take the blood thinner til January?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "author": "RN",
+              "date": "2025-12-04T08:30",
+              "body": "Great news, thanks for the update. Yes - keep taking apixaban twice a day until your January visit, and the doctor will decide then about stopping. If the diarrhea comes back, call us the same day."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "pharmacy",
+          "start": "2026-01-06T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization Renewal",
+              "author": "MA",
+              "date": "2026-01-06T10:15",
+              "body": "Tiotropium HandiHaler PA expired 12/31. Renewal submitted, same dx and history as last year. 1/7: approved for 2026. Pharmacy aware."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "office_visit",
+          "start": "2026-01-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "DVT follow-up, anticoagulation duration",
+          "state": {
+            "weight_kg": 80.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Acute embolism and thrombosis of left popliteal vein",
+              "icd10": "I82.432",
+              "action": "resolved"
+            },
+            {
+              "label": "Enterocolitis due to Clostridioides difficile, not specified as recurrent",
+              "icd10": "A04.72",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Completed 3 months for provoked DVT"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-21T09:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-21T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2026",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung cancer screening, former smoker 25 pack-years"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-21T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-21T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-01-21T09:40",
+              "body": "S: Here to decide on apixaban. Started for L popliteal DVT 10/11 (enoxaparin first, apixaban from 10/20), so just over 3 months. Leg fully back to normal - no swelling, no ache. No bleeding. No recurrent diarrhea since finishing vanc in Nov, regular formed stools. Breathing at baseline through the cold, albuterol a couple of times a week. Weight coming back. Walking indoors at the mall on cold days.\n\nO: vitals as charted. Lungs clear. Heart RRR. Abd benign. Legs symmetric, no edema, calves soft and nontender.\n\nA/P\n1. L popliteal DVT - provoked by long-haul travel, now 3+ months treated, clinically resolved. Stop apixaban today. Talked about future long flights: aisle walks, fluids, calf pumps; call with any leg swelling or chest symptoms.\n2. C. diff - no recurrence, resolved.\n3. CAD - continue ASA 81 alone now.\n4. CKD 3a / HTN - BMP today. CBC to close out the anticoagulation course.\n5. LDCT annual screen - last 11/2024, overdue with the fall; ordered.\nRTC 3 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Result",
+              "author": "PCP",
+              "date": "2026-01-22T08:20",
+              "body": "BMP at CKD 3a baseline, CBC normal. No change."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "imaging",
+          "start": "2026-01-28T14:45",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2026-01-28T14:45",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (annual)\nIndication: Former smoker, 25 pack-years.\nTechnique: Low-dose helical CT of the chest without IV contrast.\nComparison: 11/06/2024.\nFindings: Lungs: No pulmonary nodules. No consolidation. No mass. Airways patent. Pleura: No effusion. Mediastinum and hila: No lymphadenopathy. Heart size normal. Upper abdomen: Unremarkable on limited views. Bones: No suspicious lesion.",
+              "conclusion": "No pulmonary nodules. Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2026",
+              "action": "done",
+              "date": "2026-01-28T14:45"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-30a",
+          "kind": "portal_message",
+          "start": "2026-01-30T11:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT Result",
+              "author": "PCP",
+              "date": "2026-01-30T11:10",
+              "body": "Your lung screening CT is clear again - no nodules, and the pneumonia from the fall has cleared completely. Next one in a year."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "pharmacy",
+          "start": "2026-03-04T08:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Requests",
+              "author": "RN",
+              "date": "2026-03-04T08:40",
+              "body": "Pharmacy e-requests: metoprolol succinate 50 mg and lisinopril 20 mg, 90-day each. Last BMP 1/21 stable, last visit 1/21. Renewed x 90 days with 3 refills per protocol. Atorvastatin has refills remaining."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "state": {
+            "weight_kg": 81.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-21T15:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-04-21T15:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-21T15:55",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-21T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-21T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-04-21T15:50",
+              "body": "Routine 3-mo visit. Feels like himself again, back to his walks outside now that it's warmer. Weight nearly back to where it was. No CP. COPD steady, rescue inhaler once or twice a week, pollen season so far ok. No leg symptoms off apixaban. No GI issues.\n\nMeds: lisinopril 20, metoprolol succ 50, ASA 81, atorva 40 qhs, tiotropium daily, albuterol prn. Adherent.\n\nExam: vitals as charted. Lungs clear. Heart RRR, no murmur. Legs symmetric, no edema.\n\nA/P\nHTN - at goal.\nCAD - stable. Continue.\nCOPD - stable on tiotropium.\nCKD 3a - BMP, UACR today. Lipids today.\nAWV in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-23a",
+          "kind": "portal_message",
+          "start": "2026-04-23T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2026-04-23T12:30",
+              "body": "Labs from Tuesday: kidney function stable at your usual, no urine protein, cholesterol still well controlled on atorvastatin. No changes. Enjoy the spring."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "portal_message",
+          "start": "2026-06-10T06:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler",
+              "author": "patient",
+              "date": "2026-06-10T06:50",
+              "body": "Need a new albuterol please, the counter says 12 left. Same pharmacy. Breathing ok, nothing new."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Inhaler",
+              "author": "RN",
+              "date": "2026-06-10T09:35",
+              "body": "Sent to your pharmacy this morning, 2 inhalers with refills. Should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "office_visit",
+          "start": "2026-08-11T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-11T10:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-11T10:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-08-11T10:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-11T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-08-11T10:40",
+              "body": "Summer f/u. Doing well. Humid stretch in July had him using albuterol a bit more, settled now. No CP, no palpitations. No leg swelling. Bowels normal. No new meds or OTCs.\n\nExam: vitals as charted. Lungs clear, no wheeze. Heart RRR. No edema.\n\nA/P: HTN, CAD, COPD, CKD 3a all stable on current regimen. CMP and CBC today. AWV booked 9/16 - flu, COVID then."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2026-08-12T13:05",
+              "body": "Yesterday's labs are steady - kidney function at your usual, liver tests and blood counts normal. See you on 9/16."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "annual_physical",
+          "start": "2026-09-16T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

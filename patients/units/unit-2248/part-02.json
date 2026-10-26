@@ -1,0 +1,606 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002248",
+      "events": [
+        {
+          "id": "2023-01-10a",
+          "kind": "office_visit",
+          "start": "2023-01-10T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "state": {"weight_kg": 74.6},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-01-10T10:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-01-10T09:45"},
+            {"procedure": "Venipuncture", "performed": "2023-01-10T10:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-01-10T10:15",
+              "body": "Routine. Says the holidays were quiet. Chest pressure only with heavy shoveling, same as always. Knees ok. Taking everything.\nBP fine today. Weight down a little from the fall, he thinks less takeout.\nHeart RRR, lungs clear, no edema.\nHTN controlled, stable angina unchanged, continue all. BMP. Shingrix #2 at pharmacy next week. LDCT done 10/22. RTC spring."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "pharmacy",
+          "start": "2023-01-17T13:30",
+          "reason": "Vaccine given at pharmacy",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-01-17T13:30"}],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine administration record",
+              "author": "pharmacist",
+              "date": "2023-01-18T08:00",
+              "body": "Community pharmacy immunization report. Zoster vaccine recombinant, adjuvanted, dose 2 of 2, 0.5 mL IM left deltoid, 01/17/2023. No adverse event observed. Reported to state registry."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-03a",
+          "kind": "telephone",
+          "start": "2023-04-03T15:50",
+          "reason": "Family concern about mood",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from daughter",
+              "author": "RN",
+              "date": "2023-04-03T16:05",
+              "body": "Daughter called (on HIPAA form as health care proxy). Worried about her father for about a month: stays in bed most of the day, stopped going out to the garden, doesn't watch the games anymore, she has to remind him to eat and shower. He has lost weight, clothes loose. She asked him directly if he has thought about hurting himself and he said no. No confusion, no falls, no new medicines she knows of. He agreed to come in. Offered tomorrow 10:00 with PCP; she will bring him. Advised if he says anything about wanting to die or she can't wake him, call 911 or 988. PCP aware."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-04a",
+          "kind": "office_visit",
+          "start": "2023-04-04T10:00",
+          "end": "2023-04-04T10:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Low mood and withdrawal, weight loss",
+          "conditions": [
+            {"label": "Major depressive disorder, single episode, severe without psychotic features", "icd10": "F32.2", "action": "diagnosed", "onset": "2023-03-01"}
+          ],
+          "medications": [
+            {"drug": "mirtazapine 15 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 15, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"}
+          ],
+          "state": {"weight_kg": 69.6, "bp": [128, 78], "labs": {"Thyroid Stimulating Hormone": 1.9, "Vitamin B12": 540}},
+          "vitals": {"bp": [126, 76]},
+          "measure": ["hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 21}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-04-04T11:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-04-04T11:00", "results": [{"test": "Sodium"}, {"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2023-04-04T11:00", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Vitamin B12"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2023-04-04T10:00"},
+            {"procedure": "Venipuncture", "performed": "2023-04-04T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: mood",
+              "author": "PCP",
+              "date": "2023-04-04T11:20",
+              "body": "Here with daughter, who called yesterday.\n\nHPI: Over roughly the last month Paul has pulled away from everything. He hasn't been out to start the garden, which his daughter says is unheard of in March, and he stopped watching football with his neighbor. Most days he is in bed until afternoon. He needs reminding to eat and to shower. He falls asleep fine but is up around 3 in the morning and lies there until it gets light. He describes himself as \"tired of everything.\" Asked directly: no thoughts of suicide, no plan, never attempted, no guns in the house. No hallucinations. Weight down 5 kg in about 3 weeks by our scale. No change in cardiac symptoms, no chest pain, no dyspnea. No new medicines, no alcohol increase (hasn't had a beer in weeks). No prior episodes of depression that he or his daughter can recall. Couldn't name a trigger. He does still walk the dog, briefly, because \"she won't let me not.\"\n\nPHQ-9: 21. Answered item 9 as 0.\n\nExam: vitals within normal limits, weight as charted. Thin, slumped in the chair, poor eye contact, speech slowed with long latency, flat affect. Oriented, follows the conversation, recall 3/3. Thyroid not enlarged. Heart regular. Lungs clear. Abdomen soft, no mass. No edema.\n\nAssessment: Major depressive disorder, single episode, severe, without psychotic features: neurovegetative symptoms, psychomotor slowing and weight loss, no SI. Rule out medical contributors.\n\nPlan:\n- CBC, CMP, TSH, B12 today.\n- Start mirtazapine 15 mg at bedtime: should help sleep and appetite, and sits well with his heart medicines. Reviewed sedation, that benefit takes weeks.\n- Offered referral to counseling; he declined for now, \"let's see if the pill works.\" Will revisit.\n- Safety: daughter staying over a few nights this week. 988 and our after-hours line given to both. Daughter will text me if anything changes.\n- Video check in 2 weeks, visit in 6 weeks. Daily weights not needed; weekly is fine.\n\n55 minutes spent, more than half counseling and coordination."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-06a",
+          "kind": "portal_message",
+          "start": "2023-04-06T09:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-04-06T09:30",
+              "body": "Hi Paul (and hello to your daughter, who I know reads these). Your blood work came back normal: blood count, kidneys, liver, salts and calcium, thyroid and B12. That is reassuring that nothing physical is driving how you've been feeling. Keep taking the mirtazapine every night. Our video visit is on the 18th."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "telehealth_visit",
+          "start": "2023-04-18T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression follow-up",
+          "surveys": [{"survey": "PHQ-9 total score", "value": 17}],
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2023-04-18T11:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit: depression follow-up",
+              "author": "PCP",
+              "date": "2023-04-18T11:25",
+              "body": "Video, patient at home, daughter on the call. Identity confirmed.\nTwo weeks on mirtazapine 15. Sleeping through until 5 or 6 most nights now. Eating breakfast again, daughter thinks portions are bigger. Still not interested in much, still in bed a lot in the afternoon. A little groggy the first few mornings, better now. No SI, no thoughts of death.\nPHQ-9 17 (from 21).\nObserved: dressed, shaved, a little more animated than last visit, still flat.\nPlan: early sleep and appetite response, mood lagging as expected. Same dose for now, see in person mid-May and likely go up. Safety plan unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "office_visit",
+          "start": "2023-05-16T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression follow-up",
+          "medications": [
+            {"drug": "mirtazapine 15 MG Oral Tablet", "action": "stop", "reason": "Dose increased"},
+            {"drug_text": "mirtazapine 30 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 30, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"}
+          ],
+          "state": {"weight_kg": 71.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 12}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-05-16T10:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Depression follow-up",
+              "author": "PCP",
+              "date": "2023-05-16T11:00",
+              "body": "Came alone today, drove himself. Six weeks on mirtazapine 15 mg. Sleep good. Appetite back, weight up a bit. Up and dressed by mid-morning most days. Put in tomatoes last weekend with his daughter's help but says it felt like a chore. Still flat in the evenings. Denies SI.\nPHQ-9 12.\nExam: better eye contact, speech normal rate. Heart regular, no edema.\nA/P: MDD, single severe episode, partial response. Increase mirtazapine to 30 mg qhs. Counseling offered again, still prefers not. Recheck 8 weeks. Gave him the after-hours number again."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "office_visit",
+          "start": "2023-07-11T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression and blood pressure follow-up",
+          "state": {"weight_kg": 73.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 7}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-07-11T09:15"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-07-11T09:40",
+              "body": "Doing much better on 30. Out in the garden every afternoon, two walks a day with the dog again, watched the Fourth of July fireworks at his daughter's. Sleep and appetite fine. Some mornings still slow to get going. No SI.\nPHQ-9 7. Weight continuing back up.\nHeart and lungs normal. BP in range.\nA/P: MDD improving, continue mirtazapine 30 mg; plan at least 6-12 months once well. HTN and CAD stable, angina unchanged. AWV in September."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "pharmacy",
+          "start": "2023-08-08T08:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Mirtazapine refill",
+              "author": "MA",
+              "date": "2023-08-08T08:40",
+              "body": "eRx renewal request mirtazapine 30 mg #90. Seen 7/11, plan to continue. Approved per PCP standing protocol; sent 90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "conditions": [
+            {"label": "Major depressive disorder, single episode, severe without psychotic features", "icd10": "F32.2", "action": "resolved"},
+            {"label": "Major depressive disorder, single episode, in partial remission", "icd10": "F32.4", "action": "diagnosed", "onset": "2023-09-26"}
+          ],
+          "state": {"weight_kg": 74.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-26T08:40", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-26T08:40", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-26T08:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2023-09-26T08:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2023-09-26T08:30"},
+            {"procedure": "Venipuncture", "performed": "2023-09-26T08:40"}
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual lung cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2023-09-26T09:20",
+              "body": "AWV, subsequent.\n\nInterval: depressive episode this spring, now much improved on mirtazapine 30 mg. Brought me a bag of peppers. Gardening, walking, back to the Sunday games with his neighbor. Sleep good.\nPHQ-9: 5. No SI.\n\nHRA: independent in ADLs/IADLs, drives, no falls, no hearing or vision complaints beyond readers. Lives alone with dog, daughter close by. Alcohol 1-2/wk. Former smoker.\nCognition: Mini-Cog normal.\n\nProblems: CAD s/p LAD stent 2020 with stable angina; HTN; hyperlipidemia; OA knees; MDD single episode, now partial remission; former smoker.\nMeds: aspirin 81, atorvastatin 40 qhs, metoprolol succinate 50, lisinopril 20, mirtazapine 30 qhs, acetaminophen prn. NKDA.\n\nExam: vitals reviewed, weight back near baseline. Brighter, good eye contact. Heart regular, lungs clear, no edema.\n\nPrevention: colon UTD to 2028. LDCT due next month, ordered. Shingrix complete. Tdap 2022. PCV20 2021. Flu, updated COVID and RSV vaccine next month (discussed RSV for 60+ with heart disease; he wants it).\nLabs: CMP, lipids, CBC, A1c.\n\nA/P: MDD now partial remission, continue mirtazapine 30 mg at least through spring, then reassess. Other chronic problems stable. RTC 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-17T14:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T14:17"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-10-17T14:20"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T14:15"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2023-10-17T14:40",
+              "body": "Three vaccines today per AWV plan. High-dose flu L deltoid, updated COVID R deltoid, RSV (Arexvy) L deltoid lower site. Screening negative. Told him a sore arm and feeling run down for a day are common with three at once. Observed, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "imaging",
+          "start": "2023-11-07T11:40",
+          "reason": "Annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-11-07T11:40",
+              "text": "LOW-DOSE CT CHEST, ANNUAL SCREENING\nComparison: 10/25/2022 and 10/19/2021.\nFindings: Lungs clear without nodules. No consolidation or effusion. Central airways patent. No adenopathy. Normal heart size, no pericardial effusion. Coronary calcification with LAD stent, stable. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1. Negative. Return to annual low-dose CT in 12 months."
+            }
+          ],
+          "orders": [{"id": "ldct-2023", "action": "done", "date": "2023-11-07T11:40"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "author": "PCP",
+              "date": "2023-11-08T08:15",
+              "body": "Negative again, Lung-RADS 1. Portal message sent. Next 11/2024."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-23T10:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-23T10:00"},
+            {"procedure": "Venipuncture", "performed": "2024-01-23T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-01-23T10:35",
+              "body": "Winter check. Mood holding, PHQ-9 4. Planning next year's garden from seed catalogs. Sleeping well on mirtazapine. Angina: same, a couple of times a month on the hill or with the snowblower, rest relieves. No syncope or palpitations.\nVitals ok. Heart regular. Lungs clear. Ankles without edema.\nA/P: MDD partial remission, continue mirtazapine; reassess tapering in the summer if still well, he is in no hurry. HTN controlled, BMP. CAD stable, cardiology letter due next month. RTC 4-5 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "outside_records",
+          "start": "2024-02-13T16:20",
+          "reason": "Cardiology letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology annual follow-up letter",
+              "author": "cardiology",
+              "date": "2024-02-13T16:20",
+              "body": "Outside cardiology group, visit 02/06/2024.\nMr. Pelletier returns for routine follow-up of coronary disease. LAD drug-eluting stent 2020. Exertional chest pressure remains infrequent and unchanged. Had a depressive illness last spring, now improved on mirtazapine from his PCP.\nMedications: aspirin 81 mg, atorvastatin 40 mg, metoprolol succinate 50 mg, lisinopril 20 mg, mirtazapine 30 mg nightly, acetaminophen as needed. NKDA.\nExam: comfortable, regular rhythm, clear lungs, no edema.\nECG: sinus rhythm.\nAssessment and plan: stable angina, low burden. Continue current therapy. Return in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-06a",
+          "kind": "ed_visit",
+          "start": "2024-04-06T18:50",
+          "end": "2024-04-07T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Collapse at home",
+          "vitals": [
+            {"time": "2024-04-06T18:55", "bp": [88, 60], "hr": 38, "rr": 16},
+            {"time": "2024-04-07T08:00", "bp": [118, 70], "hr": 58, "rr": 14, "spo2": 97}
+          ],
+          "state": {"labs": {"Troponin I, High Sensitivity": 6}},
+          "conditions": [
+            {"label": "Second degree atrioventricular block, Mobitz type I", "icd10": "I44.1", "action": "diagnosed", "onset": "2024-04-06"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-04-06T19:05", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2024-04-06T19:05", "results": [{"test": "Troponin I, High Sensitivity"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-04-06T19:05", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-04-06T18:58",
+              "text": "Sinus rhythm with second-degree AV block, Mobitz type I: progressive PR prolongation with intermittently dropped QRS complexes, grouped beating. Ventricular rate 38. Narrow QRS. No acute ST-segment changes.",
+              "conclusion": "Second-degree AV block, Mobitz I (Wenckebach), ventricular rate 38."
+            }
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2024-04-06T18:50"}],
+          "documents": [
+            {
+              "type": "ED Record",
+              "title": "Emergency department physician record",
+              "author": "emergency medicine",
+              "date": "2024-04-09T10:15",
+              "body": "Regional hospital emergency department. Received by fax 04/09/2024. Date of service 04/06/2024.\n\nCC: passed out at home.\nHPI: 70M with CAD (LAD stent 2020), HTN, on metoprolol, who went down while walking from the living room to the kitchen this evening. Brief, came to on the floor; no seizure activity, no incontinence, no head strike per patient. Called his daughter, who called EMS. Felt washed out but no chest pain or shortness of breath.\nMeds per patient list: aspirin, atorvastatin, lisinopril, metoprolol succinate 50 mg daily, mirtazapine nightly, acetaminophen prn.\nAllergies: NKDA.\nExam on arrival: pulse 38, BP 88/60, RR 16. Awake and alert, tired looking. Heart sounds distant, no murmur; lungs clear. Remainder of cardiopulmonary exam unremarkable. No injuries.\nECG: Mobitz I second-degree AV block, rate 38.\nLabs: hs-troponin I normal x2. Potassium normal. Creatinine normal. Hemoglobin normal.\nCourse: placed on telemetry with pads on. Metoprolol held. Rate came up to the 50s-60s overnight without intervention; no higher-grade block on telemetry. BP normalized.\nImpression: syncope due to symptomatic second-degree AV block, Mobitz type I, likely aggravated by beta blocker.\nDisposition: discharged 04/07. STOP metoprolol. Follow up with cardiology within 2 weeks and with PCP this week. Return for recurrent lightheadedness or fainting."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-08a",
+          "kind": "telephone",
+          "start": "2024-04-08T09:05",
+          "reason": "ED follow-up call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient call after ED visit",
+              "author": "RN",
+              "date": "2024-04-08T09:20",
+              "body": "Pt called: fainted at home Saturday, ED said his heart rate was too slow and \"took me off the metoprolol.\" Home since Sunday morning. No further spells, no dizziness. Has a cardiology appt 4/19. Advised no driving until cleared and to sit or lie down for any lightheadedness. ED records requested. Post-ED visit Friday 4/12 with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-12a",
+          "kind": "office_visit",
+          "start": "2024-04-12T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for syncope",
+          "medications": [
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "stop", "reason": "Second-degree AV block, Mobitz I"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-04-12T13:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED visit",
+              "author": "PCP",
+              "date": "2024-04-12T14:05",
+              "body": "Seen after the ED visit 4/6 (record received 4/9 and reviewed). Collapsed at home, ED found Mobitz I with a rate in the 30s and soft pressure; troponin normal, rate recovered off metoprolol.\n\nSince home: no further episodes, no lightheadedness. Has not taken metoprolol since. Chest pressure once this week walking the dog, eased with rest. Mood steady.\nExam: vitals reviewed, pulse regular today. Heart regular, no murmur. Lungs clear. No edema. No bruising or injury from the fall.\n\nA/P:\n1. Syncope from second-degree AV block, Mobitz I, likely beta-blocker related: metoprolol removed from his list. Cardiology 4/19. No driving until cardiology clears him.\n2. CAD/stable angina: on aspirin, statin, lisinopril. Watch for more angina off the beta blocker; cardiology to weigh in.\n3. HTN: fine today.\nRTC after cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "outside_records",
+          "start": "2024-05-21T11:00",
+          "reason": "Cardiology letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up letter",
+              "author": "cardiology",
+              "date": "2024-05-21T11:00",
+              "body": "Outside cardiology group, visits 04/19/2024 and 05/14/2024.\nSeen after his ED visit for syncope with Mobitz I AV block. Off metoprolol since 4/6, he has had no further syncope or presyncope and the ECG in clinic shows sinus rhythm with 1:1 conduction. We attribute the Wenckebach to beta blockade and will keep him off it. He may drive.\nHe notes his exertional chest pressure is somewhat more frequent since metoprolol was stopped, still with exertion and relieved by rest.\nMedications: aspirin 81 mg, atorvastatin 40 mg, lisinopril 20 mg, mirtazapine 30 mg, acetaminophen prn. No beta blocker. NKDA.\nPlan: exercise treadmill stress test to reassess ischemic burden; we will decide on catheterization based on the result. Avoid AV-nodal blocking agents."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "pharmacy",
+          "start": "2024-06-18T10:25",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Mail-order renewal",
+              "author": "MA",
+              "date": "2024-06-18T10:25",
+              "body": "Mail-order pharmacy renewal requests: atorvastatin 40, lisinopril 20, metoprolol succinate 50. Metoprolol was stopped 4/12 (AV block), request denied and pharmacy told to inactivate it. Atorvastatin and lisinopril approved x 90 days, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "telehealth_visit",
+          "start": "2024-07-16T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-07-16T15:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit",
+              "author": "PCP",
+              "date": "2024-07-16T15:20",
+              "body": "Video, pt at home, on the back porch. Identity confirmed.\nNo more fainting. Cardiology cleared him to drive in May. Chest pressure now maybe once a week with the dog on the hill or carrying the hose, still goes away with rest. Stress test is set for September. Mood fine, PHQ-9 5; garden doing well. Wanted to talk about coming off mirtazapine; we agreed to keep it through the cardiac workup and talk again at the AWV.\nHome BP readings he read off: mostly 120s-130s/70s.\nPlan: continue current meds. AWV in September."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "outside_records",
+          "start": "2024-09-10T14:45",
+          "reason": "Stress test report",
+          "reports": [
+            {
+              "study": "Exercise stress test",
+              "performed": "2024-09-05T09:00",
+              "text": "EXERCISE TREADMILL TEST (outside cardiology)\nIndication: stable angina, more frequent off beta blocker.\nProtocol: Bruce. Baseline ECG: sinus rhythm, normal conduction.\nThe patient exercised to near-target heart rate and stopped for typical chest pressure at peak exercise. Horizontal ST depression developed at peak and resolved in recovery, along with the chest pressure. Blood pressure response normal. No arrhythmia or conduction abnormality during exercise or recovery.",
+              "conclusion": "Positive for exercise-induced ischemia with typical angina. No arrhythmia. Findings consistent with his stable angina; elective coronary angiography recommended."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Stress test received",
+              "author": "MA",
+              "date": "2024-09-10T14:45",
+              "body": "Exercise stress test report from outside cardiology received and scanned. Cardiology note on the requisition: elective cath being scheduled. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T08:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-24T08:40", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T08:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2024-09-24T08:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-09-24T08:30"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T08:40"}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual lung cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-09-24T09:15",
+              "body": "AWV.\nYear in review: syncope in April from Mobitz I on metoprolol, beta blocker stopped, no recurrence. Angina more frequent since, positive treadmill test 9/5; elective cath with outside cardiology next Monday 9/30. Mood steady, PHQ-9 4.\nHRA: independent, driving again since May, no falls since April, lives alone with dog. Daughter nearby. Alcohol 1-2 drinks/week.\nMeds: aspirin 81, atorvastatin 40 qhs, lisinopril 20, mirtazapine 30 qhs, acetaminophen prn. No beta blocker. NKDA.\nExam: vitals reviewed. Heart regular, no murmur. Lungs clear. No edema. Knees with crepitus, unchanged.\nPrevention: LDCT due 11/2024, ordered. Colon UTD. Vaccines: flu and COVID next month; RSV done 2023.\nA/P: CAD with worsening stable angina, workup underway with cardiology. MDD partial remission: keep mirtazapine for now given everything going on; he agrees. HTN, lipids: labs today. RTC after cath, then 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-30a",
+          "kind": "procedure_visit",
+          "start": "2024-09-30T07:30",
+          "end": "2024-10-01T09:30",
+          "service": "Cardiology",
+          "reason": "Elective cardiac catheterization",
+          "vitals": [
+            {"time": "2024-09-30T08:05", "temp_c": 36.9, "hr": 118, "bp": [78, 40], "rr": 26, "spo2": 95},
+            {"time": "2024-09-30T09:30", "hr": 92, "bp": [112, 64], "rr": 18, "spo2": 98},
+            {"time": "2024-10-01T07:00", "hr": 70, "bp": [128, 74], "rr": 14, "spo2": 98}
+          ],
+          "allergies": [
+            {"substance": "Iodinated contrast media", "reaction": "Anaphylactoid reaction: flushing, hypotension, obtundation", "severity": "severe", "criticality": "high", "type": "allergy"}
+          ],
+          "conditions": [
+            {"label": "Anaphylactoid reaction to iodinated contrast media", "icd10": "T88.6XXA", "action": "diagnosed", "onset": "2024-09-30"}
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Cardiac catheterization procedure note",
+              "author": "cardiology",
+              "date": "2024-10-03T13:40",
+              "body": "Outside cardiology, cardiac catheterization laboratory. Procedure date 09/30/2024. Received 10/03/2024.\n\nProcedure planned: elective left heart catheterization and coronary angiography.\nIndication: stable angina with positive exercise treadmill test 09/05/2024; CAD with prior MI and LAD drug-eluting stent (2020).\nPre-procedure: alert, comfortable, no chest pain. No known drug allergies. Home medications: aspirin 81 mg, atorvastatin 40 mg, lisinopril 20 mg, mirtazapine 30 mg, acetaminophen prn. Not on a beta blocker since 04/2024.\n\nEvent: Arterial access obtained without difficulty. Shortly after the first contrast injection the patient abruptly became flushed and hypotensive and then obtunded. Temperature 36.9 C, HR 118, BP 78/40, RR 26, SpO2 95% on room air. Tachycardic, skin warm and diffusely erythematous, bounding peripheral pulses. No JVD, no rales, no peripheral edema. No urticaria, no wheeze, no stridor.\nAssessment: anaphylactoid reaction to iodinated contrast.\nManagement: contrast stopped and the procedure aborted before diagnostic images were complete. IV epinephrine, rapid IV fluid boluses, IV diphenhydramine and IV methylprednisolone. Mental status and blood pressure recovered over about 20 minutes. Sheath removed, hemostasis achieved.\nPost-procedure: observed overnight on telemetry; no recurrence, no arrhythmia. Discharged 10/01 in good condition.\n\nPlan: iodinated contrast allergy added, severe. Any future contrast study requires steroid and antihistamine premedication with an anesthesia team available. Coronary anatomy not defined; continue medical management of angina for now and review in clinic."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "portal_message",
+          "start": "2024-10-08T07:45",
+          "reason": "Question about contrast reaction",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Heart cath",
+              "author": "patient",
+              "date": "2024-10-08T07:45",
+              "body": "Doc, I guess you heard the cath didn't go well. I had a bad reaction to the dye and they had to stop. They said I'm allergic now. Does that mean no more scans? I have my lung CT next month."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Heart cath",
+              "author": "PCP",
+              "date": "2024-10-08T12:30",
+              "body": "Paul, I read the report and I'm glad you came through it. I've added the contrast dye allergy to your chart as severe. Your lung screening CT uses no dye at all, so that is safe to keep. If you ever need a test with dye in the future it can still be done, with medicines given beforehand to prevent a reaction; always tell anyone doing a scan or a procedure about this allergy. Cardiology will see you to plan next steps for the chest pressure."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-22T10:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-22T10:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-22T10:25"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2024-10-22T10:45",
+              "body": "Flu high-dose L deltoid, 2024-25 COVID R deltoid. New contrast allergy noted on screening, not relevant to these vaccines; no vaccine reactions ever. Observed 15 minutes without issue."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T12:50",
+          "reason": "Annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-11-12T12:50",
+              "text": "LOW-DOSE CT CHEST, ANNUAL SCREENING. No IV contrast (noted contrast allergy).\nComparison: 11/07/2023.\nFindings: No pulmonary nodules. No consolidation or effusion. No adenopathy. Heart normal size. Coronary artery calcification and LAD stent, unchanged. Aorta normal caliber.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening."
+            }
+          ],
+          "orders": [{"id": "ldct-2024", "action": "done", "date": "2024-11-12T12:50"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "author": "PCP",
+              "date": "2024-11-13T08:05",
+              "body": "Lung-RADS 1. Pt messaged. Next 11/2025."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after catheterization",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-12-10T11:15"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-12-10T11:45",
+              "body": "Ten weeks after the aborted cath (contrast reaction). Fully recovered from that. Chest pressure about weekly with exertion, sometimes twice, always settles with rest within minutes; no rest pain, no syncope, no palpitations. Sees cardiology early January to decide on next steps. Mood good, PHQ-9 5.\nExam: vitals reviewed. Heart regular, lungs clear, no edema.\nA/P: stable angina, more frequent off beta blocker, cardiology managing; told him to call or go to the ED for chest pain at rest or lasting more than 15 minutes. HTN controlled on lisinopril. Contrast allergy on file. MDD partial remission, continue mirtazapine. RTC 3 months."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

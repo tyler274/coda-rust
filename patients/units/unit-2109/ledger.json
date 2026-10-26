@@ -1,0 +1,3676 @@
+{
+  "unit": "unit-2109",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"multivitamin Oral Tablet\"",
+    "left text-only (not verified): drug \"iron sucrose 20 MG/ML Injectable Solution\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002109",
+      "given": "Adam",
+      "family": "Upton",
+      "birth_date": "1966-11-06",
+      "address_line": "1430 Federal Street",
+      "phone": "+1-413-555-0165",
+      "email": "adam.upton@example.test",
+      "marital_status": "married",
+      "summary": "Belchertown cattle rancher who joins in 2019 with stage 4 CKD, anemia of CKD and an asymptomatic doxorubicin cardiomyopathy after a 2014 thigh sarcoma. He starts hemodialysis by catheter in 2020, gets a left forearm fistula in 2022, develops right carpal tunnel syndrome, and his cardiomyopathy becomes symptomatic HFrEF with a 2025 admission for decompensation.",
+      "events": [
+        {
+          "id": "2019-09-03a",
+          "kind": "outside_records",
+          "start": "2019-09-03T10:20",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records (partial)",
+              "date": "2019-09-03T10:20",
+              "author": "front desk",
+              "body": "Nine pages faxed from the patient's previous primary care office ahead of his new-patient visit next week. Contents: last two office notes (2018), a medication list, an immunization record that lists a tetanus shot \"more than 10 years ago\" without a date, and a colonoscopy report from 2017.\n\nColonoscopy 2017 (outside, screening): complete to the cecum, good prep, no polyps, otherwise normal. Recommended repeat in 10 years.\n\nOffice notes mention kidney disease followed by nephrology, a heart condition followed by cardiology after chemotherapy, and a thigh sarcoma treated in 2014. No nephrology or cardiology letters were included.\n\nScanned to chart for the PCP to review at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T08:40",
+          "end": "2019-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Chronic kidney disease, stage 4",
+              "action": "diagnosed",
+              "onset": "2017-06-01",
+              "note": "Followed by outside nephrology"
+            },
+            {
+              "label": "Anemia in chronic kidney disease",
+              "action": "diagnosed",
+              "onset": "2018-03-01",
+              "note": "On epoetin from nephrology",
+              "icd10": "D63.1"
+            },
+            {
+              "label": "Hyperphosphatemia",
+              "action": "diagnosed",
+              "onset": "2018-03-01",
+              "note": "On calcium acetate from nephrology",
+              "icd10": "E83.39"
+            },
+            {
+              "label": "Cardiomyopathy due to drug and external agent",
+              "action": "diagnosed",
+              "onset": "2015-04-01",
+              "note": "Doxorubicin; asymptomatic LV dysfunction, LVEF 45% on 2015 echo; followed by outside cardiology",
+              "icd10": "I42.7"
+            },
+            {
+              "label": "Personal history of malignant neoplasm of soft tissue",
+              "action": "history",
+              "onset": "2014-02-01",
+              "note": "Soft-tissue sarcoma right thigh, wide local excision and doxorubicin 2014, in remission",
+              "icd10": "Z85.831"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Cardiomyopathy"
+            },
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Fluid, kidney disease"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "calcium acetate 667 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth three times daily with meals",
+              "dose": {
+                "value": 667,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperphosphatemia"
+            },
+            {
+              "drug_text": "epoetin alfa 10000 UNT/ML Injectable Solution",
+              "action": "historical",
+              "sig": "Inject 10,000 units under the skin once monthly (given by nephrology)",
+              "dose": {
+                "value": 10000,
+                "unit": "[iU]"
+              },
+              "frequency": "MONTHLY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Anemia of CKD"
+            },
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth as needed for pain",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Back soreness"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              68
+            ],
+            "hr": 61,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 100,
+            "weight_kg": 86.1,
+            "height_cm": 181.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 3.67
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 40
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 19
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 19
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 17
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.57
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 5.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Rare, holidays only, 1-2 drinks"
+            },
+            {
+              "item": "Occupation",
+              "value": "Rancher (beef cattle)"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2019-09-10T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-10T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and physical note",
+              "title": "New Patient Visit",
+              "date": "2019-09-10T09:40",
+              "author": "PCP",
+              "body": "52M rancher establishing care. Previous PCP retired; wife found us through a neighbor. Partial records from the prior office reviewed (colonoscopy 2017 clean, repeat 2027).\n\nHPI / history as he tells it:\n- Kidneys: told about \"weak kidneys\" around 2017. Sees an outside nephrology group every 3 months. They give him a monthly epoetin shot in clinic and started a phosphate binder (calcium acetate) last year. He knows the word dialysis has come up as \"down the road\" and that they want him to think about access. No uremic symptoms he can name: appetite fine, no itching, no nausea. Makes good urine.\n- Heart: 2014 sarcoma of the right thigh, wide local excision then doxorubicin at a cancer center. About a year later an echo showed his pumping was down (EF 45% by his cardiology papers from that time, which he brought). No symptoms then or now. Cardiology started lisinopril 10 and sees him every year or two. Furosemide 40 daily came from either nephrology or cardiology; he isn't sure which.\n- Sarcoma: in remission, still sees oncology yearly with a chest CT.\n- Aspirin 81 since \"a long time ago\", MVI, Tylenol for back soreness after chores. Avoids ibuprofen because nephrology told him to.\n\nPMH: as above. PSH: right thigh wide local excision 2014. No chest radiation.\nMeds: lisinopril 10 daily, furosemide 40 daily, ASA 81, calcium acetate 667 TID w/ meals, epoetin alfa 10,000 units SC monthly (nephrology), MVI, acetaminophen 500 prn.\nAllergies: NKDA.\nFHx: father HTN, MI at 68, died in his late 80s. Mother living, type 2 diabetes, CKD, osteoarthritis. Brother high cholesterol. Paternal grandfather CHF. No known HCM or sudden death in the family.\nSocial: married, runs a small beef herd outside town. Never smoked. Drinks maybe twice a year. No drugs. Black coffee, plain cooking.\n\nROS: no chest pain, no dyspnea at his usual work, no orthopnea, no edema lately, no bleeding. Otherwise negative.\n\nExam: vitals per flowsheet. Weathered, well-appearing. HEENT unremarkable. Neck supple, JVP not elevated. Heart regular, no murmur or gallop. Lungs clear. Abdomen soft, nontender. Right lateral thigh with a well-healed longitudinal scar, no mass. Ext: no edema, pulses 2+. Skin: no rash. Neuro: grossly nonfocal. PHQ-2 0.\n\nA/P:\n1. CKD stage 4, followed by nephrology. Labs today; will ask nephrology for their last note. Renally dose everything, no NSAIDs.\n2. Anemia of CKD on monthly epoetin per nephrology. CBC today.\n3. Hyperphosphatemia on calcium acetate. Phos today.\n4. Doxorubicin cardiomyopathy, asymptomatic, on lisinopril. Euvolemic today. Continue cardiology follow-up.\n5. Hx soft-tissue sarcoma R thigh 2014, in remission. Oncology surveillance continues.\n6. Health maintenance: colonoscopy up to date (2017). Tdap and flu next month at a nurse visit. Hep B vaccine series given likely dialysis in the future; start at the nurse visit. One-time HIV and hep C, plus hep B surface antigen today. Lipids today.\n\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              76
+            ],
+            "weight_kg": 86.2,
+            "height_cm": 180.0,
+            "labs": {
+              "Bicarbonate": 21,
+              "Blood Urea Nitrogen": 41,
+              "Creatinine": 3.6,
+              "Hemoglobin": 10.8,
+              "Phosphorus": 5.0,
+              "Potassium": 4.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-09-12T16:05",
+              "author": "PCP",
+              "body": "Hi Adam, your labs from Tuesday are back. Kidney numbers and blood count are in the range I'd expect with your kidney disease and look similar to what your nephrologist has been seeing. Phosphorus is a little high, which is what the calcium acetate is for, so keep taking it with meals. Cholesterol is fine. HIV, hepatitis B and hepatitis C screens were all negative. I'll send a copy to your kidney doctor. See you at the nurse visit for your shots."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T10:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T10:20"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2019-10-08T10:22"
+            },
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2019-10-08T10:24"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Immunizations",
+              "date": "2019-10-08T10:35",
+              "author": "RN",
+              "body": "Here for vaccines per PCP plan. Feels well today, no fever. Screening questions negative. Influenza 0.5 mL IM left deltoid, Tdap 0.5 mL IM right deltoid, Heplisav-B 0.5 mL IM left deltoid (dose 1 of 2). Lots recorded. Tolerated without issue, waited 15 min. Dose 2 of hep B due in 1 month; scheduled for 11/12 at front desk. Patient asked that we avoid Mondays/Wednesdays/Fridays when possible since nephrology may move him to a dialysis schedule eventually; noted in scheduling."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-12a",
+          "kind": "nurse_visit",
+          "start": "2019-11-12T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-11-12T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2019-11-12T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Heplisav-B #2",
+              "date": "2019-11-12T10:45",
+              "author": "RN",
+              "body": "Heplisav-B dose 2 of 2, 0.5 mL IM right deltoid. Arm was a bit sore for a day after the October shots, nothing more. No reaction today. Series complete. PCP wants a surface antibody drawn in a couple of months; added to the next lab order."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-17a",
+          "kind": "office_visit",
+          "start": "2019-12-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Kidney disease follow-up",
+          "vitals": {
+            "bp": [
+              140,
+              72
+            ],
+            "hr": 55,
+            "spo2": 98,
+            "weight_kg": 85.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-12-17T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 4.05
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 47
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.8
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 17
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 17
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-12-17T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.57
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-12-17T09:30",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 5.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-12-17T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-12-17T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2019-12-17T09:35",
+              "author": "PCP",
+              "body": "S: Three-month follow-up. Feeling okay, a bit more tired at the end of the day with feeding the herd in the cold, which he puts down to the season. Appetite fine. No itching, nausea or swelling. Saw nephrology in November; they talked again about access planning and he is \"thinking about it.\" Shot monthly at their clinic.\n\nO: Vitals per flowsheet. Well-appearing. JVP flat. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P:\n- CKD 4: BMP today. Creatinine creeping. Encouraged him to keep the access conversation going with nephrology.\n- Anemia of CKD: CBC today.\n- Phos: on binder, recheck.\n- Cardiomyopathy: no symptoms, continue lisinopril.\nRTC 2 months; hep B surface antibody at that draw."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Blood Urea Nitrogen": 46,
+              "Creatinine": 4.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "office_visit",
+          "start": "2020-02-11T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, kidney follow-up",
+          "vitals": {
+            "bp": [
+              139,
+              83
+            ],
+            "hr": 57,
+            "spo2": 98,
+            "weight_kg": 86.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-02-11T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 4.99
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 54
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.4
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 13
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-02-11T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-02-11T09:50",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Reactive, immune"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-02-11T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-02-11T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2020-02-11T09:55",
+              "author": "PCP",
+              "body": "S: Wife came along. Over the last month he is more worn out, needs to sit after chores he used to do straight through. Some mornings he doesn't feel like eating breakfast. No vomiting, no itching, no chest pain, no shortness of breath. Nephrology saw him two weeks ago and told him his numbers are close to needing dialysis; they want him to start in the spring and are setting it up. Fistula surgery was raised but not booked yet.\n\nO: Vitals per flowsheet. Tired-looking but in no distress. Heart regular. Lungs clear. No edema, no asterixis.\n\nA/P:\n- CKD 4, progressing (creatinine about 4.9 today). Fatigue and poor morning appetite fit. Nephrology is planning dialysis start; I agree with their timing. Discussed what in-center dialysis looks like and that he can keep ranching around it.\n- Anemia of CKD, stable on epoetin per nephrology.\n- Hep B surface antibody drawn today after the 2-dose series.\n- Will forward today's labs to nephrology.\nRTC after dialysis starts, sooner if needed."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Blood Urea Nitrogen": 52,
+              "Creatinine": 4.9,
+              "Hemoglobin": 10.4,
+              "Potassium": 5.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "telephone",
+          "start": "2020-04-14T13:40",
+          "reason": "Wife calls: dialysis started",
+          "conditions": [
+            {
+              "label": "End stage renal disease",
+              "action": "diagnosed",
+              "onset": "2020-04-06"
+            },
+            {
+              "label": "Dependence on renal dialysis",
+              "action": "diagnosed",
+              "onset": "2020-04-06",
+              "note": "In-center hemodialysis MWF via tunneled right IJ catheter",
+              "icd10": "Z99.2"
+            },
+            {
+              "label": "Chronic kidney disease, stage 4",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "sevelamer carbonate 800 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily with meals",
+              "dose": {
+                "value": 800,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperphosphatemia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone call from patient's wife",
+              "date": "2020-04-14T13:55",
+              "author": "RN",
+              "body": "Wife calling to update us. Adam started hemodialysis last Monday (4/6) at an outpatient dialysis unit, Mon/Wed/Fri mornings. Running through a catheter in the right side of his neck for now; the fistula surgery is still to be scheduled. Nephrology added a second phosphate binder, sevelamer 800 mg with meals, on top of the calcium acetate. Everything else the same. He's tired after sessions but managing. She wanted to know if his April 28 appointment should be moved given the virus situation; offered video visit instead, she accepted for June. Med list and problem list updated per PCP. Routed to PCP.\n\nPCP addendum: Thanks. Converted to ESRD on HD on the problem list. Glad the start went smoothly. Video visit in June is fine."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telephone",
+          "start": "2020-04-21T11:10",
+          "reason": "Insurance update",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Insurance updated",
+              "date": "2020-04-21T11:10",
+              "author": "front desk",
+              "body": "Patient's wife called with new coverage information. Medicare now primary (ESRD), Blue Cross Blue Shield plan kept as supplemental. Cards scanned from her email photos. Registration updated; old commercial policy inactivated."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-16a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after dialysis start",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2020-06-16T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-06-16T14:30",
+              "author": "PCP",
+              "body": "Video visit, patient at home in the kitchen with his wife, identity confirmed, consent for video given.\n\nS: Ten weeks into in-center HD, Mon/Wed/Fri. Says he feels better than in the winter: eating again, more energy on non-dialysis days. Washed out the afternoon of a session. Catheter site fine per the unit nurses; he keeps it dry with a cover when he showers. Nephrology hasn't scheduled fistula surgery yet, says elective surgery is backed up. Still taking all meds; binders with every meal \"most of the time.\" Making some urine. No chest pain, breathlessness or swelling. No fever.\n\nO: Appears well on video, talking in full sentences, no visible distress. Catheter dressing visible at right upper chest, clean. No facial puffiness.\n\nA/P:\n- ESRD on HD via tunneled catheter. Doing well. Labs per dialysis unit; asked him to have the unit fax us a recent lab sheet when convenient.\n- Anemia of CKD on epoetin, hyperphosphatemia on calcium acetate and sevelamer, per nephrology.\n- Cardiomyopathy: no symptoms, lisinopril and furosemide unchanged.\nIn-person visit in the fall with flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza",
+              "date": "2020-10-06T10:15",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM right deltoid (avoid left arm per patient, fistula planned on that side eventually). Screening negative, mask on, temperature checked at door. Tolerated well. Reminded of his November follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "office_visit",
+          "start": "2020-11-17T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              71
+            ],
+            "hr": 65,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 86.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-11-17T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.45
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 54
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.0
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 10
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-11-17T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-11-17T09:40",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-11-17T09:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-11-17T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2020-11-17T09:45",
+              "author": "PCP",
+              "body": "S: First in-person visit since dialysis started. Doing his three sessions a week without missing. Wife drives on bad-weather days. Energy reasonable. No breathlessness, no swelling, no chest pain. Catheter has had no infections. Fistula still not booked; nephrology says early next year at the earliest. The dialysis unit never sent us labs, so drawing a few today on his off day.\n\nO: Vitals per flowsheet. Comfortable. Tunneled catheter right upper chest, dressing clean, no erythema. JVP not elevated. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P:\n- ESRD on HD: creatinine and BUN as expected for an interdialytic draw. Phos a bit above goal; reinforced taking binders with meals. Copy to nephrology.\n- Anemia of CKD: hemoglobin steady on epoetin.\n- Cardiomyopathy: asymptomatic; continue lisinopril, furosemide.\n- Wellness visit in the spring (Medicare)."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Blood Urea Nitrogen": 54,
+              "Creatinine": 6.4,
+              "Hemoglobin": 10.3,
+              "Phosphorus": 5.4,
+              "Potassium": 5.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "annual_physical",
+          "start": "2021-03-16T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              131,
+              85
+            ],
+            "hr": 69,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 85.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-03-16T09:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.21
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 55
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.8
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 10
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-03-16T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2021-03-16T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-03-16T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-01-27T07:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-02-24T07:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2021-03-16T09:10",
+              "author": "PCP",
+              "body": "Initial Medicare AWV (Medicare via ESRD since last spring).\n\nInterval: Both Moderna doses given at the dialysis unit, 1/27 and 2/24; card reviewed and entered. Dialysis M/W/F through the right chest catheter, no line infections. Fistula surgery still not scheduled; nephrology referred to vascular, waiting list. Calving season starting, which is his busy stretch.\n\nHealth risk assessment: independent in all daily activities, drives, works the herd with one part-time hand. No falls. Hearing and vision fine for him (reading glasses). Diet: limits salt and potassium foods per the dialysis dietitian, \"mostly.\" Wife at home, good support. PHQ-2 0. Never smoker, alcohol rare.\n\nExam: vitals per flowsheet. Well-appearing. Catheter site clean. Heart regular, no murmur or gallop. Lungs clear. No edema. Thigh scar unchanged.\n\nAdvance directives: wants his wife as health care proxy; form given to bring back.\n\nPlan:\n- ESRD on HD, anemia of CKD, hyperphosphatemia: per nephrology. Off-day labs today for our records.\n- Cardiomyopathy: asymptomatic; due for his cardiology visit this year.\n- Sarcoma history: oncology letter expected after his May scan.\n- Prevention: colonoscopy 2017 (next 2027). Flu done in the fall. COVID primary series complete. Shingrix in the fall. Pneumococcal vaccine to discuss next year.\n- Written prevention schedule given."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-05-25a",
+          "kind": "outside_records",
+          "start": "2021-05-25T14:30",
+          "reason": "Oncology surveillance letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Sarcoma Surveillance Visit (outside oncology)",
+              "date": "2021-05-25T14:30",
+              "author": "oncology",
+              "body": "Sarcoma survivorship clinic, visit of 2021-05-18.\n\nMr. Upton returns for routine surveillance seven years after wide local excision of a soft-tissue sarcoma of the right thigh followed by doxorubicin-based chemotherapy (2014). He has no new lumps, thigh pain or cough. Weight steady. He is now on hemodialysis, which began in April 2020.\n\nExam: right thigh scar well healed, no palpable mass or induration along the excision bed, inguinal nodes not enlarged. Lungs clear.\n\nCT chest today: no pulmonary nodules or other evidence of metastatic disease.\n\nImpression: no evidence of recurrence. Continue annual surveillance with exam and chest imaging through year 10. He continues to see cardiology for his anthracycline-related LV dysfunction.\n\nAllergies: NKDA. Medications per his list.\n\nThank you for letting us share in his care."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "office_visit",
+          "start": "2021-08-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "vitals": {
+            "bp": [
+              134,
+              77
+            ],
+            "hr": 67,
+            "spo2": 98,
+            "weight_kg": 85.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-08-17T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2021-08-17T09:25",
+              "author": "PCP",
+              "body": "S: Routine. Haying done for the first cut, second cut coming. Dialysis going steadily, no missed runs. Saw cardiology in July; told \"no change\" and keep the same pills (no letter received). Oncology letter in May clean. Health care proxy form returned, scanned.\n\nO: Vitals per flowsheet. Tanned, well. Catheter site clean. Heart regular. Lungs clear. No edema.\n\nA/P: ESRD on HD, anemia of CKD, phos per nephrology. Cardiomyopathy stable, asymptomatic. Will request the cardiology note. Flu in October; Shingrix after that. RTC 6 months for AWV."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T10:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-10-04T07:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza",
+              "date": "2021-10-19T10:12",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM right deltoid. Screening negative. Patient reports Moderna booster at his dialysis unit on 10/4; entered from his card. Shingrix #1 scheduled 11/16 so the two aren't on the same day per his preference."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "nurse_visit",
+          "start": "2021-11-16T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 1",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-11-16T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-11-16T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Shingrix #1",
+              "date": "2021-11-16T10:45",
+              "author": "RN",
+              "body": "Shingrix 0.5 mL IM right deltoid, dose 1 of 2. Told him to expect a sore arm and maybe a day of feeling run down, and to schedule it for after a dialysis day if he can. Dose 2 due in 2 to 6 months; will give at his March AWV."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "annual_physical",
+          "start": "2022-03-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              135,
+              78
+            ],
+            "hr": 67,
+            "rr": 13,
+            "temp_c": 36.2,
+            "spo2": 98,
+            "weight_kg": 86.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-08T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 225
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-08T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.46
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 52
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 9
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-08T09:00",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2022-03-08T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-08T09:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-08T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-03-08T09:10"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-03-08T09:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2022-03-08T09:20",
+              "author": "PCP",
+              "body": "Subsequent AWV.\n\nInterval: no ED visits or hospital stays. Dialysis three days a week, still by the chest catheter. Nephrology has him on the vascular surgery list again; he says the first referral \"got lost.\" Cardiology visit last summer reportedly unchanged; note never arrived despite our request.\n\nHRA: independent, working full days on non-dialysis days. No falls. Mood good, PHQ-2 0. Sleeps well. Safety: wears a seat belt. Proxy on file (wife).\n\nExam: vitals per flowsheet. Well. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema.\n\nPlan:\n- Shingrix #2 and PCV20 today (CKD and heart disease both qualify him).\n- Labs for our records.\n- ESRD, anemia, phos per nephrology; cardiomyopathy asymptomatic, continue lisinopril and furosemide.\n- Colonoscopy due 2027.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-07a",
+          "kind": "pharmacy",
+          "start": "2022-06-07T11:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request: furosemide, lisinopril",
+              "date": "2022-06-07T11:20",
+              "author": "MA",
+              "body": "Electronic refill requests from his pharmacy for furosemide 40 mg daily and lisinopril 10 mg daily, 90-day supply each. Last office visit 3/8/22. Routed to PCP.\n\nPCP: Approved both, 90 days with 3 refills. Binders and epoetin stay with nephrology."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "office_visit",
+          "start": "2022-08-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; fistula planning",
+          "vitals": {
+            "bp": [
+              126,
+              73
+            ],
+            "hr": 74,
+            "spo2": 99,
+            "weight_kg": 86.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-08-16T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2022-08-16T09:25",
+              "author": "PCP",
+              "body": "S: Six-month check. Finally saw vascular surgery in July after the nephrology re-referral; left forearm fistula planned for early October. He's glad to be rid of the catheter eventually. No problems with it so far. Otherwise feels well, working. No breathlessness, no swelling.\n\nO: Vitals per flowsheet. Well. Catheter right chest, site clean. Heart regular. Lungs clear. No edema.\n\nA/P:\n- ESRD on HD, access planning under way. He asked about aspirin before surgery; told him to follow the surgeon's instructions.\n- Cardiomyopathy asymptomatic.\n- Flu and updated COVID shot this fall at the dialysis unit or here, his choice.\nRTC after surgery."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "portal_message",
+          "start": "2022-10-04T19:40",
+          "reason": "Upcoming surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgery Friday",
+              "date": "2022-10-04T19:40",
+              "author": "patient",
+              "body": "Hi, this is Adam's wife writing for him. His fistula surgery is this Friday the 7th. The surgeon's office said he can keep taking his baby aspirin. Do you need anything from us beforehand? Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surgery Friday",
+              "date": "2022-10-05T08:50",
+              "author": "RN",
+              "body": "Thanks for letting us know. Nothing needed from our side, the surgeon's instructions are the ones to follow. Please have him book a visit with us a few weeks after surgery. Good luck Friday."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-21a",
+          "kind": "specialist_visit",
+          "start": "2022-10-21T13:30",
+          "service": "Vascular Surgery",
+          "reason": "Post-operative check after AV fistula creation",
+          "conditions": [
+            {
+              "label": "Arteriovenous fistula, acquired",
+              "action": "diagnosed",
+              "onset": "2022-10-07",
+              "note": "Left forearm, surgically created for hemodialysis access 2022-10-07",
+              "icd10": "I77.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              64
+            ],
+            "hr": 104,
+            "rr": 16,
+            "temp_c": 37.1,
+            "spo2": 98
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Vascular Surgery Post-operative Visit",
+              "date": "2022-10-24T10:05",
+              "author": "vascular surgery",
+              "body": "Vascular surgery clinic, date of service 2022-10-21. Faxed to PCP.\n\n55-year-old man on in-center hemodialysis by tunneled catheter, seen two weeks after creation of a left forearm arteriovenous fistula (10/7/22).\n\nHe has felt more tired since surgery and gets mildly short of breath going up stairs, which he thinks is his anemia. Denies chest pain, leg swelling or needing to sleep propped up. Incision pain minimal.\n\nVitals: T 98.7 F (37.1 C), HR 104, BP 132/64, RR 16, SpO2 98% on room air.\n\nExam: incision healing well, no drainage. Hand warm, extremities warm with bounding peripheral pulses. Prominent bruit over the fistula with a palpable continuous thrill. Apical impulse displaced laterally.\n\nAssessment: healing left forearm AV fistula, maturing as expected.\nPlan: dialysis unit may begin cannulation trials once maturity is confirmed, typically 4 to 6 weeks; keep the tunneled catheter until the fistula is reliably in use. Arm exercises reviewed. His fatigue and exertional breathlessness to be followed by nephrology and his primary care physician.\n\nAllergies: NKDA. Meds: calcium acetate, sevelamer, epoetin alfa, lisinopril, furosemide, aspirin 81, multivitamin, acetaminophen as needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "office_visit",
+          "start": "2022-11-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue after fistula surgery",
+          "vitals": {
+            "bp": [
+              138,
+              77
+            ],
+            "hr": 78,
+            "rr": 15,
+            "spo2": 97,
+            "weight_kg": 86.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-08T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.29
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-11-08T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.43
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 53
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 9
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-11-08T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-11-08T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-28T07:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, bivalent",
+              "date": "2022-10-12T07:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2022-11-08T09:40",
+              "author": "PCP",
+              "body": "S: Four weeks out from the left forearm fistula. Vascular surgery note received. Since surgery he's been more tired and a little winded on the stairs to the hayloft. Thinks it's his blood count. No chest pain, no swelling, sleeps flat on one pillow. Dialysis still by catheter while the fistula matures. Flu shot 9/28 and bivalent COVID 10/12 at the dialysis unit.\n\nO: Vitals per flowsheet. Comfortable. Left forearm incision healed; thrill and bruit over the fistula. Catheter site clean. JVP not elevated. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P:\n- Fatigue and mild exertional dyspnea since fistula creation. CBC and BMP today. Will send results and this note to nephrology, who see him three times a week and can adjust from there.\n- ESRD on HD, new AV fistula maturing.\n- Cardiomyopathy: no signs of fluid today.\nRTC 3 to 4 months, sooner if worse."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-23a",
+          "kind": "portal_message",
+          "start": "2023-02-23T20:15",
+          "reason": "Update: catheter removed",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neck line is out",
+              "date": "2023-02-23T20:15",
+              "author": "patient",
+              "body": "Adam's wife again. Just letting you know the dialysis catheter came out yesterday. They've been using the arm fistula for a few weeks now and the nurses say it works great. He's very happy to shower like a normal person. Also his right hand has been bothering him at night, numb and tingly, should he make an appointment for that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neck line is out",
+              "date": "2023-02-24T09:05",
+              "author": "RN",
+              "body": "That's great news, thanks for the update. Yes, please have him come in about the hand. I've put him on the schedule for Tuesday 3/21 at 9:00, a non-dialysis day. Call sooner if the hand gets weak or he starts dropping things."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "office_visit",
+          "start": "2023-03-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right hand numbness and tingling",
+          "vitals": {
+            "bp": [
+              141,
+              81
+            ],
+            "hr": 70,
+            "spo2": 98,
+            "weight_kg": 86.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-21T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Right hand numbness and tingling, median distribution"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2023-03-21T09:30",
+              "author": "PCP",
+              "body": "S: Right hand numbness, tingling and some burning since roughly October, around the time of the fistula surgery on the other arm. Thumb, index and middle finger mostly. Wakes him at night; he shakes the hand out. Also worse sitting through dialysis. No neck pain. Right-handed; work is hard on his hands (fencing pliers, feed bags). Tunneled catheter out 2/22, fistula in use. Fatigue from the fall is about the same.\n\nO: Vitals per flowsheet. Well. Left forearm fistula with thrill and bruit, catheter exit site healed. Right hand: no visible thenar wasting, skin normal, radial pulse normal. Neck full range without pain. Heart regular. Lungs clear. No edema.\n\nA/P:\n- Right hand paresthesias in a median pattern, nocturnal, worse on dialysis. Suspect carpal tunnel. Referral to neurology for evaluation and nerve testing. Wrist neutral at night in the meantime; acetaminophen as needed; still no NSAIDs.\n- ESRD on HD, now via left forearm AVF.\n- Fatigue: CBC sent to nephrology in November; they're managing his epoetin.\nRTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-27a",
+          "kind": "specialist_visit",
+          "start": "2023-04-27T14:00",
+          "service": "Neurology",
+          "reason": "Right hand numbness and tingling",
+          "conditions": [
+            {
+              "label": "Carpal tunnel syndrome",
+              "action": "diagnosed",
+              "onset": "2022-10-20",
+              "note": "Right hand"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-24T06:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 55
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 9
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-24T06:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-24T06:40",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 5.4
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 300
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2023-04-27T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2023-05-02T11:30",
+              "author": "neurology",
+              "body": "Outpatient neurology, date of service 2023-04-27. Reason for referral: right hand numbness.\n\nHistory: 56-year-old right-handed rancher with ESRD on in-center hemodialysis for about three years, doxorubicin-related cardiomyopathy and a treated right thigh sarcoma. A left forearm AV fistula was created last October. For about six months he has had intermittent numbness, tingling and a burning ache in the right hand, mainly the thumb, index and middle fingers. It is worst at night and while he sits for dialysis.\n\nExam: Tinel sign positive at the right wrist over the carpal tunnel. Phalen maneuver reproduces his symptoms at 30 seconds. Reduced light touch and pinprick in the right median distribution. Weakness of right thumb opposition. No edema or erythema of the hand. Remainder of the neurologic exam unremarkable.\n\nRecent dialysis-unit labs (provided by patient): creatinine 6.5 mg/dL, BUN 55 mg/dL, hemoglobin 10.2 g/dL, calcium 9.2 mg/dL, phosphorus 5.4 mg/dL, PTH 300 pg/mL (elevated).\n\nImpression: right carpal tunnel syndrome, a common problem in dialysis patients. The fistula is on the opposite arm.\n\nPlan:\n1. Nerve conduction study and EMG of the right arm.\n2. Neutral-position wrist splint at night.\n3. Will write again with test results.\n\nAllergies: NKDA. Medications reviewed per his list."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "procedure_visit",
+          "start": "2023-05-23T10:00",
+          "service": "Neurology",
+          "reason": "Nerve conduction study and EMG, right arm",
+          "reports": [
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2023-05-23T10:00",
+              "text": "Right upper extremity. Right median sensory and motor studies across the wrist show slowed conduction with prolonged distal latencies. Right ulnar and radial sensory and motor studies are normal. Needle EMG of selected right arm and hand muscles shows no other abnormality; no evidence of cervical radiculopathy.",
+              "conclusion": "Right median mononeuropathy at the wrist, consistent with carpal tunnel syndrome. Ulnar and radial nerves normal."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Addendum: Nerve Testing",
+              "date": "2023-06-13T15:10",
+              "author": "neurology",
+              "body": "Addendum to our consultation of 4/27/23.\n\nNerve conduction study and EMG on 5/23/23 showed a right median mononeuropathy at the wrist; ulnar and radial nerves normal, no other abnormality on needle exam.\n\nThis confirms right carpal tunnel syndrome. He reports the night splint is helping him sleep. Continue the splint at night. If symptoms are not adequately controlled with splinting, we would suggest referral to hand surgery to discuss release. No neurology follow-up needed unless things change."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              139,
+              73
+            ],
+            "hr": 71,
+            "spo2": 100,
+            "weight_kg": 86.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-06-20T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2023-06-20T09:20",
+              "author": "PCP",
+              "body": "S: Neurology letter and nerve study reviewed: right carpal tunnel confirmed. Wears the splint most nights and sleeps through more often. Still some tingling during dialysis. Doesn't want to think about surgery during haying. Fistula working, no problems. Energy \"so-so.\"\n\nO: Vitals per flowsheet. Fistula thrill and bruit present. Heart regular. Lungs clear. No edema.\n\nA/P:\n- Right carpal tunnel syndrome: continue night splint. He knows hand surgery is the next step if it isn't enough; will revisit in the fall.\n- ESRD on HD via L forearm AVF; anemia, phos per nephrology.\n- Cardiomyopathy asymptomatic.\nFlu shot in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-10T10:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-02T07:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza",
+              "date": "2023-10-10T10:12",
+              "author": "RN",
+              "body": "High-dose flu 0.7 mL IM right deltoid (no injections in the fistula arm). Screening negative. Updated COVID vaccine given at dialysis 10/2 per patient, entered. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-06a",
+          "kind": "specialist_visit",
+          "start": "2023-11-06T11:00",
+          "service": "Nephrology",
+          "reason": "ESRD follow-up",
+          "medications": [
+            {
+              "drug_text": "iron sucrose 20 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "100 mg IV at each dialysis session for 10 sessions (dialysis unit)",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Anemia of CKD with low transferrin saturation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              82
+            ],
+            "hr": 88
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-06T06:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.88
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-11-06T06:45",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 48
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 318
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 100
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-11-06T06:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 55
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 9
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Progress Note",
+              "date": "2024-01-09T14:20",
+              "author": "nephrology",
+              "body": "Outpatient nephrology (dialysis unit) progress note, date of service 2023-11-06. Sent at request of PCP office.\n\nESRD on in-center hemodialysis MWF via left forearm AVF. Also followed for anthracycline cardiomyopathy by cardiology and seen by neurology this year.\n\nSubjective: several weeks of increasing fatigue; breathless with exertion to the point he has cut his daily walks short. No chest pain, palpitations or lightheadedness.\n\nVitals: BP 138/82, HR 88.\nExam: pale conjunctivae and skin. Otherwise unremarkable.\n\nLabs today: hemoglobin 8.2 g/dL, MCV 86 fL, ferritin 100 ng/mL, transferrin saturation 15%, creatinine 6.5 mg/dL, BUN 55 mg/dL.\n\nAssessment: anemia of CKD, worse, with low iron saturation.\nPlan: iron sucrose 100 mg IV with each of the next 10 treatments. Continue epoetin alfa 10,000 units monthly. Continue calcium acetate and sevelamer with meals. Recheck CBC and iron indices after the course.\n\nMedications: calcium acetate 667 mg TID with meals, sevelamer 800 mg TID with meals, epoetin alfa 10,000 units SC monthly, lisinopril 10 mg daily, furosemide 40 mg daily, aspirin 81 mg daily, multivitamin, acetaminophen as needed. Allergies: NKDA."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Ferritin": 100,
+              "Hemoglobin": 8.2,
+              "Iron": 48,
+              "Mean Corpuscular Volume": 86,
+              "Total Iron-Binding Capacity": 322,
+              "Transferrin Saturation": 15
+            }
+          }
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "office_visit",
+          "start": "2023-12-05T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; fatigue",
+          "vitals": {
+            "bp": [
+              126,
+              76
+            ],
+            "hr": 63,
+            "spo2": 98,
+            "weight_kg": 86.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-05T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2023-12-05T09:30",
+              "author": "PCP",
+              "body": "S: Says nephrology told him at the start of November his \"blood count was down to 8\" and the unit has been giving him iron through the machine every session since, about ten doses in all. Tired, cut back his walks to the far pasture. No chest pain, no black stools, no bleeding he's noticed. Splint still helping the right hand at night.\n\nO: Vitals per flowsheet. Looks pale. Fistula thrill and bruit. Heart regular. Lungs clear. No edema.\n\nA/P:\n- Anemia of CKD, worse per his report, getting IV iron at dialysis. We don't have the nephrology note; front desk to request it. No separate labs here so we don't double-stick him.\n- Carpal tunnel R, controlled with splint.\n- Cardiomyopathy: no fluid signs.\nRTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "telephone",
+          "start": "2023-12-12T10:40",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Records request to dialysis unit",
+              "date": "2023-12-12T10:40",
+              "author": "front desk",
+              "body": "Faxed records request to patient's dialysis unit / nephrology for most recent progress note and labs (Nov 2023), signed release on file. Will re-fax in 2 weeks if nothing arrives.\n\n12/28: no response, re-faxed."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "vitals": {
+            "bp": [
+              126,
+              82
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 86.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-19T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-19T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.48
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 54
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 9
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-19T09:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T09:30",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-19T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-19T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2024-03-19T09:35",
+              "author": "PCP",
+              "body": "S: Nephrology note from November finally arrived in January (hgb 8.2, TSAT 15%, ferritin 100; IV iron x10). Energy somewhat better since the iron, back to walking most of the fence line. No chest pain, no breathlessness at rest, sleeps flat. Hand okay with splint. Calving soon.\n\nO: Vitals per flowsheet. Less pale. Fistula thrill and bruit. JVP not elevated. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P:\n- Anemia of CKD after IV iron: CBC today.\n- ESRD on HD: CMP, phos for our records; copy to nephrology.\n- Lipids today, last checked 2019.\n- Cardiomyopathy: due for cardiology this year; he has an appointment in October.\n- Carpal tunnel R: stable.\nAWV skipped this spring at his request (calving), will catch up next year."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "portal_message",
+          "start": "2024-03-21T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-03-21T12:30",
+              "author": "PCP",
+              "body": "Hi Adam, your blood count is back up to about 10 from 8.2 in November, so the iron did its job. Kidney labs and phosphorus are where they usually run for you on dialysis. Cholesterol is fine. I've sent a copy to your nephrologist. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "outside_records",
+          "start": "2024-05-28T13:00",
+          "reason": "Oncology surveillance letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Sarcoma Survivorship: Completion of Surveillance (outside oncology)",
+              "date": "2024-05-28T13:00",
+              "author": "oncology",
+              "body": "Sarcoma survivorship clinic, visit of 2024-05-21.\n\nMr. Upton is now ten years from wide local excision and doxorubicin-based chemotherapy for a soft-tissue sarcoma of the right thigh. He reports no new masses, pain at the site, or cough.\n\nExam: right thigh scar well healed without mass. No inguinal adenopathy. Lungs clear.\n\nCT chest: no evidence of metastatic disease.\n\nImpression: no evidence of recurrence at 10 years. He is discharged from routine sarcoma surveillance. We ask his primary care physician to examine the thigh at routine visits and to refer back promptly for any new mass. He remains under cardiology care for anthracycline-related LV dysfunction.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "office_visit",
+          "start": "2024-09-24T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worsening shortness of breath, ankle swelling",
+          "vitals": {
+            "bp": [
+              139,
+              74
+            ],
+            "hr": 64,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 89.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2024-09-24T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Progressive dyspnea, orthopnea, edema; known anthracycline cardiomyopathy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2024-09-24T09:20",
+              "author": "PCP",
+              "body": "S: Wife made the appointment. Over the summer and getting worse, he runs out of breath faster doing chores and has to stop partway along the fence line. Now sleeping on two or three pillows; lying flat feels heavy. Some nights wakes up coughing and has to sit up for a while before it settles. Ankles swollen by evening, boots tight. No fever or cold symptoms. No missed dialysis. Says the unit hasn't changed his target weight in a long time. Cardiology visit was already booked for late October.\n\nO: Vitals per flowsheet; weight up about 3 kg from spring. Comfortable sitting, talks in full sentences. Fistula thrill and bruit. Heart regular. Lungs: fine crackles at both bases. Ext: pitting edema both ankles.\n\nA/P:\n- Progressive exertional dyspnea, orthopnea, nocturnal cough and ankle edema in a man with known doxorubicin cardiomyopathy on HD. Concern his cardiomyopathy is progressing and/or he is above his true dry weight. Called cardiology to ask for the first opening; they confirmed 10/21 is the soonest and put him on the cancellation list. Called the dialysis unit charge nurse to ask nephrology to reassess his target weight this week.\n- Return/ED precautions given for breathlessness at rest, chest pain or fainting.\n- Continue lisinopril, furosemide.\nRTC after cardiology."
+            }
+          ],
+          "state": {
+            "weight_kg": 89.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "specialist_visit",
+          "start": "2024-10-21T13:00",
+          "service": "Cardiology",
+          "reason": "Progressive dyspnea; anthracycline cardiomyopathy",
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "done",
+              "date": "2024-10-21T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Office Note",
+              "date": "2024-10-29T16:00",
+              "author": "cardiology",
+              "body": "Outpatient cardiology, date of service 2024-10-21. Faxed to PCP.\n\n57-year-old man with doxorubicin-related cardiomyopathy (asymptomatic LV dysfunction since 2015) and ESRD on hemodialysis, back with several months of gradually worsening breathlessness.\n\nHPI: Breathless walking his fence line after breakfast and must stop twice to rest. Sleeps propped on extra pillows; lying flat feels heavy. Wakes at night with coughing spells that ease once he sits up by an open window. Ankles swell by evening and his boots fit tighter. Tires with chores that used to be easy. A dull, pressure-like feeling in the chest with exertion, not sharp, not changed by breathing or leaning forward. Neighbors say his face looks puffy. Weight roughly steady by his account though his belt is tighter. Denies palpitations, fainting, orthostatic lightheadedness, fever, recent viral illness or GI illness, tick bites, rash, calf pain, leg pain walking on level ground, or long travel. No chest radiation, chest trauma or heart surgery. Never smoker; alcohol holidays only, less than in the past; no cocaine, stimulants, anabolic steroids or supplements. Family: no known HCM or sudden death.\n\nExam: comfortable at rest but becomes winded changing position. JVP mildly elevated when reclined, less so upright. Fine basilar crackles that clear only partly with deep breaths. Apical impulse displaced laterally. Soft, low-pitched early diastolic sound (S3). Holosystolic murmur at the apex radiating to the axilla. Abdomen soft, mild right upper quadrant fullness, nontender. Pitting edema to the mid-shins. Peripheral pulses intact and symmetric.\n\nStudies: chest x-ray and ECG obtained in clinic today.\n\nImpression: symptomatic progression of his anthracycline cardiomyopathy, with volume overload.\nPlan: transthoracic echocardiogram. Will coordinate target weight with his nephrologist. Continue lisinopril 10 mg, furosemide 40 mg, aspirin 81 mg. Follow-up after the echo.\n\nAllergies: NKDA. Medications: calcium acetate, sevelamer, epoetin alfa, lisinopril, furosemide, aspirin, acetaminophen as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-05a",
+          "kind": "nurse_visit",
+          "start": "2024-11-05T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-11-05T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-11-05T10:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-14T07:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Influenza",
+              "date": "2024-11-05T10:15",
+              "author": "RN",
+              "body": "High-dose flu IM right deltoid. Screening negative. COVID updated dose at dialysis 10/14, entered from card. Says he's breathing \"a little easier\" since the dialysis unit started taking more fluid off; echo scheduled next week. Cardiology note from 10/21 received and given to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "outside_records",
+          "start": "2024-12-10T11:45",
+          "reason": "Cardiology follow-up letter",
+          "conditions": [
+            {
+              "label": "Heart failure with reduced ejection fraction",
+              "action": "diagnosed",
+              "onset": "2024-10-21",
+              "note": "Anthracycline cardiomyopathy, LVEF 35% on 2024-11-12 echo"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up Letter",
+              "date": "2024-12-10T11:45",
+              "author": "cardiology",
+              "body": "Dear colleague,\n\nI have reviewed Mr. Upton's transthoracic echocardiogram of 11/12/24 with him by phone. It shows a dilated left ventricle with an ejection fraction of 35%, down from 45% in 2015, moderate functional mitral regurgitation, and no pericardial effusion.\n\nThis is heart failure with reduced ejection fraction from his anthracycline cardiomyopathy, now symptomatic. His nephrologist has lowered his target weight by 2 kg and he already notes less orthopnea and ankle swelling.\n\nPlan: continue lisinopril 10 mg daily, furosemide 40 mg daily and aspirin 81 mg daily. Keep to the new target weight at dialysis. Follow-up in one year, sooner for weight gain, worsening breathlessness or swelling.\n\nAllergies: NKDA.\n\nThank you for allowing me to participate in his care."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              81
+            ],
+            "hr": 66,
+            "rr": 15,
+            "spo2": 97,
+            "weight_kg": 86.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-14T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 57
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 10
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 17
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-14T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-14T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2025-01-14T09:35",
+              "author": "PCP",
+              "body": "S: Follow-up after cardiology. Echo per their letter: LVEF 35% (was 45% in 2015), moderate functional MR. Diagnosis now HFrEF. Since the dialysis unit dropped his target weight he sleeps on one pillow again, no night coughing, and the evening ankle swelling is much less. Still gets winded faster than a few years ago on the hill behind the barn. Weighs himself at every session.\n\nO: Vitals per flowsheet; weight down about 2 kg since September. Fistula thrill and bruit. JVP not elevated. Heart regular. Lungs clear. No edema today.\n\nA/P:\n- HFrEF from anthracycline cardiomyopathy: better with volume control at dialysis. Continue lisinopril 10, furosemide 40, aspirin 81. Cardiology in a year. Told him and his wife to call for a weight jump between sessions, more pillows or swelling.\n- ESRD on HD; BMP and CBC today for our records.\n- Carpal tunnel R: splint, stable.\n- AWV in the spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "annual_physical",
+          "start": "2025-04-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              124,
+              74
+            ],
+            "hr": 65,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 87.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-08T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-08T09:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.32
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 54
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 10
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T09:05",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-04-08T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-08T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2025-04-08T09:15",
+              "author": "PCP",
+              "body": "AWV (last one 2022).\n\nInterval: no ED or hospital. HFrEF diagnosed after his fall echo; stable since target weight lowered. Discharged from sarcoma surveillance last May after 10 clean years.\n\nHRA: independent in everything; still running the herd with help from a neighbor's son on dialysis days. No falls. PHQ-2 1 (a few days of feeling down about slowing up). Sleep okay, one pillow. Wife and he updated their health care proxies last year; ours on file is current. Never smoker, alcohol holidays only.\n\nExam: vitals per flowsheet. Well. Fistula thrill and bruit. Heart regular. Lungs clear. Abdomen soft. Right thigh scar without mass. No edema.\n\nPlan:\n- Labs for our records today.\n- Prevention: colonoscopy due 2027. Flu and COVID each fall. Shingrix, PCV20, Tdap (2019), hep B series done. Will discuss RSV vaccine in the fall.\n- HFrEF, ESRD, anemia, phos, carpal tunnel: as per recent notes, no changes.\nRTC 5 to 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "portal_message",
+          "start": "2025-04-10T17:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-04-10T17:20",
+              "author": "PCP",
+              "body": "Adam, labs from the wellness visit look like your usual dialysis numbers. Blood count is holding steady. Nothing to change. Copy sent to nephrology."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "portal_message",
+          "start": "2025-06-10T07:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2025-06-10T07:45",
+              "author": "patient",
+              "body": "Need refills on the lisinopril and the water pill please, same pharmacy. Thanks, Adam"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2025-06-10T11:30",
+              "author": "MA",
+              "body": "Lisinopril 10 mg and furosemide 40 mg sent to your pharmacy for 90 days with refills. Your next visit is due in September, please call to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "office_visit",
+          "start": "2025-09-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "No-show",
+              "date": "2025-09-16T10:15",
+              "author": "front desk",
+              "body": "Patient did not arrive for 9:00 follow-up. Left voicemail at home number. Wife called back at 2 pm: he's finishing the last hay cut and forgot; will call to reschedule after harvest."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-10-25a",
+          "kind": "ed_visit",
+          "start": "2025-10-25T10:40",
+          "end": "2025-10-25T16:20",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, leg swelling",
+          "conditions": [
+            {
+              "label": "Acute on chronic systolic (congestive) heart failure",
+              "action": "diagnosed",
+              "onset": "2025-08-25",
+              "note": "Acute decompensation; admitted for urgent hemodialysis with ultrafiltration",
+              "icd10": "I50.23"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-25T10:50",
+              "bp": [
+                138,
+                72
+              ],
+              "hr": 102,
+              "rr": 20
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-25T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "date": "2025-10-27T08:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department, date of service 10/25/25 (Saturday). Received by fax.\n\nCC: shortness of breath and leg swelling.\n\nHPI: 58-year-old man with ESRD on hemodialysis three times weekly through a left forearm AV fistula and chemotherapy-related cardiomyopathy. About two months of gradually worsening breathlessness with exertion and swelling of both legs. His wife reports he has been more tired and some nights wakes short of breath. Denies chest pain, cough or fever. No recent infections. No missed sessions or changes in his dialysis schedule.\n\nVitals on arrival: BP 138/72, HR 102, RR 20.\n\nExam: JVP visible at 45 degrees. Soft systolic murmur over the precordium. Bibasilar crackles. Bilateral pitting edema to the knees. Palpable thrill over the left forearm fistula.\n\nImpression: acute decompensated heart failure in a hemodialysis patient.\n\nDisposition: admitted to medicine; nephrology consulted for urgent hemodialysis with ultrafiltration.\n\nAllergies: NKDA. Home medications: calcium acetate, sevelamer, epoetin alfa, lisinopril, furosemide, aspirin 81, multivitamin, acetaminophen as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-29a",
+          "kind": "telephone",
+          "start": "2025-10-29T09:15",
+          "reason": "Wife calls: home from hospital",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-10-29T09:35",
+              "author": "RN",
+              "body": "Wife called. Adam was admitted Saturday from the ED for fluid on the lungs and came home yesterday afternoon (10/28). She doesn't have discharge papers beyond a medication sheet that shows no changes. He's back on his regular dialysis schedule starting today. Breathing \"way better.\" Denies chest pain per her. Booked post-hospital visit Tue 11/4 at 9:00. Asked her to bring whatever paperwork they have and the weight sheet from dialysis. Requested discharge summary from the hospital."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "office_visit",
+          "start": "2025-11-04T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, heart failure",
+          "conditions": [
+            {
+              "label": "Acute on chronic systolic (congestive) heart failure",
+              "action": "resolved",
+              "icd10": "I50.23"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              80
+            ],
+            "hr": 65,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 84.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-04T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.58
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 50
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 9
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-04T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.57
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 83
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-11-04T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-04T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-04T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2025-11-04T09:40"
+            },
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-08T07:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-08T07:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-11-04T09:45",
+              "author": "PCP",
+              "body": "S: Here with wife. ED record from 10/25 received (ADHF; admitted for urgent dialysis with UF). No discharge summary yet despite our request. His account: three dialysis runs in the hospital, \"about 5 kilos\" off, discharged 10/28 with no pill changes and a lower target weight on the dialysis orders. Says it crept up on him over two months and he figured it was the harvest wearing him out (missed his September visit with us). Now breathing near his baseline, one pillow, no night waking. No chest pain. Flu and COVID shots were given at dialysis 10/8.\n\nO: Vitals per flowsheet; weight about 5 kg below his September 2024 visit. Comfortable. JVP not elevated. Fistula thrill and bruit. Heart regular. Lungs clear. Ext: trace ankle edema.\n\nA/P:\n- Acute decompensated HFrEF, resolved after inpatient ultrafiltration. Chronic HFrEF from anthracycline cardiomyopathy, LVEF 35% (11/2024). Meds reconciled with wife's discharge sheet: no changes; lisinopril 10, furosemide 40, aspirin 81. New target weight per nephrology. Cardiology follow-up moved up to January (called their office).\n- Daily weights at home on non-dialysis days, call for gain over 2 kg or more pillows.\n- ESRD on HD; BMP and CBC today.\n- RSV vaccine today (ESRD and HF).\n- Re-request discharge summary.\nRTC 3 months, sooner if needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "outside_records",
+          "start": "2026-01-27T14:10",
+          "reason": "Cardiology follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up Letter",
+              "date": "2026-01-27T14:10",
+              "author": "cardiology",
+              "body": "Dear colleague,\n\nI saw Mr. Upton on 1/20/26 after his October admission for decompensated heart failure.\n\nHe feels well, walks his property at an easy pace, sleeps flat on one pillow and denies orthopnea or nocturnal symptoms. He is meeting his new dialysis target weight.\n\nOn exam today he appears euvolemic.\n\nImpression: HFrEF from anthracycline cardiomyopathy (LVEF 35%, 11/2024), compensated at his current target weight.\nPlan: no medication changes; continue lisinopril 10 mg, furosemide 40 mg and aspirin 81 mg. Follow-up in six months.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "vitals": {
+            "bp": [
+              135,
+              70
+            ],
+            "hr": 65,
+            "rr": 13,
+            "spo2": 98,
+            "weight_kg": 84.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-10T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2026-02-10T09:25",
+              "author": "PCP",
+              "body": "S: Three months post-hospital. Cardiology saw him 1/20, letter received: euvolemic, no changes, back in six months. Hospital discharge summary never came; noted. He's been strict with fluids, weighs himself on off days. Breathing at his usual. Right hand tingles some nights if he skips the splint.\n\nO: Vitals per flowsheet. Well. JVP not elevated. Fistula thrill and bruit. Heart regular. Lungs clear. No edema.\n\nA/P:\n- HFrEF, compensated. Continue current regimen.\n- ESRD on HD, anemia, phos per nephrology.\n- Carpal tunnel R: splint; he still doesn't want surgery.\nAWV in June."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "pharmacy",
+          "start": "2026-04-21T10:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request: lisinopril, furosemide",
+              "date": "2026-04-21T10:05",
+              "author": "MA",
+              "body": "Pharmacy requesting 90-day renewals of lisinopril 10 mg daily and furosemide 40 mg daily. Seen 2/10/26. Routed to PCP.\n\nPCP: Approved, 90 days x 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "annual_physical",
+          "start": "2026-06-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              135,
+              84
+            ],
+            "hr": 80,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 84.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-23T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.33
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 307
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-23T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 6.58
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 55
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.8
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 9
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T09:00",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-06-23T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-23T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2026-06-23T09:15",
+              "author": "PCP",
+              "body": "AWV.\n\nInterval: no ED or hospital since October. Cardiology in July. Dialysis M/W/F through the left forearm fistula, no access problems.\n\nHRA: independent. Works shorter days than he used to. No falls. PHQ-2 0. Wife well. Proxy current. Never smoker, alcohol holidays only.\n\nExam: vitals per flowsheet. Well. JVP not elevated. Heart regular. Lungs clear. Abdomen soft. Right thigh scar without mass. Fistula thrill and bruit. No edema.\n\nPlan:\n- Labs for our records.\n- Prevention: colonoscopy due next year, will order then. Flu/COVID this fall. Other vaccines up to date.\n- HFrEF, ESRD, anemia of CKD, hyperphosphatemia, carpal tunnel R: unchanged.\nRTC September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-25a",
+          "kind": "portal_message",
+          "start": "2026-06-25T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-06-25T16:40",
+              "author": "PCP",
+              "body": "Hi Adam, labs from Tuesday look like your usual: kidney numbers as expected on dialysis, blood count steady, phosphorus close to where nephrology wants it. Nothing to change. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "portal_message",
+          "start": "2026-08-13T20:05",
+          "reason": "Wrist splint",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wrist brace",
+              "date": "2026-08-13T20:05",
+              "author": "patient",
+              "body": "Hi, his right wrist brace finally fell apart (the velcro). Does he need a prescription for a new one or can I just buy one? Same kind of tingling as always, nothing new. Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wrist brace",
+              "date": "2026-08-14T09:10",
+              "author": "RN",
+              "body": "No prescription needed. Any pharmacy wrist splint that holds the wrist straight (neutral) is fine, same as the old one. If the tingling changes or his grip gets weaker, let us know and we can talk about seeing hand surgery. His September visit is on the books."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute on chronic systolic (congestive) heart failure|I50.23": {
+        "code": "I50.23",
+        "display": "Acute on chronic systolic (congestive) heart failure",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Anemia in chronic kidney disease|D63.1": {
+        "code": "D63.1",
+        "display": "Anemia in chronic kidney disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Arteriovenous fistula, acquired|I77.0": {
+        "code": "I77.0",
+        "display": "Arteriovenous fistula, acquired",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cardiomyopathy due to drug and external agent|I42.7": {
+        "code": "I42.7",
+        "display": "Cardiomyopathy due to drug and external agent",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dependence on renal dialysis|Z99.2": {
+        "code": "Z99.2",
+        "display": "Dependence on renal dialysis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyperphosphatemia|E83.39": {
+        "code": "E83.39",
+        "display": "Other disorders of phosphorus metabolism",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Personal history of malignant neoplasm of soft tissue|Z85.831": {
+        "code": "Z85.831",
+        "display": "Personal history of malignant neoplasm of soft tissue",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "calcium acetate 667 MG Oral Capsule": {
+        "code": "359296",
+        "display": "calcium acetate 667 MG Oral Capsule",
+        "ingredient": "calcium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "epoetin alfa 10000 UNT/ML Injectable Solution": {
+        "code": "240000",
+        "display": "epoetin alfa 10000 UNT/ML Injectable Solution",
+        "ingredient": "epoetin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "sevelamer carbonate 800 MG Oral Tablet": {
+        "code": "749206",
+        "display": "sevelamer carbonate 800 MG Oral Tablet",
+        "ingredient": "sevelamer",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "rejected": [
+      "drug \"multivitamin Oral Tablet\"",
+      "drug \"iron sucrose 20 MG/ML Injectable Solution\""
+    ]
+  }
+}

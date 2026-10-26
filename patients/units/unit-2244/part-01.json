@@ -1,0 +1,611 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002244",
+      "given": "Dennis",
+      "family": "Rousseau",
+      "birth_date": "1957-03-02",
+      "address_line": "212 Pontoosic Road",
+      "phone": "+1-646-555-0116",
+      "email": "dennis.rousseau@example.test",
+      "marital_status": "married",
+      "summary": "Retired accountant with treated hypertension and hyperlipidemia who joined in 2022. A right frontal ischemic stroke in May 2025 was followed by a diagnosis of vascular dementia that November and a small right cerebellar stroke in June 2026.",
+      "events": [
+        {
+          "id": "2022-08-29a",
+          "kind": "telephone",
+          "start": "2022-08-29T11:05",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "author": "front desk",
+              "date": "2022-08-29T11:05",
+              "body": "Mr. Rousseau called about becoming a patient. 65, on Medicare, lives here in Westfield and wants a doctor closer to home. Reviewed membership and how the practice works; he'd like to go ahead. New patient appt booked Mon 9/12 at 9:00. Records release sent through the portal, he signed it same afternoon. Request faxed to his prior primary care office for last 5 yrs incl. colonoscopy and vaccines. Asked him to bring all pill bottles to the first visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "establish_care",
+          "start": "2022-09-12T09:00",
+          "end": "2022-09-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "note": "35 pack-years, quit 2017"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              82
+            ],
+            "weight_kg": 84.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Low Density Lipoprotein": 84
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-12T09:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-12T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-12T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-12T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4,
+                  "unit": "%"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired accountant"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-09-12T09:55"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-09-12T09:56"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-12T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-12T09:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "35 pack-year former smoker, quit 2017"
+            },
+            {
+              "id": "aaa-us-2022",
+              "action": "placed",
+              "order": "Abdominal aortic ultrasound, screening",
+              "category": "imaging",
+              "reason": "Male former smoker age 65"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-12T10:00",
+              "body": "NEW PATIENT\n\n65M, retired accountant, here to set up primary care. Comes alone, brought his bottles.\n\nBlood pressure has been treated for years on lisinopril 20 mg; he checks it at the pharmacy kiosk now and then and says it's usually in the 130s. On atorvastatin 40 mg for cholesterol, no muscle aches. Takes both in the morning and rarely misses. No chest pain, no breathlessness on the stairs, no leg swelling. No headaches, no vision change. Never had a stroke or a TIA that he knows of.\n\nPMH: hypertension, hyperlipidemia.\nPSH: cataract surgery 2021, done at an eye practice; vision fine since.\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily.\nAllergies: none to medications.\nFH: father had an ischemic stroke at 74. Mother with high blood pressure. Brother has coronary disease.\nSH: married, lives with his wife. Retired from accounting. Smoked about 35 pack-years and stopped in 2017, no relapse. A drink once or twice a month. Walks the neighborhood most mornings.\n\nExam: Well-appearing, organized historian. BP 134/82. Clear lungs, regular rhythm without murmur. No carotid bruits. Abdomen benign, no pulsatile mass. Legs without swelling, pedal pulses present. Gait normal.\n\nA/P\n1. Essential hypertension: close to goal on lisinopril 20. Continue. BMP today.\n2. Hyperlipidemia: atorvastatin 40, fasting lipid panel today.\n3. Former heavy smoker: meets criteria for yearly low-dose CT; ordered. One-time aortic ultrasound ordered as well.\n4. Health maintenance: hep C screen today. Colonoscopy per his account about 4 yrs ago and normal, will confirm from records. High-dose flu and PCV20 given today. PHQ-2 0.\n\nFollow up in 6 months, sooner as needed."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              82
+            ]
+          }
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T08:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs from Monday",
+              "author": "PCP",
+              "date": "2022-09-14T08:40",
+              "body": "Hi Dennis, good to meet you on Monday. Your bloodwork came back fine. Kidney function, potassium, liver tests and blood counts are normal. The LDL cholesterol is where we want it on the atorvastatin, and your A1c shows no sign of diabetes. The hepatitis C screen was negative. No changes. The CT and the aorta ultrasound orders are in, and scheduling will call you."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "outside_records",
+          "start": "2022-09-26T14:20",
+          "reason": "Prior practice records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Practice",
+              "author": "MA",
+              "date": "2022-09-26T14:20",
+              "body": "Records received by fax from prior PCP office, 41 pages, scanned to media. Summary for the chart:\n- Problem list: hypertension, hyperlipidemia.\n- Meds: lisinopril 20 mg daily, atorvastatin 40 mg daily. No drug allergies listed.\n- Colonoscopy 2018, screening, normal; repeat in 10 years.\n- Cataract surgery 2021 by an outside ophthalmologist, op note not included.\n- COVID-19 primary series 2021 per their immunization record; flu shots yearly.\n- Smoking history documented, quit 2017.\nRouted to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "imaging",
+          "start": "2022-10-18T08:30",
+          "reason": "Lung cancer screening and aortic screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-10-18T08:30",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Baseline exam. Indication: 65-year-old former smoker, 35 pack-years, quit 2017. Technique: helical low-dose acquisition without contrast. Findings: No pulmonary nodules. Airways patent. No consolidation, effusion or pneumothorax. Heart size normal, no pericardial effusion. No enlarged mediastinal or hilar nodes. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            },
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2022-10-18T09:15",
+              "text": "ULTRASOUND, ABDOMINAL AORTA, SCREENING. Indication: male former smoker, age 65. The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximum outer-to-outer diameter 2.1 cm in the infrarenal segment. No focal dilation or aneurysm. Common iliac arteries normal in caliber.",
+              "conclusion": "Normal caliber abdominal aorta, 2.1 cm. No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "done",
+              "date": "2022-10-18T08:30"
+            },
+            {
+              "id": "aaa-us-2022",
+              "action": "done",
+              "date": "2022-10-18T09:15"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "portal_message",
+          "start": "2022-10-20T12:10",
+          "reason": "Imaging results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT and ultrasound results",
+              "author": "PCP",
+              "date": "2022-10-20T12:10",
+              "body": "Dennis, both studies were normal. The lung screening CT showed no nodules, so we repeat it once a year. The aorta measured normal size with no aneurysm, and that one does not need repeating. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "office_visit",
+          "start": "2023-03-14T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and cholesterol follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-14T10:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-14T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: Hypertension, Hyperlipidemia",
+              "author": "PCP",
+              "date": "2023-03-14T10:55",
+              "body": "6-month check. Feels well. Has been doing the indoor track at the Y over the winter. Taking lisinopril and atorvastatin every morning, no cough, no dizziness standing, no muscle pain. No chest discomfort or palpitations.\n\nBP as recorded, at goal. Weight steady.\nHeart regular, lungs clear, ankles without swelling.\n\nHTN: controlled on lisinopril 20 mg. BMP for K and creatinine.\nHLD: continue atorvastatin 40 mg; lipids at the wellness visit in the fall.\nShingrix discussed, he'd like to start, nurse visit next month.\nRTC September for wellness visit."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP result",
+              "author": "PCP",
+              "date": "2023-03-15T08:20",
+              "body": "Potassium and creatinine normal on lisinopril. Portal note sent: no changes."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "nurse_visit",
+          "start": "2023-04-11T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 1",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-04-11T13:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-04-11T13:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization: Shingrix #1",
+              "author": "RN",
+              "date": "2023-04-11T13:45",
+              "body": "Shingrix dose 1 of 2, 0.5 mL IM left deltoid. No allergies, feeling well today. Told him to expect a sore arm and maybe a day of feeling run down. Dose 2 due in 2 to 6 months; booked for mid-June. Tolerated without problem."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "nurse_visit",
+          "start": "2023-06-13T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-06-13T13:34"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-06-13T13:34"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization: Shingrix #2",
+              "author": "RN",
+              "date": "2023-06-13T13:42",
+              "body": "Second Shingrix, 0.5 mL IM right deltoid. Says the first one made his arm ache for two days, nothing more. Series now complete, updated in the immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "pharmacy",
+          "start": "2023-07-18T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "90-day Refills",
+              "author": "MA",
+              "date": "2023-07-18T09:15",
+              "body": "Pharmacy fax requesting 90-day supplies of lisinopril 20 mg and atorvastatin 40 mg, 3 refills each. Last BMP March normal. Pended to PCP. Approved and sent 7/18 by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T09:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-19T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5,
+                  "unit": "%"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-09-19T09:25"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2023-09-19T09:26"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-19T09:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2023-09-19T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-19T09:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual screening, former smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2023-09-19T09:40",
+              "body": "MEDICARE AWV (initial)\n\nDennis is 66 and doing well. Still walking most days, did a fair amount of yard work this summer. No falls in the past year. Independent with all daily tasks and his own finances; still does the household taxes. Hearing and vision fine since the cataract operation. Sleeps 7 hours.\n\nMeds reviewed: lisinopril 20 mg, atorvastatin 40 mg. No allergies.\nPHQ-9 1. No concerns about memory raised by him or noted today.\nTobacco: none since 2017. Alcohol: a drink a month or so.\n\nExam: BP at goal. Clear lungs, regular heart, no bruits. Normal gait, gets up from the chair without using his hands.\n\nPlan\n- HTN, HLD: unchanged regimen. Lipids, CMP, A1c drawn.\n- Lung screening: annual LDCT reordered.\n- Vaccines today: high-dose flu, Tdap (no record of one in the last 10 yrs), updated COVID.\n- Colonoscopy 2018 normal, next 2028.\n- Advance directive: has a health care proxy naming his wife; asked him to bring a copy.\n- Next: 6-month BP visit in March."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your wellness visit labs",
+              "author": "PCP",
+              "date": "2023-09-20T12:45",
+              "body": "Dennis, cholesterol, kidney and liver tests and A1c all look good. LDL is in range on atorvastatin 40. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "imaging",
+          "start": "2023-10-10T08:15",
+          "reason": "Annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-10T08:15",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Comparison 10/2022. Technique: low-dose helical CT without contrast. Findings: No pulmonary nodules. No airspace disease. No pleural effusion. Normal heart size. No mediastinal adenopathy. Osseous structures unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-10-10T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "author": "PCP",
+              "date": "2023-10-11T07:50",
+              "body": "Screening CT again clear, Lung-RADS 1. Released to portal with a note to the patient. Repeat next fall."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,851 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001685",
+      "given": "Leah",
+      "family": "Martel",
+      "birth_date": "1990-06-17",
+      "address_line": "218 Shays Street",
+      "phone": "+1-518-555-0181",
+      "email": "leah.martel@example.test",
+      "marital_status": "married",
+      "summary": "High school math teacher in Amherst with migraine, depression on sertraline and later restless legs syndrome, who joins in 2022 while planning a pregnancy. Four pregnancies follow: a term birth, a loss after a fetal spina bifida diagnosis, a left tubal ectopic, and a term birth complicated by cervical insufficiency, pyelonephritis and maternal varicella at delivery. Somatic symptom disorder is diagnosed during the first pregnancy.",
+      "events": [
+        {
+          "id": "2022-08-24a",
+          "kind": "establish_care",
+          "start": "2022-08-24T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Migraine without aura",
+              "action": "history",
+              "onset": "2012-06-01",
+              "note": "Since early twenties"
+            },
+            {
+              "label": "Major depressive disorder",
+              "icd10": "F32.9",
+              "action": "history",
+              "onset": "2019-03-01",
+              "note": "On sertraline, outside psychiatry"
+            },
+            {
+              "label": "History of pelvic inflammatory disease",
+              "icd10": "Z87.42",
+              "action": "history",
+              "onset": "2022-03-01",
+              "note": "Treated as outpatient at prior care"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            },
+            {
+              "drug": "sumatriptan 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at headache onset; may repeat once after 2 hours if needed",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Migraine"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1-2 tablets by mouth every 6 hours as needed for headache",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Headache"
+            },
+            {
+              "drug_text": "prenatal vitamin with folic acid Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Planning pregnancy"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "height_cm": 166.0,
+            "labs": {
+              "Hematocrit": 37.5,
+              "Total Cholesterol": 168,
+              "Low Density Lipoprotein": 84,
+              "Thyroid Stimulating Hormone": 1.84
+            },
+            "bp": [
+              112,
+              72
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-24T10:25",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-24T10:25",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-24T10:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-24T10:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-24T10:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "No alcohol use"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-08-24T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "procedure",
+              "reason": "Establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-08-24T10:20",
+              "body": "Leah is a 32 y/o high school math teacher here to establish care. Moved her care over from a practice she'd been with since college; wanted something where she can actually reach a doctor. Records release signed today.\n\nWhat she brings:\n- Migraine without aura since her early 20s. Throbbing, one-sided or both, nausea and light sensitivity with the bad ones. Uses sumatriptan 50 mg at onset, sometimes a second dose 2 h later. Tylenol for the milder ones, doesn't do much. Estimates 2-3 a month right now. Mother has migraines too.\n- Depression, followed by an outside psychiatrist since ~2019, stable on sertraline 50 mg daily. Sees psychiatry a few times a year. No SI. PHQ-9 today 4.\n- Treated for PID this past March at her old practice, outpatient antibiotics, no admission. Asymptomatic since.\n\nMeds: sertraline 50 daily, sumatriptan 50 prn, acetaminophen prn.\nAllergies: NKDA.\nSurg hx: none. OB: G0.\nFHx: mother migraines; father 'jumpy legs at night,' told it's restless legs; paternal grandmother with major depression.\nSH: married. Teaches algebra and precalc at the regional high school. Never smoked, doesn't drink, no drugs.\n\nShe and her husband are hoping to try for a pregnancy sometime in the next year. Talked about starting a prenatal vitamin with folic acid now rather than waiting, and about checking in with us and OB once she's pregnant re: sertraline and sumatriptan.\n\nROS otherwise negative.\n\nExam: vitals as charted. Pleasant, well appearing. HEENT unremarkable, TMs clear. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Neuro nonfocal. Mood good, affect bright.\n\nA/P\n1. Establish care. Screening labs today: CBC, CMP, lipids, TSH, one-time HIV and hep C.\n2. Migraine without aura, episodic. Continue sumatriptan prn.\n3. MDD, stable. Continue sertraline 50, keep psychiatry follow-up.\n4. Hx PID, treated. Will review old records.\n5. Preconception: start prenatal vitamin with folic acid daily.\n6. Pap with HPV last year per patient; will confirm from records. Flu shot when available this fall.\nRTC 1 year or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-26a",
+          "kind": "portal_message",
+          "start": "2022-08-26T16:12",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-08-26T16:12",
+              "body": "Hi Leah, all of your blood work from Wednesday looks normal: blood counts, kidney and liver function, thyroid, and cholesterol. HIV and hepatitis C screens were negative, and those don't need repeating unless something changes. Nice to meet you this week. Let me know once the records from your old office land if you have questions about anything in them."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "outside_records",
+          "start": "2022-09-08T11:05",
+          "reason": "Prior primary care records received",
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2022-09-08T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records Summary",
+              "author": "front desk",
+              "date": "2022-09-08T11:05",
+              "body": "42 pages received by fax from patient's prior primary care office, scanned to Media. Abstracted for PCP:\n\n- Office visit 03/2022: lower abdominal pain and cervical motion tenderness, treated for pelvic inflammatory disease as an outpatient. Recheck visit 2 weeks later documents resolution.\n- Cervical cytology with HPV co-testing 2021: NILM, high-risk HPV not detected.\n- Immunizations: HPV series completed as a teenager. Tdap 2016. COVID primary series 2021.\n- Problem list on their side: migraine, depression.\n- Med list: sertraline 50 mg daily, sumatriptan 50 mg prn.\n- Allergies: NKDA."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records Review",
+              "author": "PCP",
+              "date": "2022-09-09T07:50",
+              "body": "Reviewed prior records. PID 3/2022 treated outpatient, documented resolution. Pap/HPV co-test 2021 negative, next due 2026. Nothing that changes the plan."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-14a",
+          "kind": "nurse_visit",
+          "start": "2022-10-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-14T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-01T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-14T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2022-10-14T15:30",
+              "body": "In after school for flu vaccine. Screening questions negative, no prior reactions. Quadrivalent flu 0.5 mL IM R deltoid, tolerated well. VIS given. Pt reports bivalent COVID booster at a pharmacy 10/1; entered as historical."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "office_visit",
+          "start": "2022-12-07T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg discomfort at night, trouble sleeping",
+          "state": {
+            "labs": {
+              "Ferritin": 16
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-07T16:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-07T16:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-12-07T16:40",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 16
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-12-07T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Evening leg discomfort with urge to move, sleep disruption"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-12-07T16:35",
+              "body": "S: A couple of months of an awful creepy-crawly feeling in both legs in the evening, worse once she's lying down. Has to get up and walk around or stretch, which helps until she lies back down. Falling asleep has turned into an hour-long project and she's tired at school. No back pain, no weakness, no numbness, no bladder problems. Her dad has something similar. No new meds.\n\nO: Vitals as charted. Well appearing, a little tired. Lower extremities: normal bulk and strength, reflexes 2+ and symmetric, sensation intact to light touch, pulses normal, no edema or varicosities.\n\nA/P: Evening leg discomfort with urge to move, relieved by movement, family history in father. Sounds like restless legs. Checking CBC, BMP and ferritin today. Would like neurology to see her and weigh in on treatment, especially since she's thinking about pregnancy next year. Referral placed. Sleep hygiene, avoid late caffeine."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-09a",
+          "kind": "portal_message",
+          "start": "2022-12-09T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from Wednesday",
+              "author": "PCP",
+              "date": "2022-12-09T12:30",
+              "body": "Leah, your blood counts and kidney tests are normal. Your ferritin (iron stores) came back at the very bottom of the normal range. It's technically normal, but iron levels matter in restless legs, so I've sent these results along with the referral so neurology has them for your visit. Neurology's office should call you to schedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results from Wednesday",
+              "author": "patient",
+              "date": "2022-12-09T19:02",
+              "body": "Thanks! They called already, I'm in on January 20th. Pretty much counting the days at this point lol"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "telephone",
+          "start": "2023-01-09T10:25",
+          "reason": "Records request from neurology",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "author": "front desk",
+              "date": "2023-01-09T10:30",
+              "body": "Neurology office called ahead of pt's 1/20 consult asking for the 12/7 office note and labs. Faxed referral, note, CBC, BMP and iron studies. Confirmation received."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-20a",
+          "kind": "specialist_visit",
+          "start": "2023-01-20T10:30",
+          "service": "Neurology",
+          "reason": "Restless legs evaluation",
+          "conditions": [
+            {
+              "label": "Restless legs syndrome",
+              "action": "diagnosed",
+              "onset": "2022-10-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "pramipexole dihydrochloride 0.125 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth nightly, 2 hours before bed",
+              "dose": {
+                "value": 0.125,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Restless legs syndrome"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2023-01-20T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "author": "neurology",
+              "date": "2023-01-26T09:14",
+              "body": "Outpatient Neurology Consultation\nDate of service: 01/20/2023\nReferred by: primary care\n\nDear colleague,\n\nI saw Ms. Martel, a 32-year-old teacher, for uncomfortable sensations in both legs that keep her awake. She describes a strong, hard-to-resist need to move the legs that arrives in the evening and whenever she lies down; walking or stretching relieves it for a while. She has no back pain, no leg weakness and no urinary incontinence.\n\nHistory: migraine without aura, major depressive disorder on sertraline, prior pelvic inflammatory disease. Medications: sertraline 50 mg daily, sumatriptan 50 mg as needed, and a prenatal vitamin with folic acid daily. Allergies: none known. Family history notable for restless legs in her father and migraine in her mother. She does not smoke, drink or use drugs.\n\nExamination: vital signs normal. Mental status, cranial nerves, motor, reflexes, sensation, coordination and gait are all normal. No signs of neuropathy or radiculopathy.\n\nData: your labs from 12/07/2022 show a normal CBC, normal electrolytes and renal function, and a ferritin at the lower limit of normal.\n\nImpression: Restless legs syndrome, primary, with a family history. Exam is normal.\n\nPlan: Start pramipexole 0.125 mg nightly, taken about two hours before bed. Counseled on nausea and sleepiness, and on augmentation over time. She is planning a pregnancy; she should let her obstetrician know she is on this. Follow up with us as needed; happy to see her again if symptoms escalate.\n\nAllergies: NKDA.\n\nOutpatient Neurology"
+            }
+          ]
+        },
+        {
+          "id": "2023-02-13a",
+          "kind": "portal_message",
+          "start": "2023-02-13T20:41",
+          "reason": "Medication update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leg update",
+              "author": "patient",
+              "date": "2023-02-13T20:41",
+              "body": "Just wanted to let you know the pramipexole is working. I'm actually falling asleep at a normal time. Little queasy the first week but that's gone. Can you do the refills on it going forward or does that have to be neurology?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leg update",
+              "author": "PCP",
+              "date": "2023-02-14T08:05",
+              "body": "So glad to hear it. Yes, we can handle refills from here. Just send a request when you're getting low."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "pharmacy",
+          "start": "2023-03-22T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2023-03-22T09:15",
+              "body": "Electronic refill request from pharmacy: sertraline 50 mg tab, #90. Last seen 12/2022. Pended for PCP. -- Approved by PCP, 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-19a",
+          "kind": "portal_message",
+          "start": "2023-06-19T07:02",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "icd10": "Z33.1",
+              "action": "diagnosed",
+              "onset": "2023-05-22",
+              "note": "LMP 2023-05-22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "author": "patient",
+              "date": "2023-06-19T07:02",
+              "body": "Good morning! Positive home test this weekend. First day of my last period was May 22. I called the OB office and they're seeing me in a few weeks. Should I be doing anything different with my meds in the meantime? I'm still on the sertraline, the pramipexole, the prenatal, and I've had a couple of migraines."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "author": "PCP",
+              "date": "2023-06-19T12:48",
+              "body": "Congratulations, Leah! Keep taking the sertraline and the prenatal vitamin; stopping an antidepressant abruptly in early pregnancy usually causes more problems than it solves. Please bring the pramipexole and sumatriptan up at your first OB visit so they can weigh in. Tylenol is fine for headaches in the meantime. If the migraines are getting worse, let's get you in here."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-31a",
+          "kind": "office_visit",
+          "start": "2023-07-31T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Migraines worsening, currently pregnant",
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ]
+          },
+          "state": {
+            "weight_kg": 65.5
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-31T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-07-31T11:02",
+              "body": "Chief complaint: headaches.\n\nHPI: 33 y/o G1 at 10 weeks by LMP (5/22), here about her migraines. Over the last six months they've been coming about 6 times a month, severe, throbbing, with nausea and light sensitivity, and most of them put her in bed for the afternoon. Migraines since her early 20s but they've been climbing in frequency and severity over the past year. Acetaminophen barely touches them. She's been reluctant to use sumatriptan since the positive test. She's on summer break, which is the only reason she hasn't missed school days. Main questions: is there anything safe she can take daily in pregnancy to prevent them, and how she's going to manage this with a newborn. First OB visit was last week, dating ultrasound fine per patient.\n\nNo aura, no thunderclap onset, no change in character, no fevers, no visual loss, no weakness. Mood okay; PHQ-9 5. RLS controlled on pramipexole.\n\nMeds: sertraline 50 daily, pramipexole 0.125 qhs, prenatal vitamin daily, sumatriptan 50 prn, acetaminophen prn.\nAllergies: NKDA.\n\nExam: BP 120/78, other vitals as charted. Well appearing. Fundi with sharp discs. Neck supple. Heart and lungs normal. Neuro: CN II-XII intact, strength, reflexes, sensation, coordination and gait normal.\n\nA/P:\nMigraine without aura, worsening frequency, now in first trimester. Normal neuro exam, no red flags, so no imaging. Long talk about the options for prevention in pregnancy and what's known about each. She'd like to hold off on a daily medicine for now and see how the second trimester goes, which is reasonable.\n- Sumatriptan remains her rescue med; it's what we'd choose in pregnancy if acetaminophen fails. Okay to use at onset, max 2 doses in 24 h.\n- Acetaminophen 1000 mg at onset is fine to try first.\n- Regular sleep, meals and hydration; headache diary.\n- Message to OB re: plan and her question about pramipexole in pregnancy.\nCall if headaches change in character, any visual symptoms, or BP readings at OB are up. Recheck after the diary is a month in."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "telephone",
+          "start": "2023-08-14T13:40",
+          "reason": "Medication refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Call",
+              "author": "RN",
+              "date": "2023-08-14T13:45",
+              "body": "Pt called requesting sumatriptan refill, down to 2 tabs. Keeping the headache diary as asked and will bring it to her physical in September. Refill pended to PCP. -- Sent, #9 with 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-02a",
+          "kind": "ed_visit",
+          "start": "2023-09-02T14:10",
+          "end": "2023-09-02T19:45",
+          "service": "Emergency Medicine",
+          "reason": "Abdominal pain in pregnancy",
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Visit Summary",
+              "author": "emergency medicine",
+              "date": "2023-09-06T10:22",
+              "body": "EMERGENCY DEPARTMENT RECORD\nDate of visit: 09/02/2023\n\nChief complaint: abdominal pain.\n\n33 y/o G1P0 at about 14-15 weeks with roughly 3-4 weeks of a constant, dull, diffuse abdominal ache that does not radiate and is not related to meals or activity. Came in today because it has not let up. No fever, vomiting, diarrhea, urinary symptoms, vaginal bleeding or fluid.\n\nPMH: migraine, depression, restless legs. Meds: sertraline, pramipexole, prenatal vitamin, sumatriptan prn. Allergies: NKDA.\n\nExam: afebrile, vital signs normal. Abdomen soft, nondistended, no tenderness, no rebound or guarding. Fetal heart tones present by Doppler.\n\nWork-up: CBC, metabolic panel, lipase and urinalysis unremarkable. Bedside ultrasound: single live intrauterine pregnancy.\n\nAssessment: abdominal pain in pregnancy, no acute process identified.\n\nDisposition: home. Follow up with her obstetrician and primary care. Return for worsening pain, fever, bleeding or vomiting."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-13a",
+          "kind": "annual_physical",
+          "start": "2023-09-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-13T16:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-13T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-13T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-13T16:25",
+              "body": "Annual exam. 33 y/o G1 at 16w2d.\n\nInterval: seen in ED 9/2 for a dull, steady belly ache that started in August; workup there was unremarkable and she went home. Still has it most days, she rates it a 3-4, just there all the time. No pattern with food. Sleeping okay on the pramipexole. Headache diary: 5 migraines in the last 4 weeks, used sumatriptan for 3. She's been back at school two weeks.\n\nPrenatal care with OB, going fine per patient. Sertraline continued.\n\nPreventive: Pap/HPV due 2026. Flu shot today, safe in pregnancy, she wants it. Updated COVID shot once it's out, at the pharmacy. Tdap will come from OB in the third trimester. Seatbelt yes. Feels safe at home.\n\nExam: vitals as charted. Well appearing. HEENT normal. Thyroid normal. Heart RRR, no murmur. Lungs clear. Breasts deferred to OB. Abdomen soft, gravid, nontender, no masses. Skin normal. Neuro normal. Mood euthymic.\n\nA/P:\n1. Health maintenance as above; flu vaccine given.\n2. Migraine, frequent but stable since July. Continue rescue plan, no daily preventive for now per her preference.\n3. Abdominal pain in pregnancy, ED workup negative. Exam benign today. If it persists, will image and get GI's opinion. She knows to go to OB triage for anything acute.\n4. MDD, PHQ-9 5, stable.\n5. RLS controlled."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "office_visit",
+          "start": "2023-10-11T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Ongoing abdominal pain",
+          "state": {
+            "weight_kg": 70.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-11T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "abd-us-2023",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "Persistent diffuse abdominal pain in pregnancy"
+            },
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Persistent diffuse abdominal pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-10-11T17:05",
+              "body": "Follow-up abdominal pain. Now 20w2d.\n\nPain has been constant since early August: dull, all over the belly, doesn't travel anywhere, not worse with eating or moving, nothing makes it go away. No fever, weight loss beyond expected pregnancy gain, vomiting, bowel change, blood, urinary symptoms or bleeding. OB has looked at it and told her the pregnancy looks fine. She's missed three school days in the last month because of it and is worried something is being missed. Says she lies awake thinking about it. GAD-7 8, PHQ-9 7.\n\nExam: vitals as charted. Comfortable at rest. Abdomen soft, gravid, fundus at about the umbilicus, no focal tenderness, no rebound or guarding, no CVA tenderness, no hepatosplenomegaly appreciated. \n\nA/P: Chronic diffuse abdominal pain in pregnancy, present for about 10 weeks, benign exam, unremarkable ED labs.\n- Abdominal ultrasound (liver, gallbladder, pancreas, kidneys).\n- GI referral for a second opinion.\n- Acknowledged how unsettling this is. Encouraged her to bring this up with her psychiatrist as well, since the worry is eating into sleep. She's agreeable.\n- Continue sertraline 50."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "imaging",
+          "start": "2023-10-16T08:30",
+          "reason": "Abdominal pain in pregnancy",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-10-16T08:30",
+              "text": "Indication: persistent diffuse abdominal pain, pregnant at about 21 weeks.\nTechnique: grayscale and color Doppler sonography of the abdomen.\nFindings: Liver normal in size and echotexture without focal lesion. Gallbladder without stones, wall thickening or pericholecystic fluid. No biliary dilatation; common bile duct 3 mm. Pancreas visualized portions unremarkable. Spleen normal in size. Right kidney 11.0 cm and left kidney 11.3 cm, without hydronephrosis, stones or masses. No ascites. Gravid uterus noted, not evaluated on this exam.",
+              "conclusion": "Normal abdominal ultrasound."
+            }
+          ],
+          "orders": [
+            {
+              "id": "abd-us-2023",
+              "action": "done",
+              "date": "2023-10-16T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ultrasound result",
+              "author": "PCP",
+              "date": "2023-10-16T17:20",
+              "body": "Hi Leah, your ultrasound this morning was completely normal: liver, gallbladder, pancreas, spleen and kidneys all look healthy. That's reassuring. GI will still see you so we get a specialist's take."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-02a",
+          "kind": "portal_message",
+          "start": "2023-11-02T21:30",
+          "reason": "Referral question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI appointment",
+              "author": "patient",
+              "date": "2023-11-02T21:30",
+              "body": "The GI office says their first opening is December 13. Is that okay to wait for or should I be pushing for something sooner? The ache is the same, not worse."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI appointment",
+              "author": "PCP",
+              "date": "2023-11-03T07:45",
+              "body": "December 13 is fine given your normal ultrasound and labs, and since nothing has changed. I'll ask them to put you on their cancellation list. If the pain changes, gets sharper, or comes with fever, vomiting, bleeding or contractions, go to OB triage right away rather than waiting."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "ed_visit",
+          "start": "2023-11-20T21:05",
+          "end": "2023-11-21T01:30",
+          "service": "Emergency Medicine",
+          "reason": "Abdominal pain in pregnancy",
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Visit Summary",
+              "author": "emergency medicine",
+              "date": "2023-11-24T14:00",
+              "body": "EMERGENCY DEPARTMENT RECORD\nDate of visit: 11/20/2023\n\nCC: abdominal pain.\n\n33 y/o G1P0 at 26 weeks with a dull, diffuse, constant abdominal ache since August, seen here 9/2 with a negative workup; normal outpatient ultrasound in October. Came in tonight because the pain kept her up and she was scared. No contractions, bleeding, leakage of fluid, fever or urinary symptoms; active fetal movement.\n\nAllergies: NKDA. Meds: sertraline, pramipexole, prenatal vitamin, sumatriptan prn.\n\nExam: vital signs normal. Abdomen gravid, soft, nontender, fundal height appropriate. No CVA tenderness. OB evaluated in the department: fetal heart rate tracing reactive, no contractions on monitoring, cervix closed.\n\nLabs: CBC, CMP, lipase and urinalysis within normal limits.\n\nImpression: chronic abdominal pain in pregnancy, no acute obstetric or surgical cause.\n\nPlan: discharged home, keep the GI appointment in December, PCP and OB follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "specialist_visit",
+          "start": "2023-12-13T13:00",
+          "service": "Gastroenterology",
+          "reason": "Chronic abdominal pain",
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2023-12-13T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2023-12-19T10:40",
+              "body": "Gastroenterology Office Consultation\nDate of service: 12/13/2023\n\nThank you for referring Leah Martel, 33, now 29 weeks pregnant, for diffuse abdominal pain since August 2023.\n\nThe pain is steady and dull across the whole abdomen, does not radiate, and has no relationship to eating, bowel movements or position. No dysphagia, heartburn out of proportion to pregnancy, vomiting, bleeding, diarrhea, constipation change or weight loss. Two ED evaluations (September and November) with normal labs; normal abdominal ultrasound in October.\n\nMeds: sertraline 50 mg, pramipexole 0.125 mg, prenatal vitamin, sumatriptan as needed. NKDA.\n\nExam: well appearing. Abdomen gravid, soft, nontender throughout, no masses palpable, normal bowel sounds. Carnett sign negative.\n\nImpression: chronic diffuse abdominal pain without alarm features, normal labs and imaging. I don't find a structural GI cause. Endoscopy in pregnancy is reserved for strong indications and there is none here; I would not pursue it.\n\nRecommendations: reassurance; no further GI testing now. Happy to see her again postpartum if the pain persists or new features appear. Agree with involving her psychiatrist given the distress this is causing.\n\nGastroenterology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

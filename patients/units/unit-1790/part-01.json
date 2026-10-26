@@ -1,0 +1,415 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001790",
+      "given": "Gretchen",
+      "family": "Kelleher",
+      "birth_date": "1990-05-22",
+      "address_line": "77 Linden Street, Apt 3",
+      "phone": "+1-413-555-0178",
+      "email": "gretchen.kelleher@example.test",
+      "marital_status": "single",
+      "summary": "Graphic designer with childhood-onset generalized epilepsy on phenytoin, HIV (stage 3, 2016) on Biktarvy and recurrent severe depression who joins in 2018; central DI is diagnosed in 2019 and a folate-deficiency anemia recurs. Later a pregnancy with DI exacerbation, a seizure-related fall with TBI after stopping medicines (2023), cerebral toxoplasmosis at CD4 50 (2024), and a suicide attempt plan with psychotic depression (2026).",
+      "events": [
+        {
+          "id": "2018-04-17a",
+          "kind": "establish_care",
+          "start": "2018-04-17T09:20",
+          "end": "2018-04-17T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish primary care",
+          "conditions": [
+            {"label": "Epilepsy", "action": "history", "onset": "1998-01-01", "note": "Childhood-onset generalized seizure disorder; on phenytoin since about 2015; last seizure spring 2017"},
+            {"label": "Human immunodeficiency virus disease", "action": "history", "onset": "2016-03-01", "note": "Diagnosed 2016, CDC stage 3; followed by outside ID clinic"},
+            {"label": "Major depressive disorder, recurrent, severe without psychotic features", "icd10": "F33.2", "action": "history", "onset": "2012-01-01"},
+            {"label": "Drug-induced folate deficiency anemia", "icd10": "D52.1", "action": "history", "onset": "2016-11-01", "note": "After methotrexate given for ectopic pregnancy in 2016"}
+          ],
+          "medications": [
+            {"drug_text": "phenytoin sodium 100 MG Extended Release Oral Capsule", "action": "historical", "sig": "Take 3 capsules (300 mg) by mouth at bedtime", "dose": {"value": 300, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Epilepsy"},
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV"},
+            {"drug": "sertraline 100 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "History of folate deficiency"},
+            {"drug_text": "Prenatal Vitamins Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"},
+            {"substance": "Latex", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 64.0, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.8}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-04-17T10:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-04-17T10:30", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2018-04-17T10:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2018-04-17T10:30", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2018-04-17T10:30", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2018-04-17T10:30", "results": [{"test": "Hepatitis B Surface Antigen", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2018-04-17T10:30", "results": [{"test": "Hepatitis B Surface Antibody", "text": "Negative (non-immune)"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 8}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social use"},
+            {"item": "Occupation", "value": "Graphic designer"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, high MDM", "performed": "2018-04-17T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2018-04-17T10:20", "body": "NEW PATIENT — establishing care\n\n27 yo woman, graphic designer, lives in Holyoke with a roommate. Leaving her prior primary care office; wants one place that can coordinate her specialists.\n\nHPI / PMH as she tells it:\n1. Epilepsy since childhood, generalized seizures. Phenytoin 300 mg at bedtime for roughly three years now, before that other meds she can't name. Last seizure was in the spring of last year. Sees an outside neurology group about once a year.\n2. HIV, diagnosed 2016. She says her count was very low when it was found (\"stage 3\"). Followed by an ID clinic, which moved her to Biktarvy earlier this spring; she does not remember the name of the earlier combination. Says she is taking it.\n3. Depression, recurrent, with two bad episodes in her early twenties. Sertraline 100 mg has kept her steady. No psychiatrist currently; no hospitalizations. Denies SI today.\n4. Folate deficiency after methotrexate in 2016 — she was given methotrexate for an ectopic pregnancy, which then ruptured and she ended up with a laparoscopic salpingectomy. Has taken folic acid 1 mg daily since, plus a prenatal vitamin (\"I want a baby someday\").\n\nPSH: lap salpingectomy for ruptured ectopic 2016; D&C 2017.\nMeds: phenytoin ER 300 mg qHS; Biktarvy 1 tab daily; sertraline 100 mg daily; folic acid 1 mg daily; prenatal vitamin with iron daily.\nAllergies: SULFA ANTIBIOTICS — anaphylaxis. Latex — contact dermatitis.\nFH: father epilepsy. Mother RA and type 2 DM. Sister with major depression. Maternal aunt breast cancer at 45.\nSH: never smoker. Drinks occasionally at social events. No drugs. Works as a graphic designer, mostly from home.\n\nROS: negative except as above. Sleep ok. Appetite ok.\n\nExam: vitals as charted. Well-appearing, pleasant, good eye contact. HEENT unremarkable, oropharynx clear, gums normal. Neck supple, no adenopathy. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed laparoscopic port scars. No edema. Neuro: alert, fluent, CN grossly intact, gait normal. Skin without rash.\n\nPHQ-9 8.\n\nA/P:\n- Epilepsy, controlled. Continue phenytoin. Will get neurology records; level at next visit.\n- HIV on Biktarvy — ID manages ART. Requesting their most recent note with CD4/VL.\n- MDD, recurrent, severe by history, currently stable on sertraline 100. PHQ-9 mild range. Continue; return 6 months or sooner.\n- Hx drug-induced folate deficiency — continue folic acid.\n- Health maintenance: CBC, CMP, lipids, TSH, hep C Ab, hep B sAg/sAb today. Pap and vaccines at a physical next month (she would rather not do the Pap today). Pneumococcal and meningococcal vaccines indicated with HIV.\n- Records release signed for prior PCP, ID, neurology.\n\nReturn ~6 weeks for physical."},
+            {"type": "Administrative Note", "title": "Records Request", "author": "front desk", "date": "2018-04-17T10:35", "body": "Release of information signed by patient. Requests faxed to prior primary care office, outside infectious disease clinic and outside neurology group for last 2 years of notes, labs and med lists."}
+          ]
+        },
+        {
+          "id": "2018-04-20a",
+          "kind": "portal_message",
+          "start": "2018-04-20T13:05",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your recent labs", "author": "PCP", "date": "2018-04-20T13:05", "body": "Hi Gretchen,\n\nYour blood counts, kidney and liver tests, cholesterol and thyroid all look fine. Hepatitis C and hepatitis B infection tests are negative.\n\nOne thing to act on: your hepatitis B antibody is negative, which means you are not protected against hepatitis B. With HIV we recommend the vaccine — it is two shots a month apart. We can start it at your physical along with the pneumonia and meningitis vaccines.\n\nSee you on the 29th."}
+          ]
+        },
+        {
+          "id": "2018-05-08a",
+          "kind": "outside_records",
+          "start": "2018-05-08T11:40",
+          "reason": "Records received from prior providers",
+          "labs": [
+            {"panel": null, "collected": "2018-04-10T09:00", "results": [{"test": "CD4 Count", "value": 310}]},
+            {"panel": null, "collected": "2018-04-10T09:00", "results": [{"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Infectious Disease Clinic Note (dated 2018-04-10)", "author": "infectious disease", "date": "2018-05-08T11:40", "body": "OUTSIDE INFECTIOUS DISEASE CLINIC — office note, date of service 04/10/2018\n\nReason: routine HIV follow-up after regimen change.\n\n27F with HIV diagnosed 2016, AIDS-defining CD4 at diagnosis (stage 3), no opportunistic infections. Switched to bictegravir/emtricitabine/tenofovir alafenamide in February for simplification. Tolerating well, no GI upset. Reports she misses \"maybe one a month.\"\n\nOther: epilepsy on phenytoin (neurology), depression on sertraline (PCP). Allergies: sulfonamides — anaphylaxis; latex.\n\nLabs today: CD4 310 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\n\nAssessment: HIV, virally suppressed on current ART. CD4 above 200; no prophylaxis needed.\nPlan: continue Biktarvy. Labs and visit every 6 months. Vaccines through PCP.\n\n— Infectious Disease attending"},
+            {"type": "Outside Records", "title": "Neurology Note (dated 2017-08-29)", "author": "neurology", "date": "2018-05-08T11:45", "body": "OUTSIDE NEUROLOGY — follow-up, DOS 08/29/2017\n\nGeneralized epilepsy since childhood. One generalized tonic-clonic seizure this spring after a stretch of poor sleep; none since. Taking phenytoin 300 mg nightly. Exam nonfocal. Gum exam normal.\n\nPlan: continue phenytoin 300 mg qHS. Seizure precautions reviewed. Return 1 year."},
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "front desk", "date": "2018-05-08T11:50", "body": "Records received by fax from prior primary care office, 22 pages. Problem list: epilepsy, HIV, depression, history of folate deficiency after methotrexate (2016). Surgical: laparoscopic salpingectomy 2016, D&C 2017. Med list matches current. Allergies sulfa (anaphylaxis), latex. No immunization records included. Scanned to media tab; abstracted for PCP."}
+          ]
+        },
+        {
+          "id": "2018-05-29a",
+          "kind": "annual_physical",
+          "start": "2018-05-29T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap, vaccines",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2018-05-29T09:10", "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV13", "date": "2018-05-29T09:25"},
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2018-05-29T09:26"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2018-05-29T09:27"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2018-05-29T08:40"},
+            {"procedure": "Immunization administration", "performed": "2018-05-29T09:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2018-05-29T09:40", "body": "Annual exam. Feels well. No seizures. Mood steady. Taking all meds (\"almost always\" for Biktarvy). LMP 2 weeks ago, cycles regular.\n\nReviewed ID note from April: CD4 310, VL undetectable. Neurology note from last summer reviewed.\n\nExam: vitals as charted. Gen well. HEENT normal, gums normal. Neck no nodes or thyromegaly. Breasts symmetric without masses. Heart RRR. Lungs clear. Abdomen soft. Pelvic: normal external genitalia, cervix without lesions, Pap obtained (nitrile gloves — latex allergy). Ext no edema. Skin normal.\n\nA/P:\n- Health maintenance: Pap today — with HIV, yearly Paps for three years, then every 3 years with HPV testing if all normal.\n- Vaccines today: PCV13, Heplisav-B #1, MenACWY #1. Nurse visit in a month for Heplisav #2; PPSV23 and MenACWY #2 at 8 weeks.\n- Epilepsy, HIV, depression: stable, as before.\n- Follow-up in about 6 months."}
+          ]
+        },
+        {
+          "id": "2018-06-04a",
+          "kind": "portal_message",
+          "start": "2018-06-04T16:10",
+          "reason": "Pap result",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap result", "author": "RN", "date": "2018-06-04T16:10", "body": "Hi Gretchen — your Pap smear was normal. The doctor would like to repeat it next year (yearly for three years is the recommendation for you). Reminder that your second hepatitis B shot is due around June 29."}
+          ]
+        },
+        {
+          "id": "2018-06-29a",
+          "kind": "nurse_visit",
+          "start": "2018-06-29T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine #2",
+          "immunizations": [{"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2018-06-29T15:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-06-29T15:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization", "author": "RN", "date": "2018-06-29T15:15", "body": "Heplisav-B dose 2 of 2, 0.5 mL IM right deltoid. Screening questions reviewed, no contraindications. Latex-free supplies used. Tolerated without issue. Series complete — antibody check can be done in 1–2 months per PCP."}
+          ]
+        },
+        {
+          "id": "2018-07-27a",
+          "kind": "nurse_visit",
+          "start": "2018-07-27T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "PPSV23 and MenACWY #2",
+          "immunizations": [
+            {"vaccine": "Pneumococcal polysaccharide PPSV23", "date": "2018-07-27T11:35"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2018-07-27T11:36"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-07-27T11:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2018-07-27T11:45", "body": "PPSV23 0.5 mL IM L deltoid; MenACWY dose 2 0.5 mL IM R deltoid. VIS given. Pt waited 15 min, no reaction. PPSV23 booster due in 5 years (2023)."}
+          ]
+        },
+        {
+          "id": "2018-08-21a",
+          "kind": "pharmacy",
+          "start": "2018-08-21T10:15",
+          "reason": "Phenytoin refill request",
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Refill Request", "author": "MA", "date": "2018-08-21T10:15", "body": "Pharmacy fax: refill request phenytoin sodium ER 100 mg caps, take 3 qHS, #270. Last fill by prior PCP. Pended for PCP — approved, 90-day supply with 1 refill. Pharmacy notified."}
+          ]
+        },
+        {
+          "id": "2018-10-09a",
+          "kind": "nurse_visit",
+          "start": "2018-10-09T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2018-10-09T16:25"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-10-09T16:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza Vaccine", "author": "MA", "date": "2018-10-09T16:30", "body": "Flu vaccine 0.5 mL IM L deltoid. No egg or vaccine allergy. Latex-free bandage. Tolerated well."}
+          ]
+        },
+        {
+          "id": "2018-11-13a",
+          "kind": "office_visit",
+          "start": "2018-11-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up depression and epilepsy",
+          "state": {"labs": {"Phenytoin": 14.2}},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2018-11-13T14:40", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2018-11-13T14:40", "results": [{"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 7}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2018-11-13T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2018-11-13T14:35", "body": "S: Six-month check. Mood \"pretty good\" — busy season at work, some stress with deadlines but sleeping fine. No seizures, no auras. Taking sertraline daily. Biktarvy most days, still the occasional missed dose. ID follow-up is in January.\n\nPHQ-9 7. No SI.\n\nO: vitals as charted. Alert, bright affect. Gums normal. Heart RRR, lungs clear. Neuro nonfocal, no nystagmus, gait steady.\n\nA/P:\n1. MDD, recurrent, stable on sertraline 100 — continue.\n2. Epilepsy — no seizures since spring 2017. Phenytoin level and albumin today. Continue 300 qHS.\n3. HIV — per ID.\n4. Flu shot done in October.\nRTC 6 months / physical in spring."}
+          ]
+        },
+        {
+          "id": "2018-11-16a",
+          "kind": "portal_message",
+          "start": "2018-11-16T09:30",
+          "reason": "Phenytoin level result",
+          "documents": [
+            {"type": "Patient Message", "title": "Phenytoin level", "author": "PCP", "date": "2018-11-16T09:30", "body": "Your phenytoin (Dilantin) level is in the therapeutic range and your liver tests and albumin are normal. No change to your dose."}
+          ]
+        },
+        {
+          "id": "2019-01-22a",
+          "kind": "specialist_visit",
+          "start": "2019-01-22T10:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2019-01-22T10:30", "results": [{"test": "CD4 Count", "value": 342}]},
+            {"panel": null, "collected": "2019-01-22T10:30", "results": [{"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2019-01-28T12:10", "body": "Outside ID clinic — visit 01/22/2019\n\nDear Doctor,\n\nI saw Ms. Kelleher for routine HIV care. She remains on Biktarvy and reports good adherence over the holidays. No fevers, weight stable, no thrush.\n\nCD4 342 cells/uL; HIV RNA not detected.\n\nShe completed the hepatitis B, meningococcal and pneumococcal series in your office — thank you.\n\nContinue current regimen. Next visit in 6 months.\n\nAllergies on file: sulfonamides (anaphylaxis), latex.\n\nInfectious Disease attending"}
+          ]
+        },
+        {
+          "id": "2019-04-09a",
+          "kind": "office_visit",
+          "start": "2019-04-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Excessive thirst and urination",
+          "state": {"labs": {"Sodium": 146, "Urine Specific Gravity": 1.003, "Hemoglobin A1c": 5.1}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-04-09T11:15", "results": [{"test": "Sodium"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2019-04-09T11:15", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Urinalysis", "collected": "2019-04-09T11:10", "results": [{"test": "Urine Specific Gravity", "value": 1.003}, {"test": "Urine Glucose", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "endo-referral", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "Polyuria and polydipsia, suspected diabetes insipidus"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-04-09T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit — Thirst/Urination", "author": "PCP", "date": "2019-04-09T11:20", "body": "CC: thirsty all the time, peeing constantly.\n\nHPI: Started around February. Keeps a big water bottle at her desk and refills it \"five or six times\" a day. Up 3–4 times a night to urinate, which is new. Urine looks like water. No dysuria, no fever. No head injury, no new meds. No seizures. Mom has type 2 diabetes so she is worried about that.\n\nMeds unchanged: phenytoin 300 qHS, Biktarvy, sertraline 100, folic acid, prenatal vitamin.\n\nExam: vitals as charted. Appears well hydrated, mucous membranes moist. Thyroid normal. Heart RRR, lungs clear. Abdomen benign. No edema. Neuro nonfocal; visual fields full to confrontation.\n\nUA in office: very dilute, no glucose.\n\nA/P: Polyuria/polydipsia. No glycosuria on the UA and a normal glucose on her April labs is expected — this does not look like diabetes mellitus. Dilute urine and sodium at the top of normal raise concern for diabetes insipidus. Lithium/hypercalcemia not in play; calcium pending. BMP, A1c today. Referring to endocrinology for evaluation. Told her not to restrict fluids on her own — drink to thirst. Call with confusion, vomiting or if she can't keep up with her thirst."}
+          ]
+        },
+        {
+          "id": "2019-04-11a",
+          "kind": "portal_message",
+          "start": "2019-04-11T12:20",
+          "reason": "Results and referral",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs and endocrinology appointment", "author": "PCP", "date": "2019-04-11T12:20", "body": "Gretchen, your A1c and glucose are normal, so this is not sugar diabetes. Your sodium is at the high end of normal and the urine is very dilute, which fits with the hormone problem we talked about (diabetes insipidus). Endocrinology has you scheduled May 15. Keep drinking to thirst until then."},
+            {"type": "Patient Message", "title": "RE: Labs and endocrinology appointment", "author": "patient", "date": "2019-04-11T19:02", "body": "ok thank you. is that related to my seizures or the hiv? just want to know what to expect"},
+            {"type": "Patient Message", "title": "RE: Labs and endocrinology appointment", "author": "PCP", "date": "2019-04-12T08:15", "body": "Good question — we don't know yet. Endocrinology will sort out whether it's the pituitary signal (central) or the kidneys, and what might be behind it."}
+          ]
+        },
+        {
+          "id": "2019-05-15a",
+          "kind": "specialist_visit",
+          "start": "2019-05-15T13:30",
+          "service": "Endocrinology",
+          "reason": "Polyuria and polydipsia",
+          "conditions": [
+            {"label": "Central diabetes insipidus", "action": "diagnosed", "onset": "2019-02-01", "note": "Inadequately controlled at presentation"}
+          ],
+          "medications": [
+            {"drug_text": "desmopressin acetate 0.1 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 0.1, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Central diabetes insipidus"}
+          ],
+          "state": {"labs": {"Sodium": 148, "Chloride": 108}},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-05-15T14:10", "results": [{"test": "Sodium", "value": 148}, {"test": "Chloride"}]},
+            {"panel": null, "collected": "2019-05-15T14:10", "results": [{"test": "Osmolality, serum", "loinc": "2692-2", "unit": "mOsm/kg", "value": 300}]},
+            {"panel": null, "collected": "2019-05-15T14:10", "results": [{"test": "Osmolality, urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 150}]}
+          ],
+          "orders": [
+            {"id": "endo-referral", "action": "done", "date": "2019-05-15T13:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology Consultation (seen 2019-05-15)", "author": "endocrinology", "date": "2019-05-20T09:45", "body": "OUTSIDE ENDOCRINOLOGY GROUP — new consultation, 05/15/2019\n\nReferred by: PCP. Question: polyuria/polydipsia.\n\nHistory: 28-year-old woman with about three months of heavy urination and constant thirst. She estimates she now drinks roughly 6 liters a day and gets up several times overnight to void. No recent head injury and no surgery of any kind near the head. Background of childhood generalized epilepsy (phenytoin), HIV on ART, recurrent depression on sertraline, prior folate deficiency.\n\nAllergies: sulfonamides (anaphylaxis); latex.\nMeds: phenytoin, Biktarvy, sertraline, folic acid, prenatal vitamin.\n\nExam: normal, including visual fields and thyroid. Not volume depleted.\n\nLabs today:\n  Sodium 148 mEq/L\n  Serum osmolality 300 mOsm/kg\n  Urine osmolality 150 mOsm/kg\n\nImpression: Central diabetes insipidus, currently inadequately controlled. Concentrated plasma with inappropriately dilute urine; the clinical picture favors a central cause.\n\nPlan:\n1. Start desmopressin acetate 0.1 mg by mouth twice daily.\n2. Drink to thirst only — do not force fluids on desmopressin (risk of low sodium).\n3. Sodium in one week through her PCP, please.\n4. Follow up here in 3 months.\n\nThank you for this referral.\nEndocrinology attending"}
+          ]
+        },
+        {
+          "id": "2019-05-22a",
+          "kind": "lab_only",
+          "start": "2019-05-22T08:15",
+          "reason": "Sodium check on desmopressin",
+          "state": {"labs": {"Sodium": 140, "Chloride": 103}},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-05-22T08:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2019-05-22T08:15"}],
+          "documents": [
+            {"type": "Lab Note", "title": "Lab Draw", "author": "MA", "date": "2019-05-22T08:20", "body": "BMP drawn per endocrinology request (1 week on desmopressin). Pt reports thirst \"way better already.\""}
+          ]
+        },
+        {
+          "id": "2019-05-23a",
+          "kind": "portal_message",
+          "start": "2019-05-23T11:00",
+          "reason": "Sodium result",
+          "documents": [
+            {"type": "Patient Message", "title": "Sodium result", "author": "PCP", "date": "2019-05-23T11:00", "body": "Your sodium is back in the normal range on the desmopressin — good. I've copied endocrinology. Happy birthday this week!"}
+          ]
+        },
+        {
+          "id": "2019-06-11a",
+          "kind": "annual_physical",
+          "start": "2019-06-11T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2019-06-11T09:00", "text": "Liquid-based preparation. Satisfactory for evaluation; endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. No organisms identified.", "conclusion": "NILM."}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2019-06-11T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2019-06-11T09:20", "body": "Annual. Doing well. Desmopressin has made a big difference — sleeping through or up once. Thirst normal. No seizures. Mood good, PHQ-9 6.\n\nInterval: endocrinology 5/15 — central DI, desmopressin 0.1 BID. Sodium normal 5/22.\n\nMeds: phenytoin ER 300 qHS, desmopressin 0.1 BID, Biktarvy daily, sertraline 100, folic acid 1, prenatal vitamin.\nAllergies: sulfa (anaphylaxis), latex.\n\nExam: vitals as charted. Gen NAD. HEENT normal. Neck supple. Heart regular, no murmur. Lungs clear. Abd soft. Pelvic: normal external genitalia, cervix normal, Pap taken. Ext warm, no edema. Neuro nonfocal.\n\nA/P:\n- Central DI, on desmopressin — controlled clinically. Endo f/u in August.\n- Epilepsy — stable.\n- HIV — ID in July.\n- MDD — stable on sertraline.\n- Pap #2 of 3 yearly.\nRTC fall for flu shot; 6 months."}
+          ]
+        },
+        {
+          "id": "2019-06-17a",
+          "kind": "portal_message",
+          "start": "2019-06-17T15:40",
+          "reason": "Pap result",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap result", "author": "RN", "date": "2019-06-17T15:40", "body": "Normal Pap again this year. One more yearly Pap next year, then we can space them out."}
+          ]
+        },
+        {
+          "id": "2019-08-06a",
+          "kind": "specialist_visit",
+          "start": "2019-08-06T09:00",
+          "service": "Endocrinology",
+          "reason": "Diabetes insipidus follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology Follow-up (seen 2019-08-06)", "author": "endocrinology", "date": "2019-08-12T14:20", "body": "Endocrinology follow-up 08/06/2019\n\nCentral DI on desmopressin 0.1 mg BID. Polyuria largely resolved; nocturia once at most. No headaches, no swelling. Sodium normal at one week (PCP lab). Exam normal.\n\nAllergies: sulfonamide antibiotics (anaphylaxis), latex.\n\nPlan: continue desmopressin 0.1 mg twice daily. Drink to thirst. Sodium every 6–12 months, sooner with illness, vomiting or confusion. Return 1 year or as needed.\n\nEndocrinology"}
+          ]
+        },
+        {
+          "id": "2019-08-28a",
+          "kind": "portal_message",
+          "start": "2019-08-28T21:14",
+          "reason": "Fatigue and bleeding gums",
+          "orders": [
+            {"id": "anemia-labs-2019", "action": "placed", "order": "CBC with differential, folate, B12, CMP, vitamin D", "category": "lab", "reason": "Fatigue, gum bleeding"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "tired + gums", "author": "patient", "date": "2019-08-28T21:14", "body": "Hi, I've been really tired for like 2 months, not sleepy just wiped out. Also my gums look puffy and they bleed every time I brush. I made an appt for the 10th but wanted to ask if I should do bloodwork before so we can talk about it."},
+            {"type": "Patient Message", "title": "RE: tired + gums", "author": "PCP", "date": "2019-08-29T07:50", "body": "Yes, good idea. I put in orders for a blood count, folate, B12, chemistries and vitamin D. Stop by the lab any morning next week. See you on the 10th."}
+          ]
+        },
+        {
+          "id": "2019-09-03a",
+          "kind": "lab_only",
+          "start": "2019-09-03T07:45",
+          "reason": "Fatigue workup",
+          "state": {"labs": {"Hemoglobin": 10.2, "Mean Corpuscular Volume": 102, "Folate": 3, "Calcium": 9.2, "25-hydroxy Vitamin D": 30, "Vitamin B12": 512}},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2019-09-03T07:45", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Mean Corpuscular Volume", "value": 102}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2019-09-03T07:45", "results": [{"test": "Folate", "value": 3}]},
+            {"panel": null, "collected": "2019-09-03T07:45", "results": [{"test": "Vitamin B12"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-03T07:45", "results": [{"test": "Calcium", "value": 9.2}, {"test": "Sodium"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2019-09-03T07:45", "results": [{"test": "25-hydroxy Vitamin D", "value": 30}]}
+          ],
+          "orders": [
+            {"id": "anemia-labs-2019", "action": "done", "date": "2019-09-03T07:45"}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2019-09-03T07:45"}]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "office_visit",
+          "start": "2019-09-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, gum swelling and bleeding",
+          "conditions": [
+            {"label": "Drug-induced folate deficiency anemia", "icd10": "D52.1", "action": "diagnosed", "onset": "2019-07-01", "note": "Methotrexate-induced folate deficiency; recurrence with missed folic acid"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 7}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-09-10T15:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2019-09-10T16:05", "body": "Follow-up — fatigue, gums.\n\nS: Saw endocrinology in May (central DI, now on desmopressin, doing well on that). For the past ~2 months she has felt drained. Gums swollen and bleed with brushing. Eating the same as always; no change in bowels; weight steady. Periods regular, not heavy. On questioning she admits the folic acid \"fell off\" over the summer — she ran out and didn't refill, maybe 2–3 months. Taking phenytoin, desmopressin, Biktarvy and sertraline.\n\nMood ok, PHQ-9 7. No SI.\n\nO: vitals as charted. Mildly pale conjunctivae. Gums erythematous and hyperplastic. Heart RRR, no murmur. Lungs clear. Abd soft, no splenomegaly. No petechiae.\n\nLabs 9/3: Hgb 10.2, MCV 102 (macrocytic). Folate 3 (low). B12 normal. Calcium 9.2. 25-OH vitamin D 30.\n\nA/P:\n1. Macrocytic anemia from folate deficiency — the same methotrexate-related folate deficiency she had in 2016, back now that she stopped her folic acid. Restart folic acid 1 mg daily — new script sent, 90 days with refills; set up auto-refill with her pharmacy. Recheck CBC and folate in 3 months.\n2. Central DI — stable.\n3. Epilepsy — no seizures.\n4. MDD — stable.\nFlu shot next month."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T12:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T12:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza Vaccine", "author": "MA", "date": "2019-10-08T12:20", "body": "Influenza vaccine given IM R deltoid, 0.5 mL. No reactions. Latex-free supplies. Pt reports she is back on folic acid daily."}
+          ]
+        },
+        {
+          "id": "2019-11-19a",
+          "kind": "specialist_visit",
+          "start": "2019-11-19T10:30",
+          "service": "Neurology",
+          "reason": "Epilepsy follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Follow-up (seen 2019-11-19)", "author": "neurology", "date": "2019-11-25T13:00", "body": "Outside neurology — annual epilepsy follow-up, 11/19/2019\n\nGeneralized epilepsy, seizure-free since spring 2017 on phenytoin ER 300 mg nightly. Interval diagnosis of central diabetes insipidus this year, on desmopressin. No sleep deprivation lately. Exam: alert, normal speech, no nystagmus, normal gait and coordination.\n\nAllergies: sulfonamides, latex.\n\nPlan: continue phenytoin at the current dose. Discussed seizure precautions and the importance of nightly dosing. Return in 1 year."}
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "lab_only",
+          "start": "2019-12-10T08:05",
+          "reason": "Recheck CBC and folate",
+          "state": {"labs": {"Hemoglobin": 12.6, "Mean Corpuscular Volume": 92, "Folate": 12}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-12-10T08:05", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}]},
+            {"panel": null, "collected": "2019-12-10T08:05", "results": [{"test": "Folate"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2019-12-10T08:05"}]
+        },
+        {
+          "id": "2019-12-12a",
+          "kind": "portal_message",
+          "start": "2019-12-12T10:25",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Blood count recheck", "author": "PCP", "date": "2019-12-12T10:25", "body": "Great news — your blood count and folate are back to normal. Keep taking the folic acid every day; this is exactly why. Are your gums any better?"},
+            {"type": "Patient Message", "title": "RE: Blood count recheck", "author": "patient", "date": "2019-12-12T18:40", "body": "yay. gums are a little better, bleeding less. energy way better"}
+          ]
+        }
+      ]
+    }
+  ]
+}

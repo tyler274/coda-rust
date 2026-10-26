@@ -1,0 +1,924 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002742",
+   "given": "Barbara",
+   "family": "Parsons",
+   "birth_date": "1965-06-15",
+   "address_line": "212 Cold Spring Road",
+   "phone": "+1-603-555-0165",
+   "email": "barbara.parsons@example.test",
+   "marital_status": "married",
+   "summary": "Woman with long-standing seropositive rheumatoid arthritis, paroxysmal atrial fibrillation on amiodarone, treated right breast cancer and atlantoaxial subluxation who joins in 2018. Over eight years she develops a fragility wrist fracture with osteoporosis, rheumatoid lung disease with a rheumatoid effusion, avascular necrosis of the right hip, amiodarone lung toxicity, a bacterial pneumonia on rituximab, and progressive cervical myelopathy treated with C1-C2 fusion in 2026.",
+   "events": [
+    {
+     "id": "2018-09-24a",
+     "kind": "telephone",
+     "start": "2018-09-24T10:12",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2018-09-24T10:12",
+       "body": "Caller would like to become a patient here. Her previous PCP retired over the summer and the group that took over the panel is not taking her insurance plan well (PPO through husband). Sees an outside rheumatologist and cardiologist and wants a doctor who can keep it all straight. Membership agreement emailed. New patient visit booked 10/10 at 9:00, 60 min. Records release signed by e-fax, request sent to the prior practice for last 5 years of notes, labs, imaging, med list."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-03a",
+     "kind": "outside_records",
+     "start": "2018-10-03T14:40",
+     "reason": "Prior practice records received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records summary",
+       "author": "MA",
+       "date": "2018-10-03T14:40",
+       "body": "Received 84 pages from prior primary care office, scanned. Summary for PCP review:\n\n- Rheumatoid arthritis, RF and CCP positive, dx 2011 by outside rheumatology. Infliximab infusions 2014-2017, stopped for loss of effect. Diclofenac tried years ago, not helpful. Currently hydroxychloroquine 200 mg BID, prednisone 5 mg daily, ibuprofen 400 mg prn. Esomeprazole 20 mg daily for GI protection.\n- Paroxysmal AF dx 2016, on amiodarone 200 mg daily per outside cardiology. Not anticoagulated (cardiology notes say CHA2DS2-VASc 1).\n- Right breast invasive ductal carcinoma 2012: lumpectomy with sentinel node biopsy, then radiation. Yearly diagnostic mammograms since, all benign. Last 11/2017.\n- Atlantoaxial subluxation with mild cervical myelopathy noted 2017, followed by an outside spine surgeon, no surgery recommended so far.\n- Pap 2017 normal. Never had a colonoscopy in these records.\n- Allergies: NKDA.\n- Immunizations: flu yearly; Tdap 2008; no shingles vaccine documented.\n\nLabs from 2018 (TSH, CMP, CBC) normal. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-10a",
+     "kind": "establish_care",
+     "start": "2018-10-10T09:00",
+     "end": "2018-10-10T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "conditions": [
+      {
+       "label": "Rheumatoid arthritis",
+       "action": "diagnosed",
+       "onset": "2011-05-01",
+       "note": "Seropositive (RF and anti-CCP); followed by outside rheumatology"
+      },
+      {
+       "label": "Paroxysmal atrial fibrillation",
+       "action": "diagnosed",
+       "onset": "2016-03-01",
+       "note": "On amiodarone per outside cardiology; CHA2DS2-VASc 1, not anticoagulated"
+      },
+      {
+       "label": "History of breast cancer",
+       "action": "history",
+       "onset": "2012-04-01",
+       "note": "Right breast invasive ductal carcinoma 2012; lumpectomy, sentinel node biopsy, adjuvant radiation"
+      },
+      {
+       "label": "Atlantoaxial subluxation with myelopathy",
+       "icd10": "M43.3",
+       "action": "diagnosed",
+       "onset": "2017-06-01",
+       "note": "Mild cervical myelopathy; followed nonoperatively by outside spine surgery"
+      },
+      {
+       "label": "Long term (current) use of systemic steroids",
+       "action": "diagnosed",
+       "onset": "2011-05-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "hydroxychloroquine sulfate 200 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Rheumatoid arthritis"
+      },
+      {
+       "drug": "prednisone 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Rheumatoid arthritis"
+      },
+      {
+       "drug_text": "ibuprofen 400 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for joint pain",
+       "dose": {
+        "value": 400,
+        "unit": "mg"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Joint pain"
+      },
+      {
+       "drug_text": "esomeprazole magnesium 20 MG Delayed Release Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth daily before breakfast",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "GI protection on prednisone and NSAID"
+      },
+      {
+       "drug_text": "amiodarone hydrochloride 200 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Paroxysmal atrial fibrillation"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Former administrative assistant, not currently working"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "state": {
+      "weight_kg": 61.0,
+      "height_cm": 163.0,
+      "labs": {
+       "Thyroid Stimulating Hormone": 2.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2018-10-10T10:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2018-10-10T10:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-10-10T10:15",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2018-10-10T10:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2018-10-10T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2018-10-10T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2018-10-10T10:05",
+       "body": "53 yo woman establishing care. Prior PCP retired. Records reviewed before visit (see 10/3 summary).\n\nRA: seropositive, about 7 years. Outside rheumatologist sees her yearly or so. Had infliximab for ~3 yrs, lost effect, stopped 2017. Now HCQ 200 bid + prednisone 5 daily, ibuprofen a few times a week for hand pain. Mornings are stiff for under an hour. Esomeprazole daily, no reflux or dark stools.\n\nAF: paroxysmal, found 2016 when she felt her heart racing. On amiodarone since, sees cardiology yearly. No palpitations in over a year. Not on a blood thinner, cardiology felt risk was low.\n\nBreast cancer: R breast IDC 2012, lumpectomy + SLNB + radiation. Diagnostic mammogram every fall, due next month.\n\nNeck: told in 2017 she has a slipped joint at the top of the neck from the RA with mild cord involvement. Spine surgeon follows, said to avoid heavy lifting and neck manipulation (no chiropractors). Occasional tingling in fingertips, no change. Walking fine.\n\nGyn: periods stopped last year. Some hot flashes, tolerable so far.\n\nFH: father had breast cancer (male). Mother has an autoimmune disease, pt not sure which.\nSH: married, two grown kids. Used to be an admin assistant, not working now. Never smoked, no alcohol. Big hobby is her greenhouse.\nAllergies: NKDA.\n\nExam: well appearing. Heart regular. Lungs clear. Mild MCP fullness both hands, no warm joints. Neck exam deferred beyond inspection. Strength full, gait normal, reflexes symmetric.\n\nA/P\n1. RA on HCQ/pred - continue, rheum co-manages. Needs yearly eye exam on HCQ, will ask for last report.\n2. PAF on amiodarone - TSH and LFTs today, then q6mo. Cardiology yearly.\n3. Hx breast ca - mammogram due 11/2018, order placed.\n4. Atlantoaxial subluxation w/ mild myelopathy - stable by history, spine surgery follows.\n5. Chronic prednisone - bone health to discuss next visit.\n6. HM: flu today. HCV/HIV once today. Shingrix next spring. Colonoscopy discussed, she wants to wait.\n\nRTC 6 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2018",
+       "action": "placed",
+       "order": "Diagnostic mammogram, bilateral",
+       "category": "imaging",
+       "reason": "History of right breast cancer"
+      }
+     ]
+    },
+    {
+     "id": "2018-10-12a",
+     "kind": "portal_message",
+     "start": "2018-10-12T16:20",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2018-10-12T16:20",
+       "body": "Hi Barbara, everything from Wednesday came back fine. Blood counts, kidney and liver numbers, thyroid and cholesterol are all normal, and the hepatitis C and HIV screens were negative. We'll recheck the thyroid and liver tests in the spring because of the amiodarone. Glad to have you with us."
+      }
+     ]
+    },
+    {
+     "id": "2018-11-14a",
+     "kind": "outside_records",
+     "start": "2018-11-14T11:00",
+     "reason": "Cardiology letter",
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2018-11-07T10:30",
+       "text": "Sinus rhythm, rate 64. Normal axis. PR 182 ms, QRS 92 ms, QTc 452 ms. No acute ST-T change.",
+       "conclusion": "Sinus rhythm."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Cardiology follow-up letter",
+       "author": "cardiology",
+       "date": "2018-11-14T11:00",
+       "body": "Seen 11/7 for paroxysmal atrial fibrillation. She reports no palpitations, presyncope or exertional limitation over the past year. On amiodarone 200 mg daily. ECG today sinus rhythm with QTc 452. CHA2DS2-VASc remains 1 on the basis of sex alone; we continue to hold off on anticoagulation. Please continue thyroid and liver monitoring. We will see her in one year.\n\nMedications reviewed: amiodarone, hydroxychloroquine, prednisone, esomeprazole, ibuprofen as needed. Allergies: none known."
+      }
+     ]
+    },
+    {
+     "id": "2018-11-28a",
+     "kind": "imaging",
+     "start": "2018-11-28T08:45",
+     "reason": "Diagnostic mammogram, history of right breast cancer",
+     "orders": [
+      {
+       "id": "mammo-2018",
+       "action": "done",
+       "date": "2018-11-28T09:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Diagnostic mammogram",
+       "performed": "2018-11-28T08:45",
+       "text": "Bilateral diagnostic mammogram with tomosynthesis. Scattered fibroglandular density. Stable post-lumpectomy architectural distortion and skin thickening in the right upper outer breast with surgical clips. No suspicious mass, calcification or new distortion in either breast.",
+       "conclusion": "Stable post-treatment change, right breast. BI-RADS 2, benign. Annual diagnostic mammogram recommended."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram result",
+       "author": "PCP",
+       "date": "2018-11-29T08:10",
+       "body": "Stable post-treatment change, BI-RADS 2. Repeat next year. Letter sent to pt."
+      }
+     ]
+    },
+    {
+     "id": "2019-01-22a",
+     "kind": "outside_records",
+     "start": "2019-01-25T13:00",
+     "reason": "Gynecology letter",
+     "conditions": [
+      {
+       "label": "Menopausal and female climacteric states",
+       "action": "diagnosed",
+       "onset": "2017-09-01",
+       "note": "Vasomotor symptoms"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "conjugated estrogens 0.625 MG / medroxyprogesterone acetate 2.5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Menopausal vasomotor symptoms"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Gynecology consultation",
+       "author": "gynecology",
+       "date": "2019-01-25T13:00",
+       "body": "Date of visit 01/22/2019.\n\nMs. Parsons, 53, last menstrual period about 16 months ago, came in with hot flashes several times a day, drenching night sweats and broken sleep that have built up over the fall. Pelvic exam is normal. After a discussion of options she chose combined hormone therapy and we started conjugated estrogens 0.625 mg with medroxyprogesterone 2.5 mg daily. She will call if any bleeding. Follow-up in one year.\n\nAllergies: NKDA. Current medications reviewed and noted."
+      }
+     ]
+    },
+    {
+     "id": "2019-02-05a",
+     "kind": "telephone",
+     "start": "2019-02-05T11:30",
+     "reason": "Medication reconciliation",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Med list update",
+       "author": "MA",
+       "date": "2019-02-05T11:30",
+       "body": "Gyn letter scanned. Called pt to confirm new med: Prempro-type tablet 0.625/2.5 daily since late January. Put on her med list, prescriber gyn. Pt says sweats already a little better."
+      }
+     ]
+    },
+    {
+     "id": "2019-04-17a",
+     "kind": "office_visit",
+     "start": "2019-04-17T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Six-month follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-04-17T14:40",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-04-17T14:40",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-04-17T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2019-04-17T14:35",
+       "body": "S: Here for routine check. Hands about the same, worst in the morning, loosens up by mid-morning. No palpitations. Started the hormone tablet from gyn in January, hot flashes way down, sleeping again. No bleeding. Neck unchanged, no new hand clumsiness.\nO: Vitals reviewed. Heart regular. Lungs clear. Mild MCP fullness, no synovitis I can feel today. Gait normal.\nA/P:\n- RA: continue HCQ, pred 5. Eye exam - she has one scheduled in Sept.\n- PAF on amiodarone: TSH, LFTs today.\n- Menopause on HT from gyn: tolerating.\n- Chronic steroids: talked about bone density; she'd rather wait until her physical. Calcium-rich diet encouraged.\n- Shingrix #1 next week with RN.\nRTC fall for physical."
+      }
+     ]
+    },
+    {
+     "id": "2019-04-24a",
+     "kind": "nurse_visit",
+     "start": "2019-04-24T10:30",
+     "reason": "Shingrix dose 1",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-04-24T10:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-04-24T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2019-04-24T10:40",
+       "body": "Shingrix dose 1, 0.5 mL IM left deltoid. VIS reviewed. Tolerated. Dose 2 due in 2-6 months, scheduled 7/10."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-12a",
+     "kind": "outside_records",
+     "start": "2019-06-14T09:15",
+     "reason": "Rheumatology letter",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2019-06-14T09:15",
+       "body": "Seen 6/12 for seropositive rheumatoid arthritis. Disease activity low to moderate on hydroxychloroquine 200 mg twice daily and prednisone 5 mg daily, with occasional ibuprofen. Exam showed mild MCP thickening without active synovitis. She prefers not to change therapy at this time. We will see her in a year, sooner with a flare. Please continue her yearly retinal screening."
+      }
+     ]
+    },
+    {
+     "id": "2019-07-10a",
+     "kind": "nurse_visit",
+     "start": "2019-07-10T10:15",
+     "reason": "Shingrix dose 2",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-07-10T10:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-07-10T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2019-07-10T10:20",
+       "body": "Shingrix #2 given R deltoid. Series complete. Pt reports first dose made her tired for a day."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-18a",
+     "kind": "outside_records",
+     "start": "2019-09-20T15:00",
+     "reason": "Eye exam report",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Ophthalmology report",
+       "author": "ophthalmology",
+       "date": "2019-09-20T15:00",
+       "body": "Annual hydroxychloroquine screening 9/18/2019. Visual acuity 20/20 OD, 20/25 OS with correction. Automated 10-2 fields full both eyes. SD-OCT shows intact ellipsoid zone without parafoveal thinning. No evidence of hydroxychloroquine retinal toxicity. Repeat in 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-16a",
+     "kind": "annual_physical",
+     "start": "2019-10-16T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2019-10-16T09:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-10-16T09:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-10-16T09:10",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-16T09:00"
+      },
+      {
+       "vaccine": "Tdap",
+       "date": "2019-10-16T09:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2019-10-16T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2019-10-16T09:20",
+       "body": "Annual exam. Doing well. RA steady on HCQ/pred per rheum in June. No AF symptoms. Hot flashes controlled on HT. Eye screen in Sept was normal.\n\nROS otherwise negative.\nExam: NAD. HEENT normal. Neck supple. Heart RRR no murmur. Lungs clear. Abdomen benign. Mild MCP thickening. No edema. Neuro: strength and reflexes symmetric, gait normal.\n\nPlan:\n- Flu and Tdap today (last Tdap 2008).\n- Labs: CBC, CMP, TSH.\n- Mammogram next month, ordered.\n- Colonoscopy again recommended; she will think about it, wants to get through the holidays.\n- Bone density: still deferring. Discussed fracture risk on steroids.\n- Pap: 2017 normal, next due 2022.\nSee in 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2019-11-20a",
+     "kind": "imaging",
+     "start": "2019-11-20T09:00",
+     "reason": "Annual diagnostic mammogram",
+     "reports": [
+      {
+       "study": "Diagnostic mammogram",
+       "performed": "2019-11-20T09:00",
+       "text": "Bilateral diagnostic mammogram with tomosynthesis compared with 11/2018. Scattered fibroglandular density. Right upper outer post-lumpectomy distortion and clips unchanged. No new mass, suspicious calcification or distortion.",
+       "conclusion": "BI-RADS 2, benign. Continue annual imaging."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram result",
+       "author": "PCP",
+       "date": "2019-11-21T07:50",
+       "body": "Benign, unchanged. Pt notified via portal."
+      }
+     ]
+    },
+    {
+     "id": "2019-11-27a",
+     "kind": "outside_records",
+     "start": "2019-11-27T10:00",
+     "reason": "Cardiology letter",
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2019-11-20T13:30",
+       "text": "Sinus rhythm, rate 61. PR 186 ms, QRS 90 ms, QTc 448 ms. No ST-T abnormality.",
+       "conclusion": "Sinus rhythm, no change from prior."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Cardiology annual letter",
+       "author": "cardiology",
+       "date": "2019-11-27T10:00",
+       "body": "Annual visit 11/20. No recurrent atrial fibrillation symptoms. Remains in sinus rhythm on amiodarone 200 mg daily. Recent TSH and liver tests from your office reviewed and normal. Continue current plan; anticoagulation still not indicated at CHA2DS2-VASc 1. Return in 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-04a",
+     "kind": "portal_message",
+     "start": "2019-12-04T19:42",
+     "reason": "Refill request",
+     "medications": [
+      {
+       "drug_text": "esomeprazole magnesium 20 MG Delayed Release Oral Capsule",
+       "action": "stop",
+       "reason": "Reordered by practice"
+      },
+      {
+       "drug_text": "esomeprazole magnesium 20 MG Delayed Release Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule by mouth daily before breakfast",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "GI protection on prednisone and NSAID"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refill",
+       "author": "patient",
+       "date": "2019-12-04T19:42",
+       "body": "Hi, my old doctor's prescription for the esomeprazole ran out of refills. Could you send a new one to my usual pharmacy? 90 day supply if insurance allows. Thanks, Barbara"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Refill",
+       "author": "PCP",
+       "date": "2019-12-05T08:15",
+       "body": "Done, 90 days with 3 refills. Happy holidays."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-18a",
+     "kind": "office_visit",
+     "start": "2020-03-18T14:00",
+     "reason": "Six-month follow-up",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2020-04-08a",
+     "kind": "telehealth_visit",
+     "start": "2020-04-08T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up by video",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2020-04-08T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Follow-up",
+       "author": "PCP",
+       "date": "2020-04-08T11:25",
+       "body": "Video visit, rescheduled from March when we closed in-person visits. Pt at home, alone in room, consents to video.\nStaying home, husband doing the shopping. Worried about infection risk on prednisone; we went over masking, distancing, and calling early for fever or cough. Joints OK. No palpitations. Hot flashes controlled.\nNo exam beyond observation: comfortable, speaking full sentences.\nPlan: continue all meds. Postpone lab draw until summer unless needed. Rheum visit in June will likely be virtual too.\n~20 min."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-17a",
+     "kind": "outside_records",
+     "start": "2020-06-19T12:00",
+     "reason": "Rheumatology letter",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Rheumatology telemedicine visit",
+       "author": "rheumatology",
+       "date": "2020-06-19T12:00",
+       "body": "Telemedicine follow-up 6/17/2020. She reports stable hand stiffness and occasional wrist aching, managed with ibuprofen a few times a week. No fevers or infections. Given the pandemic we agreed to keep hydroxychloroquine 200 mg twice daily and prednisone 5 mg daily unchanged and to reassess in person early next year."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-05a",
+     "kind": "lab_only",
+     "start": "2020-08-05T08:10",
+     "reason": "Amiodarone monitoring",
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2020-08-05T08:10",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-08-05T08:10",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-08-05T08:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab review",
+       "author": "PCP",
+       "date": "2020-08-05T15:30",
+       "body": "TSH and liver panel normal. Portal message sent."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-21a",
+     "kind": "annual_physical",
+     "start": "2020-10-21T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2020-10-21T09:05",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-10-21T09:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-10-21T09:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-21T09:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2020-10-21T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2020-10-21T09:15",
+       "body": "Masked in-person physical. Has kept close to home this year. Wrists ache more lately, rheum visit planned for winter. No palpitations. On HT from gyn, saw them in Jan.\n\nExam: BP and weight per flowsheet. Heart regular, lungs clear. Mild MCP thickening, slight wrist fullness, no warmth. No edema. Neuro intact, gait normal.\n\nPlan: flu shot today. CBC, CMP, lipids. Mammogram 11/2020 ordered. Colonoscopy deferred again by pt given pandemic; revisit next year. Bone density still not done - she'll do it 'once things calm down.' Follow up in spring."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-18a",
+     "kind": "imaging",
+     "start": "2020-11-18T08:30",
+     "reason": "Annual diagnostic mammogram",
+     "reports": [
+      {
+       "study": "Diagnostic mammogram",
+       "performed": "2020-11-18T08:30",
+       "text": "Bilateral diagnostic mammogram with tomosynthesis. Comparison 2018 and 2019. Scattered fibroglandular density. Stable treated right breast. No suspicious finding.",
+       "conclusion": "BI-RADS 2, benign."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram result",
+       "author": "RN",
+       "date": "2020-11-19T10:00",
+       "body": "Benign. Letter mailed, portal notification sent."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-02a",
+     "kind": "outside_records",
+     "start": "2020-12-02T09:40",
+     "reason": "Cardiology letter",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Cardiology annual letter",
+       "author": "cardiology",
+       "date": "2020-12-02T09:40",
+       "body": "Virtual annual visit 11/24/2020. No palpitations, chest discomfort or syncope. Home pulse checks regular. We reviewed August TSH and liver tests from your office, both normal. Continue amiodarone 200 mg daily; ECG at the next in-person visit. No anticoagulation at CHA2DS2-VASc 1."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-09a",
+     "kind": "portal_message",
+     "start": "2020-12-09T13:05",
+     "reason": "COVID vaccine question",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Vaccine question",
+       "author": "patient",
+       "date": "2020-12-09T13:05",
+       "body": "I keep reading about the new COVID vaccines. Will I be able to get one with the prednisone and the RA medicine, and will it even work for me?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Vaccine question",
+       "author": "PCP",
+       "date": "2020-12-09T17:40",
+       "body": "Good question. Yes, people on your medicines are being encouraged to get it, and you will likely be in an early group because of the immune-suppressing medicines. It may work a bit less strongly for you, which is one more reason to get it. When the state opens your group we'll message you."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

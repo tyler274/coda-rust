@@ -1,0 +1,646 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002092",
+      "given": "Brett",
+      "family": "Coughlin",
+      "birth_date": "1979-05-24",
+      "address_line": "27 Shays Street, Amherst, MA 01002",
+      "phone": "+1-860-555-0117",
+      "email": "brett.coughlin@example.test",
+      "marital_status": "single",
+      "summary": "47-year-old construction site supervisor with obesity, chronic gallstone pancreatitis on enzymes and mitral valve prolapse who joined in 2024. Within two years: femoral shaft ORIF complicated by prolonged succinylcholine paralysis (pseudocholinesterase deficiency), viridans streptococcal mitral endocarditis after a dental extraction, and ARDS after elective cholecystectomy. Recovering at today with low albumin.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:40",
+          "reason": "New patient registration",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient registration call",
+              "author": "front desk",
+              "date": "2024-08-27T10:40",
+              "body": "Caller wants to join the practice. Says his old doctor's office went to a big hospital system and he could never get a call back. Works construction, days are long, wants to be able to text. Membership info emailed. Insurance card photo received. Signed release faxed to prior PCP office for records. New patient visit booked 9/10 at 7:30am, his request (early, before site opens)."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-05a",
+          "kind": "outside_records",
+          "start": "2024-09-05T14:10",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records received from prior primary care office",
+              "author": "front desk",
+              "date": "2024-09-05T14:10",
+              "body": "Records scanned to chart from prior PCP office (covers roughly 2016-2024).\n\nSummary sheet from that office:\nProblems: obesity; chronic pancreatitis, gallstone related, on enzyme replacement, followed by an outside GI group in the past; mitral valve prolapse with mild mitral regurgitation on prior echo.\nMeds: pancrelipase 36,000 lipase units with meals and snacks; aspirin 81 mg daily; omeprazole 20 mg daily.\nAllergies: NKDA.\nSocial: former smoker.\nPrior screening noted: lipids and A1c normal on their last draw. No colon screening on file.\n\nFiled for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T07:30",
+          "end": "2024-09-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Obesity, unspecified",
+              "action": "history",
+              "onset": "2015-01-01",
+              "note": "BMI 34"
+            },
+            {
+              "label": "Chronic pancreatitis",
+              "action": "history",
+              "onset": "2018-01-01",
+              "note": "Gallstone related, gallbladder in place, on pancreatic enzymes"
+            },
+            {
+              "label": "Mitral valve prolapse",
+              "action": "history",
+              "onset": "2012-01-01",
+              "note": "Mild mitral regurgitation"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2021-06-01",
+              "note": "Quit at 42, 12 pack-years"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth with each meal and with snacks",
+              "dose": {
+                "value": 36000,
+                "unit": "[USP'U]"
+              },
+              "frequency": "WITH MEALS AND SNACKS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic pancreatitis"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Mitral valve prolapse"
+            },
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 110.5,
+            "height_cm": 180.3,
+            "labs": {
+              "Albumin": 3.6,
+              "Total Cholesterol": 184,
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction site supervisor"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "3-4 beers per week"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-10T08:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-09-10T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-09-10T07:30",
+              "body": "45M here to set himself up with us; prior office records in chart.\n\nCC: establish care, no acute issues.\n\nHPI: Long history of gallstone pancreatitis that turned chronic. Takes Creon 36,000 with every meal and snack, says when he skips it he knows within an hour (greasy stools, cramping). Has not had a flare needing the hospital in a couple of years. Gallbladder is still in. Not sure why nobody took it out, says it came up once and he was busy. Omeprazole every morning. Told years ago he has a floppy mitral valve, knows his father has the same thing. Takes baby aspirin because a prior doctor told him to. No chest pain, palpitations, syncope. Climbs ladders and walks job sites all day without trouble.\n\nPMH: as above. No surgeries.\nMeds: pancrelipase 36,000 units lipase with meals/snacks, ASA 81 daily, omeprazole 20 daily.\nAllergies: NKDA.\nFH: father MVP. Mother had gallstones. Uncle on mom's side has chronic pancreatitis.\nSH: site supervisor for a commercial builder. Smoked about 12 pack-years, stopped at 42. 3-4 beers a week, no binge. Lives alone in Amherst. Rides a motorcycle in season.\n\nROS: weight stable, no abdominal pain currently, no steatorrhea on enzymes, no dyspnea, no edema.\n\nExam: vitals as charted, BMI 34. Pleasant, well appearing. Oropharynx clear, teeth in decent repair. Neck supple. Heart regular, mid-systolic click with a soft late systolic murmur at the apex, no gallop. Lungs clear. Abdomen obese, soft, nontender, no masses. No edema. Skin without rash.\n\nA/P:\n1. Chronic gallstone pancreatitis, on enzymes - stable. Continue Creon, omeprazole. CMP today. Will revisit whether surgery should look at the gallbladder once I know him better.\n2. MVP with mild MR - exam matches. Continue aspirin as he has been.\n3. Obesity, BMI 34 - talked briefly about food and activity, he is not interested in medication now.\n4. Former smoker - 12 pk-yr, does not meet lung screening.\n5. Health maintenance: flu shot today. Hep C and HIV screening today. Lipids, A1c. Colon screening due - we will set up a FIT at his physical in the spring, he prefers that to colonoscopy.\n\nRTC spring for physical, sooner prn. Gave him my cell."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-09-12T17:05",
+              "body": "Brett, everything from Tuesday came back fine. Blood counts, kidney and liver numbers, sugar and cholesterol all where they should be, and the hepatitis C and HIV screens are negative. Nothing to change. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "pharmacy",
+          "start": "2024-10-07T11:20",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Pancrelipase prior authorization",
+              "author": "MA",
+              "date": "2024-10-07T11:20",
+              "body": "Pharmacy says new plan year requires PA for Creon 36,000. Submitted with dx chronic pancreatitis, dose with meals and snacks, long-standing use per prior records. Approved same day for 12 months. Pharmacy notified, patient texted."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "portal_message",
+          "start": "2024-10-21T19:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-19T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid shot",
+              "author": "patient",
+              "date": "2024-10-21T19:30",
+              "body": "FYI got the new covid shot at the drugstore Saturday. Arm sore, otherwise fine."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Covid shot",
+              "author": "MA",
+              "date": "2024-10-22T08:15",
+              "body": "Thanks Brett, added to your record."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-02a",
+          "kind": "hospital_admission",
+          "start": "2024-12-02T16:40",
+          "end": "2024-12-07T12:30",
+          "service": "Orthopedic Surgery",
+          "reason": "Right femoral shaft fracture after motorcycle collision",
+          "conditions": [
+            {
+              "label": "Fracture of shaft of right femur, closed",
+              "icd10": "S72.301A",
+              "action": "diagnosed",
+              "onset": "2024-12-02"
+            },
+            {
+              "label": "Hypoalbuminemia",
+              "icd10": "E88.09",
+              "action": "diagnosed",
+              "onset": "2024-12-02"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1-2 tablets by mouth every 6 hours as needed for severe pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            },
+            {
+              "drug_text": "0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 40 mg under the skin once daily for 28 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "VTE prophylaxis after femur fixation"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-02T17:05",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-02T17:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-03T05:30",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.9
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 2.9
+            }
+          },
+          "procedures": [
+            {
+              "procedure": "Open reduction and internal fixation of right femoral shaft fracture",
+              "performed": "2024-12-02T19:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Orthopedic Surgery",
+              "author": "orthopedic surgery",
+              "date": "2024-12-09T09:45",
+              "body": "Regional hospital, orthopaedic trauma service\nAdmitted 12/02/2024, discharged 12/07/2024\n\nDiagnosis: closed right femoral shaft fracture, motorcycle collision.\nProcedure 12/02/2024: open reduction and internal fixation, right femoral shaft.\n\nPresentation: 45-year-old man brought in after a motorcycle collision with severe right thigh pain, obvious deformity, unable to stand. Alert and oriented, hemodynamically stable, in considerable pain. Imaging confirmed a right femoral shaft fracture. No other injuries identified on trauma survey. Taken to the OR the same evening.\n\nAnesthesia event: rapid sequence intubation with propofol and succinylcholine. Fasciculations of the face and chest were seen within seconds, followed by complete paralysis as expected. Fixation proceeded uneventfully. However, more than an hour after anesthetic agents were stopped, the patient had no spontaneous respiratory effort and no movement. Vital signs remained stable throughout. Repeat neurologic examination showed flaccid paralysis that was not explained by residual sedation. The anesthesia team felt this pointed to an underlying metabolic or genetic cause and suspected plasma (pseudo)cholinesterase deficiency. He was kept intubated, sedated and ventilated in recovery until neuromuscular function returned, and was extubated that night without difficulty. Plasma cholinesterase activity and dibucaine number were sent 12/04; results will be forwarded by the anesthesia department.\n\nHospital course: pain controlled on oral regimen. Albumin 2.9 on 12/03, noted as hypoalbuminemia; diet advanced, enzymes resumed with meals. Mobilized with PT, walker, weight bearing as tolerated on the right. Enoxaparin for VTE prophylaxis.\n\nHome medications continued: pancrelipase with meals and snacks, aspirin 81 mg, omeprazole 20 mg.\nNew: oxycodone-acetaminophen 5/325, 1-2 tabs q6h prn; enoxaparin 40 mg subcut daily x 28 days.\nAllergies: NKDA on admission. Anesthesia alert: prolonged paralysis after succinylcholine - avoid pending results.\n\nFollow-up: orthopaedics clinic 2 weeks, outpatient PT, primary care within 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "telephone",
+          "start": "2024-12-09T13:20",
+          "reason": "Post-discharge outreach",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2024-12-09T13:20",
+              "body": "Called pt 2 days after discharge from regional hospital (R femur ORIF 12/2). Home, getting around with walker. Pain moderate, taking oxycodone-APAP about 3x/day. Doing his own enoxaparin shots, no bleeding. Eating, taking Creon. Bowels slow, suggested OTC senna. No fever, no calf pain, no SOB. TCM visit booked Thu 12/12 - he has a ride."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-12a",
+          "kind": "office_visit",
+          "start": "2024-12-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after femur fixation",
+          "state": {
+            "labs": {
+              "Albumin": 3.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-12T10:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-12T10:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-12-12T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-12T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "author": "PCP",
+              "date": "2024-12-12T10:00",
+              "body": "Seen 10 days after a motorcycle crash: closed R femoral shaft fracture, ORIF 12/2 at the regional hospital, home 12/7. Discharge summary reviewed.\n\nThe anesthesia part is the bigger issue long term. He got succinylcholine for RSI and stayed paralyzed well over an hour after the case, kept on the vent until it wore off, extubated that night. Anesthesia suspects pseudocholinesterase deficiency and sent levels; not back yet. He remembers nothing of it, was told about it the next morning. Also albumin 2.9 inpatient.\n\nNow: walking with walker, WBAT. Pain improving, oxycodone-APAP 2-3 a day. Enoxaparin daily, no bruising beyond injection sites. Eating ok, Creon with meals. Constipated, senna helping.\n\nMeds: pancrelipase w/ meals and snacks, ASA 81, omeprazole 20, oxycodone-APAP 5/325 prn, enoxaparin 40 daily through ~12/30.\nAllergies: NKDA; succinylcholine reaction pending workup.\n\nExam: vitals as charted, afebrile. Uncomfortable getting onto the table but ok. Heart regular with his usual click/soft apical murmur. Lungs clear. R lateral thigh incision clean, dry, staples in, no erythema. Calves soft, nontender. Distal pulses intact, sensation intact.\n\nA/P:\n1. R femoral shaft fracture s/p ORIF - healing course per ortho, f/u 12/23. PT started. Taper oxycodone as able; no refill planned.\n2. VTE prophylaxis - finish 28 days enoxaparin.\n3. Prolonged paralysis after succinylcholine - await cholinesterase results. Flagged in chart now as an anesthesia alert.\n4. Hypoalbuminemia - recheck today. Push protein, keep enzymes with every meal and snack.\n5. Work - off duty until cleared by ortho; note given."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-13a",
+          "kind": "portal_message",
+          "start": "2024-12-13T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-12-13T16:40",
+              "body": "Hi Brett - your blood counts are fine and kidneys are fine. Albumin (a protein made by the liver that drops when you're sick or not absorbing food well) is 3.1, a little better than in the hospital but still low. Keep the Creon with every meal and snack and aim for protein at each meal - eggs, chicken, Greek yogurt, a shake if you're not hungry. We'll recheck it in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "outside_records",
+          "start": "2024-12-19T09:10",
+          "reason": "Anesthesia letter with cholinesterase results",
+          "conditions": [
+            {
+              "label": "Pseudocholinesterase deficiency",
+              "icd10": "E88.09",
+              "action": "diagnosed",
+              "onset": "2024-12-02"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Succinylcholine",
+              "reaction": "Prolonged paralysis and apnea after anesthesia",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "intolerance"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Letter from Department of Anesthesiology",
+              "author": "anesthesiology",
+              "date": "2024-12-19T09:10",
+              "body": "Re: Brett Coughlin, DOB 05/24/1979\n\nDear Doctor,\n\nYour patient had prolonged neuromuscular blockade after succinylcholine during emergency fixation of a right femoral shaft fracture on 12/02/2024, requiring postoperative ventilation for several hours. Plasma cholinesterase testing drawn 12/04/2024 has resulted:\n\nPlasma cholinesterase activity: 1,850 U/L (reference 5,320-12,920)\nDibucaine number: 21 (reference 79-87)\n\nThe low activity with a markedly reduced dibucaine number is the pattern of the homozygous atypical variant, i.e. inherited pseudocholinesterase deficiency. He should not receive succinylcholine or mivacurium; other neuromuscular blockers and ester local anesthetics in usual doses are generally acceptable, with the anesthesia team informed. We recommend he carry a medical alert card or bracelet and tell every future anesthesia team. Blood relatives may wish to be tested.\n\nWe have spoken with Mr. Coughlin by phone and mailed him a letter and alert card.\n\nAllergies/alerts updated in our record: succinylcholine (prolonged apnea).\n\nSincerely,\nDepartment of Anesthesiology, regional hospital"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "portal_message",
+          "start": "2024-12-20T07:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Anesthesia results",
+              "author": "PCP",
+              "date": "2024-12-20T07:50",
+              "body": "Brett, I got the anesthesia letter. The tests confirm what they suspected: you have an inherited form of pseudocholinesterase deficiency. Your body can't break down one specific paralytic drug (succinylcholine) normally, which is why you stayed paralyzed after surgery. It doesn't affect your day to day health at all. It matters only if you ever need anesthesia: anyone putting you to sleep needs to know so they use a different drug. I've put it at the top of your chart as a high-priority alert. Please wear a medical alert bracelet, and since it runs in families, your parents or any siblings could ask their doctors about testing."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Anesthesia results",
+              "author": "patient",
+              "date": "2024-12-20T12:31",
+              "body": "Thanks doc. They called me too. Ordered a bracelet. Will tell my folks."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-23a",
+          "kind": "specialist_visit",
+          "start": "2024-12-23T13:00",
+          "service": "Orthopedic Surgery",
+          "reason": "2-week postoperative visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopaedic Trauma Clinic - Postoperative Visit",
+              "author": "orthopedic surgery",
+              "date": "2024-12-26T15:20",
+              "body": "Orthopaedic trauma clinic, regional hospital. Visit 12/23/2024.\n\n45M, 3 weeks s/p ORIF R femoral shaft fracture (12/02/2024). Doing well. Pain controlled, using oxycodone rarely. Ambulating with walker.\n\nExam: incision healed, staples removed, steri-strips applied. No erythema or drainage. Thigh soft. Knee flexion coming along. NVI distally.\nX-rays R femur 2 views: hardware intact, alignment maintained, fracture line still visible as expected.\n\nPlan: WBAT, progress to cane as tolerated. Continue PT. Finish enoxaparin course. Return 4-5 weeks with X-rays. Off work for now.\n\nAllergies: succinylcholine (prolonged apnea)."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1853 @@
+{
+  "unit": "unit-2625",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002625",
+      "given": "Austin",
+      "family": "Crowley",
+      "birth_date": "1992-04-05",
+      "address_line": "27 Pleasant Street",
+      "phone": "+1-646-555-0133",
+      "email": "austin.crowley@example.test",
+      "marital_status": "single",
+      "summary": "Financial analyst in his thirties with ulcerative colitis since 2015 on mesalamine, followed by an outside GI group. Joins in 2022; primary sclerosing cholangitis is found on MRCP in October 2025, and worsening cholestasis in spring 2026 leads to ERCP dilation of a dominant bile duct stricture with negative brushings.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "portal_message",
+          "start": "2022-08-30T16:42",
+          "reason": "New patient intake",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New patient paperwork",
+              "date": "2022-08-30T16:42",
+              "author": "patient",
+              "body": "Hi, I filled out the intake forms online and signed the records release for my old primary care office. I have my first appointment on 9/12. I see a GI doctor every year for colitis, should I bring anything from them or will you request those too? Thanks, Austin"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New patient paperwork",
+              "date": "2022-08-31T09:10",
+              "author": "front desk",
+              "body": "Hi Austin, got your forms and the release, thank you. We faxed the request to your prior primary care office this morning. For GI, just bring your current medication bottle or a photo of the label and the name of the practice; the doctor will ask GI for notes if needed. See you on the 12th at 9:00. Please arrive 10 minutes early to scan your insurance card."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "establish_care",
+          "start": "2022-09-12T09:00",
+          "end": "2022-09-12T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Ulcerative colitis",
+              "action": "history",
+              "onset": "2015-06-01",
+              "note": "Diagnosed 2015 by outside GI; on mesalamine since."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "mesalamine 1200 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 1200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Ulcerative colitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              79
+            ],
+            "hr": 84,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 76.9,
+            "height_cm": 180.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-12T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 295
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.19
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-12T10:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-12T10:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 163
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-12T10:15",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Financial analyst"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-12T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-12T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-12T10:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-12T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "date": "2022-09-12T10:05",
+              "author": "PCP",
+              "body": "New patient, 30M, moving his primary care here. Previous PCP was fine, wanted easier access. Works as a financial analyst, long weeks around quarter close.\n\nUC: diagnosed 2015, around age 23. Has been on mesalamine 1.2 g twice a day ever since. Followed by an outside GI group, sees them about once a year and they do his GI labs. Says he has been in remission a long time, no bleeding, normal stools, no abdominal pain. Takes the mesalamine reliably. GI refills it.\n\nNo other medical problems. No surgeries. NKDA.\n\nFamily: maternal grandmother had UC. Father has primary sclerosing cholangitis. Mother has autoimmune hypothyroidism.\n\nSocial: never smoked, does not drink at all, no drugs. Lives in Easthampton. Exercises a few times a week.\n\nROS: negative except as above. No fatigue, no itching, no weight change.\n\nExam: well appearing. Vitals as charted. HEENT unremarkable, no scleral icterus. Neck supple, no adenopathy. Heart regular rate and rhythm, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema. Skin without rash.\n\nA/P\n1. Ulcerative colitis, in remission per patient on mesalamine. Continue with GI. Will request their most recent note. Mesalamine needs renal function checked; doing a BMP today.\n2. Health maintenance: CBC, BMP, lipids. HIV and hep C screening today, he agrees. Tdap given, no record of one in the last 10 years. Flu and COVID boosters next month when available. PHQ-2 0.\n3. Return in a year for a physical, sooner as needed. He has my cell for questions."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.0,
+            "height_cm": 180.3,
+            "labs": {
+              "Low Density Lipoprotein": 93,
+              "Total Cholesterol": 164
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T12:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "date": "2022-09-14T12:20",
+              "author": "PCP",
+              "body": "Austin, your blood counts, kidney function, electrolytes and cholesterol all look good. HIV and hepatitis C screens were nonreactive, which is what we expected; no need to repeat those unless something changes. Kidney numbers are the main thing we watch on mesalamine and yours are normal."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your recent lab results",
+              "date": "2022-09-14T18:03",
+              "author": "patient",
+              "body": "Great, thanks for the quick turnaround."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "outside_records",
+          "start": "2022-09-27T11:30",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2022-09-27T11:30",
+              "author": "outside primary care",
+              "body": "Records packet, 14 pages, faxed by prior primary care office in response to release dated 08/30/2022.\n\nContents: annual exams 2018 through 2021, immunization record, medication list, labs.\n\nProblem list: ulcerative colitis, managed by gastroenterology.\nMedications: mesalamine DR 1.2 g twice daily (prescribed by GI).\nAllergies: NKDA.\n\nAnnual exams each unremarkable; weight stable in the high 70s kg; blood pressure normal at each visit. Basic metabolic panels and blood counts in 2019 and 2021 within normal limits. Immunizations listed: childhood series complete, influenza in most years, COVID-19 primary series 2021. No Tdap recorded since adolescence.\n\nReviewed and scanned to chart. Nothing outstanding. -- MA"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "nurse_visit",
+          "start": "2022-10-19T17:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-19T17:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-19T17:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-19T17:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2022-10-19T17:35",
+              "author": "RN",
+              "body": "Here after work for flu and bivalent COVID booster. Screening questions negative. Flu vaccine 0.5 mL IM left deltoid. Pfizer bivalent 0.3 mL IM right deltoid. VIS given for both. Waited 15 minutes, no reaction. Told him a sore arm or a tired day afterward is common."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "pharmacy",
+          "start": "2023-01-24T10:05",
+          "reason": "Refill request, mesalamine",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request",
+              "date": "2023-01-24T10:05",
+              "author": "MA",
+              "body": "Fax from pharmacy requesting refill of mesalamine DR 1.2 g, 1 tab BID, #180. Prescriber on the bottle is his GI. Called pharmacy, told them to send to GI office; we do not manage this one. Pharmacy said they had sent to us because GI's fax line was busy. Patient has 6 days left. Left a message for patient letting him know."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Pharmacy Refill Request",
+              "date": "2023-01-25T14:40",
+              "author": "MA",
+              "body": "Patient called back, GI sent the refill this morning, he picked it up. Closing."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "nurse_visit",
+          "start": "2023-03-14T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine, dose 1",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-14T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2023-03-14T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2023-03-14T08:25",
+              "author": "RN",
+              "body": "Hep B series, dose 1 of 2 (Heplisav-B), per PCP recommendation for all adults under 60; no prior hep B vaccine on his records. 0.5 mL IM left deltoid. VIS reviewed. No reaction during 15 minute wait. Dose 2 due in 4 weeks, booked for 4/13."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-13a",
+          "kind": "nurse_visit",
+          "start": "2023-04-13T08:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine, dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-04-13T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2023-04-13T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2023-04-13T08:20",
+              "author": "RN",
+              "body": "Heplisav-B dose 2 of 2, 0.5 mL IM right deltoid. Said the first one left his arm sore for a day, nothing else. Observed, fine. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              105,
+              85
+            ],
+            "hr": 78,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 76.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-19T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-19T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 131
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-19T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-19T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-19T08:25",
+              "author": "PCP",
+              "body": "Early slot before work. Feeling well. UC quiet, no bleeding or urgency, on mesalamine 1.2 g BID, saw GI earlier this year and everything was fine per him. Busy at work but sleeping ok. Running and some weights.\n\nMeds: mesalamine DR 1.2 g BID. NKDA.\nNever smoker, no alcohol.\n\nExam: well, no distress. No scleral icterus. Neck no nodes or thyromegaly. Heart RRR without murmur. Lungs clear. Abdomen soft and nontender, no masses or organomegaly. No edema. Skin normal.\n\nPHQ-2 0.\n\nA/P\nUC in remission, GI following. BMP for mesalamine, CBC, lipids today.\nHep B series done in the spring. Flu and COVID next month.\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T07:55",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your physical",
+              "date": "2023-09-21T07:55",
+              "author": "PCP",
+              "body": "Labs from Tuesday are all normal, kidneys included. Cholesterol is fine. Nothing to do."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T12:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T12:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-24T12:30",
+              "author": "RN",
+              "body": "Lunch-hour visit for flu and the 2023-24 COVID vaccine. No fever today, no prior reactions besides a sore arm. Flu 0.5 mL IM L deltoid, Pfizer 2023-24 formula 0.3 mL IM R deltoid. VIS provided. 15 min observation without problems."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "pharmacy",
+          "start": "2024-01-09T13:25",
+          "reason": "Prior authorization, mesalamine DR",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization Notice",
+              "date": "2024-01-09T13:25",
+              "author": "MA",
+              "body": "Insurer PA request arrived here for mesalamine DR 1.2 g tablets, new plan year. Our office is not the prescriber. Forwarded the PA form to his GI office by fax with a cover sheet and messaged the patient so he can follow up with them."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Prior authorization",
+              "date": "2024-01-11T08:47",
+              "author": "patient",
+              "body": "Thanks for the heads up. GI got it approved yesterday, pharmacy filled it."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              81
+            ],
+            "hr": 79,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 77.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.02
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-24T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-24T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 163
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-24T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-24T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-24T08:45",
+              "author": "PCP",
+              "body": "32M here for yearly exam. No complaints. Colitis has been quiet, no flares this year by his account. GI visit coming up next month. Still on mesalamine 1.2 g twice daily, rarely misses a dose. Work is steady.\n\nNKDA. Never smoker, no alcohol.\n\nExam: Well appearing. Eyes anicteric. No neck masses. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Extremities without edema. Skin clear.\n\nPHQ-2 0.\n\nAssessment/plan:\n- UC on mesalamine, followed by GI. Annual BMP for kidney function today with CBC and lipids.\n- Flu and COVID in October, nurse visit.\n- Back next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T17:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2024-09-26T17:30",
+              "author": "PCP",
+              "body": "Hi Austin, everything from Tuesday came back normal: counts, kidneys, electrolytes, cholesterol. Have a good GI visit next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "outside_records",
+          "start": "2024-10-21T10:40",
+          "reason": "Gastroenterology visit note",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-14T11:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-14T11:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2024-10-21T10:40",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP\nDate of service: 10/14/2024\nRe: Austin Crowley, DOB 04/05/1992\n\nDear Doctor,\n\nI saw Austin today for his yearly ulcerative colitis visit. He was diagnosed in 2015 and has taken mesalamine the whole time. He is taking it as prescribed and has gone the past year without a flare. He has had no blood in his stool recently, no abdominal pain and no weight loss.\n\nMedications: mesalamine DR 1.2 g by mouth twice daily.\nAllergies: NKDA.\nFamily history: maternal grandmother with ulcerative colitis; father with primary sclerosing cholangitis; mother with autoimmune hypothyroidism.\nSocial: never smoker, no alcohol, financial analyst.\n\nVital signs were stable. On exam the abdomen is nontender without masses.\n\nCBC and basic metabolic panel drawn today are normal.\n\nImpression: ulcerative colitis in clinical remission on mesalamine.\nPlan: continue mesalamine 1.2 g twice daily. Return in one year, sooner for any change in bowel habits or bleeding.\n\nThank you for allowing us to share in his care.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-30a",
+          "kind": "nurse_visit",
+          "start": "2024-10-30T16:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-30T16:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-30T16:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-30T16:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-30T17:05",
+              "author": "RN",
+              "body": "Flu (2024-25 trivalent) 0.5 mL IM left deltoid and COVID 2024-25 Pfizer 0.3 mL IM right deltoid. Feeling well, no contraindications. Observed 15 min. Left without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "portal_message",
+          "start": "2025-03-11T21:14",
+          "reason": "Insurance card update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New insurance card",
+              "date": "2025-03-11T21:14",
+              "author": "patient",
+              "body": "Work switched our plan administrator, same PPO but new member number. Uploaded front and back of the card. Let me know if you need anything else."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New insurance card",
+              "date": "2025-03-12T09:02",
+              "author": "front desk",
+              "body": "Got it, updated in your account and verified eligibility. You're all set."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "portal_message",
+          "start": "2025-07-29T10:20",
+          "reason": "Physical scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for your yearly physical",
+              "date": "2025-07-29T10:20",
+              "author": "front desk",
+              "body": "Hi Austin, you're due for your annual physical. We have openings in late August, including Monday 8/25 at 7:40 am. Want it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time for your yearly physical",
+              "date": "2025-07-29T12:31",
+              "author": "patient",
+              "body": "Yes please, 8/25 at 7:40 works."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "annual_physical",
+          "start": "2025-08-25T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2025-08-24T19:05",
+              "author": "front desk",
+              "body": "Patient cancelled by portal Sunday night, end-of-quarter work deadline. Will call to rebook after things settle."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "portal_message",
+          "start": "2025-10-20T07:12",
+          "reason": "GI testing",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI visit and MRI",
+              "date": "2025-10-20T07:12",
+              "author": "patient",
+              "body": "Hi, wanted to give you a heads up. I saw GI on the 6th because I've been tired and itchy for months. My liver tests came back off and they had me do an MRI of the bile ducts on Friday. GI called and said it looks like PSC, which is what my dad has. They're sending you a letter. I still need to rebook my physical too. Can we talk about all of it when the letter comes?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI visit and MRI",
+              "date": "2025-10-20T12:48",
+              "author": "PCP",
+              "body": "Thanks for telling me, Austin. That is a lot to take in, especially with your dad's history. Once GI's note and the MRI report arrive I'll read them and we can sit down; I'll have the front desk find you a slot in the next couple of weeks and we'll do the physical separately. Your flu shot is still on for Wednesday, that's fine to get. Text me if anything changes before then."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "nurse_visit",
+          "start": "2025-10-22T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-22T17:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-22T17:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-22T17:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-22T17:15",
+              "author": "RN",
+              "body": "Seasonal flu 0.5 mL IM L deltoid, 2025-26 COVID (Pfizer) 0.3 mL IM R deltoid. No fever, screening negative. Visit with PCP being booked for early November. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "outside_records",
+          "start": "2025-10-24T14:10",
+          "reason": "Gastroenterology note and MRCP report",
+          "conditions": [
+            {
+              "label": "Primary sclerosing cholangitis",
+              "action": "diagnosed",
+              "onset": "2025-10-17",
+              "note": "Diagnosed by outside GI on MRCP."
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-10-06T10:30",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.1
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 420
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 55
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-06T10:30",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 210
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI abdomen with MRCP",
+              "loinc": "24557-1",
+              "performed": "2025-10-17T15:00",
+              "text": "OUTSIDE IMAGING REPORT\nExam: MRI abdomen without and with contrast, MRCP protocol.\nIndication: Cholestatic liver tests in a patient with ulcerative colitis.\nTechnique: Multiplanar, multisequence MR imaging of the abdomen with 2D and 3D MRCP sequences before and after IV gadolinium.\nFindings: Multiple short strictures involve the intrahepatic ducts of both lobes and the extrahepatic bile duct, with intervening segments of dilation. No discrete intraductal filling defect. Liver normal in size and signal without focal lesion. Gallbladder unremarkable. Pancreas normal; pancreatic duct not dilated. Spleen normal in size. No ascites. No lymphadenopathy. Kidneys and adrenals unremarkable.",
+              "conclusion": "Multifocal intrahepatic and extrahepatic biliary strictures with segmental dilations, in keeping with primary sclerosing cholangitis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2025-10-24T14:10",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP\nDates: clinic visit 10/06/2025; MRCP 10/17/2025\nRe: Austin Crowley, DOB 04/05/1992\n\nDear Doctor,\n\nAustin came back to clinic with roughly six months of fatigue and itching. On questioning he also described on-and-off bloody diarrhea going back to late last year, which he had put down to hemorrhoids and had not mentioned to anyone. He continues mesalamine DR 1.2 g twice daily. He denies travel, alcohol or sexual risk exposures.\n\nAllergies: NKDA.\nFamily history: maternal grandmother with UC, father with PSC, mother with autoimmune hypothyroidism.\n\nExam: well nourished, jaundiced. Abdomen soft, not distended, nontender. No hepatosplenomegaly. No ascites.\n\nLabs 10/06/2025:\nTotal bilirubin 2.1 mg/dL (H)\nDirect bilirubin 1.5 mg/dL (H)\nAlkaline phosphatase 420 U/L (H)\nGGT 210 U/L (H)\nAST 50 U/L (H)\nALT 55 U/L\n\nMRCP 10/17/2025: multifocal strictures of the intrahepatic and extrahepatic bile ducts with segmental dilation (report enclosed).\n\nImpression: primary sclerosing cholangitis in a patient with long-standing ulcerative colitis and a father with PSC. Cholestatic liver enzymes with mild hyperbilirubinemia.\n\nPlan: continue mesalamine 1.2 g twice daily. We discussed the diagnosis with him by phone after the MRCP. Follow-up in clinic in six months with repeat labs, sooner if jaundice or itching worsens.\n\nThank you for allowing us to share in his care.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 55,
+              "Alkaline Phosphatase": 420,
+              "Aspartate Aminotransferase": 50,
+              "Bilirubin, Direct": 1.5,
+              "Bilirubin, Total": 2.1,
+              "Gamma Glutamyl Transferase": 210
+            }
+          }
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "office_visit",
+          "start": "2025-11-04T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, new diagnosis of PSC",
+          "vitals": {
+            "bp": [
+              119,
+              83
+            ],
+            "hr": 78,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 77.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-11-04T16:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-04T16:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-11-04T16:55"
+            },
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2025-11-04T16:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-11-04T17:05",
+              "author": "PCP",
+              "body": "S: Here to go over the new PSC diagnosis. GI letter and MRCP report reviewed with him. He has been tired and itchy since around the spring and figured it was work stress. The bloody stool episodes GI wrote about he had brushed off as hemorrhoids; GI is aware. He knows PSC well from his father and has a lot of questions about what comes next. Still on mesalamine 1.2 g BID. No other meds. NKDA. No alcohol.\n\nO: Vitals as charted, weight unchanged. Sclerae faintly yellow. Heart regular. Lungs clear. Abdomen soft, nontender, no organomegaly, no ascites. No edema.\n\nA/P:\n1. Primary sclerosing cholangitis, new, GI managing. Labs and MRCP reviewed, bilirubin 2.1 and alk phos 420. Talked through how it is usually followed with labs and imaging and that GI will lead. Added to problem list. Asked him to message me or GI right away for fever, worse yellowing, or right-sided belly pain.\n2. UC on mesalamine, per GI.\n3. Vaccines for chronic liver disease: hep B series already complete (2023). Hep A dose 1 today, dose 2 in 6 months. PCV20 today.\n4. Physical still to be rebooked, front desk to schedule December.\n\n~35 minutes, more than half counseling."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "annual_physical",
+          "start": "2025-12-09T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              80
+            ],
+            "hr": 72,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 76.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-09T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 300
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-09T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-12-09T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-09T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-12-09T08:30",
+              "author": "PCP",
+              "body": "33M, physical, rebooked from August.\n\nInterval: PSC diagnosed in October by GI, seen here 11/4. Fatigue and itching ongoing, about the same. GI follow-up planned for spring with labs. Mesalamine 1.2 g BID continues.\n\nMood ok, a little down about the diagnosis but coping, talking with family. Sleeping fine. PHQ-2 1.\n\nNKDA. Never smoker, no alcohol.\n\nExam: Well appearing, no distress. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema. Skin with no rash.\n\nPlan:\n- PSC and UC per GI. Liver labs with GI in the spring, not repeating here.\n- BMP for mesalamine, CBC.\n- Vaccines: flu, COVID done this fall. PCV20 and hep A #1 given 11/4; hep A #2 due May.\n- RTC 1 year, or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "portal_message",
+          "start": "2025-12-11T13:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-12-11T13:05",
+              "author": "PCP",
+              "body": "Blood counts and kidney function from your physical are normal. Liver tests stay with GI as we discussed."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T11:40",
+          "reason": "Prior authorization renewal, mesalamine DR",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization Renewal",
+              "date": "2026-01-13T11:40",
+              "author": "MA",
+              "body": "Annual PA renewal for mesalamine DR 1.2 g came to us again instead of GI. Same as last time: faxed it to his GI office, noted in the PA log, sent patient a portal note. Asked the insurer rep to update prescriber of record to GI."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "outside_records",
+          "start": "2026-04-24T09:50",
+          "reason": "Gastroenterology note, labs and ultrasound",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-20T09:45",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 2.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 420
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 75
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-20T09:45",
+              "results": [
+                {
+                  "test": "CA 19-9",
+                  "loinc": "24108-3",
+                  "unit": "U/mL",
+                  "value": 22
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2026-04-20T11:15",
+              "text": "OUTSIDE IMAGING REPORT\nExam: Ultrasound, abdomen complete.\nIndication: Primary sclerosing cholangitis, rising bilirubin.\nFindings: The intrahepatic bile ducts are beaded and irregular. The liver is normal in size without focal mass. Gallbladder is normal, without stones or wall thickening. Visualized pancreas unremarkable. Spleen normal in size. Both kidneys normal in size without hydronephrosis. Abdominal aorta normal caliber. No ascites.",
+              "conclusion": "Beading and irregularity of the intrahepatic bile ducts, consistent with known primary sclerosing cholangitis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2026-04-24T09:50",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP\nDate of service: 04/20/2026\nRe: Austin Crowley, DOB 04/05/1992\n\nDear Doctor,\n\nAustin returned six months after we diagnosed primary sclerosing cholangitis. Fatigue and itching have persisted through the winter and he has been yellow off and on. Over the last stretch he has noticed pale stools and dark urine. His colitis has stayed quiet on mesalamine, and the bleeding episodes he described last fall have not come back.\n\nMedications: mesalamine DR 1.2 g twice daily.\nAllergies: NKDA.\nFamily history: maternal grandmother UC, father PSC, mother autoimmune hypothyroidism.\nSocial: never smoker, no alcohol, financial analyst.\n\nExam: afebrile. Sclerae icteric. Abdomen soft, not distended, no masses, mildly tender in the right upper quadrant.\n\nLabs 04/20/2026:\nTotal bilirubin 3.2 mg/dL (H)\nDirect bilirubin 2.5 mg/dL (H)\nAlkaline phosphatase 420 U/L (H)\nAST 80 U/L (H)\nALT 75 U/L (H)\nCA 19-9 22 U/mL (normal)\n\nAbdominal ultrasound today: beaded, irregular intrahepatic ducts (report enclosed).\n\nImpression: PSC with worsening cholestasis and jaundice; concern for a dominant stricture. CA 19-9 reassuring.\nPlan: ERCP with cholangiography, possible dilation and brushings, being scheduled at the regional hospital. Continue mesalamine.\n\nThank you for allowing us to share in his care.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 75,
+              "Alkaline Phosphatase": 420,
+              "Aspartate Aminotransferase": 80,
+              "Bilirubin, Direct": 2.5,
+              "Bilirubin, Total": 3.2
+            }
+          }
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "portal_message",
+          "start": "2026-04-27T08:15",
+          "reason": "Question about ERCP",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ERCP question",
+              "date": "2026-04-27T08:15",
+              "author": "patient",
+              "body": "GI is setting me up for an ERCP on May 12. My dad had a couple of these. Is there anything you want me to do before, and is it ok to still get my second hep A shot next week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ERCP question",
+              "date": "2026-04-27T11:52",
+              "author": "PCP",
+              "body": "Hi Austin, I saw GI's letter. The ERCP is the right next step given the jaundice and the stool color change; they can look at the ducts directly, open up a tight spot if there is one, and take samples. Follow the prep instructions from the hospital, and you'll need a ride home. The hep A shot next week is fine. If you get fever, chills or worse belly pain before the procedure, call GI or me the same day."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "nurse_visit",
+          "start": "2026-05-05T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis A vaccine, dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-05-05T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2026-05-05T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2026-05-05T08:15",
+              "author": "RN",
+              "body": "Hep A dose 2 of 2, 1 mL IM left deltoid. Afebrile by report, no reaction to dose 1 in November. VIS given. Observed 15 minutes. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-15a",
+          "kind": "outside_records",
+          "start": "2026-05-15T15:20",
+          "reason": "ERCP report",
+          "reports": [
+            {
+              "study": "ERCP",
+              "loinc": "18751-8",
+              "performed": "2026-05-12T10:30",
+              "text": "REGIONAL HOSPITAL ENDOSCOPY\nProcedure: Endoscopic retrograde cholangiopancreatography with biliary balloon dilation and brushings.\nIndication: Primary sclerosing cholangitis with rising bilirubin, pale stools and dark urine.\nSedation: Monitored anesthesia care.\nFindings: Normal major papilla. Deep biliary cannulation achieved. Cholangiogram shows multifocal intrahepatic strictures with intervening dilation, and a dominant stricture of the common bile duct. Biliary sphincterotomy not performed. The dominant stricture was dilated with a balloon. Brushings of the stricture sent for cytology. Good drainage of contrast after dilation. No stent placed. Pancreatic duct not opacified.\nComplications: None.\nDisposition: Discharged home the same day.",
+              "conclusion": "Dominant common bile duct stricture in primary sclerosing cholangitis, balloon dilated; brushings obtained; no stent."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedures",
+              "title": "ERCP Procedure Report",
+              "date": "2026-05-15T15:20",
+              "author": "gastroenterology",
+              "body": "Regional hospital endoscopy report, procedure date 05/12/2026, received by fax.\n\nERCP for PSC with worsening cholestasis. Dominant common bile duct stricture identified and balloon dilated; brushings sent to cytology. No stent. No complications. Discharged home same day with his family. Mesalamine to continue. Clinic follow-up with labs in about six weeks.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "outside_records",
+          "start": "2026-05-20T10:05",
+          "reason": "Bile duct brushing cytology",
+          "reports": [
+            {
+              "study": "Cytology, bile duct brushing",
+              "loinc": "33716-2",
+              "performed": "2026-05-12T10:30",
+              "text": "REGIONAL HOSPITAL PATHOLOGY\nSpecimen: Common bile duct stricture, brushings.\nClinical history: Primary sclerosing cholangitis, dominant stricture.\nAdequacy: Satisfactory for evaluation.\nMicroscopic: Cellular specimen with benign ductal epithelium in flat sheets. No atypical or malignant cells identified.",
+              "conclusion": "Negative for malignancy.",
+              "issued": "2026-05-19T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Bile Duct Brushing Cytology",
+              "date": "2026-05-20T10:05",
+              "author": "pathology",
+              "body": "Cytology report from the regional hospital for the 05/12/2026 ERCP brushings: benign ductal cells, negative for malignancy. Copy also sent to ordering gastroenterologist. Scanned to chart. -- MA"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "telehealth_visit",
+          "start": "2026-05-21T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in after ERCP",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-05-21T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2026-05-21T12:50",
+              "author": "PCP",
+              "body": "Video visit from his office.\n\nERCP 5/12 at the regional hospital, report reviewed: dominant CBD stricture ballooned, brushings taken, no stent. Cytology back yesterday, negative for malignancy, which I went over with him; he had already seen it in the GI portal and was relieved.\n\nSince the procedure his urine is lighter and stools are getting back to normal color. Itching a bit better. No fever, no chills, no abdominal pain after the first day. Eating normally, back at work. Still taking mesalamine 1.2 g BID.\n\nAppears well on video, no distress, speaking comfortably.\n\nA/P: PSC, s/p ERCP with dilation of dominant stricture, benign brushings, recovering as expected. GI follow-up with labs late June. Return precautions reviewed: fever, rigors, returning jaundice or RUQ pain should prompt a same-day call. Hep A series finished 5/5."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "outside_records",
+          "start": "2026-06-26T14:35",
+          "reason": "Gastroenterology follow-up after ERCP",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-06-22T09:20",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.4
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 310
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 48
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.7
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2026-06-26T14:35",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP\nDate of service: 06/22/2026\nRe: Austin Crowley, DOB 04/05/1992\n\nDear Doctor,\n\nFollow-up six weeks after ERCP with balloon dilation of a dominant common bile duct stricture (brushings benign). Austin feels much better. The itching has largely settled, his stools are a normal color again and his urine is no longer dark. Colitis remains quiet on mesalamine.\n\nMedications: mesalamine DR 1.2 g twice daily.\nAllergies: NKDA.\n\nExam: anicteric. Abdomen soft and nontender.\n\nLabs 06/22/2026:\nTotal bilirubin 1.4 mg/dL (H)\nDirect bilirubin 0.8 mg/dL (H)\nAlkaline phosphatase 310 U/L (H)\nAST 48 U/L (H)\nALT 52 U/L\n\nImpression: PSC, improved biochemically and clinically after stricture dilation.\nPlan: continue mesalamine 1.2 g twice daily. Hepatic panel and CA 19-9 in late August; he may have them drawn at your office. Repeat MRCP in about a year. Return to clinic in the fall.\n\nThank you for allowing us to share in his care.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 52,
+              "Alkaline Phosphatase": 310,
+              "Aspartate Aminotransferase": 48,
+              "Bilirubin, Direct": 0.8,
+              "Bilirubin, Total": 1.4
+            }
+          }
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "portal_message",
+          "start": "2026-06-29T17:10",
+          "reason": "GI follow-up letter",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your GI follow-up",
+              "date": "2026-06-29T17:10",
+              "author": "PCP",
+              "body": "Hi Austin, I read GI's note from last week. Bilirubin has come down from 3.2 to 1.4 and the alk phos is lower too, so the dilation did what it was supposed to. Glad the itching is better. They want liver labs and a CA 19-9 in late August, and we can draw them here if that's easier; just message when you want to come in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your GI follow-up",
+              "date": "2026-06-29T20:44",
+              "author": "patient",
+              "body": "Thanks! Yes I'll do the labs with you guys, much closer to work."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T09:30",
+          "reason": "Lab appointment for GI labs",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab draw for GI",
+              "date": "2026-08-18T09:30",
+              "author": "patient",
+              "body": "Hi, can I come in next week for the liver labs GI wanted? Wednesday afternoon would be best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab draw for GI",
+              "date": "2026-08-18T10:12",
+              "author": "front desk",
+              "body": "Wednesday 8/26 at 3:30 is open, booked. The orders are in and results will go to GI and to your doctor here."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-26a",
+          "kind": "lab_only",
+          "start": "2026-08-26T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatic panel and CA 19-9 for GI",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-08-26T15:35",
+              "pending": true,
+              "results": [
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Bilirubin, Direct"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-26T15:35",
+              "pending": true,
+              "results": [
+                {
+                  "test": "CA 19-9",
+                  "loinc": "24108-3",
+                  "unit": "U/mL"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-26T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Lab Draw",
+              "date": "2026-08-26T15:45",
+              "author": "MA",
+              "body": "Venipuncture right antecubital, one attempt. Hepatic panel and CA 19-9 per GI's request, copy to GI. Sent to reference lab. Patient tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-21a",
+          "kind": "annual_physical",
+          "start": "2026-09-21T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "labs": {
+      "CA 19-9": {
+        "code": "24108-3",
+        "display": "Cancer Ag 19-9 [Units/volume] in Serum or Plasma",
+        "unit": "U/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Cytology, bile duct brushing": {
+        "code": "33716-2",
+        "display": "Non-gynecological cytology study",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "ERCP": {
+        "code": "18751-8",
+        "display": "Endoscopy study",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MRI abdomen with MRCP": {
+        "code": "24557-1",
+        "display": "MR Abdomen WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

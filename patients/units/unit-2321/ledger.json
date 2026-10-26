@@ -1,0 +1,1617 @@
+{
+  "unit": "unit-2321",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002321",
+      "given": "George",
+      "family": "Thayer",
+      "birth_date": "1953-09-20",
+      "address_line": "41 North Silver Lane",
+      "phone": "+1-508-555-0140",
+      "email": "george.thayer@example.test",
+      "marital_status": "married",
+      "summary": "Retired math teacher with hypertension, BPH after TURP, chronic constipation and hyposmia who joins in 2023, develops Parkinson disease diagnosed by outside neurology in 2024, and by August 2026 has Parkinson disease psychosis started on quetiapine.",
+      "events": [
+        {
+          "id": "2023-08-21a",
+          "kind": "telephone",
+          "start": "2023-08-21T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2023-08-21T10:12",
+              "author": "front desk",
+              "body": "Wife phoned on behalf of George Thayer, 69, retired teacher, wants him to become a member here. Membership packet emailed. New patient slot booked Tue 9/12 at 9:00. Signed records release faxed to his old primary care office same day."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "outside_records",
+          "start": "2023-09-05T14:40",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Practice",
+              "date": "2023-09-05T14:40",
+              "author": "outside primary care",
+              "body": "Received by fax 9/5/2023, 38 pages. Summary of contents:\n- Problem list: hypertension; benign prostatic hyperplasia, status post TURP 2015; chronic constipation; decreased sense of smell.\n- Medications: amlodipine 5 mg daily; docusate sodium 100 mg twice daily; polyethylene glycol 3350 17 g daily as needed.\n- Allergies: sulfa drugs (rash); latex.\n- Surgical: cholecystectomy 2002; TURP 2015; cataract extraction with lens implant, both eyes, 2019.\n- Screening colonoscopy 2018: no polyps, normal to the cecum, repeat in 10 years.\n- Immunizations: Tdap 2019; influenza yearly; COVID primary series and boosters through 2022.\n- Most recent office notes 2022-2023: blood pressure controlled on amlodipine, no medication changes.\nScanned to media."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T09:00",
+          "end": "2023-09-12T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Benign prostatic hyperplasia without lower urinary tract symptoms",
+              "action": "diagnosed",
+              "note": "status post TURP 2015",
+              "icd10": "N40.0"
+            },
+            {
+              "label": "Chronic constipation",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Hyposmia",
+              "action": "diagnosed",
+              "note": "long-standing",
+              "icd10": "R43.8"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "onset": "2002-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug_text": "docusate sodium 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "constipation"
+            },
+            {
+              "drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution",
+              "action": "historical",
+              "sig": "Mix 17 g in 8 oz of liquid and drink once daily as needed for constipation",
+              "dose": {
+                "value": 17,
+                "unit": "g"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "constipation"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Latex",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              81
+            ],
+            "hr": 64,
+            "spo2": 99,
+            "weight_kg": 74.1,
+            "height_cm": 175.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T10:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 57
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-12T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 243
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-12T10:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 158
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 85
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 111
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Lifelong abstainer"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired high school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-12T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-09-12T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T10:05",
+              "author": "PCP",
+              "body": "NEW PATIENT\n69 y/o man, retired high school math teacher, transferring care. Wife along. Old records reviewed (arrived 9/5).\n\nHPI / chronic issues\n- HTN: many years, on amlodipine 5 mg. Checks at home now and then, says numbers are in the 120s-130s. No headaches, no swelling.\n- BPH: TURP in 2015, stream has been good ever since, gets up once a night at most. On nothing for it.\n- Constipation: lifelong-ish. Docusate twice a day and MiraLAX on days he needs it, which is most days. BMs every 1-2 days on this. No blood, no black stools.\n- Sense of smell has been poor for years, can't smell coffee much. No head injury. Hasn't seen anyone about it.\nNo other concerns. Feels well, walks around town most mornings.\n\nPSH: cholecystectomy 2002; TURP 2015; cataract surgery both eyes 2019.\nMeds: amlodipine 5 daily; docusate 100 BID; PEG 3350 17 g daily prn.\nAllergies: sulfa (rash); latex.\nFH: father - Parkinson's, began at 72. Mother - Alzheimer's from age 75. One older brother with essential tremor.\nSH: married, daughter lives nearby. Never smoker. Has never drunk alcohol.\n\nExam: vitals as charted. Pleasant, talkative, good historian. Pupils round, lens implants both eyes. Neck supple, no thyroid enlargement. Heart regular rate, no murmurs. Lungs clear throughout. Abdomen soft, old surgical scars well healed, nontender. No leg edema. Moves all limbs well, strength symmetric, walks with a normal stride and arm swing. No tremor.\n\nAssessment and plan\n1. Hypertension - controlled. Continue amlodipine 5 mg.\n2. BPH s/p TURP - no symptoms, nothing to do.\n3. Chronic constipation - stable on docusate + PEG, continue.\n4. Hyposmia - long-standing, on the list.\n5. Health maintenance: colonoscopy 2018 clean per outside report, due 2028. Tdap 2019. PCV20 given today. Flu and COVID in October. Will start Shingrix after that. One-time hep C and HIV screening sent today with CMP, CBC, lipids, A1c, TSH.\nFollow up in about 6 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              78
+            ],
+            "weight_kg": 74.4,
+            "height_cm": 175.0,
+            "labs": {
+              "Hemoglobin A1c": 5.6,
+              "Low Density Lipoprotein": 90,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Total Cholesterol": 166,
+              "Vitamin B12": 460
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2023-09-14T16:20",
+              "author": "PCP",
+              "body": "Hi George - everything from Tuesday came back fine. Kidney and liver tests, blood count, thyroid, sugar (A1c) and cholesterol are all in a healthy range, and the hepatitis C and HIV screens were negative. Nothing needs to change. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-17T11:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T11:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-17T11:45",
+              "author": "RN",
+              "body": "Here for fall shots. Allergies reviewed - sulfa, latex; latex-free gloves used. High-dose flu 0.7 mL IM left deltoid. Updated COVID vaccine 0.3 mL IM right deltoid. VIS sheets given. Waited 15 min, felt fine, left."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "nurse_visit",
+          "start": "2023-11-28T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 1",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-11-28T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2023-11-28T14:10",
+              "author": "MA",
+              "body": "Shingrix #1, 0.5 mL IM L deltoid. Latex-free supplies. Told him to expect possible soreness or tiredness for a day or two. Dose 2 due in 2-6 months - scheduled 2/6."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "pharmacy",
+          "start": "2024-01-09T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2024-01-09T08:50",
+              "author": "MA",
+              "body": "Pharmacy fax: amlodipine 5 mg, last fill by previous doctor, no refills left. Routed to PCP.\n\nPCP: ok, 90 days x 3 refills sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "nurse_visit",
+          "start": "2024-02-06T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-02-06T10:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-02-06T10:30",
+              "author": "MA",
+              "body": "Second Shingrix 0.5 mL IM R deltoid, latex-free. Said the first one made him achy for an evening, nothing more. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up; daughter concerned about tremor and walking",
+          "vitals": {
+            "bp": [
+              135,
+              78
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 74.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-19T14:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T14:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Vitamin B12",
+                  "value": 473
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-19T13:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "resting tremor and gait change, ? parkinsonism"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2024-03-19T14:30",
+              "author": "PCP",
+              "body": "S: Six-month BP check. His daughter came with him and brought up the real reason: since sometime last summer his right hand shakes when it's resting on his leg or the arm of the chair, he walks slower with short shuffling steps, and a handful of times his feet have seemed glued to the floor in the middle of a step - mostly in doorways. George shrugs it off as getting older. No falls. No new meds. Taking amlodipine daily, no side effects. Bowels same as always on his regimen.\n\nO: BP and vitals per flowsheet. Right hand: rhythmic tremor at rest, quiets when he reaches for a cup. Movements generally slowed. Walks with shortened steps. Strength full and equal. Heart regular, lungs clear.\n\nA/P:\n# Resting tremor, slowed gait - with his father's history I am worried about parkinsonism. Referring to neurology. TSH, B12 and CMP today to clear the usual reversible things. Discussed doorway freezing - take your time, hold the frame.\n# HTN - fine on amlodipine 5, continue.\nRTC 6 mo or after neurology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "portal_message",
+          "start": "2024-03-21T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-03-21T12:05",
+              "author": "PCP",
+              "body": "George, thyroid, B12 and your chemistry panel are all normal, so nothing there explains the tremor. Neurology has the referral; their office will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "telephone",
+          "start": "2024-05-14T15:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Status",
+              "date": "2024-05-14T15:30",
+              "author": "front desk",
+              "body": "Daughter called - neurology's first opening is end of July, can we get him in sooner? Called neurology scheduling, no earlier new-patient slots, he's on their cancellation list. Daughter updated. She knows to call if anything changes before then."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "specialist_visit",
+          "start": "2024-07-29T09:30",
+          "service": "Neurology",
+          "reason": "tremor and gait difficulty",
+          "conditions": [
+            {
+              "label": "Parkinson disease",
+              "action": "diagnosed",
+              "onset": "2023-07-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "carbidopa 25 MG / levodopa 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Parkinson disease"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2024-07-29T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2024-08-01T11:00",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY - NEW PATIENT CONSULTATION\nDate of visit: 07/29/2024. Received 08/01/2024.\nReason for referral: tremor and gait change.\n\nMr. Thayer is a 70-year-old right-handed retired teacher seen with his daughter, who gives much of the history. Over roughly the last year his walking has become slow and shuffling, and he intermittently freezes partway through a step. She has also noticed his face is less expressive and his voice has become quieter and flatter. The tremor is chiefly present at rest and settles when he uses the hand. He remains independent with dressing, bathing and finances, but his walking has grown progressively less steady.\n\nPMH: hypertension; BPH s/p TURP (2015); chronic constipation; hyposmia.\nPSH: cholecystectomy 2002; TURP 2015; bilateral cataract surgery 2019.\nMedications: amlodipine 5 mg daily; docusate 100 mg BID; polyethylene glycol 3350 17 g daily PRN.\nAllergies: sulfa (rash); latex.\nFamily history: father with Parkinson disease from age 72; mother with Alzheimer disease from age 75; older brother with essential tremor.\nSocial: never smoker, no alcohol ever, retired high school mathematics teacher.\n\nExamination: alert and appropriate. Hypomimia; hypophonic speech. Bradykinesia on repetitive movements. Cogwheel rigidity. Stooped posture with a shuffling gait. Sensation intact to all modalities. Reflexes normal and symmetric, toes downgoing. No focal weakness, no other sign of stroke.\n\nImpression: idiopathic Parkinson disease, clinically probable - rest tremor, bradykinesia and rigidity, with hyposmia and constipation as long-standing nonmotor features.\n\nPlan:\n1. Start carbidopa-levodopa 25/100, one tablet three times daily; build up over 2 weeks, take 30 minutes before meals if possible.\n2. MRI brain without contrast to exclude a structural or vascular cause.\n3. Return in about 6 months, sooner by phone if trouble with the medication.\n\nThank you for this referral.\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "imaging",
+          "start": "2024-08-20T07:45",
+          "service": "Radiology",
+          "reason": "Parkinsonism, exclude structural cause",
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2024-08-20T07:45",
+              "text": "OUTSIDE IMAGING CENTER - received 08/22/2024\nEXAM: MRI brain without contrast, 08/20/2024.\nINDICATION: Parkinsonism; evaluate for structural lesion.\nTECHNIQUE: Sagittal T1, axial T2, FLAIR, diffusion, susceptibility, coronal T2. No contrast administered.\nFINDINGS: Generalized parenchymal volume loss in keeping with age, with ventricles and sulci proportionate. No restricted diffusion. No hemorrhage or abnormal susceptibility. No mass or extra-axial fluid collection. No significant white matter signal abnormality. Basal ganglia and brainstem normal in appearance. Normal vascular flow voids. Bilateral lens replacements. Paranasal sinuses and mastoids clear.",
+              "conclusion": "Age-appropriate atrophy. No focal lesion.",
+              "issued": "2024-08-22T09:10"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T09:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI and Neurology Letter",
+              "date": "2024-08-23T09:40",
+              "author": "PCP",
+              "body": "Hi George, I read the neurology letter and your MRI report. The MRI shows only the normal changes of age - no stroke, no tumor, nothing that changes the diagnosis. I agree with starting the carbidopa-levodopa. If it upsets your stomach, take it with a few crackers. See you in September for your wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              135,
+              76
+            ],
+            "hr": 57,
+            "spo2": 97,
+            "weight_kg": 74.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 78
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.09
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-24T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 149
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 91
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 102
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-24T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2024-09-24T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-09-24T09:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-24T09:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2024-09-24T09:30",
+              "author": "PCP",
+              "body": "Initial AWV. Age 71 (birthday last week).\nSince last visit: seen by neurology 7/29, diagnosed with Parkinson disease, started carbidopa-levodopa 25/100 TID. MRI brain 8/20 age-related atrophy only. He is taking it on schedule; thinks the hand is a bit calmer, walking about the same. No nausea or lightheadedness.\n\nFunctional review: independent in ADLs, drives locally in daylight, manages his own pills with a weekly box, wife handles the calendar. Hearing ok. Vision fine with readers. No falls in the past year. Lives in a one-floor house.\nPHQ-2: 0. Cognitive screen: 3-word recall 3/3, clock drawn correctly.\nAdvance directive: wife is health care proxy, form on file to be brought in.\n\nExam: vitals per flowsheet. Masked face, soft voice. Right hand rest tremor, small amplitude. Heart regular, lungs clear, no edema. Walks unassisted, slow, stooped.\n\nPlan / prevention:\n- Parkinson disease - per neurology; continue carbidopa-levodopa.\n- HTN - on target, amlodipine 5 continued.\n- Constipation - unchanged, continue docusate and PEG.\n- Labs: CMP, CBC, lipids, A1c today.\n- Flu (high-dose) and COVID given today. RSV - discuss at a nurse visit this fall.\n- Colonoscopy due 2028.\nPersonalized prevention plan printed for him."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T17:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-09-26T17:10",
+              "author": "PCP",
+              "body": "Labs from your wellness visit are all normal - blood count, kidney and liver, sugar and cholesterol. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "nurse_visit",
+          "start": "2024-11-12T10:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "RSV vaccine",
+          "immunizations": [
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2024-11-12T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-11-12T11:00",
+              "author": "RN",
+              "body": "RSV vaccine per PCP order after discussion at AWV. 0.5 mL IM L deltoid. Latex-free. Tolerated, observed 15 minutes, no reaction. Wife drove."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "specialist_visit",
+          "start": "2025-01-21T14:00",
+          "service": "Neurology",
+          "reason": "Parkinson disease follow-up",
+          "medications": [
+            {
+              "drug_text": "ropinirole 3 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily (after titration per neurology)",
+              "dose": {
+                "value": 3,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Parkinson disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2025-01-24T10:30",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY - FOLLOW-UP\nVisit 01/21/2025, received 01/24/2025.\n\nMr. Thayer returns six months after starting carbidopa-levodopa 25/100 TID, with his wife. He tolerates it without nausea. The rest tremor is somewhat less, but he and his wife feel his walking and overall slowness are only partly improved.\n\nCurrent medications: carbidopa-levodopa 25/100 TID; amlodipine 5 mg daily; docusate 100 mg BID; PEG 3350 PRN.\nAllergies: sulfa (rash); latex.\n\nExam: hypomimia, hypophonia, bradykinesia and rigidity persist, a little less than at the first visit. Gait slow with shortened stride.\nMRI brain from August reviewed: age-related atrophy, no focal lesion.\n\nImpression: Parkinson disease, partial response to levodopa.\nPlan: add ropinirole, starting low and increasing weekly by our printed schedule to a target of 3 mg three times daily over about two months. Continue carbidopa-levodopa 25/100 TID. Reviewed sleepiness and impulse-control effects to watch for. Call us with any problems; follow up as scheduled.\n\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              136,
+              78
+            ],
+            "hr": 77,
+            "spo2": 98,
+            "weight_kg": 74.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-18T10:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.07
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 74
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-18T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2025-03-18T10:40",
+              "author": "PCP",
+              "body": "Routine HTN f/u. Neurology added ropinirole in January; he finished the titration last week and is now on 3 mg three times a day plus the carbidopa-levodopa. Wife says he is moving a little easier in the mornings. No daytime dozing that either of them has noticed. Bowels unchanged on docusate + PEG.\nBP fine today. Exam: soft voice, rest tremor R hand, slow but steady gait without a device. Heart and lungs normal. No edema.\nA/P: HTN controlled - amlodipine 5 unchanged. Parkinson disease - per neurology, med list updated with ropinirole 3 mg TID. Constipation stable. CMP today. Back in 6 months for the wellness visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "portal_message",
+          "start": "2025-03-20T13:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-03-20T13:15",
+              "author": "PCP",
+              "body": "George - kidney function and salts are normal. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "portal_message",
+          "start": "2025-06-24T19:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill Request",
+              "date": "2025-06-24T19:02",
+              "author": "patient",
+              "body": "Sorry we cancelled the June appointment, my daughter's car was in the shop. Could you renew the stool softener and the MiraLAX prescription? Same pharmacy. - George (typed by Carol)"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Refill Request",
+              "date": "2025-06-25T09:14",
+              "author": "MA",
+              "body": "No problem - the doctor sent both to your pharmacy. Since you're due for your wellness visit in September, we'll see you then instead of rebooking June."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              121,
+              77
+            ],
+            "hr": 74,
+            "spo2": 98,
+            "weight_kg": 74.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T09:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-23T09:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-23T09:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 159
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 89
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 112
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-23T09:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-09-23T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-09-23T09:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-23T09:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2025-09-23T09:35",
+              "author": "PCP",
+              "body": "Subsequent AWV, 72 y/o. Daughter with him.\nInterval: no ED visits or hospital stays. Parkinson meds unchanged since spring - carbidopa-levodopa 25/100 TID, ropinirole 3 mg TID. Still independent with self-care, a bit slower dressing. Stopped driving at night on his own. No falls.\nPHQ-2 0. Cognitive screen: recall 3/3, clock normal.\nHome: one level, grab bar in the shower already.\nMeds reconciled with the bottles he brought.\n\nExam: BP at goal. Masked face, quiet voice, rest tremor R hand, cogwheeling at the wrists, slow stooped gait. Heart regular, lungs clear, no edema.\n\nPlan:\n- HTN: continue amlodipine 5 mg.\n- Parkinson disease: followed by neurology, no changes from me.\n- Constipation: stable, continue.\n- Labs today: CMP, CBC, lipids, A1c.\n- High-dose flu and COVID vaccine given.\n- Colonoscopy due 2028. Health care proxy (wife) form scanned."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-09-25T12:40",
+              "author": "PCP",
+              "body": "Hi George, your labs this week are reassuring: normal blood count, kidney and liver function, A1c and cholesterol. No action needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Call",
+              "date": "2025-12-09T11:05",
+              "author": "MA",
+              "body": "Pharmacy asked whether we would renew carbidopa-levodopa - told them neurology prescribes it and gave them the neurology office fax. Pharmacy will request from them. Amlodipine refill due next month, has refills on file."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "office_visit",
+          "start": "2026-02-17T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              123,
+              71
+            ],
+            "hr": 68,
+            "spo2": 96,
+            "weight_kg": 74.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-02-17T15:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-02-17T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2026-02-17T15:50",
+              "author": "PCP",
+              "body": "BP recheck, came in with his wife. Takes amlodipine every morning. Says the winter has made him stiffer and slower; neurology follow-up is booked for August. No falls. Bowels ok on the usual.\nExam: BP in range. Hypophonia, masked face, rest tremor right hand, rigidity at both elbows, slow gait with short steps, turns carefully. Heart/lungs normal.\nA/P: HTN controlled, no changes. Parkinson disease - stable to slowly progressing, keep the August neurology visit; call them sooner if he worsens. CMP. RTC after neurology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "portal_message",
+          "start": "2026-02-19T08:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-02-19T08:55",
+              "author": "PCP",
+              "body": "Chemistry panel normal, George. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "telephone",
+          "start": "2026-05-12T09:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling Call",
+              "date": "2026-05-12T09:25",
+              "author": "front desk",
+              "body": "Wife called to ask if we can send his recent notes to neurology before his August 11 appointment. Last two visit notes and February labs faxed to neurology. Confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "specialist_visit",
+          "start": "2026-08-11T10:30",
+          "service": "Neurology",
+          "reason": "Parkinson disease follow-up",
+          "conditions": [
+            {
+              "label": "Psychotic disorder with hallucinations due to known physiological condition",
+              "action": "diagnosed",
+              "onset": "2026-06-01",
+              "note": "Parkinson disease psychosis",
+              "icd10": "F06.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "quetiapine 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Parkinson disease psychosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2026-08-13T14:20",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY - FOLLOW-UP\nVisit 08/11/2026, received 08/13/2026.\n\nMr. Thayer, 72, with Parkinson disease, hypertension and BPH, is seen with his wife, roughly two years after his first visit here for tremor and freezing of gait. Daily tasks are getting harder for him. Since about 2023 he has grown progressively stiffer in his arms and legs, slower in all movement, and more shuffling when he walks. He continues to have a poor sense of smell and constipation, and he now has trouble getting to sleep at night. His wife describes his expression as often blank, and says he can take several seconds before answering a question. No recent head injury.\nOn direct questioning his wife reports that for about two months he has been seeing people in the house who are not there, mostly in the evening. He knows they are not real and is not frightened by them. No false beliefs or paranoia.\n\nMedications: carbidopa-levodopa 25/100 TID; ropinirole 3 mg TID; amlodipine 5 mg daily; docusate 100 mg BID; PEG 3350 17 g daily PRN.\nAllergies: sulfa (rash); latex.\nFamily history: father Parkinson disease (onset 72); mother Alzheimer disease (onset 75); older brother essential tremor.\nSocial: never smoker, no alcohol.\n\nExam: right hand rest tremor that dampens with action; cogwheel rigidity in both upper limbs; bradykinesia; stooped gait with reduced arm swing. Cognitive testing shows slowed processing speed; fully oriented.\nPrior MRI brain (08/2024) reviewed: age-appropriate atrophy, no focal lesion.\n\nImpression:\n1. Parkinson disease, progressing.\n2. Parkinson disease psychosis - well-formed visual hallucinations with insight retained.\n3. Sleep-onset insomnia.\n\nPlan:\n- Start quetiapine 25 mg at bedtime.\n- Continue carbidopa-levodopa 25/100 TID and ropinirole 3 mg TID.\n- Return in about 3 months; call sooner if the hallucinations change or he becomes confused.\n\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "telephone",
+          "start": "2026-08-14T11:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up Call",
+              "date": "2026-08-14T11:40",
+              "author": "RN",
+              "body": "PCP reviewed the 8/11 neurology letter and asked me to check in. Spoke with wife. He started quetiapine 25 mg at bedtime on 8/12, picked up at their pharmacy. Med list updated. Reviewed: take it at bedtime only, get up slowly at night, call neurology or us if he is more confused or unusually drowsy. He has his PCP visit 9/22. Wife had no other questions."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment Question",
+              "date": "2026-08-20T20:15",
+              "author": "patient",
+              "body": "This is Carol, George's daughter. Is his appointment on the 22nd of September still at 9? I'm planning to drive him."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Appointment Question",
+              "date": "2026-08-21T08:30",
+              "author": "front desk",
+              "body": "Yes, Tuesday 9/22 at 9:00 AM with the doctor. It's booked as his yearly wellness visit plus a follow-up, so plan on about 45 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit and follow-up after neurology medication change",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Benign prostatic hyperplasia without lower urinary tract symptoms|N40.0": {
+        "code": "N40.0",
+        "display": "Benign prostatic hyperplasia without lower urinary tract symptoms",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyposmia|R43.8": {
+        "code": "R43.8",
+        "display": "Other disturbances of smell and taste",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Psychotic disorder with hallucinations due to known physiological condition|F06.0": {
+        "code": "F06.0",
+        "display": "Psychotic disorder with hallucinations due to known physiological condition",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "docusate sodium 100 MG Oral Capsule": {
+        "code": "1115005",
+        "display": "docusate sodium 100 MG Oral Capsule",
+        "ingredient": "docusate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ropinirole 3 MG Oral Tablet": {
+        "code": "283858",
+        "display": "ropinirole 3 MG Oral Tablet",
+        "ingredient": "ropinirole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}

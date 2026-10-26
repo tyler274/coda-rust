@@ -1,0 +1,1212 @@
+{
+  "unit": "unit-1796",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001796",
+      "given": "Lauren",
+      "family": "Vaillancourt",
+      "birth_date": "1992-10-18",
+      "address_line": "112 Linden Street, Apt 3",
+      "phone": "+1-347-555-0120",
+      "email": "lauren.vaillancourt@example.test",
+      "marital_status": "married",
+      "summary": "Healthy 32-year-old business development manager who joins the practice in July 2025 with cryptosporidiosis after a work trip to southern Mexico. Later seen at two outside EDs: dehydration at a Florida marathon in January 2026 and norovirus with dehydration on a cruise in July 2026. Otherwise routine preventive care.",
+      "events": [
+        {
+          "id": "2025-07-28a",
+          "kind": "telephone",
+          "start": "2025-07-28T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New membership enrollment; requesting visit",
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "placed",
+              "order": "Request records from prior primary care office",
+              "category": "referral",
+              "to": "Prior primary care office",
+              "reason": "new patient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Member Enrollment",
+              "date": "2025-07-28T10:20",
+              "author": "front desk",
+              "body": "Membership enrollment completed by phone. Insurance BCBS PPO, card on file. Pt asking to be seen soon: says she has had diarrhea for about four days since getting back from a work trip. Offered Wed 7/30 9:40 new patient slot with Dr., accepted. Records release signed electronically; request faxed to her previous PCP office. Told her to text the practice line if she gets worse before Wednesday."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-30a",
+          "kind": "establish_care",
+          "start": "2025-07-30T09:40",
+          "end": "2025-07-30T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; watery diarrhea x 6 days",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              76
+            ],
+            "hr": 83,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 59.3,
+            "height_cm": 167.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-30T10:25",
+              "resulted": "2025-07-30T17:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-07-30T10:25",
+              "resulted": "2025-07-30T17:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-30T10:30",
+              "resulted": "2025-08-01T08:50",
+              "results": [
+                {
+                  "test": "Bacteria identified in Stool by Culture",
+                  "loinc": "625-4",
+                  "text": "No Salmonella, Shigella, Campylobacter or Shiga toxin-producing E. coli isolated."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-30T10:30",
+              "resulted": "2025-07-31T15:40",
+              "results": [
+                {
+                  "test": "Microscopic observation in Stool by Modified acid fast stain",
+                  "loinc": "11545-1",
+                  "text": "Positive. Round to ovoid acid-fast oocysts, 4-6 micrometers, consistent with Cryptosporidium species."
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "International business development manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2025-07-30T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-30T10:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "stool-cx-0730",
+              "action": "placed",
+              "order": "Stool culture, routine enteric pathogens",
+              "category": "lab",
+              "reason": "watery diarrhea after travel"
+            },
+            {
+              "id": "stool-afb-0730",
+              "action": "placed",
+              "order": "Stool modified acid-fast stain (Cryptosporidium/Cyclospora)",
+              "category": "lab",
+              "reason": "watery diarrhea after travel"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2025-07-30T13:15",
+              "author": "PCP",
+              "body": "NEW PATIENT, ACUTE\n\nCC: watery diarrhea for 6 days.\n\nHPI: 32F, joined the practice this week. Got home roughly a week ago from ten days in southern Mexico for work. A lot of the trip was outdoor events, and she ate street food and drank local drinks there. Diarrhea began about 6 days ago; watery, as many as 8 times a day, with mild crampy belly pain. Never any blood or mucus, no tenesmus. No vomiting. No fever. Eating less than usual and wiped out, but says she has kept fluids up fine. Hasn't taken anything for it.\n\nPMH: none. Healthy, no immune problems.\nPSH: tonsillectomy at 12; wisdom teeth out at 21.\nMeds: none.\nAllergies: NKDA.\nFHx: mother hypothyroid. Father HTN. No immunodeficiency or GI disease in the family.\nSH: international business development, travels a fair amount. Married. Never smoker. Drinks socially, 1-2 a week. Runs for exercise.\n\nExam: vitals per flowsheet, afebrile. Looks tired. Mucous membranes dry. Neck supple. Heart regular, no murmur. Lungs clear. Abdomen soft, mildly tender diffusely, no guarding or rebound, normal bowel sounds, no hepatosplenomegaly. Skin warm, no rash.\n\nA/P:\n1. Acute watery diarrhea after travel to southern Mexico, day 6, nonbloody, afebrile. Mildly dry on exam but drinking. Bacterial pathogens vs parasite (crypto, cyclospora, giardia). Sending stool culture and modified acid-fast stain. BMP and CBC today.\n- Oral rehydration: ORS or broth plus salty crackers, aim to keep urine pale.\n- Hold off on loperamide until we know what this is.\n- Call or text same day for blood in stool, fever, or not keeping fluids down.\n2. Health maintenance: get prior records in, full physical in the fall.\n\nFollow-up: will call with stool results."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.0,
+            "height_cm": 167.6,
+            "labs": {
+              "White Blood Cells": 11.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-07-30b",
+          "kind": "portal_message",
+          "start": "2025-07-30T18:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work from today",
+              "date": "2025-07-30T18:10",
+              "author": "PCP",
+              "body": "Hi Lauren, your electrolytes and kidney numbers came back normal, so the fluids are keeping up. Your white count is slightly high, which fits with a gut infection and isn't worrying by itself. Stool tests take a couple of days. I'll call you when they're in."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-01a",
+          "kind": "telephone",
+          "start": "2025-08-01T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Stool results",
+          "conditions": [
+            {
+              "label": "Cryptosporidiosis",
+              "action": "diagnosed",
+              "onset": "2025-07-24",
+              "icd10": "A07.2"
+            }
+          ],
+          "orders": [
+            {
+              "id": "stool-cx-0730",
+              "action": "done",
+              "date": "2025-08-01T08:50"
+            },
+            {
+              "id": "stool-afb-0730",
+              "action": "done",
+              "date": "2025-07-31T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Stool Results Call",
+              "date": "2025-08-01T11:05",
+              "author": "PCP",
+              "body": "Called pt with stool results. Culture: no bacterial pathogens. Modified AFB stain positive, oocysts c/w Cryptosporidium. Explained the diagnosis: a parasite picked up from food or water, usually clears on its own in 1-3 weeks in someone healthy. She is still having 5-6 watery stools a day, cramping a bit better, drinking well, no fever. Plan supportive: fluids/ORS, normal diet as tolerated. It spreads easily, so careful handwashing, don't cook for others while symptomatic, and no pools or hot tubs until 2 weeks after the diarrhea stops. She will message if not improving in a week or if she can't keep up with fluids."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "portal_message",
+          "start": "2025-08-13T07:52",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Update after cryptosporidium",
+          "conditions": [
+            {
+              "label": "Cryptosporidiosis",
+              "action": "resolved",
+              "onset": "2025-07-24",
+              "icd10": "A07.2"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Feeling better",
+              "date": "2025-08-13T07:52",
+              "author": "patient",
+              "body": "Quick update, the diarrhea finally stopped around Saturday the 9th and I've been eating normally since. Back in the office this week. Is there anything I need to do now or am I all set? Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Feeling better",
+              "date": "2025-08-13T12:40",
+              "author": "PCP",
+              "body": "Glad to hear it. Nothing more to do. No need to retest. Just stay out of pools until about the 23rd. We'll see you for your physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "outside_records",
+          "start": "2025-08-20T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior primary care records",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-03-22T09:30",
+              "text": "Specimen: ThinPrep, satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2018-05-09T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "done",
+              "date": "2025-08-20T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care",
+              "date": "2025-08-20T14:30",
+              "author": "MA",
+              "body": "Scanned 23 pages from pt's previous PCP office (2016-2024). Abstracted:\n- Problem list: none active.\n- Meds: none.\n- Allergies: NKDA.\n- Pap with HPV 03/2023: NILM, HPV neg.\n- Immunizations: childhood series documented complete; HPV series x3 completed as teen; Tdap 05/2018. Flu shots most years.\n- Last physical there 03/2023, normal.\nForwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "annual_physical",
+          "start": "2025-10-08T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              76
+            ],
+            "hr": 67,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 58.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-08T08:45",
+              "resulted": "2025-10-08T15:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-08T08:45",
+              "resulted": "2025-10-08T15:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-08T08:45",
+              "resulted": "2025-10-08T15:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-08T08:45",
+              "resulted": "2025-10-09T11:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-08T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T09:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-08T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-08T11:30",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nS: 32F here for her first full physical with us. Feels well. The cryptosporidium in July-August cleared in about two weeks without treatment and bowels have been normal since. Running 4-5 days a week, working up toward a marathon this winter. Travels for work every month or two. Sleep okay. Periods regular. No concerns today.\n\nPMH: cryptosporidiosis 7-8/2025, resolved.\nPSH: tonsillectomy age 12; third molars age 21.\nMeds: none. Allergies: NKDA.\nFHx: mom hypothyroidism; dad hypertension.\nSH: married, works in international business development. Never smoked. Alcohol 1-2 drinks/week.\n\nROS: negative x 12 systems.\n\nO: Vitals reviewed. Well, fit-appearing. HEENT: TMs clear, oropharynx normal, tonsils surgically absent. Neck: no thyroid enlargement, no lymphadenopathy. CV: RRR, no murmurs. Lungs: clear bilaterally. Abd: soft, nontender, no masses. Ext: no edema. Skin: no concerning lesions. Neuro: grossly nonfocal. Mood/affect normal.\n\nPHQ-2: 0.\n\nA/P: Healthy adult, preventive visit.\n- Pap/HPV co-test 3/2023 normal at prior office, next due 2028.\n- Tdap 2018, good until 2028.\n- Flu vaccine given today. Offered this season's COVID shot, she'll think about it.\n- One-time HIV and hep C screens, CBC (recheck the white count from July), CMP, lipids.\n- Hydration and fueling on long runs, especially when traveling somewhere hot.\nRTC 1 year, sooner as needed."
+            },
+            {
+              "type": "Immunization Note",
+              "title": "Vaccine Administration",
+              "date": "2025-10-08T09:05",
+              "author": "MA",
+              "body": "Influenza vaccine 0.5 mL IM left deltoid. Standard pre-vaccine questions answered, no contraindications. VIS provided. Tolerated without issue, observed 15 min."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Total Cholesterol": 171,
+              "White Blood Cells": 6.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "portal_message",
+          "start": "2025-10-10T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical lab results",
+              "date": "2025-10-10T09:15",
+              "author": "PCP",
+              "body": "Lauren, everything from Wednesday looks good. White count is back to normal, blood counts, kidney and liver tests are normal, and cholesterol is in a healthy range. HIV and hepatitis C screens were nonreactive. Those two only need doing once. See you next fall unless something comes up."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-10a",
+          "kind": "ed_visit",
+          "start": "2026-01-10T10:55",
+          "end": "2026-01-10T13:40",
+          "service": "Emergency Medicine",
+          "reason": "Lightheadedness during marathon",
+          "conditions": [
+            {
+              "label": "Dehydration",
+              "action": "diagnosed",
+              "onset": "2026-01-10",
+              "icd10": "E86.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "sodium chloride 9 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "1,000 mL IV bolus once",
+              "dose": {
+                "value": 1000,
+                "unit": "mL"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "dehydration"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-01-10T10:20",
+              "bp": [
+                98,
+                66
+              ],
+              "hr": 104
+            },
+            {
+              "time": "2026-01-10T10:58",
+              "bp": [
+                102,
+                68
+              ],
+              "hr": 98,
+              "rr": 18,
+              "temp_c": 37.3,
+              "spo2": 99
+            },
+            {
+              "time": "2026-01-10T13:05",
+              "bp": [
+                114,
+                72
+              ],
+              "hr": 78
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-10T11:10",
+              "resulted": "2026-01-10T11:52",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-01-10T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside Emergency Department Record",
+              "date": "2026-01-14T09:40",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE (outside facility, central Florida)\nDate of visit: 01/10/2026. Received by fax 01/14/2026.\n\nCC: lightheaded and dizzy during a marathon.\n\nHPI: 33-year-old woman running a marathon this morning in warm, humid weather. Reports she took no fluids from the start. Around mile 10 became lightheaded and dizzy, slowed down and stopped to rest for a few minutes; noticed a dry mouth and that her skin felt sticky. Has not voided since the start of the race. Race medical tent noted HR 104 and BP 98/66, with weight 3 lb under her pre-race check-in weight, and sent her in for evaluation. Denies any recent illness, vomiting or diarrhea. No chest pain, no syncope, no headache, no confusion.\n\nPMH: cryptosporidium infection, summer 2025, resolved.\nPSH: tonsillectomy, wisdom teeth extraction.\nMedications: none.\nAllergies: no known drug allergies.\nFamily hx: mother hypothyroidism, father hypertension.\nSocial: never smoker, social alcohol, works in international business development.\n\nExam on arrival: T 37.3, HR 98, BP 102/68, RR 18, SpO2 99% RA. Alert, oriented, conversant. Mucous membranes dry. Lungs clear. Heart regular, mildly tachycardic, no murmur. Abdomen benign. No focal neuro deficit. Skin warm.\n\nLabs: BMP within reference range, sodium normal.\n\nED course: 1 L normal saline IV. Encouraged oral fluids, tolerated well. Repeat HR 78, BP 114/72. Ambulating without dizziness.\n\nImpression: volume depletion / dehydration from exertion in heat without fluid intake.\n\nDisposition: discharged in stable condition. Oral fluids with electrolytes for the next 24 hours, rest, no running for several days. Follow up with primary care in 1 week. Return for fainting, confusion, chest pain, or inability to keep fluids down."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "portal_message",
+          "start": "2026-01-12T08:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED visit while traveling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit in Florida",
+              "date": "2026-01-12T08:14",
+              "author": "patient",
+              "body": "Hi, wanted to give you a heads up. I was running the marathon in Florida on Saturday and got really dizzy around mile 10. The medical tent sent me to the ER, they said I was dehydrated and gave me a bag of IV fluids and let me go. I'm home now and honestly feel fine, just sore. They told me to see my doctor in a week. Do you want me to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit in Florida",
+              "date": "2026-01-12T09:02",
+              "author": "PCP",
+              "body": "Thanks for letting me know, glad you're feeling better. Yes, let's do a quick visit Friday and recheck your electrolytes. Our team will request the ER record so I have it before then. Keep drinking and take a few days off running."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "office_visit",
+          "start": "2026-01-16T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, dehydration",
+          "conditions": [
+            {
+              "label": "Dehydration",
+              "action": "resolved",
+              "onset": "2026-01-10",
+              "icd10": "E86.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              71
+            ],
+            "hr": 92,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 58.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-16T15:45",
+              "resulted": "2026-01-16T20:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.57
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-01-16T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-16T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2026-01-16T17:30",
+              "author": "PCP",
+              "body": "S: Follow-up after ED visit in Florida 1/10 for dehydration during a marathon (record received 1/14 and reviewed: no fluids taken, lightheaded about mile 10, tent HR 104, BP 98/66, down 3 lb from her check-in weight, BMP normal there, 1 L NS and discharged). Since then feels completely normal. Peeing normally, eating and drinking well. No dizziness standing, no palpitations. Did an easy 3 mi run yesterday without trouble. No GI symptoms.\n\nMeds: none. NKDA.\n\nO: Vitals reviewed, normal. Comfortable. Mucous membranes moist. Heart RRR. Lungs clear. No orthostatic symptoms on standing.\n\nA/P: Exertional dehydration, resolved.\n- BMP today to close the loop.\n- Long-run plan: drink to thirst starting early, roughly every aid station, electrolyte drink for anything over an hour, extra care racing somewhere hot. Weigh before and after long training runs.\n- Back to normal training as she feels able.\nRTC for physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-19a",
+          "kind": "portal_message",
+          "start": "2026-01-19T10:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Friday's labs",
+              "date": "2026-01-19T10:25",
+              "author": "PCP",
+              "body": "Hi Lauren, sodium, potassium and kidney function from Friday are all normal. You're fully recovered from the race. Nothing else needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-18a",
+          "kind": "portal_message",
+          "start": "2026-03-18T13:48",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Immunization record request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "date": "2026-03-18T13:48",
+              "author": "patient",
+              "body": "Hello, my company's travel team is asking for a copy of my vaccination record before my next few trips. Could you send me whatever you have on file? A PDF is perfect."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "date": "2026-03-18T16:02",
+              "author": "MA",
+              "body": "Hi Lauren, your immunization record is attached as a PDF. It includes what came over from your previous office plus the flu shot you got here in October. Let us know if they need anything more."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "ed_visit",
+          "start": "2026-07-20T14:20",
+          "end": "2026-07-20T19:05",
+          "service": "Emergency Medicine",
+          "reason": "Vomiting and diarrhea on cruise",
+          "conditions": [
+            {
+              "label": "Norovirus infection",
+              "action": "diagnosed",
+              "onset": "2026-07-19",
+              "icd10": "A08.11"
+            },
+            {
+              "label": "Dehydration",
+              "action": "diagnosed",
+              "onset": "2026-07-20",
+              "icd10": "E86.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "sodium chloride 9 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "1,000 mL IV bolus once",
+              "dose": {
+                "value": 1000,
+                "unit": "mL"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "dehydration"
+            },
+            {
+              "drug_text": "ondansetron 2 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "4 mg IV once",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "vomiting"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea. #6",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "nausea and vomiting"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-07-20T14:28",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 106,
+              "rr": 16,
+              "temp_c": 37.1,
+              "spo2": 99
+            },
+            {
+              "time": "2026-07-20T18:40",
+              "hr": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-20T15:30",
+              "resulted": "2026-07-20T17:15",
+              "results": [
+                {
+                  "test": "Leukocytes [Presence] in Stool by Light microscopy",
+                  "loinc": "13655-6",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Ova and parasites identified in Stool by Light microscopy",
+                  "loinc": "10704-5",
+                  "text": "No ova or parasites seen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-07-20T18:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside Emergency Department Record",
+              "date": "2026-07-24T11:20",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD (hospital at cruise port of call)\nVisit 07/20/2026. Copy received 07/24/2026 at patient request.\n\nChief complaint: vomiting and diarrhea x 24 h.\n\nHistory: 33 y/o female passenger on a cruise. Sudden onset yesterday of severe nausea, then repeated vomiting and frequent watery, nonbloody diarrhea. Cannot keep down food or liquids. Many other passengers on the ship sick with the same illness. Husband, who ate every meal with her, became ill with the same symptoms a few hours before she did. No raw shellfish, no undercooked meat, no unpasteurized dairy. Nobody in their group with fever or blood in the stool.\n\nPast history: cryptosporidiosis 2025; dehydration after a marathon 01/2026, recovered. Surgeries: tonsillectomy, wisdom teeth.\nMedications: none. Allergies: NKDA.\nSocial: never smoker, occasional alcohol.\n\nTriage: T 37.1 C, HR 106, BP 110/70, RR 16, SpO2 99%.\nExam: Tired-appearing but alert and oriented x3. Dry mucous membranes. Mild tachycardia, regular. Lungs clear. Abdomen soft, nondistended, without peritoneal signs. No rash.\n\nStool: fecal leukocytes negative; ova and parasite exam negative.\n\nTreatment: NS 1 L IV bolus; ondansetron 4 mg IV. Nausea settled; drank oral fluids without vomiting. HR 88 on recheck.\n\nAssessment: acute gastroenteritis in a shipboard outbreak, most consistent with norovirus. Dehydration.\n\nDisposition: discharged back to ship, stable. Rx ondansetron 4 mg ODT q8h PRN nausea, #6. Small frequent sips of oral rehydration fluid, strict handwashing (alcohol gel does not reliably kill this virus), stay in cabin until 48 h symptom-free. Return for blood in stool, high fever, confusion, or inability to keep fluids down. See primary doctor after returning home."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "portal_message",
+          "start": "2026-07-22T19:36",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "GI illness on cruise",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sick on the cruise",
+              "date": "2026-07-22T19:36",
+              "author": "patient",
+              "body": "Hi! We got back tonight from our cruise. Half the ship came down with a stomach bug and so did we. I ended up in an ER at one of the stops Monday because I couldn't keep anything down. They gave me fluids and nausea meds and said it was probably norovirus. Vomiting stopped yesterday, still some diarrhea but less. They told me to check in with you when I'm home. I signed their release so you should get the records."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sick on the cruise",
+              "date": "2026-07-23T08:10",
+              "author": "RN",
+              "body": "Welcome home, sorry the trip ended that way. Sounds like you're turning the corner. Booked you a video visit with Dr. at 11:30 today. Keep sipping fluids until then and call us if you can't keep them down."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "telehealth_visit",
+          "start": "2026-07-23T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-ED follow-up, gastroenteritis",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-07-23T11:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2026-07-23T12:15",
+              "author": "PCP",
+              "body": "Video visit, pt at home in Holyoke, consented.\n\nS: Seen 7/20 in an ED at a port stop on her cruise for vomiting and watery diarrhea during a shipboard outbreak; given IV fluids and ondansetron, told likely norovirus (record not yet received). Husband had the same illness. Last emesis 7/21. Two loose stools so far today, no blood. Drinking well and urinating normally. Took the ondansetron twice, none since yesterday. Feels washed out. No fever. No belly pain to speak of.\n\nO: Appears well on video, talking in full sentences, lips moist, no distress.\n\nA/P: Viral gastroenteritis, presumed norovirus, improving. Dehydration improving with oral intake.\n- Keep up fluids, bland food as tolerated, advance diet.\n- Ondansetron PRN, remaining tabs fine to finish or discard.\n- Bleach-based cleaner for bathroom surfaces; handwashing with soap rather than gel. Contagious for a few days after symptoms stop, so no cooking for others this week.\n- Message Monday with an update; sooner for blood in stool, fever, or not keeping fluids down."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "portal_message",
+          "start": "2026-07-29T07:44",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Update after gastroenteritis",
+          "conditions": [
+            {
+              "label": "Norovirus infection",
+              "action": "resolved",
+              "onset": "2026-07-19",
+              "icd10": "A08.11"
+            },
+            {
+              "label": "Dehydration",
+              "action": "resolved",
+              "onset": "2026-07-20",
+              "icd10": "E86.0"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "All better",
+              "date": "2026-07-29T07:44",
+              "author": "patient",
+              "body": "Sorry this is late, meant to write Monday. Totally back to normal since about Sunday, eating everything, back at work. My husband's fine too."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: All better",
+              "date": "2026-07-29T08:30",
+              "author": "PCP",
+              "body": "Great news, thanks for the update. The ED record came in and matches what you told me. Nothing more to do. See you in October for your physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-14a",
+          "kind": "annual_physical",
+          "start": "2026-10-14T08:40",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Cryptosporidiosis|A07.2": {
+        "code": "A07.2",
+        "display": "Cryptosporidiosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dehydration|E86.0": {
+        "code": "E86.0",
+        "display": "Dehydration",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Norovirus infection|A08.11": {
+        "code": "A08.11",
+        "display": "Acute gastroenteropathy due to Norwalk agent",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ondansetron 2 MG/ML Injectable Solution": {
+        "code": "283504",
+        "display": "ondansetron 2 MG/ML Injectable Solution",
+        "ingredient": "ondansetron",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "sodium chloride 9 MG/ML Injectable Solution": {
+        "code": "313002",
+        "display": "sodium chloride 9 MG/ML Injectable Solution",
+        "ingredient": "sodium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bacteria identified in Stool by Culture": {
+        "code": "625-4",
+        "display": "Bacteria identified in Stool by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Leukocytes [Presence] in Stool by Light microscopy": {
+        "code": "13655-6",
+        "display": "Leukocytes [Presence] in Stool by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Microscopic observation in Stool by Modified acid fast stain": {
+        "code": "11545-1",
+        "display": "Microscopic observation [Identifier] in Specimen by Acid fast stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ova and parasites identified in Stool by Light microscopy": {
+        "code": "10704-5",
+        "display": "Ova and parasites identified in Stool by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

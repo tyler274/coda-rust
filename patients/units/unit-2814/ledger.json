@@ -1,0 +1,2994 @@
+{
+  "unit": "unit-2814",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002814",
+      "given": "Evelyn",
+      "family": "Murphy",
+      "birth_date": "1967-11-28",
+      "address_line": "27 Woodbridge Street",
+      "phone": "+1-508-555-0180",
+      "email": "evelyn.murphy@example.test",
+      "marital_status": "single",
+      "summary": "Office manager and current smoker with COPD and hypertension who joined the practice in 2021. A vulvar squamous cell carcinoma found in late 2023 is excised in January 2024 (stage IB, nodes negative) and followed by gynecologic oncology; a separate vaginal squamous cell carcinoma is found in May 2026 and excised in June 2026 (stage I).",
+      "events": [
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:00",
+          "end": "2021-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "note": "on tiotropium and albuterol from prior PCP"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history",
+              "note": "about 1 pack per day since age 25"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "note": "on amlodipine"
+            },
+            {
+              "label": "Anogenital (venereal) warts",
+              "action": "history",
+              "note": "excisions and cryotherapy in the 1990s and 2000s",
+              "icd10": "A63.0"
+            },
+            {
+              "label": "Papillomavirus as the cause of diseases classified elsewhere",
+              "action": "history",
+              "note": "HPV, with past genital warts",
+              "icd10": "B97.7"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "note": "laparoscopic cholecystectomy 2010"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule once daily",
+              "dose": {
+                "value": 18,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              144,
+              90
+            ],
+            "hr": 65,
+            "spo2": 97,
+            "weight_kg": 67.2,
+            "height_cm": 162.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 176
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Office manager"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 glasses of wine per week"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-14T09:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-14T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-14T09:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "placed",
+              "order": "Request records from prior primary care",
+              "category": "procedure",
+              "reason": "new patient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T10:20",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n53F office manager, transferring care after her prior primary care doctor retired. Wants one office she can actually reach. No acute concerns today.\n\nPMH\n- COPD. Dx'd at prior practice, she isn't sure what year. Gets winded on 2 flights of stairs, walks fine on flat ground. Uses albuterol maybe 2-3x/week, more in cold weather. On tiotropium daily, uses it most days. No hospitalizations or prednisone bursts she can recall. Never had breathing tests explained to her.\n- HTN on amlodipine 5 for years. Doesn't check at home.\n- Genital warts in her 20s-30s, several excisions and cryo treatments through the 2000s. None since.\n\nPSH: lap chole 2010. Wart excisions/cryo as above.\n\nMeds: albuterol HFA 2 puffs q4-6h prn; tiotropium 18 mcg inhaled daily; amlodipine 5 mg daily.\nAllergies: NKDA.\n\nFHx: mother - cervical cancer at 42, deceased. Father - lung cancer at 58, deceased. Sister - CIN II.\n\nSocial: office manager. Smokes about a pack a day, started at 25, so roughly 29 pack-years. Has tried cutting down on her own, not interested in a quit date right now. Wine 1-2 glasses a week. No drugs.\n\nROS: chronic exertional dyspnea as above, no chest pain, no hemoptysis, no weight change, no GI or GU complaints. Postmenopausal.\n\nExam: BP above goal on repeat, otherwise vitals per flowsheet. Well appearing, faint smoker's voice. HEENT unremarkable. No cervical or supraclavicular nodes. Heart RRR, no murmur. Lungs: mildly prolonged expiration, no wheeze or crackles. Abd soft, well-healed lap scars. Ext no edema, no clubbing. Skin no concerning lesions seen.\n\nA/P\n1. COPD - no spirometry on file that she knows of. Will get office spirometry next month once records are in. Continue tiotropium + albuterol. Inhaler technique reviewed, good.\n2. Tobacco - discussed briefly, she knows. Not ready. Will keep asking.\n3. HTN - a little high today, she was rushing in. Recheck at the COPD visit. Continue amlodipine 5.\n4. Lung cancer screening - qualifies (age, ~29 pk-yr, current). Will order after spirometry visit.\n5. Health maintenance - records requested. CMP, CBC, lipids, A1c, one-time HCV and HIV today. Flu shot given. Will ask records about colonoscopy, Pap, mammogram, vaccines.\n\nRTC ~4 weeks."
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              88
+            ],
+            "weight_kg": 68.0,
+            "height_cm": 163.0,
+            "labs": {
+              "Hemoglobin A1c": 5.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T14:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-09-16T14:10",
+              "author": "PCP",
+              "body": "Hi Evelyn,\n\nAll of your bloodwork from Tuesday came back fine: kidney and liver tests normal, blood counts normal, cholesterol in a reasonable range, and the A1c shows no sign of diabetes. The hepatitis C and HIV screens were negative, so those are one-and-done.\n\nSee you next month for the breathing test.\n\nPrimary care"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "outside_records",
+          "start": "2021-09-20T11:30",
+          "reason": "Records from prior primary care",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2016-05-10T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-19T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T15:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records",
+              "action": "done",
+              "date": "2021-09-20T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Summary of Episode Note",
+              "title": "Prior Primary Care Records",
+              "date": "2021-09-20T11:30",
+              "author": "outside primary care",
+              "body": "Records received from prior primary care office (closed practice), 38 pages, scanned.\n\nSummary abstracted by MA:\n- Problem list: COPD; hypertension; tobacco use; history of condyloma acuminatum, treated.\n- Medications: albuterol HFA prn, tiotropium 18 mcg daily, amlodipine 5 mg daily. No allergies listed.\n- Colonoscopy 2018: normal, repeat 10 years.\n- Cervical cytology with HPV co-test 2019: negative.\n- Screening mammogram 2020: negative, BI-RADS 1.\n- Immunizations: Tdap 05/2016. COVID-19 Pfizer 03/19/2021 and 04/09/2021 (copy of card).\n- No spirometry report in the packet.\n\nForwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-13a",
+          "kind": "office_visit",
+          "start": "2021-10-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up, spirometry",
+          "vitals": {
+            "bp": [
+              127,
+              77
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 68.0
+          },
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2021-10-13T08:40",
+              "text": "Office spirometry, pre- and post-bronchodilator (albuterol 4 puffs via spacer). Acceptable and repeatable efforts.\nPost-bronchodilator: FEV1 1.62 L (66% predicted). FVC 2.57 L (83% predicted). FEV1/FVC 0.63.\nNo significant bronchodilator response.",
+              "conclusion": "Moderate obstructive ventilatory defect (GOLD 2), without significant bronchodilator response."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-10-13T08:30"
+            },
+            {
+              "procedure": "Spirometry",
+              "performed": "2021-10-13T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-13T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-10-13T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2021",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "current smoker, about 29 pack-years"
+            },
+            {
+              "id": "mammo-2021",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "COPD Follow-up",
+              "date": "2021-10-13T09:30",
+              "author": "PCP",
+              "body": "S: Here for spirometry and BP recheck. Breathing same as always. Albuterol a couple times a week. No cough change, no sputum change, no ER visits. Still smoking ~1 ppd.\n\nRecords from prior PCP reviewed: colonoscopy 2018 normal, Pap/HPV 2019 negative, mammo 2020 negative. No PFTs in the packet.\n\nO: BP improved, see flowsheet. Lungs: prolonged expiration, no wheeze. Heart RRR.\nSpirometry (see report): post-BD FEV1 1.62 L, 66% pred; FEV1/FVC 0.63; no significant BD response.\n\nA/P\n- COPD, moderate obstruction (GOLD 2). Few symptoms, no exacerbations. Tiotropium alone is reasonable. Continue albuterol prn.\n- HTN: better today. Continue amlodipine 5.\n- Tobacco: we talked about the spirometry result as a reason. She listened, not ready to set a date.\n- PCV20 today.\n- LDCT lung screening ordered. Screening mammogram ordered (due Nov).\n- Colonoscopy next due 2028.\n\nf/u 6 months, sooner prn."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              82
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-04a",
+          "kind": "imaging",
+          "start": "2021-11-04T13:00",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2021-11-04T13:00",
+              "text": "INDICATION: Lung cancer screening. Current smoker, approximately 29 pack-years. Baseline study.\nTECHNIQUE: Low-dose helical CT of the chest without contrast.\nCOMPARISON: None.\nFINDINGS: No pulmonary nodules. No consolidation or pleural effusion. Central airways patent. No mediastinal or hilar lymphadenopathy. Heart size normal. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening with low-dose CT in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2021",
+              "action": "done",
+              "date": "2021-11-04T13:00"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "imaging",
+          "start": "2021-11-10T10:30",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-11-10T10:30",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison is made to the outside study from 2020.\nThe breasts are scattered areas of fibroglandular density. No suspicious mass, calcifications or architectural distortion.",
+              "conclusion": "BI-RADS 1: negative. Routine screening mammogram in 1 year."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "done",
+              "date": "2021-11-10T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Imaging results",
+              "date": "2021-11-11T09:15",
+              "author": "RN",
+              "body": "Hi Evelyn, both of your screening tests came back normal. The lung CT showed no nodules and the mammogram was negative. Each one gets repeated in a year and we'll send reminders. -Nursing"
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "pharmacy",
+          "start": "2021-12-20T16:00",
+          "reason": "COVID-19 booster reported",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-18T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside immunization",
+              "date": "2021-12-20T16:00",
+              "author": "MA",
+              "body": "Pharmacy immunization notice received: Pfizer COVID-19 booster given 12/18/2021. Entered in immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-19a",
+          "kind": "pharmacy",
+          "start": "2022-01-19T10:40",
+          "reason": "Prior authorization, tiotropium",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization",
+              "date": "2022-01-19T10:40",
+              "author": "MA",
+              "body": "Pharmacy faxed: tiotropium 18 mcg inhalation capsules now need prior auth under her plan's 2022 formulary. PA submitted online with dx COPD (J44.9), spirometry 10/13/21 attached, tried/on since prior practice. Approved same day, valid 12 months. Pharmacy notified, pt aware via portal."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-23a",
+          "kind": "annual_physical",
+          "start": "2022-03-23T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              138,
+              80
+            ],
+            "hr": 65,
+            "spo2": 96,
+            "weight_kg": 67.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-23T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 31
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-23T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-03-23T08:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 185
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-03-23T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-23T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-23T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-03-23T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-03-23T09:10",
+              "author": "PCP",
+              "body": "ANNUAL PREVENTIVE VISIT\n\nDoing well. Busy season at work. Breathing stable through the winter, no flares, albuterol a few times a week. Tiotropium daily. Amlodipine daily. Smoking still about a pack a day. Mood fine.\n\nROS otherwise negative.\n\nExam: vitals per flowsheet, BP fine today. Pleasant, in no distress. HEENT normal, no nodes. Thyroid not enlarged. Heart RRR, no murmur. Lungs with prolonged expiration, no wheeze, no crackles. Breasts deferred to mammography per her preference. Abdomen soft, nontender. Ext no edema. Skin without suspicious lesions.\n\nScreens: PHQ-2 0. AUDIT-C 2.\n\nHealth maintenance:\n- Colonoscopy 2018 normal, next 2028.\n- Cervical: co-test 2019 negative, next due 2024.\n- Mammogram 11/2021 neg, next Nov.\n- LDCT 11/2021 Lung-RADS 1, next Nov.\n- Vaccines: Shingrix #1 today, #2 in 2-6 months. PCV20 done. Tdap 2016. COVID boosted Dec.\n\nA/P\n1. COPD GOLD 2, stable on tiotropium + prn albuterol.\n2. HTN controlled on amlodipine 5.\n3. Tobacco: advised to quit; offered help whenever she wants it. Declines for now.\n4. Labs: CMP, CBC, lipids.\n\nRTC 6 months, Shingrix #2 nurse visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-25a",
+          "kind": "portal_message",
+          "start": "2022-03-25T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-03-25T12:30",
+              "author": "PCP",
+              "body": "Evelyn - labs from Wednesday all look good. Nothing to change. Remember to book the second shingles shot in the next few months."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-09a",
+          "kind": "nurse_visit",
+          "start": "2022-06-09T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-06-09T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-06-09T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunization",
+              "date": "2022-06-09T16:30",
+              "author": "RN",
+              "body": "Shingrix dose 2 of 2, 0.5 mL IM left deltoid. Screening questions reviewed, no contraindications. Had a sore arm and was tired for a day after dose 1, nothing else. Tolerated today without issue. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-29a",
+          "kind": "office_visit",
+          "start": "2022-09-29T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension and COPD follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              82
+            ],
+            "hr": 61,
+            "spo2": 97,
+            "weight_kg": 68.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-09-29T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-29T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-29T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-09-29T16:15",
+              "author": "PCP",
+              "body": "F/u BP and COPD.\n\nNo changes since spring. Summer was easy on her lungs. No exacerbations, no antibiotics or steroids anywhere this year. Using albuterol 1-2x/wk. Tiotropium daily. Taking amlodipine. Still ~1 ppd; she says work stress makes it the wrong time.\n\nExam: BP at goal. Lungs prolonged expiration, no wheeze. Heart regular. No edema.\n\nA/P: COPD stable, HTN controlled. Brief cessation advice again. Flu shot today. LDCT and mammogram due in Nov, reminders sent. RTC March for physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T12:20",
+          "reason": "Annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-11-08T12:20",
+              "text": "INDICATION: Annual lung cancer screening, current smoker.\nTECHNIQUE: Low-dose CT of the chest without IV contrast.\nCOMPARISON: 11/04/2021.\nFINDINGS: Lungs: no nodules. No airspace disease or effusion. Airways patent. Mediastinum: no adenopathy. Normal heart size. Limited upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1. No nodules. Annual low-dose CT recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual screening"
+            },
+            {
+              "id": "ldct-2022",
+              "action": "done",
+              "date": "2022-11-08T12:20"
+            }
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "imaging",
+          "start": "2022-11-16T09:45",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-16T09:45",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 11/10/2021.\nScattered fibroglandular density. No suspicious masses, grouped calcifications or distortion. Stable.",
+              "conclusion": "BI-RADS 1: negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            },
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-11-16T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Screening results",
+              "date": "2022-11-17T11:05",
+              "author": "RN",
+              "body": "Your lung screening CT and mammogram were both normal again this year. Next ones are due next November. Have a good holiday season!"
+            }
+          ]
+        },
+        {
+          "id": "2023-02-13a",
+          "kind": "portal_message",
+          "start": "2023-02-13T07:50",
+          "reason": "Refill request, amlodipine",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill request",
+              "date": "2023-02-13T07:50",
+              "author": "patient",
+              "body": "Good morning, my amlodipine is down to the last few pills and the pharmacy says no refills left. Can you send a new one? Same pharmacy. Thanks, Evelyn"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill request",
+              "date": "2023-02-13T10:25",
+              "author": "MA",
+              "body": "Sent to your pharmacy this morning, 90-day supply with refills through your physical. -MA"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "annual_physical",
+          "start": "2023-03-22T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              76
+            ],
+            "hr": 67,
+            "spo2": 97,
+            "weight_kg": 67.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-22T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 56
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-22T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-03-22T09:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 88
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-03-22T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-03-22T09:25",
+              "author": "PCP",
+              "body": "Annual exam.\n\nInterval: no illnesses this year. One cold in January, rode it out, didn't need albuterol more than usual. Inhaler use ~2x/wk. No exacerbations since joining. Still smoking about a pack a day; 1 ppd since 25.\n\nMeds: tiotropium 18 mcg daily, albuterol prn, amlodipine 5 mg daily. NKDA.\n\nROS: negative except chronic exertional dyspnea, unchanged.\n\nExam: vitals per flowsheet. NAD. HEENT clear, no adenopathy. Heart regular, no murmurs. Lungs: diminished breath sounds at bases, prolonged expiration, no wheeze. Abd benign. Ext: no edema. Skin: no lesions of concern.\n\nScreens: PHQ-2 1 (a little stressed at work), AUDIT-C 2.\n\nA/P\n- COPD GOLD 2: stable. Same regimen.\n- HTN: controlled.\n- Tobacco: still precontemplative. Discussed again; door open.\n- HM: colonoscopy 2028. Cervical co-test due 2024 - will do next year. Mammo and LDCT in Nov, both negative last year. Flu and COVID in the fall.\n- Labs today: CMP, CBC, lipids.\n\nRTC fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-09a",
+          "kind": "pharmacy",
+          "start": "2023-10-09T17:20",
+          "reason": "COVID-19 vaccine reported",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-07T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside immunization",
+              "date": "2023-10-09T17:20",
+              "author": "MA",
+              "body": "Immunization registry update from pharmacy: 2023-2024 COVID-19 vaccine (Pfizer) given 10/07/23. Recorded."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-31a",
+          "kind": "office_visit",
+          "start": "2023-10-31T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vulvar itching and spotting",
+          "vitals": {
+            "bp": [
+              123,
+              73
+            ],
+            "hr": 70,
+            "spo2": 97,
+            "weight_kg": 68.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-31T13:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-31T14:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-31T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2023",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "ulcerated right vulvar lesion, urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-10-31T14:15",
+              "author": "PCP",
+              "body": "CC: vulvar itching, spotting.\n\nHPI: 55F, booked as a flu shot visit, then told the MA she wanted to ask about something. About 5 months of itching \"down there\" that has slowly gotten worse, on the right side. Over the last couple of months some spotting of blood on her underwear on and off, and a discharge with a bad odor. Hoped it would settle on its own; embarrassed, kept putting it off. Postmenopausal. No fever, no urinary symptoms, no groin swelling she has noticed. Hx genital warts treated in the 90s/2000s; mother had cervical cancer, sister CIN II.\n\nExam (chaperoned by MA): right labia majora with an ulcerated, friable lesion, roughly 3 cm, bleeds lightly with contact. Left side and perineum without visible lesion on external inspection. No palpable inguinal nodes on either side. Speculum exam not done today.\n\nA/P\n1. Ulcerated right vulvar lesion - needs tissue diagnosis. Concerning for neoplasia given appearance, HPV history and smoking. Urgent gynecology referral placed and I called their office; they will see her within a few weeks. Explained to her honestly that it has to be biopsied and that the biopsy will tell us what it is. She is worried but okay with the plan.\n2. Flu vaccine given.\n3. COPD/HTN: no changes today.\n\nWill call her when the gyn note comes in."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "imaging",
+          "start": "2023-11-08T08:40",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-08T08:40",
+              "text": "Screening bilateral mammogram with tomosynthesis. Comparison: 11/16/2022 and 11/10/2021.\nScattered areas of fibroglandular density. No new or suspicious mass, calcification or distortion.",
+              "conclusion": "BI-RADS 1. Negative. Next screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            },
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-11-08T08:40"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "specialist_visit",
+          "start": "2023-11-20T10:00",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Vulvar lesion",
+          "orders": [
+            {
+              "id": "gyn-referral-2023",
+              "action": "done",
+              "date": "2023-11-20T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "date": "2023-11-22T15:00",
+              "author": "gynecology",
+              "body": "OUTSIDE GYNECOLOGY - CONSULTATION LETTER\nDate of service: 11/20/2023\nRe: Evelyn Murphy, DOB 11/28/1967\n\nThank you for referring Ms. Murphy, a 55-year-old woman, for a vulvar lesion.\n\nShe describes six months of vulvar itching that has steadily worsened, with intermittent bleeding and a malodorous vaginal discharge.\n\nHistory: COPD, hypertension, tobacco dependence. Remote treatment of condylomata with excision and cryotherapy over the 1990s-2000s; laparoscopic cholecystectomy 2010.\nMedications: albuterol HFA as needed, tiotropium 18 mcg daily, amlodipine 5 mg daily.\nAllergies: NKDA.\nFamily: mother with cervical cancer at 42; father with lung cancer at 58; sister with CIN II.\nSocial: smokes, about 30 pack-years.\n\nExamination: On the right labium majus there is a 3 cm ulcerated mass that is friable on contact. Inguinal lymph nodes are not palpable bilaterally. Remainder of the external genitalia without other gross lesion; vagina and cervix appear normal; bimanual exam unremarkable.\n\nProcedure: After local anesthesia, punch biopsy of the lesion was obtained and sent to pathology. Hemostasis with silver nitrate. Tolerated well.\n\nImpression: Ulcerated right vulvar mass, suspicious for malignancy. Pathology pending; I will contact her and you with the result. If malignant she will be referred to gynecologic oncology.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-27a",
+          "kind": "outside_records",
+          "start": "2023-11-27T09:10",
+          "reason": "Vulvar biopsy pathology",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of labium majus",
+              "action": "diagnosed",
+              "onset": "2023-11-20",
+              "note": "right labia majora, biopsy-proven squamous cell carcinoma",
+              "icd10": "C51.0"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-11-20T10:30",
+              "text": "SPECIMEN: Vulva, right labium majus, punch biopsy.\nGROSS: Received in formalin, a tan-pink punch of skin, 0.4 cm in diameter, entirely submitted.\nMICROSCOPIC: Sections show squamous mucosa with invasive nests of atypical squamous cells infiltrating the underlying stroma, with surface ulceration. The base of the biopsy is involved.",
+              "conclusion": "Vulva, right, punch biopsy: INVASIVE SQUAMOUS CELL CARCINOMA.",
+              "issued": "2023-11-24T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gynonc-referral-2023",
+              "action": "placed",
+              "order": "Gynecologic oncology referral",
+              "category": "referral",
+              "to": "Gynecologic Oncology",
+              "reason": "vulvar squamous cell carcinoma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside pathology received",
+              "date": "2023-11-27T09:20",
+              "author": "RN",
+              "body": "Pathology from gynecology received by fax: right vulvar biopsy shows invasive squamous cell carcinoma. Gyn office states they told pt Friday and have referred her to gynecologic oncology. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "telephone",
+          "start": "2023-11-28T12:40",
+          "reason": "Biopsy result follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Telephone Call",
+              "date": "2023-11-28T12:55",
+              "author": "PCP",
+              "body": "Called pt re: vulvar biopsy (SCC). She heard from gyn Friday. Understandably shaken; has told her sister. Gyn onc consult is set for next Tuesday. Reviewed what to expect in general terms: they will examine, likely get imaging, and talk about surgery. Told her to text anytime with questions, and that we'll help with anything pre-op. She wanted to know if smoking matters for healing - yes, and any cut-down helps. She'll think about it."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "specialist_visit",
+          "start": "2023-12-05T09:30",
+          "service": "Gynecologic Oncology",
+          "reason": "Vulvar squamous cell carcinoma",
+          "orders": [
+            {
+              "id": "gynonc-referral-2023",
+              "action": "done",
+              "date": "2023-12-05T09:30"
+            },
+            {
+              "id": "staging-ct-2023",
+              "action": "placed",
+              "order": "CT chest, abdomen and pelvis with contrast",
+              "category": "imaging",
+              "reason": "staging, vulvar SCC"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Consultation",
+              "date": "2023-12-07T16:30",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY NEW PATIENT CONSULTATION\nVisit date: 12/05/2023\nPatient: Evelyn Murphy (DOB 11/28/1967)\nReferring: outside gynecology; PCP copied\n\nDiagnosis: Invasive squamous cell carcinoma of the right vulva, on biopsy 11/20/2023.\n\nHPI: 56-year-old with roughly six months of right vulvar pruritus, intermittent bleeding and malodorous discharge. Biopsy at gynecology showed invasive SCC.\n\nPMH: COPD on tiotropium and albuterol; hypertension on amlodipine. Prior condyloma treatment. Lap chole 2010.\nAllergies: no known drug allergies.\nSocial: current smoker, 1 ppd.\nFamily: mother cervical cancer; father lung cancer; sister CIN II.\n\nExam: Well appearing. Groins: no palpable inguinal or femoral adenopathy bilaterally. Vulva: 3 cm ulcerated lesion of the right labium majus, well lateral to the midline, not involving the clitoris, urethra or anus. Healing biopsy site. Vagina and cervix normal on speculum. Rectovaginal exam without nodularity.\n\nAssessment: Clinically early-stage right lateral vulvar SCC, unifocal, under 4 cm, groins clinically negative.\n\nPlan:\n1. CT chest, abdomen and pelvis with contrast for staging.\n2. If no nodal or distant disease, right radical local excision (radical partial vulvectomy) with right inguinal sentinel lymph node biopsy. Risks reviewed including wound separation, infection, lymphedema, and change in sensation; she wishes to proceed.\n3. Pre-operative evaluation with her PCP given COPD.\n4. Strongly encouraged smoking cessation before surgery.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-07a",
+          "kind": "imaging",
+          "start": "2023-12-07T14:00",
+          "reason": "Staging CT",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2023-12-07T14:00",
+              "text": "INDICATION: Vulvar squamous cell carcinoma, staging.\nTECHNIQUE: Contrast-enhanced CT of the chest, acquired with the abdomen and pelvis.\nCOMPARISON: Low-dose screening CT 11/08/2022.\nFINDINGS: No pulmonary nodule or mass. No consolidation or effusion. No mediastinal, hilar or axillary lymphadenopathy. Heart normal in size. No pericardial effusion.",
+              "conclusion": "No evidence of thoracic metastatic disease."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-12-07T14:00",
+              "text": "INDICATION: Vulvar squamous cell carcinoma, staging.\nTECHNIQUE: Contrast-enhanced CT of the abdomen and pelvis.\nFINDINGS: Liver, spleen, pancreas, adrenal glands and kidneys unremarkable. Gallbladder surgically absent. No hydronephrosis. No retroperitoneal or pelvic lymphadenopathy. No inguinal or femoral lymphadenopathy. Uterus and adnexa unremarkable for age. No ascites. Bowel unremarkable. No osseous lesions.",
+              "conclusion": "No lymphadenopathy or distant metastatic disease."
+            }
+          ],
+          "orders": [
+            {
+              "id": "staging-ct-2023",
+              "action": "done",
+              "date": "2023-12-07T14:00"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "office_visit",
+          "start": "2023-12-19T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-operative evaluation",
+          "vitals": {
+            "bp": [
+              128,
+              91
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 67.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-19T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 102
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-19T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 226
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-12-19T11:25",
+              "text": "Rate 74. Normal sinus rhythm. Normal axis. Normal intervals. No ST or T wave abnormality.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-19T11:00"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2023-12-19T11:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-12-19T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Evaluation",
+              "date": "2023-12-19T12:10",
+              "author": "PCP",
+              "body": "PRE-OP EVALUATION\nProcedure: right radical local excision of vulva with right inguinal sentinel lymph node biopsy, gynecologic oncology, planned 01/09/2024, general anesthesia.\n\nReviewed gyn onc consult and staging CT (no nodes, no distant disease, no lung nodule).\n\nCardiopulmonary: walks a few blocks and climbs 2 flights with some breathlessness, stops to rest at the top, no chest pain, no syncope. >4 METs. No exacerbation in the past year, no steroids. Albuterol ~2x/week. Tiotropium daily.\nSmoking: down to about 3/4 ppd this month, she says. Encouraged to stop entirely at least the week before and after surgery.\nNo personal or family hx of anesthesia problems. No bleeding history. No anticoagulants or supplements.\n\nMeds: tiotropium 18 mcg daily, albuterol prn, amlodipine 5 mg daily. NKDA.\n\nExam: vitals per flowsheet. Airway: Mallampati II, normal neck mobility, own teeth. Heart regular, no murmur. Lungs with prolonged expiration, clear, no wheeze. No edema.\n\nECG: NSR 74, normal.\nCBC, BMP today.\n\nAssessment: 56F with stable moderate COPD (GOLD 2) and controlled HTN for low-to-intermediate risk surgery. No active cardiac conditions. Acceptable risk to proceed.\nRecommendations:\n- Take tiotropium and amlodipine the morning of surgery. Bring albuterol.\n- Incentive spirometry and early ambulation post-op.\n- Smoking abstinence around surgery as above.\n\nCopy to gynecologic oncology."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Pre-op labs",
+              "date": "2023-12-20T08:30",
+              "author": "PCP",
+              "body": "Your blood count and chemistry from yesterday were normal, so you're all set from our side. I've sent the pre-op note to the surgeon's office. Thinking of you - text if anything comes up before the 9th."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "hospital_admission",
+          "start": "2024-01-09T06:30",
+          "end": "2024-01-10T12:30",
+          "service": "Gynecologic Oncology",
+          "reason": "Right radical local excision of vulva with sentinel lymph node biopsy",
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain. #20",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-operative pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Gynecologic Oncology",
+              "date": "2024-01-11T10:00",
+              "author": "gynecologic oncology",
+              "body": "DISCHARGE SUMMARY\nAdmitted: 01/09/2024  Discharged: 01/10/2024\nService: Gynecologic Oncology\n\nDiagnosis: Squamous cell carcinoma of the right vulva.\nProcedure 01/09/2024: Right radical local excision of the vulva (radical partial vulvectomy) with right inguinal sentinel lymph node biopsy after technetium and blue dye injection. Two right inguinal sentinel nodes identified and removed. Primary closure of the vulvar defect. EBL 50 mL. No complications.\n\nHospital course: Uneventful overnight stay. Pain controlled on oral medication. Voiding spontaneously after catheter removal on POD 1. Ambulating. Used her own inhalers; no respiratory issues. Tolerating diet.\n\nAllergies: NKDA.\nDischarge medications: oxycodone-acetaminophen 5/325 mg, 1 tab q6h prn pain (#20). Continue home tiotropium, albuterol prn, amlodipine 5 mg.\nInstructions: Sitz baths twice daily and after bowel movements, keep incisions clean and dry, no intercourse or tampons until cleared, no heavy lifting for 2 weeks. Call for fever, spreading redness, wound drainage, or groin swelling.\nFollow-up: Gynecologic oncology in 3 weeks; final pathology to be reviewed then.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-11a",
+          "kind": "telephone",
+          "start": "2024-01-11T14:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge Call",
+              "date": "2024-01-11T14:45",
+              "author": "RN",
+              "body": "Post-discharge call. Home since yesterday. Pain is manageable, took 2 of the oxycodone pills yesterday and 1 overnight, none yet today. Doing sitz baths. No fever. Incision without drainage per pt. Breathing at baseline. Bowels not yet moved - advised fluids, walking. She has not smoked since Monday and wants to try to keep it that way; encouraged. Knows to call gyn onc for wound concerns. Post-op visit 1/30."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "outside_records",
+          "start": "2024-01-16T13:00",
+          "reason": "Surgical pathology, vulvar excision",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-01-09T08:15",
+              "text": "SPECIMENS:\nA. Vulva, right, radical local excision (stitch marks anterior margin).\nB. Right inguinal sentinel lymph node #1.\nC. Right inguinal sentinel lymph node #2.\n\nDIAGNOSIS:\nA. Invasive squamous cell carcinoma, HPV-associated (p16 block-positive).\n   Tumor size: 3.0 cm in greatest dimension.\n   Depth of invasion: 4 mm.\n   Lymphovascular invasion: not identified.\n   Margins: negative for invasive carcinoma; closest margin (deep) 10 mm.\nB. One lymph node, negative for carcinoma (0/1), including on cytokeratin immunostain.\nC. One lymph node, negative for carcinoma (0/1), including on cytokeratin immunostain.\n\nSYNOPTIC: pT1b pN0 (sn). FIGO (2021) stage IB.",
+              "conclusion": "Right vulvar invasive squamous cell carcinoma, HPV-associated, 3.0 cm, 4 mm depth of invasion, margins negative, sentinel lymph nodes 0/2. FIGO stage IB.",
+              "issued": "2024-01-15T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside pathology received",
+              "date": "2024-01-16T13:10",
+              "author": "RN",
+              "body": "Final surgical pathology received from gynecologic oncology: margins clear, both sentinel nodes negative, stage IB. Routed to PCP."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your pathology",
+              "date": "2024-01-16T17:40",
+              "author": "PCP",
+              "body": "Evelyn, I saw your final pathology today. The margins are clear and both lymph nodes were negative, which is the result we were hoping for. Your surgeon will go through it in detail at your visit on the 30th, including what follow-up looks like. Glad you're healing."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "specialist_visit",
+          "start": "2024-01-30T13:45",
+          "service": "Gynecologic Oncology",
+          "reason": "Post-operative visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Post-op Visit",
+              "date": "2024-02-01T09:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - POST-OPERATIVE VISIT\nDate: 01/30/2024\n\nMs. Murphy is three weeks out from right radical local excision of the vulva and right inguinal sentinel lymph node biopsy. She is doing well; off narcotics since the first week. Mild tenderness at the groin incision, resolving. No fever, drainage or leg swelling. She reports she has not smoked since surgery.\n\nExam: Vulvar incision well healed, no separation or erythema. Right groin incision clean, no seroma. No lower extremity edema.\n\nPathology reviewed with her: invasive SCC, HPV-associated, 3.0 cm, DOI 4 mm, no LVSI, margins negative (closest 10 mm), sentinel nodes 0/2. FIGO 2021 stage IB.\n\nPlan: No adjuvant therapy indicated. Surveillance with history and exam every 3 months for 2 years, then every 6 months, alternating between our office and her gynecologist. Imaging only for symptoms. Advised to report any new vulvar itching, lump, bleeding or groin swelling between visits. Continued smoking abstinence strongly encouraged. Cleared for normal activity.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "annual_physical",
+          "start": "2024-03-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              130,
+              71
+            ],
+            "hr": 65,
+            "spo2": 96,
+            "weight_kg": 68.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-20T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-20T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 238
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-20T08:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-20T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-03-20T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-20T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-03-20T09:15",
+              "author": "PCP",
+              "body": "Physical.\n\nInterval history: right vulvar SCC dx 11/2023, s/p right radical local excision + R inguinal SLN 1/9/24 - stage IB, margins neg, nodes 0/2, no adjuvant tx. Gyn onc surveillance q3mo, first in April. Recovered well.\n\nTobacco: stayed off cigarettes about 5 weeks after surgery, restarted in February when work got busy. Now ~1 ppd again. Disappointed in herself. We talked about it without lecturing - she knows. Not ready to try medication. Will revisit.\n\nCOPD: no exacerbations. Albuterol 1-3x/week. Tiotropium daily.\nHTN: amlodipine 5, no side effects.\n\nExam: vitals per flowsheet. NAD. No cervical/supraclavicular nodes. Heart regular. Lungs prolonged expiration, clear. Abd soft. Groins without palpable nodes, healed R groin incision. Ext no edema.\n\nPHQ-2 1. AUDIT-C 1.\n\nA/P\n1. Vulvar SCC stage IB, s/p excision - surveillance per gyn onc; cervical screening will be handled at her gyn visits.\n2. COPD GOLD 2 - stable.\n3. HTN - controlled.\n4. Tobacco - relapsed after brief quit. Encouraged; will keep offering.\n5. HM: CMP, CBC, lipids, A1c. Mammo 11/2023 neg. LDCT: staging CT 12/2023 showed no nodules; next LDCT December. Colonoscopy 2028.\n\nRTC fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "specialist_visit",
+          "start": "2024-04-23T10:15",
+          "service": "Gynecologic Oncology",
+          "reason": "Vulvar cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Surveillance",
+              "date": "2024-04-25T12:00",
+              "author": "gynecologic oncology",
+              "body": "GYN ONCOLOGY SURVEILLANCE VISIT - 04/23/2024\nDx: R vulvar SCC, FIGO IB, s/p radical local excision + SLN 01/09/2024.\n\nInterval: no vulvar itching, bleeding, discharge, groin swelling or leg swelling. Smoking again.\nExam: groins without adenopathy. Vulva: well-healed right excision scar, no lesions. Vagina and cervix normal on speculum. Bimanual and rectovaginal unremarkable.\nImpression: No evidence of disease.\nPlan: Next visit in 3 months with her gynecologist, then here in October.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-25a",
+          "kind": "specialist_visit",
+          "start": "2024-07-25T14:00",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Vulvar cancer surveillance, cervical screening",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-07-25T14:15",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2024-07-30T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Surveillance Visit",
+              "date": "2024-07-31T09:30",
+              "author": "gynecology",
+              "body": "OUTSIDE GYNECOLOGY\nDate of service: 07/25/2024\nRe: Evelyn Murphy\n\nSeen for alternating surveillance after right vulvar SCC (stage IB) excised 1/2024.\nNo symptoms. No bleeding.\nExam: inguinal regions without adenopathy. Vulva with healed right-sided scar, no new lesion. Vagina without lesions. Cervix normal; cytology obtained. Uterus small, adnexa nonpalpable.\nCervical cytology (resulted 7/30): negative for intraepithelial lesion or malignancy.\nAssessment: No evidence of recurrence. Next visit with gynecologic oncology in October.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "office_visit",
+          "start": "2024-09-26T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension and COPD follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              82
+            ],
+            "hr": 77,
+            "spo2": 97,
+            "weight_kg": 68.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-09-26T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-26T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-26T16:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            },
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual screening, current smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-09-26T16:40",
+              "author": "PCP",
+              "body": "F/u.\nFeels fine. No COPD flares this year; albuterol a couple of times a week, more on humid days. Tiotropium daily. Amlodipine daily. Smoking ~1 ppd. Gyn onc April and gyn July both clear, Pap in July negative.\nExam: BP okay. Lungs: prolonged expiratory phase, no wheeze. Heart RRR. No edema.\nA/P: COPD and HTN stable, no changes. Cessation offered again - declined for now. Flu shot today. COVID shot at pharmacy when the new one is out. Mammo Nov, LDCT Dec - orders in. RTC March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "pharmacy",
+          "start": "2024-10-08T09:05",
+          "reason": "COVID-19 vaccine reported",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-05T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside immunization",
+              "date": "2024-10-08T09:05",
+              "author": "MA",
+              "body": "Registry: 2024-25 COVID-19 vaccine given at pharmacy 10/05/24. Added to record."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "specialist_visit",
+          "start": "2024-10-22T09:00",
+          "service": "Gynecologic Oncology",
+          "reason": "Vulvar cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Surveillance",
+              "date": "2024-10-24T15:20",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY FOLLOW-UP - 10/22/2024\nStage IB right vulvar SCC, excised 01/2024. Now 9 months out.\nAsymptomatic. Reviewed gynecology note from July including negative cytology.\nExam: No inguinofemoral adenopathy. Vulva: healed scar on the right, no suspicious areas. Speculum: normal vagina and cervix. Pelvic and rectovaginal: no masses.\nImpression: NED.\nPlan: Gynecology in January, here in April.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "imaging",
+          "start": "2024-11-13T11:15",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-11-13T11:15",
+              "text": "Bilateral screening mammography with tomosynthesis. Compared with 11/08/2023 and prior.\nBreast density: scattered fibroglandular. No suspicious findings.",
+              "conclusion": "BI-RADS 1: negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-11-13T11:15"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "imaging",
+          "start": "2024-12-11T15:30",
+          "reason": "Annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-12-11T15:30",
+              "text": "INDICATION: Annual lung cancer screening. Current smoker.\nTECHNIQUE: Low-dose non-contrast CT chest.\nCOMPARISON: Contrast CT chest 12/07/2023; LDCT 11/08/2022.\nFINDINGS: No pulmonary nodules. Lungs otherwise clear. No effusion. No mediastinal or hilar adenopathy. Cardiac size normal.",
+              "conclusion": "Lung-RADS 1: negative. Return to annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-12-11T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Screening results",
+              "date": "2024-12-12T10:00",
+              "author": "RN",
+              "body": "Hi Evelyn - your mammogram last month and your lung CT yesterday were both normal. See you in March."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-23a",
+          "kind": "specialist_visit",
+          "start": "2025-01-23T11:30",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Vulvar cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Surveillance Visit",
+              "date": "2025-01-27T08:45",
+              "author": "gynecology",
+              "body": "OUTSIDE GYNECOLOGY\nDate of service: 01/23/2025\nRe: Evelyn Murphy, DOB 11/28/1967\n\nFollow-up in the shared surveillance schedule for right vulvar squamous cell carcinoma, stage IB, excised January 2024.\nShe has no complaints. No itching, bleeding or discharge.\nExam: no groin adenopathy. Vulva: healed right scar, no new lesion. Vagina and cervix without lesions. Bimanual normal.\nAssessment: No evidence of disease at one year.\nPlan: gynecologic oncology in April, back here in July.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "portal_message",
+          "start": "2025-01-27T19:05",
+          "reason": "Refill request, albuterol",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler refill",
+              "date": "2025-01-27T19:05",
+              "author": "patient",
+              "body": "Hi, could I get a refill on the rescue inhaler? Cold snap this week and I'm on my last one. Breathing is ok otherwise, just using it a bit more in the cold. Evelyn"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Inhaler refill",
+              "date": "2025-01-28T08:10",
+              "author": "PCP",
+              "body": "Refilled. If you find you're needing it more than a few times a week for more than a week or two, or you get a fever or more sputum, let me know and we'll get you in."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "annual_physical",
+          "start": "2025-03-26T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              140,
+              74
+            ],
+            "hr": 65,
+            "spo2": 96,
+            "weight_kg": 68.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-26T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-26T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-03-26T09:15",
+              "results": [
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 186
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 127
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-03-26T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-26T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-03-26T09:40",
+              "author": "PCP",
+              "body": "Annual physical, 57F.\n\nOnc: R vulvar SCC IB s/p excision 1/2024, NED at gyn onc 10/24 and gyn 1/25. Next gyn onc April.\nCOPD: winter was okay, used albuterol more during the January cold, no steroids or antibiotics, no urgent visits. Back to ~2x/week.\nHTN: on amlodipine 5.\nTobacco: 1 ppd, ~32 pack-years. Not ready.\n\nROS negative otherwise. No bleeding, no new lumps.\n\nExam: vitals per flowsheet, BP fine. NAD. No adenopathy cervical/supraclavicular/inguinal. Heart regular, no murmur. Lungs prolonged expiration, no wheeze, no crackles. Abd soft. Ext no edema.\n\nPHQ-2 0, AUDIT-C 2.\n\nA/P\n1. COPD GOLD 2, stable, same regimen.\n2. HTN controlled.\n3. Vulvar SCC surveillance per gyn onc/gyn.\n4. Tobacco: advised; declines meds or a quit date.\n5. HM: labs today. Mammo 11/24 neg, LDCT 12/24 neg - both repeat in fall/winter. Colonoscopy 2028. Cervical per gyn (NILM 7/24).\n\nRTC September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "specialist_visit",
+          "start": "2025-04-24T09:45",
+          "service": "Gynecologic Oncology",
+          "reason": "Vulvar cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Surveillance",
+              "date": "2025-04-28T14:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY SURVEILLANCE - 04/24/2025\nFIGO IB right vulvar SCC, s/p radical local excision and SLN biopsy 01/09/2024, no adjuvant therapy. 15 months out.\nNo symptoms reported.\nExam: groins negative bilaterally. Vulvar scar well healed, no lesion. Vaginal walls and cervix normal. Bimanual and rectovaginal without masses.\nImpression: NED.\nPlan: continue alternating q3-month visits through the 2-year mark. Gynecology in July; here in October.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "specialist_visit",
+          "start": "2025-07-24T15:15",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Vulvar cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Surveillance Visit",
+              "date": "2025-07-28T10:20",
+              "author": "gynecology",
+              "body": "OUTSIDE GYNECOLOGY\nDate of service: 07/24/2025\nRe: Evelyn Murphy\n\nRoutine surveillance after right vulvar SCC (IB), excised 1/2024.\nDenies vulvar symptoms or vaginal bleeding.\nExam: groins without palpable nodes; vulva with healed scar, no lesion; vagina and cervix normal appearing; bimanual normal.\nImpression: No evidence of disease.\nPlan: gynecologic oncology in October.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "office_visit",
+          "start": "2025-09-24T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension and COPD follow-up",
+          "vitals": {
+            "bp": [
+              136,
+              81
+            ],
+            "hr": 62,
+            "spo2": 96,
+            "weight_kg": 67.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-09-24T16:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-24T16:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-24T16:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            },
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual screening, current smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-09-24T16:45",
+              "author": "PCP",
+              "body": "BP/COPD f/u.\nNo issues. Summer fine. Albuterol 1-2x/wk. No flares. Amlodipine and tiotropium daily. Smoking unchanged.\nGyn onc 4/25 and gyn 7/25 both NED; gyn onc again in Oct.\nExam: BP at goal. Lungs prolonged expiration, no wheeze, no crackles. Heart regular. No edema.\nPlan: no med changes. Flu shot given. Mammo and LDCT orders placed for Nov/Dec. Physical in March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "pharmacy",
+          "start": "2025-10-07T13:30",
+          "reason": "COVID-19 vaccine reported",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-04T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside immunization",
+              "date": "2025-10-07T13:30",
+              "author": "MA",
+              "body": "2025-26 COVID-19 vaccine given at pharmacy 10/04/25 per state registry. Recorded."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "specialist_visit",
+          "start": "2025-10-21T10:30",
+          "service": "Gynecologic Oncology",
+          "reason": "Vulvar cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Surveillance",
+              "date": "2025-10-23T16:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE 10/21/2025\nRight vulvar SCC, FIGO IB, excised 01/2024. Approaching 2 years without recurrence.\nAsymptomatic; no bleeding, itching or groin swelling.\nExam: no inguinal adenopathy. Vulva: healed right scar, no suspicious lesion. Vagina and cervix normal. Pelvic and rectovaginal exams normal.\nImpression: NED.\nPlan: lengthen to every 6 months, alternating. Next visit with her gynecologist in April 2026. She knows to call sooner for any bleeding, itching, sore or lump.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "imaging",
+          "start": "2025-11-12T10:00",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-11-12T10:00",
+              "text": "Screening bilateral mammogram with tomosynthesis. Comparison 11/13/2024 and earlier.\nScattered areas of fibroglandular density. No suspicious mass, calcifications or distortion. No change.",
+              "conclusion": "BI-RADS 1: negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-11-12T10:00"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "imaging",
+          "start": "2025-12-10T14:45",
+          "reason": "Annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-12-10T14:45",
+              "text": "INDICATION: Annual lung cancer screening, current smoker.\nTECHNIQUE: Low-dose CT chest without contrast.\nCOMPARISON: 12/11/2024.\nFINDINGS: No pulmonary nodule. No consolidation or effusion. No lymphadenopathy. Heart normal in size.",
+              "conclusion": "Lung-RADS 1. Negative. Next annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-12-10T14:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Screening results",
+              "date": "2025-12-11T09:40",
+              "author": "RN",
+              "body": "Evelyn, your lung screening CT from yesterday and your November mammogram were both normal. Happy holidays from all of us."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "telephone",
+          "start": "2026-03-16T15:20",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment change",
+              "date": "2026-03-16T15:20",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's physical - quarter-end at work, can't get away. Offered April dates; she asked for September instead. Rebooked 9/15/26 8:30. Reminded her she can text the office if anything comes up before then."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "annual_physical",
+          "start": "2026-03-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "portal_message",
+          "start": "2026-05-04T21:40",
+          "reason": "Vaginal bleeding",
+          "orders": [
+            {
+              "id": "gyn-referral-2026",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "postmenopausal bleeding, history of vulvar cancer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question",
+              "date": "2026-05-04T21:40",
+              "author": "patient",
+              "body": "Hi, I'm probably overreacting but I have been having some spotting and bleeding on and off since around November. Not every day, sometimes a week or two goes by. I was supposed to see my gynecologist in April and I pushed it because of work. Should I be worried? Evelyn"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Telephone Call",
+              "date": "2026-05-05T08:20",
+              "author": "PCP",
+              "body": "Called pt re: last night's message. ~6 months of intermittent vaginal bleeding/spotting, postmenopausal. Some of the earlier spotting was after intercourse, but no intercourse for the last few months and it continues. No pain, no vulvar itching, no groin lumps. Not on any hormones.\n\nWith her vulvar SCC history this needs a gyn exam now, not in a few months. Called her gynecologist's office directly - they will see her 5/18, first available with her own gynecologist; they'll call if something opens sooner. Gyn onc office aware. Told her plainly that bleeding after menopause always needs to be looked at, and with her history it's especially important not to wait. She agreed. Will watch for the note."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "specialist_visit",
+          "start": "2026-05-18T13:30",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Postmenopausal bleeding",
+          "orders": [
+            {
+              "id": "gyn-referral-2026",
+              "action": "done",
+              "date": "2026-05-18T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Visit",
+              "date": "2026-05-19T17:00",
+              "author": "gynecology",
+              "body": "OUTSIDE GYNECOLOGY\nDate of service: 05/18/2026\nRe: Evelyn Murphy, DOB 11/28/1967\n\n58-year-old with a history of right vulvar squamous cell carcinoma (stage IB, excised 01/2024), seen sooner at her PCP's request. For six months she has had irregular postmenopausal bleeding along with spotting after intercourse; she has not been sexually active recently.\n\nPMH: COPD, hypertension, tobacco dependence. Condylomata treated in the past. Lap chole 2010.\nMedications: albuterol as needed, tiotropium 18 mcg daily, amlodipine 5 mg daily.\nAllergies: NKDA.\nFamily: mother cervical cancer at 42; father lung cancer at 58; sister CIN II.\nSocial: smoker, 30 pack-years.\n\nExam: Groins without palpable adenopathy. Vulva: healed right excision scar, no lesion. Speculum: a 2 cm ulcerative lesion on the posterior vaginal wall. Cervix appears normal. Bimanual and the rest of the pelvic exam unremarkable.\n\nProcedure: biopsy of the posterior vaginal wall lesion under local anesthesia, sent to pathology. Minimal bleeding, Monsel's applied.\n\nImpression: Posterior vaginal wall ulcerative lesion in a patient with prior vulvar SCC; concerning for malignancy. Will call with pathology and coordinate with gynecologic oncology.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "outside_records",
+          "start": "2026-05-21T16:15",
+          "reason": "Vaginal biopsy pathology",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of vagina",
+              "action": "diagnosed",
+              "onset": "2026-05-18",
+              "note": "posterior vaginal wall, biopsy-proven squamous cell carcinoma",
+              "icd10": "C52"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-05-18T13:50",
+              "text": "SPECIMEN: Vagina, posterior wall, biopsy.\nGROSS: Two tan-white fragments of soft tissue, aggregate 0.5 x 0.3 x 0.2 cm, entirely submitted.\nMICROSCOPIC: Fragments of squamous mucosa with ulceration and underlying invasive nests of malignant squamous cells in the stroma.",
+              "conclusion": "Vagina, posterior wall, biopsy: INVASIVE SQUAMOUS CELL CARCINOMA.",
+              "issued": "2026-05-21T11:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gynonc-referral-2026",
+              "action": "placed",
+              "order": "Gynecologic oncology referral",
+              "category": "referral",
+              "to": "Gynecologic Oncology",
+              "reason": "vaginal squamous cell carcinoma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside pathology received",
+              "date": "2026-05-21T16:20",
+              "author": "RN",
+              "body": "Gyn faxed vaginal biopsy pathology: invasive squamous cell carcinoma. Gyn spoke with pt this afternoon and has referred back to gynecologic oncology. Routed to PCP urgently."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-22a",
+          "kind": "telephone",
+          "start": "2026-05-22T08:15",
+          "reason": "Biopsy result follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Telephone Call",
+              "date": "2026-05-22T08:35",
+              "author": "PCP",
+              "body": "Spoke with Evelyn about the vaginal biopsy (invasive SCC). She'd heard from gyn yesterday. Quiet on the phone, then said she wished she hadn't waited. I told her the useful thing now is the next step, and that gyn onc knows her well. Consult is 6/2. Offered a visit or call anytime before then; she'll text if she wants to come in. Will do pre-op eval whenever surgery is scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "specialist_visit",
+          "start": "2026-06-02T08:45",
+          "service": "Gynecologic Oncology",
+          "reason": "Vaginal squamous cell carcinoma",
+          "orders": [
+            {
+              "id": "gynonc-referral-2026",
+              "action": "done",
+              "date": "2026-06-02T08:45"
+            },
+            {
+              "id": "staging-ct-2026",
+              "action": "placed",
+              "order": "CT chest, abdomen and pelvis with contrast",
+              "category": "imaging",
+              "reason": "staging, vaginal SCC"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Consultation",
+              "date": "2026-06-03T18:10",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY CONSULTATION - 06/02/2026\nPatient: Evelyn Murphy (DOB 11/28/1967)\nKnown to us: right vulvar SCC, FIGO IB, radical local excision with SLN biopsy 01/09/2024, NED through 10/2025.\n\nNew problem: posterior vaginal wall lesion biopsied by her gynecologist 05/18/2026, invasive SCC. Six months of intermittent postmenopausal bleeding.\n\nMedications: tiotropium, albuterol prn, amlodipine 5 mg. Allergies: NKDA. Current smoker.\n\nExam: No inguinal or femoral adenopathy. Vulva: healed right scar, no lesion; the vulva is separate from the vaginal lesion. Speculum: 2 cm ulcerated lesion on the posterior vaginal wall with healing biopsy site. Cervix normal in appearance. Rectovaginal exam: lesion mobile and confined to the vaginal wall, no extension into the paravaginal tissue or rectovaginal septum.\n\nAssessment: Squamous cell carcinoma of the vagina, clinically confined to the vaginal wall (FIGO stage I, pending imaging). Vulva and cervix are not involved.\n\nPlan:\n1. CT chest, abdomen and pelvis with contrast.\n2. If no nodal or distant disease: wide local excision of the posterior vaginal wall lesion (partial vaginectomy). Discussed the alternative of radiation; given the small, mobile lesion she prefers surgery.\n3. Pre-op clearance with PCP.\n4. Smoking cessation before and after surgery, again.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "imaging",
+          "start": "2026-06-04T12:30",
+          "reason": "Staging CT",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-06-04T12:30",
+              "text": "INDICATION: Vaginal squamous cell carcinoma; history of vulvar SCC. Staging.\nTECHNIQUE: CT chest with IV contrast, performed with abdomen and pelvis.\nCOMPARISON: LDCT 12/10/2025; CT 12/07/2023.\nFINDINGS: No pulmonary nodule or mass. Lungs clear. No pleural effusion. No thoracic lymphadenopathy. Normal heart size.",
+              "conclusion": "No evidence of thoracic metastatic disease."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-06-04T12:30",
+              "text": "INDICATION: Vaginal SCC, staging.\nTECHNIQUE: IV contrast-enhanced CT abdomen and pelvis.\nCOMPARISON: 12/07/2023.\nFINDINGS: Solid organs unremarkable. Gallbladder surgically absent. Kidneys enhance symmetrically, no hydronephrosis. No retroperitoneal, pelvic, inguinal or femoral lymphadenopathy. Uterus and adnexa unremarkable. No ascites. No osseous lesion.",
+              "conclusion": "No lymphadenopathy or distant metastatic disease."
+            }
+          ],
+          "orders": [
+            {
+              "id": "staging-ct-2026",
+              "action": "done",
+              "date": "2026-06-04T12:30"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-11a",
+          "kind": "office_visit",
+          "start": "2026-06-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-operative evaluation",
+          "vitals": {
+            "bp": [
+              137,
+              79
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 67.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-11T11:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-11T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 303
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-06-11T10:40",
+              "text": "Sinus rhythm at 78. Axis normal. PR, QRS and QT intervals normal. No acute ST-T changes. Unchanged from 12/19/2023.",
+              "conclusion": "Normal sinus rhythm. Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-11T10:20"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-06-11T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-11T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Evaluation",
+              "date": "2026-06-11T11:20",
+              "author": "PCP",
+              "body": "PRE-OP\nPlanned: wide local excision of posterior vaginal wall lesion (partial vaginectomy), gyn onc, 6/23/26, general anesthesia, same-day discharge expected.\n\nBackground: vaginal SCC on biopsy 5/18/26, clinically stage I; staging CT 6/4 negative (no nodes, no mets, no lung nodule). Prior R vulvar SCC IB, excised 1/2024 without complication - did well with GA then.\n\nCOPD GOLD 2 (FEV1 66% in 2021). No exacerbations, no steroids or antibiotics in the past year. Albuterol ~2x/wk. Climbs 2 flights with a pause, no chest pain. >4 METs.\nSmoking ~1 ppd, ~33 pack-years. Says she'll stop the week before like last time.\nNo bleeding disorder history, no anticoagulants.\nMeds: tiotropium 18 mcg daily, albuterol prn, amlodipine 5. NKDA.\n\nExam: BP at goal, vitals per flowsheet. Airway unchanged. Heart regular. Lungs with prolonged expiration, no wheeze. No edema.\nECG: NSR, normal, unchanged.\nCBC/BMP today.\n\nImpression: acceptable risk for planned low-risk procedure. Same recommendations as 2023: take tiotropium and amlodipine morning of surgery, bring albuterol, early ambulation. Note sent to gyn onc."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Pre-op labs",
+              "date": "2026-06-12T07:55",
+              "author": "PCP",
+              "body": "Your bloodwork from yesterday is normal and the ECG looked the same as last time, so you're cleared from our end. Sent everything to the surgery office. I'm here if you need anything."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "procedure_visit",
+          "start": "2026-06-23T07:00",
+          "end": "2026-06-23T14:30",
+          "service": "Gynecologic Oncology",
+          "reason": "Wide local excision, posterior vaginal wall",
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain, with food, for up to 7 days",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-operative pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Operative Report - Gynecologic Oncology",
+              "date": "2026-06-25T09:00",
+              "author": "gynecologic oncology",
+              "body": "OPERATIVE REPORT\nDate of surgery: 06/23/2026\nPreoperative diagnosis: Squamous cell carcinoma of the posterior vaginal wall, clinical stage I.\nPostoperative diagnosis: Same.\nProcedure: Wide local excision of posterior vaginal wall lesion (partial vaginectomy).\nAnesthesia: General.\nFindings: Exam under anesthesia confirmed a 2 cm ulcerated lesion of the posterior vaginal wall, mobile, without paravaginal or rectovaginal septum involvement. Cervix and vulva without lesion.\nDescription: The lesion was outlined with a 1 cm margin, and the vaginal wall was excised full thickness, preserving the underlying rectovaginal fascia. Specimen oriented and sent. Rectal exam at the end confirmed intact rectal mucosa. The defect was closed primarily. EBL 75 mL. No complications.\nDisposition: Discharged home the same day after voiding. Ibuprofen 600 mg q6h prn with food for up to 7 days. Continue home inhalers and amlodipine. Pelvic rest until cleared. Follow-up in 4 weeks.\nAllergies: NKDA.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-25a",
+          "kind": "telephone",
+          "start": "2026-06-25T11:00",
+          "reason": "Post-operative call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-op Call",
+              "date": "2026-06-25T11:15",
+              "author": "RN",
+              "body": "Post-op check-in call, POD 2. Sore but okay; ibuprofen helping, taking it with food. Light pink discharge only, no heavy bleeding, no fever, voiding fine, bowels moving. Breathing at baseline. Not smoking since last Tuesday. Has gyn onc's after-hours number. Post-op visit 7/21."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "outside_records",
+          "start": "2026-06-29T14:00",
+          "reason": "Surgical pathology, vaginal excision",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-06-23T08:30",
+              "text": "SPECIMEN: Vagina, posterior wall lesion, wide local excision (oriented).\nDIAGNOSIS: Invasive squamous cell carcinoma, p16 block-positive.\n   Tumor size: 2.0 cm.\n   Depth of invasion: 3 mm.\n   Lymphovascular invasion: not identified.\n   Margins: all margins negative for carcinoma; closest margin 5 mm.\nSYNOPTIC: pT1. FIGO stage I.",
+              "conclusion": "Posterior vaginal wall invasive squamous cell carcinoma, p16-positive, 2.0 cm, 3 mm depth of invasion, margins negative. FIGO stage I.",
+              "issued": "2026-06-29T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside pathology received",
+              "date": "2026-06-29T14:10",
+              "author": "RN",
+              "body": "Final pathology from vaginal excision received: margins negative, stage I. Routed to PCP."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your pathology",
+              "date": "2026-06-29T18:05",
+              "author": "PCP",
+              "body": "Hi Evelyn - your final pathology came over today. The margins are clear. Your surgeon will go over it with you on the 21st and talk about the follow-up plan. How are you healing?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your pathology",
+              "date": "2026-06-29T20:30",
+              "author": "patient",
+              "body": "Thank you. Healing ok, sore when I sit too long. Relieved."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "specialist_visit",
+          "start": "2026-07-21T14:15",
+          "service": "Gynecologic Oncology",
+          "reason": "Post-operative visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Post-op Visit",
+              "date": "2026-07-23T11:40",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - POST-OP 07/21/2026\nFour weeks after wide local excision of a posterior vaginal wall SCC. Recovering well; off ibuprofen for two weeks. Spotting stopped after the first week. No pain with bowel movements, no fever.\n\nExam: Vaginal incision healed, no granulation or separation. No groin adenopathy. Vulva unchanged with healed right scar.\n\nPathology reviewed: invasive SCC, p16-positive, 2.0 cm, DOI 3 mm, no LVSI, margins negative (closest 5 mm). FIGO stage I.\n\nPlan: No adjuvant therapy. Surveillance every 3 months with history and exam, alternating with her gynecologist as before, given two HPV-associated lower genital tract cancers. Next visit here in October. Pelvic rest lifted. Asked again to stop smoking; she says she is trying.\n\nGynecologic Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T12:10",
+          "reason": "Refill request, tiotropium",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2026-08-04T12:10",
+              "author": "patient",
+              "body": "Hi - pharmacy says the Spiriva needs a new prescription. Also still on for the physical Sept 15? Thanks, Evelyn"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2026-08-04T15:35",
+              "author": "MA",
+              "body": "New tiotropium prescription sent with a year of refills. Yes, you're booked 9/15 at 8:30, please come fasting for labs. -MA"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "annual_physical",
+          "start": "2026-09-15T08:30",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anogenital (venereal) warts|A63.0": {
+        "code": "A63.0",
+        "display": "Anogenital (venereal) warts",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Malignant neoplasm of labium majus|C51.0": {
+        "code": "C51.0",
+        "display": "Malignant neoplasm of labium majus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Malignant neoplasm of vagina|C52": {
+        "code": "C52",
+        "display": "Malignant neoplasm of vagina",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Papillomavirus as the cause of diseases classified elsewhere|B97.7": {
+        "code": "B97.7",
+        "display": "Papillomavirus as the cause of diseases classified elsewhere",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "tiotropium 0.018 MG Inhalation Powder": {
+        "code": "485032",
+        "display": "tiotropium 0.018 MG Inhalation Powder",
+        "ingredient": "tiotropium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}

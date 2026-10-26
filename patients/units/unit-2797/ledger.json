@@ -1,0 +1,3451 @@
+{
+  "unit": "unit-2797",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001103",
+      "given": "Kristen",
+      "family": "Marchetti",
+      "birth_date": "1983-09-20",
+      "address_line": "41 Linseed Road",
+      "phone": "+1-413-555-0188",
+      "email": "kristen.marchetti@example.test",
+      "summary": "Hatfield high school math teacher who joined in 2018 with new hypertension on HCTZ; in 2020 resistant pressures with hypokalemia and high renin/aldosterone led to renal artery imaging, cardiology diagnosis of fibromuscular dysplasia, and an ED visit for transient right-eye vision loss. Losartan added in 2021 after a CTA showed multifocal right renal FMD; pressures since in the 130s-140s.",
+      "events": [
+        {
+          "id": "2018-04-17a",
+          "kind": "establish_care",
+          "start": "2018-04-17T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2018-04-17"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              166,
+              97
+            ],
+            "hr": 77,
+            "temp_c": 36.2,
+            "spo2": 98,
+            "weight_kg": 70.3,
+            "height_cm": 165.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2018-04-17T16:35",
+              "resulted": "2018-04-18T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-04-17T16:35",
+              "resulted": "2018-04-18T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Wine, 1-2 glasses per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2018-04-17T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2018-04-17T16:55",
+              "author": "PCP",
+              "body": "NEW PATIENT — ESTABLISH CARE\n\n34 y/o woman, teaches math at the high school. Has not had a regular PCP for several years (prior office in another town; records release signed today). Here to get set up. Feels well.\nROS: no headaches she'd call unusual, no chest pain, palpitations, dyspnea, leg swelling. Menses regular. Sleeping ok.\n\nIntake BP 166/97. I rechecked after she sat quietly for ~10 min, both arms — still well into the 160s/90s. She does not know of any prior readings.\n\nPMH: none\nPSH: none\nMeds: none\nAllergies: NKDA\nFH: mother has had high blood pressure since her mid-40s (dx at 45). A maternal aunt had an ischemic stroke at 52. Father — hyperlipidemia.\nSH: never smoker. Wine 1-2 glasses a month. No drug use. Teaches high school mathematics.\n\nExam: HR 77, T 36.2, SpO2 98%. Wt 70.3 kg, ht 165.7 cm, BMI 25.6.\nPleasant, in no distress. Thyroid not enlarged. Heart regular, no murmur or gallop. Chest clear. Abdomen soft, nontender. No peripheral edema. Radial and pedal pulses 2+.\n\nA/P\n1. Hypertension, new, stage 2 range on repeated office readings. Strong maternal history. She is young for essential HTN — if it proves hard to control, will look for a secondary cause. Start hydrochlorothiazide 25 mg every morning. Salt, activity reviewed; alcohol already minimal. BMP and lipids today. Nurse BP check with BMP in about 5 weeks. Buy a validated upper-arm cuff and bring it in so we can compare.\n2. Health maintenance: cervical screening due; she prefers to do it at a physical rather than today. Will check immunization history once old records arrive."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records Request",
+              "date": "2018-04-17T17:20",
+              "author": "front desk",
+              "body": "Release signed by pt. Request for complete records faxed to prior primary care office. Will scan on receipt."
+            }
+          ],
+          "state": {
+            "bp": [
+              158,
+              100
+            ],
+            "hr": 80,
+            "weight_kg": 70.4,
+            "height_cm": 166.0,
+            "labs": {
+              "Glucose": 88,
+              "High Density Lipoprotein": 63,
+              "Low Density Lipoprotein": 95,
+              "Total Cholesterol": 177,
+              "Triglycerides": 86
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "height_cm",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2018-04-18a",
+          "kind": "portal_message",
+          "start": "2018-04-18T12:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2018-04-18T12:20",
+              "author": "PCP",
+              "body": "Hi Kristen — your labs from yesterday are fine. Potassium 4.1, sodium 139, kidney function normal (creatinine 0.73). Cholesterol looks good: total 180, LDL 96, HDL 64, triglycerides 99.\nStart the hydrochlorothiazide tomorrow morning. You may urinate more for the first week or so. Nurse BP check in about 5 weeks — front desk will call to book."
+            }
+          ]
+        },
+        {
+          "id": "2018-05-09a",
+          "kind": "outside_records",
+          "start": "2018-05-09T10:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2018-05-09T10:05",
+              "author": "front desk",
+              "body": "Records received by fax from pt's previous primary care office, 14 pages: office notes and annual exams 2011-2014, immunization list (no Tdap date listed). No chronic diagnoses or medications on their list. Scanned to media tab and sent to PCP inbox.\nPCP review 5/10: nothing that changes current plan. No Tdap on file — offer at physical."
+            }
+          ]
+        },
+        {
+          "id": "2018-05-24a",
+          "kind": "nurse_visit",
+          "start": "2018-05-24T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure check on hydrochlorothiazide",
+          "vitals": {
+            "bp": [
+              161,
+              94
+            ],
+            "hr": 87
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2018-05-24T15:45",
+              "resulted": "2018-05-25T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-05-24T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - BP Check",
+              "date": "2018-05-24T15:55",
+              "author": "RN",
+              "body": "BP check, ~5 wks on HCTZ 25 mg daily. Takes it each morning before school, has not missed doses. Urinating more the first week, settled now. No dizziness, no cramps.\nBP 161/94 R arm seated after 5 min rest, HR 87. Pt's home cuff checked against ours on the L arm — within a few points of each other.\nBMP drawn. Routed to PCP."
+            }
+          ],
+          "state": {
+            "bp": [
+              146,
+              94
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2018-05-25a",
+          "kind": "portal_message",
+          "start": "2018-05-25T12:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2018-05-25T12:40",
+              "author": "PCP",
+              "body": "Your bloodwork on the hydrochlorothiazide is fine — potassium 4.1, sodium 139, kidney function normal. The pressure at the nurse visit (161/94) is still higher than I'd like. Give it more time with the salt and activity changes, and send me a set of home readings in a few weeks. I'd like to see you in the fall once school is back in session."
+            }
+          ]
+        },
+        {
+          "id": "2018-07-30a",
+          "kind": "pharmacy",
+          "start": "2018-07-30T09:15",
+          "documents": [
+            {
+              "type": "Pharmacy Request",
+              "title": "Refill Request",
+              "date": "2018-07-30T09:15",
+              "author": "MA",
+              "body": "Pharmacy refill request: hydrochlorothiazide 25 mg tab, asking for 90-day supply. Last BP visit 5/24/18, labs 5/24 normal. Sent #90 with 1 refill per protocol. Pt reminded by phone to book fall BP follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-27a",
+          "kind": "office_visit",
+          "start": "2018-09-27T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              144,
+              90
+            ],
+            "hr": 84,
+            "weight_kg": 70.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2018-09-27T16:10",
+              "resulted": "2018-09-28T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2018-09-27T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-09-27T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2018-09-27T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2018-09-27T16:30",
+              "author": "PCP",
+              "body": "S: BP follow-up. School started; busy but ok. Takes HCTZ 25 every morning. Home log (about a dozen readings in Sept) mostly mid-140s over ~90. Walking after school 3-4 days a week. No cramps, lightheadedness or headaches.\nO: BP 144/90, HR 84, wt 70.8 kg. CV: regular, no murmur. Lungs clear. Ankles without edema.\nA: HTN, better on thiazide but above goal (<130/80).\nP: Discussed adding a second agent vs. more time on lifestyle. She'd rather work on sodium first (takeout and school cafeteria lunches are her weak spots). Agreed — recheck in the spring, sooner if home numbers climb. BMP today. Flu vaccine today."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2018-09-28T11:05",
+              "author": "PCP",
+              "body": "BMP normal on HCTZ: Na 139, K 3.9, Cr 0.70. No change in dose. Pt notified through portal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2018-12-03a",
+          "kind": "portal_message",
+          "start": "2018-12-03T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home BP readings",
+              "date": "2018-12-03T20:15",
+              "author": "patient",
+              "body": "Hi, I've been checking at home a few times a week like you asked. Most are around 145-150 on top and low 90s on the bottom, a couple in the 140s. Is that okay or should I come in before spring?\nKristen"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home BP readings",
+              "date": "2018-12-04T10:30",
+              "author": "RN",
+              "body": "Hi Kristen, thanks for sending these. The doctor reviewed them — no change for now, keep logging. Your spring BP visit is booked for Wed 3/20 at 3:30. Call sooner for headaches, chest pain or readings over 180/110."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-20a",
+          "kind": "office_visit",
+          "start": "2019-03-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "No-Show",
+              "date": "2019-03-20T16:10",
+              "author": "front desk",
+              "body": "Pt did not arrive for 3:30 BP follow-up. Called cell, left VM to reschedule.\n3/21: pt called back — mixed up the date. Rebooked Tue 4/16 10:20 (school vacation week)."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2019-04-16a",
+          "kind": "office_visit",
+          "start": "2019-04-16T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              157,
+              98
+            ],
+            "hr": 81,
+            "weight_kg": 70.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-04-16T10:50",
+              "resulted": "2019-04-16T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-04-16T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2019-04-16T11:05",
+              "author": "PCP",
+              "body": "BP f/u, rescheduled from March. Vacation week.\nOn HCTZ 25 daily, adherent. Home readings 140s-150s/90s. Admits the sodium changes didn't really stick over the winter. Denies headache, chest pain, SOB, visual change.\nBP 157/98, HR 81, wt 70.6 kg. Heart regular, no murmur. Chest clear. Legs without swelling.\n\nA/P: HTN not controlled on thiazide alone, a year in. I recommended adding a second agent today. She wants one more try first — a few colleagues are starting an after-school walking group — and would like to revisit at her physical in August. Accepted with a deadline: if still over 140/90 at the physical, we add a medication. BMP today."
+            }
+          ],
+          "state": {
+            "bp": [
+              152,
+              96
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-04-17a",
+          "kind": "portal_message",
+          "start": "2019-04-17T07:55",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2019-04-17T07:55",
+              "author": "PCP",
+              "body": "Labs from yesterday are normal — potassium 4.1, sodium 139, creatinine 0.80. See you in August for your physical."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-21a",
+          "kind": "annual_physical",
+          "start": "2019-08-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              157,
+              94
+            ],
+            "hr": 76,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 70.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-08-21T09:40",
+              "resulted": "2019-08-21T15:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-08-21T09:40",
+              "resulted": "2019-08-22T14:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2019-08-21T09:30",
+              "text": "SPECIMEN: Cervix, liquid-based preparation.\nADEQUACY: Satisfactory for evaluation; endocervical/transformation zone component present.\nINTERPRETATION: Negative for intraepithelial lesion or malignancy.\nHIGH-RISK HPV (reflexed co-test): Not detected.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy; high-risk HPV not detected.",
+              "issued": "2019-08-26T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2019-08-21T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-08-21T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-08-21T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2019-08-21T10:15",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n35 y/o F, summer break, feels well. HTN on HCTZ 25 mg; home readings \"about the same,\" 140s-150s/90s. The walking group lasted about a month.\nROS: negative except as above. Menses regular, no gyn concerns.\nMeds: hydrochlorothiazide 25 mg daily. NKDA.\nFH/SH: unchanged from intake. Never smoker, rare wine.\n\nPrevention:\n- Cervical: last Pap ~2014 per old records. Co-test today.\n- HIV and hepatitis C one-time screening offered — accepts.\n- Tdap: none on record — given today.\n- PHQ-2: 0.\n\nExam: BP 157/94, HR 76, T 36.7, SpO2 98%, wt 70.7 kg, BMI 25.7.\nGeneral: well. HEENT: TMs and oropharynx normal. Neck: thyroid normal size, no nodes. CV: regular, no murmur. Lungs: clear. Breasts: symmetric, no masses or discharge. Abdomen: soft, no organomegaly. Pelvic: vulva and vagina unremarkable; cervix normal in appearance, cytology/HPV sample taken. Extremities: no edema. Skin: no concerning lesions.\n\nA/P\n1. Health maintenance as above. BMP today.\n2. HTN, still above goal. Per our April agreement I again recommended a second agent (ACE inhibitor or amlodipine). She is reluctant to add a daily pill and asked for one more stretch with home monitoring through the fall. I documented my recommendation; she will send readings in October and we will add then if not under 140/90."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2019-08-27a",
+          "kind": "portal_message",
+          "start": "2019-08-27T13:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Results",
+              "date": "2019-08-27T13:15",
+              "author": "PCP",
+              "body": "Kristen — your Pap and HPV test are both normal, so the next co-test is due in 5 years. HIV and hepatitis C screens are negative. Kidney function and potassium normal. The Tdap you got is good for 10 years.\nDon't forget to send me home BP readings in October."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-04a",
+          "kind": "nurse_visit",
+          "start": "2019-10-04T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-04T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-04T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2019-10-04T15:35",
+              "author": "RN",
+              "body": "Quadrivalent flu vaccine 0.5 mL IM, L deltoid. VIS reviewed; no prior reactions. Waited 15 min in lobby without problems.\nAsked about October BP readings — she has been checking but hasn't sent them; will send this weekend."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "portal_message",
+          "start": "2019-12-10T21:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP question",
+              "date": "2019-12-10T21:40",
+              "author": "patient",
+              "body": "Hi — I know I was supposed to send numbers in October and I never did, school got away from me. They've been creeping up. Lots of 150s and some in the 160s over 100. I feel fine otherwise. Should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BP question",
+              "date": "2019-12-11T09:20",
+              "author": "front desk",
+              "body": "Hi Kristen, the doctor would like to see you. First after-school opening after the break is Tue 1/21 at 3:30 — booked. Please bring your cuff and log.\nNote from Dr: keep taking the HCTZ. If you get readings over 180/110, a severe headache, chest pain or vision change before then, call us the same day."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-21a",
+          "kind": "office_visit",
+          "start": "2020-01-21T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure above goal, muscle cramps",
+          "vitals": [
+            {
+              "time": "2020-01-21T15:35",
+              "bp": [
+                166,
+                102
+              ],
+              "hr": 78
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-01-21T16:05",
+              "resulted": "2020-01-21T16:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 147
+                },
+                {
+                  "test": "Potassium",
+                  "value": 2.9
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 32
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.64
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-01-21T16:05",
+              "resulted": "2020-01-28T10:40",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "value": 9.4
+                },
+                {
+                  "test": "Aldosterone",
+                  "value": 34
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-01-21T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "renal-doppler",
+              "action": "placed",
+              "order": "Renal artery duplex ultrasound",
+              "category": "imaging",
+              "reason": "resistant hypertension with hypokalemia"
+            },
+            {
+              "id": "cards-referral",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "resistant hypertension, suspected renovascular cause"
+            },
+            {
+              "id": "urine-metaneph",
+              "action": "placed",
+              "order": "24-hour urine metanephrines",
+              "category": "lab",
+              "reason": "resistant hypertension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Resistant Hypertension",
+              "date": "2020-01-21T16:45",
+              "author": "PCP",
+              "body": "S: BP follow-up. HCTZ 25 mg daily since 4/2018, she rarely misses a dose. Home readings since November 150s-160s over 90s-100s. New: muscle cramps for a few weeks — calves and feet at night, sometimes her hands while grading. No palpitations or weakness. No licorice, decongestants, NSAIDs, energy drinks or supplements. Never smoker, rare wine. Not snoring per her report.\n\nO: BP 166/102, same in both arms. HR 78. No edema. No bruits heard. Heart regular. Lungs clear.\n\nA/P\n1. Hypertension, now behaving as resistant: never at goal on a thiazide for almost two years and rising. At 36, this needs a secondary workup. Cramps on a thiazide make me think of low potassium, which would also bring primary aldosteronism and renovascular disease into the picture.\n - BMP, plasma renin activity and aldosterone drawn today.\n - 24-hour urine metanephrines — container and instructions given.\n - Renal artery duplex ultrasound ordered. In a woman her age, fibromuscular dysplasia is the renovascular cause I'm most concerned about.\n - Cardiology referral for resistant hypertension.\n - Continue HCTZ for now so the renin/aldosterone are drawn on her usual regimen.\n2. Muscle cramps — likely electrolyte; will call with BMP this afternoon."
+            }
+          ],
+          "state": {
+            "bp": [
+              164,
+              102
+            ],
+            "labs": {
+              "Aldosterone": 34,
+              "Plasma Renin Activity": 9.6
+            }
+          }
+        },
+        {
+          "id": "2020-01-21b",
+          "kind": "telephone",
+          "start": "2020-01-21T17:20",
+          "conditions": [
+            {
+              "label": "Hypokalemia",
+              "action": "diagnosed",
+              "onset": "2020-01-21",
+              "icd10": "E87.6"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily with food",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypokalemia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab Result Call",
+              "date": "2020-01-21T17:20",
+              "author": "PCP",
+              "body": "Spoke with pt re: today's BMP. K 2.9, HCO3 32, Na 147 — hypokalemia with metabolic alkalosis, fits her cramps.\nStart potassium chloride ER 20 mEq once daily with food. Repeat BMP in ~2 weeks; she'll come 2/3 when she drops off the 24-hr urine.\nED for palpitations, marked weakness or fainting. Renin/aldosterone are send-outs, about a week. Pt verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-28a",
+          "kind": "portal_message",
+          "start": "2020-01-28T12:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Renin and Aldosterone",
+              "date": "2020-01-28T12:30",
+              "author": "PCP",
+              "body": "Kristen, your renin and aldosterone results are back. Both are elevated (renin activity 9.4, aldosterone 34). When both run high together, the adrenal glands are usually responding to a signal from the kidneys rather than overproducing on their own — a secondary hyperaldosteronism pattern. That fits with reduced blood flow to a kidney, which the renal artery ultrasound is designed to look for, so please keep that appointment. Still do the 24-hour urine collection and keep taking the potassium every day."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-03a",
+          "kind": "lab_only",
+          "start": "2020-02-03T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Repeat potassium; 24-hour urine drop-off",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-02-03T07:25",
+              "resulted": "2020-02-03T13:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.7
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-02-03T07:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "urine-metaneph",
+              "action": "done",
+              "date": "2020-02-06T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Lab Visit",
+              "date": "2020-02-03T07:40",
+              "author": "MA",
+              "body": "Pt dropped off 24-hr urine collection (started Sun 2/2 AM, finished this AM), labeled and sent to reference lab. BMP drawn L antecubital, one stick. Taking KCl daily, cramps less."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bicarbonate": 29,
+              "Potassium": 3.7
+            }
+          }
+        },
+        {
+          "id": "2020-02-06a",
+          "kind": "telephone",
+          "start": "2020-02-06T14:10",
+          "documents": [
+            {
+              "type": "Lab Report",
+              "title": "24-Hour Urine Metanephrines",
+              "date": "2020-02-06T11:00",
+              "author": "reference lab",
+              "body": "REFERENCE LABORATORY REPORT\nSpecimen: urine, 24-hour collection. Collected 02/02/2020-02/03/2020. Received 02/03/2020.\nTest: Metanephrines, fractionated, 24-hour urine.\nMetanephrine: within reference interval.\nNormetanephrine: within reference interval.\nTotal metanephrines: within reference interval.\nInterpretation: Normal. Results do not suggest pheochromocytoma or paraganglioma."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Results Call",
+              "date": "2020-02-06T14:10",
+              "author": "RN",
+              "body": "Reached pt by phone after PCP review. 24-hr urine metanephrines normal (report scanned). BMP 2/3 on KCl: K 3.7 (up from 2.9), Na 140, HCO3 28. Continue KCl 20 mEq daily. Renal artery duplex confirmed for Wed 2/12 at 4:00, nothing to eat after lunch that day. Pt agreeable."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-12a",
+          "kind": "imaging",
+          "start": "2020-02-12T16:00",
+          "service": "Radiology",
+          "reason": "Renal artery duplex",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2020-02-12T16:00",
+              "text": "EXAM: Ultrasound, abdominal Doppler — renal arteries.\nINDICATION: Resistant hypertension, hypokalemia. Elevated renin and aldosterone.\nTECHNIQUE: Grayscale, color and spectral Doppler evaluation of the abdominal aorta, renal artery origins and both kidneys. Patient fasting.\nFINDINGS:\nAorta: normal caliber.\nRight renal artery: reduced luminal diameter with turbulent flow on color and spectral Doppler.\nLeft renal artery: no focal flow abnormality identified.\nKidneys: normal size and echotexture bilaterally. No hydronephrosis or mass.",
+              "conclusion": "Turbulent flow with reduced diameter of the right renal artery, suspicious for renal artery stenosis. Cause not determined by ultrasound; fibromuscular dysplasia is a consideration in a young woman. CTA or MRA could further characterize if clinically indicated.",
+              "issued": "2020-02-13T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "renal-doppler",
+              "action": "done",
+              "date": "2020-02-12T16:00"
+            }
+          ]
+        },
+        {
+          "id": "2020-02-13a",
+          "kind": "portal_message",
+          "start": "2020-02-13T12:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Renal Artery Ultrasound",
+              "date": "2020-02-13T12:05",
+              "author": "PCP",
+              "body": "Kristen, the ultrasound shows a narrowing of the artery to your right kidney with turbulent flow through it. In a woman your age the most common cause is fibromuscular dysplasia (FMD) — a condition of the artery wall itself, not cholesterol buildup. It would explain why your pressure has been so stubborn and why the renin and aldosterone were high. Your cardiology appointment is March 11; please keep it, they will confirm the diagnosis and plan next steps. No medication changes in the meantime."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-11a",
+          "kind": "specialist_visit",
+          "start": "2020-03-11T13:30",
+          "service": "Cardiology",
+          "reason": "Resistant hypertension, abnormal renal artery Doppler",
+          "conditions": [
+            {
+              "label": "Fibromuscular dysplasia",
+              "action": "diagnosed",
+              "onset": "2020-03-11"
+            },
+            {
+              "label": "Renovascular hypertension",
+              "action": "diagnosed",
+              "onset": "2018-04-17",
+              "icd10": "I15.0"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "resolved",
+              "note": "reclassified as renovascular hypertension"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2020-03-11T13:35",
+              "bp": [
+                155,
+                95
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-03-11T14:20",
+              "resulted": "2020-03-11T17:00",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "done",
+              "date": "2020-03-11T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "date": "2020-03-16T09:30",
+              "author": "cardiology",
+              "body": "CARDIOVASCULAR MEDICINE — OUTPATIENT CONSULTATION\nDate of service: 03/11/2020\nReferred by: primary care, for resistant hypertension with hypokalemia and an abnormal renal artery Doppler.\n\nDear Colleague,\n\nThank you for asking me to see Ms. Marchetti, a 36-year-old high school mathematics teacher. Hypertension was diagnosed in 2018 and has not reached goal on hydrochlorothiazide 25 mg daily. In January her potassium was 2.9 with a bicarbonate of 32, and potassium chloride 20 mEq daily was added. Plasma renin activity and aldosterone were both elevated; 24-hour urine metanephrines were normal.\n\nWhen asked specifically, she describes about six months of intermittent headaches — throbbing and right-sided — sometimes accompanied by a whooshing sound in her ears that keeps time with her pulse. She had not thought to mention these before. No visual symptoms, weakness, numbness or speech difficulty. No chest pain, claudication or post-prandial abdominal pain.\n\nMedications: hydrochlorothiazide 25 mg daily; potassium chloride ER 20 mEq daily. Allergies: none known.\nFamily history: mother with hypertension from age 45; maternal aunt with ischemic stroke at 52; father with hyperlipidemia.\nSocial: never smoker; one or two glasses of wine a month.\n\nExamination: BP 155/95 in both arms. Regular rhythm, normal S1 S2, no murmur. A high-pitched bruit is audible over the right side of the neck, and a similar high-pitched bruit in the right upper quadrant of the abdomen. Lungs clear. No edema. Peripheral pulses present and symmetric.\n\nData: Chemistry today — creatinine 0.76, potassium 4.3, both normal. Renal artery Doppler of 02/12/2020 reviewed: turbulence and reduced diameter of the right renal artery.\n\nImpression:\n1. Fibromuscular dysplasia involving the right renal artery, with renovascular hypertension. A young woman with thiazide-resistant hypertension, secondary hyperaldosteronism, an abdominal bruit and these Doppler findings — I am comfortable making this diagnosis.\n2. Episodic right-sided pulsatile headache and pulsatile tinnitus.\n\nRecommendations:\n- Continue hydrochlorothiazide and potassium chloride at current doses.\n- Home blood pressure log.\n- Return to cardiology clinic in 3 to 4 months to review pressures and plan.\n\nI explained that FMD is a non-atherosclerotic disease of the arterial wall. Thank you for this referral.\n\nCardiology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bicarbonate": 27,
+              "Potassium": 4.1
+            }
+          }
+        },
+        {
+          "id": "2020-03-17a",
+          "kind": "telephone",
+          "start": "2020-03-17T12:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cardiology Letter Review",
+              "date": "2020-03-17T12:45",
+              "author": "PCP",
+              "body": "Cardiology consult letter (DOS 3/11) received 3/16, reviewed. Diagnosis: fibromuscular dysplasia of the right renal artery with renovascular hypertension. Their plan: continue HCTZ 25 + KCl 20, home BP log, cardiology follow-up in 3-4 months.\nCalled pt to go over it; questions answered. Problem list updated. She prefers a video visit for her next BP check given the pandemic — booked for May."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-20a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-20T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up (video)",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-05-20T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - Hypertension",
+              "date": "2020-05-20T14:35",
+              "author": "PCP",
+              "body": "Video visit (pt at home, consented). Teaching remotely.\nMeds: HCTZ 25 mg daily, KCl ER 20 mEq daily. Adherent. Cramps resolved since starting potassium.\nHome cuff readings last 2 weeks, read off her log: mostly 150s/90s.\nOccasional right-sided headaches, no different from what she described to cardiology. No vision changes, weakness, numbness or speech trouble.\nCardiology follow-up was planned for early summer; their office is rebooking in-person visits and she is on their list.\nExam limited to video: well appearing, speech fluent, no distress.\n\nA/P: Renovascular HTN from right renal artery FMD, still above goal. Cardiology is directing management; continue current regimen pending their follow-up. BMP at the lab this week. Reviewed stroke warning signs — any vision loss, weakness, numbness, facial droop or speech trouble means 911."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-22a",
+          "kind": "lab_only",
+          "start": "2020-05-22T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BMP",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-05-22T08:10",
+              "resulted": "2020-05-22T14:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-05-22T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2020-05-22T15:20",
+              "author": "MA",
+              "body": "LM on pt's cell per PCP: BMP from today normal, potassium 4.2, creatinine 0.65. Continue current meds. Portal message sent as well."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-18a",
+          "kind": "ed_visit",
+          "start": "2020-07-18T12:50",
+          "end": "2020-07-18T17:40",
+          "service": "Emergency Medicine",
+          "reason": "Transient vision loss right eye",
+          "vitals": [
+            {
+              "time": "2020-07-18T12:58",
+              "bp": [
+                162,
+                98
+              ],
+              "hr": 82,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99
+            },
+            {
+              "time": "2020-07-18T13:02",
+              "bp": [
+                154,
+                92
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-07-18T13:30",
+              "resulted": "2020-07-18T14:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2020-07-18T15:10",
+              "text": "EXAM: Duplex ultrasound, renal arteries.\nINDICATION: Hypertension, known fibromuscular dysplasia.\nFINDINGS: Renal arteries: beading and irregularity of the arterial contour. Abdominal aorta normal caliber. Kidneys normal in size, no hydronephrosis.",
+              "conclusion": "Beading and irregularity of the renal artery, consistent with stenosis due to fibromuscular dysplasia.",
+              "issued": "2020-07-18T16:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2020-07-18T12:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Provider Note",
+              "title": "Emergency Department Note",
+              "date": "2020-07-21T14:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT — PHYSICIAN DOCUMENTATION\nDate of service: 07/18/2020. Arrival 12:50. Records sent to primary care at patient request.\n\nCHIEF COMPLAINT: Right eye vision loss, resolved.\n\nHPI: 36-year-old woman with fibromuscular dysplasia (renal, diagnosed by her cardiologist in March) and hypertension who comes in after two episodes of losing vision in her right eye. Each lasted a few minutes and cleared completely. Painless, right eye only. She also reports severe headaches on and off since last fall, plus a \"whooshing\" noise in her ears; both continue. She is following with cardiology as an outpatient. No weakness, numbness, speech change or facial droop. Back to baseline now.\n\nPMH: Hypertension, diagnosed about two years ago, poorly controlled on hydrochlorothiazide. Fibromuscular dysplasia.\nPSH: None.\nMEDICATIONS: Hydrochlorothiazide; potassium chloride.\nALLERGIES: NKDA.\nFAMILY HISTORY: Noncontributory.\nSOCIAL: Never smoker. Wine 1-2 glasses per month. High school math teacher.\n\nVITALS: BP 162/98 right arm, 154/92 left arm. HR 82, RR 16, T 36.7 C, SpO2 99% room air.\n\nEXAM:\nGeneral: alert, comfortable.\nEyes: pupils equal and reactive, no afferent defect. Visual fields full to confrontation. Acuity grossly intact each eye.\nNeck: supple. No carotid bruits.\nCV: regular rate and rhythm.\nLungs: clear.\nAbdomen: soft, nontender. High-pitched epigastric bruit.\nNeuro: cranial nerves II-XII intact. Strength 5/5 all extremities. Sensation intact. Finger-to-nose and gait normal.\n\nRESULTS: BMP — renal function normal (BUN 14, creatinine 0.71), potassium 4.2.\nRenal artery duplex: beading and irregularity consistent with stenosis from fibromuscular dysplasia (see report).\n\nED COURSE / MDM: Two brief episodes of right monocular vision loss, fully resolved, with a normal neurological examination. Renal function normal. Duplex consistent with her known FMD. Blood pressure elevated without symptoms of end-organ injury here. She is at baseline and has primary care and cardiology follow-up in place.\n\nDIAGNOSES: Transient vision loss, right eye. Fibromuscular dysplasia. Hypertension.\n\nDISPOSITION: Discharged home in stable condition. Follow up with primary care within one week and with cardiology. Return immediately for recurrent vision loss, weakness, numbness, trouble speaking, or a sudden severe headache.\n\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2020-07-20a",
+          "kind": "portal_message",
+          "start": "2020-07-20T07:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit Saturday",
+              "date": "2020-07-20T07:05",
+              "author": "patient",
+              "body": "Hi, wanted to let you know I went to the ER on Saturday. I lost the vision in my right eye twice, for a few minutes each time. It came back completely. They said my neuro exam was normal and to follow up with you and cardiology. I'm fine now, just a little shaken. Can I get in this week or next?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit Saturday",
+              "date": "2020-07-20T12:10",
+              "author": "PCP",
+              "body": "Glad you're okay, and thank you for letting me know. We've requested the ER records. Front desk has you for Tue 7/28 at 10:30. If the vision loss happens again — even briefly — call 911 rather than waiting it out."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-28a",
+          "kind": "office_visit",
+          "start": "2020-07-28T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "vitals": {
+            "bp": [
+              150,
+              99
+            ],
+            "hr": 80,
+            "weight_kg": 70.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-07-28T11:00",
+              "resulted": "2020-07-28T16:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-07-28T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ED Follow-up",
+              "date": "2020-07-28T11:20",
+              "author": "PCP",
+              "body": "ED FOLLOW-UP\nSeen 7/18 in an outside ED for two brief episodes of right monocular vision loss, minutes each, full recovery. ED records reviewed: normal neuro exam, epigastric bruit, normal renal function, renal duplex with beading/irregularity c/w FMD. Discharged to outpatient follow-up.\nSince then: no further episodes. Headaches a bit less often this month; the whooshing comes and goes. Taking HCTZ 25 and KCl 20 daily. Home BP still 150s/90s.\nCardiology: the 3-4 month follow-up has not happened; their office is still working through postponed visits. She will call them this week and we will fax the ED records over.\n\nExam: BP 150/99, HR 80, wt 70.8 kg. Alert, fluent speech. Pupils equal, EOM full, fields full to confrontation. Heart regular. Lungs clear. Strength symmetric, gait normal.\n\nA/P\n1. Transient right monocular vision loss, resolved, in a patient with FMD and uncontrolled BP. ED evaluation reassuring; no new deficits. 911 precautions reviewed again.\n2. Renovascular HTN / right renal artery FMD, above goal. Continue HCTZ 25 and KCl 20 for now; cardiology to direct further management. BMP today. ED records to cardiology."
+            }
+          ],
+          "state": {
+            "bp": [
+              154,
+              96
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-08-24a",
+          "kind": "pharmacy",
+          "start": "2020-08-24T10:30",
+          "documents": [
+            {
+              "type": "Pharmacy Request",
+              "title": "Refill Request",
+              "date": "2020-08-24T10:30",
+              "author": "MA",
+              "body": "Pharmacy requests 90-day supplies: hydrochlorothiazide 25 mg and potassium chloride ER 20 mEq. Last visit 7/28/20, BMP 7/28 normal. Sent both, #90 x1 refill, per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-15a",
+          "kind": "annual_physical",
+          "start": "2020-10-15T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ],
+            "hr": 78,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 69.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-10-15T16:20",
+              "resulted": "2020-10-16T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-10-15T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-15T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-15T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-10-15T16:50",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n37 y/o F. Back teaching in person. Feels well. No further vision episodes since July. Occasional headaches. Home BP 140s-150s/90s.\nCardiology: still no follow-up date. Their office told her they would call; gave her the scheduling line again.\nMeds: hydrochlorothiazide 25 mg daily; potassium chloride ER 20 mEq daily. NKDA.\n\nPrevention: Pap/HPV 8/2019 normal. Tdap 2019. HIV/HCV screened 2019. Flu vaccine today. PHQ-2: 0.\n\nExam: BP 138/88, HR 78, T 36.7, SpO2 97%, wt 69.8 kg, BMI 25.4.\nWell appearing. HEENT unremarkable. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Skin clear.\n\nA/P\n1. Renovascular HTN / FMD: today's office reading is the best she has had, but her home log is still above goal. No change today; BMP. Pushing cardiology follow-up — she will call them, we'll send a referral reminder.\n2. Health maintenance up to date; flu given."
+            }
+          ],
+          "state": {
+            "bp": [
+              158,
+              98
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2020-12-07a",
+          "kind": "portal_message",
+          "start": "2020-12-07T19:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP log",
+              "date": "2020-12-07T19:50",
+              "author": "patient",
+              "body": "Here are my numbers since Thanksgiving, mostly mornings before school: 150-158 over 94-100. Still haven't heard from cardiology."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BP log",
+              "date": "2020-12-08T09:45",
+              "author": "RN",
+              "body": "Thanks Kristen. The doctor reviewed your log and would like to see you in March for a full BP visit — front desk will reach out. We faxed another request to cardiology today. Same-day call for headache, vision change or readings over 180/110."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "office_visit",
+          "start": "2021-03-16T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "medications": [
+            {
+              "drug": "losartan potassium 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "renovascular hypertension"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2021-03-16T15:45",
+              "bp": [
+                180,
+                120
+              ],
+              "hr": 76
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-16T16:20",
+              "resulted": "2021-03-17T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-03-16T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cta-abd",
+              "action": "placed",
+              "order": "CT angiogram abdomen",
+              "category": "imaging",
+              "reason": "fibromuscular dysplasia, renal artery"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2021-03-17T09:05",
+              "author": "PCP",
+              "body": "HTN FOLLOW-UP (seen 3/16; labs back this morning)\nRoutine follow-up of severe hypertension with right renal artery FMD (dx cardiology 3/2020), with prior transient right-eye vision loss (7/2020), headaches and pulsatile tinnitus. Today she denies headache, vision changes or chest pain. Home readings have run higher this winter. Cardiology follow-up never got rebooked.\nMeds: HCTZ 25 mg daily, KCl ER 20 mEq daily.\n\nBP 180/120 (repeated after rest, similar), HR 76.\nExam normal: alert, comfortable; heart regular, no murmur; lungs clear; abdomen soft; no edema; neuro nonfocal.\nLabs 3/16: creatinine and electrolytes normal — Cr 0.66, K 4.0, Na 140, HCO3 28.\n\nA/P\n1. Renovascular HTN due to right renal artery FMD — severely elevated, asymptomatic, no sign of acute end-organ injury. Add losartan 25 mg daily (unilateral disease, normal renal function). Continue HCTZ 25. Continue KCl for now; BMP in 1-2 weeks given ARB.\n2. CT angiogram of the abdomen ordered to define the renal artery disease.\n3. Pregnancy: losartan can harm a developing pregnancy. Counselled; she reports reliable contraception and no plans for pregnancy. Stop it and call right away if pregnancy is ever possible.\n4. Will send CTA result to cardiology with another request for follow-up.\nED for severe headache, vision loss, chest pain or neuro symptoms. Recheck 6-8 weeks."
+            }
+          ],
+          "state": {
+            "bp": [
+              176,
+              116
+            ]
+          }
+        },
+        {
+          "id": "2021-03-29a",
+          "kind": "lab_only",
+          "start": "2021-03-29T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BMP after losartan start",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-29T07:15",
+              "resulted": "2021-03-29T13:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-03-29T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2021-03-29T13:40",
+              "author": "PCP",
+              "body": "Your bloodwork two weeks into losartan looks good — creatinine 0.73 (0.66 before) and potassium 4.5. Your kidneys are tolerating it. CT angiogram is booked for 4/8."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Potassium": 4.4
+            }
+          }
+        },
+        {
+          "id": "2021-04-08a",
+          "kind": "imaging",
+          "start": "2021-04-08T16:30",
+          "service": "Radiology",
+          "reason": "CT angiogram abdomen",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2021-04-08T16:30",
+              "text": "EXAM: CT angiography of the abdomen.\nINDICATION: Renovascular hypertension; known fibromuscular dysplasia of the right renal artery on ultrasound; anatomic evaluation.\nTECHNIQUE: Arterial-phase helical CT of the abdomen after intravenous contrast, with multiplanar and 3D reformations.\nFINDINGS:\nAbdominal aorta: normal caliber.\nRight renal artery: single artery with an irregular, beaded appearance and a focal area of narrowing. No aneurysm or dissection identified.\nLeft renal artery: single artery, normal in caliber and contour.\nKidneys: normal in size bilaterally with symmetric enhancement. No hydronephrosis.",
+              "conclusion": "1. Beaded, irregular right renal artery with focal narrowing, consistent with multifocal fibromuscular dysplasia.\n2. Normal left renal artery.\n3. Kidneys normal in size.",
+              "issued": "2021-04-09T09:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cta-abd",
+              "action": "done",
+              "date": "2021-04-08T16:30"
+            }
+          ]
+        },
+        {
+          "id": "2021-04-09a",
+          "kind": "portal_message",
+          "start": "2021-04-09T12:35",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CT Angiogram Result",
+              "date": "2021-04-09T12:35",
+              "author": "PCP",
+              "body": "Kristen, the CT angiogram confirms fibromuscular dysplasia in the artery to your right kidney — the beaded pattern typical of the multifocal type, with one narrowed area. The artery to your left kidney is normal and both kidneys are a normal size. I'm sending the report to cardiology. Keep logging your pressures; next BP visit in early June."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-21a",
+          "kind": "outside_records",
+          "start": "2021-04-21T11:20",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-03-13T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-04-10T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "COVID-19 Vaccine Record",
+              "date": "2021-04-21T11:20",
+              "author": "MA",
+              "body": "Pt uploaded photo of CDC vaccination card through portal. Moderna dose 1 3/13/2021, dose 2 4/10/2021, community vaccination clinic. Entered as historical immunizations."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "office_visit",
+          "start": "2021-06-10T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "medications": [
+            {
+              "drug": "losartan potassium 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "losartan potassium 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "renovascular hypertension"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              95
+            ],
+            "hr": 77,
+            "weight_kg": 70.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-06-10T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2021-06-10T16:25",
+              "author": "PCP",
+              "body": "S: BP f/u, ~3 months on losartan 25 + HCTZ 25 + KCl 20. No dizziness, cough or swelling. Home log 140s-150s/90s. No headaches lately, no vision events. Contraception unchanged.\nO: BP 135/95, HR 77, wt 70.3 kg. S1 S2 normal. Clear to auscultation. No pedal edema.\nA/P: Renovascular HTN (R renal FMD) — better, but diastolic and home readings still above goal. Increase losartan to 50 mg daily. BMP in 2 weeks; if potassium stays normal on the higher dose, plan to stop the KCl. Pregnancy precautions on ARB reviewed again."
+            }
+          ],
+          "state": {
+            "bp": [
+              148,
+              94
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-24a",
+          "kind": "lab_only",
+          "start": "2021-06-24T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BMP after losartan increase",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-06-24T07:30",
+              "resulted": "2021-06-24T13:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.8
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-06-24T07:30"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Potassium": 4.6
+            }
+          }
+        },
+        {
+          "id": "2021-06-25a",
+          "kind": "telephone",
+          "start": "2021-06-25T11:45",
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "potassium normal on losartan"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Potassium Plan",
+              "date": "2021-06-25T11:45",
+              "author": "PCP",
+              "body": "BMP 6/24 on losartan 50: K 4.8, Cr 0.68. Potassium has now been normal twice on losartan (4.5 in March, 4.8 now). Stop potassium chloride.\nSpoke with pt; she will stop it today. Repeat BMP in about 2 weeks off potassium."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-12a",
+          "kind": "lab_only",
+          "start": "2021-07-12T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BMP off potassium",
+          "conditions": [
+            {
+              "label": "Hypokalemia",
+              "action": "resolved",
+              "icd10": "E87.6"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-07-12T08:00",
+              "resulted": "2021-07-12T14:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-07-12T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2021-07-12T15:00",
+              "author": "PCP",
+              "body": "Off potassium supplement ~2 weeks: K 4.2, Cr 0.75, Na 140. Low potassium has resolved on losartan. Continue losartan 50 + HCTZ 25. Pt notified via portal."
+            }
+          ],
+          "state": {
+            "bp": [
+              139,
+              88
+            ],
+            "labs": {
+              "Potassium": 4.2
+            }
+          }
+        },
+        {
+          "id": "2021-10-28a",
+          "kind": "annual_physical",
+          "start": "2021-10-28T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              79
+            ],
+            "hr": 79,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 70.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-10-28T16:20",
+              "resulted": "2021-10-29T09:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-10-28T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-28T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-28T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-10-28T16:45",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n38 y/o F. Feels well. Home BP since summer mostly 130s-140s over 80s. No headaches or vision changes. Off potassium since June.\nMeds: losartan 50 mg daily; hydrochlorothiazide 25 mg daily. NKDA.\nContraception reliable and unchanged; understands losartan and pregnancy.\nCardiology: has not been back since 3/2020; CTA report was sent in April. She says she'll call.\n\nPrevention: flu today. COVID primary series complete (Moderna 3/2021, 4/2021). Pap/HPV 2019 normal — next 2024. PHQ-2: 0.\n\nExam: BP 132/79, HR 79, T 36.5, SpO2 98%, wt 70.7 kg, BMI 25.7.\nGeneral well. Eyes/ENT normal. Thyroid not enlarged. Cardiac regular, no murmur. Lungs clear. Abdomen soft. No edema. Skin unremarkable.\n\nA/P\n1. Renovascular HTN / R renal FMD — much improved on losartan + HCTZ. Continue. BMP today. BP visits every 6 months.\n2. Health maintenance as above."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              90
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2021-12-06a",
+          "kind": "portal_message",
+          "start": "2021-12-06T20:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-11-20T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster",
+              "date": "2021-12-06T20:30",
+              "author": "patient",
+              "body": "FYI I got my COVID booster at the pharmacy on 11/20, Moderna. Arm was sore for a day, that's it."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Immunization Entered",
+              "date": "2021-12-07T08:40",
+              "author": "MA",
+              "body": "Moderna booster 11/20/2021 entered from pt report and state registry."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "office_visit",
+          "start": "2022-04-19T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              145,
+              88
+            ],
+            "hr": 73,
+            "weight_kg": 70.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-04-19T11:30",
+              "resulted": "2022-04-19T16:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-04-19T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2022-04-19T11:40",
+              "author": "PCP",
+              "body": "BP f/u, school vacation week. Losartan 50 + HCTZ 25, no side effects. Home readings 130s-140s/80s. No headaches, vision changes or chest pain.\nBP 145/88, HR 73, wt 70.2 kg. Regular rhythm. Breath sounds normal. No ankle swelling.\nA/P: Renovascular HTN (R renal FMD), running in her usual range on two drugs. Continue. BMP today. Next: physical in the fall. Cardiology — still hasn't scheduled; feels well and doesn't want another specialist visit right now. Will revisit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-04-20a",
+          "kind": "portal_message",
+          "start": "2022-04-20T08:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2022-04-20T08:15",
+              "author": "MA",
+              "body": "Per PCP: BMP normal — potassium 4.3, creatinine 0.71. No changes. Message sent to pt via portal."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-18a",
+          "kind": "pharmacy",
+          "start": "2022-07-18T09:40",
+          "documents": [
+            {
+              "type": "Pharmacy Request",
+              "title": "Refill Request",
+              "date": "2022-07-18T09:40",
+              "author": "MA",
+              "body": "Refill request from pharmacy: losartan 50 mg and hydrochlorothiazide 25 mg, 90-day. Last BP visit 4/19/22 with normal BMP. Sent both with 3 refills per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "annual_physical",
+          "start": "2022-11-03T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              140,
+              86
+            ],
+            "hr": 87,
+            "temp_c": 36.3,
+            "spo2": 99,
+            "weight_kg": 70.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-11-03T16:20",
+              "resulted": "2022-11-04T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-11-03T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-11-03T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-11-03T16:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-15T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-11-03T16:45",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n39 y/o F. Doing well, end of first marking period, tired but otherwise fine. Home BP 130s-140s/80s.\nMeds: losartan 50 mg daily, HCTZ 25 mg daily. NKDA.\nContraception: reliable, unchanged.\nPrevention: flu today. Bivalent COVID booster 10/15 at pharmacy (entered). Pap/HPV due 2024. PHQ-2: 1 (tired) — no depressed mood or anhedonia on further questions.\n\nExam: BP 140/86, HR 87, T 36.3, SpO2 99%, wt 70.8 kg, BMI 25.8.\nPleasant, well. ENT normal. Thyroid normal size. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Skin unremarkable.\n\nA/P\n1. Renovascular HTN / R renal FMD — stable range. Continue regimen. BMP today.\n2. Health maintenance as above."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-03-15a",
+          "kind": "office_visit",
+          "start": "2023-03-15T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Cancelled Appointment",
+              "date": "2023-03-14T13:05",
+              "author": "front desk",
+              "body": "Pt called to cancel 3/15 3:30 BP visit — school meeting. Rebooked Wed 4/19 10:40 (vacation week)."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-04-19a",
+          "kind": "office_visit",
+          "start": "2023-04-19T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              136,
+              87
+            ],
+            "hr": 80,
+            "weight_kg": 70.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-19T11:10",
+              "resulted": "2023-04-19T16:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-04-19T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2023-04-19T11:20",
+              "author": "PCP",
+              "body": "S: 6-month BP check. Losartan 50 + HCTZ 25 daily, no missed doses. Home log 130s-140s/80s-low 90s. No headaches, no vision changes.\nO: BP 136/87, HR 80, wt 70.1 kg. CV regular. Lungs clear. No edema.\nA/P: Renovascular HTN / R renal FMD — stable. Continue. BMP. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-08a",
+          "kind": "portal_message",
+          "start": "2023-05-08T19:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "School form",
+              "date": "2023-05-08T19:25",
+              "author": "patient",
+              "body": "Hi! I'm chaperoning the junior class trip in June (overnight) and the district needs a health form signed by my doctor. Can I drop it off this week?"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Form Completed",
+              "date": "2023-05-10T15:30",
+              "author": "front desk",
+              "body": "District chaperone health form dropped off 5/9. Completed and signed by PCP 5/10: no restrictions; current meds listed (losartan 50 mg, HCTZ 25 mg), NKDA. Copy scanned; original at front desk for pickup. Pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-30a",
+          "kind": "annual_physical",
+          "start": "2023-10-30T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              135,
+              90
+            ],
+            "hr": 77,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 69.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-30T16:20",
+              "resulted": "2023-10-31T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-30T16:20",
+              "resulted": "2023-10-31T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 85
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 113
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-10-30T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-30T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-30T16:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-07T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-30T16:50",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n40 y/o F, feels well. Home BP 130s-140s/80s. No headaches or vision changes.\nMeds: losartan 50 mg, hydrochlorothiazide 25 mg daily. NKDA. Contraception unchanged; ARB/pregnancy counselling current.\n\nPrevention:\n- Flu today; updated COVID vaccine 10/7 at pharmacy (entered).\n- Lipids today (last 2018).\n- Pap/HPV due 2024.\n- Mammography: discussed starting screening now that she's 40. She'd like to think about it and decide by next year.\n- PHQ-2: 0.\n\nExam: BP 135/90, HR 77, T 36.6, SpO2 97%, wt 69.7 kg, BMI 25.4.\nWell. ENT clear. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Skin: no concerning lesions.\n\nA/P\n1. Renovascular HTN / R renal FMD — stable on two agents. BMP, lipids.\n2. Health maintenance as above."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-10-31a",
+          "kind": "portal_message",
+          "start": "2023-10-31T12:50",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2023-10-31T12:50",
+              "author": "PCP",
+              "body": "Your labs are fine. Cholesterol: total 183, LDL 96, HDL 62, triglycerides 85 — similar to 2018. Potassium 4.2 and kidney function normal on losartan and HCTZ. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-17a",
+          "kind": "office_visit",
+          "start": "2024-04-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              146,
+              88
+            ],
+            "hr": 77,
+            "weight_kg": 70.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-04-17T10:30",
+              "resulted": "2024-04-17T15:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-17T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2024-04-17T10:45",
+              "author": "PCP",
+              "body": "BP f/u (vacation week). Losartan 50 + HCTZ 25. Home 130s-140s over 80s. Feels well; no headache, vision change, chest pain.\nBP 146/88, HR 77, wt 70.3 kg. Heart regular. Lungs clear. Ankles without edema.\nA/P: Renovascular HTN / R renal FMD — top of her usual range today, home log fine. Continue. BMP. Physical + co-test in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-18a",
+          "kind": "portal_message",
+          "start": "2024-04-18T08:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2024-04-18T08:30",
+              "author": "MA",
+              "body": "Per PCP, BMP normal (K 4.1, Cr 0.67). Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-19a",
+          "kind": "pharmacy",
+          "start": "2024-08-19T10:10",
+          "documents": [
+            {
+              "type": "Pharmacy Request",
+              "title": "Mail-Order Prescriptions",
+              "date": "2024-08-19T10:10",
+              "author": "MA",
+              "body": "Pt's plan now requires maintenance meds through mail order for 90-day fills. New prescriptions sent to the mail-order pharmacy per PCP: losartan 50 mg daily #90 x3, hydrochlorothiazide 25 mg daily #90 x3. Local pharmacy asked to inactivate old refills. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "annual_physical",
+          "start": "2024-10-24T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              142,
+              83
+            ],
+            "hr": 86,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 70.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-24T16:20",
+              "resulted": "2024-10-25T08:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-10-24T16:00",
+              "text": "SPECIMEN: Cervix, liquid-based preparation.\nADEQUACY: Satisfactory for evaluation; transformation zone component present.\nINTERPRETATION: Negative for intraepithelial lesion or malignancy.\nHIGH-RISK HPV: Not detected.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy; high-risk HPV not detected.",
+              "issued": "2024-10-29T15:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-24T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-24T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-24T16:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-05T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-24T16:50",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n41 y/o F, well. Home BP 130s-140s/80s. No headaches, vision changes or tinnitus lately.\nMeds: losartan 50 mg daily, hydrochlorothiazide 25 mg daily (mail order). NKDA.\nContraception reliable; ARB counselling repeated.\n\nPrevention:\n- Pap with HPV today (last 2019 normal).\n- Flu today; updated COVID 10/5 at pharmacy (entered).\n- Mammography: discussed again; she is still deciding.\n- PHQ-2: 0.\n\nExam: BP 142/83, HR 86, T 36.5, SpO2 98%, wt 70.7 kg, BMI 25.7.\nWell appearing. ENT normal. Thyroid normal. Heart regular, no murmur. Lungs clear. Breasts without masses. Abdomen soft. Pelvic: external genitalia and vagina normal; cervix appears normal, co-test collected. No edema.\n\nA/P\n1. Renovascular HTN / R renal FMD — stable. Continue. BMP.\n2. Health maintenance as above."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-10-30a",
+          "kind": "portal_message",
+          "start": "2024-10-30T12:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Results",
+              "date": "2024-10-30T12:15",
+              "author": "PCP",
+              "body": "Kristen — your Pap and HPV are normal again; next co-test in 5 years. Kidney function, potassium and sodium normal. Let me know if you decide about the mammogram and I'll put the order in."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "portal_message",
+          "start": "2025-01-13T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home readings",
+              "date": "2025-01-13T20:05",
+              "author": "patient",
+              "body": "Happy new year! Sending my readings since Christmas since you asked last time: mostly 128 to 142 on top and 82 to 90 on the bottom. Feeling fine."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home readings",
+              "date": "2025-01-14T09:10",
+              "author": "RN",
+              "body": "Thanks, Kristen — reviewed with the doctor. Those are in your usual range. No changes. See you in April."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "office_visit",
+          "start": "2025-04-22T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              142,
+              84
+            ],
+            "hr": 82,
+            "weight_kg": 70.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-22T10:10",
+              "resulted": "2025-04-22T15:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-22T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2025-04-22T10:25",
+              "author": "PCP",
+              "body": "6-month BP f/u. Losartan 50, HCTZ 25 — taking daily, no side effects. Home 130s-140s/80s.\nNo headaches, vision changes, chest pain.\nBP 142/84, HR 82, wt 70.9 kg. Cardiac exam unremarkable. Lungs clear bilaterally. Extremities without edema.\nA/P: Renovascular HTN / R renal FMD, stable. Continue. BMP today."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-23a",
+          "kind": "portal_message",
+          "start": "2025-04-23T07:50",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2025-04-23T07:50",
+              "author": "PCP",
+              "body": "BMP normal — potassium 4.2, creatinine 0.67, sodium 139. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-21a",
+          "kind": "pharmacy",
+          "start": "2025-07-21T09:20",
+          "documents": [
+            {
+              "type": "Pharmacy Request",
+              "title": "Renewal Request",
+              "date": "2025-07-21T09:20",
+              "author": "MA",
+              "body": "Mail-order pharmacy renewal request: losartan 50 mg and hydrochlorothiazide 25 mg, 90-day. Last visit 4/22/25, BMP normal. Renewed x3 per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "annual_physical",
+          "start": "2025-10-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              134,
+              83
+            ],
+            "hr": 85,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 71.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-16T16:20",
+              "resulted": "2025-10-17T08:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.63
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-16T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-16T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2025-10-16T16:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-04T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-16T16:45",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n42 y/o F. Well. Home BP 130s-140s/80s.\nMeds: losartan 50 mg, HCTZ 25 mg daily. NKDA. Contraception unchanged.\nPrevention: flu today; updated COVID 10/4 (pharmacy). Pap/HPV 10/2024 normal. Mammography — still undecided, info given again. PHQ-2: 0.\nExam: BP 134/83, HR 85, T 36.5, SpO2 98%, wt 71.3 kg, BMI 26.0. Well. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema.\nA/P\n1. Renovascular HTN / R renal FMD — stable on losartan + HCTZ. BMP.\n2. Health maintenance as above."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "portal_message",
+          "start": "2025-10-17T12:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2025-10-17T12:40",
+              "author": "PCP",
+              "body": "All normal — potassium 4.2, creatinine 0.63, sodium 140. No changes. Next BP visit in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "portal_message",
+          "start": "2026-01-12T19:35",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill + readings",
+              "date": "2026-01-12T19:35",
+              "author": "patient",
+              "body": "Hi, mail order says my HCTZ needs a new prescription? Losartan still has refills I think. Readings lately are 130s-140s over mid 80s."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill + readings",
+              "date": "2026-01-13T08:20",
+              "author": "PCP",
+              "body": "Sent a new hydrochlorothiazide prescription (90 days, 3 refills) to the mail-order pharmacy this morning. Your readings look good. See you in April."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "office_visit",
+          "start": "2026-04-22T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              94
+            ],
+            "hr": 77,
+            "weight_kg": 71.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-22T10:45",
+              "resulted": "2026-04-22T16:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-04-22T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2026-04-22T11:00",
+              "author": "PCP",
+              "body": "S: BP check. Losartan 50 + HCTZ 25, adherent. Home log 130s-140s over 80s. Denies headache, vision change, chest pain.\nO: BP 138/94, HR 77, wt 71.1 kg. Regular rhythm. Lungs clear. No edema.\nA/P: Renovascular HTN / R renal FMD — diastolic a little high today; home log in her usual range. Continue current doses. BMP. Fall follow-up."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-23a",
+          "kind": "portal_message",
+          "start": "2026-04-23T08:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2026-04-23T08:05",
+              "author": "MA",
+              "body": "Per PCP: BMP normal (K 4.2, Cr 0.77, Na 139). Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "pharmacy",
+          "start": "2026-07-20T09:50",
+          "documents": [
+            {
+              "type": "Pharmacy Request",
+              "title": "Renewal Request",
+              "date": "2026-07-20T09:50",
+              "author": "MA",
+              "body": "Mail-order renewal request: losartan 50 mg daily, 90-day. Last visit 4/22/26, labs normal. Renewed x3 per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "portal_message",
+          "start": "2026-08-17T18:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall appointment",
+              "date": "2026-08-17T18:45",
+              "author": "patient",
+              "body": "Hi, can I book my fall BP check? After school is best, any day but Mondays. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fall appointment",
+              "date": "2026-08-18T10:15",
+              "author": "front desk",
+              "body": "You're booked for Wednesday 10/21 at 3:40. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-10-21a",
+          "kind": "office_visit",
+          "start": "2026-10-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine blood pressure follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Hypokalemia|E87.6": {
+        "code": "E87.6",
+        "display": "Hypokalemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Renovascular hypertension|I15.0": {
+        "code": "I15.0",
+        "display": "Renovascular hypertension",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

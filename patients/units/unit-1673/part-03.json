@@ -1,0 +1,715 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001673",
+      "events": [
+        {
+          "id": "2023-01-09a",
+          "kind": "office_visit",
+          "start": "2023-01-09T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up adrenal insufficiency and breast abscess",
+          "state": {
+            "weight_kg": 62.0,
+            "labs": {
+              "Sodium": 139,
+              "Potassium": 4.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Lactational mastitis",
+              "icd10": "O91.23",
+              "action": "resolved"
+            },
+            {
+              "label": "Lactational breast abscess",
+              "icd10": "O91.13",
+              "action": "resolved"
+            },
+            {
+              "label": "Nipple fissure due to improper breastfeeding technique",
+              "icd10": "O92.13",
+              "action": "resolved"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-01-09T16:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-09T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "author": "PCP",
+              "date": "2023-01-09T16:40",
+              "body": "Kayla is back three weeks after the breast abscess drainage and a little over three weeks into treatment for Addison's.\n\nShe finished cephalexin 12/30. The incision closed over about a week and she has had no fever, redness or lumps since. Nursing on both sides without pain now; the cracked nipples healed after the lactation visits. Energy noticeably better, no lightheadedness on standing. Taking hydrocortisone 20 mg on waking and 10 mg at about 2 PM, fludrocortisone 0.1 mg in the morning. She carries the injection kit in the diaper bag. Hasn't ordered a medical ID yet.\n\nO: vitals as charted, weight up a little from December. R breast: well-healed small incision UOQ, no induration or mass, no erythema. Pigmentation already a bit lighter per pt, still visible in palmar creases.\nPHQ-9 3.\n\nA/P\n1. Primary adrenal insufficiency, autoimmune (21-OH Ab positive) - improving on replacement. BMP today. Endo f/u in March. Reinforced sick-day rules: fever or vomiting means call us or endo same day.\n2. Right lactational breast abscess with mastitis - resolved.\n3. Nipple fissures - resolved.\n4. Exclusive breastfeeding continues; infant doing well.\nRefills: endo is prescribing for now; we can take over refills once she's stable."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-18a",
+          "kind": "pharmacy",
+          "start": "2023-01-18T11:25",
+          "reason": "Prior authorization, emergency hydrocortisone kit",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization - Hydrocortisone Sodium Succinate",
+              "author": "MA",
+              "date": "2023-01-18T11:25",
+              "body": "Pharmacy fax: BCBS requires PA for hydrocortisone sodium succinate 100 mg Act-O-Vial (emergency kit, 2 vials). Endocrinology office asked us to submit since we have the records. Submitted via payer portal with dx primary adrenal insufficiency, cortisol/ACTH results and endo consult note. Approved 1/18/2023 for 12 months. Pharmacy notified; pt picking up second vial today."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "specialist_visit",
+          "start": "2023-03-13T09:00",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency follow-up",
+          "state": {
+            "labs": {
+              "Plasma Renin Activity": 2.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-13T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-13T08:30",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2023-03-15T10:20",
+              "body": "Endocrinology follow-up, 03/13/2023\n\nDear Colleague,\n\nI saw Kayla today, three months after starting replacement for autoimmune Addison disease (21-hydroxylase antibodies positive). She feels close to normal: good energy, no salt craving, no lightheadedness. The breast abscess you and the surgeons managed has healed. She used sick-day doubling appropriately during that illness and has not needed the injection.\n\nCurrent: hydrocortisone 20 mg on waking, 10 mg early afternoon; fludrocortisone 0.1 mg daily. NKDA.\nExam: BP normal without orthostatic change today; weight stable. Pigmentation fading.\nLabs: sodium 139, potassium 4.2, renin in the reference range on fludrocortisone.\n\nAssessment: well replaced on current glucocorticoid and mineralocorticoid doses.\nPlan: no changes. Sick-day rules reviewed again, kit in date. Medical alert ID encouraged. BMP and renin before her next visit in about 6 months. I'm happy for your office to handle refills between visits.\n\nKind regards"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-19a",
+          "kind": "portal_message",
+          "start": "2023-04-19T21:00",
+          "reason": "Medical alert ID question",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Medical bracelet wording",
+              "author": "patient",
+              "date": "2023-04-19T21:00",
+              "body": "Finally ordering one of the medical ID bracelets. What exactly should it say? Also the baby started solids this week (6 months!) so I'm not only breastfeeding anymore - does that change anything for my meds?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Medical bracelet wording",
+              "author": "PCP",
+              "date": "2023-04-20T07:15",
+              "body": "Good question. Something like: ADRENAL INSUFFICIENCY - STEROID DEPENDENT - GIVE HYDROCORTISONE IN EMERGENCY. If there's room, add your name and an emergency phone. Nothing changes with your meds as the baby starts solids, and it's fine to keep nursing as long as you both like."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "pharmacy",
+          "start": "2023-06-12T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Medication Refill",
+              "author": "MA",
+              "date": "2023-06-12T09:40",
+              "body": "Pharmacy refill request: hydrocortisone 20 mg tab, hydrocortisone 10 mg tab, fludrocortisone 0.1 mg tab. Pt asking to switch to 90-day supplies for the summer. Last endo visit 3/13/23, labs normal. Pended for PCP."
+            },
+            {
+              "type": "Refill Request",
+              "title": "Refill Approved",
+              "author": "PCP",
+              "date": "2023-06-12T12:50",
+              "body": "Approved 90-day supply x 1 refill each, same doses. Endo ok'd us handling refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "annual_physical",
+          "start": "2023-08-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 63.5,
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Exclusive breastfeeding",
+              "icd10": "Z39.1",
+              "action": "resolved",
+              "note": "Solids since about 6 months (April 2023); still nursing"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-21T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-21T09:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-21T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-21T09:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-21T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2023-08-21T10:15",
+              "body": "Annual exam. 31F.\n\nInterval: big year - first baby 10/2022, then Addison's (autoimmune) diagnosed 12/2022, R lactational breast abscess drained 12/2022. Since then steady. Back to teaching full time this fall. Baby on solids since April, still nursing mornings and nights.\n\nMeds: hydrocortisone 20 mg qAM / 10 mg early afternoon; fludrocortisone 0.1 mg daily; folic acid 0.4 mg daily; hydrocortisone sodium succinate 100 mg IM kit (has 2 vials, in date). NKDA.\nNo sick days needing stress dose since December. Wearing a medical ID.\nNever smoker, no alcohol.\n\nROS: energy good, no orthostasis, no salt craving, weight back to her baseline. Cycles returned in spring.\n\nExam: vitals as charted. Mild residual pigment in palmar creases only. Thyroid normal, no nodules. Heart regular, lungs clear. Breasts: small healed scar R UOQ, no masses. Abdomen soft. No edema.\n\nA/P\n1. Addison disease - stable. Annual TSH today (autoimmune). Endo again in September.\n2. Exclusive breastfeeding has ended with solids; still partially nursing. Continue folic acid while nursing and if considering another pregnancy.\n3. HM: Pap/HPV co-test 2022 normal, next 2027. Flu and updated COVID in October. Lipids today.\n4. Reminded school nurse should have a copy of her emergency plan; letter printed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-23a",
+          "kind": "portal_message",
+          "start": "2023-08-23T18:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-08-23T18:00",
+              "body": "All of Monday's labs are normal, thyroid included. Cholesterol is fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "specialist_visit",
+          "start": "2023-09-25T15:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-18T08:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-18T08:10",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2023-09-27T09:00",
+              "body": "Endocrinology - 09/25/2023\n\nFollow-up for primary adrenal insufficiency (autoimmune). Doing well; back at work. No adrenal crises, no stress-dosing since last December. Still partially breastfeeding.\n\nMeds unchanged: hydrocortisone 20/10 mg, fludrocortisone 0.1 mg. NKDA.\nExam: normotensive without postural drop. No hyperpigmentation beyond faint palmar creases. Weight stable.\nLabs 9/18: electrolytes normal, renin within range.\n\nPlan: continue current doses. Review kit expiry before winter. Next visit in 6 months with labs beforehand."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:35",
+          "reason": "Influenza and COVID-19 vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T15:42"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-10-11T15:50",
+              "body": "Flu (quadrivalent) 0.5 mL IM R deltoid and 2023-24 Pfizer COVID 0.3 mL IM L deltoid. Afebrile, feels well. Reviewed: if she runs a fever after the vaccines, follow her sick-day dosing. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "portal_message",
+          "start": "2023-12-18T19:45",
+          "reason": "Travel question",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Traveling for the holidays",
+              "author": "patient",
+              "date": "2023-12-18T19:45",
+              "body": "We're driving to my parents' for a week over break. Anything special I should pack? Also, the baby weaned this month, so it's officially done."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Traveling for the holidays",
+              "author": "RN",
+              "date": "2023-12-19T08:20",
+              "body": "Hi Kayla! Pack at least double the number of hydrocortisone tablets you'll need for the week (in case of a sick day), the injection kit, and a copy of your emergency letter. Keep the meds in your bag rather than the trunk. Have a wonderful trip."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "pharmacy",
+          "start": "2024-01-17T10:30",
+          "reason": "Prior authorization renewal",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization Renewal - Hydrocortisone Sodium Succinate",
+              "author": "MA",
+              "date": "2024-01-17T10:30",
+              "body": "Annual PA renewal for hydrocortisone sodium succinate 100 mg vial (emergency kit) per BCBS. Resubmitted with endo note 9/25/23. Approved through 1/2025. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "office_visit",
+          "start": "2024-02-12T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Adrenal insufficiency check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-03-18a",
+          "kind": "specialist_visit",
+          "start": "2024-03-18T15:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-11T07:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-11T07:55",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2024-03-20T13:10",
+              "body": "Endocrinology - 3/18/2024\n\nKayla Cronin, 32, autoimmune Addison disease on hydrocortisone 20/10 and fludrocortisone 0.1. Weaned in December. Well over the winter, no stress doses needed. No orthostatic symptoms or salt craving.\n\nExam: BP normal, no postural change. Weight stable.\nLabs 3/11: Na and K normal, renin in range.\n\nImpression: stable replacement.\nPlan: continue. Replaced the emergency vial that expires this summer (new script sent). If she plans another pregnancy, let me know early so we can plan monitoring and delivery stress dosing. Return in 9 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "pharmacy",
+          "start": "2024-05-20T10:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Medication Refill",
+              "author": "MA",
+              "date": "2024-05-20T10:05",
+              "body": "Electronic refill request x3 (hydrocortisone 20 mg, hydrocortisone 10 mg, fludrocortisone 0.1 mg), 90-day. Endo seen 3/18, no changes."
+            },
+            {
+              "type": "Refill Request",
+              "title": "Refill Approved",
+              "author": "PCP",
+              "date": "2024-05-20T13:30",
+              "body": "Sent, 90 days + 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-19a",
+          "kind": "annual_physical",
+          "start": "2024-08-19T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 64.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "folic acid 0.4 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Weaned; not currently planning pregnancy"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-08-19T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-19T10:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-19T10:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-19T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2024-08-19T10:30",
+              "body": "32 y/o here for annual.\n\nDoing well. Child weaned in December. Teaching again this fall. Missed the February check-in (snow day, rescheduled to this).\nAddison's: endo in March, no changes. No sick days needing stress dosing this year. Medical ID on.\nMeds: HC 20 mg AM / 10 mg ~2 PM, fludro 0.1 mg, emergency HC injection kit (new vial this spring). She stopped the folic acid a few months ago - not planning another pregnancy right now. NKDA.\nSH: never smoker, no EtOH.\n\nROS neg. PHQ-2 0.\n\nExam: vitals as charted. Well. Thyroid normal. Heart RRR, lungs clear. Abd soft. Skin: no abnormal pigmentation now. Ext no edema.\n\nA/P\n- Addison disease, stable on replacement. TSH, CMP today.\n- Folic acid stopped - restart 0.4 mg daily if she starts trying again (she knows).\n- HM: Pap 2027. Flu/COVID in Oct.\n- RTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "portal_message",
+          "start": "2024-08-21T16:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-08-21T16:10",
+              "body": "Normal labs across the board - thyroid, blood counts, electrolytes, kidney and liver. Have a great start to the school year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T15:30",
+          "reason": "Influenza and COVID-19 vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T15:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "MA",
+              "date": "2024-10-09T15:45",
+              "body": "2024-25 flu (trivalent) IM L deltoid, 2024-25 COVID (Pfizer) IM R deltoid. No illness today. Tolerated both. 15 min observation without issue."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "specialist_visit",
+          "start": "2024-12-09T15:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-02T08:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-02T08:05",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2024-12-11T08:40",
+              "body": "Endocrinology follow-up - 12/09/2024\n\nDear Colleague,\n\nKayla remains well on hydrocortisone 20 mg/10 mg and fludrocortisone 0.1 mg for autoimmune primary adrenal insufficiency, two years from diagnosis. No crises or emergency injections. She tells me she and her family may try for a second child in the new year.\n\nExam: normotensive, no orthostasis. Weight stable.\nLabs 12/2: sodium and potassium normal, renin in range.\n\nPlan:\n- Continue current doses.\n- Preconception: restart folic acid; let us know when pregnant. We'll follow her each trimester with electrolytes and write a labor and delivery stress-dose plan for her OB in the third trimester.\n- Emergency kit in date.\n\nWith best regards"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

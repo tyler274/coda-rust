@@ -1,0 +1,1500 @@
+{
+  "unit": "unit-2670",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): report \"Electroencephalogram, routine\" LOINC 11523-9 not found",
+    "left text-only (not verified): lab \"Valproate\" LOINC 4086-6 not found; closest real codes: 57775-9 Valproate.free and Valproate panel - Serum or Plasma; 14946-8 Valproate [Moles/volume] in Serum or Plasma; 32283-4 Valproate Free/Valproate.total in Serum or Plasma; 17762-6 Valproate [Mass/volume] in Urine; 29229-2 Valproate [Mass/volume] in Body fluid"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002670",
+      "given": "Lucas",
+      "family": "Becker",
+      "birth_date": "1989-10-25",
+      "address_line": "41 Cabot Street, Apt 2",
+      "phone": "+1-347-555-0195",
+      "email": "lucas.becker@example.test",
+      "marital_status": "single",
+      "summary": "Healthy office administrator who joined in 2024, then had his first recognized convulsive seizure at work in May 2025; epilepsy diagnosed in the ED with temporal sharp waves on EEG and valproic acid started. A second generalized seizure in January 2026 brought an ICU admission for postictal hypoventilation, complicated by a transient saline-related hyperchloremic acidosis.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "date": "2024-08-27T10:12",
+              "author": "front desk",
+              "body": "Caller is looking for a new primary care doctor; says he hasn't had one since moving to the area a few years back. 34 y/o male, commercial plan, verified in system. Membership info emailed. Booked new patient physical 9/10 at 8:40. Asked him to come fasting and bring any vaccine records he can find."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:40",
+          "end": "2024-09-10T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              75
+            ],
+            "hr": 73,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 82.1,
+            "height_cm": 181.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.19
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 60
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Office administrator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-09-10T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-09-10T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2024-09-10T09:35",
+              "author": "PCP",
+              "body": "NEW PATIENT, PREVENTIVE\n\nLucas is a 34-year-old man here to set up primary care. Last regular doctor was in his early twenties; no visits since apart from a walk-in for a sinus thing years ago he can't date. Feels well. No complaints today.\n\nPMH: none he knows of. PSH: none.\nMeds: none. No supplements.\nAllergies: NKDA.\nFH: father has a seizure disorder (generalized, on medication for years per pt). Mother healthy. No early heart disease or cancer that he knows of.\nSH: office administrator at a property management company. Shares an apartment with a roommate. Never smoked, does not drink, no recreational drugs. Walks a fair amount, no formal exercise.\n\nROS: negative across systems on the intake form; reviewed.\n\nExam: well appearing. Vitals as charted, BMI about 25. HEENT unremarkable, dentition fine. Neck supple, no thyroid enlargement or nodes. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender, no masses. Skin without concerning lesions. Neuro: alert, fluent, CN grossly intact, strength and gait normal.\n\nPHQ-2: 0.\n\nAssessment / plan\n1. Adult wellness exam, healthy 34M. Baseline CBC, CMP, lipids today.\n2. One-time HIV and hep C screening offered and accepted.\n3. No tetanus record; Tdap given in clinic.\n4. Flu and COVID shots once the fall supply is in; nurse visit.\n5. Return yearly, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-09-12T16:05",
+              "author": "PCP",
+              "body": "Hi Lucas, everything from Tuesday came back fine: blood counts, kidney and liver tests, sugar fine, and cholesterol in a reasonable place for someone your age with no other risk factors, and the HIV and hepatitis C screens were negative. Nothing to follow up on. The nurse will reach out to set up flu and COVID shots next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T12:20",
+          "reason": "fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T12:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-08T12:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T12:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-08T12:45",
+              "author": "RN",
+              "body": "On his lunch break for vaccines. No fever or illness today, no prior vaccine reactions. Flu vaccine 0.5 mL IM left deltoid. COVID updated formula 0.3 mL IM right deltoid. VIS sheets given. Observed 15 min, no reaction. Pt left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-10a",
+          "kind": "ed_visit",
+          "start": "2025-05-10T10:42",
+          "end": "2025-05-11T09:10",
+          "service": "Emergency Medicine",
+          "reason": "seizure at work",
+          "conditions": [
+            {
+              "label": "Epilepsy",
+              "action": "diagnosed",
+              "onset": "2025-05-10"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "valproic acid 250 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 2 capsules (500 mg) by mouth twice daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Epilepsy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              80
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-10T11:05",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-05-10T11:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-10T11:05",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "value": 44
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Electroencephalogram, routine",
+              "loinc": "11523-9",
+              "performed": "2025-05-11T07:20",
+              "text": "Routine EEG, awake and drowsy, approximately 30 minutes, standard 10-20 placement. Posterior dominant rhythm 10 Hz, symmetric and reactive to eye opening. Intermittent sharp-wave discharges arise over the temporal region during drowsiness. No electrographic seizures captured. Photic stimulation without a photoparoxysmal response. Hyperventilation not performed.",
+              "conclusion": "Abnormal EEG: intermittent temporal sharp-wave discharges, indicating a potentially epileptogenic focus. No seizures recorded."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-10T10:42"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ed-neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "new-onset epilepsy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "date": "2025-05-12T08:30",
+              "author": "emergency medicine",
+              "body": "OUTSIDE ED RECORD, received by fax 5/12/2025. Date of service 5/10/2025 to 5/11/2025.\n\nCC: witnessed seizure at workplace.\n\nHPI: 35 yo M arriving by EMS from his office. Coworkers describe him slumping at his desk and then shaking all four limbs for roughly two minutes. Afterward he was confused and very sleepy for a while; mental status improving on arrival. On questioning he admits to a few earlier spells over the years that he brushed off and never had evaluated. Has not been sick recently. Denies drug or alcohol use. No headache, no recent head injury.\n\nPMH: none. Meds: none. Allergies: NKDA.\nFH: father with epilepsy. SH: office administrator, never smoker, no ETOH.\n\nExam: sleepy but wakes to voice, follows commands, oriented by the second hour. Lateral tongue bruised/bitten. Small superficial laceration inner lower lip, edges well apposed, cleaned, no repair needed. VS stable throughout. Neuro: PERRL, no facial asymmetry, moves all extremities symmetrically, no drift, reflexes symmetric, no focal deficit.\n\nResults: glucose 98, Na 140, Ca 9.2, rest of CMP unremarkable. CBC normal. Prolactin drawn about 20 minutes post-event: 44 ng/mL (high).\nEEG (obtained in observation the next morning): intermittent temporal sharp waves, no seizures captured.\n\nCourse: placed in ED observation for EEG. No recurrent events overnight. Discussed with on-call neurology by phone: recurrent unprovoked spells plus epileptiform EEG meet criteria for epilepsy; agreed with starting valproic acid.\n\nDx: Epilepsy, new diagnosis. Tongue bite and minor lip laceration.\n\nDisposition: discharged home with roommate 5/11. Valproic acid 500 mg PO BID, Rx sent. State law reviewed: no driving until six months seizure-free; seizure precautions (no swimming alone, no heights, showers rather than baths). Outpatient neurology referral; PCP follow-up this week. Return for any further seizure, a seizure longer than 5 minutes, or not waking up between seizures."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "telephone",
+          "start": "2025-05-12T09:40",
+          "reason": "ED follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED Call",
+              "date": "2025-05-12T09:40",
+              "author": "RN",
+              "body": "ED record from Saturday received and in chart. Called pt. Home, groggy for most of Sunday but feels like himself today. Picked up valproic acid, took doses last night and this morning, mild nausea only. No further spells. Roommate is driving him. Booked with PCP Wednesday. Reminded not to drive."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "office_visit",
+          "start": "2025-05-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for seizure",
+          "vitals": {
+            "bp": [
+              122,
+              82
+            ],
+            "hr": 83,
+            "spo2": 99,
+            "weight_kg": 81.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-14T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "new epilepsy on valproic acid, temporal sharp waves on EEG"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "date": "2025-05-14T16:00",
+              "author": "PCP",
+              "body": "S: Here after the ED visit Saturday for a convulsive seizure at his desk. Read through the outside record. He tells me now that he has had maybe three or four similar spells over the past several years, always alone or asleep, woke up sore and with a bitten tongue and assumed he'd fainted. Didn't bring it up when he joined last fall. Since discharge no events. Taking valproic acid 500 mg twice a day; a bit queasy the first two days, better taking it with food. Lip sore but healing. Has been out of work since Friday; going back Monday.\n\nO: Vitals as charted. Alert, conversant, normal affect. Small healing mucosal laceration lower lip, no infection. Tongue with resolving bruise laterally. Neuro nonfocal: CN intact, strength 5/5 throughout, gait steady.\n\nA/P:\n1. Epilepsy, newly diagnosed in the ED: temporal sharp waves on EEG, recurrent unprovoked events, father with a seizure disorder. Continue valproic acid 500 mg BID. Neurology referral placed here so it goes to the group we use (ED referral not confirmed). Reviewed what to do if a seizure happens and when to call 911; roommate knows.\n2. Driving: no driving until 6 months without a seizure, so not before mid-November at the earliest. He takes the bus to work. Letter for employer offered.\n3. Lip laceration healing well, no care needed.\nRTC after neurology, or sooner with any event."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "specialist_visit",
+          "start": "2025-06-18T13:30",
+          "service": "Neurology",
+          "reason": "new-onset epilepsy",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-18T14:20",
+              "results": [
+                {
+                  "test": "Valproate",
+                  "loinc": "4086-6",
+                  "unit": "ug/mL",
+                  "value": 74
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-06-18T14:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-18T14:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 222
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2025-06-18T13:30"
+            },
+            {
+              "id": "ed-neuro-referral",
+              "action": "cancelled",
+              "date": "2025-06-18T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation (outside)",
+              "date": "2025-06-20T11:10",
+              "author": "neurology",
+              "body": "Outpatient neurology, consultation. Date of visit 6/18/2025.\n\nThank you for sending Mr. Becker, a 35-year-old right-handed office administrator, after a generalized convulsion at work on 5/10/2025.\n\nHistory: Several prior unwitnessed nocturnal or solitary episodes over a number of years with post-event soreness and tongue biting, never evaluated. The May event was witnessed by coworkers, about two minutes of bilateral shaking with postictal confusion. No aura he can recall. No febrile seizures, head injury or CNS infection in childhood that he knows of. Father has a generalized seizure disorder.\n\nMedications: valproic acid 500 mg twice daily since 5/11/2025. Mild early nausea, resolved. No tremor, weight change or hair thinning.\nAllergies: no known drug allergies.\nSocial: never smoker, no alcohol, lives with a roommate.\n\nExamination: BP and pulse normal. Alert, attentive, fluent speech. Cranial nerves II-XII intact. Normal bulk and tone, full strength, reflexes 2+ and symmetric, toes downgoing. Finger-nose and gait normal. No tremor.\n\nData reviewed: ED EEG with intermittent temporal sharp waves; prolactin 44 post-event; ED chemistry and counts normal.\nToday: valproate level 74 mcg/mL (trough), hepatic panel and CBC within normal limits.\n\nImpression: epilepsy with recurrent unprovoked seizures and temporal epileptiform discharges.\n\nPlan:\n- Continue valproic acid 500 mg twice daily; level is therapeutic.\n- Seizure precautions and driving restriction per state rules, reviewed again.\n- Keep a seizure diary.\n- Return in 6 months, sooner for any event.\n\nAllergies reviewed: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "pharmacy",
+          "start": "2025-06-30T10:02",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: valproic acid",
+              "date": "2025-06-30T10:02",
+              "author": "MA",
+              "body": "Pharmacy request for valproic acid 250 mg caps, 2 caps BID, #120. Last level 74 at neurology 6/18. Approved per PCP, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:00",
+          "end": "2025-09-23T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              117,
+              79
+            ],
+            "hr": 85,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 81.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-23T08:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 207
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T08:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-23T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-23T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-23T08:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2025-09-23T09:10",
+              "author": "PCP",
+              "body": "Annual exam. 35M.\n\nInterval: Epilepsy diagnosed in May after a convulsion at work; seen by neurology in June, valproate level therapeutic, no changes. No seizures since May 10th. Taking valproic acid 500 mg BID, rarely misses; uses a pill box and phone alarm. No tremor, weight gain or GI upset now. Mood fine. Still taking the bus, eligible to drive again in November if nothing happens.\n\nMeds: valproic acid 250 mg caps, 2 BID. Allergies: NKDA.\nSH unchanged: never smoker, no alcohol.\n\nExam: vitals as charted, weight stable. Well appearing. Heart regular, no murmur. Lungs clear. Abdomen benign. No tremor on outstretched hands. Gait normal. Skin clear.\n\nPHQ-2 0.\n\nPlan:\n- Epilepsy, controlled on valproic acid. CBC and CMP today for drug monitoring.\n- Flu and COVID vaccines today, tolerated.\n- Lipids were normal last year; not repeating.\n- See neurology in December as planned. Physical again next year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-09-25T12:30",
+              "author": "PCP",
+              "body": "Lucas, your blood count, liver tests and kidney tests from the physical are all normal, so the valproic acid isn't causing any trouble there. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "portal_message",
+          "start": "2025-11-12T19:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Driving",
+              "date": "2025-11-12T19:48",
+              "author": "patient",
+              "body": "Hi, it's been six months since the seizure in May and nothing since. Am I OK to start driving again? Do I need a form from you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Driving",
+              "date": "2025-11-13T08:15",
+              "author": "PCP",
+              "body": "Yes, with six months event-free and steady on your medication you meet the state standard to drive. No form needed from us unless the registry sends you one; if they do, drop it off and I'll fill it out. Keep taking the valproic acid without gaps and stay off the road if you ever miss doses or feel off."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "hospital_admission",
+          "start": "2026-01-06T07:55",
+          "end": "2026-01-09T13:30",
+          "service": "Pulmonary & Critical Care",
+          "reason": "found unresponsive at home after a seizure",
+          "conditions": [
+            {
+              "label": "Hyperchloremic metabolic acidosis due to excess normal saline infusion",
+              "action": "diagnosed",
+              "onset": "2026-01-06",
+              "icd10": "E87.21"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-01-06T07:55",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 88,
+              "rr": 8,
+              "temp_c": 37.0,
+              "spo2": 92
+            },
+            {
+              "time": "2026-01-06T13:00",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 76,
+              "rr": 16,
+              "temp_c": 36.9,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-06T08:05",
+              "results": [
+                {
+                  "test": "pH of arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.28
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 60
+                },
+                {
+                  "test": "Bicarbonate in arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 29
+                },
+                {
+                  "test": "Oxygen partial pressure in arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 70
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-06T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-06T08:05",
+              "results": [
+                {
+                  "test": "Valproate",
+                  "loinc": "4086-6",
+                  "unit": "ug/mL",
+                  "value": 71
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-07T05:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 116
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 17
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-08T05:20",
+              "results": [
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-01-06T10:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-01-09T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (outside)",
+              "date": "2026-01-12T14:20",
+              "author": "critical care",
+              "body": "DISCHARGE SUMMARY, received 1/12/2026\nAdmitted 1/6/2026, discharged 1/9/2026. Service: pulmonary and critical care.\n\nReason for admission: unresponsive at home following a convulsive seizure, with hypoventilation.\n\nHistory: 36-year-old man with epilepsy diagnosed May 2025 on valproic acid 500 mg twice daily, reports no missed doses. His roommate heard a noise early in the morning and found him having a generalized tonic-clonic seizure that lasted about two minutes and stopped without intervention; he did not wake fully afterward and EMS was called. Prior convulsion May 2025. No alcohol, no illness, slept normally.\n\nArrival: T 37.0 C, BP 130/85, HR 88, RR 8, SpO2 92% on room air. GCS 13, drowsy but rousable, no focal findings.\nArterial gas on arrival: pH 7.28, PaCO2 60, HCO3 29, PaO2 70, consistent with acute respiratory acidosis from postictal hypoventilation.\n\nHospital course:\n1. Seizure / epilepsy. Admitted to the ICU for airway watch. Placed on supplemental oxygen; respiratory drive and alertness recovered over several hours with no need for ventilatory support, and by early afternoon he was oriented with RR 16 and SpO2 97%. Valproate level on arrival 71 mcg/mL. Neurology consulted: no further seizures in hospital; level therapeutic and adherence good; recommend continuing valproic acid 500 mg twice daily unchanged with outpatient follow-up.\n2. Hyperchloremic metabolic acidosis. He received several liters of 0.9% saline in the first 24 hours. Morning labs 1/7: Na 142, Cl 116, HCO3 17, anion gap 9, a non-gap acidosis from the saline load. Fluids changed to a balanced crystalloid then stopped as he ate and drank. 1/8: Cl 105, HCO3 23. Resolved.\n\nDischarge condition: stable, at baseline mental status, ambulating, tolerating diet.\n\nDischarge diagnoses: epilepsy with breakthrough generalized tonic-clonic seizure; postictal hypoventilation with acute respiratory acidosis, resolved; hyperchloremic metabolic acidosis due to excess normal saline infusion, resolved.\n\nDischarge medications: valproic acid 500 mg by mouth twice daily (no change).\nAllergies: no known drug allergies.\n\nInstructions: no driving for six months from 1/6/2026 per state guidelines; seizure precautions; follow up with PCP within a week and with outpatient neurology."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "telephone",
+          "start": "2026-01-12T15:05",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2026-01-12T15:05",
+              "author": "RN",
+              "body": "Discharge summary received and routed. Called pt: home since Friday, tired but OK, no further seizures, taking valproic acid 2 caps twice a day. Med list reviewed, no new meds. Appt with PCP tomorrow 11:00, roommate driving."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Hyperchloremic metabolic acidosis due to excess normal saline infusion",
+              "action": "resolved",
+              "icd10": "E87.21"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              77
+            ],
+            "hr": 68,
+            "rr": 12,
+            "spo2": 99,
+            "weight_kg": 82.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-13T11:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.07
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2026-01-13T11:50",
+              "author": "PCP",
+              "body": "Hospital f/u.\n\nAdmitted 1/6 to 1/9 after a generalized seizure at home, found by his roommate, slow breathing on arrival with a high CO2 that corrected within hours in the ICU without a breathing tube. Picked up a non-gap acidosis from the IV saline that had corrected by the 8th. Level was in range, neurology made no changes.\n\nToday he feels back to normal, a little sore in the shoulders the first two days. No events since. Says he has not missed a dose; can't think of a trigger. No alcohol.\n\nMeds: valproic acid 500 mg BID. NKDA.\n\nExam: vitals as charted, SpO2 normal on room air. Alert, oriented, speech normal. Lungs clear. Heart regular. Neuro nonfocal, gait normal. No tongue injury this time.\n\nA/P\n1. Epilepsy, breakthrough GTC seizure on therapeutic valproate. Continue current dose per neurology; their follow-up is already booked for February.\n2. Saline-related hyperchloremic acidosis, resolved in hospital. Repeat BMP today to close the loop; marking resolved on the problem list.\n3. Driving: back to no driving, six months from 1/6, so not before early July.\n4. Work note for last week provided."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "portal_message",
+          "start": "2026-01-14T17:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from yesterday",
+              "date": "2026-01-14T17:10",
+              "author": "PCP",
+              "body": "Your chemistry panel from yesterday is completely normal, including the chloride and bicarbonate that were off in the hospital. That issue is behind you. See you at the next visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs from yesterday",
+              "date": "2026-01-14T18:02",
+              "author": "patient",
+              "body": "Great thanks. HR at work wants the note on letterhead, can you send it through here? Thx"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs from yesterday",
+              "date": "2026-01-15T09:20",
+              "author": "front desk",
+              "body": "Attached is the work note on practice letterhead covering 1/6 through 1/12. Let us know if your employer needs anything else."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "specialist_visit",
+          "start": "2026-02-11T09:15",
+          "service": "Neurology",
+          "reason": "epilepsy follow-up after breakthrough seizure",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up (outside)",
+              "date": "2026-02-13T10:40",
+              "author": "neurology",
+              "body": "Neurology follow-up, visit 2/11/2026.\n\nInterval: one breakthrough generalized tonic-clonic seizure on 1/6/2026 requiring ICU admission for postictal hypoventilation; valproate level 71 at that time, adherence reported as good. Nothing since. Diary otherwise blank since May 2025. Tolerating medication without tremor or GI effects.\n\nMedications: valproic acid 500 mg twice daily. Allergies: NKDA.\n\nExam: alert and oriented, cranial nerves intact, strength and reflexes normal and symmetric, gait normal, no tremor.\n\nAssessment: epilepsy, one breakthrough seizure in the past 9 months on valproic acid.\n\nPlan: continue valproic acid 500 mg twice daily. Seizure precautions; no driving until 7/6/2026. Return in 6 months or sooner with any event."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T08:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: valproic acid",
+              "date": "2026-03-10T08:50",
+              "author": "MA",
+              "body": "eRx renewal request, valproic acid 250 mg cap, 2 caps PO BID, #120. Neurology note 2/11 says continue same dose. Sent 90-day supply with 1 refill per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "office_visit",
+          "start": "2026-05-19T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "epilepsy check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2026-05-18T13:45",
+              "author": "front desk",
+              "body": "Pt called to cancel 5/19 check-in, end-of-month deadline at work. Doing fine, no seizures. Did not want to rebook; will see PCP at fall physical."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "portal_message",
+          "start": "2026-07-14T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Driving again",
+              "date": "2026-07-14T21:05",
+              "author": "patient",
+              "body": "Hi doc, it has been six months since January and no seizures. Neurology told me July 6 was the date. Just double checking it's fine to drive again."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Driving again",
+              "date": "2026-07-15T07:55",
+              "author": "PCP",
+              "body": "Yes, that matches what neurology and I told you. With no events since January 6 you can drive. Same caution as before: if you miss medication or have any warning feeling, don't get behind the wheel."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "pharmacy",
+          "start": "2026-08-18T11:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: valproic acid",
+              "date": "2026-08-18T11:30",
+              "author": "MA",
+              "body": "Pharmacy refill request valproic acid 250 mg caps #120. Approved, 2 refills. Pt reminded about physical 9/29; CBC/CMP will be drawn that morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-29a",
+          "kind": "annual_physical",
+          "start": "2026-09-29T08:20",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Hyperchloremic metabolic acidosis due to excess normal saline infusion|E87.21": {
+        "code": "E87.21",
+        "display": "Acute metabolic acidosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "valproic acid 250 MG Oral Capsule": {
+        "code": "1099681",
+        "display": "valproic acid 250 MG Oral Capsule",
+        "ingredient": "valproic",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bicarbonate in arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "report \"Electroencephalogram, routine\" LOINC 11523-9 not found",
+      "lab \"Valproate\" LOINC 4086-6 not found; closest real codes: 57775-9 Valproate.free and Valproate panel - Serum or Plasma; 14946-8 Valproate [Moles/volume] in Serum or Plasma; 32283-4 Valproate Free/Valproate.total in Serum or Plasma; 17762-6 Valproate [Mass/volume] in Urine; 29229-2 Valproate [Mass/volume] in Body fluid"
+    ]
+  }
+}

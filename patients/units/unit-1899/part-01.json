@@ -1,0 +1,635 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001899",
+      "given": "Wanda",
+      "family": "Alicea",
+      "birth_date": "1997-02-19",
+      "address_line": "61 Belcher Street, Apt 2",
+      "phone": "+1-413-555-0135",
+      "email": "wanda.alicea@example.test",
+      "marital_status": "married",
+      "summary": "Healthy 27-year-old digital marketing specialist who joined in August 2024, started a prenatal vitamin before trying to conceive and became pregnant in May 2025. Tinea corporis of the left forearm twice in the pregnancy, treated by outside dermatology with topical clotrimazole. Listeria bacteremia at 36 weeks after deli meat and soft cheese, treated with 14 days of IV ampicillin, then a term vaginal delivery in February 2026.",
+      "events": [
+        {
+          "id": "2024-08-19a",
+          "kind": "outside_records",
+          "start": "2024-08-19T10:20",
+          "reason": "Records from prior primary care office",
+          "procedures": [
+            {
+              "procedure": "Tonsillectomy",
+              "performed": "2003-07-10T08:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2022-05-17T09:30",
+              "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM. Routine screening interval."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2024-08-19T10:20",
+              "body": "Records received by secure fax from her previous primary care office (seen there 2019-2024) ahead of her new patient visit. 14 pages: last two preventive visit notes, immunization record, one Pap report (05/2022, NILM), labs from 2023 (CBC and metabolic panel, unremarkable per their note). Childhood series complete on the immunization record, MMR x2 and varicella x2 documented. Surgical history on their list: tonsillectomy as a child. No active problems, no medications. Scanned to media, routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "establish_care",
+          "start": "2024-08-21T08:40",
+          "end": "2024-08-21T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "height_cm": 163.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.8,
+              "Hemoglobin A1c": 5.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Digital marketing specialist"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-21T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-21T09:35",
+              "results": [
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-21T09:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-21T09:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-08-21T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-21T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2024-08-21T09:50",
+              "body": "27F here to establish care. Moved her primary care here after her old office's physician retired; prior records reviewed (Pap 2022 NILM, immunizations complete as a child).\n\nNo concerns today. Works as a digital marketing specialist, mostly remote. Never smoked, does not drink. Two dogs at home. Exercises a few times a week.\n\nPMH: none. PSH: tonsillectomy at age 6. Meds: none. Allergies: NKDA.\nFH: mother with type 2 diabetes; father with hypertension.\n\nROS: negative in full.\n\nExam: vitals as charted. Well appearing. HEENT unremarkable, tonsils surgically absent. Thyroid not enlarged. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin clear. No edema. Neuro grossly normal. Affect bright.\nPHQ-2: 0.\n\nA/P: healthy adult, preventive visit.\n- Baseline CBC, CMP, lipids, TSH. A1c given her mother's diabetes. One-time HIV and hepatitis C screening, she agrees.\n- Cervical screening: Pap 2022 normal, next due 2025.\n- Flu and COVID vaccines when the fall supply arrives; nurse visit.\n- Return yearly, sooner as needed. She has the practice number for calls and texts."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-08-23T13:05",
+              "body": "Hi Wanda, all of Wednesday's blood work came back normal: blood counts, kidney and liver tests, cholesterol, thyroid and A1c (no sign of diabetes). HIV and hepatitis C screens were negative. No changes needed. See you at your physical next summer."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-09T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T16:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2024-10-09T16:25",
+              "body": "In for seasonal flu vaccine and 2024-2025 COVID vaccine. No fever today, no prior reactions, NKDA. Flu given L deltoid, COVID given R deltoid, lots and VIS dates in the immunization record. Waited 15 min in the lobby without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-11T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Preconception questions",
+          "medications": [
+            {
+              "drug_text": "prenatal vitamin with minerals and folic acid greater than 0.8 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preconception folic acid"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-03-11T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2025-03-11T12:55",
+              "body": "Video visit, patient at home, identity verified.\n\nShe is hoping to get pregnant this year and wanted to know what she should do beforehand. Cycles regular. No medications. Never smoker, no alcohol. Healthy, labs in August normal.\n\nDiscussed: start a prenatal vitamin with folic acid now, ideally at least a month before trying. Her immunization record shows MMR and varicella series complete. Pap due later this year, can be done by OB at the first prenatal visit or here. Let us know when she has a positive test and we will get her to an OB group.\n\nPlan: prenatal vitamin 1 tab daily, sent to her pharmacy. No other changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "portal_message",
+          "start": "2025-06-24T07:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "author": "patient",
+              "date": "2025-06-24T07:48",
+              "body": "Hi! I took a home pregnancy test today and it's positive. First day of my last period was May 26. What do I do next? Still taking the prenatal vitamin every day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test",
+              "author": "RN",
+              "date": "2025-06-24T09:20",
+              "body": "Congratulations! Please come in tomorrow for a quick urine test to confirm, and we'll send the referral to an OB group. Keep taking the prenatal vitamin. If you have heavy bleeding or one-sided pain, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-25a",
+          "kind": "nurse_visit",
+          "start": "2025-06-25T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pregnancy confirmation",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-05-26",
+              "note": "G1P0, LMP 2025-05-26"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-25T11:05",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "First pregnancy, prenatal care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Pregnancy Test",
+              "author": "RN",
+              "date": "2025-06-25T11:20",
+              "body": "Urine hCG positive. LMP 5/26/25, about 4 1/2 weeks. G1. No bleeding or cramping. On prenatal vitamin daily. Referral to OB sent per PCP; she will call to set up the first prenatal visit at 8 weeks. Reviewed reasons to call."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-26a",
+          "kind": "portal_message",
+          "start": "2025-06-26T20:14",
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Pruritic annular rash, left forearm, early pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash on my arm",
+              "author": "patient",
+              "date": "2025-06-26T20:14",
+              "body": "Sorry to bug you again. I've had a really itchy rash on my left forearm for about 5 days, it's a circle and it's getting bigger. Photo attached. Is there anything I can put on it now that I'm pregnant?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash on my arm",
+              "author": "PCP",
+              "date": "2025-06-27T08:05",
+              "body": "Thanks for the photo. Since you're newly pregnant I'd like a dermatologist to look at it and pick the treatment. They had an opening Monday the 30th at 2:30 and we've booked it for you. Until then avoid scratching and don't put any steroid cream on it."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "specialist_visit",
+          "start": "2025-06-30T14:30",
+          "service": "Dermatology",
+          "reason": "Itchy rash, left forearm",
+          "conditions": [
+            {
+              "label": "Tinea corporis",
+              "icd10": "B35.4",
+              "action": "diagnosed",
+              "onset": "2025-06-21"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clotrimazole 10 MG/ML Topical Cream",
+              "action": "start",
+              "sig": "Apply a thin layer to the rash and 2 cm of surrounding skin twice daily for 4 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Tinea corporis"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2025-06-30T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "author": "dermatology",
+              "date": "2025-07-02T09:10",
+              "body": "Dermatology consultation. Visit date 06/30/2025. Received 07/02/2025.\n\nReason for referral: pruritic rash, left forearm, in early pregnancy.\n\nHistory: 28-year-old woman, G1P0 at about 5 weeks by LMP, with one week of a very itchy rash on the left forearm. She reports it began as a small red ring that has slowly widened, clearing in the middle with a red scaly rim. A few weeks ago she began going to hot yoga classes at her gym and uses her own mat. She has two dogs that often sleep on her bed. No new soaps or lotions. No other rashes.\nPMH: current pregnancy. PSH: tonsillectomy in childhood.\nMedications: prenatal vitamin daily.\nAllergies: NKDA.\nFamily history: maternal type 2 diabetes, paternal hypertension.\nSocial: digital marketing; never smoker; no alcohol.\n\nExam: Left forearm with two annular, erythematous plaques, each with a raised scaly border and central clearing. Remainder of the exposed skin, scalp and nails unremarkable.\n\nKOH preparation from the leading edge: branching septate hyphae.\n\nAssessment: tinea corporis, left forearm.\n\nPlan:\n1. Clotrimazole 1% cream twice daily to the plaques and a margin of normal skin, 4 weeks. A topical azole is appropriate in pregnancy; no oral antifungal.\n2. Wash towels and bedding in hot water; keep the area dry.\n3. Return if not clearing in 4 weeks or if it spreads.\n\nThank you for this referral.\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-21a",
+          "kind": "specialist_visit",
+          "start": "2025-07-21T09:00",
+          "service": "Obstetrics",
+          "reason": "First prenatal visit",
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2025-07-21T09:00"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-21T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-21T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Urine Culture",
+                  "text": "No growth"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2025-07-21T09:30",
+              "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: New Prenatal Visit Summary",
+              "author": "obstetrics",
+              "date": "2025-07-24T15:30",
+              "body": "OB new prenatal visit, 07/21/2025. Copy to primary care.\n\nG1P0 at 8w0d by LMP 05/26/2025. Transvaginal dating ultrasound today: single intrauterine pregnancy, crown-rump length consistent with 8w0d, cardiac activity present. EDD 03/02/2026 by LMP, confirmed by ultrasound.\n\nFeels well; mild nausea, no vomiting. No bleeding. On prenatal vitamin. Recently treated by dermatology for tinea on the left forearm with clotrimazole cream, improving.\nAllergies: NKDA.\n\nExam: BP and weight per our flowsheet, normal. Pelvic exam normal. Pap collected.\n\nPrenatal labs drawn today: CBC, HIV, hepatitis B surface antigen, RPR, urine culture; results normal (attached). Pap NILM.\n\nPlan: routine prenatal care, visits every 4 weeks, anatomy ultrasound at 18-20 weeks, glucose challenge at 24-28 weeks.\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-30a",
+          "kind": "portal_message",
+          "start": "2025-07-30T18:40",
+          "conditions": [
+            {
+              "label": "Tinea corporis",
+              "icd10": "B35.4",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clotrimazole 10 MG/ML Topical Cream",
+              "action": "stop",
+              "reason": "Course complete, rash cleared"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Arm rash update",
+              "author": "patient",
+              "date": "2025-07-30T18:40",
+              "body": "Just an update, the rash on my arm is completely gone. I finished the 4 weeks of the cream. Also saw OB last week and everything looks good!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Arm rash update",
+              "author": "PCP",
+              "date": "2025-07-31T07:55",
+              "body": "Great news on both counts. I'll mark the ringworm as resolved. If it comes back, send a picture."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "annual_physical",
+          "start": "2025-08-25T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2025-08-21T11:30",
+              "body": "Patient called to cancel her 8/25 physical. Seeing OB every month and would rather do the physical after the baby is born. Will call to rebook. Reminded her she can still reach the office for anything in between."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "pharmacy",
+          "start": "2025-09-17T10:12",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: prenatal vitamin",
+              "author": "MA",
+              "date": "2025-09-17T10:12",
+              "body": "Pharmacy refill request for prenatal vitamin, 1 tab daily, #90. Active on med list, taking daily per patient. Approved per PCP protocol with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "nurse_visit",
+          "start": "2025-10-01T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines in pregnancy",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-01T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-01T08:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-01T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2025-10-01T08:35",
+              "body": "18 weeks pregnant, here for flu and COVID vaccines, both recommended in pregnancy and OB agrees. Afebrile. No prior reactions. Flu L deltoid, COVID R deltoid. Tolerated well; observed 15 minutes. Will let OB know at her next visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "imaging",
+          "start": "2025-10-06T13:00",
+          "service": "Obstetrics",
+          "reason": "Fetal anatomy ultrasound",
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Obstetric Ultrasound, Detailed Anatomy",
+              "author": "obstetrics",
+              "date": "2025-10-09T08:45",
+              "body": "OBSTETRIC ULTRASOUND, ANATOMY SURVEY. Exam date 10/06/2025. Received 10/09/2025.\nIndication: routine anatomy survey, 19w0d by dates.\nFindings: single live intrauterine pregnancy, cephalic. Fetal heart rate normal. Biometry consistent with dates; estimated fetal weight appropriate for gestational age. Fetal anatomy surveyed and normal, including brain, face, spine, four-chamber heart and outflow tracts, abdominal wall, kidneys, bladder and limbs. Placenta posterior, clear of the cervix. Amniotic fluid normal. Cervical length normal.\nImpression: normal anatomy survey; growth appropriate for dates."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-13a",
+          "kind": "specialist_visit",
+          "start": "2025-10-13T10:45",
+          "service": "Dermatology",
+          "reason": "Rash on left forearm again",
+          "conditions": [
+            {
+              "label": "Tinea corporis",
+              "icd10": "B35.4",
+              "action": "diagnosed",
+              "onset": "2025-10-06",
+              "note": "Recurrence, same site"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clotrimazole 10 MG/ML Topical Cream",
+              "action": "start",
+              "sig": "Apply twice daily to the plaques and surrounding skin; continue for 2 weeks after the skin looks clear",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Recurrent tinea corporis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "author": "dermatology",
+              "date": "2025-10-16T14:20",
+              "body": "Dermatology follow-up. Visit date 10/13/2025. Received 10/16/2025.\n\nSeen here 06/30 for tinea corporis of the left forearm, which cleared with 4 weeks of clotrimazole. She is now 20 weeks pregnant. For the past week the same area has been itching intensely again: ring-shaped patches with a red, flaky edge that are spreading outward and paler in the middle. She has kept going to hot yoga since early summer on her own mat, and the two dogs still sleep on the bed.\nMedications: prenatal vitamin.\nAllergies: NKDA.\n\nExam: two annular erythematous plaques on the left forearm with raised scaly borders and central clearing. No other sites involved.\n\nKOH preparation: branching septate hyphae.\n\nAssessment: recurrent tinea corporis, left forearm, likely reinfection from a household or gym source.\n\nPlan:\n1. Restart clotrimazole 1% cream twice daily and continue for 2 full weeks after the skin looks clear.\n2. Wipe down the mat after every class and wash it weekly; shower soon after class.\n3. Have the dogs checked by their veterinarian for ringworm; keep them off the bed until then.\n4. Return if it recurs again.\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-21a",
+          "kind": "portal_message",
+          "start": "2025-11-21T12:10",
+          "conditions": [
+            {
+              "label": "Tinea corporis",
+              "icd10": "B35.4",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clotrimazole 10 MG/ML Topical Cream",
+              "action": "stop",
+              "reason": "Course complete"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash",
+              "author": "patient",
+              "date": "2025-11-21T12:10",
+              "body": "The ringworm cleared up again a couple of weeks ago and I kept the cream going 2 more weeks like they said, just stopped it. Fingers crossed it stays away this time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash",
+              "author": "MA",
+              "date": "2025-11-21T15:02",
+              "body": "Thanks for letting us know! The doctor has updated your chart."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

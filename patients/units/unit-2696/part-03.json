@@ -1,0 +1,211 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002696",
+      "events": [
+        {
+          "id": "2023-03-14a",
+          "kind": "office_visit",
+          "start": "2023-03-14T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 6.4}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-14T09:00", "results": [{"test": "Glucose"}]},
+            {"panel": null, "collected": "2023-03-14T09:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-03-14T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2023-03-14T10:05", "body": "Doing well. Still walking. Fasting numbers 100-120, nothing under 80 on the meter. Endocrinology appointment set for late May. BP fine at home.\nExam: vitals as recorded; heart and lungs normal; no edema.\nPlan: A1c/BMP. No changes. She'll ask endo about the insulin dose since sugars are tighter now."}
+          ]
+        },
+        {
+          "id": "2023-05-24a",
+          "kind": "specialist_visit",
+          "start": "2023-05-24T13:30",
+          "service": "Endocrinology",
+          "reason": "Cushing syndrome and diabetes follow-up",
+          "conditions": [{"label": "Type 2 diabetes mellitus with hypoglycemia without coma", "icd10": "E11.649", "action": "diagnosed", "onset": "2023-05-24", "note": "severe hypoglycemia: recurrent early-morning lows on basal insulin"}],
+          "vitals": {"bp": [132, 84], "hr": 78},
+          "labs": [
+            {"panel": null, "collected": "2023-05-24T13:00", "results": [{"test": "Hemoglobin A1c", "value": 6.2}, {"test": "Fasting Glucose", "value": 72}, {"test": "Creatinine", "value": 1.0}, {"test": "Microalbumin/Creatinine Ratio", "value": 25}]}
+          ],
+          "medications": [
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "stop", "reason": "dose lowered for hypoglycemia"},
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "start", "sig": "Inject 20 units under the skin at bedtime", "dose": {"value": 20, "unit": "[iU]"}, "frequency": "DAILY", "route": "Subcutaneous", "course": "chronic", "reason": "type 2 diabetes; reduced from 24 units for early-morning hypoglycemia"},
+            {"drug_text": "glucagon 1 MG Injection", "action": "start", "sig": "Inject 1 mg into the muscle or under the skin once for severe low blood sugar; may repeat once in 15 minutes", "dose": {"value": 1, "unit": "mg"}, "frequency": "PRN", "route": "Intramuscular", "course": "chronic", "reason": "rescue for severe hypoglycemia"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology follow-up", "author": "endocrinology", "date": "2023-08-09T10:40", "body": "Outside endocrinology, clinic visit 05/24/2023 (received 08/09/2023 in response to records request).\n\nInterval history: Ms. Pagan returns for Cushing syndrome and type 2 diabetes. She has kept to her eating plan and her walking. For several weeks she has woken many mornings drenched in sweat with her heart pounding. No chest pain, no breathlessness, no recent illness.\n\nMedications reviewed: metformin 1000 mg twice daily, insulin glargine 24 units at bedtime, lisinopril 10 mg daily, prednisone 15 mg daily. NKDA.\nFamily and social history unchanged: never smoker, social wine, administrative assistant.\n\nExam: BP 132/84, HR 78, BMI 29. General examination unremarkable.\n\nLabs today: hemoglobin A1c 6.2%; fasting plasma glucose 72 mg/dL; creatinine 1.0 mg/dL; urine albumin-to-creatinine ratio 25 mg/g.\n\nAssessment:\n1. Severe hypoglycemia: recurrent early-morning episodes on basal insulin, with A1c now well below target for her.\n2. Type 2 diabetes.\n3. Cushing syndrome on chronic glucocorticoid for lupus; steroid management remains with rheumatology.\n\nPlan: reduce insulin glargine to 20 units at bedtime. Glucagon 1 mg kit prescribed; husband to be shown how to use it. Check fingerstick before bed and on waking for two weeks. Return in one year or sooner if lows persist."}
+          ]
+        },
+        {
+          "id": "2023-05-26a",
+          "kind": "portal_message",
+          "start": "2023-05-26T21:05",
+          "reason": "insulin dose change",
+          "documents": [
+            {"type": "Patient Message", "title": "Insulin change", "author": "patient", "date": "2023-05-26T21:05", "body": "Hi, just letting you know the endocrinologist lowered my night insulin from 24 to 20 because I've been waking up sweaty with my heart racing, she said my sugar is dropping too low early in the morning. She also gave me a glucagon shot to keep at home. Should I change anything else?"},
+            {"type": "Patient Message", "title": "RE: Insulin change", "author": "PCP", "date": "2023-05-27T09:15", "body": "Thanks for the update. Follow her new dose of 20 units. Nothing else changes for now. Check your sugar at bedtime and when you wake for the next couple of weeks, and for any reading under 70 take 15 grams of fast sugar (4 oz juice) and recheck in 15 minutes. Make sure your husband knows where the glucagon is. We'll get her note."}
+          ]
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "pharmacy",
+          "start": "2023-05-30T14:00",
+          "reason": "fill notification",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy fill and records request", "author": "MA", "date": "2023-05-30T14:00", "body": "Pharmacy fill history shows glucagon 1 mg kit and glargine pens filled 5/25 under the endocrinologist. Our med list still shows glargine 24 units; left for PCP to reconcile once note arrives. Faxed records request to endocrinology for 5/24 visit note and labs."}
+          ]
+        },
+        {
+          "id": "2023-08-09a",
+          "kind": "outside_records",
+          "start": "2023-08-09T10:40",
+          "reason": "endocrinology note received",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Endocrinology note reviewed", "author": "PCP", "date": "2023-08-09T16:30", "body": "May endo note arrived after a second request. Glargine 20 qHS, glucagon kit, A1c 6.2, fasting 72, creatinine 1.0, UACR 25. Med list reconciled. Messaged pt: she says the morning sweats stopped within about a week of the lower dose."}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 6.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-19T08:30", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-19T08:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-19T08:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-19T08:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-09-19T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-19T11:30", "body": "Annual. No lows since the glargine went to 20 units in May; fasting now 120s-140s. Lupus quiet per pt. Periods still irregular.\nMeds reviewed with bottles: metformin 1000 BID, glargine 20 qHS, lisinopril 10, prednisone 15, glucagon kit at home (unused).\nPHQ-2 negative.\nExam: vitals as charted. Heart regular, no murmur. Lungs clear. Abdomen soft. Skin intact. Feet: protective sensation intact, pulses present, no calluses.\nPlan: fasting labs. Flu/COVID next month. Mammogram in December. Pap next due 2026. Colonoscopy due 2031. Eye exam overdue, she'll book."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T16:50",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T16:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T16:57"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T16:55"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu and COVID vaccines", "author": "RN", "date": "2023-10-10T17:15", "body": "Influenza left deltoid and 2023-24 COVID right deltoid. No contraindications. Observed; fine."}
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "outside_records",
+          "start": "2023-11-07T11:20",
+          "reason": "eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye exam", "author": "optometry", "date": "2023-11-07T11:20", "body": "Dilated fundus exam 11/01/2023. Acuity 20/20 OD, 20/25 OS corrected. Anterior segments normal. Posterior pole and periphery without diabetic changes in either eye. Assessment: diabetes mellitus type 2 without retinopathy. Return 1 year."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "imaging",
+          "start": "2023-12-12T09:30",
+          "reason": "screening mammogram",
+          "reports": [{"study": "Screening mammogram, bilateral", "performed": "2023-12-12T09:30", "text": "Bilateral screening mammogram with tomosynthesis compared to 12/2022. Scattered fibroglandular tissue. No suspicious abnormality.", "conclusion": "BI-RADS 1: negative."}],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening mammogram", "author": "radiology", "date": "2023-12-12T14:00", "body": "Screening mammogram: BI-RADS 1, negative. Routine annual screening."}
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "outside_records",
+          "start": "2024-02-27T09:10",
+          "reason": "rheumatology letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology follow-up letter", "author": "rheumatology", "date": "2024-02-27T09:10", "body": "Outside rheumatology group, visit 02/20/2024.\n\nDear colleague, Ms. Pagan was seen for annual review of her systemic lupus erythematosus. No arthralgia, rash, mouth ulcers, chest pain with breathing or new hair loss. Examination: no synovitis, no malar or discoid rash, heart and lungs normal. Monitoring blood count and urinalysis in our clinic were within normal limits and renal function was stable. Lupus remains clinically quiet on prednisone 15 mg daily, continued. We will see her in 12 months.\nCurrent medications per our record: prednisone 15 mg daily, metformin 1000 mg twice daily, insulin glargine 20 units at bedtime, lisinopril 10 mg daily. NKDA."}
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.1}, "weight_kg": 76.0},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-19T16:00", "results": [{"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-03-19T16:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-19T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2024-03-19T17:10", "body": "S: Winter was hard to keep walking. Fasting 130s-150s, no lows since last May. Rheum letter in, no changes.\nO: weight up a bit since fall. BP fine. Heart regular, lungs clear, no edema.\nA/P: T2DM on glargine 20, metformin. A1c today; if it climbs past the mid-7s we'll revisit the insulin dose carefully given last year's lows. Back to walking now the weather's turning. Physical in the fall."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "telephone",
+          "start": "2024-06-11T10:30",
+          "reason": "test strip prior authorization",
+          "documents": [
+            {"type": "Prior Authorization", "title": "Glucose test strips", "author": "MA", "date": "2024-06-11T10:30", "body": "Insurance now requires PA for more than 100 strips per month. Submitted: T2DM on basal insulin with prior hypoglycemia, testing twice daily plus as needed. Approved through 6/2025. Pharmacy and pt notified by phone."}
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "annual_physical",
+          "start": "2024-10-01T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {"label": "Obesity, unspecified", "action": "diagnosed", "onset": "2024-10-01"},
+            {"label": "Type 2 diabetes mellitus with hypoglycemia without coma", "icd10": "E11.649", "action": "resolved", "note": "no hypoglycemia since May 2023 dose reduction"}
+          ],
+          "state": {"weight_kg": 78.3, "labs": {"Hemoglobin A1c": 7.3}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-01T08:30", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-01T08:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-10-01T08:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-10-01T08:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-01T09:05"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-10-01T08:00"},
+            {"procedure": "Immunization administration", "performed": "2024-10-01T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-10-01T12:15", "body": "Annual. Feels OK. Weight has crept up again this year. No lows at all since spring 2023.\nMeds: metformin 1000 BID, glargine 20 qHS, lisinopril 10, prednisone 15 (rheum), glucagon kit.\nPHQ-2 0.\nExam: BMI now just over 30, vitals otherwise as charted. Heart regular, lungs clear, abdomen soft and nontender. Skin intact. Feet: monofilament normal, pulses palpable.\nA/P:\n1. Obesity, BMI 30.6. Added to problem list. Talked portions, evening snacking, and getting back to daily walks.\n2. T2DM, A1c today. Hypoglycemia from 2023 resolved after dose change; removing from active list.\n3. HTN on lisinopril, controlled.\n4. Prevention: flu today, COVID in a few weeks. Mammogram December. Shingrix once she turns 50 in February."}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T12:10",
+          "reason": "COVID vaccine",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-22T12:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-22T12:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "COVID-19 vaccine", "author": "RN", "date": "2024-10-22T12:30", "body": "2024-25 COVID vaccine IM left deltoid. No issues during observation."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "imaging",
+          "start": "2024-12-10T08:30",
+          "reason": "screening mammogram",
+          "reports": [{"study": "Screening mammogram, bilateral", "performed": "2024-12-10T08:30", "text": "Bilateral screening mammogram, comparison 12/2023. Scattered fibroglandular densities. No suspicious mass or calcification.", "conclusion": "BI-RADS 1: negative."}],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening mammogram", "author": "radiology", "date": "2024-12-10T13:45", "body": "BI-RADS 1. Negative screening mammogram."}
+          ]
+        }
+      ]
+    }
+  ]
+}

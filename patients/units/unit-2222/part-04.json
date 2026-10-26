@@ -1,0 +1,237 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002222",
+      "events": [
+        {
+          "id": "2023-08-23a",
+          "kind": "specialist_visit",
+          "start": "2023-08-23T09:15",
+          "service": "Cardiology",
+          "reason": "Atrial fibrillation follow-up",
+          "state": {"weight_kg": 84.0},
+          "vitals": {"temp_c": 36.8, "bp": [138, 82], "hr": 64, "rr": 16, "height_cm": 178.0, "weight_kg": 84.0},
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2023-08-23T09:30",
+             "text": "Atrial fibrillation with controlled ventricular response, rate 64. Normal axis. QRS and QT intervals normal. No acute ST-T changes.",
+             "conclusion": "Atrial fibrillation without rapid ventricular response."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up", "author": "cardiology", "date": "2023-08-23T15:00",
+             "body": "OUTSIDE CARDIOLOGY - annual follow-up, atrial fibrillation. Date of service 08/23/2023.\n\nMr. Rossi returns for his chronic AF. No chest pain or shortness of breath. He does notice occasional bothersome palpitations, brief, without lightheadedness.\n\nInterval history: abdominal aortic aneurysm found last year at 4.8 cm and repaired by EVAR 9/2022, complicated by cholesterol embolism with kidney injury that has recovered. Diagnosed with inclusion body myositis this spring. Also type 2 diabetes and hypertension.\n\nMedications: metformin, lisinopril, hydrochlorothiazide, metoprolol succinate 50 mg, warfarin (INRs managed by his PCP), aspirin 81 mg, atorvastatin 40 mg, omeprazole. Allergies: none.\n\nSocial: former smoker, quit in 2017 after his stroke. Red wine with dinner most nights.\n\nVitals: T 36.8 C, BP 138/82, pulse 64 and irregularly irregular, RR 16. Height 178 cm, weight 84 kg, BMI 26.5.\n\nExam: JVP not elevated. Irregularly irregular rhythm, no murmur. Lungs clear. No edema.\n\nECG: atrial fibrillation, ventricular rate 64, no rapid ventricular response.\n\nAssessment/Plan: Permanent atrial fibrillation, rate well controlled on metoprolol succinate 50 mg. Palpitations are occasional and tolerable; he prefers no medication change, which is reasonable at this resting rate. Continue warfarin for stroke prevention given prior stroke. Continue current regimen. Return in one year. Thank you for allowing us to share in his care."}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "conditions": [
+            {"label": "Obesity, unspecified", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-19T08:20", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-19T08:20", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-19T08:20", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-19T08:20", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2023-09-19T08:20", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2023-09-19T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-09-19T09:55",
+             "body": "Annual wellness visit.\n\nYear in review: EVAR 9/2022 with cholesterol embolism and AKI (recovered), IBM diagnosed 3/2023 and did a course of PT. Cardiology in August - rate controlled, no changes. Eye exam July normal.\n\nFunction: still independent in ADLs, drives, does lighter yard work and has a neighbor's kid mow now. Uses rails on stairs. No falls this year. Home program from PT most days. PHQ-2 1 (a few days of feeling down about the IBM), not more than that, declines anything further.\n\nROS: no chest pain or dyspnea, occasional palpitations as before. No dysphagia. No bleeding.\n\nExam: Wt 83.5 kg, BMI 26.4. Heart irreg irreg, no murmur. Lungs clear. Abdomen soft, nontender, no mass felt now. Quads thin, needs arms to rise. Feet intact, DP present, monofilament normal.\n\nLabs today: A1c 6.4, CMP and CBC normal, Cr 1.1, LDL ~100, UACR normal. INR in range.\n\nA/P:\n1. T2DM - well controlled.\n2. HTN - 143/80 in the office, home log 120s-130s. No change.\n3. Permanent AF on warfarin, prior stroke - stable.\n4. AAA s/p EVAR - annual duplex due next month with vascular.\n5. IBM - stable, home exercises.\n6. HLD/PAD - continue.\n7. Weight - BMI now 26.4, obesity off the problem list.\n8. Vaccines: flu, updated covid and RSV next month at nurse visit.\nRTC 4-6 months."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines, INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2023-10-10T10:35", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-10T10:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T10:42"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-10-10T10:44"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T10:40"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse visit - vaccines", "author": "RN", "date": "2023-10-10T11:05",
+             "body": "Flu HD L deltoid, covid updated R deltoid, RSV (Arexvy) L deltoid lower site. VIS for all three. Pressure held 2 min each site, on warfarin. Observed 15 min, no reaction. INR in range, no changes."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "specialist_visit",
+          "start": "2023-10-17T14:00",
+          "service": "Vascular Surgery",
+          "reason": "EVAR surveillance",
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2023-10-17T13:30",
+             "text": "EXAM: Duplex ultrasound of the abdominal aorta and endograft.\nINDICATION: Annual surveillance after EVAR 09/2022.\nCOMPARISON: 11/21/2022.\nFINDINGS: Bifurcated endograft patent with normal flow in the main body and both limbs. No endoleak. Aneurysm sac maximal diameter 4.8 cm, unchanged.",
+             "conclusion": "Stable post-EVAR appearance. Sac 4.8 cm, no endoleak."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Vascular surgery surveillance", "author": "vascular surgery", "date": "2023-10-17T16:00",
+             "body": "OUTSIDE VASCULAR SURGERY - one year after EVAR. Date of service 10/17/2023.\nNo abdominal or back pain. Legs and toes without discoloration since last year. Distal pulses present.\nDuplex: patent endograft, no endoleak, sac 4.8 cm and stable.\nPlan: continue annual duplex surveillance. Continue aspirin, statin, BP control. Next visit in 12 months."}
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "lab_only",
+          "start": "2023-11-14T08:10",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2023-11-14T08:10", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "portal_message",
+          "start": "2023-12-12T09:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Medicare plan change", "author": "patient", "date": "2023-12-12T09:30",
+             "body": "Changing my part D plan for January, the new one uses a different mail order company. Can you send everything over to them after the first of the year? I put the new card info in the paperwork."},
+            {"type": "Patient Message", "title": "RE: Medicare plan change", "author": "MA", "date": "2023-12-13T10:05",
+             "body": "Got it, Mr. Rossi. We updated your insurance in the chart and will send all eight prescriptions to the new mail-order pharmacy on January 2. You have enough on hand until then? If anything runs short, we can send a small supply to a local pharmacy."},
+            {"type": "Patient Message", "title": "RE: RE: Medicare plan change", "author": "patient", "date": "2023-12-13T12:40",
+             "body": "Yes plenty. Thanks"}
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "lab_only",
+          "start": "2024-01-09T08:30",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2024-01-09T08:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "INR / new pharmacy", "author": "RN", "date": "2024-01-09T12:20",
+             "body": "INR in range. New mail-order warfarin arrived, same 5 mg peach tablets - checked with him. Same dose."}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "state": {"weight_kg": 84.5, "labs": {"Hemoglobin A1c": 6.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-02-13T14:00", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-13T14:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2024-02-13T14:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-13T13:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office visit", "author": "PCP", "date": "2024-02-13T14:10",
+             "body": "6 month f/u.\nGetting through the winter. Stays inside more with the IBM, worried about ice. Home exercises 4-5 days a week. No falls. Sugars fine. No chest pain, palpitations occasional. No trouble swallowing. No bleeding.\nWt 84.4. Irreg irreg. Lungs clear. No edema.\nA1c 6.7, BMP stable, INR in range.\nA/P: DM2, HTN, AF/warfarin, IBM, AAA s/p EVAR, HLD/PAD - stable, no med changes. Yaktrax for the driveway. RTC summer."}
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "lab_only",
+          "start": "2024-03-26T08:20",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2024-03-26T08:20", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "lab_only",
+          "start": "2024-05-07T08:05",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2024-05-07T08:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "portal_message",
+          "start": "2024-06-04T20:15",
+          "documents": [
+            {"type": "Patient Message", "title": "food getting stuck", "author": "patient", "date": "2024-06-04T20:15",
+             "body": "For the last month or so meat and bread feel like they get stuck in the middle of my chest. I have to drink water to get it down. Could this be the IBM? Not an emergency just wondering."},
+            {"type": "Patient Message", "title": "RE: food getting stuck", "author": "RN", "date": "2024-06-05T08:20",
+             "body": "Thanks for letting us know. The doctor wants to see you for this - we booked you Tuesday 6/11 at 10:30. If food gets stuck and won't go down, or you can't swallow your saliva, go to the emergency room."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Food sticking when swallowing",
+          "state": {"weight_kg": 82.5},
+          "vitals": {"weight_kg": 82.5},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "conditions": [
+            {"label": "Dysphagia, unspecified", "icd10": "R13.10", "action": "diagnosed", "onset": "2024-05-01"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-11T11:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-11T11:00", "results": [{"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2024-06-11T11:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-11T10:30"}],
+          "orders": [
+            {"id": "gi-referral-2024", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "Dysphagia to solids, weight loss - EGD"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office visit - dysphagia", "author": "PCP", "date": "2024-06-11T11:10",
+             "body": "CC: food sticking.\n\nHPI: About a month of solids - meat, bread - hanging up behind the middle of the breastbone a few seconds after swallowing. Washes it down with water. Liquids fine. No choking or coughing with eating, no food coming back up through the nose. No vomiting, no black stools. Reflux quiet on omeprazole. Thinks he has lost a few pounds because he is eating smaller bites and less.\n\nExam: Wt 82.5 kg (84.4 in Feb). Oropharynx normal. Neck supple, no nodes. Heart irreg irreg. Lungs clear. Abdomen soft, nontender.\n\nA/P:\n1. Dysphagia to solids, sensation in the mid-chest, with weight down 2 kg. IBM can affect swallowing, but that is usually the throat end with choking and coughing; this sounds esophageal. Needs EGD - GI referral placed. CBC, CMP today. Soft, moist foods, small bites, sit up after meals. Call or go to the ED if food impacts.\n2. AF on warfarin - GI will need a hold plan for biopsies; we will coordinate.\n3. Others stable.\nRTC after GI."}
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "portal_message",
+          "start": "2024-06-12T13:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs", "author": "PCP", "date": "2024-06-12T13:00",
+             "body": "Blood count, kidney and liver tests, and protein level are normal, and INR is in range. GI has the referral."}
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "telephone",
+          "start": "2024-06-25T09:50",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "GI appointment", "author": "front desk", "date": "2024-06-25T09:50",
+             "body": "GI office confirmed referral received. First available new patient consult is Fri 8/9. Asked to be called with cancellations. Pt aware, ok with date. Told him to message us if swallowing gets worse before then."}
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "outside_records",
+          "start": "2024-07-16T15:20",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Eye examination report", "author": "ophthalmology", "date": "2024-07-16T15:20",
+             "body": "Annual diabetic eye exam. VA 20/25 OD, 20/30 OS. Dilated fundus exam without diabetic retinopathy OU. Return 1 year."}
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "lab_only",
+          "start": "2024-07-23T08:15",
+          "reason": "INR",
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2024-07-23T08:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "INR", "author": "RN", "date": "2024-07-23T12:30",
+             "body": "INR in range. Still waiting on GI 8/9. Swallowing a bit worse, now some thick liquids too; eating mostly soft food and shakes. Told PCP. PCP called GI to ask for an earlier slot; none, kept on cancellation list."}
+          ]
+        }
+      ]
+    }
+  ]
+}

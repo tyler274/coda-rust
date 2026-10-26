@@ -1,0 +1,293 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001738",
+      "events": [
+        {
+          "id": "2025-01-08a",
+          "kind": "pharmacy",
+          "start": "2025-01-08T10:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior authorization renewal", "author": "MA", "date": "2025-01-08T10:05", "body": "Annual PA for insulin pens (Lantus SoloStar, Humalog KwikPen) resubmitted for 2025. Approved 1/8/2025-12/31/2025. Pharmacy notified."}
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "specialist_visit",
+          "start": "2025-01-13T15:40",
+          "service": "Dermatology",
+          "reason": "Alopecia areata follow-up",
+          "medications": [
+            {
+              "drug_text": "clobetasol propionate 0.5 MG/ML Topical Solution",
+              "action": "stop",
+              "reason": "Alopecia areata regrown"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "author": "dermatology",
+              "date": "2025-01-14T08:45",
+              "body": "DERMATOLOGY FOLLOW-UP\nDate of visit: 01/13/2025\n\nDear Doctor,\n\nMs. Hartley returned for her alopecia areata, six months into clobetasol propionate 0.05% solution twice daily to the patches.\n\nExamination: All three scalp patches have filled in with regrown hair. No new patches. No skin atrophy or folliculitis at the treated sites. Nail pitting unchanged.\n\nImpression: Patchy alopecia areata, regrown on topical steroid.\n\nPlan: Stop clobetasol. Alopecia areata can recur; she will restart the solution on any new patch and call us. Follow-up as needed.\n\nSincerely,\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "hospital_admission",
+          "start": "2025-02-18T21:40",
+          "end": "2025-02-21T13:30",
+          "service": "Medical Intensive Care",
+          "reason": "Diabetic ketoacidosis",
+          "conditions": [
+            {"label": "Type 1 diabetes mellitus with ketoacidosis without coma", "icd10": "E10.10", "action": "diagnosed", "onset": "2025-02-18"},
+            {"label": "Acute upper respiratory infection", "action": "diagnosed", "onset": "2025-02-14"}
+          ],
+          "vitals": [
+            {"time": "2025-02-18T21:45", "bp": [102, 64], "hr": 121, "rr": 30, "temp_c": 37.7, "spo2": 98},
+            {"time": "2025-02-19T06:00", "bp": [110, 70], "hr": 98, "rr": 20, "temp_c": 37.2, "spo2": 98},
+            {"time": "2025-02-21T08:00", "bp": [114, 72], "hr": 80, "rr": 16, "temp_c": 36.8, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-18T21:55", "results": [{"test": "Glucose", "value": 438}, {"test": "Bicarbonate", "value": 9}, {"test": "Anion Gap", "value": 25}, {"test": "Potassium", "value": 5.3}]},
+            {"panel": null, "collected": "2025-02-18T21:55", "results": [
+              {"test": "Arterial pH", "loinc": "2744-1", "unit": "[pH]", "value": 7.14},
+              {"test": "Beta-hydroxybutyrate", "loinc": "6873-4", "unit": "mmol/L", "value": 6.4},
+              {"test": "Hemoglobin A1c", "value": 7.8},
+              {"test": "SARS-CoV-2 (COVID-19) PCR", "text": "Not detected"}
+            ]},
+            {"panel": "Urinalysis", "collected": "2025-02-18T22:20", "results": [{"test": "Urine Ketones", "text": "Positive"}, {"test": "Urine Glucose", "text": "Positive"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-19T05:30", "results": [{"test": "Bicarbonate"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-02-18T23:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-02-21T12:30"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Provider Note", "author": "emergency medicine", "date": "2025-02-19T09:15", "body": "EMERGENCY DEPARTMENT — PROVIDER NOTE\nDate of service: 02/18/2025, arrival 21:40\n\nCC: confusion, vomiting, fast breathing\n\nHPI: 33-year-old woman with type 1 diabetes, Hashimoto hypothyroidism and alopecia areata, brought in by her roommate, who found her confused and vomiting and breathing rapidly. Per patient and roommate, she has had a cold for several days — congestion, sore throat, cough — with poor appetite, and has not been taking her insulin regularly while sick.\n\nMeds: insulin glargine 18 units nightly; insulin lispro with meals, carb ratio 1:12; levothyroxine 88 mcg daily.\nAllergies: NKDA.\n\nExam: ill-appearing, drowsy but answers questions. Mucous membranes dry. Deep, rapid respirations. Fruity odor on the breath. Lungs clear. Heart tachycardic, regular. Abdomen soft, nontender. No focal neuro deficit.\n\nData: arterial blood gas with high anion gap metabolic acidosis, pH 7.14. Glucose 438, bicarbonate 9, anion gap 25, potassium 5.3. Beta-hydroxybutyrate 6.4. Urinalysis positive for ketones and glucose. SARS-CoV-2 PCR not detected.\n\nED course: two liters normal saline, insulin infusion per DKA protocol, potassium added to fluids once K below 5.\n\nImpression: diabetic ketoacidosis precipitated by viral upper respiratory infection and missed insulin.\nDisposition: admitted to the medical ICU."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2025-02-24T08:40", "body": "DISCHARGE SUMMARY\nAdmitted: 02/18/2025   Discharged: 02/21/2025\nAdmitting unit: medical ICU, transferred to medicine floor 02/19/2025\n\nPrincipal diagnosis: diabetic ketoacidosis, type 1 diabetes\nSecondary: viral upper respiratory infection; Hashimoto hypothyroidism; alopecia areata\n\nHospital course:\nPresented from home after several days of a viral URI with irregular insulin use; confused, vomiting and tachypneic on arrival with dry mucosa, Kussmaul breathing and ketotic breath. Arterial gas showed a high anion gap metabolic acidosis (pH 7.14); glucose 438, bicarbonate 9, anion gap 25, K 5.3, beta-hydroxybutyrate 6.4; urine positive for ketones and glucose. Hemoglobin A1c 7.8%. COVID PCR negative.\nManaged in the ICU with IV fluids, insulin infusion and potassium replacement. Mental status cleared within hours. Anion gap closed overnight and she was moved to the floor on 2/19, bridged to subcutaneous glargine and lispro at her home doses. Eating normally by 2/20. URI symptoms improving.\nDiabetes education reviewed sick-day management: never stop basal insulin, check glucose every 2-4 hours and ketones when ill, fluids, and when to call or come in.\n\nCondition at discharge: stable, alert, ambulatory.\nAllergies: NKDA.\nDischarge medications (unchanged):\n- Insulin glargine 18 units subcutaneously at bedtime\n- Insulin lispro with meals, 1 unit per 12 g carbohydrate plus correction\n- Levothyroxine 88 mcg daily\n\nFollow-up: primary care within one week."}
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "office_visit",
+          "start": "2025-02-25T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, DKA",
+          "conditions": [
+            {"label": "Type 1 diabetes mellitus with ketoacidosis without coma", "icd10": "E10.10", "action": "resolved"},
+            {"label": "Acute upper respiratory infection", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-25T16:15", "results": [{"test": "Bicarbonate"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2025-02-25T16:05"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-02-25T17:45", "body": "Seen 4 days after discharge from a 3-day admission (ICU then floor) for DKA. Summary reviewed.\n\nShe says she felt so sick with the cold that she couldn't eat, and figured she shouldn't take insulin without eating — skipped the Lantus two nights and most of the Humalog. Her roommate found her confused on the 18th. She's embarrassed and wants to make sure it doesn't happen again.\n\nNow: eating normally, energy coming back, cough nearly gone, no fever. Sugars since discharge 100s-180s. Taking Lantus 18 nightly and Humalog with meals.\n\nExam: vitals as charted. Alert, comfortable. Mucous membranes moist. Lungs clear. Heart regular.\n\nA/P\n1. DKA, resolved. Precipitant: viral URI with missed basal insulin. Went over sick-day rules again in detail — basal insulin always, even if not eating; glucose every 2-4 hours; ketone check if over 250 or vomiting; sugar-containing fluids if not eating; call us early, any hour, if ketones moderate/large or she can't keep fluids down. She has urine ketone strips at home. Wrote the plan out for her fridge.\n2. URI — resolved.\n3. T1DM — no dose changes. BMP today.\n4. Hashimoto, alopecia areata — stable.\nRTC May for routine DM visit, sooner if needed."}
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "portal_message",
+          "start": "2025-03-05T19:25",
+          "documents": [
+            {"type": "Patient Communication", "title": "Checking in", "author": "patient", "date": "2025-03-05T19:25", "body": "Back at school this week and feeling like myself again. Sugars have been behaving. The sick-day sheet is on my fridge. Also saw my bloodwork from last week was normal — thank you."},
+            {"type": "Patient Communication", "title": "RE: Checking in", "author": "PCP", "date": "2025-03-06T07:40", "body": "So glad to hear it. Yes, the chemistry panel was completely back to normal. Remember you can reach me directly if you ever get sick and the numbers start climbing."}
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "outside_records",
+          "start": "2025-03-24T14:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye examination report", "author": "optometry", "date": "2025-03-24T14:00", "body": "Diabetic eye exam, 03/18/2025.\nVA 20/20 OD, 20/20 OS with correction. IOP within normal limits.\nDilated fundus: no diabetic retinopathy in either eye; no macular edema.\nImpression: no retinopathy. Recall 12 months."}
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "office_visit",
+          "start": "2025-05-21T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.3}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-05-21T16:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-05-21T16:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2025-05-21T17:15", "body": "DM f/u, first routine visit since the February admission. No illnesses since. Has not missed basal doses. Sugars mostly 100-200, some higher afternoons. One low to 62.\n\nVitals as charted. Exam: well; injection sites fine; scalp hair full, no new patches.\n\nA/P: T1DM — A1c today; no changes. Sick-day plan reviewed briefly; she has strips at home and they're in date. Hashimoto stable; TSH with the August physical."}
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "pharmacy",
+          "start": "2025-06-11T09:25",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill — levothyroxine", "author": "MA", "date": "2025-06-11T09:25", "body": "Electronic refill request levothyroxine 88 mcg #90. Last TSH 7/2024 normal, physical booked for August. Approved per protocol, 1 refill to bridge to physical."}
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "annual_physical",
+          "start": "2025-08-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 7.0}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-08-20T09:25", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-20T09:25", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-08-20T09:25", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-20T09:25", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-08-20T09:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-08-20T11:50", "body": "Yearly physical. 34 now. No hospital visits since February. Summer was quiet; a little anxious about getting sick once school starts, given last winter — we talked it through. Sleeping ok, mood good otherwise.\n\nMeds: glargine 18 u qHS, lispro 1:12 + correction, levothyroxine 88 mcg. NKDA.\nPMH: T1DM; DKA 2/2025 with a viral URI; Hashimoto hypothyroidism; alopecia areata (regrown on clobetasol, stopped 1/2025).\nFH and SH unchanged.\n\nExam: vitals as charted. NAD. Scalp: hair full over the old patches; no new ones. Eyes normal. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen benign. Skin normal elsewhere; nails with pitting. Neuro: normal gait. Feet: no ulcers or calluses, pulses 2+, monofilament intact bilaterally.\n\nPHQ-2: 1.\n\nPlan\n- T1DM: A1c, CMP, urine albumin/creatinine, lipids.\n- Hashimoto: TSH.\n- Pap/HPV next 2029.\n- Flu vaccine in the fall.\n- Sick-day plan reviewed once more.\nNext visit in 3 months."}
+          ]
+        },
+        {
+          "id": "2025-08-22a",
+          "kind": "portal_message",
+          "start": "2025-08-22T12:10",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2025-08-22T12:10", "body": "Hi Christine — labs from Wednesday look good. A1c is back around 7, thyroid, kidneys, liver and cholesterol all normal, urine protein normal. Good luck with the new class."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "portal_message",
+          "start": "2025-10-07T06:45",
+          "documents": [
+            {"type": "Patient Communication", "title": "Head cold", "author": "patient", "date": "2025-10-07T06:45", "body": "Morning — I picked up a cold from my class, stuffy nose and scratchy throat since Sunday. No fever. Sugars are running a bit higher (low 200s a couple of times) and I checked ketones twice, both negative. Took my Lantus as usual. Anything else I should be doing?"},
+            {"type": "Patient Communication", "title": "RE: Head cold", "author": "RN", "date": "2025-10-07T08:20", "body": "Sounds like you're doing exactly the right things. Keep taking your Lantus every night, cover meals with Humalog plus correction, drink plenty, and recheck ketones if you're over 250 or feel nauseated. If ketones come back moderate or large, or you can't keep fluids down, call right away — day or night. Feel better!"}
+          ]
+        },
+        {
+          "id": "2025-10-29a",
+          "kind": "telephone",
+          "start": "2025-10-29T06:50",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "After-hours call", "author": "PCP", "date": "2025-10-29T07:05", "body": "Pt called my cell at 6:50. Two days of tingling that started in her toes and has crept up to around her belly button, legs getting weaker — had trouble with the stairs last night — and she's had trouble getting her urine started since yesterday. Sugars fine, no fever. No back trauma.\n\nConcerned for a spinal cord process. Told her to go to the ED now, not to drive; her roommate will take her. Called ahead to the ED physician."}
+          ]
+        },
+        {
+          "id": "2025-10-29b",
+          "kind": "hospital_admission",
+          "start": "2025-10-29T07:40",
+          "end": "2025-11-04T11:00",
+          "service": "Neurology",
+          "reason": "Acute transverse myelitis",
+          "conditions": [
+            {"label": "Acute transverse myelitis", "icd10": "G37.3", "action": "diagnosed", "onset": "2025-10-27"}
+          ],
+          "medications": [
+            {"drug_text": "methylprednisolone sodium succinate 1000 MG Injection", "action": "start", "sig": "1 g IV once daily for 5 days", "dose": {"value": 1000, "unit": "mg"}, "frequency": "DAILY", "route": "Intravenous", "course": "short", "reason": "Acute transverse myelitis"}
+          ],
+          "vitals": [
+            {"time": "2025-10-29T07:50", "bp": [128, 80], "hr": 88, "rr": 16, "temp_c": 36.8, "spo2": 99},
+            {"time": "2025-11-04T08:00", "bp": [118, 74], "hr": 76, "rr": 14, "temp_c": 36.6, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-29T08:10", "results": [{"test": "White Blood Cells", "value": 7.0}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-29T08:10", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2025-10-29T08:10", "results": [
+              {"test": "Erythrocyte Sedimentation Rate", "value": 20},
+              {"test": "C Reactive Protein", "value": 1},
+              {"test": "Aquaporin-4 antibody, serum", "loinc": "43638-6", "text": "Negative", "resulted": "2025-11-01T14:00"},
+              {"test": "MOG antibody, serum", "loinc": "106548-1", "text": "Negative", "resulted": "2025-11-01T14:00"}
+            ]},
+            {"panel": null, "collected": "2025-10-30T11:30", "results": [
+              {"test": "CSF white blood cells", "loinc": "26465-5", "unit": "/uL", "value": 11},
+              {"test": "CSF protein", "loinc": "2880-3", "unit": "mg/dL", "value": 49},
+              {"test": "CSF glucose", "loinc": "2342-4", "unit": "mg/dL", "value": 71},
+              {"test": "CSF oligoclonal bands", "loinc": "32358-4", "text": "Absent", "resulted": "2025-11-03T10:00"}
+            ]}
+          ],
+          "reports": [
+            {"study": "MRI thoracic spine with and without contrast", "loinc": "24981-3", "performed": "2025-10-29T10:15", "text": "MRI THORACIC SPINE WITHOUT AND WITH IV GADOLINIUM\nIndication: progressive bilateral leg weakness, ascending sensory change, urinary retention.\nTechnique: sagittal and axial T1, T2 and STIR images; post-contrast T1 sagittal and axial.\nFindings: Ill-defined T2-hyperintense signal within the spinal cord extending from T5 to T7. No enhancement of the lesion after gadolinium. Vertebral body heights and alignment preserved; marrow signal normal. No disc herniation, canal stenosis or cord compression. No epidural collection. Paraspinal soft tissues normal.", "conclusion": "T2-hyperintense intramedullary lesion from T5 to T7 without enhancement. No compressive lesion."},
+            {"study": "MRI brain with and without contrast", "loinc": "24587-8", "performed": "2025-10-30T08:40", "text": "MRI BRAIN WITHOUT AND WITH IV CONTRAST\nIndication: transverse myelitis, evaluate for demyelinating disease.\nFindings: No T2/FLAIR white matter lesions. No abnormal enhancement. No restricted diffusion. Ventricles and sulci normal for age. No mass, hemorrhage or extra-axial collection. Optic nerves symmetric and normal in signal. Major flow voids present.", "conclusion": "Normal MRI of the brain. No demyelinating lesions."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-10-29T09:30"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-10-29T14:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-11-04T10:30"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Provider Note", "author": "emergency medicine", "date": "2025-10-30T08:20", "body": "ED PROVIDER NOTE — 10/29/2025, arrived 07:40; PCP called ahead.\n\nChief complaint: leg weakness and trouble urinating x 2 days.\n\nHPI: 34-year-old woman with T1DM, Hashimoto hypothyroidism, alopecia areata and DKA in February of this year. Two days of worsening weakness in both legs. Tingling began in the toes and has risen to the level of the umbilicus. Since yesterday, difficulty starting her stream and incomplete emptying. Had a mild cold about three weeks ago that went away on its own; no other recent infections and no recent vaccines. No back pain, no trauma, no vision loss.\n\nMeds: glargine 18 u nightly, lispro with meals (1:12), levothyroxine 88 mcg. NKDA.\n\nExam: alert, oriented, anxious. CN intact. Arms normal strength and reflexes. Legs: strength 3/5 bilaterally, reflexes brisk/hyperreflexic at knees and ankles, Babinski present bilaterally. Light touch and pinprick reduced below the umbilicus. Bladder scan post-void residual 520 mL; Foley placed.\n\nLabs: WBC 7.0 (7,000/uL). ESR 20 mm/h. CRP 1 mg/L. CMP normal. Aquaporin-4 and MOG antibodies sent.\nMRI thoracic spine: T2-hyperintense cord lesion from T5 to T7, no enhancement with gadolinium.\n\nImpression: acute myelopathy, likely transverse myelitis. Neurology consulted at bedside; admitted to neurology for IV steroids and workup."},
+            {"type": "Discharge Summary", "title": "Neurology Discharge Summary", "author": "neurology", "date": "2025-11-05T09:30", "body": "NEUROLOGY DISCHARGE SUMMARY\nAdmission 10/29/2025 — discharge to acute inpatient rehabilitation 11/04/2025\n\nDiagnosis: idiopathic acute transverse myelitis, T5-T7\n\nPresentation: 2 days of progressive bilateral leg weakness with an ascending sensory level to the umbilicus and urinary retention, three weeks after a self-limited respiratory illness. Leg strength 3/5 with hyperreflexia and bilateral Babinski signs. MRI: non-enhancing T2 lesion T5-T7.\n\nWorkup:\n- MRI brain with and without contrast 10/30: normal; no demyelinating lesions.\n- Lumbar puncture 10/30: CSF WBC 11/uL, lymphocyte predominant; protein 49 mg/dL; glucose 71 mg/dL; oligoclonal bands absent.\n- Serum aquaporin-4 IgG negative; MOG IgG negative.\n- WBC 7.0, ESR 20, CRP 1, CMP normal.\n\nTreatment: IV methylprednisolone 1 g daily x 5 days (10/29-11/2), completed; no oral taper. Glucose rose on steroids as expected and was covered with correction insulin in addition to her usual basal-bolus doses; back to home doses at discharge.\nBladder: Foley removed 11/2; voiding trial passed, post-void residuals under 100 mL since.\n\nStatus at transfer: strength 4-/5 in both legs, walking short distances with a walker and assistance. Sensation still reduced below the mid-abdomen, improving.\n\nDischarge medications: insulin glargine 18 units at bedtime; insulin lispro with meals (1:12 plus correction); levothyroxine 88 mcg daily. Methylprednisolone course complete.\nAllergies: NKDA.\n\nFollow-up: inpatient rehabilitation; neurology clinic in about 6 weeks; repeat thoracic spine MRI in about 6 months."}
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "hospital_admission",
+          "start": "2025-11-04T13:00",
+          "end": "2025-11-20T11:00",
+          "service": "Inpatient Rehabilitation",
+          "reason": "Rehabilitation after transverse myelitis",
+          "procedures": [
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-11-20T10:30"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Inpatient Rehabilitation Discharge Summary", "author": "physical medicine and rehabilitation", "date": "2025-11-21T15:00", "body": "ACUTE INPATIENT REHABILITATION — DISCHARGE SUMMARY\nAdmitted 11/04/2025 from neurology; discharged home 11/20/2025.\n\nRehab diagnosis: paraparesis due to idiopathic acute transverse myelitis (T5-T7), s/p IV methylprednisolone.\nOther: type 1 diabetes on basal-bolus insulin; Hashimoto hypothyroidism; alopecia areata.\n\nCourse: 3 hours/day of PT and OT. Steady gains in strength and gait. Glucose managed on her home regimen with her own carb counting; no hypoglycemia requiring treatment by staff. Bladder: voiding independently throughout, no catheterization needed.\n\nAt discharge:\n- Strength: hip flexors 4/5 bilaterally; knee extension, ankle dorsiflexion and plantarflexion 4+/5 bilaterally.\n- Gait: about 150 feet with a rolling walker, supervision on stairs.\n- Sensation: numbness of both feet persists; trunk sensation improved.\n- Independent with self-care.\n\nEquipment: rolling walker, shower chair.\nMedications: insulin glargine 18 units at bedtime; insulin lispro with meals per carb ratio 1:12 plus correction; levothyroxine 88 mcg daily.\nAllergies: NKDA.\n\nPlan: outpatient PT twice weekly; PCP within 1 week; neurology follow-up as scheduled. Off work for now."}
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "office_visit",
+          "start": "2025-11-24T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital and rehab follow-up",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "orders": [
+            {"id": "pt-referral", "action": "placed", "order": "Outpatient physical therapy referral", "category": "referral", "to": "Physical Therapy", "reason": "Gait and leg strength after transverse myelitis"}
+          ],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-11-24T14:20"}],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-11-24T14:15"},
+            {"procedure": "Immunization administration", "performed": "2025-11-24T14:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-11-24T16:30", "body": "Here with her mother, walking in with the rolling walker. Home 4 days from inpatient rehab after a week on neurology for transverse myelitis (T5-T7). Neurology and rehab summaries reviewed in full.\n\nShe's tired but encouraged. Legs a little stronger every day; feet still numb, \"like wearing thick socks.\" Bladder working normally — no retention, no incontinence. Bowels normal. Sugars were high during the steroid days but have settled to her usual range on the home doses; no lows. Sleeping ok. Scared at first, now focused on PT.\n\nMeds: glargine 18 u qHS, lispro 1:12 + correction, levothyroxine 88 mcg. Steroid course finished 11/2. NKDA.\n\nExam: vitals as charted. Alert, good spirits. Lungs clear, heart regular. Legs: hip flexion 4/5, distal 4+/5 bilaterally; decreased light touch both feet. Gait slow and steady with walker. Feet: skin intact, no wounds, pulses normal.\n\nA/P\n1. Idiopathic acute transverse myelitis, recovering. Outpatient PT referral placed (twice weekly). Neurology follow-up mid-December, repeat MRI in spring per neurology. Foot care with reduced sensation — daily inspection, well-fitting shoes.\n2. T1DM: stable after steroid hyperglycemia. Continue. A1c due in February.\n3. Hashimoto, alopecia areata: stable.\n4. Flu vaccine today (deferred this fall during the illness).\n5. Work: on leave through winter break; we'll do short-term disability paperwork.\nRTC 6-8 weeks, sooner if any new weakness, numbness, vision change or bladder trouble."}
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "telephone",
+          "start": "2025-11-25T10:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Disability paperwork", "author": "front desk", "date": "2025-11-25T10:10", "body": "Short-term disability claim form dropped off by pt's mother. Clinician section routed to PCP. Hospital and rehab summaries attached. Completed form faxed to the insurer 11/26; copy scanned to chart."}
+          ]
+        },
+        {
+          "id": "2025-12-01a",
+          "kind": "specialist_visit",
+          "start": "2025-12-01T09:00",
+          "service": "Physical Therapy",
+          "reason": "PT evaluation after transverse myelitis",
+          "orders": [
+            {"id": "pt-referral", "action": "done", "date": "2025-12-01T09:00"}
+          ],
+          "procedures": [{"procedure": "Physical therapy evaluation, moderate complexity", "performed": "2025-12-01T09:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Physical Therapy Initial Evaluation", "author": "physical therapy", "date": "2025-12-02T12:00", "body": "OUTPATIENT PHYSICAL THERAPY — INITIAL EVALUATION, 12/01/2025\nReferral: primary care. Dx: transverse myelitis T5-T7 with lower extremity weakness.\n\nSubjective: discharged from inpatient rehab 11/20. Walking at home with rolling walker. Goal: walk without a device and return to teaching in January.\n\nObjective: Hip flexors 4/5 bilat; knee ext 4+/5; ankle DF/PF 4+/5. Light touch reduced both feet. Gait with rolling walker, slow, reduced step length. Needs arms to rise from a chair.\n\nAssessment: good rehab potential.\nPlan: 2x/week for 12 weeks — strengthening, gait and balance training, progression to cane, home program."}
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "specialist_visit",
+          "start": "2025-12-16T14:00",
+          "service": "Neurology",
+          "reason": "Transverse myelitis follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Clinic Follow-up", "author": "neurology", "date": "2025-12-18T09:45", "body": "NEUROLOGY CLINIC — 12/16/2025\n\nDear Doctor,\n\nMs. Hartley returns six weeks after admission for idiopathic acute transverse myelitis (T5-T7; AQP4 and MOG antibodies negative; normal brain MRI; CSF without oligoclonal bands), treated with 5 days of IV methylprednisolone.\n\nShe is improving steadily with PT. Walks indoors with a cane now. Bladder function normal. Persistent numbness of both feet. No new symptoms; no vision changes.\n\nExam: strength 4+/5 throughout both legs. Reduced light touch in both feet. Walks with a cane.\n\nImpression: good ongoing recovery. Nothing to suggest a relapsing disorder at this point; no maintenance therapy indicated.\nPlan: continue PT. Repeat MRI thoracic spine with and without contrast in April. Return after the MRI.\n\nSincerely,\nNeurology"}
+          ]
+        }
+      ]
+    }
+  ]
+}

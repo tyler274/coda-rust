@@ -1,0 +1,703 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001103",
+   "events": [
+    {
+     "id": "2020-01-21a",
+     "kind": "office_visit",
+     "start": "2020-01-21T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure above goal, muscle cramps",
+     "state": {
+      "bp": [
+       164,
+       102
+      ],
+      "labs": {
+       "Plasma Renin Activity": 9.6,
+       "Aldosterone": 34
+      }
+     },
+     "vitals": [
+      {
+       "time": "2020-01-21T15:35",
+       "bp": [
+        166,
+        102
+       ],
+       "hr": 78
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-01-21T16:05",
+       "resulted": "2020-01-21T16:55",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 147
+        },
+        {
+         "test": "Potassium",
+         "value": 2.9
+        },
+        {
+         "test": "Bicarbonate",
+         "value": 32
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-01-21T16:05",
+       "resulted": "2020-01-28T10:40",
+       "results": [
+        {
+         "test": "Plasma Renin Activity"
+        },
+        {
+         "test": "Aldosterone"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "renal-doppler",
+       "action": "placed",
+       "order": "Renal artery duplex ultrasound",
+       "category": "imaging",
+       "reason": "resistant hypertension with hypokalemia"
+      },
+      {
+       "id": "cards-referral",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "resistant hypertension, suspected renovascular cause"
+      },
+      {
+       "id": "urine-metaneph",
+       "action": "placed",
+       "order": "24-hour urine metanephrines",
+       "category": "lab",
+       "reason": "resistant hypertension"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-01-21T15:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Resistant Hypertension",
+       "author": "PCP",
+       "date": "2020-01-21T16:45",
+       "body": "S: BP follow-up. HCTZ 25 mg daily since 4/2018, she rarely misses a dose. Home readings since November 150s-160s over 90s-100s. New: muscle cramps for a few weeks — calves and feet at night, sometimes her hands while grading. No palpitations or weakness. No licorice, decongestants, NSAIDs, energy drinks or supplements. Never smoker, rare wine. Not snoring per her report.\n\nO: BP 166/102, same in both arms. HR 78. No edema. No bruits heard. Heart regular. Lungs clear.\n\nA/P\n1. Hypertension, now behaving as resistant: never at goal on a thiazide for almost two years and rising. At 36, this needs a secondary workup. Cramps on a thiazide make me think of low potassium, which would also bring primary aldosteronism and renovascular disease into the picture.\n - BMP, plasma renin activity and aldosterone drawn today.\n - 24-hour urine metanephrines — container and instructions given.\n - Renal artery duplex ultrasound ordered. In a woman her age, fibromuscular dysplasia is the renovascular cause I'm most concerned about.\n - Cardiology referral for resistant hypertension.\n - Continue HCTZ for now so the renin/aldosterone are drawn on her usual regimen.\n2. Muscle cramps — likely electrolyte; will call with BMP this afternoon."
+      }
+     ]
+    },
+    {
+     "id": "2020-01-21b",
+     "kind": "telephone",
+     "start": "2020-01-21T17:20",
+     "conditions": [
+      {
+       "label": "Hypokalemia",
+       "icd10": "E87.6",
+       "action": "diagnosed",
+       "onset": "2020-01-21"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily with food",
+       "dose": {
+        "value": 20,
+        "unit": "meq"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypokalemia"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Lab Result Call",
+       "author": "PCP",
+       "date": "2020-01-21T17:20",
+       "body": "Spoke with pt re: today's BMP. K 2.9, HCO3 32, Na 147 — hypokalemia with metabolic alkalosis, fits her cramps.\nStart potassium chloride ER 20 mEq once daily with food. Repeat BMP in ~2 weeks; she'll come 2/3 when she drops off the 24-hr urine.\nED for palpitations, marked weakness or fainting. Renin/aldosterone are send-outs, about a week. Pt verbalized understanding."
+      }
+     ]
+    },
+    {
+     "id": "2020-01-28a",
+     "kind": "portal_message",
+     "start": "2020-01-28T12:30",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Renin and Aldosterone",
+       "author": "PCP",
+       "date": "2020-01-28T12:30",
+       "body": "Kristen, your renin and aldosterone results are back. Both are elevated (renin activity 9.4, aldosterone 34). When both run high together, the adrenal glands are usually responding to a signal from the kidneys rather than overproducing on their own — a secondary hyperaldosteronism pattern. That fits with reduced blood flow to a kidney, which the renal artery ultrasound is designed to look for, so please keep that appointment. Still do the 24-hour urine collection and keep taking the potassium every day."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-03a",
+     "kind": "lab_only",
+     "start": "2020-02-03T07:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Repeat potassium; 24-hour urine drop-off",
+     "state": {
+      "labs": {
+       "Potassium": 3.7,
+       "Bicarbonate": 29
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-02-03T07:25",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2020-02-03T13:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "urine-metaneph",
+       "action": "done",
+       "date": "2020-02-06T11:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-02-03T07:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Lab Visit",
+       "author": "MA",
+       "date": "2020-02-03T07:40",
+       "body": "Pt dropped off 24-hr urine collection (started Sun 2/2 AM, finished this AM), labeled and sent to reference lab. BMP drawn L antecubital, one stick. Taking KCl daily, cramps less."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-06a",
+     "kind": "telephone",
+     "start": "2020-02-06T14:10",
+     "documents": [
+      {
+       "type": "Lab Report",
+       "title": "24-Hour Urine Metanephrines",
+       "author": "reference lab",
+       "date": "2020-02-06T11:00",
+       "body": "REFERENCE LABORATORY REPORT\nSpecimen: urine, 24-hour collection. Collected 02/02/2020-02/03/2020. Received 02/03/2020.\nTest: Metanephrines, fractionated, 24-hour urine.\nMetanephrine: within reference interval.\nNormetanephrine: within reference interval.\nTotal metanephrines: within reference interval.\nInterpretation: Normal. Results do not suggest pheochromocytoma or paraganglioma."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Results Call",
+       "author": "RN",
+       "date": "2020-02-06T14:10",
+       "body": "Reached pt by phone after PCP review. 24-hr urine metanephrines normal (report scanned). BMP 2/3 on KCl: K 3.7 (up from 2.9), Na 140, HCO3 28. Continue KCl 20 mEq daily. Renal artery duplex confirmed for Wed 2/12 at 4:00, nothing to eat after lunch that day. Pt agreeable."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-12a",
+     "kind": "imaging",
+     "start": "2020-02-12T16:00",
+     "service": "Radiology",
+     "reason": "Renal artery duplex",
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2020-02-12T16:00",
+       "issued": "2020-02-13T08:20",
+       "text": "EXAM: Ultrasound, abdominal Doppler — renal arteries.\nINDICATION: Resistant hypertension, hypokalemia. Elevated renin and aldosterone.\nTECHNIQUE: Grayscale, color and spectral Doppler evaluation of the abdominal aorta, renal artery origins and both kidneys. Patient fasting.\nFINDINGS:\nAorta: normal caliber.\nRight renal artery: reduced luminal diameter with turbulent flow on color and spectral Doppler.\nLeft renal artery: no focal flow abnormality identified.\nKidneys: normal size and echotexture bilaterally. No hydronephrosis or mass.",
+       "conclusion": "Turbulent flow with reduced diameter of the right renal artery, suspicious for renal artery stenosis. Cause not determined by ultrasound; fibromuscular dysplasia is a consideration in a young woman. CTA or MRA could further characterize if clinically indicated."
+      }
+     ],
+     "orders": [
+      {
+       "id": "renal-doppler",
+       "action": "done",
+       "date": "2020-02-12T16:00"
+      }
+     ]
+    },
+    {
+     "id": "2020-02-13a",
+     "kind": "portal_message",
+     "start": "2020-02-13T12:05",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Renal Artery Ultrasound",
+       "author": "PCP",
+       "date": "2020-02-13T12:05",
+       "body": "Kristen, the ultrasound shows a narrowing of the artery to your right kidney with turbulent flow through it. In a woman your age the most common cause is fibromuscular dysplasia (FMD) — a condition of the artery wall itself, not cholesterol buildup. It would explain why your pressure has been so stubborn and why the renin and aldosterone were high. Your cardiology appointment is March 11; please keep it, they will confirm the diagnosis and plan next steps. No medication changes in the meantime."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-11a",
+     "kind": "specialist_visit",
+     "start": "2020-03-11T13:30",
+     "service": "Cardiology",
+     "reason": "Resistant hypertension, abnormal renal artery Doppler",
+     "state": {
+      "labs": {
+       "Potassium": 4.1,
+       "Bicarbonate": 27
+      }
+     },
+     "vitals": [
+      {
+       "time": "2020-03-11T13:35",
+       "bp": [
+        155,
+        95
+       ]
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Fibromuscular dysplasia",
+       "action": "diagnosed",
+       "onset": "2020-03-11"
+      },
+      {
+       "label": "Renovascular hypertension",
+       "icd10": "I15.0",
+       "action": "diagnosed",
+       "onset": "2018-04-17"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "resolved",
+       "note": "reclassified as renovascular hypertension"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-03-11T14:20",
+       "resulted": "2020-03-11T17:00",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral",
+       "action": "done",
+       "date": "2020-03-11T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Consultation",
+       "author": "cardiology",
+       "date": "2020-03-16T09:30",
+       "body": "CARDIOVASCULAR MEDICINE — OUTPATIENT CONSULTATION\nDate of service: 03/11/2020\nReferred by: primary care, for resistant hypertension with hypokalemia and an abnormal renal artery Doppler.\n\nDear Colleague,\n\nThank you for asking me to see Ms. Marchetti, a 36-year-old high school mathematics teacher. Hypertension was diagnosed in 2018 and has not reached goal on hydrochlorothiazide 25 mg daily. In January her potassium was 2.9 with a bicarbonate of 32, and potassium chloride 20 mEq daily was added. Plasma renin activity and aldosterone were both elevated; 24-hour urine metanephrines were normal.\n\nWhen asked specifically, she describes about six months of intermittent headaches — throbbing and right-sided — sometimes accompanied by a whooshing sound in her ears that keeps time with her pulse. She had not thought to mention these before. No visual symptoms, weakness, numbness or speech difficulty. No chest pain, claudication or post-prandial abdominal pain.\n\nMedications: hydrochlorothiazide 25 mg daily; potassium chloride ER 20 mEq daily. Allergies: none known.\nFamily history: mother with hypertension from age 45; maternal aunt with ischemic stroke at 52; father with hyperlipidemia.\nSocial: never smoker; one or two glasses of wine a month.\n\nExamination: BP 155/95 in both arms. Regular rhythm, normal S1 S2, no murmur. A high-pitched bruit is audible over the right side of the neck, and a similar high-pitched bruit in the right upper quadrant of the abdomen. Lungs clear. No edema. Peripheral pulses present and symmetric.\n\nData: Chemistry today — creatinine 0.76, potassium 4.3, both normal. Renal artery Doppler of 02/12/2020 reviewed: turbulence and reduced diameter of the right renal artery.\n\nImpression:\n1. Fibromuscular dysplasia involving the right renal artery, with renovascular hypertension. A young woman with thiazide-resistant hypertension, secondary hyperaldosteronism, an abdominal bruit and these Doppler findings — I am comfortable making this diagnosis.\n2. Episodic right-sided pulsatile headache and pulsatile tinnitus.\n\nRecommendations:\n- Continue hydrochlorothiazide and potassium chloride at current doses.\n- Home blood pressure log.\n- Return to cardiology clinic in 3 to 4 months to review pressures and plan.\n\nI explained that FMD is a non-atherosclerotic disease of the arterial wall. Thank you for this referral.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2020-03-17a",
+     "kind": "telephone",
+     "start": "2020-03-17T12:45",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cardiology Letter Review",
+       "author": "PCP",
+       "date": "2020-03-17T12:45",
+       "body": "Cardiology consult letter (DOS 3/11) received 3/16, reviewed. Diagnosis: fibromuscular dysplasia of the right renal artery with renovascular hypertension. Their plan: continue HCTZ 25 + KCl 20, home BP log, cardiology follow-up in 3-4 months.\nCalled pt to go over it; questions answered. Problem list updated. She prefers a video visit for her next BP check given the pandemic — booked for May."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-20a",
+     "kind": "telehealth_visit",
+     "start": "2020-05-20T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure follow-up (video)",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2020-05-20T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit - Hypertension",
+       "author": "PCP",
+       "date": "2020-05-20T14:35",
+       "body": "Video visit (pt at home, consented). Teaching remotely.\nMeds: HCTZ 25 mg daily, KCl ER 20 mEq daily. Adherent. Cramps resolved since starting potassium.\nHome cuff readings last 2 weeks, read off her log: mostly 150s/90s.\nOccasional right-sided headaches, no different from what she described to cardiology. No vision changes, weakness, numbness or speech trouble.\nCardiology follow-up was planned for early summer; their office is rebooking in-person visits and she is on their list.\nExam limited to video: well appearing, speech fluent, no distress.\n\nA/P: Renovascular HTN from right renal artery FMD, still above goal. Cardiology is directing management; continue current regimen pending their follow-up. BMP at the lab this week. Reviewed stroke warning signs — any vision loss, weakness, numbness, facial droop or speech trouble means 911."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-22a",
+     "kind": "lab_only",
+     "start": "2020-05-22T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "BMP",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-05-22T08:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2020-05-22T14:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-05-22T08:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "MA",
+       "date": "2020-05-22T15:20",
+       "body": "LM on pt's cell per PCP: BMP from today normal, potassium 4.2, creatinine 0.65. Continue current meds. Portal message sent as well."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-18a",
+     "kind": "ed_visit",
+     "start": "2020-07-18T12:50",
+     "end": "2020-07-18T17:40",
+     "service": "Emergency Medicine",
+     "reason": "Transient vision loss right eye",
+     "vitals": [
+      {
+       "time": "2020-07-18T12:58",
+       "bp": [
+        162,
+        98
+       ],
+       "hr": 82,
+       "rr": 16,
+       "temp_c": 36.7,
+       "spo2": 99
+      },
+      {
+       "time": "2020-07-18T13:02",
+       "bp": [
+        154,
+        92
+       ]
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-07-18T13:30",
+       "resulted": "2020-07-18T14:25",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Renal ultrasound",
+       "performed": "2020-07-18T15:10",
+       "issued": "2020-07-18T16:20",
+       "text": "EXAM: Duplex ultrasound, renal arteries.\nINDICATION: Hypertension, known fibromuscular dysplasia.\nFINDINGS: Renal arteries: beading and irregularity of the arterial contour. Abdominal aorta normal caliber. Kidneys normal in size, no hydronephrosis.",
+       "conclusion": "Beading and irregularity of the renal artery, consistent with stenosis due to fibromuscular dysplasia."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2020-07-18T12:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Provider Note",
+       "title": "Emergency Department Note",
+       "author": "emergency medicine",
+       "date": "2020-07-21T14:00",
+       "body": "EMERGENCY DEPARTMENT — PHYSICIAN DOCUMENTATION\nDate of service: 07/18/2020. Arrival 12:50. Records sent to primary care at patient request.\n\nCHIEF COMPLAINT: Right eye vision loss, resolved.\n\nHPI: 36-year-old woman with fibromuscular dysplasia (renal, diagnosed by her cardiologist in March) and hypertension who comes in after two episodes of losing vision in her right eye. Each lasted a few minutes and cleared completely. Painless, right eye only. She also reports severe headaches on and off since last fall, plus a \"whooshing\" noise in her ears; both continue. She is following with cardiology as an outpatient. No weakness, numbness, speech change or facial droop. Back to baseline now.\n\nPMH: Hypertension, diagnosed about two years ago, poorly controlled on hydrochlorothiazide. Fibromuscular dysplasia.\nPSH: None.\nMEDICATIONS: Hydrochlorothiazide; potassium chloride.\nALLERGIES: NKDA.\nFAMILY HISTORY: Noncontributory.\nSOCIAL: Never smoker. Wine 1-2 glasses per month. High school math teacher.\n\nVITALS: BP 162/98 right arm, 154/92 left arm. HR 82, RR 16, T 36.7 C, SpO2 99% room air.\n\nEXAM:\nGeneral: alert, comfortable.\nEyes: pupils equal and reactive, no afferent defect. Visual fields full to confrontation. Acuity grossly intact each eye.\nNeck: supple. No carotid bruits.\nCV: regular rate and rhythm.\nLungs: clear.\nAbdomen: soft, nontender. High-pitched epigastric bruit.\nNeuro: cranial nerves II-XII intact. Strength 5/5 all extremities. Sensation intact. Finger-to-nose and gait normal.\n\nRESULTS: BMP — renal function normal (BUN 14, creatinine 0.71), potassium 4.2.\nRenal artery duplex: beading and irregularity consistent with stenosis from fibromuscular dysplasia (see report).\n\nED COURSE / MDM: Two brief episodes of right monocular vision loss, fully resolved, with a normal neurological examination. Renal function normal. Duplex consistent with her known FMD. Blood pressure elevated without symptoms of end-organ injury here. She is at baseline and has primary care and cardiology follow-up in place.\n\nDIAGNOSES: Transient vision loss, right eye. Fibromuscular dysplasia. Hypertension.\n\nDISPOSITION: Discharged home in stable condition. Follow up with primary care within one week and with cardiology. Return immediately for recurrent vision loss, weakness, numbness, trouble speaking, or a sudden severe headache.\n\nEmergency Medicine"
+      }
+     ]
+    },
+    {
+     "id": "2020-07-20a",
+     "kind": "portal_message",
+     "start": "2020-07-20T07:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "ER visit Saturday",
+       "author": "patient",
+       "date": "2020-07-20T07:05",
+       "body": "Hi, wanted to let you know I went to the ER on Saturday. I lost the vision in my right eye twice, for a few minutes each time. It came back completely. They said my neuro exam was normal and to follow up with you and cardiology. I'm fine now, just a little shaken. Can I get in this week or next?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: ER visit Saturday",
+       "author": "PCP",
+       "date": "2020-07-20T12:10",
+       "body": "Glad you're okay, and thank you for letting me know. We've requested the ER records. Front desk has you for Tue 7/28 at 10:30. If the vision loss happens again — even briefly — call 911 rather than waiting it out."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-28a",
+     "kind": "office_visit",
+     "start": "2020-07-28T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up",
+     "state": {
+      "bp": [
+       154,
+       96
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-07-28T11:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2020-07-28T16:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-07-28T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - ED Follow-up",
+       "author": "PCP",
+       "date": "2020-07-28T11:20",
+       "body": "ED FOLLOW-UP\nSeen 7/18 in an outside ED for two brief episodes of right monocular vision loss, minutes each, full recovery. ED records reviewed: normal neuro exam, epigastric bruit, normal renal function, renal duplex with beading/irregularity c/w FMD. Discharged to outpatient follow-up.\nSince then: no further episodes. Headaches a bit less often this month; the whooshing comes and goes. Taking HCTZ 25 and KCl 20 daily. Home BP still 150s/90s.\nCardiology: the 3-4 month follow-up has not happened; their office is still working through postponed visits. She will call them this week and we will fax the ED records over.\n\nExam: BP 150/99, HR 80, wt 70.8 kg. Alert, fluent speech. Pupils equal, EOM full, fields full to confrontation. Heart regular. Lungs clear. Strength symmetric, gait normal.\n\nA/P\n1. Transient right monocular vision loss, resolved, in a patient with FMD and uncontrolled BP. ED evaluation reassuring; no new deficits. 911 precautions reviewed again.\n2. Renovascular HTN / right renal artery FMD, above goal. Continue HCTZ 25 and KCl 20 for now; cardiology to direct further management. BMP today. ED records to cardiology."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-24a",
+     "kind": "pharmacy",
+     "start": "2020-08-24T10:30",
+     "documents": [
+      {
+       "type": "Pharmacy Request",
+       "title": "Refill Request",
+       "author": "MA",
+       "date": "2020-08-24T10:30",
+       "body": "Pharmacy requests 90-day supplies: hydrochlorothiazide 25 mg and potassium chloride ER 20 mEq. Last visit 7/28/20, BMP 7/28 normal. Sent both, #90 x1 refill, per PCP."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-15a",
+     "kind": "annual_physical",
+     "start": "2020-10-15T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg",
+      "temp_c",
+      "spo2"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-10-15T16:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2020-10-16T09:30"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-15T16:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2020-10-15T15:45"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-15T16:15"
+      }
+     ],
+     "state": {
+      "bp": [
+       158,
+       98
+      ]
+     },
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2020-10-15T16:50",
+       "body": "ANNUAL PHYSICAL\n37 y/o F. Back teaching in person. Feels well. No further vision episodes since July. Occasional headaches. Home BP 140s-150s/90s.\nCardiology: still no follow-up date. Their office told her they would call; gave her the scheduling line again.\nMeds: hydrochlorothiazide 25 mg daily; potassium chloride ER 20 mEq daily. NKDA.\n\nPrevention: Pap/HPV 8/2019 normal. Tdap 2019. HIV/HCV screened 2019. Flu vaccine today. PHQ-2: 0.\n\nExam: BP 138/88, HR 78, T 36.7, SpO2 97%, wt 69.8 kg, BMI 25.4.\nWell appearing. HEENT unremarkable. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Skin clear.\n\nA/P\n1. Renovascular HTN / FMD: today's office reading is the best she has had, but her home log is still above goal. No change today; BMP. Pushing cardiology follow-up — she will call them, we'll send a referral reminder.\n2. Health maintenance up to date; flu given."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-07a",
+     "kind": "portal_message",
+     "start": "2020-12-07T19:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "BP log",
+       "author": "patient",
+       "date": "2020-12-07T19:50",
+       "body": "Here are my numbers since Thanksgiving, mostly mornings before school: 150-158 over 94-100. Still haven't heard from cardiology."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: BP log",
+       "author": "RN",
+       "date": "2020-12-08T09:45",
+       "body": "Thanks Kristen. The doctor reviewed your log and would like to see you in March for a full BP visit — front desk will reach out. We faxed another request to cardiology today. Same-day call for headache, vision change or readings over 180/110."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

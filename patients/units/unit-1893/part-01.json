@@ -1,0 +1,214 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001893",
+      "given": "Abigail",
+      "family": "Whitcomb",
+      "birth_date": "1987-09-01",
+      "address_line": "27 Pleasant Street, Apt 3",
+      "phone": "+1-518-555-0108",
+      "email": "abigail.whitcomb@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher who joined the practice in 2019 with only seasonal allergic rhinitis. A January 2020 car crash left a mild TBI, a repaired right femur fracture and PTSD that psychiatry follows yearly, worsened by a 2021 robbery and a 2022 crash that killed a friend. In January 2026 a hard nose blow caused a perilymphatic fistula that settled with conservative ENT care.",
+      "events": [
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "conditions": [
+            {"label": "Allergic rhinitis due to pollen", "action": "diagnosed", "onset": "2004-05-01", "note": "spring and late-summer symptoms since high school"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 63.0, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.8, "Free Thyroxine": 1.2, "Glucose": 87, "Low Density Lipoprotein": 88}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-10T16:05", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-10T16:05", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-10T16:05", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-09-10T16:05", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 1}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "No current use"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-09-10T15:55"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2019-09-10T15:20"},
+            {"procedure": "Immunization administration", "performed": "2019-09-10T15:55"},
+            {"procedure": "Venipuncture", "performed": "2019-09-10T16:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit and Physical", "author": "PCP", "date": "2019-09-10T16:30", "body": "New patient, 32F, here to establish care. Moved her primary care here after her old office stopped taking new appointments for months at a time. Teaches second grade in town.\n\nNo active complaints. Hay fever every spring and again in late summer since high school: sneezing, itchy watery eyes, runny nose. Gets through it without anything; has not wanted a daily pill. No asthma.\n\nPMH: seasonal allergic rhinitis. No surgeries. No hospitalizations.\nMeds: none.\nAllergies: no known drug allergies.\nFHx: mother has generalized anxiety; father with high blood pressure and high cholesterol; one younger sibling, healthy.\nSocial: never smoked. Doesn't drink at present, no drug use. Single, lives in an apartment on Pleasant St.\n\nROS otherwise negative.\n\nExam: vitals per flowsheet. Well appearing. HEENT: TMs clear, nasal mucosa a little pale, oropharynx clear. Neck supple, no adenopathy or thyroid enlargement. Heart RRR no murmur. Lungs clear. Abdomen soft, nontender. Extremities no edema. Skin no rashes. Neuro grossly intact. Mood and affect normal.\nPHQ-9: 1.\n\nA/P\n1. Preventive care: baseline CBC, CMP, lipids, TSH. One-time HIV and hepatitis C screening, she agrees. Tdap today (last tetanus she can recall was in her teens). Flu shot when the clinic gets supply in October. Pap per old records, will request them.\n2. Seasonal allergic rhinitis: mild, she prefers to ride it out. Revisit if it starts interfering with sleep or work.\n\nRTC 1 year, sooner as needed."},
+            {"type": "Administrative", "title": "Records Request", "author": "front desk", "date": "2019-09-10T16:40", "body": "Signed release on file. Records request faxed to prior primary care office for last 5 years of notes, labs, immunizations and cervical screening."}
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T08:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-09-12T08:10", "body": "Hi Abigail, your blood counts, kidney and liver tests, thyroid and cholesterol all came back normal. HIV and hepatitis C screens were negative. Nothing to follow up on. It was good to meet you."},
+            {"type": "Patient Message", "title": "RE: Your lab results", "author": "patient", "date": "2019-09-12T19:42", "body": "Thank you! Great to hear."}
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "outside_records",
+          "start": "2019-09-24T11:00",
+          "reason": "Prior primary care records",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from Prior Primary Care Office", "author": "outside primary care", "date": "2019-09-24T11:00", "body": "Records received from prior primary care office, 2014 to 2019, 38 pages. Summary for chart:\n- Yearly physicals, generally well. Seasonal allergic rhinitis listed; no prescriptions on file.\n- Cervical cytology 2017-06: negative for intraepithelial lesion or malignancy.\n- Immunizations: childhood series documented including MMR x2 and varicella; influenza most years.\n- No surgeries, no hospitalizations.\nScanned to media. Reviewed by PCP."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:45",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T15:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T15:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization", "author": "RN", "date": "2019-10-08T15:55", "body": "Here after school for flu vaccine. Screening questions negative. Influenza vaccine 0.5 mL IM left deltoid, lot in MAR. VIS given. Waited 15 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2020-01-10a",
+          "kind": "hospital_admission",
+          "start": "2020-01-10T17:40",
+          "end": "2020-01-14T12:30",
+          "service": "Trauma Surgery — outside hospital",
+          "reason": "Motor vehicle collision with multiple injuries",
+          "conditions": [
+            {"label": "Unspecified fracture of right femur, initial encounter for closed fracture", "icd10": "S72.91XA", "action": "diagnosed", "onset": "2020-01-10"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for pain", "dose": {"value": 500, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "pain after femur fixation"}
+          ],
+          "procedures": [
+            {"procedure": "Diagnostic laparoscopy", "performed": "2020-01-10T21:10"},
+            {"procedure": "Open reduction and internal fixation of right femur fracture", "performed": "2020-01-10T22:30"}
+          ],
+          "reports": [
+            {"study": "CT head without contrast", "performed": "2020-01-10T18:25", "text": "Technique: noncontrast axial CT of the head with coronal and sagittal reformats.\nFindings: No intracranial hemorrhage, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. Basal cisterns patent. No skull fracture. Visualized paranasal sinuses and mastoid air cells clear. No scalp hematoma.", "conclusion": "No acute intracranial abnormality."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Trauma Surgery Discharge Summary", "author": "trauma surgery", "date": "2020-01-16T09:15", "body": "Regional trauma center, Trauma Surgery service\nAdmitted 01/10/2020, discharged 01/14/2020\nPatient: Abigail Whitcomb, DOB 09/01/1987\nAllergies: NKDA\n\nAdmission diagnosis: Motor vehicle collision, multiple injuries.\n\nDischarge diagnoses:\n1. Mild traumatic brain injury (concussion)\n2. Right femur fracture, status post open reduction and internal fixation 01/10/2020\n3. Blunt abdominal trauma, diagnostic laparoscopy negative 01/10/2020\n\nHospital course: 32-year-old woman brought in by EMS after a severe collision. Hemodynamically stable throughout. Imaging showed a closed right femur fracture. CT head without intracranial injury; clinical picture consistent with mild TBI. Given the mechanism and concern for intra-abdominal injury, taken to the OR with general surgery for diagnostic laparoscopy, which showed no solid organ or hollow viscus injury, followed by orthopedics for open reduction and internal fixation of the right femur the same evening. Mechanical and pharmacologic DVT prophylaxis while inpatient. Mobilized with PT on hospital day 1, weight bearing as tolerated on the right with a walker. Tolerating diet, pain controlled on oral agents, incisions clean.\n\nNeuro at discharge: alert and oriented, no focal deficits. Concussion precautions reviewed.\n\nDischarge medications: acetaminophen 500 mg tablet, 1 tab every 6 hours as needed for pain.\nNo other home medications.\n\nDisposition: home with family support. Walker. Outpatient physical therapy referral sent.\nFollow-up: orthopedic clinic in 2 weeks for wound check; primary care within 1 week."}
+          ]
+        },
+        {
+          "id": "2020-01-17a",
+          "kind": "telephone",
+          "start": "2020-01-17T10:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-Discharge Call", "author": "RN", "date": "2020-01-17T10:20", "body": "Discharge summary from the trauma center received yesterday. Called pt. She is home, mother staying with her this week. Getting around the apartment with the walker. Pain manageable with Tylenol. Incisions dry, no fever. No headache or vomiting. PT eval set up for next week. Booked with PCP Tues 1/21; mother will drive her."}
+          ]
+        },
+        {
+          "id": "2020-01-21a",
+          "kind": "office_visit",
+          "start": "2020-01-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after car accident",
+          "conditions": [
+            {"label": "History of mild traumatic brain injury", "icd10": "Z87.820", "action": "history", "onset": "2020-01-10"},
+            {"label": "History of blunt abdominal trauma", "icd10": "Z87.828", "action": "history", "onset": "2020-01-10", "note": "negative diagnostic laparoscopy 01/2020"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2"],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2020-01-21T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2020-01-21T11:50", "body": "Post-discharge visit. Trauma center discharge summary reviewed in full.\n\nCollision 1/10. Admitted 1/10 to 1/14: mild TBI with a clean head CT, right femur fracture with ORIF the night of admission, and diagnostic laparoscopy for blunt abdominal trauma that was negative.\n\nToday: one week out of the hospital. Using the walker, weight bearing as tolerated. Pain at the thigh incision mostly at night, Tylenol a couple of times a day is enough. No headaches since discharge, no vomiting, no confusion; her mother has not noticed anything off. Sleeping OK. Starts PT Monday. Out of work for now; school is covering her class.\n\nExam: vitals per flowsheet. Comfortable sitting. Lateral right thigh incision healing well, staples in, no erythema or drainage. Calf soft, nontender. Small laparoscopy port sites clean. Abdomen soft, nontender. Neuro nonfocal, gait with walker steady.\n\nA/P\n1. Right femur fracture s/p ORIF: per ortho. Wound check with them next week. PT.\n2. Mild TBI: doing well, no post-concussive symptoms today. Reviewed what to watch for. Gradual return to screens and work.\n3. Blunt abdominal trauma, negative laparoscopy: nothing further.\n4. Med rec: acetaminophen PRN only.\n\nWork note given through 2/14, to be revisited with ortho. Call with any headache, new weakness, calf swelling or shortness of breath."},
+            {"type": "Administrative", "title": "Work Note", "author": "PCP", "date": "2020-01-21T11:55", "body": "To whom it may concern: Ms. Whitcomb is under my care following a hospitalization and is unable to work through February 14, 2020. Her return date will be reassessed with her orthopedic surgeon."}
+          ]
+        },
+        {
+          "id": "2020-04-28a",
+          "kind": "specialist_visit",
+          "start": "2020-04-28T09:30",
+          "service": "Orthopedic Surgery — outside",
+          "reason": "Follow-up right femur ORIF",
+          "conditions": [
+            {"label": "Unspecified fracture of right femur, initial encounter for closed fracture", "icd10": "S72.91XA", "action": "resolved"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopedic Follow-up Letter", "author": "orthopedic surgery", "date": "2020-05-01T14:10", "body": "Orthopaedic Trauma Clinic\nDate of visit: 04/28/2020\nRe: Abigail Whitcomb, DOB 09/01/1987\nAllergies: NKDA\n\nDear colleague,\n\nI saw Ms. Whitcomb on 4/28, about 15 weeks after open reduction and internal fixation of her right femur fracture. She finished her course of outpatient physical therapy last week and is walking without an assistive device. She reports no thigh pain.\n\nExam: well-healed lateral thigh incision. Full knee and hip range of motion. Quadriceps strength 5/5. Gait normal, no limp. Neurovascularly intact distally.\n\nRadiographs of the right femur at the visit: fracture healed with bridging callus, hardware intact and in good position, no loosening.\n\nAssessment: healed right femur fracture after ORIF.\nPlan: no restrictions, full activity. Home exercise program. Hardware may stay unless it becomes symptomatic. Follow up with us as needed.\n\nThank you for allowing us to participate in her care.\nOrthopaedic Trauma Surgery"}
+          ]
+        },
+        {
+          "id": "2020-06-09a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-09T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Nightmares and anxiety since accident",
+          "surveys": [
+            {"survey": "GAD-7 total score", "value": 15},
+            {"survey": "PHQ-9 total score", "value": 7}
+          ],
+          "orders": [
+            {"id": "psych-referral", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "trauma-related nightmares, flashbacks and anxiety after January car crash"}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2020-06-09T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-06-09T16:40", "body": "Video visit, pt at home, identity confirmed, consents to telehealth.\n\nShe wrote last week asking to talk about how she's been since the crash in January. Leg fully healed, walking normally.\n\nBut since the accident: nightmares most nights where she is back in the car, wakes terrified. Flashbacks during the day. Anxious most of the time. She has not driven since January; gets rides or walks. Car horns or a siren outside make her extremely anxious and she has to stop what she's doing. Remote teaching this spring has made it easier to hide. Not drinking, no substances. No thoughts of self-harm or of not wanting to be alive. Mother has an anxiety disorder; she has never been treated for anything like this herself.\n\nGAD-7 15. PHQ-9 7, item 9 zero.\n\nObs on video: anxious, coherent, linear, good eye contact.\n\nA/P\nTrauma-related symptoms for ~5 months after the January collision; picture strongly suggests PTSD. Discussed that this is common after an injury like hers and very treatable. She wants an evaluation and is interested in therapy first. Referral to psychiatry placed; front desk to help with first available. Gave crisis line number. Check in after she's seen."}
+          ]
+        },
+        {
+          "id": "2020-07-07a",
+          "kind": "specialist_visit",
+          "start": "2020-07-07T10:00",
+          "service": "Psychiatry — outside",
+          "reason": "Psychiatric evaluation",
+          "conditions": [
+            {"label": "Post-traumatic stress disorder", "action": "diagnosed", "onset": "2020-01-10"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-07-07T11:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-07-07T11:10", "results": [{"test": "Creatinine"}, {"test": "Glucose", "value": 91, "unit": "mg/dL"}]},
+            {"panel": null, "collected": "2020-07-07T11:10", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "orders": [
+            {"id": "psych-referral", "action": "done", "date": "2020-07-14T13:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry Consultation", "author": "psychiatry", "date": "2020-07-14T13:30", "body": "Outpatient Psychiatry\nDate of service: 07/07/2020\nRe: Abigail Whitcomb, DOB 09/01/1987, age 32\nReferred by: primary care\nAllergies: NKDA. Medications: none.\n\nReason for referral: nightmares, flashbacks and anxiety after a motor vehicle collision.\n\nHistory: Ms. Whitcomb is a 32-year-old elementary school teacher who was seriously injured in a car crash in January of this year (mild TBI, right femur fracture repaired surgically, negative laparoscopy). Over the six months since, she has had recurring nightmares in which she relives the crash, waking with overwhelming fear and a sense of helplessness. She has intrusive flashbacks during the day. She has avoided driving entirely and becomes acutely anxious at the sound of car horns or sirens. Anxiety is present most of the day. She denies suicidal ideation, psychotic symptoms or manic symptoms. No prior psychiatric history or treatment.\n\nPast medical: seasonal allergic rhinitis; mild TBI and femur ORIF 01/2020; diagnostic laparoscopy 01/2020, negative.\nFamily: mother with generalized anxiety disorder; father with hypertension and hyperlipidemia; younger sibling healthy.\nSocial: teacher, single, lives alone. Never smoker. No current alcohol; denies any substance use history.\n\nVital signs within normal limits.\nMental status / exam: casually dressed, restless in the chair, shifting frequently. Startles visibly when a door closes in the hallway. Speech normal rate. Mood \"on edge\". Affect anxious, congruent. Thought process linear; no SI/HI; no perceptual disturbances. Insight and judgment good.\n\nLabs drawn today: CBC, TSH and basic metabolic panel all within normal limits.\n\nAssessment: Post-traumatic stress disorder following the January 2020 collision.\n\nPlan:\n- Trauma-focused psychotherapy: cognitive processing therapy with one of our therapists, weekly; intake scheduled.\n- Psychiatry follow-up in about a year, sooner if needed.\n- Safety planning reviewed.\n\nThank you for this referral.\nOutpatient Psychiatry"}
+          ]
+        },
+        {
+          "id": "2020-07-16a",
+          "kind": "portal_message",
+          "start": "2020-07-16T07:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Psychiatry visit", "author": "PCP", "date": "2020-07-16T07:50", "body": "Hi Abigail, I got the letter from psychiatry. Glad you were able to get in and that therapy is lined up. Their blood work was all normal. Let me know how it's going, and we'll catch up at your physical this fall."},
+            {"type": "Patient Message", "title": "RE: Psychiatry visit", "author": "patient", "date": "2020-07-16T20:05", "body": "Thanks. First therapy session is next week. Nervous but hopeful."}
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "annual_physical",
+          "start": "2020-10-20T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-20T16:15"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-10-20T15:40"},
+            {"procedure": "Immunization administration", "performed": "2020-10-20T16:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-10-20T16:30", "body": "Annual. Masked visit.\n\nInterval: crash in January with femur ORIF, mild TBI, negative laparoscopy; leg fully healed per ortho in April. Diagnosed with PTSD by psychiatry in July and has been doing weekly cognitive processing therapy since. She says the nightmares are less frequent, maybe once or twice a week now, and she can hear a siren without leaving the room. Still not driving. Back in the classroom in person this fall, hybrid schedule.\n\nNo headaches, memory or concentration complaints from the TBI. Allergies were a nuisance in August as usual.\n\nMeds: none. Allergies: NKDA.\n\nExam: vitals per flowsheet. Well appearing. HEENT normal. Neck no nodes or thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft. Right thigh scar well healed; normal gait. Neuro nonfocal. Affect mildly anxious, appropriate.\nPHQ-9 6, item 9 zero.\n\nA/P\n1. PTSD: improving with CPT. Continue with psychiatry/therapist.\n2. History of mild TBI: no residual symptoms.\n3. Allergic rhinitis: seasonal, untreated by choice.\n4. Health maintenance: flu vaccine today. Labs last year normal, none needed. Pap 2017 normal, due 2022.\n\nRTC 1 year."}
+          ]
+        }
+      ]
+    }
+  ]
+}

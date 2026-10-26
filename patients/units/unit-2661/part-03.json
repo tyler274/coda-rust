@@ -1,0 +1,71 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002661",
+      "events": [
+        {
+          "id": "2026-02-23a",
+          "kind": "portal_message",
+          "start": "2026-02-23T18:51",
+          "reason": "Dermatology referral request",
+          "orders": [
+            {"id": "derm-referral-2026", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "recurrent tinea versicolor, discuss prevention"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "referral for derm", "author": "patient", "date": "2026-02-23T18:51", "body": "Hi, the patches on my back and shoulders are showing up again, same as every year. I booked derm for March 9. Can you send the referral again? I'm going to ask them about the monthly thing you mentioned so it doesn't come back during the summer."},
+            {"type": "Patient Message", "title": "RE: referral for derm", "author": "PCP", "date": "2026-02-24T07:20", "body": "Done, referral sent to the dermatology office. Good plan to ask them about prevention."}
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "specialist_visit",
+          "start": "2026-03-09T11:20",
+          "service": "Dermatology",
+          "reason": "Recurrent rash of upper back and shoulders",
+          "medications": [
+            {"drug_text": "ketoconazole 20 MG/ML Medicated Shampoo", "action": "start", "sig": "Lather onto back, shoulders and chest, leave on 5 minutes, rinse. Daily for 2 weeks, then once a month May through September to prevent recurrence.", "dose": {"value": 1, "unit": "application"}, "frequency": "DAILY", "route": "Topical", "course": "chronic", "reason": "Tinea versicolor, treatment and seasonal prophylaxis"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-03-09T11:35", "resulted": "2026-03-09T11:45", "results": [
+              {"test": "Fungal elements, skin scraping, KOH preparation", "loinc": "18482-5", "text": "Positive: hyphae and spores in a \"spaghetti and meatballs\" arrangement"}
+            ]}
+          ],
+          "orders": [
+            {"id": "derm-referral-2026", "action": "done", "date": "2026-03-11T15:40"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Dermatology Follow-up", "author": "dermatology", "date": "2026-03-11T15:40", "body": "Outside dermatology group, return visit\nDate of service: 03/09/2026\n\nHistory: Gavin is a 26 year old man we have seen in 2023, 2024 and 2025 for discoloration of the back and shoulders due to tinea versicolor. He first noticed it a few summers ago and it now returns every year with the warm weather. It does not itch or hurt; what bothers him is how it looks, especially after time at the beach. The light patches become more obvious once he tans and have not responded to daily showers or the drugstore moisturizer he has been using. He lifeguards each summer and our summers are humid.\n\nMedications: none currently.\nAllergies: NKDA.\nPSH: third molars at 18.\nFH: no skin disease or atopy.\nROS: no fevers, fatigue, night sweats or weight loss.\n\nExam: Numerous hypopigmented macules and patches across the upper back and shoulders, a few faintly pink, all with fine dusty scale that is easier to see when scraped with a fingernail. Not tender. No erythema around them. Face, scalp, groin and extremities clear. Mucosa normal. No lymphadenopathy. Palms and soles normal.\n\nKOH (in office): hyphae with clusters of spores, the typical spaghetti-and-meatballs appearance.\n\nAssessment: Tinea versicolor with a clear yearly warm-season pattern.\n\nPlan:\n1. Ketoconazole 2% shampoo to back, shoulders and chest, 5 minutes then rinse, daily for 2 weeks.\n2. Then once a month from May through September as prevention, since he is outdoors and sweating all summer.\n3. Pigment will even out over a few months after clearing.\n4. Return if it breaks through despite monthly use.\n\nThank you for the referral."}
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "outside_records",
+          "start": "2026-03-12T08:10",
+          "reason": "Dermatology note review",
+          "documents": [
+            {"type": "Progress Notes", "title": "Outside Note Review", "author": "PCP", "date": "2026-03-12T08:10", "body": "Derm note 3/9 reviewed. KOH positive again. Ketoconazole 2% shampoo 2 wk course then monthly May-Sept as prophylaxis. Med list updated. Can refill from here when he needs it for summer."}
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "portal_message",
+          "start": "2026-05-27T09:44",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "refill", "author": "patient", "date": "2026-05-27T09:44", "body": "Season starts this weekend. I finished the 2 weeks of the shampoo in March and the patches cleared up, but I'm almost out and I'm supposed to use it once a month through the summer now. Could you send a refill to my usual pharmacy?"},
+            {"type": "Patient Message", "title": "RE: refill", "author": "PCP", "date": "2026-05-27T12:30", "body": "Sent ketoconazole 2% shampoo, one bottle with a refill, to your pharmacy. Once a month, same way as before: lather on, 5 minutes, rinse. Have a good season."},
+            {"type": "Telephone Encounter", "title": "Rx refill", "author": "MA", "date": "2026-05-27T12:28", "body": "Refill: ketoconazole 2% shampoo 120 mL, 1 refill, sent electronically per PCP. Sig unchanged: monthly May-Sept, apply to trunk 5 min then rinse."}
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

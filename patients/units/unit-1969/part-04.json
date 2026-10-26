@@ -1,0 +1,824 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001969",
+   "events": [
+    {
+     "id": "2025-09-09a",
+     "kind": "annual_physical",
+     "start": "2025-09-09T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 102.6,
+      "labs": {
+       "Hemoglobin A1c": 7.3
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 9
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-09-09T08:50",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-09-09T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-09-09T08:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2025-09-09T08:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-09-09T08:45"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-09-09T08:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-09-09T08:50",
+       "body": "Physical, 54.\nInterval: no ED visits or new problems. Swallowing good. Still drinking daily. Busy summer at the warehouse.\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 20. All via mail order now.\nExam: weight up to about 103 kg. BP per flowsheet. Normal cardiopulmonary exam. Abdomen soft. Feet: sensation intact, no lesions. PHQ-2 0. AUDIT-C 9.\nHealth maintenance: colonoscopy 2021 normal (next 2031). Shingrix done. PCV20 done. Tdap 2019. Flu today. COVID per pt at a pharmacy this fall.\nPlan: CMP and A1c today. Continue meds. Follow up in the winter for diabetes."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-02a",
+     "kind": "ed_visit",
+     "start": "2025-10-02T19:40",
+     "end": "2025-10-03T00:30",
+     "service": "Emergency Medicine",
+     "reason": "Left flank pain",
+     "vitals": [
+      {
+       "time": "2025-10-02T19:45",
+       "bp": [
+        135,
+        85
+       ],
+       "hr": 88,
+       "rr": 16,
+       "temp_c": 36.8,
+       "spo2": 98
+      },
+      {
+       "time": "2025-10-02T23:50",
+       "bp": [
+        132,
+        82
+       ],
+       "hr": 76,
+       "rr": 16,
+       "temp_c": 36.7,
+       "spo2": 98
+      }
+     ],
+     "state": {
+      "weight_kg": 103.8,
+      "labs": {
+       "Uric Acid": 8.6
+      }
+     },
+     "conditions": [
+      {
+       "label": "Ureterolithiasis",
+       "icd10": "N20.1",
+       "action": "diagnosed",
+       "onset": "2025-09-30"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule by mouth daily until stone passes, up to 4 weeks",
+       "dose": {
+        "value": 0.4,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Left ureteral stone"
+      },
+      {
+       "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+       "action": "start",
+       "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+       "dose": {
+        "value": 4,
+        "unit": "mg"
+       },
+       "frequency": "Q8H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Nausea"
+      },
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets by mouth every 6 hours as needed for pain, max 6 tablets per day",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Flank pain"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2025-10-02T20:05",
+       "results": [
+        {
+         "test": "Urine pH",
+         "value": 5.0
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-10-02T20:05",
+       "results": [
+        {
+         "test": "Urine Crystals",
+         "loinc": "5782-8",
+         "text": "Uric acid crystals present"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-10-02T20:05",
+       "results": [
+        {
+         "test": "Uric Acid",
+         "value": 8.6
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-10-02T20:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-10-02T20:05",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Renal ultrasound",
+       "performed": "2025-10-02T21:20",
+       "text": "Renal ultrasound. Indication: left flank pain, history of stone. Right kidney 11.4 cm, normal echotexture, no hydronephrosis, no stone. Left kidney 11.7 cm, normal echotexture, no hydronephrosis. A 6 mm echogenic focus with posterior shadowing is seen in the left ureter. Bladder partially distended, unremarkable.",
+       "conclusion": "6 mm stone in the left ureter. No hydronephrosis."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2025-10-02T19:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2025-10-27T14:20",
+       "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nPatient: Darren Upton  DOB 07/10/1971  Arrival 10/02/2025 19:40\n\nHPI: 54 y/o man with prior kidney stone, presenting with two days of left flank pain. Sharp, comes in waves, wraps into the left groin. Nauseated, has not vomited. No fever, no burning with urination, urine looks normal to him.\nPMH per patient: diabetes, high blood pressure, gout, achalasia, prior stone.\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 20 mg daily. NKDA.\n\nExam: T 36.8, HR 88, BP 135/85, SpO2 98%. BMI 32. Uncomfortable, shifting on the stretcher. Left CVA tenderness. Abdomen soft, nontender anteriorly. No rebound.\n\nResults: UA pH 5.0 with uric acid crystals. Serum uric acid 8.6 mg/dL (high). Creatinine and potassium normal. WBC normal.\nRenal US: 6 mm stone in the left ureter, no hydronephrosis.\n\nED course: ketorolac 15 mg IV and ondansetron 4 mg IV with good relief. Tolerating fluids. Repeat vitals normal.\n\nMDM: left ureteral stone, 6 mm, with an acid urine and uric acid crystals — likely a radiolucent uric acid stone. Afebrile, pain controlled, normal renal function, no hydronephrosis: appropriate for outpatient passage trial.\n\nDisposition: discharged 00:30. Tamsulosin 0.4 mg daily up to 4 weeks, ondansetron ODT as needed, acetaminophen as needed. Strain urine and save any stone. Urology follow-up in 1-2 weeks, sooner for fever, uncontrolled pain or vomiting.\n\nEmergency Medicine"
+      }
+     ]
+    },
+    {
+     "id": "2025-10-03a",
+     "kind": "portal_message",
+     "start": "2025-10-03T09:22",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED visit",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Was in the ER last night",
+       "author": "patient",
+       "date": "2025-10-03T09:22",
+       "body": "FYI I was in the ER last night for a kidney stone on the left side, 6 mm they said. They gave me a shot and sent me home with tamsulosin and nausea pills. Supposed to see urology. Pain is a 3 now."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Was in the ER last night",
+       "author": "PCP",
+       "date": "2025-10-03T10:05",
+       "body": "Thanks for letting us know — we haven't received anything from the ED yet, I've asked for the records. Drink plenty of water, take the tamsulosin daily, and use the strainer. If you get a fever, can't keep fluids down, or the pain gets out of control, go back. Let's do a quick video check in about two weeks if it hasn't passed sooner."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "ED records request",
+       "author": "MA",
+       "date": "2025-10-03T10:30",
+       "body": "Records request faxed to the hospital ED for visit 10/02/2025."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-11a",
+     "kind": "portal_message",
+     "start": "2025-10-11T14:48",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Passed kidney stone",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Passed it",
+       "author": "patient",
+       "date": "2025-10-11T14:48",
+       "body": "Pretty sure I passed the stone this morning, felt it go and the pain is totally gone. Didn't catch it in the strainer though, sorry. I'm going to cancel the urology appointment if that's ok."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Passed it",
+       "author": "PCP",
+       "date": "2025-10-13T08:15",
+       "body": "Great news. That's fine for now — we'll talk at the video visit Thursday about whether you still need urology."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-16a",
+     "kind": "telehealth_visit",
+     "start": "2025-10-16T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Kidney stone follow-up",
+     "conditions": [
+      {
+       "label": "Ureterolithiasis",
+       "icd10": "N20.1",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+       "action": "stop",
+       "reason": "Stone passed"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2025-10-16T12:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit — kidney stone",
+       "author": "PCP",
+       "date": "2025-10-16T12:50",
+       "body": "Video visit, patient at work in a break room, identity verified.\nPassed the stone on 10/11, not retrieved. No pain since, no fever, urine clear, no nausea. Finished with the nausea tablets. Still has a few tamsulosin left.\nED records not yet received; per pt, 6 mm left ureteral stone on ultrasound.\nA/P: Left ureteral stone, passed. Stop tamsulosin. Keep fluids up, at least 2-3 liters a day. He cancelled urology; reasonable since it passed and he's pain-free. Will review the ED record when it arrives."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-27a",
+     "kind": "telephone",
+     "start": "2025-10-27T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED record received",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "ED record received",
+       "author": "PCP",
+       "date": "2025-10-27T15:00",
+       "body": "ED record from 10/2 arrived after second request. 6 mm L ureteral stone, UA pH 5.0 with uric acid crystals, serum uric acid 8.6. Stone already passed per pt. Filed."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-09a",
+     "kind": "outside_records",
+     "start": "2025-12-09T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Eye exam report",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Diabetic eye exam",
+       "author": "optometry",
+       "date": "2025-12-09T13:00",
+       "body": "Darren Upton, seen 12/04/2025. Dilated fundus exam: no diabetic retinopathy OU. Maculae flat. Mild early lens changes unchanged. Annual follow-up.\nOptometry"
+      }
+     ]
+    },
+    {
+     "id": "2026-02-10a",
+     "kind": "office_visit",
+     "start": "2026-02-10T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-02-10T16:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-10T16:40",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-02-10T16:40",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-02-10T16:40",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2026-02-10T16:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-02-10T16:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2026-02-10T16:35",
+       "body": "S: Winter diabetes check. No stone symptoms since October. Swallowing fine. Says he's \"about the same\" with beer. Taking all three meds from mail order.\nO: BP and weight per flowsheet, weight around 104. Heart and lungs normal. Feet normal, monofilament intact.\nA/P: T2DM — A1c, BMP, lipids, urine albumin today. Continue metformin. HTN — lisinopril 20, continue. AUD — offered counseling again, declined. RTC in the summer, sooner as needed."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-25a",
+     "kind": "telephone",
+     "start": "2026-03-25T07:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Right big toe pain",
+     "orders": [
+      {
+       "id": "rheum-2026",
+       "action": "placed",
+       "order": "Rheumatology referral, urgent",
+       "category": "referral",
+       "to": "Rheumatology",
+       "reason": "Acute right great toe pain and swelling, history of gout"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Toe pain",
+       "author": "PCP",
+       "date": "2026-03-25T07:10",
+       "body": "Pt texted at 6:40 am, called him back. Woke up during the night with the right big toe throbbing; red, swollen, can't stand the sheet on it. No injury. No fever. Remembers the one gout attack years ago, says this is worse.\nLikely gout flare. He'd like to see someone who can sort out the gout long-term. Called the rheumatology group; they can see him tomorrow morning. Until then ice, elevate, acetaminophen. Go to urgent care or ED for fever, spreading redness, or if he can't bear weight at all."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-26a",
+     "kind": "specialist_visit",
+     "start": "2026-03-26T09:00",
+     "service": "Rheumatology",
+     "reason": "Acute right great toe pain",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Uric Acid": 9.2,
+       "Hemoglobin": 14.8,
+       "Mean Corpuscular Volume": 92
+      }
+     },
+     "medications": [
+      {
+       "drug": "colchicine 0.6 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets now, then 1 tablet in 1 hour; then 1 tablet twice daily until the flare resolves",
+       "dose": {
+        "value": 0.6,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Acute gout flare"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-03-26T09:40",
+       "results": [
+        {
+         "test": "Uric Acid",
+         "value": 9.2
+        },
+        {
+         "test": "C Reactive Protein",
+         "value": 24
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-03-26T09:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-03-26T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "rheum-2026",
+       "action": "done",
+       "date": "2026-03-26T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology consultation",
+       "author": "rheumatology",
+       "date": "2026-04-20T09:45",
+       "body": "RHEUMATOLOGY — NEW PATIENT CONSULTATION\nDate of service: 03/26/2026\nPatient: Darren Upton, 54 M. Referred urgently by PCP.\n\nHPI: Right great toe pain, redness and swelling for two days. Came on abruptly overnight; throbbing; can barely put a shoe on. On questioning, he has had several smaller episodes over roughly the past two years in the same area that went away within a few days without treatment; he didn't mention them to anyone. Remote first flare years ago. Past history also of a ureteral stone last fall (uric acid crystals in the urine) and an earlier kidney stone.\nOther history: type 2 diabetes, hypertension, achalasia treated with dilation, alcohol use disorder.\nMedications: lisinopril, metformin, atorvastatin 20 mg daily. Allergies: NKDA.\nFamily history: father with gout and type 2 diabetes; mother with hypertension; paternal uncle with alcohol use disorder.\nSocial: beer daily, which he acknowledges. Never smoker.\n\nExam: BMI 32. Afebrile. Right first metatarsophalangeal joint red, warm and exquisitely tender with swelling. No other joints involved. No tophi.\n\nLabs today: serum uric acid 9.2 mg/dL (ref 3.4-7.0), CRP 24 mg/L (ref <5). CBC, creatinine and glucose normal.\n\nAssessment: acute gout flare, right first MTP (podagra), on a background of recurrent flares and uric acid nephrolithiasis.\n\nPlan:\n1. Colchicine: 1.2 mg now, 0.6 mg one hour later, then 0.6 mg twice daily until the flare settles.\n2. Return in about 6 weeks once quiet to begin urate-lowering therapy with flare prophylaxis.\n3. Reduce beer intake — discussed as a major flare trigger.\n\nRheumatology"
+      }
+     ]
+    },
+    {
+     "id": "2026-04-20a",
+     "kind": "telephone",
+     "start": "2026-04-20T16:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Rheumatology letter received",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Rheumatology note received",
+       "author": "PCP",
+       "date": "2026-04-20T16:30",
+       "body": "Rheum consult from 3/26 finally in. Gout flare R 1st MTP, uric acid 9.2, CRP 24. Colchicine short course. Plans urate-lowering after the flare. Pt replied by text the toe settled within about 5 days. Follow-up with rheum is 5/7."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-08a",
+     "kind": "portal_message",
+     "start": "2026-05-08T20:14",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New medicines from rheumatology",
+     "medications": [
+      {
+       "drug": "allopurinol 100 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Gout"
+      },
+      {
+       "drug": "colchicine 0.6 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 0.6,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Gout flare prophylaxis while starting allopurinol"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "New gout medicines",
+       "author": "patient",
+       "date": "2026-05-08T20:14",
+       "body": "Saw the rheumatologist yesterday. Toe is fine now. She started me on allopurinol 100 mg once a day and colchicine one pill a day for about 6 months so I don't flare while it kicks in. Wants a uric acid level in about 6 weeks, can I do that at your office?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: New gout medicines",
+       "author": "MA",
+       "date": "2026-05-09T09:30",
+       "body": "Yes — we've added allopurinol and colchicine to your medication list. Lab can draw the uric acid any weekday morning around the third week of June; we'll send the result to rheumatology."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-18a",
+     "kind": "lab_only",
+     "start": "2026-06-18T07:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Uric acid for rheumatology",
+     "state": {
+      "labs": {
+       "Uric Acid": 7.4
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-06-18T07:15",
+       "results": [
+        {
+         "test": "Uric Acid",
+         "value": 7.4
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-06-18T07:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-06-18T07:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Uric acid",
+       "author": "PCP",
+       "date": "2026-06-18T15:40",
+       "body": "Uric acid 7.4, down from 9.2, not yet at goal. Kidney function normal. Copy faxed to rheumatology."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-22a",
+     "kind": "portal_message",
+     "start": "2026-06-22T18:02",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Allopurinol dose change",
+     "medications": [
+      {
+       "drug": "allopurinol 100 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Dose increased by rheumatology"
+      },
+      {
+       "drug": "allopurinol 100 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 2 tablets by mouth daily",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Gout"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Allopurinol change",
+       "author": "patient",
+       "date": "2026-06-22T18:02",
+       "body": "Rheumatology called, they want me on 2 of the allopurinol a day now starting today. Recheck the level in about 8 weeks. Still on the colchicine."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Allopurinol change",
+       "author": "MA",
+       "date": "2026-06-23T08:45",
+       "body": "Updated your list to allopurinol 200 mg (2 tablets) daily. We'll put in the uric acid for mid-August."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-13a",
+     "kind": "lab_only",
+     "start": "2026-08-13T07:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Uric acid recheck",
+     "state": {
+      "labs": {
+       "Uric Acid": 5.8
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-08-13T07:20",
+       "results": [
+        {
+         "test": "Uric Acid",
+         "value": 5.8
+        }
+       ],
+       "resulted": "2026-08-13T14:05"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-08-13T07:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-08-13T07:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2026-08-13T07:25",
+       "body": "Uric acid and BMP drawn per order for rheumatology. Results to be routed to PCP and faxed to rheumatology."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-22a",
+     "kind": "office_visit",
+     "start": "2026-09-22T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

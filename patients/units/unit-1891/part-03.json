@@ -1,0 +1,266 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001891",
+      "events": [
+        {
+          "id": "2025-05-09a",
+          "kind": "ed_visit",
+          "start": "2025-05-09T17:40",
+          "end": "2025-05-09T21:15",
+          "service": "Emergency Medicine",
+          "reason": "left ear pain",
+          "conditions": [
+            {"label": "Malignant otitis externa, left ear", "icd10": "H60.22", "action": "diagnosed", "onset": "2025-05-06"}
+          ],
+          "medications": [
+            {"drug_text": "ciprofloxacin 750 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 750, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "malignant otitis externa, left ear"},
+            {"drug_text": "ofloxacin 3 MG/ML Otic Solution", "action": "start", "sig": "Instill 10 drops in the left ear twice daily for 14 days", "dose": {"value": 10, "unit": "drops"}, "frequency": "BID", "route": "Otic", "course": "short", "reason": "malignant otitis externa, left ear"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2025-05-09T17:55", "results": [{"test": "Glucose, capillary (point of care)", "loinc": "41653-7", "unit": "mg/dL", "value": 180}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2025-05-09T17:40"}],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2025-05-27T11:40",
+              "body": "Regional hospital emergency department. Date of service 05/09/2025, 17:40.\n\nCC: L ear pain x3 days.\n\nHPI: 25F with type 1 diabetes on insulin, well controlled, followed by endocrinology (last seen about 8 months ago). Three days of left ear pain, much worse when she tugs on the ear lobe. Ear feels plugged and she hears less on that side. No discharge from the ear. No fever, chills, headache, dizziness or facial weakness. Went swimming in a lake about 5 days ago.\n\nPMH: T1DM. PSH: third molar extraction at 18.\nMeds: insulin glargine 20 units SC qhs; insulin aspart 8 units SC before meals; glucagon 1 mg IM PRN.\nAllergies: NKDA.\nFH: maternal aunt Hashimoto; paternal grandfather T2DM.\nSH: graduate student. Never smoker. Alcohol rare.\n\nExam: vitals reviewed, afebrile. Uncomfortable but nontoxic. L external auditory canal erythematous and swollen nearly shut, marked tenderness over the tragus; TM cannot be seen past the swelling. No discharge. No periauricular swelling or mastoid tenderness. Facial nerve intact. R ear normal. No cervical adenopathy.\n\nData: fingerstick glucose 180 mg/dL.\n\nMDM: painful otitis externa of the left ear in an insulin-dependent diabetic after freshwater exposure. Given diabetes, treated as malignant otitis externa with antipseudomonal coverage and prompt ENT evaluation.\n\nDx: Malignant otitis externa, left ear.\n\nRx: ciprofloxacin 750 mg PO BID; ofloxacin otic 0.3% 10 drops L ear BID x14 days. Keep the ear dry, no swimming. Monitor glucose more often while ill.\n\nDisposition: discharged home in stable condition. Follow up with ENT within days, call PCP Monday. Return for fever, spreading swelling, facial weakness, severe headache or worsening pain."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-10a",
+          "kind": "portal_message",
+          "start": "2025-05-10T09:22",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED visit for ear infection",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER last night",
+              "author": "patient",
+              "date": "2025-05-10T09:22",
+              "body": "Hi, I went to the ER last night for my left ear. It's been hurting since Tuesday and I can barely hear out of it. They said it's an outer ear infection and because I have diabetes they called it malignant otitis externa?? They gave me cipro pills and ear drops and said I need to see ENT soon. I don't have an ENT. Sugars have been running a little higher than usual. Pain is about the same this morning."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER last night",
+              "author": "PCP",
+              "date": "2025-05-10T11:48",
+              "body": "Thanks for letting me know. Keep taking both, keep the ear dry, and keep a closer eye on your sugars; infections and cipro can both push them around. I'll do a video visit with you Monday morning and get ENT lined up. If you get a fever, swelling around the ear, a headache that won't quit or any weakness in your face, go back to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-10b",
+          "kind": "pharmacy",
+          "start": "2025-05-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fill history reconciliation",
+          "documents": [
+            {
+              "type": "Medication Reconciliation",
+              "title": "Outside Fill Review",
+              "author": "MA",
+              "date": "2025-05-10T13:30",
+              "body": "Pharmacy fill history pulled after pt's message: ciprofloxacin 750 mg tablets and ofloxacin 0.3% otic solution, both dispensed 5/9 evening, prescriber ED. Added to med list as outside meds. No ED record in our inbox yet; request sent to the hospital's HIM department."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "telehealth_visit",
+          "start": "2025-05-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for ear infection",
+          "orders": [
+            {"id": "ent-referral", "action": "placed", "order": "Otolaryngology referral", "category": "referral", "to": "Otolaryngology", "reason": "malignant otitis externa, left ear, urgent"}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2025-05-12T08:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2025-05-12T09:15",
+              "body": "Video visit, pt at home in Easthampton, identity confirmed.\n\nSeen in a regional ED Friday evening for 3 days of left ear pain after lake swimming 5 days before that. Per her and her discharge paperwork: canal swollen shut, tragal tenderness, TM not visible, fingerstick 180. Diagnosed with malignant otitis externa given her T1DM; started ciprofloxacin 750 mg BID and ofloxacin otic drops. ED record not yet received.\n\nToday: day 3 of treatment. Pain about the same, maybe slightly less at night. Ear still plugged, hearing muffled on the left. No drainage, no fever, no headache, no facial droop. Glucose running higher than her usual; no lows. Taking cipro with food, drops twice a day.\n\nObserved on video: comfortable, no visible swelling behind or in front of the ear, face symmetric.\n\nA/P\n1. Malignant otitis externa, left, on ciprofloxacin and ofloxacin drops from the ED. Needs ENT this week given diabetes. Urgent ENT referral placed and called through.\n2. T1DM: expect some rise in sugars with infection; correction per her endo plan, call endo if readings stay high or she has ketones. Cipro can also cause lows, keep checking.\n3. Cipro and tendons: hold the long runs until the course is done, stop and call for any heel or calf pain.\nReturn precautions reviewed."
+            },
+            {
+              "type": "Referral",
+              "title": "ENT Referral Scheduling",
+              "author": "front desk",
+              "date": "2025-05-12T11:10",
+              "body": "Urgent ENT referral faxed with today's note and the fill history. ENT office able to see her Wed 5/14 at 1:30. Pt notified by phone, will bring her ED discharge papers."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "specialist_visit",
+          "start": "2025-05-14T13:30",
+          "service": "Otolaryngology",
+          "reason": "malignant otitis externa, left ear",
+          "orders": [
+            {"id": "ent-referral", "action": "done", "date": "2025-05-14T13:30"}
+          ],
+          "measure": ["bp", "hr", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2025-05-14T14:20", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 41}]},
+            {"panel": null, "collected": "2025-05-14T13:50", "resulted": "2025-05-17T10:00", "results": [{"test": "Bacteria identified in Ear by Aerobe culture", "loinc": "608-0", "text": "Pseudomonas aeruginosa. Susceptible to ciprofloxacin."}]}
+          ],
+          "reports": [
+            {"study": "CT temporal bones without contrast", "loinc": "36866-2", "performed": "2025-05-14T15:05", "text": "Technique: axial thin-section images through both temporal bones without intravenous contrast, with coronal reformats.\nComparison: none.\nFindings: Soft-tissue thickening of the left external auditory canal with narrowing of the canal lumen. The bony canal walls are intact with no erosion. The left middle ear cavity and ossicles are normal. Left mastoid air cells are well aerated and clear. No soft-tissue collection in the periauricular region. Skull base and temporomandibular joint normal. The right temporal bone is normal.", "conclusion": "Soft-tissue thickening and narrowing of the left external auditory canal without bony erosion. Middle ear and mastoid clear."}
+          ],
+          "procedures": [{"procedure": "Office consultation, comprehensive", "performed": "2025-05-14T13:30"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Consultation",
+              "author": "otolaryngology",
+              "date": "2025-05-30T09:15",
+              "body": "Outside otolaryngology group\nDate of consultation: 05/14/2025\nReferring: primary care\n\nThank you for asking us to see Abigail Lemieux, a 25-year-old graduate student with type 1 diabetes, for left ear pain treated in an ED on 5/9 as malignant otitis externa.\n\nShe developed left otalgia after swimming in a lake, with fullness and reduced hearing. On ciprofloxacin 750 mg twice daily and ofloxacin otic drops since 5/9; pain now slowly easing. No otorrhea, fever, vertigo or facial weakness.\n\nMeds: glargine 20 units qhs, aspart 8 units before meals, glucagon kit, ciprofloxacin, ofloxacin otic.\nAllergies: none known.\n\nExam: left canal edematous and erythematous; tragal tenderness and pain with traction on the pinna. Under the microscope the canal was debrided and a sample sent for culture; no granulation tissue at the bony-cartilaginous junction. After cleaning the TM could be glimpsed only partly. A wick was placed. Right ear normal. Facial nerve function intact and symmetric. No cervical lymphadenopathy.\n\nCT temporal bones today: soft-tissue thickening of the left canal without bony erosion; middle ear and mastoid clear.\nESR 41.\nCulture (final 5/17): Pseudomonas aeruginosa, ciprofloxacin sensitive.\n\nImpression: early necrotizing (malignant) otitis externa, left, in a patient with type 1 diabetes. Imaging shows no bone involvement.\n\nPlan:\n- Continue ciprofloxacin 750 mg twice daily for a total of six weeks from the start on 5/9.\n- Ofloxacin drops to finish 14 days; wick to come out on its own or at a nurse check.\n- Strict water precautions.\n- Good glucose control with her endocrinologist.\n- Return in about five weeks with a repeat ESR; sooner for worsening pain, drainage, headache or facial weakness.\n\nSincerely,\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-20a",
+          "kind": "specialist_visit",
+          "start": "2025-06-20T10:15",
+          "service": "Otolaryngology",
+          "reason": "follow-up, malignant otitis externa",
+          "medications": [
+            {"drug_text": "ciprofloxacin 750 MG Oral Tablet", "action": "stop", "reason": "six-week course complete"}
+          ],
+          "measure": ["bp", "hr", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2025-06-20T10:50", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 12}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-06-20T10:15"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Follow-up",
+              "author": "otolaryngology",
+              "date": "2025-08-04T14:30",
+              "body": "Outside otolaryngology group\nDate of visit: 06/20/2025\n\nMs. Lemieux returns six weeks into treatment for left necrotizing otitis externa. Pain resolved within the first two weeks. Hearing back to normal by her report. Finished the drops in May; wick fell out on its own. Tolerated ciprofloxacin without tendon pain. Sugars back to her usual.\n\nExam: left canal healed, skin normal, no debris, no granulation. TM intact, mobile, normal landmarks. Right ear normal. Facial nerve intact.\n\nESR today 12, down from 41.\n\nImpression: left necrotizing otitis externa, resolved after six weeks of oral ciprofloxacin.\n\nPlan: stop ciprofloxacin today. Keep the ear dry while swimming for the rest of the summer (ear plugs). Return as needed; she knows to come back promptly for any recurrence of ear pain given her diabetes.\n\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "portal_message",
+          "start": "2025-06-23T19:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ENT follow-up update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ear update",
+              "author": "patient",
+              "date": "2025-06-23T19:05",
+              "body": "Saw ENT on Friday. They said the ear is healed and the blood test came down, so I'm done with the cipro! Hearing is normal again. Can I start doing long runs again?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Ear update",
+              "author": "PCP",
+              "date": "2025-06-24T08:10",
+              "body": "Great news. Yes, ease back into the long runs over a couple of weeks now that the cipro is done, and stop if you get any Achilles or calf pain. Earplugs if you swim. We haven't received the ENT note yet; I'll keep an eye out for it."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "outside_records",
+          "start": "2025-07-22T10:05",
+          "service": "Optometry",
+          "reason": "diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic Eye Examination",
+              "author": "optometry",
+              "date": "2025-07-22T10:05",
+              "body": "Diabetic eye examination\nPatient: Abigail Lemieux, DOB 10/08/1999\nDate of exam: 07/15/2025\n\nType 1 diabetes, insulin. No eye complaints. NKDA.\n\nBest corrected acuity normal each eye. Pupils normal. Pressures normal. Anterior segments quiet.\nDilated fundus: discs healthy both eyes; maculae normal; vessels normal; no hemorrhage, microaneurysm or exudate OU.\n\nAssessment: no diabetic retinopathy either eye.\nRecommend dilated exam in one year.\n\nOutside optometry practice"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {"label": "Malignant otitis externa, left ear", "icd10": "H60.22", "action": "resolved", "note": "resolved after six weeks of ciprofloxacin per ENT 06/2025"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-23T09:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-23T09:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2025-09-23T09:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-09-23T09:10", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Microalbumin/Creatinine Ratio"}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-23T08:30"},
+            {"procedure": "Venipuncture", "performed": "2025-09-23T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2025-09-23T09:45",
+              "body": "Yearly physical.\n\nInterval: left necrotizing (malignant) otitis externa in May after lake swimming. ED 5/9, ENT 5/14 (CT without bone involvement, ESR 41, Pseudomonas on culture), six weeks of ciprofloxacin; ENT follow-up 6/20 healed, ESR 12, cipro stopped. ENT follow-up letter arrived in August. No ear symptoms since. Uses earplugs swimming. Resolving on the problem list today.\n\nDiabetes: still with the outside endocrinology group, seen in the spring per her, no changes; no letter from them since last fall's. Glargine 20 qhs, aspart 8 before meals, glucagon kit current. No lows. Optometry in July: no retinopathy.\n\nBack to running long distances without problems.\nNKDA. Never smoker. Alcohol rare.\n\nROS negative. PHQ-9: 1.\n\nExam: vitals as charted. Ears: both canals clean, TMs intact and normal. Rest of HEENT normal. Neck and thyroid normal. Heart RRR. Lungs clear. Abdomen benign. Feet: no lesions, pulses intact, monofilament normal. Neuro normal.\n\nA/P\n1. Malignant otitis externa, left: resolved.\n2. T1DM: controlled per endo. Yearly CMP, lipids, TSH, urine microalbumin, CBC today.\n3. Prevention: Pap normal 2024, next 2027. Flu and COVID in October when the clinic gets supply.\n4. Physical next fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-09-25T16:20",
+              "body": "All of Tuesday's labs are normal, including blood counts, kidney and liver tests, cholesterol, thyroid and the urine protein screen. Nothing to change. We'll text when flu and COVID shots are in."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T12:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-14T12:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-14T12:15"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2025-10-14T12:30",
+              "body": "Flu and 2025-26 COVID vaccines on her lunch break. Screening questions negative, VIS offered. Flu IM left deltoid, COVID IM right deltoid, lots recorded. No reaction after 15 minutes."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

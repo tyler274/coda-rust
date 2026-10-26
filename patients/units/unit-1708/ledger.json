@@ -1,0 +1,3351 @@
+{
+  "unit": "unit-1708",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001708",
+      "given": "Wanda",
+      "family": "Ortiz",
+      "birth_date": "1990-06-25",
+      "address_line": "57 Lincoln St, Apt 3",
+      "phone": "+1-413-555-0100",
+      "email": "wanda.ortiz@example.test",
+      "marital_status": "partnered",
+      "summary": "High school teacher in Holyoke with HPV and CIN 3 treated by LEEP, followed by outside gynecology, who joins in 2021. Asherman syndrome after a D&C is treated, then two pregnancies: a cesarean with postdural puncture headache in 2024, and a 2025 pregnancy with GDM and gestational hypertension, a third-degree laceration, and late postpartum preeclampsia with severe features. 2026 brings de Quervain tenosynovitis, melasma and lactational atrophic vaginitis.",
+      "events": [
+        {
+          "id": "2021-07-20a",
+          "kind": "telephone",
+          "start": "2021-07-20T10:12",
+          "reason": "New patient scheduling and records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2021-07-20T10:12",
+              "author": "front desk",
+              "body": "Caller is a new patient, Wanda Ortiz, DOB 06/25/1990. Moved her care here because her old primary care office closed its Holyoke site. Insurance PPO, card scanned from portal upload. Booked new patient physical 8/10 at 9:00.\n\nRelease signed electronically. Faxed requests today to:\n- prior primary care office (last 5 years)\n- her gynecology practice (colposcopy, LEEP, Paps)\n\nPatient asked that GYN keep doing her Paps since they know her history. Told her that's fine and we will keep copies."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-03a",
+          "kind": "outside_records",
+          "start": "2021-08-03T14:40",
+          "reason": "Records from prior primary care office",
+          "conditions": [
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "onset": "2016-05-01",
+              "note": "Laparoscopic cholecystectomy 2016"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Laparoscopic cholecystectomy",
+              "performed": "2016-05-01T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care summary",
+              "date": "2021-08-03T14:40",
+              "author": "outside primary care",
+              "body": "Continuity of care summary, prior primary care office, printed 07/28/2021.\n\nPatient: Wanda Ortiz, F, DOB 06/25/1990.\n\nProblems: Status post laparoscopic cholecystectomy (2016, uncomplicated). HPV / cervical dysplasia, managed by gynecology.\n\nMedications: none.\nAllergies: no known drug allergies.\n\nLast physical 09/2020: well. Blood pressure and weight normal. CBC and metabolic panel normal. Never smoker, no alcohol. Works as a high school teacher.\n\nImmunizations on file: Tdap 2014, influenza yearly through 10/2020.\n\nNo hospital admissions on file in the period requested apart from the 2016 surgery."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-05a",
+          "kind": "outside_records",
+          "start": "2021-08-05T11:05",
+          "reason": "Records from gynecology",
+          "conditions": [
+            {
+              "label": "Human papillomavirus infection",
+              "action": "diagnosed",
+              "onset": "2020-11-01",
+              "icd10": "B97.7"
+            },
+            {
+              "label": "History of cervical intraepithelial neoplasia grade 3, post-treatment surveillance",
+              "action": "diagnosed",
+              "onset": "2020-12-01",
+              "note": "LEEP 01/07/2021, margins free",
+              "icd10": "Z87.410"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-01-07T09:30",
+              "text": "Specimen: cervix, loop electrosurgical excision.\nDiagnosis: high-grade squamous intraepithelial lesion (CIN 3). Ectocervical, endocervical and deep margins free of dysplasia. No invasive carcinoma identified.",
+              "conclusion": "CIN 3, margins free.",
+              "issued": "2021-01-12T15:00"
+            },
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2021-06-17T10:00",
+              "text": "Liquid-based cytology. Specimen adequate, transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.\nHigh-risk HPV: not detected.",
+              "conclusion": "NILM. High-risk HPV not detected.",
+              "issued": "2021-06-23T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecology records: colposcopy, LEEP, follow-up co-test",
+              "date": "2021-08-05T11:05",
+              "author": "gynecology",
+              "body": "Records sent at patient request. Summary from gynecology:\n\nOB history: G1P0. Pregnancy loss with infection in 09/2020 (septic abortion), treated with antibiotics; recovered fully.\n\nCervical history: HPV-related dysplasia. Colposcopy late 2020 with biopsy showing CIN 3. LEEP conization performed 01/07/2021; pathology CIN 3 with all margins free. Six-month co-test 06/17/2021 normal, HPV negative.\n\nPlan on file: co-test again in one year, surveillance per ASCCP. Next GYN visit due June 2022.\n\nAllergies: NKDA. Medications: none. Monogamous relationship with one partner for several years."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-10a",
+          "kind": "establish_care",
+          "start": "2021-08-10T09:00",
+          "end": "2021-08-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              78
+            ],
+            "hr": 66,
+            "rr": 13,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 63.9,
+            "height_cm": 162.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-10T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.21
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-10T10:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-08-10T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 69
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 87
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 120
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 111
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-10T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-08-10T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-08-10T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-06T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-27T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "date": "2021-08-10T10:00",
+              "author": "PCP",
+              "body": "31 y/o woman establishing care. Previous primary care office closed its local site. Feels well; here mostly to have a doctor.\n\nPMH:\n- HPV, CIN 3 on colposcopic biopsy late 2020 -> LEEP 1/7/21, margins clear (path in chart). 6-mo co-test 6/2021 neg/neg. Followed by her GYN, next visit June 2022.\n- s/p lap chole 2016.\n\nOB: G1P0. Loss in 9/2020 complicated by infection (septic abortion), treated w/ antibiotics, no lasting problems per pt.\nMenses regular, monthly.\n\nMeds: none. NKDA.\n\nFH: mother T2DM. Sister had preeclampsia with her pregnancy. Paternal grandmother HTN. No early heart disease, no cancers she knows of.\n\nSH: teaches high school. Lives with her partner, together about 4 years, monogamous. Never smoked, doesn't drink. Walks most evenings. Got both Pfizer doses in March through the school district clinic.\n\nROS: negative in detail. No pelvic pain, no abnormal bleeding.\n\nExam: vitals per flowsheet, BMI about 24. Pleasant, well. HEENT clear, TMs normal. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, healed lap scars, nontender. Skin clear. No edema. Pelvic deferred to GYN.\n\nPHQ-2 0, GAD-7 2.\n\nA/P\n1. Health maintenance - CBC, CMP, lipids, TSH. A1c given mother's diabetes. One-time HIV and hep C, she agrees. Flu shot in the fall; booster when the school gets guidance. Tdap from 2014, good until 2024 or pregnancy.\n2. CIN 3 s/p LEEP - surveillance with GYN; asked them to copy us on results.\n3. They may try for a pregnancy in the next year or two; she will let us know.\n\nRTC 1 year or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.2,
+            "height_cm": 163.0,
+            "labs": {
+              "Hemoglobin A1c": 5.2,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Total Cholesterol": 174
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-08-12a",
+          "kind": "portal_message",
+          "start": "2021-08-12T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your new patient labs",
+              "date": "2021-08-12T16:20",
+              "author": "PCP",
+              "body": "Hi Wanda,\n\nEverything from Tuesday came back fine. Blood counts, kidney and liver tests, thyroid and cholesterol are all normal. Your A1c (3-month sugar average) is normal too, which is good to have on file given your mom's history. HIV and hepatitis C screens are negative, and we don't need to repeat those.\n\nGood to meet you. Enjoy the last couple weeks of summer before the kids are back.\n\nYour primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-07a",
+          "kind": "nurse_visit",
+          "start": "2021-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-07T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-07T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "date": "2021-10-07T15:40",
+              "author": "RN",
+              "body": "Came after school for flu shot. Feels well, no fever. Not pregnant per pt. No prior vaccine reactions.\nQuadrivalent influenza 0.5 mL IM left deltoid. VIS given. Tolerated; waited 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "pharmacy",
+          "start": "2021-11-09T17:45",
+          "reason": "COVID booster given at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-09T17:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization notice",
+              "date": "2021-11-10T08:00",
+              "author": "pharmacy",
+              "body": "Immunization administered at community pharmacy.\nPatient: Wanda Ortiz, DOB 06/25/1990.\nVaccine: Pfizer-BioNTech COVID-19 vaccine, booster dose, 0.3 mL IM right deltoid, 11/09/2021.\nScreening questions answered no. Reported to state registry."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-29a",
+          "kind": "portal_message",
+          "start": "2021-11-29T19:02",
+          "reason": "Pregnancy loss",
+          "conditions": [
+            {
+              "label": "Missed abortion",
+              "action": "diagnosed",
+              "onset": "2021-11-29",
+              "icd10": "O02.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Letting you know",
+              "date": "2021-11-29T19:02",
+              "author": "patient",
+              "body": "Hi, I wanted to tell you since you asked me to keep you posted. I found out I was pregnant at the start of the month and had my first ultrasound with my GYN today. There was no heartbeat and the baby measured small, so it stopped growing. They're doing a D&C on Thursday. I'm OK, just sad. Do I need anything from you before the procedure?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Letting you know",
+              "date": "2021-11-30T07:48",
+              "author": "PCP",
+              "body": "Wanda, I'm so sorry. Thank you for telling me. You don't need anything from us before Thursday; your GYN's team will handle the pre-procedure instructions. Please take a day or two off if you can.\n\nOur nurse will call you in a few weeks to check in. If you're having a hard time before then, message me any time."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "outside_records",
+          "start": "2021-12-13T09:30",
+          "reason": "Procedure note from gynecology",
+          "conditions": [
+            {
+              "label": "Missed abortion",
+              "action": "resolved",
+              "icd10": "O02.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Dilation and curettage",
+              "date": "2021-12-13T09:30",
+              "author": "gynecology",
+              "body": "Date of procedure: 12/02/2021.\nPreoperative diagnosis: missed abortion, 8 weeks by dates.\nPostoperative diagnosis: same.\nProcedure: suction dilation and curettage.\nAnesthesia: monitored anesthesia care with paracervical block.\nFindings: uterus anteverted, about 8-week size. Products of conception removed, tissue sent to pathology.\nComplications: none.\nDisposition: home the same day. Pelvic rest two weeks. Expect return of menses in 4 to 6 weeks. Follow-up as scheduled in June for cervical surveillance, sooner if heavy bleeding or fever."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "telephone",
+          "start": "2022-01-11T15:50",
+          "reason": "Check-in after pregnancy loss",
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse check-in",
+              "date": "2022-01-11T15:50",
+              "author": "RN",
+              "body": "Called per PCP request after D&C on 12/2. Pt reports she recovered without problems, bleeding stopped within the first week, no fever. Period came back early January, lighter than she is used to. Mood \"up and down over the holidays but better\". PHQ-2 1. Back at work, says the students keep her busy. Has her partner and her sister to talk to. Declines counseling referral for now, knows to reach out. Nothing further needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-27a",
+          "kind": "outside_records",
+          "start": "2022-06-27T13:15",
+          "reason": "Gynecology surveillance letter",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-06-16T10:40",
+              "text": "Liquid-based cytology. Specimen adequate, transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.\nHigh-risk HPV: not detected.",
+              "conclusion": "NILM. High-risk HPV not detected.",
+              "issued": "2022-06-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit: cervical surveillance",
+              "date": "2022-06-27T13:15",
+              "author": "gynecology",
+              "body": "Visit date: 06/16/2022\nRe: Wanda Ortiz, DOB 06/25/1990\n\nMs. Ortiz came in for her scheduled surveillance visit, now about a year and a half out from LEEP for CIN 3. Pathology at that time showed clear margins. Since then she has had no bleeding between periods, no unusual discharge and no pelvic pain. Her co-test last June was normal.\n\nHer question today was how often she will need testing from here on.\n\nHistory: HPV, CIN 3 treated as above. Septic abortion 2020 treated with antibiotics. Missed abortion with D&C 12/2021. Lap cholecystectomy 2016. No medications. No known drug allergies. Family history of type 2 diabetes in her mother, preeclampsia in a sister, hypertension in a paternal grandmother. Never smoker, no alcohol, teaches high school. Same partner for five years, no new partners.\n\nExam: external genitalia normal. Speculum: cervix with healed LEEP changes, no lesion, no discharge. Bimanual not tender.\n\nCo-test collected today. Result: NILM, high-risk HPV not detected.\n\nPlan: We reviewed the schedule after treatment of CIN 3: HPV-based co-testing yearly until there are three negative results in a row, then every three years for at least 25 years, even past 65. With today's result she has two consecutive negatives; next co-test June 2023.\n\nAllergies: NKDA. Thank you for sharing her care."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "annual_physical",
+          "start": "2022-08-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              75
+            ],
+            "hr": 71,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 64.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-08-09T08:40",
+              "resulted": "2022-08-09T08:55",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-09T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 314
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-08-09T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-09T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-08-09T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-09T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-08-09T09:25",
+              "author": "PCP",
+              "body": "Annual. Turned 32 in June.\n\nInterval: D&C in December for missed abortion, recovered. Saw GYN in June, co-test negative again; next one June 2023.\n\nShe brings up her periods: after the D&C they came back but have been much lighter, and she has had none since mid-June. Some crampy lower pelvic pain on and off. Not using contraception, not actively trying right now. Urine hCG today negative. No hot flashes, galactorrhea, headaches or weight change.\n\nMeds none. NKDA. FH and SH unchanged; still teaching, summer off.\n\nExam: vitals per flowsheet. Well appearing. Neck no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Skin normal, no acne or hirsutism. No edema.\n\nPHQ-9 2.\n\nA/P\n1. Lighter periods after D&C, now about 2 months without one; hCG negative. Could be a slow return, but the timing after a curettage matters. She would rather have her GYN look into it since they did the procedure. Will send our note. If no period by the time she sees them, they should evaluate.\n2. Health maintenance - CBC, BMP, TSH today. Flu shot in October. Next COVID booster when the updated one is out.\n\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-11a",
+          "kind": "portal_message",
+          "start": "2022-08-11T12:35",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your physical",
+              "date": "2022-08-11T12:35",
+              "author": "PCP",
+              "body": "Hi Wanda, your blood count, kidney function, sugar and thyroid are all normal. The thyroid being normal is one less thing to think about with your periods. I sent my note over to your GYN; please call them to move up your visit if you can rather than waiting for December."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs from your physical",
+              "date": "2022-08-11T20:10",
+              "author": "patient",
+              "body": "Thank you. I called and they said the soonest non-urgent opening is December 9 but they put me on the cancellation list."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "date": "2022-10-04T15:50",
+              "author": "MA",
+              "body": "Flu vaccine, quadrivalent, 0.5 mL IM L deltoid. Afebrile, no allergies, no reaction to past flu shots. VIS reviewed. Pt left in good condition after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-21a",
+          "kind": "pharmacy",
+          "start": "2022-10-21T16:30",
+          "reason": "Bivalent COVID booster at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-21T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization notice",
+              "date": "2022-10-22T08:00",
+              "author": "pharmacy",
+              "body": "Pfizer-BioNTech COVID-19 vaccine, bivalent booster, 0.3 mL IM left deltoid, given 10/21/2022 at community pharmacy. No immediate reaction observed. Registry updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "outside_records",
+          "start": "2022-12-19T10:20",
+          "reason": "Gynecology letter: amenorrhea workup",
+          "conditions": [
+            {
+              "label": "Asherman syndrome",
+              "action": "diagnosed",
+              "onset": "2022-06-01",
+              "icd10": "N85.6"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-09T09:20",
+              "resulted": "2022-12-09T15:30",
+              "results": [
+                {
+                  "test": "Choriogonadotropin.beta subunit",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "text": "<5"
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 7.2
+                },
+                {
+                  "test": "Luteinizing hormone",
+                  "loinc": "10501-5",
+                  "unit": "m[IU]/mL",
+                  "value": 6.8
+                },
+                {
+                  "test": "Prolactin",
+                  "value": 14
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Hysterosalpingogram",
+              "loinc": "25022-5",
+              "performed": "2022-12-09T13:00",
+              "text": "Indication: secondary amenorrhea after uterine curettage.\nTechnique: after sterile preparation, the cervix was cannulated and water-soluble contrast instilled under fluoroscopy. Patient tolerated the procedure.\nFindings: the cervical canal opacifies normally. There is a filling defect within the uterine cavity. Contrast passes only scantly into the proximal portions of both fallopian tubes. No contrast extravasation.",
+              "conclusion": "Filling defect in the uterine cavity with scant opacification of the proximal fallopian tubes, consistent with intrauterine adhesions in this clinical setting.",
+              "issued": "2022-12-09T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit: absent periods",
+              "date": "2022-12-19T10:20",
+              "author": "gynecology",
+              "body": "Visit date: 12/09/2022\nRe: Wanda Ortiz, DOB 06/25/1990\n\nMs. Ortiz returns six months after her surveillance visit, this time because she has not had a period since June, with intermittent pelvic pain. Her cycles were regular until the suction D&C for missed abortion a year ago. Since then each period has been lighter, and cramping has been worse, until they stopped altogether. Of note, she also had a septic abortion two years ago, treated with antibiotics.\n\nCIN 3 history is unchanged; co-test in June was negative.\n\nMeds: none. Allergies: no known drug allergies.\n\nExam: abdomen soft, not tender. Pelvic: uterus of normal size, no adnexal masses, no tenderness.\n\nLabs today: beta-hCG <5 mIU/mL. FSH 7.2 mIU/mL, LH 6.8 mIU/mL, prolactin 14 ng/mL, TSH 2.1 mIU/L, all within range.\n\nHysterosalpingogram today shows a filling defect in the cavity and only scant passage of contrast into the proximal tubes.\n\nImpression: Asherman syndrome (intrauterine adhesions) after curettage, with normal pituitary, ovarian and thyroid hormone results.\n\nPlan: operative hysteroscopy with lysis of adhesions, scheduled for January 2023. Discussed that pregnancy is often possible afterward and that she should wait for our clearance before trying. Cervical co-test due June 2023."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "portal_message",
+          "start": "2022-12-20T21:14",
+          "reason": "Question about new diagnosis",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Asherman?",
+              "date": "2022-12-20T21:14",
+              "author": "patient",
+              "body": "Hi doctor, my GYN says I have Asherman syndrome from the D&C and they're doing a hysteroscopy in January to fix the scar tissue. I've been reading online and now I'm scared I can't have kids. Did they send you the report? Is this something you've seen people get through?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Asherman?",
+              "date": "2022-12-21T07:30",
+              "author": "PCP",
+              "body": "Hi Wanda, yes, I have the letter and the X-ray report. Your hormone levels were all normal, which is good news: it means your ovaries and thyroid are doing their job and the problem is the scar tissue inside the uterus. Hysteroscopy to remove those adhesions is the standard treatment, and many women do go on to have healthy pregnancies afterward. Your GYN is the right person for the details on your odds.\n\nPlease try to stay off the forums over break. If you'd like to talk it over in person, I can see you."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-30a",
+          "kind": "outside_records",
+          "start": "2023-01-30T11:45",
+          "reason": "Operative report from gynecology",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Operative hysteroscopy with lysis of adhesions",
+              "date": "2023-01-30T11:45",
+              "author": "gynecology",
+              "body": "Date of surgery: 01/19/2023\nPreoperative diagnosis: Asherman syndrome, secondary amenorrhea.\nPostoperative diagnosis: intrauterine adhesions.\nProcedure: operative hysteroscopy with lysis of intrauterine adhesions.\nAnesthesia: general (LMA).\n\nFindings: cervix dilated without difficulty. Adhesions within the uterine cavity, divided sharply with hysteroscopic scissors. At the end of the procedure the cavity had a normal contour.\nFluid deficit and blood loss minimal. No complications.\n\nDisposition: discharged home from recovery. Office follow-up in 6 weeks; nothing in the vagina for 2 weeks. Call for fever, heavy bleeding or worsening pain.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "outside_records",
+          "start": "2023-03-14T09:10",
+          "reason": "Gynecology follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology follow-up after hysteroscopy",
+              "date": "2023-03-14T09:10",
+              "author": "gynecology",
+              "body": "Visit date: 03/07/2023\n\nSeen 7 weeks after hysteroscopic adhesiolysis. Her periods have returned, two cycles so far, with flow she describes as back to what she had before the D&C and much less cramping. No fever or discharge after surgery.\n\nExam: abdomen benign, uterus normal size and nontender.\n\nAssessment: Asherman syndrome, treated; menses restored.\n\nPlan: no restriction on trying to conceive from here. Early prenatal care once pregnant. Next cervical co-test June 2023. Allergies: NKDA. Medications: none."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-22a",
+          "kind": "outside_records",
+          "start": "2023-06-22T14:00",
+          "reason": "Cervical co-test result",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-06-13T09:50",
+              "text": "Liquid-based cytology. Satisfactory for evaluation; endocervical/transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.\nHigh-risk HPV: not detected.",
+              "conclusion": "NILM. High-risk HPV not detected.",
+              "issued": "2023-06-19T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Co-test result letter",
+              "date": "2023-06-22T14:00",
+              "author": "gynecology",
+              "body": "Dear Ms. Ortiz,\n\nYour Pap test and HPV test from June 13 are both normal. This is your third negative co-test in a row since your LEEP. You can now move to testing every three years. Your next co-test is due in June 2026. Please keep seeing a clinician every year for your general health.\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2023-07-06a",
+          "kind": "portal_message",
+          "start": "2023-07-06T08:12",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2023-06-01",
+              "note": "LMP 06/01/2023"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Good news",
+              "date": "2023-07-06T08:12",
+              "author": "patient",
+              "body": "Positive test this week!! First day of my last period was June 1. GYN said to call their OB group once it turned positive so I have an intake visit there on the 20th. Do I still come in for my physical in August?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Good news",
+              "date": "2023-07-06T12:40",
+              "author": "PCP",
+              "body": "Congratulations, Wanda! Yes, keep the August physical; it's good for us to see you and it won't duplicate what OB does. In the meantime let your OB know about the D&C and hysteroscopy history at intake (they will probably already have it)."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "annual_physical",
+          "start": "2023-08-08T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, early pregnancy",
+          "vitals": {
+            "bp": [
+              118,
+              70
+            ],
+            "hr": 75,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 64.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-08T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-08T10:05",
+              "author": "PCP",
+              "body": "Annual. 33, about 9-10 weeks pregnant (LMP 6/1/23). Intake at the OB group done 7/20 with prenatal labs and a dating scan; she says everything was normal and they will send records.\n\nInterval history: Asherman syndrome diagnosed by GYN in December after the 2021 D&C (amenorrhea, HSG with filling defect, hormones normal). Hysteroscopic adhesiolysis 1/19/23, periods came back normal. Co-test June 2023 negative - third in a row, now every 3 years.\n\nFeels nauseated mornings, keeping food down. No bleeding or cramping.\n\nMeds: none. NKDA.\nSH: still teaching, back on 8/28. Partner thrilled. No alcohol, never smoker.\n\nExam: vitals per flowsheet. Well. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema.\nPHQ-9 1.\n\nA/P\n1. Pregnancy, ~10 wks - care with OB. Flu and COVID vaccines this fall are recommended in pregnancy; Tdap at 27-36 weeks, can do here or at OB.\n2. Hx Asherman, treated - OB aware.\n3. Hx CIN 3 - next co-test June 2026.\n4. No labs today, prenatal panel just done.\n\nRTC 1 yr; will see her for vaccines."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T10:30",
+          "reason": "Prenatal records from OB",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB prenatal summary, first trimester",
+              "date": "2023-09-26T10:30",
+              "author": "obstetrics",
+              "body": "Prenatal record summary sent at patient request.\n\nG3P0020, LMP 06/01/2023, EDD 03/07/2024 confirmed by first-trimester ultrasound (single live intrauterine pregnancy, size equals dates).\n\nPrenatal panel 07/20/2023: blood counts normal; rubella immune; hepatitis B surface antigen, HIV and syphilis screens negative; urine culture no growth. Early glucose screen normal. First-trimester genetic screening low risk.\n\nHistory reviewed: LEEP for CIN 3 2021; septic abortion 2020; D&C for missed abortion 2021; Asherman syndrome treated by hysteroscopy 01/2023; laparoscopic cholecystectomy 2016.\n\nMeds: none. Allergies: NKDA. Blood pressure normal at each visit.\nNext: anatomy ultrasound at 20 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "nurse_visit",
+          "start": "2023-10-05T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine in pregnancy",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-05T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-05T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "date": "2023-10-05T15:45",
+              "author": "RN",
+              "body": "18 weeks pregnant, feeling well, nausea resolved. No fever. Inactivated quadrivalent influenza vaccine 0.5 mL IM R deltoid (preservative-free syringe). Tolerated. Plans to get the updated COVID shot at her pharmacy next week."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "pharmacy",
+          "start": "2023-10-12T17:10",
+          "reason": "Updated COVID vaccine at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-12T17:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization notice",
+              "date": "2023-10-13T08:00",
+              "author": "pharmacy",
+              "body": "Pfizer-BioNTech COVID-19 vaccine 2023-2024 formula, 0.3 mL IM left deltoid, administered 10/12/2023. Patient reported pregnancy, second trimester. No adverse event observed."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-06a",
+          "kind": "outside_records",
+          "start": "2023-11-06T13:20",
+          "reason": "OB anatomy ultrasound",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB ultrasound, anatomy survey",
+              "date": "2023-11-06T13:20",
+              "author": "obstetrics",
+              "body": "Exam date: 10/19/2023. Gestational age 20w0d by dates.\nSingle live intrauterine pregnancy, cephalic. Fetal biometry consistent with dates. Fetal anatomy survey complete and normal. Placenta posterior fundal, clear of the cervical os. Amniotic fluid normal. Cervical length normal.\nImpression: normal anatomy survey."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "nurse_visit",
+          "start": "2024-01-09T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Tdap in pregnancy",
+          "vitals": {
+            "bp": [
+              133,
+              71
+            ],
+            "hr": 72
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-01-09T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-01-09T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Tdap vaccine",
+              "date": "2024-01-09T15:40",
+              "author": "RN",
+              "body": "31w3d by LMP. OB asked that she get Tdap where convenient; came here after school. Feels well, good fetal movement, no headaches, swelling or bleeding. BP and pulse per flowsheet, normal.\nTdap 0.5 mL IM L deltoid. VIS given. Tolerated well. Copy faxed to OB."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "ed_visit",
+          "start": "2024-03-05T11:20",
+          "end": "2024-03-05T16:45",
+          "service": "Emergency Medicine",
+          "reason": "Positional headache after cesarean",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved"
+            },
+            {
+              "label": "Postdural puncture headache",
+              "action": "diagnosed",
+              "onset": "2024-03-04",
+              "icd10": "O89.4"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-cesarean pain"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-cesarean pain"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              77
+            ],
+            "hr": 69,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-03-05T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department physician record",
+              "date": "2024-03-06T07:30",
+              "author": "emergency medicine",
+              "body": "ED visit 03/05/2024\n\nCC: headache since yesterday, three days after C-section.\n\nHPI: 33-year-old woman, postpartum day 3 after cesarean delivery under epidural on 3/2, discharged home 3/4. History of CIN 3 (treated) and Asherman syndrome. About 48 hours after surgery she developed a severe, pounding headache across the forehead and the back of the head. It is much worse within minutes of sitting or standing and eases when she lies flat. Nauseated, light hurts her eyes. No fever, no neck pain, no visual loss, no weakness or numbness, no seizure. Breastfeeding.\n\nMeds: ibuprofen and acetaminophen as needed from discharge. Allergies: NKDA.\nFH: sister had preeclampsia. SH: teacher, no tobacco or alcohol.\n\nExam: afebrile, vitals within normal limits throughout (see flowsheet). Uncomfortable when sitting up, better supine. Fundi normal bilaterally. Neck supple, no meningismus. No rash. Neurologic exam normal: alert, cranial nerves intact, strength and sensation symmetric, normal gait. Low transverse incision clean and dry. Lungs clear, heart regular. Calves soft.\n\nMDM: classic postural headache after neuraxial anesthesia; blood pressure normal and no neurological findings. Postdural puncture headache. Obstetric anesthesia contacted by phone and agreed with conservative care first.\n\nED course: 1 L lactated Ringer's IV, acetaminophen 1,000 mg PO and caffeine 300 mg PO. Headache improved lying flat.\n\nDx: postdural puncture headache.\nDispo: home. Lie flat as much as possible, fluids, caffeinated drinks up to 2-3 a day (fine with breastfeeding at that amount), acetaminophen and ibuprofen as at discharge. Return for fever, stiff neck, confusion, weakness, vision change, or no improvement in 48-72 hours (anesthesia can offer a blood patch). Follow up with primary care this week."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-03-07a",
+          "kind": "telephone",
+          "start": "2024-03-07T10:05",
+          "reason": "Follow-up call after ED visit",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "date": "2024-03-07T10:05",
+              "author": "RN",
+              "body": "ED record received. Spoke with pt. Headache still there when upright but noticeably less than Tuesday, nausea gone. Staying horizontal as much as she can with her partner home on leave and her mother helping. Afebrile. No stiff neck, no vision change. Feeding and wet diapers fine per pt. Booked video visit with PCP 3/12. Reviewed ED return precautions; she has the anesthesia number if it worsens."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "outside_records",
+          "start": "2024-03-11T14:20",
+          "reason": "Delivery records",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2024-03-11T14:20",
+              "author": "obstetrics",
+              "body": "Admission 03/02/2024. Discharge 03/04/2024.\n\nG3P0020 at 39w1d. Labor epidural placed for analgesia, then low transverse cesarean delivery under epidural anesthesia on 03/02/2024. Liveborn infant with normal Apgar scores, to well-baby nursery.\nUncomplicated postoperative course. Afebrile; blood pressures normal throughout. Ambulating, tolerating diet, voiding. Breastfeeding established.\n\nDischarge medications: ibuprofen 600 mg every 6 hours as needed, acetaminophen 1,000 mg every 6 hours as needed.\nAllergies: NKDA.\n\nFollow-up: incision check in 2 weeks; postpartum visit at 6 weeks."
+            },
+            {
+              "type": "Letter",
+              "title": "PCP review of delivery records",
+              "date": "2024-03-11T16:00",
+              "author": "PCP",
+              "body": "Reviewed delivery summary and ED record. Uncomplicated cesarean 3/2, then ED 3/5 for postural headache after the epidural, treated conservatively. Video visit 3/12."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "telehealth_visit",
+          "start": "2024-03-12T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for headache",
+          "conditions": [
+            {
+              "label": "Postdural puncture headache",
+              "action": "resolved",
+              "icd10": "O89.4"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-03-12T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-03-12T13:25",
+              "author": "PCP",
+              "body": "Video visit; patient at home, baby asleep on her chest for most of it. Identity confirmed, consent for video given.\n\nS: 10 days after cesarean (3/2). Seen in ED 3/5 for a positional headache after the epidural: IV fluids, acetaminophen, caffeine. Headache eased over the next few days and has been completely gone since Sunday, upright or not. No fever, neck stiffness or vision change. Incision fine. Breastfeeding going well, latch good. Sleeping in pieces. Mood \"tired but happy\"; no intrusive thoughts.\nPHQ-9 3.\n\nO: well appearing on video, sitting upright comfortably, speech normal, moves all limbs normally.\n\nA/P\n1. Postdural puncture headache - resolved without blood patch.\n2. Postpartum, breastfeeding - incision check with OB next week, postpartum visit in April. Discussed when to call about mood.\n\nAnnual in August."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-19a",
+          "kind": "outside_records",
+          "start": "2024-04-19T09:40",
+          "reason": "OB postpartum visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Postpartum visit",
+              "date": "2024-04-19T09:40",
+              "author": "obstetrics",
+              "body": "Visit date 04/12/2024. Six weeks after cesarean delivery.\n\nRecovering well. Postdural puncture headache in the first postpartum week resolved with conservative care. Lochia finished. Exclusively breastfeeding. Mood good; depression screen negative. Blood pressure normal. Weight 70 kg.\nExam: incision well healed. Abdomen soft. Pelvic exam normal.\n\nPlan: routine care. Cervical co-test next due June 2026. Discussed waiting at least 18 months between delivery and the next birth.\nAllergies: NKDA. Meds: none."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "annual_physical",
+          "start": "2024-08-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              75
+            ],
+            "hr": 65,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 67.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-08-13T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 304
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-13T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-13T09:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 86
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 116
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 109
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T09:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-13T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-13T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-13T09:20",
+              "author": "PCP",
+              "body": "Physical. 34 as of June. Baby is 5 months, still nursing, starting a bottle at daycare for the fall.\n\nSince last year: cesarean 3/2/24, postdural headache that resolved in a week. Postpartum visit normal.\n\nNo complaints. Sleep better now that the baby sleeps 6 hours. Wants to know if her weight is back where it should be - it is close to her pre-pregnancy weight.\n\nMeds: none. NKDA.\nSH: back to the classroom later this month. Partner works days. No tobacco or alcohol.\n\nExam: vitals per flowsheet. Well. Neck, thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, low transverse scar healed. No edema. Skin clear.\nPHQ-9 2, GAD-7 3.\n\nA/P\n1. Health maintenance - CBC, CMP, lipids, TSH, A1c (FH diabetes). Flu and COVID in October. Tdap up to date.\n2. Hx CIN 3 - co-test June 2026 with GYN.\n3. Hx Asherman - no current issues.\n\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-15a",
+          "kind": "portal_message",
+          "start": "2024-08-15T13:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2024-08-15T13:05",
+              "author": "PCP",
+              "body": "Hi Wanda, all of your labs are normal: no anemia after the delivery, normal kidney and liver tests, normal thyroid, cholesterol fine and A1c normal. See you for flu shot season."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "nurse_visit",
+          "start": "2024-09-26T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-09-27a",
+          "kind": "portal_message",
+          "start": "2024-09-27T09:05",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "We missed you",
+              "date": "2024-09-27T09:05",
+              "author": "front desk",
+              "body": "Hi Wanda, we missed you for your flu shot appointment yesterday afternoon. No problem at all. You can reply here or call to rebook; nurse visits are open most weekdays after 3."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: We missed you",
+              "date": "2024-09-27T12:30",
+              "author": "patient",
+              "body": "So sorry, daycare pickup ran late and I completely forgot. Can I come Tuesday the 8th after school?"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "date": "2024-10-08T15:50",
+              "author": "MA",
+              "body": "Trivalent influenza 0.5 mL IM R deltoid. Breastfeeding, no contraindication. Tolerated. Pt will get COVID vaccine at pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "pharmacy",
+          "start": "2024-10-17T16:50",
+          "reason": "Updated COVID vaccine at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-17T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization notice",
+              "date": "2024-10-18T08:00",
+              "author": "pharmacy",
+              "body": "COVID-19 vaccine (Pfizer-BioNTech, 2024-2025 formula) 0.3 mL IM, left deltoid, 10/17/2024. Lot and expiration in pharmacy record. No adverse reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "portal_message",
+          "start": "2024-11-19T20:40",
+          "reason": "Question about next pregnancy",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Trying again?",
+              "date": "2024-11-19T20:40",
+              "author": "patient",
+              "body": "Quick question. We're thinking about trying for a second soon because of my age and how long it took last time. Is there anything I should do first? And can I try a regular delivery next time or am I stuck with a C-section?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Trying again?",
+              "date": "2024-11-20T07:55",
+              "author": "PCP",
+              "body": "Good questions. From my side your vaccines are current and your labs in August were all normal.\n\nWhether to try for a vaginal birth after a cesarean is a decision to make with your OB, who knows the details of your surgery; many women can. They will also talk with you about spacing, since a shorter gap between a cesarean and the next delivery carries some extra risk. Worth a call to them before you start trying."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "portal_message",
+          "start": "2025-01-13T06:48",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2024-12-08",
+              "note": "LMP 12/08/2024"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Number two",
+              "date": "2025-01-13T06:48",
+              "author": "patient",
+              "body": "Morning! Positive again, faster this time. LMP was December 8. OB intake is booked for the end of the month. They said they would talk about a trial of labor once I'm further along. Just keeping you in the loop."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Number two",
+              "date": "2025-01-13T12:15",
+              "author": "PCP",
+              "body": "Congratulations to you both! Thanks for letting me know. OB will take the lead. You already had your flu and COVID shots this season, so you're set there; Tdap again in the third trimester, here or at OB."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "outside_records",
+          "start": "2025-04-08T10:15",
+          "reason": "Prenatal records from OB",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB prenatal summary, first trimester",
+              "date": "2025-04-08T10:15",
+              "author": "obstetrics",
+              "body": "G4P1021, LMP 12/08/2024, EDD 09/14/2025, dates confirmed by first-trimester ultrasound: single live intrauterine pregnancy.\n\nPrenatal panel 01/30/2025 normal: blood counts normal, rubella immune, hepatitis B, HIV and syphilis screens negative, urine culture negative. Early glucose screen normal. Genetic screening low risk.\n\nHistory: prior low transverse cesarean 03/2024 (uncomplicated, postdural puncture headache afterward). Asherman syndrome treated 01/2023. CIN 3 s/p LEEP 2021, co-tests negative. Delivery interval about 18 months; she is interested in a trial of labor after cesarean, counseled, to revisit in the third trimester.\n\nBP normal at booking. Meds: none. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-28a",
+          "kind": "outside_records",
+          "start": "2025-07-28T15:30",
+          "reason": "OB update: GDM and gestational hypertension",
+          "conditions": [
+            {
+              "label": "Gestational diabetes mellitus in pregnancy, diet controlled",
+              "action": "diagnosed",
+              "onset": "2025-06-16",
+              "icd10": "O24.410"
+            },
+            {
+              "label": "Gestational hypertension",
+              "action": "diagnosed",
+              "onset": "2025-07-14",
+              "icd10": "O13.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "labetalol hydrochloride 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "gestational hypertension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB progress summary, second and third trimester",
+              "date": "2025-07-28T15:30",
+              "author": "obstetrics",
+              "body": "Prenatal update to primary care.\n\n06/16/2025, 27w1d: gestational diabetes diagnosed on glucose tolerance testing. Seen by diabetes education; diet and glucose log. Readings at target on diet alone; no medication needed.\n\n07/14/2025, 31w1d: blood pressures in the hypertensive range on two checks several hours apart. No headache, visual change or right upper quadrant pain. Preeclampsia labs normal, urine protein negative. Diagnosis: gestational hypertension. Started labetalol 200 mg by mouth twice daily. Twice-weekly fetal testing reassuring; growth scan appropriate.\n\nHer skin has darkened on the face over the last few months; reassured, sun protection.\n\nPlan: weekly visits, home BP log, delivery planning at 37-39 weeks depending on pressures. TOLAC planned.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-31a",
+          "kind": "nurse_visit",
+          "start": "2025-07-31T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Tdap in pregnancy",
+          "vitals": {
+            "bp": [
+              121,
+              78
+            ],
+            "hr": 69
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-07-31T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-07-31T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Tdap vaccine",
+              "date": "2025-07-31T10:40",
+              "author": "RN",
+              "body": "33w4d. Here for Tdap; OB office was out of stock this week. On labetalol 200 BID for gestational hypertension, diet-controlled GDM. BP per flowsheet, at goal on labetalol; denies headache, vision change, epigastric pain. Good fetal movement.\nTdap 0.5 mL IM R deltoid. Tolerated. Faxed to OB. Annual physical on 8/12 - pt may move it, OB visits weekly now."
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              80
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "annual_physical",
+          "start": "2025-08-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "outside_records",
+          "start": "2025-09-24T11:00",
+          "reason": "Delivery records",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved"
+            },
+            {
+              "label": "Gestational diabetes mellitus in pregnancy, diet controlled",
+              "action": "resolved",
+              "icd10": "O24.410"
+            },
+            {
+              "label": "Gestational hypertension",
+              "action": "resolved",
+              "icd10": "O13.3"
+            },
+            {
+              "label": "History of gestational diabetes",
+              "action": "history",
+              "onset": "2025-06-16"
+            },
+            {
+              "label": "History of gestational hypertension",
+              "action": "history",
+              "onset": "2025-07-14",
+              "icd10": "Z87.59"
+            },
+            {
+              "label": "Exclusive breastfeeding",
+              "action": "diagnosed",
+              "onset": "2025-09-14",
+              "icd10": "Z39.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "labetalol hydrochloride 200 MG Oral Tablet",
+              "action": "stop",
+              "reason": "delivered"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2025-09-24T11:00",
+              "author": "obstetrics",
+              "body": "Admission 09/13/2025 in spontaneous labor. Delivery 09/14/2025. Discharge 09/16/2025.\n\nG4P1021 at 40w0d, prior low transverse cesarean, pregnancy complicated by diet-controlled gestational diabetes and gestational hypertension on labetalol.\n\nSuccessful vaginal birth after cesarean. Midline episiotomy, which extended into a third-degree perineal laceration, repaired in the delivery room in layers. Liveborn infant, normal Apgars, healthy, rooming in.\n\nPostpartum: labetalol stopped after delivery; blood pressures normal off medication during the stay. Postpartum glucose checks normal; gestational diabetes resolved. Exclusively breastfeeding. Sitz baths and perineal care for the repair; voiding and passing stool normally at discharge.\n\nDischarge medications: none prescribed beyond over-the-counter acetaminophen as needed.\nAllergies: NKDA.\n\nFollow-up: BP check and perineal check per OB; postpartum visit at 6 weeks. 75-g glucose tolerance test after the postpartum period, or yearly glucose screening with primary care."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "portal_message",
+          "start": "2025-09-30T14:10",
+          "reason": "Delivery update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "She's here",
+              "date": "2025-09-30T14:10",
+              "author": "patient",
+              "body": "Baby girl arrived 9/14 and I got my VBAC! I had a bad tear that they stitched up right away, so sitting is not fun, but we are both doing well and she's nursing like a champ. Off the labetalol too. OB said they sent you the papers."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: She's here",
+              "date": "2025-09-30T17:45",
+              "author": "PCP",
+              "body": "Congratulations, Wanda! I have the delivery summary. Rest as much as two little ones allow. Because of the high blood pressure in pregnancy, please keep an eye out over the next several weeks: a bad headache, vision changes, swelling of the face or hands, or shortness of breath should be checked the same day, even after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-13a",
+          "kind": "ed_visit",
+          "start": "2025-10-13T09:40",
+          "end": "2025-10-13T13:20",
+          "service": "Emergency Medicine",
+          "reason": "Severe headache and blurred vision 4 weeks postpartum",
+          "conditions": [
+            {
+              "label": "Postpartum preeclampsia with severe features",
+              "action": "diagnosed",
+              "onset": "2025-10-13",
+              "icd10": "O14.15"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-13T09:48",
+              "bp": [
+                165,
+                105
+              ],
+              "hr": 88,
+              "rr": 18,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-13T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-13T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-10-13T10:15",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-13T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department physician record",
+              "date": "2025-10-17T08:15",
+              "author": "emergency medicine",
+              "body": "Visit 10/13/2025, 09:40.\n\nCC: severe headache, blurry vision.\n\nHPI: 35-year-old, four weeks after a vaginal birth after cesarean (9/14), discharged home with a healthy baby. This pregnancy had gestational hypertension treated with labetalol, stopped at delivery. Headache came on suddenly this morning and has kept getting worse; vision blurry. She says it is nothing like the headache she had after her cesarean in 2024, which was worse standing and better lying down; this one does not change with position, and she has never had one like it. Other history: Asherman syndrome, CIN 3 treated with LEEP. Breastfeeding.\n\nMeds: none. Allergies: NKDA. FH: sister with preeclampsia.\n\nExam: BP 165/105 on arrival. Alert, oriented, uncomfortable. Fundi without papilledema. Reflexes brisk throughout. 2+ pitting edema of both lower legs. Neuro: left-sided weakness; speech clear. Heart regular. Lungs clear. Abdomen soft, nontender.\n\nLabs: Hgb 12.5, platelets 210K, creatinine 0.9, AST 30, ALT 28. UA protein 2+.\n\nAssessment: postpartum preeclampsia with severe features (severe-range BP, headache, visual symptoms).\n\nED course: IV labetalol given for severe-range pressure with repeat dosing per protocol; magnesium sulfate loading dose started for seizure prophylaxis. Obstetrics at bedside.\n\nDisposition: admitted to the obstetric service."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-13b",
+          "kind": "hospital_admission",
+          "start": "2025-10-13T13:20",
+          "end": "2025-10-16T11:30",
+          "service": "Obstetrics",
+          "reason": "Postpartum preeclampsia with severe features",
+          "medications": [
+            {
+              "drug_text": "24 HR nifedipine 30 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 30,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "postpartum preeclampsia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-14T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-14T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-13T13:20"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-16T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-10-17T08:20",
+              "author": "obstetrics",
+              "body": "Admitted 10/13/2025 from the ED. Discharged 10/16/2025.\n\nDiagnosis: postpartum preeclampsia with severe features, 4 weeks after vaginal delivery.\n\nCourse: magnesium sulfate infusion continued for 24 hours after the loading dose without signs of toxicity. Severe-range pressures in the first hours treated with IV labetalol; oral nifedipine ER 30 mg daily started 10/13; no further severe-range pressures after the first evening. Headache resolved overnight; vision back to normal. Left-sided weakness resolved by the morning of 10/14; neurological exam normal on 10/14 and at discharge. Repeat blood counts, creatinine and liver enzymes stable. Breastfeeding continued; lactation support provided; nifedipine is compatible.\n\nDischarge medication: nifedipine ER 30 mg by mouth daily.\nAllergies: NKDA.\n\nInstructions: home blood pressure twice daily; call for BP 160/110 or higher, headache, vision change, shortness of breath or chest pain. BP check with primary care within one week; OB postpartum visit as scheduled 11/03."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "telephone",
+          "start": "2025-10-17T09:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional care call",
+              "date": "2025-10-17T09:30",
+              "author": "RN",
+              "body": "Discharge summary and ED record received this morning. Called pt day 1 after discharge. Feels \"like myself again\". No headache, vision clear, no weakness, no chest pain or SOB. Taking nifedipine ER 30 daily, first dose each morning. Home cuff readings since discharge mostly 130s over 80s. Legs still a little swollen, improving. Breastfeeding. Partner and her mother helping with the toddler and the baby.\nMed list reconciled: nifedipine only.\nAppt Mon 10/20 with PCP. Reviewed when to call 911 vs us."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "office_visit",
+          "start": "2025-10-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge follow-up, postpartum preeclampsia",
+          "vitals": {
+            "bp": [
+              134,
+              86
+            ],
+            "hr": 74,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 71.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-20T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-20T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-10-20T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-20T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-10-20T09:30",
+              "author": "PCP",
+              "body": "Hospital follow-up, 5 weeks postpartum.\n\nTimeline: VBAC 9/14 with episiotomy that extended to a 3rd-degree tear, repaired. Pregnancy had diet-controlled GDM and gestational HTN on labetalol, stopped at delivery. 10/13 ED: sudden severe headache and blurry vision, BP 165/105, brisk reflexes, leg edema, left-sided weakness, protein 2+, counts/creatinine/LFTs normal. Admitted for postpartum preeclampsia with severe features; magnesium 24 h, IV labetalol, started nifedipine ER 30. Weakness gone by the next morning. Home 10/16.\n\nToday: no headache since the 14th. Vision normal. No weakness, numbness, or trouble with words. No SOB, chest pain, RUQ pain. Swelling in her legs going down. Home readings 120s-130s/80s. Perineum still sore with long sitting, healing per her. Breastfeeding exclusively. Sleep fragmented with two little ones; mood OK. PHQ-9 4.\n\nMeds: nifedipine ER 30 mg daily. NKDA.\n\nExam: BP 134/86, other vitals per flowsheet. Weight 71 kg. Alert, well. Fundi not examined. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Trace ankle edema. Neuro: strength 5/5 and symmetric in all four limbs, reflexes 2+ and symmetric, no clonus, gait normal, speech fluent.\n\nA/P\n1. Postpartum preeclampsia with severe features - improving, BP at goal on nifedipine. Repeat CBC, CMP today. Continue home BP twice daily, send log Friday. Nurse BP check next Monday; likely taper off if staying in the 110s-120s. Precautions reviewed again.\n2. Exclusive breastfeeding - nifedipine fine.\n3. Hx GDM - needs glucose testing after the postpartum period; will do A1c at the January visit.\n4. 3rd-degree laceration - OB visit 11/3.\n5. Longer term: preeclampsia and gestational HTN raise her later risk of hypertension and heart disease; yearly BP, lipids and glucose. Will discuss more at 3 months.\n\nRTC: nurse visit 10/27; PCP mid-January."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              86
+            ],
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "portal_message",
+          "start": "2025-10-21T11:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Monday's labs",
+              "date": "2025-10-21T11:50",
+              "author": "PCP",
+              "body": "Hi Wanda, your blood counts, kidney and liver tests from yesterday are all normal, including the platelets. That fits with you recovering well. Keep up the home readings and we'll see you for the nurse check on Monday."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "nurse_visit",
+          "start": "2025-10-27T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure check",
+          "medications": [
+            {
+              "drug_text": "24 HR nifedipine 30 MG Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "blood pressure normal"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              74
+            ],
+            "hr": 64
+          },
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "BP check",
+              "date": "2025-10-27T15:55",
+              "author": "RN",
+              "body": "BP check on nifedipine ER 30 daily, 6 weeks postpartum. BP 118/74 seated, L arm, after 5 min rest. HR per flowsheet. Home log since 10/20: all 110s to low 120s over 70s, no reading above 125/80. No headache, visual change, swelling now minimal.\nDiscussed with PCP, who reviewed log: OK to stop nifedipine. Pt informed in person."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "PCP addendum",
+              "date": "2025-10-27T16:10",
+              "author": "PCP",
+              "body": "Home and office readings normal for a week on nifedipine 30. Stop nifedipine. Continue home BP once daily for 2 weeks and send the log; restart and call if 150/100 or above or any headache or visual symptoms. OB aware via fax."
+            }
+          ],
+          "state": {
+            "bp": [
+              118,
+              74
+            ]
+          },
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-10-31a",
+          "kind": "portal_message",
+          "start": "2025-10-31T20:25",
+          "reason": "Home blood pressure log",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP off the nifedipine",
+              "date": "2025-10-31T20:25",
+              "author": "patient",
+              "body": "Four days off the medicine. All of my readings are 110s or low 120s on top and 70s on the bottom, even after trick or treating with a toddler in a pumpkin costume. No headaches. Should I keep going with the checks?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BP off the nifedipine",
+              "date": "2025-11-01T09:10",
+              "author": "PCP",
+              "body": "Those are excellent. Yes, please keep checking once a day until Nov 10, then you can drop to a couple of times a week. Good luck at your OB visit Monday."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "outside_records",
+          "start": "2025-11-10T13:30",
+          "reason": "OB postpartum visit",
+          "conditions": [
+            {
+              "label": "External anal sphincter injury",
+              "action": "diagnosed",
+              "onset": "2025-09-14",
+              "icd10": "K62.89"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Postpartum visit",
+              "date": "2025-11-10T13:30",
+              "author": "obstetrics",
+              "body": "Visit date: 11/03/2025\n\nPostpartum visit seven weeks after VBAC complicated by a midline episiotomy extending into a third-degree laceration, repaired at delivery. Readmitted 10/13 to 10/16 for postpartum preeclampsia with severe features; nifedipine since stopped by her primary care physician with normal pressures. She takes no medications now. History also of Asherman syndrome (treated) and CIN 3 after LEEP.\n\nNew concern: since delivery she has been unable to hold back gas and sometimes stool, mostly with coughing or exercise. No rectal bleeding.\n\nExclusively breastfeeding. Mood good. Allergies: NKDA.\n\nExam: BP normal. Perineal scar well healed. Anal sphincter tone decreased at rest, and the squeeze is asymmetric. On digital rectal exam a defect is palpable in the external anal sphincter.\n\nAssessment: external anal sphincter injury after obstetric laceration, with fecal and flatal incontinence.\n\nPlan: referral to pelvic floor physical therapy for strengthening with biofeedback. Daily fiber to keep stools formed. Reassess at 6 months postpartum; colorectal surgery referral if symptoms persist despite therapy. Contraception discussed."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "nurse_visit",
+          "start": "2025-11-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "vitals": {
+            "bp": [
+              122,
+              71
+            ]
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-12T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-12T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-11-12T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2025-11-12T15:45",
+              "author": "MA",
+              "body": "Flu (trivalent) 0.5 mL IM L deltoid and COVID-19 2025-26 Pfizer 0.3 mL IM R deltoid. Breastfeeding; both fine per PCP. Missed October because of the hospital stay. BP rechecked at pt request, normal. Tolerated both, no reaction during the wait."
+            }
+          ],
+          "measure": [
+            "bp"
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "outside_records",
+          "start": "2025-11-24T10:00",
+          "reason": "Pelvic floor physical therapy evaluation",
+          "procedures": [
+            {
+              "procedure": "Physical therapy evaluation, moderate complexity",
+              "performed": "2025-11-18T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pelvic floor physical therapy evaluation",
+              "date": "2025-11-24T10:00",
+              "author": "physical therapy",
+              "body": "Evaluation date: 11/18/2025. Referred by OB.\n\nDx: external anal sphincter injury after third-degree obstetric laceration (9/14/2025), with leakage of gas and some stool with coughing and exercise.\n\nSubjective: leakage several times a week, worse on days she does more lifting. Wears a liner. Stools mostly formed with daily fiber. Goals: no stool leakage, return to walking for exercise without worry.\n\nObjective: perineal scar healed. Reduced voluntary anal squeeze strength and endurance, asymmetric contraction, poor coordination with cough. Abdominal wall and low back screen unremarkable.\n\nAssessment: good candidate for pelvic floor strengthening with biofeedback.\n\nPlan: weekly sessions x 8-12 weeks: biofeedback-assisted sphincter strengthening, urge and cough strategies, home exercise program, bowel habit education. Will update OB and PCP at discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "portal_message",
+          "start": "2026-01-05T07:20",
+          "reason": "Work letter request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Letter for school",
+              "date": "2026-01-05T07:20",
+              "author": "patient",
+              "body": "Back to school today. HR is asking for a note so I can have a room and time to pump during my planning period and lunch. Could you write one?"
+            },
+            {
+              "type": "Letter",
+              "title": "Workplace lactation letter",
+              "date": "2026-01-05T12:30",
+              "author": "PCP",
+              "body": "To whom it may concern,\n\nWanda Ortiz is a patient of this practice. She is breastfeeding her infant and needs reasonable break time and a private space, other than a restroom, to express breast milk during the workday, about every three hours, for as long as she continues breastfeeding.\n\nPrimary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month follow-up, postpartum preeclampsia",
+          "conditions": [
+            {
+              "label": "Postpartum preeclampsia with severe features",
+              "action": "resolved",
+              "icd10": "O14.15"
+            },
+            {
+              "label": "History of preeclampsia",
+              "action": "history",
+              "onset": "2025-10-13"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              76
+            ],
+            "hr": 76,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 99,
+            "weight_kg": 69.0
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-01-13T16:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 88
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 110
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-13T16:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 94
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-13T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-13T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-13T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "facial hyperpigmentation since pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-01-13T16:05",
+              "author": "PCP",
+              "body": "Follow-up 3 months after postpartum preeclampsia (admitted 10/13-10/16, nifedipine stopped 10/27).\n\nInterval: home BPs normal since stopping, she stopped checking in December. No headaches or vision change. OB postpartum visit 11/3 found an external anal sphincter injury from the tear; in pelvic floor PT weekly with biofeedback, leakage of stool much less often, gas still sometimes. Daily fiber.\n\nExclusively breastfeeding, baby 4 months. Back at school since early January.\n\nNew: brown patches on both cheeks and forehead that started in the middle of the pregnancy and haven't faded. Not itchy. Uses a moisturizer with SPF 15. Wants to see dermatology about treatment.\n\nMeds: none. NKDA.\n\nExam: vitals per flowsheet, BP normal. Weight down since October. Symmetric brown patches on malar cheeks and forehead. Heart regular. Lungs clear. No edema. Neuro nonfocal.\nPHQ-9 3, GAD-7 3.\n\nA/P\n1. Postpartum preeclampsia with severe features - resolved, normotensive off meds. Moved to history. Counseled that preeclampsia and gestational HTN roughly double later cardiovascular risk: yearly BP, lipids, A1c here; home cuff a few times a month. Lipids, CMP, urine albumin today.\n2. Hx GDM - A1c today (postpartum screen); then every 1-3 years.\n3. External anal sphincter injury - continue PT; OB following.\n4. Facial hyperpigmentation - referral to dermatology. Better sunscreen in the meantime.\n5. Flu/COVID done in November.\n\nRTC annual in summer."
+            }
+          ],
+          "state": {
+            "bp": [
+              114,
+              72
+            ],
+            "weight_kg": 68.0,
+            "labs": {
+              "Microalbumin/Creatinine Ratio": 8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "portal_message",
+          "start": "2026-01-14T17:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Tuesday's labs",
+              "date": "2026-01-14T17:30",
+              "author": "PCP",
+              "body": "Wanda, your A1c is normal, so no sign of diabetes after the pregnancy. Cholesterol, kidney function and the urine protein test are normal too. We'll repeat the A1c and cholesterol at your summer physical. The dermatology referral went out today; their office will call you."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "outside_records",
+          "start": "2026-02-11T09:20",
+          "reason": "Physical therapy discharge summary",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pelvic floor physical therapy discharge",
+              "date": "2026-02-11T09:20",
+              "author": "physical therapy",
+              "body": "Discharge summary, 10 visits 11/18/2025 to 02/05/2026.\n\nDx: external anal sphincter injury after obstetric laceration.\n\nProgress: no stool leakage for the past 4 weeks. Occasional gas leakage with a hard cough or when lifting the toddler quickly. Voluntary squeeze stronger and better sustained; coordinated pre-contraction before cough now automatic. Back to walking 30 minutes most days.\n\nGoals met: stool continence; return to walking. Partially met: gas control.\n\nPlan: discharged to independent home program; continue fiber. Re-refer if symptoms return or worsen. Copy to OB."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "portal_message",
+          "start": "2026-02-24T21:05",
+          "reason": "Wrist pain, referral request",
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "placed",
+              "order": "Orthopedics referral",
+              "category": "referral",
+              "to": "Orthopedics",
+              "reason": "radial-sided wrist pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wrist",
+              "date": "2026-02-24T21:05",
+              "author": "patient",
+              "body": "Hi, the thumb side of my right wrist has been killing me, worse every day for about a week and a half, especially picking up the baby or pouring. No fall. A teacher friend had something like this after her baby and saw the hand people at ortho. Could you send a referral so I can get in before break? My insurance doesn't need one but the ortho office wants it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wrist",
+              "date": "2026-02-25T07:40",
+              "author": "PCP",
+              "body": "Sure, referral to orthopedics sent this morning. Until you're seen, try to lift the baby with your palms up and scooping rather than with your thumbs, and rest the wrist when you can. If it gets swollen, red or numb, let me know and I'll see you sooner."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "outside_records",
+          "start": "2026-03-11T10:40",
+          "reason": "Orthopedics consult letter",
+          "conditions": [
+            {
+              "label": "de Quervain tenosynovitis",
+              "action": "diagnosed",
+              "onset": "2026-02-13",
+              "icd10": "M65.4"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily with food for 2 weeks",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "de Quervain tenosynovitis"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "done",
+              "date": "2026-03-06T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics consultation: wrist pain",
+              "date": "2026-03-11T10:40",
+              "author": "orthopedics",
+              "body": "Date of visit: 03/06/2026\nReason for referral: radial-sided wrist pain.\n\nThank you for sending Ms. Ortiz, a 35-year-old teacher who delivered her second child six months ago. Her history includes CIN 3 treated with LEEP, Asherman syndrome and a complicated recent pregnancy (gestational diabetes, gestational hypertension, postpartum preeclampsia, obstetric anal sphincter injury). For two weeks she has had pain on the thumb side of the right wrist that keeps getting worse, brought on by lifting her 6-month-old.\n\nMedications: none. Allergies: NKDA. Breastfeeding.\n\nExam: tender to palpation over the radial styloid along the first dorsal compartment. Finkelstein maneuver provokes sharp pain along the radial wrist. No redness or swelling. Grip strength normal. Sensation intact throughout the hand. Thumb CMC grind negative.\n\nImpression: de Quervain tenosynovitis, right.\n\nPlan: forearm-based thumb spica splint, worn during the day with lifting and at night. Ibuprofen 600 mg three times daily with food for two weeks (compatible with breastfeeding). Lifting technique reviewed. If not better in about six weeks, a corticosteroid injection into the first dorsal compartment is the next step. Follow-up in six weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "outside_records",
+          "start": "2026-03-19T14:10",
+          "reason": "Dermatology consult letter",
+          "conditions": [
+            {
+              "label": "Melasma",
+              "action": "diagnosed",
+              "onset": "2025-04-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "azelaic acid 0.15 MG/MG Topical Gel",
+              "action": "historical",
+              "sig": "Apply a thin layer to affected areas of the face twice daily",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "melasma"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2026-03-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "date": "2026-03-19T14:10",
+              "author": "dermatology",
+              "body": "Date of visit: 03/13/2026\n\nDear colleague,\n\nI saw Ms. Ortiz, 35, for darkening of the facial skin. It began in the second trimester of her recent pregnancy and has not faded in the six months since delivery. No itch or pain. She would like it treated. She has been using a moisturizer with SPF 15 when outdoors. Pregnancy was notable for gestational diabetes managed by diet, which resolved after delivery. She is breastfeeding.\n\nMedications: none other than the moisturizer. Allergies: NKDA.\n\nExam: multiple symmetric, sharply marginated brown macules over both cheeks and the forehead, accentuated in sun-exposed areas. No other lesions or rashes on a full skin exam.\n\nAssessment: melasma.\n\nPlan:\n- Daily broad-spectrum tinted mineral sunscreen, SPF 50, reapplied midday; wide-brimmed hat outdoors.\n- Azelaic acid 15% gel twice daily; safe while breastfeeding. May sting at first.\n- Hydroquinone or a triple-combination cream can be considered once she has finished breastfeeding.\n- Follow-up in 4 months.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "pharmacy",
+          "start": "2026-03-24T11:15",
+          "reason": "Prior authorization request",
+          "documents": [
+            {
+              "type": "Fax",
+              "title": "Prior authorization request: azelaic acid gel",
+              "date": "2026-03-24T11:15",
+              "author": "pharmacy",
+              "body": "Prior authorization required by plan for azelaic acid 15% gel, 50 g. Patient: Wanda Ortiz, DOB 06/25/1990. Please complete the plan's PA form or prescribe a formulary alternative."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PA fax routed",
+              "date": "2026-03-24T13:30",
+              "author": "front desk",
+              "body": "PA fax came to us, but the prescription was written by dermatology. Called dermatology office; they will submit the PA. Called pt and left voicemail explaining the delay. Faxed the request to dermatology."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-06a",
+          "kind": "outside_records",
+          "start": "2026-04-06T10:05",
+          "reason": "Gynecology letter: painful intercourse",
+          "conditions": [
+            {
+              "label": "Dyspareunia secondary to atrophic vaginitis (lactational)",
+              "action": "diagnosed",
+              "onset": "2025-12-30",
+              "icd10": "N94.11"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit: dyspareunia",
+              "date": "2026-04-06T10:05",
+              "author": "gynecology",
+              "body": "Visit date: 03/30/2026\n\nMs. Ortiz came in for painful intercourse over the past three months. The pain is at the vaginal opening and burning in quality. Her younger child was born 6 months ago, and she is exclusively breastfeeding; her periods have not come back. No discharge, no bleeding. Background: CIN 3 after LEEP with negative co-tests (next due June 2026), Asherman syndrome treated by hysteroscopy, postpartum preeclampsia in October, external anal sphincter injury now much improved after pelvic floor therapy.\n\nMedications: none. Allergies: NKDA.\n\nExam: external genitalia normal; perineal scar healed. Vaginal mucosa pale and dry, with loss of rugae. No discharge. Bimanual not tender.\n\nAssessment: dyspareunia due to atrophic vaginitis of lactation (low estrogen while breastfeeding).\n\nPlan: water-based lubricant with intercourse; over-the-counter vaginal moisturizer two to three times a week. Expect improvement as breastfeeding decreases. Return if not better; a low-dose vaginal estrogen is an option then. Co-test due June 2026, which her primary care office may do at her physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "outside_records",
+          "start": "2026-04-22T15:00",
+          "reason": "Orthopedics follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics follow-up",
+              "date": "2026-04-22T15:00",
+              "author": "orthopedics",
+              "body": "Date of visit: 04/17/2026\n\nFollow-up of right de Quervain tenosynovitis. She has worn the thumb spica splint consistently and finished two weeks of ibuprofen. Pain much better; mild ache only with a long day of lifting. Mild tenderness at the first dorsal compartment; Finkelstein now only mildly uncomfortable. No injection needed.\n\nPlan: wean the splint over two weeks, keep using it for heavy lifting. Return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "annual_physical",
+          "start": "2026-07-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with cervical co-test",
+          "conditions": [
+            {
+              "label": "de Quervain tenosynovitis",
+              "action": "resolved",
+              "icd10": "M65.4"
+            },
+            {
+              "label": "Exclusive breastfeeding",
+              "action": "resolved",
+              "note": "still breastfeeding, solids added",
+              "icd10": "Z39.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              75
+            ],
+            "hr": 67,
+            "rr": 15,
+            "temp_c": 37.2,
+            "spo2": 98,
+            "weight_kg": 66.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-14T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.27
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-14T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-14T09:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-07-14T09:30",
+              "text": "Liquid-based cytology. Satisfactory for evaluation; transformation zone component present. Atrophic pattern consistent with lactation.\nInterpretation: negative for intraepithelial lesion or malignancy.\nHigh-risk HPV: not detected.",
+              "conclusion": "NILM. High-risk HPV not detected.",
+              "issued": "2026-07-20T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-07-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-14T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-07-14T10:00",
+              "author": "PCP",
+              "body": "Annual, 36 last month. Summer break. Missed last year's physical in late pregnancy.\n\nInterval since January:\n- de Quervain R wrist (ortho 3/6): splint + 2 wks ibuprofen, much better in April, now no pain at all, splint put away.\n- Melasma (derm 3/13): tinted SPF 50 daily; azelaic acid gel BID since mid-April, once the prior auth finally went through. Patches somewhat lighter. Derm follow-up later this summer.\n- Dyspareunia from lactational vaginal atrophy (GYN 3/30): lubricant and moisturizer help; somewhat better, not gone. Still breastfeeding, morning and night now with solids in the day.\n- Anal sphincter injury: no stool leakage; rare gas. Doing her PT exercises.\n- BP: occasional home checks, all normal.\n\nMeds: azelaic acid 15% gel BID. NKDA.\nFH: mother T2DM, sister preeclampsia, PGM HTN.\nSH: teaching in the fall, two kids at home, partner. No alcohol, never smoked.\n\nExam: vitals per flowsheet, BP normal, weight back near baseline. Face with faint symmetric brown patches on cheeks and forehead. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. R wrist: no tenderness over the first dorsal compartment, Finkelstein negative. No edema.\nPelvic: external genitalia normal. Speculum: vaginal mucosa somewhat pale and dry; cervix with healed LEEP changes, no lesion. Co-test collected.\nPHQ-9 1.\n\nA/P\n1. Hx CIN 3, post-treatment surveillance - co-test today (3 years after third negative); if negative, next in 3 years.\n2. Hx preeclampsia / gestational HTN - BP normal. A1c and lipids normal in January, recheck next visit.\n3. de Quervain - resolved.\n4. Melasma - per derm.\n5. Dyspareunia, lactational atrophy - continue current measures; GYN if not improving.\n6. External anal sphincter injury - improved with PT.\n7. Health maintenance - CBC, BMP, TSH. Flu and COVID in the fall.\n\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T12:20",
+          "reason": "Co-test and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap/HPV and labs",
+              "date": "2026-07-21T12:20",
+              "author": "PCP",
+              "body": "Hi Wanda, your Pap test is normal and HPV was not detected. That keeps you on the every-3-years schedule; next co-test summer 2029. Blood count, kidney function, sugar and thyroid from last week are normal as well. Enjoy the rest of your break."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap/HPV and labs",
+              "date": "2026-07-21T18:02",
+              "author": "patient",
+              "body": "Thank you!! Best news all summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:45",
+          "reason": "Medication refill question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Azelaic acid refill",
+              "date": "2026-08-18T19:45",
+              "author": "patient",
+              "body": "Hi, my pharmacy says the azelaic acid gel has no refills left. Derm moved my follow-up to September. Can you refill it or do I have to wait for them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Azelaic acid refill",
+              "date": "2026-08-19T09:20",
+              "author": "front desk",
+              "body": "Hi Wanda, since dermatology prescribes this, we called their office this morning and they are sending a refill to your pharmacy today. If it isn't there by tomorrow afternoon, let us know."
+            }
+          ]
+        },
+        {
+          "id": "2027-01-12a",
+          "kind": "office_visit",
+          "start": "2027-01-12T15:20",
+          "reason": "6-month follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Asherman syndrome|N85.6": {
+        "code": "N85.6",
+        "display": "Intrauterine synechiae",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dyspareunia secondary to atrophic vaginitis (lactational)|N94.11": {
+        "code": "N94.11",
+        "display": "Superficial (introital) dyspareunia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Exclusive breastfeeding|Z39.1": {
+        "code": "Z39.1",
+        "display": "Encounter for care and examination of lactating mother",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "External anal sphincter injury|K62.89": {
+        "code": "K62.89",
+        "display": "Other specified diseases of anus and rectum",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Gestational diabetes mellitus in pregnancy, diet controlled|O24.410": {
+        "code": "O24.410",
+        "display": "Gestational diabetes mellitus in pregnancy, diet controlled",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Gestational hypertension|O13.3": {
+        "code": "O13.3",
+        "display": "Gestational [pregnancy-induced] hypertension without significant proteinuria, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of cervical intraepithelial neoplasia grade 3, post-treatment surveillance|Z87.410": {
+        "code": "Z87.410",
+        "display": "Personal history of cervical dysplasia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of gestational hypertension|Z87.59": {
+        "code": "Z87.59",
+        "display": "Personal history of other complications of pregnancy, childbirth and the puerperium",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Human papillomavirus infection|B97.7": {
+        "code": "B97.7",
+        "display": "Papillomavirus as the cause of diseases classified elsewhere",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Missed abortion|O02.1": {
+        "code": "O02.1",
+        "display": "Missed abortion",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Postdural puncture headache|O89.4": {
+        "code": "O89.4",
+        "display": "Spinal and epidural anesthesia-induced headache during the puerperium",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Postpartum preeclampsia with severe features|O14.15": {
+        "code": "O14.15",
+        "display": "Severe pre-eclampsia, complicating the puerperium",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "de Quervain tenosynovitis|M65.4": {
+        "code": "M65.4",
+        "display": "Radial styloid tenosynovitis [de Quervain]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "24 HR nifedipine 30 MG Extended Release Oral Tablet": {
+        "code": "198034",
+        "display": "24 HR nifedipine 30 MG Extended Release Oral Tablet",
+        "ingredient": "hr",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "azelaic acid 0.15 MG/MG Topical Gel": {
+        "code": "1041518",
+        "display": "azelaic acid 0.15 MG/MG Topical Gel",
+        "ingredient": "azelaic",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "labetalol hydrochloride 200 MG Oral Tablet": {
+        "code": "896762",
+        "display": "labetalol hydrochloride 200 MG Oral Tablet",
+        "ingredient": "labetalol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Choriogonadotropin.beta subunit": {
+        "code": "21198-7",
+        "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Luteinizing hormone": {
+        "code": "10501-5",
+        "display": "Lutropin [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Hysterosalpingogram": {
+        "code": "25022-5",
+        "display": "RF Uterus and Fallopian tubes Views W contrast IU",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

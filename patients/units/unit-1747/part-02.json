@@ -1,0 +1,538 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001747",
+      "events": [
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive visit",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "No-Show",
+              "author": "front desk",
+              "date": "2024-09-10T09:05",
+              "body": "Did not arrive for 8:30 physical. Texted and left voicemail. Pt replied at 9:01 that she had the date mixed up with her first week of classes; rebooked for 9/24 at 4 PM."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T16:00",
+          "end": "2024-09-24T16:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive visit",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 2-3 drinks per month"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-24T16:30",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-24T16:32"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-24T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T16:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2024-09-24T16:45",
+              "body": "Sorry-I-missed-it visit, rescheduled from the 10th. Feels well. Semester started, still at the store about 15 h/wk.\n\nMeds: none. Allergies: NKDA.\nSocial: never smoker; alcohol a few drinks a month. Sexually active, more than one partner over the summer, condoms not every time. Wants the urine screen again.\nGyn: regular cycles, LMP about 10 days ago. Pap 9/2023 normal.\nROS: no dysuria, no discharge, no pelvic pain. Otherwise negative.\n\nExam: well. Heart RRR. Lungs clear. Abdomen soft, nontender. Skin normal.\nPHQ-2 0, GAD-7 2.\n\nAssessment/plan\n- Health maintenance: GC/CT urine today. Flu vaccine given. Declines a COVID shot this year, which is her call.\n- Condoms with new partners reviewed; offered testing between visits whenever she wants it.\n- Pap next fall.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "portal_message",
+          "start": "2024-10-01T10:15",
+          "reason": "Screening result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Urine test",
+              "author": "RN",
+              "date": "2024-10-01T10:15",
+              "body": "Hi Samantha, your gonorrhea and chlamydia screen from 9/24 is negative. Have a good semester."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-30a",
+          "kind": "portal_message",
+          "start": "2024-12-30T07:48",
+          "reason": "Urinary symptoms and discharge",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "burning",
+              "author": "patient",
+              "date": "2024-12-30T07:48",
+              "body": "Hi — for about 5 days it's been burning when I pee and I'm going constantly, and there's a yellowish discharge. I booked a same-day spot at the gyn office near campus for this afternoon since they had one, just wanted you to know in case they send anything over."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: burning",
+              "author": "PCP",
+              "date": "2024-12-30T08:20",
+              "body": "Good plan to be seen today — they can do the exam and swabs. If you get a fever, belly or pelvic pain, or vomiting before then, go to the ED instead. Ask them to fax us the note and I'll check in once I see the results."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-30b",
+          "kind": "specialist_visit",
+          "start": "2024-12-30T14:15",
+          "end": "2024-12-30T14:50",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Dysuria, frequency and vaginal discharge",
+          "vitals": {
+            "temp_c": 37.8
+          },
+          "conditions": [
+            {
+              "label": "Gonococcal cervicitis",
+              "icd10": "A54.03",
+              "action": "diagnosed",
+              "onset": "2024-12-25"
+            },
+            {
+              "label": "High risk sexual behavior",
+              "icd10": "Z72.5",
+              "action": "diagnosed",
+              "onset": "2024-06-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 500 MG Injection",
+              "action": "historical",
+              "sig": "500 mg IM once, given in clinic",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intramuscular",
+              "course": "short",
+              "reason": "gonococcal cervicitis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-30T14:30",
+              "resulted": "2025-01-01T09:40",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-30T14:30",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-30T14:40",
+              "resulted": "2024-12-31T15:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Office Note",
+              "author": "gynecology",
+              "date": "2025-01-03T11:30",
+              "body": "OUTSIDE GYNECOLOGY PRACTICE — CLINIC NOTE\nDate of service: 12/30/2024\nPatient: Samantha Kimball, DOB 04/29/2001\nCopy to: primary care physician\n\nReason for visit: 5 days of burning with urination, urinary frequency and yellow vaginal discharge.\n\nHPI: 23-year-old seen same day. Symptoms began about 5 days ago. LMP roughly three weeks ago; no change in her cycles. Reports multiple sexual partners over the last six months with inconsistent condom use.\n\nMedications: none. Allergies: NKDA.\nFamily history: maternal grandmother with breast cancer at 65; father with hypertension; mother with hypothyroidism.\nSocial: never smoker; alcohol 2-3 drinks per month; university student, works part time in retail.\n\nExam: T 37.8 C (100.0 F). Well-appearing. Abdomen soft. Speculum: purulent discharge from the cervical os. Bimanual: cervical motion tenderness.\n\nTesting: urine pregnancy test negative today. Urine GC/CT NAAT, HIV-1/2 Ag/Ab, RPR and HBsAg sent.\nResults (addended 1/1/2025): N. gonorrhoeae DETECTED; C. trachomatis not detected. HIV Ag/Ab negative. RPR nonreactive. HBsAg negative.\n\nAssessment: gonococcal cervicitis.\n\nPlan: ceftriaxone 500 mg IM given in clinic today. Advised no intercourse for 7 days after treatment and until partners from the last 60 days are tested and treated; she will notify partners. Condoms counseled. Retest in 3 months. Patient informed of the positive result by phone 1/2.\n\nElectronically signed, attending gynecologist"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-03a",
+          "kind": "outside_records",
+          "start": "2025-01-03T11:25",
+          "reason": "Outside gynecology note received",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Outside Records Received",
+              "author": "front desk",
+              "date": "2025-01-03T11:25",
+              "body": "Fax from outside gynecology practice, 2 pages: office note for DOS 12/30/2024 with addended results. Indexed to chart and routed to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "telephone",
+          "start": "2025-01-06T10:40",
+          "reason": "Follow-up on outside gynecology results",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Follow-up — Gonorrhea Result",
+              "author": "RN",
+              "date": "2025-01-06T10:55",
+              "body": "Gyn note from 12/30 received Friday and reviewed with PCP. Spoke with pt.\nShe got the ceftriaxone shot in their office on 12/30; burning and discharge mostly gone now. No fever, no pelvic pain. She has let the partners she could reach know. Reinforced no sex until a full week after treatment and until partners are treated, and condoms. Retest due around the end of March; she can do it here or at gyn.\nProblem list updated per PCP with gonococcal cervicitis and high-risk sexual behavior. Pt aware she can call or text with any new pain or fever."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-31a",
+          "kind": "specialist_visit",
+          "start": "2025-03-31T10:00",
+          "end": "2025-03-31T10:40",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Dysuria and frequency after new partner",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
+          "conditions": [
+            {
+              "label": "Pelvic inflammatory disease (suspected)",
+              "icd10": "N73.9",
+              "action": "diagnosed",
+              "onset": "2025-03-26"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 500 MG Injection",
+              "action": "historical",
+              "sig": "500 mg IM once, given in clinic",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intramuscular",
+              "course": "short",
+              "reason": "suspected pelvic inflammatory disease"
+            },
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily for 14 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "suspected pelvic inflammatory disease"
+            },
+            {
+              "drug_text": "metronidazole 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 14 days; no alcohol during and for 3 days after",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "suspected pelvic inflammatory disease"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-03-31T10:10",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "10-20/hpf"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "0-2/hpf"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-31T10:10",
+              "resulted": "2025-04-02T08:15",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Office Note",
+              "author": "gynecology",
+              "date": "2025-04-03T09:10",
+              "body": "OUTSIDE GYNECOLOGY PRACTICE — FOLLOW-UP NOTE\nDate of service: 03/31/2025\nPatient: Samantha Kimball, DOB 04/29/2001\ncc: PCP\n\nCC: painful urination and frequency x5 days.\n\nHPI: Known to us from 12/30/2024, when she had gonococcal cervicitis treated with ceftriaxone. Now about three months out, with five days of dysuria and urinary frequency. About two weeks ago she had unprotected intercourse with a new partner. No vaginal discharge, no bleeding.\n\nMeds: none currently. Allergies: NKDA.\nSocial: never smoker. Alcohol occasional, 2-3 drinks/month. Student; part-time retail.\nFamily hx: as previously documented (maternal grandmother breast cancer at 65, father HTN, mother hypothyroidism).\n\nExam: vital signs within normal limits. Abdomen soft, no tenderness. Pelvic: cervical motion tenderness present.\n\nUA (in office): leukocyte esterase positive, nitrite negative; microscopy WBC 10-20/hpf, RBC 0-2/hpf, no bacteria and no yeast seen.\nGC/CT NAAT sent — resulted 4/2: N. gonorrhoeae not detected, C. trachomatis not detected.\n\nImpression: pyuria without bacteriuria plus cervical motion tenderness in a patient with recent gonorrhea — treating as suspected pelvic inflammatory disease.\n\nPlan:\n- Ceftriaxone 500 mg IM x1 given today.\n- Doxycycline 100 mg PO BID x14 days.\n- Metronidazole 500 mg PO BID x14 days; avoid alcohol.\n- Abstain until the course is done and the new partner is treated. Condoms.\n- Return or go to the ED for fever, worsening pelvic pain or vomiting, or if no better in 72 hours.\n\nSigned, attending gynecologist"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-04a",
+          "kind": "telephone",
+          "start": "2025-04-04T13:30",
+          "reason": "Check-in after gynecology visit",
+          "conditions": [
+            {
+              "label": "Gonococcal cervicitis",
+              "icd10": "A54.03",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Check-in",
+              "author": "PCP",
+              "date": "2025-04-04T13:45",
+              "body": "Called her after the gyn letter from 3/31 came in. Day 5 of doxy and metronidazole; some nausea with the metronidazole if she takes it on an empty stomach, better with food. Burning already easing. No fever, no worsening pain.\nNAAT from 3/31 negative for both GC and CT, so the December gonorrhea is treated — taking cervicitis off the active list. Suspected PID stays on until she finishes and feels well.\nMed list updated with the 14-day courses. Finish every dose; no alcohol with metronidazole. Text me if she gets fever or worse pain."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "portal_message",
+          "start": "2025-07-08T19:22",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "physical",
+              "author": "patient",
+              "date": "2025-07-08T19:22",
+              "body": "Can I set up my yearly physical for late September? Tuesdays after 3 are best because of my work schedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: physical",
+              "author": "front desk",
+              "date": "2025-07-09T08:40",
+              "body": "You're booked Tuesday 9/23 at 3:30. We'll send a reminder the week before."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T15:30",
+          "end": "2025-09-23T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual preventive visit",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Pelvic inflammatory disease (suspected)",
+              "icd10": "N73.9",
+              "action": "resolved"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 2-3 drinks per month"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-23T16:00",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-23T16:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-23T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2025-09-23T16:20",
+              "body": "Yearly visit. Finished both antibiotics in mid-April without missing doses. No pelvic pain, discharge or urinary symptoms since. Feels well; heavy course load this semester but managing.\n\nMeds: none. NKDA.\nInterval: gonococcal cervicitis 12/2024 treated with ceftriaxone at gyn; suspected PID 3/2025 treated with ceftriaxone, doxycycline and metronidazole; NAAT negative 3/31.\nSH: never smoker, alcohol 2-3 drinks a month. Sexually active, partners vary, condoms some of the time.\nLMP about 2 weeks ago, regular.\n\nExam: well-appearing. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no guarding. Skin clear.\nPHQ-9 2, GAD-7 3.\n\nA/P\n1. Suspected PID 3/2025 — treated, symptom-free for months. Resolved.\n2. High-risk sexual behavior — we talked again about condoms every time and testing with each new partner. She knows she can come in for a swab without an appointment.\n3. Preventive: GC/CT urine today. Flu shot given. Pap due next fall (last 9/2023).\nSee her next September, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "portal_message",
+          "start": "2025-09-30T09:30",
+          "reason": "Screening result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "MA",
+              "date": "2025-09-30T09:30",
+              "body": "Hi Samantha, the doctor reviewed your urine test from last week — gonorrhea and chlamydia both negative."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "portal_message",
+          "start": "2025-10-14T20:51",
+          "reason": "Vaccine question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid shot?",
+              "author": "patient",
+              "date": "2025-10-14T20:51",
+              "body": "Do I need to get the covid vaccine this year or is it optional for me? I got the flu one at my physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid shot?",
+              "author": "PCP",
+              "date": "2025-10-15T07:30",
+              "body": "For you it's optional — reasonable either way. If you want it, any pharmacy has it or we can book a nurse slot."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

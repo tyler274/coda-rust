@@ -1,0 +1,1157 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001789",
+   "events": [
+    {
+     "id": "2022-01-25a",
+     "kind": "telephone",
+     "start": "2022-01-25T15:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Danazol supply",
+       "author": "MA",
+       "date": "2022-01-25T15:10",
+       "body": "Pt called - her pharmacy has only 30 capsules of danazol and the wholesaler is back-ordered a week. She has 2 days left. Called two other local pharmacies; one has stock. Allergy office okayed transfer of the Rx. Pt aware, picking up tonight. Reminded her not to skip doses."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-23a",
+     "kind": "portal_message",
+     "start": "2022-03-23T20:31",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Really tired, dark pee",
+       "author": "patient",
+       "date": "2022-03-23T20:31",
+       "body": "For about two weeks I've been wiped out and get winded just walking up from the barn. Got dizzy at work today. My pee has been dark like tea in the mornings. Joints are achy again too. Should I come in?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Really tired, dark pee",
+       "author": "PCP",
+       "date": "2022-03-23T21:02",
+       "body": "Yes - come in tomorrow at 10:30, we'll check blood work while you're here. If you faint, have chest pain or can't catch your breath at rest tonight, go to the ED."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-24a",
+     "kind": "office_visit",
+     "start": "2022-03-24T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fatigue, exertional dyspnea, dark urine",
+     "state": {
+      "hr": 104,
+      "labs": {
+       "Hemoglobin": 8.1,
+       "Bilirubin, Total": 2.4
+      },
+      "weight_kg": 73.5
+     },
+     "measure": [
+      "bp",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-03-24T10:55",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 8.1
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-03-24T10:55",
+       "results": [
+        {
+         "test": "Bilirubin, Total",
+         "value": 2.4
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-referral-2022",
+       "action": "placed",
+       "order": "Hematology referral",
+       "category": "referral",
+       "to": "Hematology",
+       "reason": "anemia with suspected hemolysis in SLE, urgent"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2022-03-24T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - fatigue, dark urine",
+       "author": "PCP",
+       "date": "2022-03-24T13:10",
+       "body": "CC: 2 wks fatigue, DOE, dizziness, dark urine.\n\nHPI: 22F with SLE (HCQ, pred 5) and HAE type I (danazol). Gradual over 2 weeks: tired, short of breath on the walk up from the barn, lightheaded at work yesterday. Dark tea-colored urine, mostly first thing in the morning. Joints achy again and sun bothering her skin more. Has felt feverish on and off but never above 100. No bleeding, normal periods, no melena. No new meds, no NSAIDs, no recent illness. It's been a cold, wet March and she's been out feeding stock early mornings.\n\nExam: Pale conjunctivae. HR 104 regular. No scleral icterus I can see. No lymphadenopathy. No splenomegaly appreciated. Lungs clear. Mild MCP tenderness. No rash today. No edema.\n\nLabs back at 12:40: Hgb 8.1 (11.2 last summer, 12.0 in Nov). Bili 2.4. Creatinine normal.\n\nA/P: Acute anemia with dark urine and raised bilirubin in SLE - hemolysis until proven otherwise.\n- Spoke with hematology on call; they will see her Tuesday 3/29 and do the hemolysis work-up there.\n- Rheumatology notified.\n- Strict ED precautions reviewed: syncope, chest pain, breathless at rest, worsening jaundice.\n- Note off work through Monday. Stay warm."
+      }
+     ],
+     "vitals": {
+      "hr": 104
+     }
+    },
+    {
+     "id": "2022-03-29a",
+     "kind": "specialist_visit",
+     "start": "2022-03-29T13:30",
+     "service": "Hematology",
+     "reason": "Anemia, suspected hemolysis",
+     "state": {
+      "hr": 102,
+      "labs": {
+       "Hemoglobin": 7.9,
+       "Bilirubin, Total": 2.6,
+       "Bilirubin, Direct": 0.4
+      }
+     },
+     "conditions": [
+      {
+       "label": "Cold autoimmune hemolytic anemia",
+       "icd10": "D59.12",
+       "action": "diagnosed",
+       "onset": "2022-03-10",
+       "note": "Secondary to SLE"
+      }
+     ],
+     "measure": [
+      "bp",
+      "temp_c",
+      "spo2"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-03-29T14:10",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 7.9
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2022-03-29T14:10",
+       "results": [
+        {
+         "test": "Bilirubin, Total",
+         "value": 2.6
+        },
+        {
+         "test": "Bilirubin, Direct",
+         "value": 0.4
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-03-29T14:10",
+       "resulted": "2022-03-30T15:00",
+       "results": [
+        {
+         "test": "Reticulocytes",
+         "loinc": "17849-1",
+         "unit": "%",
+         "value": 8
+        },
+        {
+         "test": "Lactate dehydrogenase",
+         "loinc": "2532-0",
+         "unit": "U/L",
+         "value": 486
+        },
+        {
+         "test": "Haptoglobin",
+         "loinc": "4542-7",
+         "unit": "mg/dL",
+         "text": "<10"
+        },
+        {
+         "test": "Direct antiglobulin test",
+         "loinc": "1007-4",
+         "text": "Positive: anti-C3d positive, anti-IgG negative"
+        },
+        {
+         "test": "Cold agglutinin titer",
+         "loinc": "14658-9",
+         "text": "1:512"
+        },
+        {
+         "test": "Peripheral smear",
+         "loinc": "18314-5",
+         "text": "Spherocytes present"
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug": "folic acid 1 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 1,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hemolytic anemia"
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-referral-2022",
+       "action": "done",
+       "date": "2022-03-29T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Consultation",
+       "author": "hematology",
+       "date": "2022-04-01T11:45",
+       "body": "HEMATOLOGY CONSULTATION - 3/29/2022\n\nThank you for the urgent referral of Ms. Soto, 22, with SLE (6/2021) and HAE type I (10/2021).\n\nHPI: Over two weeks, increasing tiredness, breathlessness on exertion, lightheadedness and dark urine. She also notes her joints aching again and her skin reacting to sun more than usual, with intermittent low-grade temperatures. She has not had a recent infection and takes no NSAIDs. Much of her work this month has been outdoors in cold, wet weather.\nMeds: hydroxychloroquine 200 mg bid, prednisone 5 mg, danazol 200 mg tid, vitamin D3 2000 IU. NKDA.\n\nExam: Pale; pulse 102. No jaundice. No lymph nodes palpable. Spleen not felt. Lungs clear.\n\nLabs today: hemoglobin 7.9 g/dL, reticulocytes 8%, LDH 486 U/L, haptoglobin <10 mg/dL, total bilirubin 2.6 with direct 0.4 (indirect predominant). Spherocytes on the smear. Direct antiglobulin test positive for C3d, negative for IgG. Cold agglutinin titer 1:512.\n\nImpression: Complement-mediated (cold) autoimmune hemolytic anemia, secondary to her lupus. Compensating marrow.\n\nPlan:\n- Folic acid 1 mg daily.\n- Cold avoidance is the main treatment: warm layers, insulated gloves and a hat for barn work, no cold drinks, warm the car before driving. If she ever needs a transfusion or IV fluids, they must go through a blood warmer - please note this prominently.\n- No transfusion needed today; she is hemodynamically stable and producing well.\n- CBC in 2 weeks with you, back here in 4 weeks. Rheumatology aware.\n\nHematology"
+      }
+     ],
+     "vitals": {
+      "hr": 102
+     }
+    },
+    {
+     "id": "2022-04-12a",
+     "kind": "lab_only",
+     "start": "2022-04-12T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "CBC per hematology",
+     "state": {
+      "labs": {
+       "Hemoglobin": 9.1,
+       "Bilirubin, Total": 1.9
+      },
+      "hr": 88
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-04-12T08:05",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.1
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-04-12T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "CBC",
+       "author": "PCP",
+       "date": "2022-04-12T14:20",
+       "body": "Hgb up to 9.1 from 7.9. Messaged pt - good direction, keep the folic acid and keep warm. Copy to hematology."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-26a",
+     "kind": "specialist_visit",
+     "start": "2022-04-26T13:30",
+     "service": "Hematology",
+     "reason": "Cold AIHA follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin": 9.8,
+       "Bilirubin, Total": 1.5
+      },
+      "hr": 82
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-04-26T13:50",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.8
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-04-26T13:50",
+       "results": [
+        {
+         "test": "Reticulocytes",
+         "loinc": "17849-1",
+         "unit": "%",
+         "value": 4.1
+        },
+        {
+         "test": "Lactate dehydrogenase",
+         "loinc": "2532-0",
+         "unit": "U/L",
+         "value": 298
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology follow-up",
+       "author": "hematology",
+       "date": "2022-04-29T09:30",
+       "body": "Hematology follow-up 4/26/2022. Energy better, urine clear for about 10 days, no dizziness. Wearing heavy gloves for chores. Hemoglobin 9.8, reticulocytes 4.1%, LDH 298 - hemolysis settling with warmer weather and cold avoidance. Continue folic acid 1 mg. Recheck in about 10 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-10a",
+     "kind": "lab_only",
+     "start": "2022-05-10T07:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Labs for rheumatology",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-05-10T07:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-05-10T07:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-05-10T07:55",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-05-10T07:50",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "Complement C3",
+         "loinc": "4485-9",
+         "unit": "mg/dL",
+         "value": 86
+        },
+        {
+         "test": "DNA double strand Ab",
+         "loinc": "5130-0",
+         "unit": "[IU]/mL",
+         "value": 58
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-05-10T07:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2022-05-10T08:00",
+       "body": "Standing rheum labs drawn, R antecubital, one stick. Results to rheumatology by fax."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-17a",
+     "kind": "specialist_visit",
+     "start": "2022-05-17T09:00",
+     "service": "Rheumatology",
+     "reason": "SLE follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2022-05-20T13:15",
+       "body": "Rheumatology 5/17/2022\n\nInterval: cold agglutinin hemolytic anemia in March, now recovering under hematology with folic acid and cold avoidance. Joints quiet since April. No rash, no ulcers.\nMeds: HCQ 200 bid, prednisone 5 mg daily, folic acid 1 mg, vitamin D3, danazol 200 tid (allergy).\nExam: no synovitis, no rash.\nLabs 5/10: hemoglobin recovering, WBC and platelets normal, creatinine normal, UA negative, C3 86, dsDNA 58.\nPlan: no change. Six months."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-12a",
+     "kind": "specialist_visit",
+     "start": "2022-07-12T14:00",
+     "service": "Hematology",
+     "reason": "Cold AIHA follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin": 11.6,
+       "Bilirubin, Total": 0.8,
+       "Bilirubin, Direct": 0.2
+      },
+      "hr": 76
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-07-12T14:15",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 11.6
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2022-07-12T14:15",
+       "results": [
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology follow-up",
+       "author": "hematology",
+       "date": "2022-07-14T10:05",
+       "body": "Hematology 7/12/2022. Feeling like herself. Hemoglobin 11.6, bilirubin normal. Cold AIHA well compensated over the summer. Continue folic acid. Expect some hemolysis risk each winter - same cold precautions, call if dark urine returns. Annual visit, CBC with PCP in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-16a",
+     "kind": "annual_physical",
+     "start": "2022-08-16T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 74.0,
+      "labs": {
+       "Total Cholesterol": 184,
+       "High Density Lipoprotein": 44,
+       "Low Density Lipoprotein": 118,
+       "Triglycerides": 112
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-08-16T09:30",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 44
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 118
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2022-08-16T09:30",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-08-16T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2022-08-16T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-08-16T10:05",
+       "body": "Annual. Good summer. No swelling attacks since starting danazol last October. Lupus quiet per rheum in May. Cold AIHA from March recovered (Hgb 11.6 in July).\n\nMeds: hydroxychloroquine 200 mg bid, prednisone 5 mg daily, danazol 200 mg tid, folic acid 1 mg daily, vitamin D3 2000 IU daily. NKDA.\nNot sexually active; understands no pregnancy on danazol.\nNever smoker, no ETOH.\n\nROS: no rash, no mouth ulcers, no joint swelling, no dark urine.\n\nExam: Well. BMI about 28. Skin clear. Mouth clear. No synovitis. Heart and lungs normal. Abd soft, no spleen tip. No edema. No swelling.\nPHQ-9 2.\n\nA/P:\n1. SLE - stable on HCQ/pred.\n2. HAE type I - no attacks on danazol. Danazol monitoring labs today (LFTs, lipids) for allergy.\n3. Cold AIHA - CBC today; winter precautions in place.\n4. HM: flu and COVID booster in the fall (bivalent when available). Pap due 2023.\nRTC 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-17a",
+     "kind": "portal_message",
+     "start": "2022-08-17T12:15",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Your labs",
+       "author": "PCP",
+       "date": "2022-08-17T12:15",
+       "body": "Liver tests normal. Blood count good (hemoglobin holding). Cholesterol: HDL is on the low side at 44, which is a known effect of danazol; LDL 118. Nothing to treat at your age - I sent a copy to allergy. Keep moving and eating well."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-11a",
+     "kind": "nurse_visit",
+     "start": "2022-10-11T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-11T08:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-11T08:17"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-11T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2022-10-11T08:35",
+       "body": "Flu (inactivated quad) L deltoid; Pfizer bivalent booster R deltoid. Screening negative. Observed 15 min, fine."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-08a",
+     "kind": "lab_only",
+     "start": "2022-11-08T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Labs for rheumatology",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-11-08T07:45",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-11-08T07:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-11-08T07:50",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-11-08T07:45",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "Complement C3",
+         "loinc": "4485-9",
+         "unit": "mg/dL",
+         "value": 94
+        },
+        {
+         "test": "DNA double strand Ab",
+         "loinc": "5130-0",
+         "unit": "[IU]/mL",
+         "value": 41
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-11-08T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2022-11-08T07:58",
+       "body": "Rheum standing labs drawn. Sent."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-17a",
+     "kind": "specialist_visit",
+     "start": "2022-11-17T10:30",
+     "service": "Rheumatology",
+     "reason": "SLE follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2022-11-22T08:40",
+       "body": "Rheumatology 11/17/2022. Doing well. No flares since spring. Knows the winter cold-AIHA routine. Exam unremarkable. Labs 11/8: counts and chemistries normal, UA negative, C3 94, dsDNA 41. SLE quiescent on hydroxychloroquine 200 bid and prednisone 5. Continue. Six months."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-31a",
+     "kind": "office_visit",
+     "start": "2023-01-31T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Winter check, CBC",
+     "appointment": "cancelled",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cancelled visit",
+       "author": "front desk",
+       "date": "2023-01-31T07:15",
+       "body": "Pt called to cancel this morning's visit - roads unplowed out by her place after last night's snow. Feels fine, no dark urine. Will call to rebook."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-24a",
+     "kind": "specialist_visit",
+     "start": "2023-02-24T11:00",
+     "service": "Dermatology",
+     "reason": "Lupus rash flare",
+     "state": {
+      "labs": {
+       "White Blood Cells": 3.5,
+       "Hemoglobin": 10.9,
+       "Erythrocyte Sedimentation Rate": 42
+      }
+     },
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-02-24T11:40",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 3.5
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 10.9
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-02-24T11:40",
+       "resulted": "2023-02-27T10:00",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate",
+         "value": 42
+        },
+        {
+         "test": "DNA double strand Ab",
+         "loinc": "5130-0",
+         "unit": "[IU]/mL",
+         "value": 142
+        },
+        {
+         "test": "Complement C3",
+         "loinc": "4485-9",
+         "unit": "mg/dL",
+         "value": 66
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology follow-up",
+       "author": "dermatology",
+       "date": "2023-03-03T14:00",
+       "body": "Dermatology return visit 2/24/2023\n\nMs. Soto (SLE, HAE type I, cold AIHA) is back with her lupus active again: the facial rash has returned after some bright snow-glare days, with mouth sores, aching hands and tiredness for about two weeks.\nMeds: hydroxychloroquine 200 mg bid, prednisone 5 mg, danazol 200 mg tid, folic acid, vitamin D3.\n\nExam: Malar erythema both cheeks and nasal bridge. Two palatal erosions. Swollen, tender MCPs and PIPs both hands.\n\nLabs today: WBC 3.5, hemoglobin 10.9, dsDNA 142 IU/mL, C3 66 mg/dL, ESR 42.\n\nImpression: cutaneous and articular SLE flare with serologic activity.\nPlan: reinforced sun protection including UV-blocking sunglasses and SPF on snow days. I have sent this note to her rheumatologist, who will manage the systemic flare.\n\nDermatology"
+      }
+     ]
+    },
+    {
+     "id": "2023-03-14a",
+     "kind": "specialist_visit",
+     "start": "2023-03-14T09:30",
+     "service": "Rheumatology",
+     "reason": "SLE flare follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2023-03-16T16:00",
+       "body": "Rheumatology 3/14/2023 (added visit after the dermatology flare note). Rash fading, mouth sores healed, hands still a bit stiff in the mornings but better each week. No dark urine, no chest pain, no swelling. Exam: faint malar erythema, minimal MCP tenderness, no effusions. Reviewed derm labs of 2/24. Settling with sun protection; she prefers not to go up on prednisone and I agree for now. No change: HCQ 200 bid, prednisone 5. Labs before November visit, sooner if it flares again."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-18a",
+     "kind": "pharmacy",
+     "start": "2023-04-18T11:20",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Hydroxychloroquine 90-day supply",
+       "author": "MA",
+       "date": "2023-04-18T11:20",
+       "body": "Mail-order pharmacy request to convert hydroxychloroquine 200 mg bid to 90-day supply. Rheum is the prescriber; pt asked us to send it since rheum office slow to respond. Sent per PCP: #180, 1 refill. Rheum cc'd."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-18a",
+     "kind": "specialist_visit",
+     "start": "2023-07-18T14:00",
+     "service": "Hematology",
+     "reason": "Cold AIHA annual",
+     "state": {
+      "labs": {
+       "Hemoglobin": 11.5,
+       "White Blood Cells": 5.0,
+       "Erythrocyte Sedimentation Rate": 20
+      }
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-07-18T14:10",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 11.5
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology annual follow-up",
+       "author": "hematology",
+       "date": "2023-07-20T09:00",
+       "body": "Hematology 7/18/2023. No dark urine this past winter; she was careful with gloves and layers. Hemoglobin 11.5. Stable compensated cold AIHA. Folic acid continues. One year."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-22a",
+     "kind": "annual_physical",
+     "start": "2023-08-22T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "25-hydroxy Vitamin D": 34
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-08-22T09:35",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2023-08-22T09:35",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-08-22T09:35",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap)",
+       "performed": "2023-08-22T09:10",
+       "text": "Specimen satisfactory for evaluation; endocervical component present. Negative for intraepithelial lesion or malignancy.",
+       "conclusion": "NILM."
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2023-08-22T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-08-22T10:00",
+       "body": "Annual, 24 y/o.\nSLE flare in February (derm/rheum), settled without steroid increase. HAE - no attacks on danazol. Cold AIHA quiet; Hgb 11.5 last month.\nMeds: HCQ 200 bid, prednisone 5, danazol 200 tid, folic acid 1, vit D3 2000 IU. NKDA.\nSocial: still on the ranch, full-time at the clinic now. No tobacco/ETOH. Not sexually active.\nROS neg.\nExam: well, no rash, mouth clear, joints quiet, heart/lungs nl, abd nl. Pelvic: nl, Pap done.\nPHQ-2 0.\nA/P: Chronic issues stable. Pap today. Danazol labs + vit D. Flu/COVID this fall. Due for HCQ eye screen again in 2026 unless rheum wants sooner. RTC 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-29a",
+     "kind": "portal_message",
+     "start": "2023-08-29T16:45",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Pap and labs",
+       "author": "PCP",
+       "date": "2023-08-29T16:45",
+       "body": "Pap normal. Liver tests normal, vitamin D good, cholesterol unchanged from last year. See you in the fall for shots."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "nurse_visit",
+     "start": "2023-10-10T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-10T08:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-10T08:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-10T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "MA",
+       "date": "2023-10-10T08:40",
+       "body": "Flu L arm, 2023-24 COVID (Pfizer) R arm. No issues."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-07a",
+     "kind": "lab_only",
+     "start": "2023-11-07T07:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Labs for rheumatology",
+     "state": {
+      "labs": {
+       "White Blood Cells": 5.4,
+       "Hemoglobin": 11.8,
+       "Erythrocyte Sedimentation Rate": 18
+      }
+     },
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-11-07T07:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-11-07T07:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-11-07T07:55",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-11-07T07:50",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        },
+        {
+         "test": "Complement C3",
+         "loinc": "4485-9",
+         "unit": "mg/dL",
+         "value": 92
+        },
+        {
+         "test": "DNA double strand Ab",
+         "loinc": "5130-0",
+         "unit": "[IU]/mL",
+         "value": 36
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-11-07T07:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2023-11-07T08:02",
+       "body": "Rheumatology labs drawn and sent. Pt reminded about the 11/14 rheum appt."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-14a",
+     "kind": "specialist_visit",
+     "start": "2023-11-14T09:00",
+     "service": "Rheumatology",
+     "reason": "SLE follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology follow-up",
+       "author": "rheumatology",
+       "date": "2023-11-17T11:30",
+       "body": "Rheumatology 11/14/2023. No further flares since February. Exam normal. Labs 11/7: CBC normal, creatinine normal, UA negative for protein and blood, C3 92, dsDNA 36, ESR normal. Quiescent. Continue HCQ 200 bid and prednisone 5 mg. Return 6 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

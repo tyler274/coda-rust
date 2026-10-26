@@ -1,0 +1,3114 @@
+{
+  "unit": "unit-1685",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal vitamin with folic acid Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001685",
+      "given": "Leah",
+      "family": "Martel",
+      "birth_date": "1990-06-17",
+      "address_line": "218 Shays Street",
+      "phone": "+1-518-555-0181",
+      "email": "leah.martel@example.test",
+      "marital_status": "married",
+      "summary": "High school math teacher in Amherst with migraine, depression on sertraline and later restless legs syndrome, who joins in 2022 while planning a pregnancy. Four pregnancies follow: a term birth, a loss after a fetal spina bifida diagnosis, a left tubal ectopic, and a term birth complicated by cervical insufficiency, pyelonephritis and maternal varicella at delivery. Somatic symptom disorder is diagnosed during the first pregnancy.",
+      "events": [
+        {
+          "id": "2022-08-24a",
+          "kind": "establish_care",
+          "start": "2022-08-24T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Migraine without aura",
+              "action": "history",
+              "onset": "2012-06-01",
+              "note": "Since early twenties"
+            },
+            {
+              "label": "Major depressive disorder",
+              "action": "history",
+              "onset": "2019-03-01",
+              "note": "On sertraline, outside psychiatry",
+              "icd10": "F32.9"
+            },
+            {
+              "label": "History of pelvic inflammatory disease",
+              "action": "history",
+              "onset": "2022-03-01",
+              "note": "Treated as outpatient at prior care",
+              "icd10": "Z87.42"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            },
+            {
+              "drug": "sumatriptan 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at headache onset; may repeat once after 2 hours if needed",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Migraine"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1-2 tablets by mouth every 6 hours as needed for headache",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Headache"
+            },
+            {
+              "drug_text": "prenatal vitamin with folic acid Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Planning pregnancy"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              83
+            ],
+            "hr": 74,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 63.9,
+            "height_cm": 164.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-24T10:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.99
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-24T10:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 95
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-24T10:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 176
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 132
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-24T10:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.79
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-24T10:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "No alcohol use"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-08-24T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "procedure",
+              "reason": "Establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-08-24T10:20",
+              "author": "PCP",
+              "body": "Leah is a 32 y/o high school math teacher here to establish care. Moved her care over from a practice she'd been with since college; wanted something where she can actually reach a doctor. Records release signed today.\n\nWhat she brings:\n- Migraine without aura since her early 20s. Throbbing, one-sided or both, nausea and light sensitivity with the bad ones. Uses sumatriptan 50 mg at onset, sometimes a second dose 2 h later. Tylenol for the milder ones, doesn't do much. Estimates 2-3 a month right now. Mother has migraines too.\n- Depression, followed by an outside psychiatrist since ~2019, stable on sertraline 50 mg daily. Sees psychiatry a few times a year. No SI. PHQ-9 today 4.\n- Treated for PID this past March at her old practice, outpatient antibiotics, no admission. Asymptomatic since.\n\nMeds: sertraline 50 daily, sumatriptan 50 prn, acetaminophen prn.\nAllergies: NKDA.\nSurg hx: none. OB: G0.\nFHx: mother migraines; father 'jumpy legs at night,' told it's restless legs; paternal grandmother with major depression.\nSH: married. Teaches algebra and precalc at the regional high school. Never smoked, doesn't drink, no drugs.\n\nShe and her husband are hoping to try for a pregnancy sometime in the next year. Talked about starting a prenatal vitamin with folic acid now rather than waiting, and about checking in with us and OB once she's pregnant re: sertraline and sumatriptan.\n\nROS otherwise negative.\n\nExam: vitals as charted. Pleasant, well appearing. HEENT unremarkable, TMs clear. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Neuro nonfocal. Mood good, affect bright.\n\nA/P\n1. Establish care. Screening labs today: CBC, CMP, lipids, TSH, one-time HIV and hep C.\n2. Migraine without aura, episodic. Continue sumatriptan prn.\n3. MDD, stable. Continue sertraline 50, keep psychiatry follow-up.\n4. Hx PID, treated. Will review old records.\n5. Preconception: start prenatal vitamin with folic acid daily.\n6. Pap with HPV last year per patient; will confirm from records. Flu shot when available this fall.\nRTC 1 year or sooner."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              72
+            ],
+            "weight_kg": 64.0,
+            "height_cm": 166.0,
+            "labs": {
+              "Hematocrit": 37.5,
+              "Low Density Lipoprotein": 84,
+              "Thyroid Stimulating Hormone": 1.84,
+              "Total Cholesterol": 168
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-26a",
+          "kind": "portal_message",
+          "start": "2022-08-26T16:12",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-08-26T16:12",
+              "author": "PCP",
+              "body": "Hi Leah, all of your blood work from Wednesday looks normal: blood counts, kidney and liver function, thyroid, and cholesterol. HIV and hepatitis C screens were negative, and those don't need repeating unless something changes. Nice to meet you this week. Let me know once the records from your old office land if you have questions about anything in them."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "outside_records",
+          "start": "2022-09-08T11:05",
+          "reason": "Prior primary care records received",
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2022-09-08T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records Summary",
+              "date": "2022-09-08T11:05",
+              "author": "front desk",
+              "body": "42 pages received by fax from patient's prior primary care office, scanned to Media. Abstracted for PCP:\n\n- Office visit 03/2022: lower abdominal pain and cervical motion tenderness, treated for pelvic inflammatory disease as an outpatient. Recheck visit 2 weeks later documents resolution.\n- Cervical cytology with HPV co-testing 2021: NILM, high-risk HPV not detected.\n- Immunizations: HPV series completed as a teenager. Tdap 2016. COVID primary series 2021.\n- Problem list on their side: migraine, depression.\n- Med list: sertraline 50 mg daily, sumatriptan 50 mg prn.\n- Allergies: NKDA."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records Review",
+              "date": "2022-09-09T07:50",
+              "author": "PCP",
+              "body": "Reviewed prior records. PID 3/2022 treated outpatient, documented resolution. Pap/HPV co-test 2021 negative, next due 2026. Nothing that changes the plan."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-14a",
+          "kind": "nurse_visit",
+          "start": "2022-10-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-14T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-14T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-01T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2022-10-14T15:30",
+              "author": "RN",
+              "body": "In after school for flu vaccine. Screening questions negative, no prior reactions. Quadrivalent flu 0.5 mL IM R deltoid, tolerated well. VIS given. Pt reports bivalent COVID booster at a pharmacy 10/1; entered as historical."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "office_visit",
+          "start": "2022-12-07T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg discomfort at night, trouble sleeping",
+          "vitals": {
+            "bp": [
+              120,
+              72
+            ],
+            "hr": 68,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 64.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-07T16:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.14
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-07T16:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-12-07T16:40",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 16
+                },
+                {
+                  "test": "Iron",
+                  "value": 76
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 319
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-12-07T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Evening leg discomfort with urge to move, sleep disruption"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-12-07T16:35",
+              "author": "PCP",
+              "body": "S: A couple of months of an awful creepy-crawly feeling in both legs in the evening, worse once she's lying down. Has to get up and walk around or stretch, which helps until she lies back down. Falling asleep has turned into an hour-long project and she's tired at school. No back pain, no weakness, no numbness, no bladder problems. Her dad has something similar. No new meds.\n\nO: Vitals as charted. Well appearing, a little tired. Lower extremities: normal bulk and strength, reflexes 2+ and symmetric, sensation intact to light touch, pulses normal, no edema or varicosities.\n\nA/P: Evening leg discomfort with urge to move, relieved by movement, family history in father. Sounds like restless legs. Checking CBC, BMP and ferritin today. Would like neurology to see her and weigh in on treatment, especially since she's thinking about pregnancy next year. Referral placed. Sleep hygiene, avoid late caffeine."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Ferritin": 16
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-09a",
+          "kind": "portal_message",
+          "start": "2022-12-09T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from Wednesday",
+              "date": "2022-12-09T12:30",
+              "author": "PCP",
+              "body": "Leah, your blood counts and kidney tests are normal. Your ferritin (iron stores) came back at the very bottom of the normal range. It's technically normal, but iron levels matter in restless legs, so I've sent these results along with the referral so neurology has them for your visit. Neurology's office should call you to schedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results from Wednesday",
+              "date": "2022-12-09T19:02",
+              "author": "patient",
+              "body": "Thanks! They called already, I'm in on January 20th. Pretty much counting the days at this point lol"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "telephone",
+          "start": "2023-01-09T10:25",
+          "reason": "Records request from neurology",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2023-01-09T10:30",
+              "author": "front desk",
+              "body": "Neurology office called ahead of pt's 1/20 consult asking for the 12/7 office note and labs. Faxed referral, note, CBC, BMP and iron studies. Confirmation received."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-20a",
+          "kind": "specialist_visit",
+          "start": "2023-01-20T10:30",
+          "service": "Neurology",
+          "reason": "Restless legs evaluation",
+          "conditions": [
+            {
+              "label": "Restless legs syndrome",
+              "action": "diagnosed",
+              "onset": "2022-10-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "pramipexole dihydrochloride 0.125 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth nightly, 2 hours before bed",
+              "dose": {
+                "value": 0.125,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Restless legs syndrome"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2023-01-20T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2023-01-26T09:14",
+              "author": "neurology",
+              "body": "Outpatient Neurology Consultation\nDate of service: 01/20/2023\nReferred by: primary care\n\nDear colleague,\n\nI saw Ms. Martel, a 32-year-old teacher, for uncomfortable sensations in both legs that keep her awake. She describes a strong, hard-to-resist need to move the legs that arrives in the evening and whenever she lies down; walking or stretching relieves it for a while. She has no back pain, no leg weakness and no urinary incontinence.\n\nHistory: migraine without aura, major depressive disorder on sertraline, prior pelvic inflammatory disease. Medications: sertraline 50 mg daily, sumatriptan 50 mg as needed, and a prenatal vitamin with folic acid daily. Allergies: none known. Family history notable for restless legs in her father and migraine in her mother. She does not smoke, drink or use drugs.\n\nExamination: vital signs normal. Mental status, cranial nerves, motor, reflexes, sensation, coordination and gait are all normal. No signs of neuropathy or radiculopathy.\n\nData: your labs from 12/07/2022 show a normal CBC, normal electrolytes and renal function, and a ferritin at the lower limit of normal.\n\nImpression: Restless legs syndrome, primary, with a family history. Exam is normal.\n\nPlan: Start pramipexole 0.125 mg nightly, taken about two hours before bed. Counseled on nausea and sleepiness, and on augmentation over time. She is planning a pregnancy; she should let her obstetrician know she is on this. Follow up with us as needed; happy to see her again if symptoms escalate.\n\nAllergies: NKDA.\n\nOutpatient Neurology"
+            }
+          ]
+        },
+        {
+          "id": "2023-02-13a",
+          "kind": "portal_message",
+          "start": "2023-02-13T20:41",
+          "reason": "Medication update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leg update",
+              "date": "2023-02-13T20:41",
+              "author": "patient",
+              "body": "Just wanted to let you know the pramipexole is working. I'm actually falling asleep at a normal time. Little queasy the first week but that's gone. Can you do the refills on it going forward or does that have to be neurology?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leg update",
+              "date": "2023-02-14T08:05",
+              "author": "PCP",
+              "body": "So glad to hear it. Yes, we can handle refills from here. Just send a request when you're getting low."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "pharmacy",
+          "start": "2023-03-22T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "date": "2023-03-22T09:15",
+              "author": "MA",
+              "body": "Electronic refill request from pharmacy: sertraline 50 mg tab, #90. Last seen 12/2022. Pended for PCP. -- Approved by PCP, 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-19a",
+          "kind": "portal_message",
+          "start": "2023-06-19T07:02",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2023-05-22",
+              "note": "LMP 2023-05-22",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "date": "2023-06-19T07:02",
+              "author": "patient",
+              "body": "Good morning! Positive home test this weekend. First day of my last period was May 22. I called the OB office and they're seeing me in a few weeks. Should I be doing anything different with my meds in the meantime? I'm still on the sertraline, the pramipexole, the prenatal, and I've had a couple of migraines."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "date": "2023-06-19T12:48",
+              "author": "PCP",
+              "body": "Congratulations, Leah! Keep taking the sertraline and the prenatal vitamin; stopping an antidepressant abruptly in early pregnancy usually causes more problems than it solves. Please bring the pramipexole and sumatriptan up at your first OB visit so they can weigh in. Tylenol is fine for headaches in the meantime. If the migraines are getting worse, let's get you in here."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-31a",
+          "kind": "office_visit",
+          "start": "2023-07-31T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Migraines worsening, currently pregnant",
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 78,
+            "temp_c": 37.1,
+            "spo2": 95,
+            "weight_kg": 66.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-31T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-07-31T11:02",
+              "author": "PCP",
+              "body": "Chief complaint: headaches.\n\nHPI: 33 y/o G1 at 10 weeks by LMP (5/22), here about her migraines. Over the last six months they've been coming about 6 times a month, severe, throbbing, with nausea and light sensitivity, and most of them put her in bed for the afternoon. Migraines since her early 20s but they've been climbing in frequency and severity over the past year. Acetaminophen barely touches them. She's been reluctant to use sumatriptan since the positive test. She's on summer break, which is the only reason she hasn't missed school days. Main questions: is there anything safe she can take daily in pregnancy to prevent them, and how she's going to manage this with a newborn. First OB visit was last week, dating ultrasound fine per patient.\n\nNo aura, no thunderclap onset, no change in character, no fevers, no visual loss, no weakness. Mood okay; PHQ-9 5. RLS controlled on pramipexole.\n\nMeds: sertraline 50 daily, pramipexole 0.125 qhs, prenatal vitamin daily, sumatriptan 50 prn, acetaminophen prn.\nAllergies: NKDA.\n\nExam: BP 120/78, other vitals as charted. Well appearing. Fundi with sharp discs. Neck supple. Heart and lungs normal. Neuro: CN II-XII intact, strength, reflexes, sensation, coordination and gait normal.\n\nA/P:\nMigraine without aura, worsening frequency, now in first trimester. Normal neuro exam, no red flags, so no imaging. Long talk about the options for prevention in pregnancy and what's known about each. She'd like to hold off on a daily medicine for now and see how the second trimester goes, which is reasonable.\n- Sumatriptan remains her rescue med; it's what we'd choose in pregnancy if acetaminophen fails. Okay to use at onset, max 2 doses in 24 h.\n- Acetaminophen 1000 mg at onset is fine to try first.\n- Regular sleep, meals and hydration; headache diary.\n- Message to OB re: plan and her question about pramipexole in pregnancy.\nCall if headaches change in character, any visual symptoms, or BP readings at OB are up. Recheck after the diary is a month in."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.5
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "telephone",
+          "start": "2023-08-14T13:40",
+          "reason": "Medication refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Call",
+              "date": "2023-08-14T13:45",
+              "author": "RN",
+              "body": "Pt called requesting sumatriptan refill, down to 2 tabs. Keeping the headache diary as asked and will bring it to her physical in September. Refill pended to PCP. -- Sent, #9 with 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-02a",
+          "kind": "ed_visit",
+          "start": "2023-09-02T14:10",
+          "end": "2023-09-02T19:45",
+          "service": "Emergency Medicine",
+          "reason": "Abdominal pain in pregnancy",
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Visit Summary",
+              "date": "2023-09-06T10:22",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD\nDate of visit: 09/02/2023\n\nChief complaint: abdominal pain.\n\n33 y/o G1P0 at about 14-15 weeks with roughly 3-4 weeks of a constant, dull, diffuse abdominal ache that does not radiate and is not related to meals or activity. Came in today because it has not let up. No fever, vomiting, diarrhea, urinary symptoms, vaginal bleeding or fluid.\n\nPMH: migraine, depression, restless legs. Meds: sertraline, pramipexole, prenatal vitamin, sumatriptan prn. Allergies: NKDA.\n\nExam: afebrile, vital signs normal. Abdomen soft, nondistended, no tenderness, no rebound or guarding. Fetal heart tones present by Doppler.\n\nWork-up: CBC, metabolic panel, lipase and urinalysis unremarkable. Bedside ultrasound: single live intrauterine pregnancy.\n\nAssessment: abdominal pain in pregnancy, no acute process identified.\n\nDisposition: home. Follow up with her obstetrician and primary care. Return for worsening pain, fever, bleeding or vomiting."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-13a",
+          "kind": "annual_physical",
+          "start": "2023-09-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              107,
+              73
+            ],
+            "hr": 73,
+            "rr": 18,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 65.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-13T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-13T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-13T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-13T16:25",
+              "author": "PCP",
+              "body": "Annual exam. 33 y/o G1 at 16w2d.\n\nInterval: seen in ED 9/2 for a dull, steady belly ache that started in August; workup there was unremarkable and she went home. Still has it most days, she rates it a 3-4, just there all the time. No pattern with food. Sleeping okay on the pramipexole. Headache diary: 5 migraines in the last 4 weeks, used sumatriptan for 3. She's been back at school two weeks.\n\nPrenatal care with OB, going fine per patient. Sertraline continued.\n\nPreventive: Pap/HPV due 2026. Flu shot today, safe in pregnancy, she wants it. Updated COVID shot once it's out, at the pharmacy. Tdap will come from OB in the third trimester. Seatbelt yes. Feels safe at home.\n\nExam: vitals as charted. Well appearing. HEENT normal. Thyroid normal. Heart RRR, no murmur. Lungs clear. Breasts deferred to OB. Abdomen soft, gravid, nontender, no masses. Skin normal. Neuro normal. Mood euthymic.\n\nA/P:\n1. Health maintenance as above; flu vaccine given.\n2. Migraine, frequent but stable since July. Continue rescue plan, no daily preventive for now per her preference.\n3. Abdominal pain in pregnancy, ED workup negative. Exam benign today. If it persists, will image and get GI's opinion. She knows to go to OB triage for anything acute.\n4. MDD, PHQ-9 5, stable.\n5. RLS controlled."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "office_visit",
+          "start": "2023-10-11T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Ongoing abdominal pain",
+          "vitals": {
+            "bp": [
+              110,
+              72
+            ],
+            "hr": 67,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 69.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-11T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "abd-us-2023",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "Persistent diffuse abdominal pain in pregnancy"
+            },
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Persistent diffuse abdominal pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-10-11T17:05",
+              "author": "PCP",
+              "body": "Follow-up abdominal pain. Now 20w2d.\n\nPain has been constant since early August: dull, all over the belly, doesn't travel anywhere, not worse with eating or moving, nothing makes it go away. No fever, weight loss beyond expected pregnancy gain, vomiting, bowel change, blood, urinary symptoms or bleeding. OB has looked at it and told her the pregnancy looks fine. She's missed three school days in the last month because of it and is worried something is being missed. Says she lies awake thinking about it. GAD-7 8, PHQ-9 7.\n\nExam: vitals as charted. Comfortable at rest. Abdomen soft, gravid, fundus at about the umbilicus, no focal tenderness, no rebound or guarding, no CVA tenderness, no hepatosplenomegaly appreciated. \n\nA/P: Chronic diffuse abdominal pain in pregnancy, present for about 10 weeks, benign exam, unremarkable ED labs.\n- Abdominal ultrasound (liver, gallbladder, pancreas, kidneys).\n- GI referral for a second opinion.\n- Acknowledged how unsettling this is. Encouraged her to bring this up with her psychiatrist as well, since the worry is eating into sleep. She's agreeable.\n- Continue sertraline 50."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "imaging",
+          "start": "2023-10-16T08:30",
+          "reason": "Abdominal pain in pregnancy",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-10-16T08:30",
+              "text": "Indication: persistent diffuse abdominal pain, pregnant at about 21 weeks.\nTechnique: grayscale and color Doppler sonography of the abdomen.\nFindings: Liver normal in size and echotexture without focal lesion. Gallbladder without stones, wall thickening or pericholecystic fluid. No biliary dilatation; common bile duct 3 mm. Pancreas visualized portions unremarkable. Spleen normal in size. Right kidney 11.0 cm and left kidney 11.3 cm, without hydronephrosis, stones or masses. No ascites. Gravid uterus noted, not evaluated on this exam.",
+              "conclusion": "Normal abdominal ultrasound."
+            }
+          ],
+          "orders": [
+            {
+              "id": "abd-us-2023",
+              "action": "done",
+              "date": "2023-10-16T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ultrasound result",
+              "date": "2023-10-16T17:20",
+              "author": "PCP",
+              "body": "Hi Leah, your ultrasound this morning was completely normal: liver, gallbladder, pancreas, spleen and kidneys all look healthy. That's reassuring. GI will still see you so we get a specialist's take."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-02a",
+          "kind": "portal_message",
+          "start": "2023-11-02T21:30",
+          "reason": "Referral question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI appointment",
+              "date": "2023-11-02T21:30",
+              "author": "patient",
+              "body": "The GI office says their first opening is December 13. Is that okay to wait for or should I be pushing for something sooner? The ache is the same, not worse."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI appointment",
+              "date": "2023-11-03T07:45",
+              "author": "PCP",
+              "body": "December 13 is fine given your normal ultrasound and labs, and since nothing has changed. I'll ask them to put you on their cancellation list. If the pain changes, gets sharper, or comes with fever, vomiting, bleeding or contractions, go to OB triage right away rather than waiting."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "ed_visit",
+          "start": "2023-11-20T21:05",
+          "end": "2023-11-21T01:30",
+          "service": "Emergency Medicine",
+          "reason": "Abdominal pain in pregnancy",
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Visit Summary",
+              "date": "2023-11-24T14:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD\nDate of visit: 11/20/2023\n\nCC: abdominal pain.\n\n33 y/o G1P0 at 26 weeks with a dull, diffuse, constant abdominal ache since August, seen here 9/2 with a negative workup; normal outpatient ultrasound in October. Came in tonight because the pain kept her up and she was scared. No contractions, bleeding, leakage of fluid, fever or urinary symptoms; active fetal movement.\n\nAllergies: NKDA. Meds: sertraline, pramipexole, prenatal vitamin, sumatriptan prn.\n\nExam: vital signs normal. Abdomen gravid, soft, nontender, fundal height appropriate. No CVA tenderness. OB evaluated in the department: fetal heart rate tracing reactive, no contractions on monitoring, cervix closed.\n\nLabs: CBC, CMP, lipase and urinalysis within normal limits.\n\nImpression: chronic abdominal pain in pregnancy, no acute obstetric or surgical cause.\n\nPlan: discharged home, keep the GI appointment in December, PCP and OB follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "specialist_visit",
+          "start": "2023-12-13T13:00",
+          "service": "Gastroenterology",
+          "reason": "Chronic abdominal pain",
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2023-12-13T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2023-12-19T10:40",
+              "author": "gastroenterology",
+              "body": "Gastroenterology Office Consultation\nDate of service: 12/13/2023\n\nThank you for referring Leah Martel, 33, now 29 weeks pregnant, for diffuse abdominal pain since August 2023.\n\nThe pain is steady and dull across the whole abdomen, does not radiate, and has no relationship to eating, bowel movements or position. No dysphagia, heartburn out of proportion to pregnancy, vomiting, bleeding, diarrhea, constipation change or weight loss. Two ED evaluations (September and November) with normal labs; normal abdominal ultrasound in October.\n\nMeds: sertraline 50 mg, pramipexole 0.125 mg, prenatal vitamin, sumatriptan as needed. NKDA.\n\nExam: well appearing. Abdomen gravid, soft, nontender throughout, no masses palpable, normal bowel sounds. Carnett sign negative.\n\nImpression: chronic diffuse abdominal pain without alarm features, normal labs and imaging. I don't find a structural GI cause. Endoscopy in pregnancy is reserved for strong indications and there is none here; I would not pursue it.\n\nRecommendations: reassurance; no further GI testing now. Happy to see her again postpartum if the pain persists or new features appear. Agree with involving her psychiatrist given the distress this is causing.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-10a",
+          "kind": "lab_only",
+          "start": "2024-01-10T07:45",
+          "reason": "Labs requested by psychiatry",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-10T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.27
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-01-10T07:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 31
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 9
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-01-10T07:50",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.02
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-10T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab Request",
+              "date": "2024-01-08T11:20",
+              "author": "MA",
+              "body": "Outside psychiatry office called asking for a CBC, metabolic panel and UA before pt's appointment on 1/31; she'd rather draw here than at their lab. PCP okayed, orders entered, pt scheduled for a fasting-optional draw Wed AM."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-01-10T15:35",
+              "author": "PCP",
+              "body": "Leah, this morning's labs are normal: blood count, electrolytes, kidney and liver tests, and the urine test. Hemoglobin is 13.2, which is a good number this far along. I've faxed a copy to your psychiatrist's office for the 31st."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.2,
+              "Platelets": 250,
+              "White Blood Cells": 7.0
+            }
+          }
+        },
+        {
+          "id": "2024-01-31a",
+          "kind": "specialist_visit",
+          "start": "2024-01-31T14:00",
+          "service": "Psychiatry",
+          "reason": "Psychiatric follow-up",
+          "conditions": [
+            {
+              "label": "Somatic symptom disorder",
+              "action": "diagnosed",
+              "onset": "2023-08-01"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "date": "2024-02-06T16:45",
+              "author": "psychiatry",
+              "body": "Outpatient Psychiatry\nDate of service: 01/31/2024\n\nRe: Leah Martel, DOB 06/17/1990\n\nDear Doctor,\n\nLeah returned for follow-up of major depressive disorder. She is now 36 weeks pregnant with her first child. Her depression has stayed in a reasonable place on sertraline 50 mg.\n\nThe main topic was abdominal pain she has had for about six months: a steady, dull ache spread across the abdomen that does not radiate and has no link to food or activity. She has been evaluated twice in the emergency department, had a normal abdominal ultrasound and saw gastroenterology, with nothing found. She describes a great deal of worry about her health, checks her body frequently, and has missed several days of work for the pain.\n\nMedical history also includes migraine without aura and restless legs syndrome, followed by you and neurology. Medications: sertraline 50 mg daily, pramipexole 0.125 mg nightly, sumatriptan 50 mg as needed, prenatal vitamin daily. No known drug allergies.\n\nVital signs were normal. On abdominal exam there was no tenderness, mass or organomegaly. Your labs of 01/10/2024 were reviewed: hemoglobin 13.2 g/dL, WBC 7,000, platelets 250,000, normal electrolytes and liver tests, normal urinalysis.\n\nImpression: Somatic symptom disorder, with persistent abdominal pain and disproportionate health anxiety; major depressive disorder, stable.\n\nPlan: continue sertraline 50 mg daily, which is compatible with pregnancy and breastfeeding. We will meet monthly for psychotherapy-focused visits through the postpartum period. I'd suggest one consistent point of contact for the pain, which I think is you, with scheduled visits rather than urgent ones.\n\nThank you for sharing her care.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-07a",
+          "kind": "outside_records",
+          "start": "2024-02-07T07:40",
+          "reason": "Psychiatry letter reviewed",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Letter Reviewed",
+              "date": "2024-02-07T07:40",
+              "author": "PCP",
+              "body": "Psychiatry letter reviewed. New dx somatic symptom disorder. Agree with plan for scheduled PCP visits for the abdominal pain rather than urgent ones; will set her up for a regular check after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "hospital_admission",
+          "start": "2024-02-20T03:10",
+          "end": "2024-02-22T11:30",
+          "service": "Obstetrics",
+          "reason": "Term labor",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-12-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2024-02-27T09:30",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted: 02/20/2024  Discharged: 02/22/2024\n\nPatient: Leah Martel, 33, G1P0 -> G1P1001\nEDD 02/26/2024 by LMP consistent with first-trimester ultrasound. Admitted at 39w1d in spontaneous labor.\n\nPrenatal course: uncomplicated. Normal anatomy survey. Tdap given 12/06/2023. Followed by her PCP and GI for chronic abdominal pain with negative evaluation; by psychiatry for depression and somatic symptom disorder; on pramipexole for restless legs.\n\nLabor and delivery: spontaneous labor progressed normally. Epidural. Spontaneous vaginal delivery 02/20/2024 of a liveborn infant, Apgars 8 and 9, birth weight 3,390 g. Estimated blood loss 300 mL.\n\nPostpartum course: uncomplicated. Afebrile, normal blood pressures, voiding, ambulating, pain controlled. Infant well, discharged with mother.\n\nAllergies: NKDA.\nDischarge medications: sertraline 50 mg daily, pramipexole 0.125 mg nightly, prenatal vitamin daily, sumatriptan 50 mg as needed.\n\nFollow-up: OB postpartum visit at 6 weeks; PCP and psychiatry as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "portal_message",
+          "start": "2024-02-21T18:05",
+          "reason": "Birth announcement",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby is here",
+              "date": "2024-02-21T18:05",
+              "author": "patient",
+              "body": "Baby arrived yesterday morning! Everything went smoothly, we're both doing great. Going home tomorrow. Do I need to see you or just OB?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby is here",
+              "date": "2024-02-22T08:10",
+              "author": "PCP",
+              "body": "Congratulations to all of you! OB will see you at 6 weeks. I'd also like to see you in about a month to check in on mood and sleep. The front desk will call to set it up."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "office_visit",
+          "start": "2024-03-20T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in",
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 71,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 68.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-20T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-03-20T13:58",
+              "author": "PCP",
+              "body": "Here with the baby in the car seat, four weeks out from an uncomplicated vaginal delivery (discharge summary reviewed). On maternity leave until April break.\n\nSleep is broken but she's coping; husband is doing nights on the weekend. Mood 'tired, not sad.' PHQ-9 6, GAD-7 6, no thoughts of harm to self or baby. Seeing psychiatry monthly, staying on sertraline 50.\n\nThe belly ache is still there some days. We agreed on a standing plan: she keeps a short log and we go over it at scheduled visits instead of urgent trips in. She liked that.\n\nMigraines have been quiet. RLS fine on pramipexole.\n\nExam: vitals as charted. Well appearing, tired. Thyroid normal. Heart and lungs normal. Abdomen soft, nontender, uterus not palpable. Calves soft.\n\nA/P\n1. Postpartum, doing well. OB 6-week visit booked.\n2. MDD and somatic symptom disorder: stable on sertraline, monthly psychiatry. Scheduled visits here.\n3. Migraine, RLS stable. Refills current.\nRTC 3 months or as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-24a",
+          "kind": "pharmacy",
+          "start": "2024-04-24T10:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "date": "2024-04-24T10:05",
+              "author": "MA",
+              "body": "Pharmacy requesting renewal of pramipexole 0.125 mg tab, take 1 nightly, #90. Last office visit 3/20/24. Pended to PCP. -- Approved x 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "portal_message",
+          "start": "2024-06-17T06:48",
+          "reason": "Pregnancy",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2024-05-17",
+              "note": "LMP 2024-05-17",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surprise",
+              "date": "2024-06-17T06:48",
+              "author": "patient",
+              "body": "So... I'm pregnant again. LMP was May 17. Not exactly the plan for the timing but we're happy. OB is seeing me in July. Same meds as last time, same plan? I didn't skip the prenatal this whole time so at least that's covered."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surprise",
+              "date": "2024-06-17T12:10",
+              "author": "PCP",
+              "body": "Congratulations! Yes, same plan as last time: sertraline and the prenatal vitamin continue, review the pramipexole with OB at your first visit, and sumatriptan stays your rescue for migraines if Tylenol doesn't do it. Let me know how the first visit goes."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "specialist_visit",
+          "start": "2024-09-20T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Routine prenatal visit, 18 weeks",
+          "conditions": [
+            {
+              "label": "Maternal care for fetal spina bifida with Chiari II malformation",
+              "action": "diagnosed",
+              "onset": "2024-09-20",
+              "icd10": "O35.08X0"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mfm-referral-2024",
+              "action": "placed",
+              "order": "Maternal-fetal medicine referral",
+              "category": "referral",
+              "to": "Maternal-Fetal Medicine",
+              "reason": "Fetal spina bifida with Chiari II findings"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit Note",
+              "date": "2024-09-26T13:10",
+              "author": "obstetrics",
+              "body": "Obstetrics & Gynecology Prenatal Visit\nDate of service: 09/20/2024\n\nLeah Martel, 34, G2P1001 at 18w0d by LMP (05/17/2024).\n\nSeen for a routine prenatal visit. She has no complaints and her prenatal care has been regular and uncomplicated to this point. Her prior pregnancy (delivered 02/2024) was uncomplicated with a healthy term infant.\n\nHistory: migraine, depression, restless legs, somatic symptom disorder. Medications: sertraline 50 mg daily, pramipexole 0.125 mg nightly, prenatal vitamin with folic acid daily, sumatriptan as needed. Allergies: none known. Nonsmoker, no alcohol.\n\nExam: normal. Uterine size appropriate for gestational age.\n\nThe maternal serum alpha-fetoprotein from her second-trimester screen returned elevated. Ultrasound was performed today for further evaluation: single fetus; the skull has a lemon-shaped contour and the cerebellum is curved in a banana shape. No other abnormality was identified.\n\nAssessment: Intrauterine pregnancy at 18 weeks with findings of fetal open spina bifida with Chiari II malformation.\n\nPlan: results reviewed with the patient and her husband. Urgent referral to maternal-fetal medicine for detailed ultrasound and counseling, scheduled 10/01. We will follow along closely.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-22a",
+          "kind": "portal_message",
+          "start": "2024-09-22T21:15",
+          "reason": "Patient update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hard news",
+              "date": "2024-09-22T21:15",
+              "author": "patient",
+              "body": "I wanted you to hear it from me. The 18 week ultrasound showed the baby has spina bifida. We see the high-risk team on Oct 1. I'm okay-ish. Mostly I just wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hard news",
+              "date": "2024-09-23T07:30",
+              "author": "PCP",
+              "body": "Leah, I'm so sorry. Thank you for telling me. You don't have to carry this alone; call or text me anytime, including this week, and let your psychiatrist know too. I'll be thinking of you on the 1st."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "specialist_visit",
+          "start": "2024-10-01T10:00",
+          "service": "Maternal-Fetal Medicine",
+          "reason": "Detailed fetal ultrasound and counseling",
+          "conditions": [
+            {
+              "label": "Missed abortion",
+              "action": "diagnosed",
+              "onset": "2024-10-01",
+              "icd10": "O02.1"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mfm-referral-2024",
+              "action": "done",
+              "date": "2024-10-01T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Maternal-Fetal Medicine Consultation",
+              "date": "2024-10-08T08:55",
+              "author": "maternal-fetal medicine",
+              "body": "Maternal-Fetal Medicine Consultation\nDate of service: 10/01/2024\n\nMs. Martel, 34, G2P1001 at 19w4d, was referred for detailed evaluation after an elevated MSAFP and ultrasound findings of fetal spina bifida with Chiari II malformation on 09/20.\n\nDetailed ultrasound today: single fetus with no cardiac activity, confirmed by two examiners. Biometry consistent with the stated dates.\n\nImpression: Intrauterine fetal demise at 19w4d (missed abortion) in a pregnancy with fetal open spina bifida and Chiari II malformation.\n\nWe discussed management options. She and her husband chose dilation and evacuation, scheduled for tomorrow with the gynecology team.\n\nMaternal-Fetal Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "procedure_visit",
+          "start": "2024-10-02T07:30",
+          "end": "2024-10-02T13:15",
+          "service": "Gynecology",
+          "reason": "Dilation and evacuation for missed abortion",
+          "conditions": [
+            {
+              "label": "Maternal care for fetal spina bifida with Chiari II malformation",
+              "action": "resolved",
+              "icd10": "O35.08X0"
+            },
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report: Dilation and Evacuation",
+              "date": "2024-10-08T08:56",
+              "author": "gynecology",
+              "body": "OPERATIVE REPORT\nDate of procedure: 10/02/2024\n\nPreoperative diagnosis: missed abortion at 19w5d.\nPostoperative diagnosis: same.\nProcedure: cervical preparation and dilation and evacuation under ultrasound guidance.\nAnesthesia: monitored anesthesia care with paracervical block.\nFindings: products of conception consistent with dates; evacuation complete on ultrasound at the end of the procedure.\nEstimated blood loss: 150 mL.\nComplications: none.\nDisposition: recovered without incident and discharged home the same day with a responsible adult. Bleeding and infection precautions reviewed. Follow-up in gynecology clinic in 2 weeks.\n\nAllergies: NKDA.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "telephone",
+          "start": "2024-10-03T17:30",
+          "reason": "Check-in after pregnancy loss",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Call",
+              "date": "2024-10-03T17:50",
+              "author": "PCP",
+              "body": "Called Leah after her message last night that the MFM ultrasound on 10/1 showed no heartbeat and she had a D&E yesterday. Physically sore, bleeding like a period, no fever. Emotionally 'in pieces' but safe; husband and her mom are with her. No SI. Has a psychiatry appointment moved up to next week. Taking the rest of the week off school; I'll do a note. Booked to see me 10/16. Told her to call any hour."
+            },
+            {
+              "type": "Letters",
+              "title": "Work Note",
+              "date": "2024-10-03T17:55",
+              "author": "PCP",
+              "body": "To whom it may concern: Leah Martel is under my care and is unable to work from 10/01/2024 through 10/07/2024 for medical reasons. She may return 10/08/2024. Please contact the office with any questions."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "office_visit",
+          "start": "2024-10-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after pregnancy loss",
+          "conditions": [
+            {
+              "label": "Missed abortion",
+              "action": "resolved",
+              "icd10": "O02.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              76
+            ],
+            "hr": 73,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 65.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-16T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-16T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-16T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-16T16:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-10-16T16:40",
+              "author": "PCP",
+              "body": "Two weeks after D&E for missed abortion at 19 weeks; that pregnancy had a spina bifida/Chiari II diagnosis at 18 weeks. MFM and op notes reviewed.\n\nBleeding tapered off a few days ago. No fever, pelvic pain or discharge. Gyn post-op visit went fine per patient.\n\nMood: grieving, which she names as such. Sleeping poorly some nights, crying, still getting to school and looking after the baby. PHQ-9 9, item 9 zero. Saw psychiatry last week; staying on sertraline 50 for now, more frequent visits there. Husband and her mother around a lot. Abdominal ache unchanged.\n\nExam: vitals as charted. Tearful at times, appropriate. Abdomen soft, nontender.\n\nA/P\n1. Pregnancy loss, recovering physically. Missed abortion resolved.\n2. MDD with grief: PHQ-9 9. Continue sertraline, psychiatry following closely. Discussed warning signs and how to reach me.\n3. Flu and updated COVID vaccines today.\nVideo check in December."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "telehealth_visit",
+          "start": "2024-12-11T19:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mood follow-up",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-12-11T19:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2024-12-11T19:25",
+              "author": "PCP",
+              "body": "Video visit from home after the baby's bedtime. Two months after the loss. Says the hard days are spaced further apart now. Back to full teaching load. Seeing psychiatry every 2-3 weeks; sertraline 50 unchanged. PHQ-9 6. No SI.\n\nMigraines a couple a month, sumatriptan works. RLS fine. Belly ache still comes and goes, she's logging it as we agreed and it isn't driving visits.\n\nExam limited to video: well appearing, speech normal, affect appropriate.\n\nA/P: MDD with grief, improving. Continue current plan. Annual physical in February."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "annual_physical",
+          "start": "2025-02-26T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              76
+            ],
+            "hr": 75,
+            "rr": 17,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 65.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-26T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-02-26T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-26T16:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.96
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-02-26T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-02-26T16:35",
+              "author": "PCP",
+              "body": "Annual exam, 34F.\n\nThe year: term vaginal delivery 2/2024; second pregnancy found to have fetal spina bifida/Chiari II at 18 weeks, then fetal demise at 19 weeks with D&E 10/2024. She says the winter has been better than she feared. Psychiatry down to monthly again, sertraline 50. PHQ-9 4, GAD-7 4.\n\nMigraine: 2-3 a month, sumatriptan effective, no ED trips for headache. RLS: well controlled on pramipexole 0.125, no daytime symptoms. Abdominal ache: 'background noise,' some weeks none.\n\nNot actively trying for pregnancy but not preventing either. Continues prenatal vitamin. Cycles have always run irregular.\n\nPreventive: Pap/HPV due 2026. Flu and COVID done this fall. Tdap 12/2023. Lipids and HIV/HCV done 2022. Exercise: walks the stroller most days. Seatbelt, smoke detectors yes. Feels safe at home.\n\nExam: vitals as charted. Well appearing. HEENT, neck, thyroid normal. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Extremities without edema. Skin no concerning lesions. Neuro nonfocal. Mood and affect normal.\n\nA/P\n1. Health maintenance. CBC, CMP, TSH today.\n2. MDD, somatic symptom disorder: stable, continue sertraline and psychiatry.\n3. Migraine without aura: stable on rescue therapy.\n4. RLS: stable.\nRTC 6 months for med check, 1 year physical."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-28a",
+          "kind": "portal_message",
+          "start": "2025-02-28T11:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-02-28T11:15",
+              "author": "PCP",
+              "body": "Hi Leah, everything from Wednesday came back normal: blood count, kidney and liver function, electrolytes and thyroid. Nothing to change."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2025-02-28T15:40",
+              "author": "patient",
+              "body": "Thank you!! Have a good weekend"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "hospital_admission",
+          "start": "2025-05-20T16:05",
+          "end": "2025-05-23T11:20",
+          "service": "Emergency Medicine; Gynecology",
+          "reason": "Left lower abdominal pain and vaginal spotting",
+          "conditions": [
+            {
+              "label": "Ectopic pregnancy (left tubal)",
+              "action": "diagnosed",
+              "onset": "2025-05-20",
+              "icd10": "O00.101"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-05-20T16:12",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 98,
+              "rr": 18,
+              "temp_c": 37.2,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-20T16:30",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-20T16:45",
+              "results": [
+                {
+                  "test": "Choriogonadotropin.beta subunit, serum",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 1500
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-20T16:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.12
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-22T06:10",
+              "results": [
+                {
+                  "test": "Choriogonadotropin.beta subunit, serum",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 1800
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-05-20T18:20",
+              "text": "Indication: positive pregnancy test, left lower quadrant pain, spotting. LMP about 6 weeks ago.\nTechnique: transabdominal and transvaginal grayscale and color Doppler imaging.\nFindings: The uterus is anteverted and normal in size. The endometrial cavity is empty; no gestational sac, yolk sac or fetal pole. No intrauterine pregnancy. A complex mass is seen in the left adnexa, separate from the left ovary. The right ovary and right adnexa are normal.",
+              "conclusion": "No intrauterine pregnancy. Complex left adnexal mass. In the setting of a positive pregnancy test, ectopic pregnancy is a consideration; correlate with serial hCG."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-05-22T13:30",
+              "text": "Specimens: (A) endometrial curettings; (B) left fallopian tube, salpingectomy.\nGross: (A) scant tan-red tissue. (B) segment of fallopian tube with a hemorrhagic, disrupted wall.\nMicroscopic: (A) decidualized endometrium; no chorionic villi or trophoblast identified. (B) chorionic villi and trophoblast within the tubal lumen and wall with hemorrhage and wall disruption.",
+              "conclusion": "A: Decidualized endometrium, no products of conception. B: Left fallopian tube with ruptured tubal ectopic pregnancy.",
+              "issued": "2025-05-24T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2025-05-28T09:05",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE\nDate of visit: 05/20/2025\n\nCC: left lower abdominal pain.\n\nHPI: 34 y/o G3P1011 with sudden, sharp left lower abdominal pain that started about 6 hours before arrival. Light vaginal spotting for the past 2 days. LMP about 6 weeks ago; cycles irregular. Pregnancy in 2024. Treated for PID about three years ago. Sexually active with one partner, inconsistent condom use.\n\nPMH: migraine, depression, restless legs, somatic symptom disorder. PSH: D&E 10/2024. Meds: sertraline 50 mg, pramipexole 0.125 mg, prenatal vitamin, sumatriptan prn. Allergies: NKDA.\n\nExam: BP 110/70, HR 98, T 37.2 C (99.0 F). Uncomfortable. Abdomen: tender in the left lower quadrant with rebound. Pelvic: os closed, no active bleeding, cervical motion tenderness.\n\nData: urine hCG positive. Serum quantitative beta-hCG 1500 mIU/mL. CBC unremarkable. Transvaginal ultrasound: empty uterus, no IUP, complex left adnexal mass.\n\nMDM: pregnancy of unknown location with a complex left adnexal mass; ectopic pregnancy is the main concern. Hemodynamically stable. Gynecology consulted and admits for serial hCG and further evaluation.\n\nDisposition: admitted to gynecology."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Gynecology Discharge Summary",
+              "date": "2025-05-28T09:06",
+              "author": "gynecology",
+              "body": "GYNECOLOGY DISCHARGE SUMMARY\nAdmitted: 05/20/2025 via the ED  Discharged: 05/23/2025\n\nAdmitting diagnosis: pregnancy of unknown location, complex left adnexal mass.\nDischarge diagnosis: ruptured left tubal ectopic pregnancy, status post left salpingectomy.\n\nCourse: Admitted for observation and serial beta-hCG. hCG 1500 mIU/mL on 05/20 and 1800 mIU/mL on 05/22, an abnormal rise over 48 hours. On 05/22 she underwent diagnostic dilation and curettage; no products of conception were seen on the specimen. She was taken for laparoscopy the same day, which found a ruptured left tubal ectopic pregnancy, and a laparoscopic left salpingectomy was performed. Right tube appeared normal. Postoperative course uncomplicated; tolerating diet, ambulating, pain controlled with oral analgesics. Pathology: decidualized endometrium without villi; left tube with ruptured tubal ectopic pregnancy.\n\nAllergies: NKDA.\nDischarge medications: resume home medications (sertraline 50 mg daily, pramipexole 0.125 mg nightly, prenatal vitamin daily, sumatriptan 50 mg as needed).\nInstructions: no lifting over 10 lb for 2 weeks; pelvic rest 2 weeks. Gynecology post-op visit in 2 weeks. Follow up with primary care.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-04a",
+          "kind": "office_visit",
+          "start": "2025-06-04T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hospitalization",
+          "conditions": [
+            {
+              "label": "Ectopic pregnancy (left tubal)",
+              "action": "resolved",
+              "icd10": "O00.101"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              67
+            ],
+            "hr": 81,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 64.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-04T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-06-04T16:45",
+              "author": "PCP",
+              "body": "Post-hospital follow-up. Admitted 5/20-5/23 for a left tubal ectopic: hCG 1500 -> 1800 over 48 h, D&C without products of conception, then laparoscopy found it ruptured and the left tube was removed. ED, discharge summary and path reviewed.\n\nFeels much better. Port sites a little sore, no fever, bleeding light and tapering. Gyn post-op check next week. Off school since the 20th, back Monday for the last weeks of the year.\n\nMood: 'another hit, but I'm steadier than in the fall.' PHQ-9 5. Psychiatry aware. Sertraline 50, no changes.\n\nExam: vitals as charted. Well appearing. Three laparoscopic port sites clean, dry, healing, no erythema. Abdomen soft, mildly tender near the umbilical port only.\n\nA/P\n1. S/p left salpingectomy for ruptured ectopic, recovering well. Ectopic resolved. Gyn follow-up as planned; contraception and future pregnancy planning with gyn.\n2. MDD: stable.\n3. Return-to-work note given for 6/9.\nMed check in August."
+            },
+            {
+              "type": "Letters",
+              "title": "Return to Work",
+              "date": "2025-06-04T16:50",
+              "author": "PCP",
+              "body": "Leah Martel was hospitalized 05/20/2025 to 05/23/2025 and has been under medical care since. She may return to work without restriction on 06/09/2025."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "office_visit",
+          "start": "2025-08-20T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medication check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2025-08-20T11:05",
+              "author": "front desk",
+              "body": "Pt did not arrive for 10:30 med check. Called, left voicemail to reschedule. -- Pt called back 2:15 pm, forgot, at a teacher workshop. Will rebook after school starts; asked for refills to be sent in the meantime."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "pharmacy",
+          "start": "2025-08-25T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "date": "2025-08-25T09:30",
+              "author": "MA",
+              "body": "Refills requested: sertraline 50 mg #90, sumatriptan 50 mg #9, pramipexole 0.125 mg #90. Last OV 6/4/25, missed 8/20 med check, rebooking. Pended to PCP. -- Sent all three, 90-day supplies, sumatriptan with 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "portal_message",
+          "start": "2025-10-08T05:55",
+          "reason": "Pregnancy",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2025-09-03",
+              "note": "LMP 2025-09-03",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "News",
+              "date": "2025-10-08T05:55",
+              "author": "patient",
+              "body": "Positive test again. LMP Sept 3. After May I'm terrified it's in the wrong place again. The gyn office is getting me an early ultrasound Friday. Still on everything the same. Can I get my flu shot while I'm pregnant again?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: News",
+              "date": "2025-10-08T07:40",
+              "author": "PCP",
+              "body": "Congratulations, and I completely understand the fear. The early ultrasound is exactly the right step; let me know what it shows. Yes to the flu shot, and the updated COVID shot too. The nurses can do both whenever you can get in. Same plan on your medications as the last pregnancies."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: News",
+              "date": "2025-10-10T13:20",
+              "author": "patient",
+              "body": "It's in the uterus!!! Heartbeat and everything. Booking the shots for next Friday."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "nurse_visit",
+          "start": "2025-10-17T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-17T15:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-17T15:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-17T15:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-17T15:25",
+              "author": "RN",
+              "body": "6 weeks pregnant. Screening negative, no prior vaccine reactions. Trivalent flu IM L deltoid and updated COVID mRNA IM R deltoid. VIS provided for both. Waited 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "pharmacy",
+          "start": "2025-11-19T08:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "date": "2025-11-19T08:40",
+              "author": "MA",
+              "body": "Pharmacy request: prenatal vitamin with folic acid, 1 daily, #90. Pt is 11 weeks, followed by OB. Pended to PCP. -- Sent with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "specialist_visit",
+          "start": "2026-01-21T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Vaginal discharge and pelvic pressure, 20 weeks",
+          "conditions": [
+            {
+              "label": "Cervical insufficiency",
+              "action": "diagnosed",
+              "onset": "2026-01-21",
+              "icd10": "O34.32"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-21T11:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.16
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-01-21T11:40",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.02
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.6
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Visit Note",
+              "date": "2026-01-27T14:25",
+              "author": "obstetrics",
+              "body": "Obstetrics & Gynecology\nDate of service: 01/21/2026\n\nLeah Martel, 35, G4P1021 at 20w0d by LMP (09/03/2025) and early ultrasound.\n\nSeen for a week of increased vaginal discharge, without pain, itching or odor, and two days of pelvic pressure. No bleeding, cramping or fluid leakage.\n\nOB history: one term vaginal delivery (02/2024) without complication; missed abortion at 19 weeks with D&E (10/2024); left tubal ectopic with laparoscopic left salpingectomy (05/2025). Other history: prior PID, migraine, depression, restless legs, somatic symptom disorder. Medications: sertraline 50 mg, pramipexole 0.125 mg nightly, prenatal vitamin, sumatriptan as needed. NKDA.\n\nExam: vital signs stable. Abdomen: fundal height appropriate for gestational age. Speculum: external cervical os closed; the internal os appears dilated with membranes bulging into it. Tocodynamometry: no contractions.\n\nLabs: prenatal CBC and urinalysis within normal limits.\n\nAssessment: cervical insufficiency at 20 weeks.\n\nPlan: discussed management with the patient and her husband; they elected a physical exam-indicated cerclage, scheduled for 01/23. Pelvic rest. Modified activity at work.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "telephone",
+          "start": "2026-01-22T16:50",
+          "reason": "Patient update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Call",
+              "date": "2026-01-22T17:05",
+              "author": "PCP",
+              "body": "Leah called to let me know OB found her cervix opening at 20 weeks yesterday and she's having a cerclage tomorrow. Scared but clear on the plan; husband taking her. No fever, bleeding or contractions. Reviewed that her usual meds are fine to take the night before unless anesthesia says otherwise. Will watch for the OB records."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "procedure_visit",
+          "start": "2026-01-23T08:00",
+          "end": "2026-01-23T14:40",
+          "service": "Obstetrics",
+          "reason": "Cervical cerclage",
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report: Cervical Cerclage",
+              "date": "2026-01-29T09:10",
+              "author": "obstetrics",
+              "body": "OPERATIVE REPORT\nDate of procedure: 01/23/2026\n\nPreoperative diagnosis: cervical insufficiency at 20w2d.\nPostoperative diagnosis: same.\nProcedure: physical exam-indicated McDonald cerclage.\nAnesthesia: spinal.\nFindings: membranes reduced above the internal os; cerclage placed at the cervicovaginal junction and tied anteriorly.\nComplications: none. Estimated blood loss minimal.\nFetal heart tones present before and after the procedure.\nDisposition: discharged home the same day. Pelvic rest, modified activity, return precautions for contractions, bleeding, fluid or fever. Planned cerclage removal at 36 weeks.\n\nAllergies: NKDA.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "portal_message",
+          "start": "2026-02-04T16:30",
+          "reason": "Work note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Work note question",
+              "date": "2026-02-04T16:30",
+              "author": "patient",
+              "body": "Hi, I had a cerclage placed on the 23rd (OB letter should be on its way to you). OB says modified activity, no lifting over 15 lbs and sitting breaks. HR at school wants a letter from 'my doctor.' Does it have to be OB or can it come from you? Sorry, I know it's a silly one."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Work note question",
+              "date": "2026-02-05T07:55",
+              "author": "PCP",
+              "body": "Not silly at all. I have the OB records now and can write it based on their restrictions. Letter is attached in your portal. If OB changes the restrictions, just let me know and I'll update it."
+            },
+            {
+              "type": "Letters",
+              "title": "Work Accommodation",
+              "date": "2026-02-05T07:58",
+              "author": "PCP",
+              "body": "Leah Martel is under medical care during her pregnancy. Per her obstetric team, she may continue working with these restrictions until further notice: no lifting over 15 pounds and the ability to sit as needed during the day. Please contact the office with questions."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "office_visit",
+          "start": "2026-02-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medication check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2026-02-17T12:10",
+              "author": "front desk",
+              "body": "Pt cancelled 2/18 med check, has an OB visit the same afternoon and is limiting trips. Will reschedule after delivery. Refills are current."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "hospital_admission",
+          "start": "2026-03-20T13:25",
+          "end": "2026-03-22T12:00",
+          "service": "Emergency Medicine; Obstetrics",
+          "reason": "Fever and right flank pain in pregnancy",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis in pregnancy",
+              "action": "diagnosed",
+              "onset": "2026-03-18",
+              "icd10": "O23.03"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth four times daily to complete 14 days of treatment (through 4/2), then 1 capsule at bedtime until delivery",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Acute pyelonephritis in pregnancy, then suppression"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-03-20T13:30",
+              "bp": [
+                125,
+                78
+              ],
+              "hr": 112,
+              "rr": 20,
+              "temp_c": 38.8,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-03-20T13:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 16.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 86
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.89
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 10
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 3
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 13.8
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-03-20T13:50",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "Many"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.021
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-20T13:50",
+              "resulted": "2026-03-22T09:30",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Escherichia coli, >100,000 CFU/mL. Susceptible: ceftriaxone, cefazolin, nitrofurantoin. Resistant: ampicillin."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2026-03-25T10:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE\nDate of visit: 03/20/2026\n\nCC: fever and right flank pain.\n\nHPI: 35 y/o G4P1021 at 28w2d with a cerclage in place (placed 01/2026 for cervical insufficiency) presents with 2 days of high fevers, chills and constant right flank pain that radiates to the lower abdomen. Nauseated, no vomiting. No contractions, bleeding or leakage of fluid.\n\nPMH: migraine, depression, restless legs, somatic symptom disorder, prior PID, left salpingectomy for ectopic 2025. Meds: sertraline, pramipexole, prenatal vitamin, sumatriptan prn. NKDA.\n\nExam: T 38.8 C (101.8 F), HR 112, BP 125/78. Appears uncomfortable. Right CVA tenderness. Abdomen gravid, nontender uterus. Fetal monitoring: baseline 160 bpm, moderate variability, no decelerations.\n\nData: UA with pyuria and bacteriuria, leukocyte esterase and nitrite positive. CBC: WBC 16.0 with a left shift, Hgb 12.2, platelets 250. Urine culture sent.\n\nAssessment: acute pyelonephritis in pregnancy.\n\nPlan: IV fluids, acetaminophen, IV ceftriaxone. Admitted to the obstetric service for continued fetal monitoring and IV antibiotics."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2026-03-25T10:16",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted: 03/20/2026  Discharged: 03/22/2026\nDiagnosis: acute pyelonephritis at 28 weeks.\n\nCourse: treated with IV ceftriaxone. Fever resolved within 48 hours and flank pain improved. Fetal testing reassuring throughout; no contractions. Cerclage intact. Urine culture: E. coli >100,000 CFU/mL, susceptible to ceftriaxone, cefazolin and nitrofurantoin, resistant to ampicillin.\n\nDischarge medications: cephalexin 500 mg by mouth four times daily to complete a 14-day course, then cephalexin 500 mg at bedtime as suppression for the rest of the pregnancy. Continue sertraline 50 mg, pramipexole 0.125 mg nightly, prenatal vitamin, sumatriptan as needed.\n\nAllergies: NKDA.\nFollow-up: OB clinic in 1 week; primary care as needed. Return for fever, flank pain, contractions, bleeding or fluid."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0,
+            "labs": {
+              "Hemoglobin": 12.2,
+              "Neutrophils %": 86,
+              "Platelets": 250,
+              "White Blood Cells": 16.0
+            }
+          }
+        },
+        {
+          "id": "2026-03-27a",
+          "kind": "telehealth_visit",
+          "start": "2026-03-27T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in after hospitalization",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-03-27T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2026-03-27T16:40",
+              "author": "PCP",
+              "body": "Video follow-up after admission 3/20-3/22 for pyelonephritis at 28 weeks; ED and discharge summary reviewed, E. coli sensitive to cephalosporins.\n\nAfebrile since the hospital, flank pain gone, eating normally. Taking cephalexin four times a day, a week left, then the nightly dose until delivery. Some mild nausea with the capsules if taken on an empty stomach. Baby moving well; OB saw her yesterday. Mood steady; she's anxious about how many things have gone sideways in this pregnancy but coping, psychiatry visit next week.\n\nExam limited to video: well appearing, comfortable, speaking easily.\n\nA/P: Pyelonephritis in pregnancy, improving on cephalexin. Take doses with food. Continue suppression per OB. Call for fever, chills or flank pain. Visit with me after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "pharmacy",
+          "start": "2026-04-20T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "date": "2026-04-20T08:50",
+              "author": "MA",
+              "body": "Pharmacy request: cephalexin 500 mg cap, 1 at bedtime, #30, originally from the hospital OB team. Pt says OB asked her to get it refilled through whoever's easiest. Also prenatal vitamin #90. Pended to PCP. -- Cephalexin #30 x 1 refill sent, will stop at delivery per OB plan. Prenatal sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "procedure_visit",
+          "start": "2026-05-13T09:20",
+          "service": "Obstetrics",
+          "reason": "Cerclage removal at 36 weeks",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Cerclage Removal",
+              "date": "2026-05-18T11:30",
+              "author": "obstetrics",
+              "body": "Obstetrics Clinic Procedure Note\nDate: 05/13/2026\n\nG4P1021 at 36w0d. Planned removal of McDonald cerclage. Speculum placed, suture visualized, cut and removed intact without difficulty. Minimal bleeding. Fetal heart tones normal before and after. No contractions. Labor precautions reviewed. Continue cephalexin suppression until delivery.\n\nObstetrics"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-23a",
+          "kind": "hospital_admission",
+          "start": "2026-05-23T06:40",
+          "end": "2026-05-25T13:00",
+          "service": "Obstetrics",
+          "reason": "Labor with ruptured membranes and vesicular rash",
+          "conditions": [
+            {
+              "label": "Varicella without complication",
+              "action": "diagnosed",
+              "onset": "2026-05-20",
+              "icd10": "B01.9"
+            },
+            {
+              "label": "Cervical insufficiency",
+              "action": "resolved",
+              "icd10": "O34.32"
+            },
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Delivered"
+            },
+            {
+              "drug_text": "acyclovir 800 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth five times daily for 7 days",
+              "dose": {
+                "value": 800,
+                "unit": "mg"
+              },
+              "frequency": "5 times daily",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Varicella"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-05-23T06:45",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 88,
+              "rr": 18,
+              "temp_c": 37.8,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-23T07:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.01
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-05-23T07:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 40
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 95
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.3
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-23T07:20",
+              "resulted": "2026-05-23T15:10",
+              "results": [
+                {
+                  "test": "Varicella zoster virus DNA, vesicle swab, PCR",
+                  "loinc": "11483-5",
+                  "text": "Detected"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-03-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2026-05-29T08:45",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted: 05/23/2026  Discharged: 05/25/2026\n\nPatient: Leah Martel, 35, G4P1021 -> G4P2022, admitted at 37w3d.\n\nPresentation: contractions every 5 minutes and rupture of membranes 2 hours before arrival. She also reported an itchy blistering rash for 3 days that began on the trunk and spread to the face and arms and legs.\n\nPrenatal course: cervical insufficiency with McDonald cerclage 01/23, removed 05/13 at 36 weeks. Pyelonephritis at 28 weeks, on cephalexin suppression. Tdap 03/11/2026. Otherwise unremarkable.\n\nAdmission exam: T 37.8 C (100.0 F), BP 120/78, HR 88. Clusters of vesicles on erythematous bases over the trunk, face and extremities. Fetal heart tracing reassuring.\n\nLabs: WBC 9.0, Hgb 12.5, platelets 250; ALT 45, AST 40. Vesicle swab VZV PCR detected.\n\nDiagnosis: maternal varicella at delivery.\n\nCourse: placed on airborne and contact precautions in a private room. Spontaneous vaginal delivery 05/23/2026 of a healthy liveborn boy, Apgars 8 and 9. Started oral acyclovir. Cephalexin suppression discontinued after delivery. Postpartum course uncomplicated; no respiratory symptoms; afebrile from postpartum day 1.\n\nNewborn: evaluated by pediatrics for perinatal varicella exposure and given varicella-zoster immune globulin; to be followed by the pediatric team. Discharged home with the mother.\n\nAllergies: NKDA.\nDischarge medications: acyclovir 800 mg by mouth five times daily to complete 7 days; sertraline 50 mg daily; pramipexole 0.125 mg nightly; prenatal vitamin daily; sumatriptan 50 mg as needed.\nFollow-up: OB postpartum visit; primary care in 2-3 weeks including repeat liver tests. Avoid contact with nonimmune and pregnant people until all lesions are crusted."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 45,
+              "Aspartate Aminotransferase": 40,
+              "Hemoglobin": 12.5,
+              "Neutrophils %": 68,
+              "Platelets": 250,
+              "White Blood Cells": 9.0
+            }
+          }
+        },
+        {
+          "id": "2026-05-29a",
+          "kind": "telephone",
+          "start": "2026-05-29T14:20",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Call",
+              "date": "2026-05-29T14:35",
+              "author": "RN",
+              "body": "Called after discharge summary arrived. Pt home with the baby, both doing okay. Rash itchy but all spots scabbing over, no new ones since Tuesday. No cough, shortness of breath, headache or fever. Finishing acyclovir tomorrow. Baby followed by pediatrics. Booked PCP 6/10 with liver tests that day; she'll come once fully crusted and will mask in the lobby. PCP updated."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "office_visit",
+          "start": "2026-06-10T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum follow-up, varicella",
+          "conditions": [
+            {
+              "label": "Varicella without complication",
+              "action": "resolved",
+              "icd10": "B01.9"
+            },
+            {
+              "label": "History of varicella infection",
+              "action": "history",
+              "onset": "2026-05-20",
+              "icd10": "Z86.19"
+            },
+            {
+              "label": "Acute pyelonephritis in pregnancy",
+              "action": "resolved",
+              "icd10": "O23.03"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              105,
+              68
+            ],
+            "hr": 78,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 68.9
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-06-10T14:20",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-10T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-06-10T14:25",
+              "author": "PCP",
+              "body": "Postpartum visit, 2.5 weeks after SVD of a boy on 5/23 at 37w3d. Discharge summary reviewed: chickenpox at delivery (VZV PCR positive, ALT 45/AST 40), treated with acyclovir x7 days; newborn got VZIG through pediatrics and is doing well per mom. Cephalexin suppression stopped at delivery. Earlier this pregnancy: cerclage 1/23 for cervical insufficiency, out 5/13; pyelo at 28 weeks.\n\nNow: all lesions crusted by 5/29, mostly faded now, a few pink marks on her back. No fever, cough, shortness of breath. Itch gone. Bleeding light. No urinary symptoms since the pyelo treatment. Sleep is in two-hour pieces. PHQ-9 6, GAD-7 5, no thoughts of harm. Back with psychiatry next week. Sertraline 50, pramipexole 0.125, prenatal vitamin, sumatriptan prn. Migraines quiet.\n\nExam: vitals as charted. Well appearing. Skin: scattered healed pink macules on the trunk and face, a few with fine scale, no vesicles, no secondary infection. Lungs clear. Heart regular. Abdomen soft, nontender. No CVA tenderness. Calves soft.\n\nA/P\n1. Varicella at delivery, resolved. Now history of varicella. No vaccine needed. Repeat hepatic panel today.\n2. Pyelonephritis in pregnancy, resolved.\n3. Postpartum: OB 6-week visit booked. Mood screen reassuring; psychiatry follow-up continues.\n4. MDD, somatic symptom disorder, RLS, migraine: stable, no changes.\nAnnual physical in September; Pap/HPV is due this year."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.5,
+            "labs": {
+              "Alanine Aminotransferase": 21,
+              "Aspartate Aminotransferase": 19
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-11a",
+          "kind": "portal_message",
+          "start": "2026-06-11T12:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver tests",
+              "date": "2026-06-11T12:05",
+              "author": "PCP",
+              "body": "Hi Leah, your liver tests from yesterday are back to normal (ALT 21, AST 19). The small bump at delivery was from the chickenpox and has settled. Nothing more to do. Enjoy that boy."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "date": "2026-07-21T09:40",
+              "author": "MA",
+              "body": "Refills requested: sertraline 50 mg #90 and pramipexole 0.125 mg #90. Last OV 6/10/26. Pended to PCP. -- Approved, 90 days with 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T20:10",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-08-12T20:10",
+              "author": "patient",
+              "body": "Hi! Trying to get my physical on the calendar before school gets crazy. Is there anything mid-September, late afternoon? And should I plan on the Pap then or is that an OB thing now?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-08-13T08:20",
+              "author": "front desk",
+              "body": "Hi Leah, you're booked for Wednesday 9/16 at 3:40 pm. Per your doctor, the Pap/HPV can be done at that visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "annual_physical",
+          "start": "2026-09-16T15:40",
+          "reason": "Annual physical; Pap/HPV due",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute pyelonephritis in pregnancy|O23.03": {
+        "code": "O23.03",
+        "display": "Infections of kidney in pregnancy, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cervical insufficiency|O34.32": {
+        "code": "O34.32",
+        "display": "Maternal care for cervical incompetence, second trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Ectopic pregnancy (left tubal)|O00.101": {
+        "code": "O00.101",
+        "display": "Right tubal pregnancy without intrauterine pregnancy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of pelvic inflammatory disease|Z87.42": {
+        "code": "Z87.42",
+        "display": "Personal history of other diseases of the female genital tract",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of varicella infection|Z86.19": {
+        "code": "Z86.19",
+        "display": "Personal history of other infectious and parasitic diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Major depressive disorder|F32.9": {
+        "code": "F32.9",
+        "display": "Major depressive disorder, single episode, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Maternal care for fetal spina bifida with Chiari II malformation|O35.08X0": {
+        "code": "O35.08X0",
+        "display": "Maternal care for (suspected) central nervous system malformation or damage in fetus, spina bifida, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Missed abortion|O02.1": {
+        "code": "O02.1",
+        "display": "Missed abortion",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Varicella without complication|B01.9": {
+        "code": "B01.9",
+        "display": "Varicella without complication",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "acyclovir 800 MG Oral Tablet": {
+        "code": "197313",
+        "display": "acyclovir 800 MG Oral Tablet",
+        "ingredient": "acyclovir",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "pramipexole dihydrochloride 0.125 MG Oral Tablet": {
+        "code": "859033",
+        "display": "pramipexole dihydrochloride 0.125 MG Oral Tablet",
+        "ingredient": "pramipexole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Choriogonadotropin.beta subunit, serum": {
+        "code": "21198-7",
+        "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Varicella zoster virus DNA, vesicle swab, PCR": {
+        "code": "11483-5",
+        "display": "Varicella zoster virus DNA [Presence] in Specimen by NAA with probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal vitamin with folic acid Oral Tablet\""
+    ]
+  }
+}

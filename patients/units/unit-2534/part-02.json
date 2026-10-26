@@ -1,0 +1,727 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002534",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "portal_message",
+          "start": "2025-01-14T12:18",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back to work",
+              "author": "patient",
+              "date": "2025-01-14T12:18",
+              "body": "Hi doc, just an update. Went back to work full time last week, driving the territory again. Was nervous the first couple days but ok now and I wear the belt every time I promise. Still on for Feb 11?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back to work",
+              "author": "PCP",
+              "date": "2025-01-14T16:44",
+              "body": "Great to hear. Yes, Feb 11 at 3:20 - please do the blood draw at that visit. If the nerves about driving don't settle, tell me and we'll talk about options."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospitalization, recheck blood count",
+          "conditions": [
+            {
+              "label": "Contusion of left flank",
+              "action": "resolved",
+              "icd10": "S30.1XXA"
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-11T15:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-11T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-11T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-02-11T16:05",
+              "body": "F/u ~4 months after the October crash.\n\nDischarge summary came in December (reviewed): shock with coagulopathy, massive transfusion, ICU, left flank contusion. No op note or imaging in what they sent.\n\nFeels back to normal. Energy fine, climbing stairs without getting winded. Left side no longer sore. Back at work since early January. Anxiety about driving improving; GAD-7 8. Sleeping better. Taking sertraline and lisinopril daily.\n\nStill smoking 10/day. Not ready to set a date.\n\nExam: color good. Weight up 3 kg. Lungs clear, heart regular. Flank bruise gone, nontender. Walks normally.\n\nA/P:\n- Post-hemorrhage anemia: CBC today, expect normal.\n- Left flank contusion: resolved.\n- GAD: improving, continue sertraline 50.\n- HTN: fine on lisinopril 10.\n- Tobacco: counseled.\nRTC for physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "portal_message",
+          "start": "2025-02-12T08:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "author": "PCP",
+              "date": "2025-02-12T08:30",
+              "body": "Blood count is back to normal - hemoglobin fully recovered. No iron or anything else needed. See you in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "pharmacy",
+          "start": "2025-04-08T10:05",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill: lisinopril, sertraline",
+              "author": "MA",
+              "date": "2025-04-08T10:05",
+              "body": "Electronic refill requests from pharmacy for lisinopril 10 mg and sertraline 50 mg, 90-day supplies. Last BMP 11/2024 normal, seen 2/11. Approved per protocol, 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "hospital_admission",
+          "start": "2025-06-12T17:26",
+          "end": "2025-06-17T11:45",
+          "service": "Trauma Surgery",
+          "reason": "chest pain and dyspnea after high-speed motor vehicle collision",
+          "conditions": [
+            {
+              "label": "Blunt thoracic aortic injury",
+              "action": "diagnosed",
+              "icd10": "S25.00XA",
+              "onset": "2025-06-12"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-06-12T17:30",
+              "bp": [
+                145,
+                90
+              ],
+              "hr": 110,
+              "rr": 22
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-12T17:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-06-12T17:45",
+              "text": "Portable AP chest, trauma bay. The mediastinum is widened. Left pleural effusion. No rib fracture identified. No pneumothorax. Heart size difficult to assess on this projection.",
+              "conclusion": "Widened mediastinum and left pleural effusion. No rib fractures.",
+              "issued": "2025-06-12T17:58"
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-06-12T17:50",
+              "text": "Sinus tachycardia. Normal axis. Normal intervals. No ST elevation or depression, no T-wave inversion.",
+              "conclusion": "Sinus tachycardia without evidence of ischemia.",
+              "issued": "2025-06-12T17:54"
+            },
+            {
+              "study": "CT chest",
+              "performed": "2025-06-12T18:35",
+              "text": "CT angiography of the chest with IV contrast. Injury of the proximal descending thoracic aorta with surrounding mediastinal hematoma. Left pleural effusion. No rib fractures. Lungs otherwise clear. Heart size normal. No pericardial effusion.",
+              "conclusion": "Blunt thoracic aortic injury of the proximal descending aorta with mediastinal hematoma. Left pleural effusion.",
+              "issued": "2025-06-12T18:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-06-12T17:26"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-06-12T22:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-06-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2025-07-08T10:15",
+              "body": "REGIONAL TRAUMA CENTER - EMERGENCY DEPARTMENT\nDate of service: 06/12/2025\n\nCC: chest pain, short of breath after MVC.\n\nHPI: 29M, restrained driver in a high-speed collision, airbags deployed. Arrives by EMS complaining of acute chest pain and trouble breathing. Admitted here 10/2024 for hemorrhagic shock after a prior crash. Hx hypertension and generalized anxiety.\n\nMeds: lisinopril 10 mg daily, sertraline 50 mg daily.\nAllergies: penicillin (rash).\nPSH: tonsillectomy, L knee meniscal repair.\nFHx: father with HTN and MI at 55; mother hypothyroid; sister healthy.\nSHx: smokes 10 cig/day; social alcohol on weekends; sales rep.\n\nVitals on arrival: BP 145/90, HR 110, RR 22.\n\nExam: alert, uncomfortable. Contusion over the sternum. Breath sounds decreased on the left. Abdomen soft, nontender. Pelvis stable. Moves all extremities.\n\nLabs: Hgb 13.2, Hct 39%, WBC 12,000, Plt 250,000.\nCXR: widened mediastinum, left pleural effusion, no rib fractures.\nFAST: negative for intra-abdominal fluid.\nECG: sinus tachycardia, no ischemic changes.\nCTA chest: injury of the proximal descending thoracic aorta with mediastinal hematoma; left effusion.\n\nED course: trauma and vascular surgery at bedside. Taken for endovascular repair.\n\nImpression: blunt thoracic aortic injury after MVC.\nDisposition: admitted to trauma surgery / vascular surgery, to the OR."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Trauma Surgery Discharge Summary",
+              "author": "trauma surgery",
+              "date": "2025-07-08T10:15",
+              "body": "REGIONAL TRAUMA CENTER - DISCHARGE SUMMARY\nAdmitted 06/12/2025   Discharged 06/17/2025\n\nPrincipal diagnosis: blunt thoracic aortic injury, proximal descending thoracic aorta.\n\nProcedure 06/12/2025: thoracic endovascular aortic repair (TEVAR) with stent graft, percutaneous right femoral access, vascular surgery.\n\nCourse: uncomplicated repair. Monitored overnight in the ICU, then the floor. Left pleural effusion followed on exam and imaging, not drained. Right groin access site without hematoma. Ambulating, eating, pain controlled. Discharged home.\n\nAllergies: penicillin.\nDischarge medications: continue lisinopril 10 mg daily and sertraline 50 mg daily. No changes.\nInstructions: no heavy lifting for 2 weeks; no driving while sore. Stop smoking.\nFollow-up: vascular surgery clinic with CT angiogram in 1 month. Primary care in 1-2 weeks.\n\nED record and discharge summary received together by fax 07/08/2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "portal_message",
+          "start": "2025-06-19T20:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Another accident",
+              "author": "patient",
+              "date": "2025-06-19T20:47",
+              "body": "I hate to say it but I was in another crash last week, the 12th. I was wearing my belt this time. They found a tear in my aorta and fixed it with a stent through my groin, I was in 5 days and got home Tuesday. They said see my doctor in 1-2 weeks. Can I get in? Chest is sore but breathing is fine now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Another accident",
+              "author": "RN",
+              "date": "2025-06-20T08:40",
+              "body": "So sorry to hear this, Brandon. You're booked Tuesday 6/24 at 10:40 with your doctor. If you get new chest or back pain, shortness of breath, a swelling or bleeding at the groin, or a cold or numb leg before then, go to the ED. Please sign the records release we just sent so we can get the hospital notes."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "office_visit",
+          "start": "2025-06-24T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up, aortic repair",
+          "state": {
+            "weight_kg": 84.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-24T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-24T11:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-06-24T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-24T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-06-24T11:35",
+              "body": "TCM visit, 7 days after discharge. Hospital records not here yet; requested.\n\nPer Brandon: 6/12, belted, airbags went off, high speed. Chest pain and couldn't catch his breath at the scene. At the trauma center they found an injury to his aorta on CT and repaired it the same night with a stent graft through the right groin. 5 days in, ICU one night. Discharged on his same two meds.\n\nNow: chest wall sore where the airbag hit, better daily. Breathing comfortable. No back pain. Groin a little bruised, no swelling. Walking a mile a day. No fevers. Not driving yet.\n\nAnxiety up again - 'what are the odds, twice'. GAD-7 9. Sleeping OK most nights. Declines a dose change or counseling for now.\n\nExam: comfortable. Healing yellow bruise over sternum, mildly tender. Lungs clear. Heart RRR, no murmur. Right groin puncture site healed, no hematoma or bruit. Femoral and pedal pulses intact both sides. No leg swelling.\n\nA/P:\n1. Blunt thoracic aortic injury s/p TEVAR 6/12 - recovering. Vascular follow-up with CTA in a month already scheduled. Explained why BP control and stopping smoking matter for the graft.\n2. HTN - continue lisinopril 10.\n3. GAD - flare after the crash, continue sertraline 50, revisit at the physical.\n4. Tobacco - he says he'll cut down. Counseled.\nCBC, BMP today. RTC at the physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-25a",
+          "kind": "portal_message",
+          "start": "2025-06-25T13:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Labs after hospital stay",
+              "author": "PCP",
+              "date": "2025-06-25T13:10",
+              "body": "Blood counts and kidney function normal. Good news after the procedure and the contrast dye. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-17a",
+          "kind": "specialist_visit",
+          "start": "2025-07-17T09:30",
+          "service": "Vascular Surgery",
+          "reason": "1-month follow-up after TEVAR",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-07-17T08:45",
+              "text": "CT angiography of the chest with IV contrast, compared with 06/12/2025. Thoracic aortic stent graft in the proximal descending aorta in good position. No endoleak. Mediastinal hematoma decreased in size. Left pleural effusion has resolved. Lungs clear. Heart and pericardium normal.",
+              "conclusion": "Stent graft in good position without endoleak. Decreasing mediastinal hematoma. Left effusion resolved.",
+              "issued": "2025-07-17T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Vascular Surgery Clinic Letter",
+              "author": "vascular surgery",
+              "date": "2025-07-29T15:00",
+              "body": "Vascular Surgery Clinic - Date of visit 07/17/2025\n\nDear colleague,\n\nI saw Mr. Slattery one month after thoracic endovascular repair of a blunt aortic injury (06/12/2025, right femoral access). He feels well. Chest wall soreness nearly gone. No back pain, no claudication, no groin problems.\n\nMeds: lisinopril 10 mg daily, sertraline 50 mg daily. Allergy: penicillin (rash).\nSmoking: continues, about 10 per day.\n\nExam: right groin access site well healed. Femoral and distal pulses normal bilaterally.\n\nCTA chest today: graft in good position, no endoleak, mediastinal hematoma smaller, left effusion resolved.\n\nImpression: satisfactory early result after TEVAR.\n\nRecommendations: keep blood pressure well controlled; we strongly recommend he stop smoking. Repeat CT angiogram at 1 year, here. No activity restrictions now.\n\nThank you for allowing us to share in his care."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Traumatic hemorrhagic shock with acute coagulopathy",
+              "action": "resolved",
+              "icd10": "T79.4XXA"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-16T09:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-16T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-16T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "2-3 drinks on weekends"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-16T09:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-16T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-16T09:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-16T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-16T09:30",
+              "body": "Annual, 29 y/o M.\n\nInterval since last physical: hemorrhagic shock after unbelted crash 10/2024 (recovered, Hgb normal 2/2025); blunt thoracic aortic injury 6/2025 with TEVAR, vascular says graft looks good at 1 month, next CTA 6/2026.\n\nFeels well. Back to full work. Chest wall fine. Walking and some light weights. Belted always now.\n\nSmoking: ~10/day since 2018, so about 7 years. Long talk again - aortic repair, his dad's MI. He'll think about a quit date. Alcohol 2-3 on weekends.\n\nMood: GAD-7 7, PHQ-9 4. Sertraline 50 working, no side effects.\n\nROS: no chest or back pain, no dyspnea, no leg pain, no GU symptoms.\n\nExam: BMI ~25.5. HEENT normal. Neck supple. Lungs clear. Heart RRR, no murmur. Abdomen soft, nontender. Groins healed. Pulses 2+ throughout. No edema. Neuro nonfocal. Affect bright.\n\nA/P:\n- HTN: on lisinopril 10, reading at goal today. CMP.\n- Blunt thoracic aortic injury s/p TEVAR: stable, CTA 1 yr with vascular.\n- Hemorrhagic shock 10/2024: resolved; off the active list.\n- GAD: stable on sertraline.\n- Tobacco: counseled, not ready.\n- Prevention: lipids, CBC today. Flu vaccine given. Declines COVID.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-18a",
+          "kind": "portal_message",
+          "start": "2025-09-18T12:02",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2025-09-18T12:02",
+              "body": "All normal - chemistry, liver, blood count. Cholesterol is about where it was 2 years ago and fine for your age. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "pharmacy",
+          "start": "2025-11-04T14:22",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill: sertraline",
+              "author": "MA",
+              "date": "2025-11-04T14:22",
+              "body": "Pharmacy request sertraline 50 mg #90. Seen 9/16. Approved, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "hospital_admission",
+          "start": "2025-12-19T18:05",
+          "end": "2025-12-23T12:30",
+          "service": "Trauma Surgery",
+          "reason": "lower abdominal pain and inability to void after head-on motor vehicle collision",
+          "conditions": [
+            {
+              "label": "Intraperitoneal bladder rupture",
+              "action": "diagnosed",
+              "icd10": "S37.29XA",
+              "onset": "2025-12-19"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-12-19T18:10",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 102,
+              "rr": 22,
+              "temp_c": 37.1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-19T18:20",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 36
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-19T18:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-12-19T19:25",
+              "text": "CT of the abdomen and pelvis with IV contrast, followed by CT cystogram with dilute contrast instilled through the urethral catheter. Contrast extravasates from the bladder dome into the peritoneal cavity, outlining bowel loops. Free fluid in the pelvis and both paracolic gutters. Liver, spleen, pancreas, kidneys and adrenals without injury. No hydronephrosis. Thoracic aortic stent graft partially imaged, unchanged. No acute fracture.",
+              "conclusion": "Intraperitoneal bladder rupture at the dome. No solid-organ injury.",
+              "issued": "2025-12-19T19:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-12-19T18:05"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-12-19T21:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2026-01-14T09:50",
+              "body": "REGIONAL TRAUMA CENTER - EMERGENCY DEPARTMENT\nDate of service: 12/19/2025\n\nCC: lower abdominal pain, can't urinate.\n\nHPI: 30M, restrained driver in a head-on MVC about 3 hours ago. Severe pain low in the abdomen since; has not passed any urine since the crash. Known to us: hemorrhagic shock after an MVC 10/2024; blunt aortic injury 6/2025 repaired with TEVAR. HTN, GAD.\n\nMeds: lisinopril 10 mg daily, sertraline 50 mg daily.\nAllergies: penicillin (rash).\nSHx: smoker, 10/day; weekend alcohol.\n\nVitals: BP 110/70, HR 102, RR 22, T 37.1 C.\n\nExam: alert, in distress from pain. Tender and bruised over the suprapubic area. Abdomen otherwise soft. Pelvis stable. Foley catheter placed - no urine returned.\n\nLabs: BUN 36, creatinine 1.8, K 4.5, Hgb 13.2, WBC 12,000.\n\nCT abdomen/pelvis with IV contrast and CT cystogram: contrast leaking from the bladder dome into the peritoneum, pelvic free fluid. No solid organ injury. Aortic graft unchanged.\n\nImpression: intraperitoneal bladder rupture. Elevated BUN/creatinine attributed to absorption of urine from the peritoneum.\n\nDisposition: trauma surgery and urology consulted; to the OR for repair. Admitted.\n\nReceived by fax 01/14/2026 after second request. Discharge summary not included."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-26a",
+          "kind": "telephone",
+          "start": "2025-12-26T10:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient call: third crash, bladder repair",
+              "author": "RN",
+              "date": "2025-12-26T10:35",
+              "body": "Brandon called. Head-on crash 12/19, belted. Bladder was torn and he had surgery that night through a cut in his belly to sew it up. Home 12/23 with a Foley catheter, urology is taking it out in about 2 weeks after a dye test. Pain controlled. Catheter draining clear yellow urine. No fever. Incision dry. Same two meds. Booked with PCP Tues 12/30. Reviewed reasons to go to ED: fever, catheter stops draining, blood clots, increasing belly pain, redness or drainage at the incision. Records request faxed to the trauma center."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-30a",
+          "kind": "office_visit",
+          "start": "2025-12-30T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up, bladder repair",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-30T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-30T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-12-30T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-30T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-12-30T12:05",
+              "body": "Third post-crash visit in 14 months.\n\n12/19 head-on collision, seatbelt on. Couldn't void afterward, severe low belly pain. Per patient the CT showed a tear at the top of the bladder leaking into the abdomen; laparotomy and repair that night. 4 days inpatient. Home 12/23 with a urethral catheter. Was told his kidney numbers were up when he came in because of the leak. Urology appointment 1/6 for a bladder x-ray and catheter removal. No records yet (requested 12/26).\n\nNow: incision sore, improving. Catheter draining well, clear. No fever or chills. Bowels moving. Eating. Meds unchanged.\n\nPretty shaken. Talking about whether he can keep doing a job that's all driving. GAD-7 8 - lower than I'd have guessed. No SI.\n\nExam: uncomfortable getting on the table. Lungs clear. Heart regular. Lower midline incision clean and dry, no redness. Mild suprapubic tenderness. Catheter in place, clear yellow urine in bag. No leg swelling.\n\nA/P:\n1. Intraperitoneal bladder rupture s/p repair 12/19 - healing; catheter care reviewed; keep the 1/6 urology visit.\n2. Elevated creatinine at admission - recheck BMP today.\n3. HTN - stays on lisinopril 10.\n4. Blunt aortic injury s/p TEVAR - CTA due 6/2026.\n5. GAD - continue sertraline; offered counseling referral again, he'll think about it.\n6. Smoking - counseled.\nRTC March, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-31a",
+          "kind": "portal_message",
+          "start": "2025-12-31T09:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Kidney function",
+              "author": "PCP",
+              "date": "2025-12-31T09:15",
+              "body": "Your creatinine is 0.98 - normal. The high number in the ED was from the urine leaking into your belly, not kidney damage. Blood count fine too. Happy new year, and good luck on the 6th."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

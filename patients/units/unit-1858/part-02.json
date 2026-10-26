@@ -1,0 +1,238 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001858",
+      "events": [
+        {
+          "id": "2025-02-14a",
+          "kind": "portal_message",
+          "start": "2025-02-14T21:12",
+          "reason": "visit request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Can I come in next week?",
+              "author": "patient",
+              "date": "2025-02-14T21:12",
+              "body": "Hi Doctor, I haven't been sleeping well for a few months and my heart races at random times, even sitting at my desk grading. I also sweat a lot more than usual and I'm jumpy. I figured it was stress but it isn't going away. We have February break next week, could I come in Monday?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Can I come in next week?",
+              "author": "PCP",
+              "date": "2025-02-15T08:40",
+              "body": "Yes, Monday 9:00 works. Please come a few minutes early so we can draw blood at the same visit. If you get chest pain, fainting or a racing heart that won't settle, call me right away instead of waiting."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-17a",
+          "kind": "office_visit",
+          "start": "2025-02-17T09:00",
+          "end": "2025-02-17T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "palpitations, insomnia, sweating",
+          "conditions": [
+            {"label": "Graves disease", "action": "diagnosed", "onset": "2024-11-15", "note": "TSH suppressed, free T4 and total T3 high, diffuse goiter, maternal family history"}
+          ],
+          "state": {"weight_kg": 57.4},
+          "vitals": {"hr": 102, "bp": [130, 85], "weight_kg": 57.4},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-02-17T09:35", "resulted": "2025-02-17T15:40", "results": [
+              {"test": "Thyroid Stimulating Hormone", "text": "<0.01"},
+              {"test": "Free Thyroxine", "value": 3.0},
+              {"test": "Total T3", "loinc": "3053-6", "unit": "ng/dL", "value": 250}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-02-17T09:35", "resulted": "2025-02-17T13:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-02-17T09:35", "resulted": "2025-02-17T13:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": null, "collected": "2025-02-17T09:35", "resulted": "2025-02-21T10:50", "results": [
+              {"test": "Thyrotropin receptor antibody", "loinc": "5385-0", "unit": "IU/L", "value": 6.8}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-17T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-02-17T09:35"}
+          ],
+          "orders": [
+            {"id": "endo-referral", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "Graves disease"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-02-17T09:45",
+              "body": "CC: palpitations, can't sleep, sweaty.\n\nHPI: 34F, healthy at her physical in October. Since mid-November she has slept badly, wakes at 2-3 am and can't get back down. Heart pounds or races off and on through the day. Sweats in a cool classroom. Feels keyed up nearly all the time, which she had chalked up to work. Hungrier than usual and eating more, yet down 5 kg from her baseline (62 to 57). No caffeine, alcohol or drugs, no supplements or diet pills. No chest pain or fainting.\n\nMeds: none. NKDA.\nFH: mother Hashimoto's hypothyroidism, maternal aunt with Graves'. Father HTN.\n\nExam: HR 102, BP 130/85. Looks anxious and fidgety. Eyes: no proptosis, no lid lag. Neck: thyroid diffusely enlarged, smooth and soft, no discrete nodule, no tenderness. Heart fast, regular, no murmur. Lungs clear. Fine tremor with arms held out. Skin warm and damp.\n\nA/P: picture is hyperthyroidism. Symmetric goiter, no nodules, plus her aunt and mother, makes Graves' by far the likeliest.\n- TSH, free T4, total T3 drawn now; CBC, CMP.\n- TSH receptor antibody sent to confirm.\n- Referring to endocrinology.\n- Will call her this afternoon with the thyroid numbers.\n\nAddendum 16:05: TSH <0.01 (ref 0.4-4.0), free T4 3.0 ng/dL (ref 0.9-1.7), total T3 250 ng/dL (ref 80-180). CBC and CMP unremarkable. Overt hyperthyroidism; diagnosing Graves disease. Called pt, see phone note. Endocrinology referral marked for first available."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-17b",
+          "kind": "telephone",
+          "start": "2025-02-17T16:10",
+          "reason": "results",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Thyroid results call",
+              "author": "PCP",
+              "date": "2025-02-17T16:20",
+              "body": "Reached her at home. Explained the thyroid is overactive and that with the goiter and her family history this is most likely Graves'. Antibody test should be back by the end of the week. Explained what endocrinology does from here and that treatment works well. She was relieved to have an answer. Knows to call for chest pain, fainting or a heart rate that won't come down."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-21a",
+          "kind": "portal_message",
+          "start": "2025-02-21T12:30",
+          "reason": "antibody result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Antibody result",
+              "author": "PCP",
+              "date": "2025-02-21T12:30",
+              "body": "Hi Alyssa, the thyroid receptor antibody came back positive at 6.8 (normal is under 1.75). That confirms Graves' disease. The endocrinology office has your referral; they should call you to schedule. Let me know if you haven't heard from them by the middle of next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-03a",
+          "kind": "telephone",
+          "start": "2025-03-03T11:15",
+          "reason": "referral scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Endocrinology referral status",
+              "author": "front desk",
+              "date": "2025-03-03T11:15",
+              "body": "Pt called, has not heard from endocrinology. Called their office: referral received, first new-patient opening is Mon 4/28 at 1:30. Pt accepted, she will get a sub for the afternoon. Info sent to pt by portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-02a",
+          "kind": "telephone",
+          "start": "2025-06-02T10:00",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request - endocrinology",
+              "author": "RN",
+              "date": "2025-06-02T10:00",
+              "body": "No consult note yet from her 4/28 endocrinology visit. Called their records line and faxed a request for the consult letter and labs. They say it is still waiting for signature."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-16a",
+          "kind": "outside_records",
+          "start": "2025-06-16T14:25",
+          "reason": "endocrinology consult letter",
+          "labs": [
+            {"panel": null, "collected": "2025-04-28T13:10", "results": [
+              {"test": "Thyroid Stimulating Hormone", "text": "<0.01"},
+              {"test": "Free Thyroxine", "value": 3.2},
+              {"test": "Total T3", "loinc": "3053-6", "unit": "ng/dL", "value": 250}
+            ]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-04-28T13:45", "text": "Sinus rhythm at a rapid rate. Normal axis. PR, QRS and QT intervals within normal limits. No ST or T wave abnormality. No prior tracing for comparison.", "conclusion": "Sinus tachycardia. Otherwise normal ECG."}
+          ],
+          "orders": [
+            {"id": "endo-referral", "action": "done", "date": "2025-06-16T14:25"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation (visit 2025-04-28)",
+              "author": "endocrinology",
+              "date": "2025-06-16T14:25",
+              "body": "ENDOCRINOLOGY CONSULTATION\nDate of visit: 04/28/2025\nReason for referral: Graves disease, from her primary care physician.\n\nThank you for sending Ms. Sears, a 34-year-old teacher seen today about ten weeks after her primary care workup. Over the last two months she reports her heart racing, feeling overheated when others are comfortable, a fine shake in her hands, more frequent stools and continued weight loss even though she is eating more. No eye irritation or double vision.\n\nMedications: none. Allergies: no known drug allergies.\nPast history: tonsillectomy in childhood, third molar extraction.\nFamily history: mother with Hashimoto hypothyroidism, maternal aunt with Graves disease, father with hypertension.\nSocial: never smoker, no alcohol, elementary school teacher.\n\nExamination: BP 150/80, HR 112. Fine tremor of the outstretched hands. Skin warm and moist. Thyroid diffusely enlarged, smooth, no nodules. No proptosis or lid retraction.\n\nData: TSH <0.01 mIU/L (0.4-4.0), free T4 3.2 ng/dL (0.8-1.8), total T3 250 ng/dL (80-180). Outside TSH receptor antibody 6.8 IU/L. ECG in clinic: sinus tachycardia, otherwise unremarkable.\n\nImpression: Graves disease with overt hyperthyroidism.\n\nPlan: We went through the three treatment paths, an antithyroid drug, radioactive iodine and thyroidectomy, with their benefits and risks. She would like time to think it over and read the material we gave her. She will call us with her decision and return for follow-up.\n\nEndocrinology"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Consult letter received",
+              "author": "MA",
+              "date": "2025-06-16T14:40",
+              "body": "Endocrinology consult from 4/28 received by fax after records request of 6/2. ECG and labs abstracted. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "telephone",
+          "start": "2025-09-23T16:50",
+          "reason": "reschedule physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Physical rescheduled",
+              "author": "front desk",
+              "date": "2025-09-23T16:50",
+              "body": "Pt left a voicemail, can't make the 10/7 physical because of a staff meeting moved to that morning. Called back and left message with open slots. Removed 10/7 slot. Will rebook when she calls."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-09T15:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-09T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2025-10-09T15:45",
+              "body": "Flu shot only today, 0.5 mL IM left deltoid, VIS given. Tolerated well. Pt mentions endocrinology put her on a thyroid pill at the end of August; she didn't have the name with her. Our list shows no medications and we have no note from that visit. Sending a records request to endocrinology. Reminded her to rebook her physical."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "outside_records",
+          "start": "2025-10-20T11:05",
+          "reason": "endocrinology follow-up letter",
+          "medications": [
+            {"drug_text": "methimazole 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Graves disease"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up (visit 2025-08-25)",
+              "author": "endocrinology",
+              "date": "2025-10-20T11:05",
+              "body": "ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 08/25/2025\n\nMs. Sears is 35 and returns for Graves disease, first seen here in April after her primary care evaluation in February. For about two months she has been tired, with palpitations, more sweating, heat intolerance and an intermittent tremor. Weight keeps drifting down. Her periods have become irregular, and she sleeps poorly. No intercurrent illness, no new medications, no drug use.\n\nAllergies: NKDA. Family history: mother with Hashimoto hypothyroidism, maternal aunt with Graves disease, father with hypertension.\nSocial: never smoker, no alcohol, teaches elementary school.\n\nExam: HR 118, BP 138/72, weight 56.0 kg. Anxious, fine tremor of the hands. Thyroid diffusely enlarged and non-tender.\n\nLabs today: TSH remains suppressed and free T4 elevated.\n\nAssessment: Graves disease, persistent overt hyperthyroidism.\n\nPlan: After our discussion she prefers to begin with an antithyroid drug. Start methimazole 10 mg once daily. Reviewed rash, fever or sore throat, and yellowing of the skin as reasons to stop and call. Labs in 6 weeks, follow-up after that.\n\nEndocrinology"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology letter received; med list updated",
+              "author": "RN",
+              "date": "2025-10-20T11:20",
+              "body": "August endocrinology note received after second request. Methimazole 10 mg daily added to med list as an outside prescription (pharmacy fill history shows first fill 8/25). No lab values included in the letter. Routed to PCP."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

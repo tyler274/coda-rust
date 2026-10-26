@@ -1,0 +1,640 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002321",
+      "given": "George",
+      "family": "Thayer",
+      "birth_date": "1953-09-20",
+      "address_line": "41 North Silver Lane",
+      "phone": "+1-508-555-0140",
+      "email": "george.thayer@example.test",
+      "marital_status": "married",
+      "summary": "Retired math teacher with hypertension, BPH after TURP, chronic constipation and hyposmia who joins in 2023, develops Parkinson disease diagnosed by outside neurology in 2024, and by August 2026 has Parkinson disease psychosis started on quetiapine.",
+      "events": [
+        {
+          "id": "2023-08-21a",
+          "kind": "telephone",
+          "start": "2023-08-21T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2023-08-21T10:12",
+              "body": "Wife phoned on behalf of George Thayer, 69, retired teacher, wants him to become a member here. Membership packet emailed. New patient slot booked Tue 9/12 at 9:00. Signed records release faxed to his old primary care office same day."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "outside_records",
+          "start": "2023-09-05T14:40",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Practice",
+              "author": "outside primary care",
+              "date": "2023-09-05T14:40",
+              "body": "Received by fax 9/5/2023, 38 pages. Summary of contents:\n- Problem list: hypertension; benign prostatic hyperplasia, status post TURP 2015; chronic constipation; decreased sense of smell.\n- Medications: amlodipine 5 mg daily; docusate sodium 100 mg twice daily; polyethylene glycol 3350 17 g daily as needed.\n- Allergies: sulfa drugs (rash); latex.\n- Surgical: cholecystectomy 2002; TURP 2015; cataract extraction with lens implant, both eyes, 2019.\n- Screening colonoscopy 2018: no polyps, normal to the cecum, repeat in 10 years.\n- Immunizations: Tdap 2019; influenza yearly; COVID primary series and boosters through 2022.\n- Most recent office notes 2022-2023: blood pressure controlled on amlodipine, no medication changes.\nScanned to media."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T09:00",
+          "end": "2023-09-12T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Benign prostatic hyperplasia without lower urinary tract symptoms",
+              "icd10": "N40.0",
+              "action": "diagnosed",
+              "note": "status post TURP 2015"
+            },
+            {
+              "label": "Chronic constipation",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Hyposmia",
+              "icd10": "R43.8",
+              "action": "diagnosed",
+              "note": "long-standing"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "onset": "2002-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug_text": "docusate sodium 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "constipation"
+            },
+            {
+              "drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution",
+              "action": "historical",
+              "sig": "Mix 17 g in 8 oz of liquid and drink once daily as needed for constipation",
+              "dose": {
+                "value": 17,
+                "unit": "g"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "constipation"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Latex",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              78
+            ],
+            "weight_kg": 74.4,
+            "height_cm": 175.0,
+            "labs": {
+              "Hemoglobin A1c": 5.6,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Vitamin B12": 460,
+              "Total Cholesterol": 166,
+        "Low Density Lipoprotein": 90
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Lifelong abstainer"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired high school mathematics teacher"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T10:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-12T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-12T10:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-09-12T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-12T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-12T10:05",
+              "body": "NEW PATIENT\n69 y/o man, retired high school math teacher, transferring care. Wife along. Old records reviewed (arrived 9/5).\n\nHPI / chronic issues\n- HTN: many years, on amlodipine 5 mg. Checks at home now and then, says numbers are in the 120s-130s. No headaches, no swelling.\n- BPH: TURP in 2015, stream has been good ever since, gets up once a night at most. On nothing for it.\n- Constipation: lifelong-ish. Docusate twice a day and MiraLAX on days he needs it, which is most days. BMs every 1-2 days on this. No blood, no black stools.\n- Sense of smell has been poor for years, can't smell coffee much. No head injury. Hasn't seen anyone about it.\nNo other concerns. Feels well, walks around town most mornings.\n\nPSH: cholecystectomy 2002; TURP 2015; cataract surgery both eyes 2019.\nMeds: amlodipine 5 daily; docusate 100 BID; PEG 3350 17 g daily prn.\nAllergies: sulfa (rash); latex.\nFH: father - Parkinson's, began at 72. Mother - Alzheimer's from age 75. One older brother with essential tremor.\nSH: married, daughter lives nearby. Never smoker. Has never drunk alcohol.\n\nExam: vitals as charted. Pleasant, talkative, good historian. Pupils round, lens implants both eyes. Neck supple, no thyroid enlargement. Heart regular rate, no murmurs. Lungs clear throughout. Abdomen soft, old surgical scars well healed, nontender. No leg edema. Moves all limbs well, strength symmetric, walks with a normal stride and arm swing. No tremor.\n\nAssessment and plan\n1. Hypertension - controlled. Continue amlodipine 5 mg.\n2. BPH s/p TURP - no symptoms, nothing to do.\n3. Chronic constipation - stable on docusate + PEG, continue.\n4. Hyposmia - long-standing, on the list.\n5. Health maintenance: colonoscopy 2018 clean per outside report, due 2028. Tdap 2019. PCV20 given today. Flu and COVID in October. Will start Shingrix after that. One-time hep C and HIV screening sent today with CMP, CBC, lipids, A1c, TSH.\nFollow up in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-09-14T16:20",
+              "body": "Hi George - everything from Tuesday came back fine. Kidney and liver tests, blood count, thyroid, sugar (A1c) and cholesterol are all in a healthy range, and the hepatitis C and HIV screens were negative. Nothing needs to change. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-17T11:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T11:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-10-17T11:45",
+              "body": "Here for fall shots. Allergies reviewed - sulfa, latex; latex-free gloves used. High-dose flu 0.7 mL IM left deltoid. Updated COVID vaccine 0.3 mL IM right deltoid. VIS sheets given. Waited 15 min, felt fine, left."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "nurse_visit",
+          "start": "2023-11-28T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 1",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-11-28T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "MA",
+              "date": "2023-11-28T14:10",
+              "body": "Shingrix #1, 0.5 mL IM L deltoid. Latex-free supplies. Told him to expect possible soreness or tiredness for a day or two. Dose 2 due in 2-6 months - scheduled 2/6."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "pharmacy",
+          "start": "2024-01-09T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2024-01-09T08:50",
+              "body": "Pharmacy fax: amlodipine 5 mg, last fill by previous doctor, no refills left. Routed to PCP.\n\nPCP: ok, 90 days x 3 refills sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "nurse_visit",
+          "start": "2024-02-06T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-02-06T10:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "MA",
+              "date": "2024-02-06T10:30",
+              "body": "Second Shingrix 0.5 mL IM R deltoid, latex-free. Said the first one made him achy for an evening, nothing more. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up; daughter concerned about tremor and walking",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "resting tremor and gait change, ? parkinsonism"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-19T14:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T14:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Vitamin B12"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-19T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2024-03-19T14:30",
+              "body": "S: Six-month BP check. His daughter came with him and brought up the real reason: since sometime last summer his right hand shakes when it's resting on his leg or the arm of the chair, he walks slower with short shuffling steps, and a handful of times his feet have seemed glued to the floor in the middle of a step - mostly in doorways. George shrugs it off as getting older. No falls. No new meds. Taking amlodipine daily, no side effects. Bowels same as always on his regimen.\n\nO: BP and vitals per flowsheet. Right hand: rhythmic tremor at rest, quiets when he reaches for a cup. Movements generally slowed. Walks with shortened steps. Strength full and equal. Heart regular, lungs clear.\n\nA/P:\n# Resting tremor, slowed gait - with his father's history I am worried about parkinsonism. Referring to neurology. TSH, B12 and CMP today to clear the usual reversible things. Discussed doorway freezing - take your time, hold the frame.\n# HTN - fine on amlodipine 5, continue.\nRTC 6 mo or after neurology."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "portal_message",
+          "start": "2024-03-21T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-03-21T12:05",
+              "body": "George, thyroid, B12 and your chemistry panel are all normal, so nothing there explains the tremor. Neurology has the referral; their office will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "telephone",
+          "start": "2024-05-14T15:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Status",
+              "author": "front desk",
+              "date": "2024-05-14T15:30",
+              "body": "Daughter called - neurology's first opening is end of July, can we get him in sooner? Called neurology scheduling, no earlier new-patient slots, he's on their cancellation list. Daughter updated. She knows to call if anything changes before then."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "specialist_visit",
+          "start": "2024-07-29T09:30",
+          "service": "Neurology",
+          "reason": "tremor and gait difficulty",
+          "conditions": [
+            {
+              "label": "Parkinson disease",
+              "action": "diagnosed",
+              "onset": "2023-07-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "carbidopa 25 MG / levodopa 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Parkinson disease"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2024-07-29T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "author": "neurology",
+              "date": "2024-08-01T11:00",
+              "body": "OUTSIDE NEUROLOGY - NEW PATIENT CONSULTATION\nDate of visit: 07/29/2024. Received 08/01/2024.\nReason for referral: tremor and gait change.\n\nMr. Thayer is a 70-year-old right-handed retired teacher seen with his daughter, who gives much of the history. Over roughly the last year his walking has become slow and shuffling, and he intermittently freezes partway through a step. She has also noticed his face is less expressive and his voice has become quieter and flatter. The tremor is chiefly present at rest and settles when he uses the hand. He remains independent with dressing, bathing and finances, but his walking has grown progressively less steady.\n\nPMH: hypertension; BPH s/p TURP (2015); chronic constipation; hyposmia.\nPSH: cholecystectomy 2002; TURP 2015; bilateral cataract surgery 2019.\nMedications: amlodipine 5 mg daily; docusate 100 mg BID; polyethylene glycol 3350 17 g daily PRN.\nAllergies: sulfa (rash); latex.\nFamily history: father with Parkinson disease from age 72; mother with Alzheimer disease from age 75; older brother with essential tremor.\nSocial: never smoker, no alcohol ever, retired high school mathematics teacher.\n\nExamination: alert and appropriate. Hypomimia; hypophonic speech. Bradykinesia on repetitive movements. Cogwheel rigidity. Stooped posture with a shuffling gait. Sensation intact to all modalities. Reflexes normal and symmetric, toes downgoing. No focal weakness, no other sign of stroke.\n\nImpression: idiopathic Parkinson disease, clinically probable - rest tremor, bradykinesia and rigidity, with hyposmia and constipation as long-standing nonmotor features.\n\nPlan:\n1. Start carbidopa-levodopa 25/100, one tablet three times daily; build up over 2 weeks, take 30 minutes before meals if possible.\n2. MRI brain without contrast to exclude a structural or vascular cause.\n3. Return in about 6 months, sooner by phone if trouble with the medication.\n\nThank you for this referral.\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "imaging",
+          "start": "2024-08-20T07:45",
+          "service": "Radiology",
+          "reason": "Parkinsonism, exclude structural cause",
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2024-08-20T07:45",
+              "issued": "2024-08-22T09:10",
+              "text": "OUTSIDE IMAGING CENTER - received 08/22/2024\nEXAM: MRI brain without contrast, 08/20/2024.\nINDICATION: Parkinsonism; evaluate for structural lesion.\nTECHNIQUE: Sagittal T1, axial T2, FLAIR, diffusion, susceptibility, coronal T2. No contrast administered.\nFINDINGS: Generalized parenchymal volume loss in keeping with age, with ventricles and sulci proportionate. No restricted diffusion. No hemorrhage or abnormal susceptibility. No mass or extra-axial fluid collection. No significant white matter signal abnormality. Basal ganglia and brainstem normal in appearance. Normal vascular flow voids. Bilateral lens replacements. Paranasal sinuses and mastoids clear.",
+              "conclusion": "Age-appropriate atrophy. No focal lesion."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T09:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI and Neurology Letter",
+              "author": "PCP",
+              "date": "2024-08-23T09:40",
+              "body": "Hi George, I read the neurology letter and your MRI report. The MRI shows only the normal changes of age - no stroke, no tumor, nothing that changes the diagnosis. I agree with starting the carbidopa-levodopa. If it upsets your stomach, take it with a few crackers. See you in September for your wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T09:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-24T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-24T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-09-24T09:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-24T09:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2024-09-24T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-09-24T09:30",
+              "body": "Initial AWV. Age 71 (birthday last week).\nSince last visit: seen by neurology 7/29, diagnosed with Parkinson disease, started carbidopa-levodopa 25/100 TID. MRI brain 8/20 age-related atrophy only. He is taking it on schedule; thinks the hand is a bit calmer, walking about the same. No nausea or lightheadedness.\n\nFunctional review: independent in ADLs, drives locally in daylight, manages his own pills with a weekly box, wife handles the calendar. Hearing ok. Vision fine with readers. No falls in the past year. Lives in a one-floor house.\nPHQ-2: 0. Cognitive screen: 3-word recall 3/3, clock drawn correctly.\nAdvance directive: wife is health care proxy, form on file to be brought in.\n\nExam: vitals per flowsheet. Masked face, soft voice. Right hand rest tremor, small amplitude. Heart regular, lungs clear, no edema. Walks unassisted, slow, stooped.\n\nPlan / prevention:\n- Parkinson disease - per neurology; continue carbidopa-levodopa.\n- HTN - on target, amlodipine 5 continued.\n- Constipation - unchanged, continue docusate and PEG.\n- Labs: CMP, CBC, lipids, A1c today.\n- Flu (high-dose) and COVID given today. RSV - discuss at a nurse visit this fall.\n- Colonoscopy due 2028.\nPersonalized prevention plan printed for him."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T17:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-09-26T17:10",
+              "body": "Labs from your wellness visit are all normal - blood count, kidney and liver, sugar and cholesterol. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "nurse_visit",
+          "start": "2024-11-12T10:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "RSV vaccine",
+          "immunizations": [
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2024-11-12T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2024-11-12T11:00",
+              "body": "RSV vaccine per PCP order after discussion at AWV. 0.5 mL IM L deltoid. Latex-free. Tolerated, observed 15 minutes, no reaction. Wife drove."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

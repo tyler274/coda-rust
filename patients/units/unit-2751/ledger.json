@@ -1,0 +1,3863 @@
+{
+  "unit": "unit-2751",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\"",
+    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002751",
+      "given": "Janet",
+      "family": "Madden",
+      "birth_date": "1965-10-12",
+      "address_line": "112 Prospect Street",
+      "phone": "+1-774-555-0184",
+      "email": "janet.madden@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired administrative assistant with two breast cancers (left 2018, right ER-positive 2021 treated through mastectomy, docetaxel/carboplatin and tamoxifen) who joins in October 2022. Over four years she has HRT-related complex atypical endometrial hyperplasia ending in hysterectomy, recurrent depression, post-mastectomy shoulder and chest wall problems, worsening chemotherapy neuropathy, then liver metastases in 2025 and bilateral adrenal metastases with primary adrenal insufficiency in 2026.",
+      "events": [
+        {
+          "id": "2022-09-27a",
+          "kind": "telephone",
+          "start": "2022-09-27T10:40",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake",
+              "date": "2022-09-27T10:52",
+              "author": "front desk",
+              "body": "Pt called to join the practice. Moving her care closer to home; her oncology stays where it is. Membership paperwork and BCBS PPO card info taken over the phone. New patient visit booked Tue 10/4 at 9:00 with PCP. Mailed records release forms for her old primary care office and her oncology group. Asked her to bring all pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "establish_care",
+          "start": "2022-10-04T09:00",
+          "end": "2022-10-04T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of breast",
+              "action": "history",
+              "onset": "2021-03-01",
+              "note": "Right breast, stage IIA, estrogen receptor positive. Lumpectomy and radiation 2021, modified radical mastectomy with axillary dissection early 2022, docetaxel/carboplatin spring 2022, adjuvant tamoxifen since June 2022."
+            },
+            {
+              "label": "History of breast cancer",
+              "action": "history",
+              "onset": "2018-03-01",
+              "note": "Left breast stage II invasive ductal carcinoma 2018; lumpectomy, sentinel node biopsy, adjuvant chemotherapy. In remission."
+            },
+            {
+              "label": "Acquired absence of right breast and nipple",
+              "action": "history",
+              "onset": "2022-02-01",
+              "icd10": "Z90.11"
+            },
+            {
+              "label": "Drug-induced polyneuropathy",
+              "action": "history",
+              "onset": "2022-05-01",
+              "note": "Mild numbness of the toes since docetaxel/carboplatin.",
+              "icd10": "G62.0"
+            },
+            {
+              "label": "Osteopenia",
+              "action": "history",
+              "onset": "2021-05-01"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "onset": "2010-01-01",
+              "note": "Remote laparoscopic cholecystectomy; year approximate."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tamoxifen 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Adjuvant endocrine therapy, right breast cancer"
+            },
+            {
+              "drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily (600 mg calcium / 400 IU vitamin D3)",
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Osteopenia"
+            },
+            {
+              "drug_text": "ibuprofen 400 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 8 hours as needed for pain",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              84
+            ],
+            "hr": 61,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 99,
+            "weight_kg": 72.0,
+            "height_cm": 163.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-04T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.92
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-04T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 101
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-04T10:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 115
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 198
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-04T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 glasses of wine per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired administrative assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-10-04T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T10:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-10-04T12:20",
+              "author": "PCP",
+              "body": "NEW PATIENT\n56F joining us; wants a PCP close to home who can coordinate around her oncology care. Brought her bottles and a treatment summary.\n\nONC HX (per pt and the summary she brought; formal records requested)\n- L breast: stage II IDC 2018. Lumpectomy + sentinel node bx, then adjuvant chemo. No evidence of disease since.\n- R breast: stage IIA, ER+, 2021. Lumpectomy + radiation, then R modified radical mastectomy with axillary dissection early this year. Chemo after that through a port: docetaxel and carboplatin, finished in the spring. Port came out over the summer.\n- Tamoxifen 20 daily since June. Tolerating it. Med onc follows her every few months.\n- Since chemo the tips of her toes have been a little numb. Not painful, not affecting walking.\n\nOTHER PMH\n- Osteopenia on a DXA at her old office (2021). On calcium/D.\n- One episode of depression years ago, resolved; no treatment now, no psychiatric admissions.\n- Gallbladder out laparoscopically long ago.\n\nMEDS: tamoxifen 20 mg daily; calcium carbonate 600 mg/vit D3 400 IU BID; ibuprofen 400 mg q8h prn aches; MVI daily.\nALL: NKDA.\nFH: mother - breast ca at 45, deceased. Maternal aunt - ovarian ca. Father - HTN, T2DM.\nSH: divorced, lives alone in Northampton. Retired admin assistant. Never smoker. Wine 1-2 glasses a MONTH. No drugs.\n\nROS: energy decent. No new lumps, no bone pain, no cough, no abdominal pain, no bleeding. Mood good.\nPHQ-9 3.\n\nEXAM: vitals in flowsheet, normal. Comfortable, well-groomed. HEENT unremarkable. No cervical, supraclavicular or L axillary nodes. R chest: well-healed mastectomy scar, flat, no nodularity, no skin change. L breast: healed lumpectomy scar, no mass, no nipple change. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed laparoscopic port scars, no organomegaly. Arms: no lymphedema either side. Feet: skin intact, monofilament felt at all sites.\n\nA/P\n1. R breast ca, ER+, on adjuvant tamoxifen - per oncology. Will get their notes.\n2. Hx L breast ca - in remission.\n3. Mild chemo neuropathy, toes - stable, observe.\n4. Osteopenia - continue Ca/D. Old DXA requested.\n5. HCM: baseline CBC, CMP, lipids, A1c, TSH; one-time HCV and HIV screening. Flu shot today. Colonoscopy and Pap history from old office pending records.\nRTC 6-7 months, sooner prn."
+            },
+            {
+              "type": "Clinical Note",
+              "title": "Immunization",
+              "date": "2022-10-04T10:02",
+              "author": "MA",
+              "body": "Flu vaccine (quadrivalent) 0.5 mL IM L deltoid. VIS given. No reaction during the 15 min wait. Labs drawn L antecubital, one stick."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0,
+            "height_cm": 163.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-10-06a",
+          "kind": "portal_message",
+          "start": "2022-10-06T16:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "date": "2022-10-06T16:30",
+              "author": "PCP",
+              "body": "Hi Janet, everything from Tuesday came back fine: blood counts, kidney and liver numbers, sugar (A1c) and thyroid are all normal, and your cholesterol is fine for your risk level, and the hepatitis C and HIV screens are negative. Nothing needs changing. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "outside_records",
+          "start": "2022-10-19T11:15",
+          "reason": "Prior records received",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2016-05-17T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records (summary)",
+              "date": "2022-10-19T11:15",
+              "author": "MA",
+              "body": "114 pages from her previous primary care office, abstracted for the chart:\n- Screening colonoscopy 2019: normal, repeat in 10 years.\n- Pap with HPV co-test late 2021: NILM, HPV negative.\n- DXA 2021: osteopenia. Calcium/vitamin D advised.\n- Tdap 05/2016.\n- Problem list there matches her history here. No allergies listed.\nScanned to media."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Oncology treatment summary",
+              "date": "2022-10-19T11:20",
+              "author": "oncology",
+              "body": "Medical Oncology - Treatment Summary (prepared 08/2022, sent at patient request)\n\nPatient: Janet Madden, DOB 10/12/1965\n\nDiagnoses:\n1. Left breast invasive ductal carcinoma, stage II (2018). Lumpectomy with sentinel lymph node biopsy followed by adjuvant chemotherapy. No evidence of recurrence.\n2. Right breast carcinoma, stage IIA, ER positive (2021). Lumpectomy with adjuvant whole-breast radiation. Subsequent right modified radical mastectomy with axillary lymph node dissection (02/2022). Implanted port placed; adjuvant docetaxel and carboplatin completed spring 2022; port removed 08/2022. Tamoxifen 20 mg daily started 06/2022, planned for at least 5 years.\n\nToxicities: grade 1 sensory neuropathy of the toes after docetaxel/carboplatin.\nAllergies: NKDA.\nSurveillance: oncology visits every 3-6 months, annual left diagnostic mammogram."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-10a",
+          "kind": "portal_message",
+          "start": "2022-11-10T08:12",
+          "reason": "Vaccine report",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-11-07T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID booster",
+              "date": "2022-11-10T08:12",
+              "author": "patient",
+              "body": "Hello, just letting you know I had the new bivalent covid shot at my pharmacy Monday afternoon (Pfizer). Sore arm overnight, otherwise fine. Janet"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID booster",
+              "date": "2022-11-10T11:40",
+              "author": "MA",
+              "body": "Thanks Janet, I've added the 11/7 Pfizer bivalent dose to your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "pharmacy",
+          "start": "2022-12-12T13:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request - tamoxifen",
+              "date": "2022-12-12T13:05",
+              "author": "MA",
+              "body": "Pharmacy faxed a 90-day refill request for tamoxifen 20 mg. This is prescribed by her oncologist; called pharmacy and asked them to send it to the oncology office instead. Left pt a voicemail so she isn't caught short."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-18a",
+          "kind": "portal_message",
+          "start": "2023-01-18T19:47",
+          "reason": "Upper back discomfort",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back and shoulder",
+              "date": "2023-01-18T19:47",
+              "author": "patient",
+              "body": "Hi Doctor, not urgent. Over the last month or so I have an on and off ache across my upper back on the right, and reaching up to my top kitchen shelves is harder than it should be. No pain at the mastectomy site and no swelling. I see my breast surgeon at the end of February for my one-year checkup. Should I wait for that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back and shoulder",
+              "date": "2023-01-19T07:55",
+              "author": "PCP",
+              "body": "Hi Janet, waiting for your surgeon on the 27th is reasonable since it sounds tied to that side and that surgery. If you get arm swelling, new numbness in the hand, or pain that is getting steadily worse before then, let me know and I'll see you sooner."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-06a",
+          "kind": "specialist_visit",
+          "start": "2023-02-06T14:00",
+          "service": "Gynecology (outside)",
+          "reason": "Hot flashes and night sweats",
+          "conditions": [
+            {
+              "label": "Menopausal and female climacteric states",
+              "action": "diagnosed",
+              "onset": "2022-02-01",
+              "note": "Perimenopausal symptoms for about a year."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "estradiol 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Vasomotor symptoms"
+            },
+            {
+              "drug_text": "progesterone 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth at bedtime",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Endometrial protection with estradiol"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit letter",
+              "date": "2023-02-10T09:30",
+              "author": "gynecology",
+              "body": "Women's Health / Gynecology\nVisit date: 02/06/2023\n\nDear colleague,\n\nI saw Ms. Madden, 57, for vasomotor symptoms. For roughly the past year her cycles have been irregular and she now has severe hot flashes through the day and night sweats that wake her most nights. Allergies: none known.\n\nAfter discussion she wished to start hormone therapy. I have prescribed estradiol 1 mg orally daily with micronized progesterone 100 mg nightly for endometrial protection.\n\nImpression: perimenopausal vasomotor syndrome.\nPlan: start combined therapy as above; follow up as needed or sooner with any bleeding.\n\nSincerely,\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "specialist_visit",
+          "start": "2023-02-27T10:30",
+          "service": "General Surgery (outside)",
+          "reason": "One-year follow-up after right mastectomy",
+          "conditions": [
+            {
+              "label": "Thoracic outlet syndrome",
+              "action": "diagnosed",
+              "onset": "2022-12-15",
+              "note": "Post-surgical, right.",
+              "icd10": "G54.0"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Breast surgery follow-up letter",
+              "date": "2023-03-03T08:45",
+              "author": "general surgery",
+              "body": "Surgical Oncology / Breast Surgery\nDate of visit: 02/27/2023\nRe: Janet Madden, DOB 10/12/1965\n\nMs. Madden returns for routine surveillance, now about a year out from her right modified radical mastectomy with axillary dissection. Overall she is doing well and has recovered steadily. The chest wall itself is comfortable, with no pain and no swelling. Her complaint is an intermittent ache in the right upper back and difficulty working overhead, for example lifting things onto a high shelf.\n\nMedications: tamoxifen 20 mg daily, estradiol 1 mg daily, micronized progesterone 100 mg nightly, calcium/vitamin D, ibuprofen as needed, multivitamin. Allergies: NKDA.\n\nExamination: The mastectomy flap is healed without erythema, warmth or swelling. Upper extremity range of motion is full bilaterally. When she leans into the wall with both arms extended, the medial edge of the right scapula stands out noticeably from the chest wall. Strength is 5/5 throughout the upper limbs apart from mild weakness of right shoulder abduction above 90 degrees. Sensation is normal in both arms and hands.\n\nImpression: Post-surgical thoracic outlet syndrome, right.\n\nPlan: Referral to physical therapy for scapular stabilization and shoulder girdle strengthening. Continue surveillance per medical oncology. Return in one year, sooner if needed.\n\nBreast Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-16a",
+          "kind": "specialist_visit",
+          "start": "2023-03-16T13:00",
+          "service": "Physical Therapy (outside)",
+          "reason": "Right shoulder girdle weakness",
+          "procedures": [
+            {
+              "procedure": "Physical therapy evaluation, low complexity",
+              "performed": "2023-03-16T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Physical therapy evaluation",
+              "date": "2023-03-20T15:10",
+              "author": "physical therapy",
+              "body": "Outpatient Physical Therapy - Initial Evaluation (03/16/2023)\nReferral: breast surgery, post-surgical thoracic outlet syndrome R.\n\nS: Intermittent R upper back ache, trouble reaching overhead. No arm swelling.\nO: Full AROM both shoulders. R scapular prominence with wall push-up. Mild R abduction weakness above shoulder height. Sensation intact.\nA: Scapular stabilizer and shoulder girdle weakness after R mastectomy/ALND, consistent with referral diagnosis. Good rehab potential.\nP: 6 visits over 6 weeks; serratus and lower trap strengthening, posture work; home exercise program issued today with band."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-10a",
+          "kind": "portal_message",
+          "start": "2023-04-10T09:20",
+          "reason": "Stopped progesterone",
+          "medications": [
+            {
+              "drug_text": "progesterone 100 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Patient stopped because of mood swings"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Medication change",
+              "date": "2023-04-10T09:20",
+              "author": "patient",
+              "body": "For my file - I stopped the progesterone capsule on Friday. Since February it has made me moody and weepy in a way I don't like at all. I'm still taking the estradiol and the hot flashes are much better on it. I left a message at the gynecology office too."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Medication change",
+              "date": "2023-04-10T12:15",
+              "author": "PCP",
+              "body": "Thanks for telling me, I've taken the progesterone off your list. Please do make sure the gynecology office calls you back so they can decide what comes next with your hormone therapy, and let them know right away about any bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "office_visit",
+          "start": "2023-05-09T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              127,
+              82
+            ],
+            "hr": 71,
+            "spo2": 99,
+            "weight_kg": 71.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-05-09T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-05-09T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-05-09T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-05-09T11:30",
+              "author": "PCP",
+              "body": "S: 7-month check. Hot flashes much better on estradiol from gyn; she stopped the progesterone a month ago (moodiness), gyn aware. R upper back ache improving with PT; finished 6 sessions, doing band exercises at home. Tamoxifen fine. Toes the same. Mood good, gardening started up again. PHQ-2 0.\nMeds reviewed: tamoxifen, estradiol, Ca/D, ibuprofen prn, MVI.\nO: Vitals reviewed, normal, weight steady. Well appearing. R scapula slight prominence with arm push, improved per pt. Lungs clear, heart RRR.\nA/P: Doing well. Shingrix #1 today, #2 in the fall. Surgery and PT notes reviewed. See her in October for a physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-02a",
+          "kind": "telephone",
+          "start": "2023-06-02T11:05",
+          "reason": "Vaginal bleeding",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse triage - bleeding",
+              "date": "2023-06-02T11:18",
+              "author": "RN",
+              "body": "Pt calling: several weeks of on-and-off vaginal bleeding, some days heavy enough to soak a pad in a few hours, then quiet for days. Started a while after the estradiol. Denies lightheadedness, chest pain or shortness of breath. Already booked with her gynecologist Wed 6/7. Advised to keep that appointment; go to ED if soaking a pad an hour for 2+ hours, faint or dizzy. Pt verbalized understanding. FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "specialist_visit",
+          "start": "2023-06-07T09:15",
+          "service": "Gynecology (outside)",
+          "reason": "Abnormal uterine bleeding on hormone therapy",
+          "conditions": [
+            {
+              "label": "Endometrial hyperplasia",
+              "action": "diagnosed",
+              "onset": "2023-05-01",
+              "icd10": "N85.00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2023-06-07T10:00",
+              "text": "Transabdominal and transvaginal pelvic ultrasound.\nIndication: abnormal uterine bleeding on estrogen therapy.\nUterus: anteverted, smooth contour, no focal myometrial mass. Endometrium: thickened, measuring 14 mm in double-layer thickness, without focal lesion or fluid. Right and left ovaries: normal size and appearance. No adnexal mass. No free fluid.",
+              "conclusion": "Thickened endometrium, 14 mm. Otherwise normal pelvic ultrasound."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit letter",
+              "date": "2023-06-12T10:20",
+              "author": "gynecology",
+              "body": "Women's Health / Gynecology\nVisit date: 06/07/2023\n\nDear colleague,\n\nMs. Madden, now 57, returned with abnormal bleeding. She has been perimenopausal for about a year and started hormone therapy four months ago for severe vasomotor symptoms. She was on estradiol with micronized progesterone but stopped the progesterone on her own because of mood swings. For several weeks now she has had intermittent heavy bleeding. Current medications: estradiol 1 mg daily, tamoxifen 20 mg daily (oncology), calcium/vitamin D, ibuprofen as needed, multivitamin. NKDA.\n\nPelvic examination: unremarkable. Her most recent Pap was normal.\nPelvic ultrasound today: endometrium thickened at 14 mm; uterus and ovaries otherwise normal.\n\nImpression: Endometrial hyperplasia, presumed, in the setting of hormone therapy.\nPlan: endometrial sampling at a follow-up visit.\n\nSincerely,\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "imaging",
+          "start": "2023-06-20T08:30",
+          "reason": "Annual surveillance mammogram, left breast",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2023-06-20T08:30",
+              "text": "Left diagnostic mammogram, CC, MLO and spot compression views of the lumpectomy site. History: left lumpectomy 2018, right mastectomy 2022.\nBreast composition: scattered areas of fibroglandular density. Post-lumpectomy architectural distortion and scar at the upper outer left breast, stable compared with prior outside studies. No suspicious mass, calcifications or new distortion. Skin and nipple unremarkable.",
+              "conclusion": "BI-RADS 2: benign post-surgical changes. Annual follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "office_visit",
+          "start": "2023-08-22T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, weight loss, low mood",
+          "vitals": {
+            "bp": [
+              109,
+              83
+            ],
+            "hr": 70,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 67.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T14:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T14:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T14:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 16
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-22T13:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2023",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "Recurrent depressive symptoms"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-08-22T17:10",
+              "author": "PCP",
+              "body": "CC: tired, losing weight, not herself.\n\nHPI: Since around early June she has been worn out all the time, sleeping badly (up at 3 am, can't get back to sleep), and has lost about 10 lb without trying (72.0 kg in Oct, 67.5 today). Feels low most of the day, most days. Has stopped going out to the garden, which is usually what she lives for in summer. Says she feels useless, and can't keep her mind on a book or a TV show. No thoughts of self-harm, no plan, no intent; feels safe. Feels it is like the episode she had years ago and wants to go back to psychiatry. No fever, no cough, no night sweats now. Still having intermittent bleeding; gyn plans a biopsy. Appetite down.\nPHQ-9 16 (item 9 = 0).\n\nMeds: tamoxifen, estradiol, Ca/D, ibuprofen prn, MVI.\n\nExam: vitals in flowsheet. Tired-appearing, subdued, linear thought, good eye contact. No nodes. Thyroid not enlarged. Heart RRR, lungs clear. Abdomen soft, nontender, no mass. R chest wall unremarkable.\n\nA/P:\n1. Recurrent depressive symptoms, moderate. Psych referral (she prefers the psychiatry group she saw before). Safety plan reviewed; crisis line numbers given.\n2. Fatigue/weight loss: CBC, CMP, TSH today.\n3. Ongoing uterine bleeding - gyn following.\nRTC after psychiatry."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.5,
+            "labs": {
+              "Hemoglobin": 11.2,
+              "Platelets": 250,
+              "Thyroid Stimulating Hormone": 2.5,
+              "White Blood Cells": 5.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "date": "2023-08-24T12:30",
+              "author": "PCP",
+              "body": "Janet, your thyroid is normal (TSH 2.5) and your kidney, liver and salt levels are all fine. Your hemoglobin is mildly low at 11.2; white count and platelets are normal. We'll recheck the blood count at your physical in October. I've sent these results to psychiatry for your visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-04a",
+          "kind": "specialist_visit",
+          "start": "2023-09-04T11:00",
+          "service": "Psychiatry (outside)",
+          "reason": "Depressive symptoms",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, recurrent, moderate",
+              "action": "diagnosed",
+              "onset": "2023-06-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "escitalopram 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2023",
+              "action": "done",
+              "date": "2023-09-04T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry evaluation",
+              "date": "2023-09-08T14:40",
+              "author": "psychiatry",
+              "body": "Outpatient Psychiatry - Return Evaluation\nDate seen: 09/04/2023\nReferred by: primary care\n\nMs. Madden, 57, is known to our clinic from a prior depressive episode. She comes back now during a difficult stretch: ongoing gynecologic evaluation for abnormal bleeding and continuing endocrine therapy for breast cancer. Over three months she describes fatigue that does not lift, about ten pounds of unintended weight loss and broken sleep. Her mood is low for most of nearly every day. Gardening, her main pleasure, no longer interests her. She endorses feelings of worthlessness and poor concentration. No suicidal ideation. No fever, cough or other acute symptoms.\n\nMedications: tamoxifen 20 mg daily, estradiol 1 mg daily, calcium/vitamin D, ibuprofen PRN, multivitamin. NKDA.\n\nExam: unremarkable apart from mild pallor. MSE: casually dressed, cooperative, mood 'low', affect congruent, thought process linear, no SI/HI, insight and judgment good.\n\nLabs from primary care (08/22): Hgb 11.2, WBC 5.0, platelets 250, TSH 2.5, CMP normal.\n\nAssessment: Major depressive disorder, recurrent episode, moderate.\n\nPlan: Start escitalopram 10 mg daily (chosen to avoid interaction with tamoxifen). Referral for weekly psychotherapy. Follow-up here in 6 weeks; primary care may continue refills once stable.\n\nPsychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "portal_message",
+          "start": "2023-09-19T20:05",
+          "reason": "Update after psychiatry",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "date": "2023-09-19T20:05",
+              "author": "patient",
+              "body": "Quick update: I started the escitalopram two weeks ago and I have my first counseling appointment next Thursday. Too soon to tell but I'm sleeping a little better. Thank you for getting me in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "date": "2023-09-20T08:10",
+              "author": "PCP",
+              "body": "Glad to hear it, Janet. It usually takes 4-6 weeks to feel the full effect, so hang in there. See you on October 10."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "annual_physical",
+          "start": "2023-10-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              117,
+              82
+            ],
+            "hr": 69,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 68.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-10T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-10T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 69
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 200
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-10-10T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T09:42"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-10-10T09:44"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-10T09:46"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-10T12:45",
+              "author": "PCP",
+              "body": "ANNUAL - 57F (58 on Thursday).\n\nInterval: psychiatry started escitalopram 10 early Sept, in weekly counseling. Mood 'coming up out of the hole' - sleeping through most nights, out in the garden putting beds to bed for winter. PHQ-9 10 (from 16). Still some intermittent bleeding; gyn biopsy planned. Shoulder fine with home exercises. Toes unchanged.\n\nMeds: tamoxifen 20, estradiol 1, escitalopram 10, Ca/D BID, ibuprofen prn, MVI. NKDA.\nHabits: never smoker, wine a couple times a month, walks 30 min most days.\n\nScreening/prevention:\n- Colon: colonoscopy 2019 normal -> 2029.\n- Cervical: Pap/HPV 2021 normal.\n- Breast: L diagnostic mammo 6/2023 benign (oncology).\n- Bone: osteopenia, on Ca/D.\n- HCV/HIV done 2022.\n- Vaccines today: flu, updated COVID, Shingrix #2, PCV20 (indicated with her cancer/chemo history). Tdap 2016.\n\nExam: vitals normal (see flowsheet). Pleasant, brighter than August. Eyes, ears, mouth normal. Neck supple, no thyromegaly, no nodes. Heart RRR without murmur. Lungs clear. R chest wall flat scar, no nodules. L breast no mass. Abdomen soft, no HSM. No edema. Feet: monofilament intact.\n\nA/P:\n1. MDD, recurrent - improving on escitalopram + therapy. Continue.\n2. Mild anemia in Aug - recheck CBC today.\n3. Breast ca on tamoxifen - per onc.\n4. AUB - gyn.\n5. HCM as above; lipids today (A1c normal last year).\nRTC 6 wk telehealth for mood."
+            },
+            {
+              "type": "Clinical Note",
+              "title": "Immunizations",
+              "date": "2023-10-10T09:50",
+              "author": "MA",
+              "body": "Given with consent, VIS for each:\n- Influenza quadrivalent 0.5 mL IM R deltoid\n- COVID-19 Pfizer 2023-24 0.3 mL IM L deltoid\n- Shingrix #2 0.5 mL IM L deltoid (lower)\n- PCV20 0.5 mL IM R deltoid (lower)\nObserved 15 min, tolerated well. Labs drawn."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "portal_message",
+          "start": "2023-10-12T15:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "date": "2023-10-12T15:15",
+              "author": "PCP",
+              "body": "Hi Janet, happy birthday. Cholesterol is about where it was last year, nothing to treat. Your hemoglobin is about where it was in August, still a bit below normal. We'll keep checking it. Nothing to change today."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "telehealth_visit",
+          "start": "2023-11-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression follow-up",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-11-14T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2023-11-14T11:05",
+              "author": "PCP",
+              "body": "Video, she is at home, consented to virtual visit.\nMood follow-up. 10 weeks on escitalopram 10, counseling every other week now. Energy better, eating normally, concentrating enough to read again. Some sad days but no longer most days. No SI. No side effects she can name. Saw psychiatry in October - continue same dose; they're happy for us to refill.\nPHQ-9 7.\nAppears well on camera, smiling, normal speech.\nA/P: MDD recurrent, improving. Continue escitalopram 10 mg. Recheck in the spring, sooner if she slides."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-15a",
+          "kind": "specialist_visit",
+          "start": "2023-12-15T09:45",
+          "service": "Gynecology (outside)",
+          "reason": "Ongoing intermittent vaginal bleeding",
+          "conditions": [
+            {
+              "label": "Endometrial hyperplasia",
+              "action": "resolved",
+              "note": "Superseded by biopsy diagnosis.",
+              "icd10": "N85.00"
+            },
+            {
+              "label": "Complex atypical endometrial hyperplasia",
+              "action": "diagnosed",
+              "onset": "2023-06-07",
+              "icd10": "N85.02"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "estradiol 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Atypical endometrial hyperplasia on biopsy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              107,
+              84
+            ],
+            "hr": 75,
+            "weight_kg": 67.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-15T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.18
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-15T10:30",
+              "results": [
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 7.2
+                },
+                {
+                  "test": "Luteinizing hormone",
+                  "loinc": "10501-5",
+                  "unit": "mIU/mL",
+                  "value": 6.9
+                },
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 45
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-12-15T10:15",
+              "text": "Specimen: endometrium, office biopsy (pipelle).\nGross: received in formalin, multiple fragments of tan-red tissue aggregating 1.6 x 1.0 x 0.3 cm, entirely submitted.\nMicroscopic: crowded, back-to-back endometrial glands with complex architecture and cytologic atypia, with little intervening stroma. No stromal invasion identified. No carcinoma seen in this sample.",
+              "conclusion": "Endometrium, biopsy: complex atypical hyperplasia. Negative for carcinoma in this sample.",
+              "issued": "2023-12-19T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit and biopsy result",
+              "date": "2023-12-21T16:00",
+              "author": "gynecology",
+              "body": "Women's Health / Gynecology\nVisit date: 12/15/2023; pathology reviewed 12/19/2023\n\nDear colleague,\n\nMs. Madden returned with six months of intermittent vaginal bleeding since starting estrogen therapy, previously evaluated here with a thickened endometrium. She is not sexually active and has no discharge or pelvic pain. Her last Pap, two years ago, was normal. History is notable for stage IIA ER-positive right breast cancer treated with lumpectomy and radiation and then adjuvant tamoxifen, started 18 months ago. Medications: tamoxifen 20 mg, estradiol 1 mg daily (estrogen only since April), escitalopram 10 mg, calcium/vitamin D, ibuprofen PRN, multivitamin. NKDA.\n\nVital signs normal. Abdomen benign. Pelvic exam: uterus slightly enlarged and non-tender; no adnexal mass.\n\nLabs: Hgb 12.3, platelets 250. FSH 7.2 mIU/mL, LH 6.9 mIU/mL, estradiol 45 pg/mL, in keeping with her oral estradiol.\n\nEndometrial biopsy performed in the office. Pathology: complex atypical hyperplasia, no carcinoma in the sample.\n\nImpression: complex atypical endometrial hyperplasia.\n\nPlan: I called her on 12/19 with the result. Estradiol stopped as of that day. I have recommended total laparoscopic hysterectomy with bilateral salpingo-oophorectomy and she agrees; we will schedule for early February. Please complete a pre-operative evaluation in January.\n\nSincerely,\nGynecology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-21a",
+          "kind": "portal_message",
+          "start": "2023-12-21T18:40",
+          "reason": "Question about recommended surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hysterectomy?",
+              "date": "2023-12-21T18:40",
+              "author": "patient",
+              "body": "The gynecologist called - the biopsy showed atypical hyperplasia and she wants to take out my uterus and ovaries in February. I stopped the estradiol Tuesday like she said. Honestly after everything else I just want to know if you think this is the right call."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hysterectomy?",
+              "date": "2023-12-22T07:45",
+              "author": "PCP",
+              "body": "Janet, I'm sorry this is one more thing. Yes - with atypical hyperplasia, removing the uterus is the standard recommendation, and taking the ovaries at the same time makes sense with your breast cancer history. I agree with her. I've taken estradiol off your list. Our front desk will call you to set up the pre-op visit in January. The hot flashes may come back off the estradiol; tell me if they do."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "office_visit",
+          "start": "2024-01-16T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-operative evaluation, hysterectomy",
+          "vitals": {
+            "bp": [
+              111,
+              78
+            ],
+            "hr": 59,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 66.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-16T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-01-16T11:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-16T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Evaluation",
+              "date": "2024-01-16T13:30",
+              "author": "PCP",
+              "body": "PRE-OP H&P\nProcedure: total laparoscopic hysterectomy + BSO, planned 2/6 (gyn), for complex atypical endometrial hyperplasia.\n\nBleeding has tapered off since estradiol stopped 12/19. Hot flashes back, tolerable. Mood steady on escitalopram 10, still in counseling.\nFunctional capacity: climbs two flights and walks 30 min without symptoms (>4 METs). No chest pain, dyspnea, syncope, palpitations. No personal or family bleeding problems. No prior anesthesia trouble (several breast surgeries, lap chole). Never smoker. No OSA symptoms.\n\nMeds: tamoxifen 20 (ask onc/gyn re peri-op hold given VTE risk), escitalopram 10, Ca/D, ibuprofen prn (stop 7 days before), MVI. NKDA.\n\nExam: vitals normal. Airway unremarkable, full dentition. Heart RRR no murmur. Lungs clear. No edema. Healed R mastectomy scar.\n\nLabs today: CBC, BMP.\n\nASSESSMENT: Low-risk patient for a low-to-intermediate-risk procedure. No further cardiac testing needed; ECG not indicated. Medically optimized.\nTamoxifen peri-operative plan deferred to oncology and surgeon. Hold ibuprofen 1 week prior. Clearance faxed to gyn."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Pre-op clearance faxed",
+              "date": "2024-01-17T09:05",
+              "author": "MA",
+              "body": "Pre-op note, CBC and BMP faxed to gynecology surgical scheduling. Confirmation received."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "procedure_visit",
+          "start": "2024-02-06T07:30",
+          "end": "2024-02-06T16:30",
+          "service": "Gynecologic Surgery (outside)",
+          "reason": "Total laparoscopic hysterectomy with bilateral salpingo-oophorectomy",
+          "conditions": [
+            {
+              "label": "Complex atypical endometrial hyperplasia",
+              "action": "resolved",
+              "note": "Uterus removed; no carcinoma on final pathology.",
+              "icd10": "N85.02"
+            },
+            {
+              "label": "Acquired absence of uterus and cervix",
+              "action": "diagnosed",
+              "onset": "2024-02-06"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-02-06T09:40",
+              "text": "A. Uterus and cervix, total hysterectomy: uterus 112 g. Endometrium with complex atypical hyperplasia; no carcinoma identified after complete submission of the endometrium. Myometrium and serosa unremarkable. Cervix with no dysplasia.\nB. Right ovary and fallopian tube: unremarkable ovary; unremarkable fallopian tube.\nC. Left ovary and fallopian tube: unremarkable ovary; unremarkable fallopian tube.",
+              "conclusion": "Complex atypical endometrial hyperplasia without carcinoma. Benign cervix, both ovaries and both fallopian tubes.",
+              "issued": "2024-02-12T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Laparoscopic total hysterectomy",
+              "performed": "2024-02-06T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative summary",
+              "date": "2024-02-14T10:10",
+              "author": "gynecology",
+              "body": "Gynecologic Surgery - Operative and Discharge Summary\nDate of surgery: 02/06/2024\nPreoperative diagnosis: complex atypical endometrial hyperplasia; history of ER-positive breast cancer.\nProcedure: total laparoscopic hysterectomy with bilateral salpingo-oophorectomy.\nAnesthesia: general. EBL 50 mL. No complications. Specimens to pathology.\nFindings: uterus mildly enlarged, smooth. Normal-appearing tubes and ovaries. Pelvic and upper abdominal survey otherwise normal.\nCourse: voided, tolerated diet, ambulating; discharged home same evening.\nDischarge medications: acetaminophen and ibuprofen as needed; resume home medications.\nFollow-up: gynecology post-op visit 2 weeks.\nFinal pathology (02/12): complex atypical hyperplasia, no carcinoma; tubes and ovaries benign. Discussed with patient by phone."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-26a",
+          "kind": "portal_message",
+          "start": "2024-02-26T14:22",
+          "reason": "Hot flashes after surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Recovering",
+              "date": "2024-02-26T14:22",
+              "author": "patient",
+              "body": "Surgery went fine and the gynecologist says no cancer, which is a huge relief. The incisions look good. The hot flashes are back in full force though, I'm up two or three times a night changing my shirt. I know I can't go back on the estrogen. Anything else I can try?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Recovering",
+              "date": "2024-02-27T08:30",
+              "author": "PCP",
+              "body": "Wonderful news about the pathology. Hot flashes are expected now that your ovaries are out. The escitalopram you are already on helps some women with them. Layers, a fan by the bed and keeping the bedroom cool help too. Let's talk it through at your April visit, and keep a note of how many nights you're woken up."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              114,
+              82
+            ],
+            "hr": 51,
+            "spo2": 98,
+            "weight_kg": 69.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-16T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-04-16T12:05",
+              "author": "PCP",
+              "body": "10 wk out from TLH/BSO, healed, cleared by gyn. Hot flashes now 1-2 a night, she's sleeping better with the fan. Doesn't want another medication for them.\nMood: good. Counseling monthly now. PHQ-9 5. Escitalopram 10 - continue; psychiatry handed refills to us.\nWeight back up to 69.5 kg.\nMeds: tamoxifen, escitalopram, Ca/D, ibuprofen prn, MVI.\nExam: vitals fine. Abd: small laparoscopic incisions healed. Heart/lungs normal.\nA/P\n- S/p hysterectomy/BSO for atypical hyperplasia, benign path - done with gyn.\n- Vasomotor sx after surgical menopause - nonpharmacologic, revisit prn.\n- MDD recurrent - near remission, continue.\n- Breast ca - tamoxifen per onc; mammogram due in June.\nRTC October physical."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "imaging",
+          "start": "2024-06-11T08:15",
+          "reason": "Annual surveillance mammogram, left breast",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2024-06-11T08:15",
+              "text": "Left diagnostic mammogram with tomosynthesis. Comparison 06/20/2023.\nScattered fibroglandular density. Stable lumpectomy scar in the upper outer quadrant with expected architectural distortion. No mass, suspicious calcification or new asymmetry. Axillary tail unremarkable.",
+              "conclusion": "BI-RADS 2, benign. Return in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "portal_message",
+          "start": "2024-08-20T07:58",
+          "reason": "Right chest wall pain",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Chest wall pain",
+              "date": "2024-08-20T07:58",
+              "author": "patient",
+              "body": "This isn't my heart, it's on the right side where the mastectomy was. A dull ache that never quite goes away and sharp twinges when I move my arm. It has been going on for a few months. I've been taking ibuprofen 400 three times a day and it barely takes the edge off. I see oncology on September 9. Should I come in before?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Chest wall pain",
+              "date": "2024-08-20T12:40",
+              "author": "PCP",
+              "body": "Hi Janet, thanks for the detail. Please do raise this with oncology on the 9th - they will want to examine that area. Please don't go above the ibuprofen you're taking, and take it with food. If you'd like to be seen before then I have openings this week; just reply and the front desk will book you. If the pain changes, you get redness or swelling there, or you get short of breath, call us that day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: Chest wall pain",
+              "date": "2024-08-20T18:15",
+              "author": "patient",
+              "body": "Thank you, I'll wait for the 9th."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-09a",
+          "kind": "specialist_visit",
+          "start": "2024-09-09T13:30",
+          "service": "Medical Oncology (outside)",
+          "reason": "Persistent right chest wall pain",
+          "conditions": [
+            {
+              "label": "Neoplasm related pain",
+              "action": "diagnosed",
+              "onset": "2024-05-01",
+              "note": "Right chest wall, after mastectomy.",
+              "icd10": "G89.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Cancer-related chest wall pain"
+            },
+            {
+              "drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution",
+              "action": "historical",
+              "sig": "Mix 17 g in 8 oz of liquid and drink daily as needed for constipation",
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Opioid-induced constipation prevention"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              73
+            ],
+            "hr": 59,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 69.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-09T13:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-09T13:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "loinc": "2160-0",
+                  "unit": "mg/dL",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-09-09T13:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical oncology visit",
+              "date": "2024-09-13T09:00",
+              "author": "oncology",
+              "body": "Medical Oncology - Clinic Note\nDate of service: 09/09/2024\nPatient: Janet Madden, 58F\n\nDx: R breast carcinoma stage IIA ER+ (2021) s/p lumpectomy/XRT, R MRM + ALND 02/2022, docetaxel/carboplatin 2022, adjuvant tamoxifen since 06/2022. Remote L breast IDC stage II (2018). S/p TLH/BSO 02/2024 for atypical hyperplasia (benign).\n\nInterval: Seen today for right chest wall pain present for several months. She calls it a steady dull ache with occasional sharp jabs, worse with arm and trunk movement. Average 5/10, as high as 7/10 on bad days. Ibuprofen 400 mg TID gives her little relief. No fall, blow or other injury.\n\nMeds: tamoxifen 20 mg daily, escitalopram 10 mg daily, calcium/vit D, ibuprofen, MVI. NKDA.\n\nVS within normal limits.\nExam: R mastectomy site with mild tenderness to palpation along the lateral chest wall; no erythema, warmth or swelling. No palpable nodularity. L breast and both axillae without masses.\n\nLabs today: Hgb 13.2, WBC 7.8, plt 250, creatinine 0.9, LFTs normal.\n\nA/P: Moderate cancer-related pain of the right chest wall, not controlled by NSAID alone.\n- Add oxycodone/acetaminophen 5/325 mg, 1 tab q6h PRN; #40, no early refills. Continue ibuprofen with food. Bowel regimen with PEG 3350 daily PRN. Opioid agreement signed; PDMP reviewed.\n- Continue tamoxifen.\n- RTC 3 months.\n\nMedical Oncology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 0.9,
+              "Hemoglobin": 13.2,
+              "White Blood Cells": 7.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              106,
+              81
+            ],
+            "hr": 53,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 70.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-08T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 68
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-08T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-08T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-08T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T09:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T09:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-08T13:15",
+              "author": "PCP",
+              "body": "Physical, age 58.\n\nYear in review: TLH/BSO Feb (benign). Oncology added oxycodone/APAP prn in Sept for R chest wall pain - uses about 1 tab a day, usually evening; pain 4/10 today, can sleep and garden. PEG most days; BMs regular. Hot flashes fewer. Mood good, PHQ-9 4; still on escitalopram 10, counseling ended over the summer by mutual agreement.\nToes still a little numb, unchanged.\n\nMeds: tamoxifen 20, escitalopram 10, oxycodone/APAP 5/325 prn (onc), PEG prn, ibuprofen 400 prn, Ca/D BID, MVI.\nAllergies: NKDA.\n\nPrevention: colonoscopy 2019 (next 2029). Post-hysterectomy for benign dx - no further Paps. L mammo 6/2024 BI-RADS 2. Shingrix done, PCV20 done, Tdap 2016 (due 2026). Flu + COVID today.\n\nExam: BP/HR normal, wt 70.4 kg. Well. Neck no nodes. Heart RRR, lungs clear. R chest wall: mild tenderness laterally, scar flat. L breast no mass. Abd soft, nontender. No edema. Feet intact skin.\n\nA/P\n1. Cancer-related chest wall pain on prn opioid per onc - controlled. Reviewed safe storage; she lives alone, no one else in the home.\n2. MDD recurrent - in remission range. Continue escitalopram.\n3. R breast ca on tamoxifen - per onc.\n4. Osteopenia - Ca/D; DXA due next year.\n5. Labs: CMP, lipids, A1c."
+            },
+            {
+              "type": "Clinical Note",
+              "title": "Immunizations",
+              "date": "2024-10-08T09:40",
+              "author": "MA",
+              "body": "Flu (2024-25 trivalent) 0.5 mL IM L deltoid; Moderna COVID 2024-25 0.5 mL IM R deltoid. VIS provided. Tolerated, no immediate reaction."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "portal_message",
+          "start": "2024-10-10T11:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "date": "2024-10-10T11:20",
+              "author": "PCP",
+              "body": "Labs from Tuesday look fine - kidney and liver tests and A1c normal, cholesterol steady and not in treatment range. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "pharmacy",
+          "start": "2024-12-03T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - escitalopram",
+              "date": "2024-12-03T09:10",
+              "author": "MA",
+              "body": "e-Refill request from pharmacy: escitalopram 10 mg #90. Last visit 10/8, on med list, PCP managing per psychiatry. Pended to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2024-12-03T12:30",
+              "author": "PCP",
+              "body": "Approved escitalopram 10 mg daily, #90 with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T16:44",
+          "reason": "Numbness hands and feet",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Numbness getting worse",
+              "date": "2025-01-21T16:44",
+              "author": "patient",
+              "body": "The numbness in my feet has been creeping up since around Christmas, and now my fingers feel it too. It's like I'm wearing gloves and socks all day. It doesn't hurt and I'm not weak, just strange. Should I be worried?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Numbness getting worse",
+              "date": "2025-01-22T08:20",
+              "author": "front desk",
+              "body": "Hi Janet, the doctor would like to examine you. You're booked Tuesday 2/4 at 10:00. If you notice weakness, trouble walking, or problems with bladder or bowels before then, please call the office right away."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "office_visit",
+          "start": "2025-02-04T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worsening numbness of hands and feet",
+          "vitals": {
+            "bp": [
+              107,
+              74
+            ],
+            "hr": 61,
+            "spo2": 98,
+            "weight_kg": 70.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-04T10:45",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 596
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.4
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-04T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2025",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Worsening sensory neuropathy after chemotherapy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-02-04T12:50",
+              "author": "PCP",
+              "body": "Numbness. Had mild toe numbness since docetaxel/carboplatin in 2022, stable for years. Over the last ~6 wk it has spread: feet to above the ankles, and now both hands to the wrists. Describes it as gloves and socks. No pain, no burning, no weakness, no falls, no bladder/bowel change, no back pain. No new meds. Rare alcohol.\nMeds: tamoxifen, escitalopram, oxycodone/APAP prn (~1/d), PEG, ibuprofen prn, Ca/D, MVI.\n\nExam: vitals ok. Strength 5/5 throughout incl. foot dorsiflexion. Vibration diminished at both great toes, present at the ankles. Ankle jerks absent bilaterally; knees 2+. Romberg negative. Gait normal, can heel and toe walk.\n\nA/P: Worsening length-dependent sensory neuropathy, background of chemo neuropathy. B12, TSH, A1c today. Neurology referral. Foot checks daily, good footwear."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0,
+            "labs": {
+              "Vitamin B12": 612
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-06a",
+          "kind": "portal_message",
+          "start": "2025-02-06T13:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "date": "2025-02-06T13:00",
+              "author": "PCP",
+              "body": "Janet, B12, thyroid and A1c are all normal, so none of the usual treatable causes showed up. The neurology referral is in; their office should call you within a week or two."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "specialist_visit",
+          "start": "2025-03-10T15:00",
+          "service": "Neurology (outside)",
+          "reason": "Sensory symptoms hands and feet",
+          "orders": [
+            {
+              "id": "neuro-referral-2025",
+              "action": "done",
+              "date": "2025-03-10T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "date": "2025-03-14T10:30",
+              "author": "neurology",
+              "body": "Neurology Consultation\nDate: 03/10/2025\nReason: numbness of the hands and feet\n\nThank you for referring Ms. Madden, a 59-year-old woman with ER-positive breast cancer on tamoxifen and a post-surgical right thoracic outlet syndrome. She says it feels as though she has gloves and socks on at all times, and this has steadily worsened over the last two months on a background of mild toe numbness since chemotherapy. She has no weakness and no pain. Her chemotherapy included docetaxel and carboplatin (2022).\n\nMedications: tamoxifen, escitalopram, oxycodone/acetaminophen PRN, polyethylene glycol, ibuprofen PRN, calcium/vitamin D, multivitamin. Allergies: none.\n\nExamination: Cranial nerves intact. Strength full. Vibration sense is reduced in both legs; joint position sense is preserved. Reflexes 1+ in the arms, 2+ at the knees, ankle jerks absent. Plantars flexor. Gait normal.\n\nRecent B12, TSH and A1c from primary care are normal.\n\nImpression: Length-dependent sensory polyneuropathy, attributable to her prior taxane/platinum chemotherapy, now worsening.\n\nRecommendations: No medication needed while it remains painless. Daily foot inspection, protective footwear, fall precautions at night. Return if pain, weakness or gait change develops.\n\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-28a",
+          "kind": "office_visit",
+          "start": "2025-04-28T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right upper abdominal pain and weight loss",
+          "vitals": {
+            "bp": [
+              106,
+              84
+            ],
+            "hr": 50,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 63.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-28T14:50",
+              "results": [
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 165
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 74
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-28T14:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-28T14:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "abd-us-2025",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "RUQ pain, weight loss"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-04-28T17:20",
+              "author": "PCP",
+              "body": "CC: RUQ pain, weight loss.\n\nHPI: Since mid-March a dull ache under the right ribs, slowly getting worse, now most of the day. Not related to meals. Weight 70.0 kg in Feb, 63.5 today without trying. No fever or chills. No jaundice, dark urine or pale stools noticed. Bowels unchanged on PEG. No nausea or vomiting. Chest wall pain is separate and stable. Gallbladder out years ago.\n\nMeds: tamoxifen 20, escitalopram 10, oxycodone/APAP 5/325 prn, PEG, ibuprofen prn, Ca/D, MVI.\n\nExam: vitals normal, afebrile. Thinner. Sclerae anicteric. Abdomen soft, mild tenderness RUQ, no guarding, no palpable mass, liver edge not felt, no shifting dullness. No edema. No nodes.\n\nA/P: RUQ pain + 6.5 kg weight loss in a woman with ER+ breast cancer - concerned. CMP, CBC today; abdominal ultrasound this week. Will call with results. Pain 4/10."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5,
+            "labs": {
+              "Alkaline Phosphatase": 165
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-30a",
+          "kind": "imaging",
+          "start": "2025-04-30T11:30",
+          "reason": "RUQ pain, weight loss",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-04-30T11:30",
+              "text": "Complete abdominal ultrasound.\nIndication: right upper quadrant pain, weight loss, history of breast cancer.\nLiver: normal size. Multiple hypoechoic lesions are seen in both lobes, the largest in the right lobe measuring about 3 cm. Hepatic and portal veins patent with normal flow direction.\nGallbladder: surgically absent. Common bile duct 5 mm, not dilated for post-cholecystectomy status.\nPancreas: visualized portions unremarkable. Spleen: normal size. Kidneys: normal size and echogenicity, no hydronephrosis. Aorta: normal caliber. No ascites.",
+              "conclusion": "Multiple hypoechoic liver lesions, concerning for metastatic disease given history. Cross-sectional imaging recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "abd-us-2025",
+              "action": "done",
+              "date": "2025-04-30T11:30"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-01a",
+          "kind": "telephone",
+          "start": "2025-05-01T08:15",
+          "reason": "Ultrasound and lab results",
+          "orders": [
+            {
+              "id": "ct-ap-2025",
+              "action": "placed",
+              "order": "CT abdomen and pelvis with contrast",
+              "category": "imaging",
+              "reason": "Liver lesions on ultrasound"
+            },
+            {
+              "id": "gi-referral-2025",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "RUQ pain, weight loss, multiple liver lesions"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "date": "2025-05-01T08:40",
+              "author": "PCP",
+              "body": "Called pt with US: several spots in the liver. Told her honestly that with her history the first concern is spread of the breast cancer, but we need a CT and likely a biopsy before anyone can say. ALP mildly up at 165, bilirubin normal, CBC normal. She took it calmly, asked good questions.\nPlan: CT A/P with contrast (ordered, scheduling for next week). Urgent GI referral per our usual liver lesion workup. Messaged her oncologist with images/report so they are in the loop. Pt to call with fever, jaundice or worsening pain. Will call her after CT."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "imaging",
+          "start": "2025-05-06T10:00",
+          "reason": "Liver lesions on ultrasound",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-05-06T10:00",
+              "text": "CT abdomen and pelvis with IV contrast, portal venous phase.\nComparison: ultrasound 04/30/2025.\nLiver: multiple hypoattenuating masses in both lobes with irregular margins, the largest in segment 7 measuring 3.2 x 2.8 cm. Portal and hepatic veins patent.\nGallbladder: surgically absent. Biliary tree not dilated.\nPancreas, spleen, adrenal glands: normal. Kidneys enhance symmetrically; no hydronephrosis.\nBowel: no obstruction or wall thickening. No ascites. No enlarged lymph nodes.\nPelvis: post-hysterectomy; no adnexal mass. Bladder unremarkable.\nBones: no suspicious lesion.\nLung bases: clear.",
+              "conclusion": "Multiple irregular liver masses, most consistent with metastases in this patient with breast cancer. No other site of disease in the abdomen or pelvis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-ap-2025",
+              "action": "done",
+              "date": "2025-05-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "CT result call",
+              "date": "2025-05-06T16:50",
+              "author": "PCP",
+              "body": "Discussed CT with pt: multiple liver masses, nothing elsewhere in abdomen/pelvis. GI appt confirmed 5/13. Oncology aware and will see her after tissue diagnosis. She'd like to keep us updated by portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "specialist_visit",
+          "start": "2025-05-13T09:30",
+          "service": "Gastroenterology (outside)",
+          "reason": "Right upper quadrant pain, weight loss, liver masses",
+          "conditions": [
+            {
+              "label": "Secondary malignant neoplasm of liver",
+              "action": "diagnosed",
+              "onset": "2025-04-30",
+              "icd10": "C78.7"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              76
+            ],
+            "hr": 61,
+            "rr": 18,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 60.0
+          },
+          "orders": [
+            {
+              "id": "gi-referral-2025",
+              "action": "done",
+              "date": "2025-05-13T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "date": "2025-05-16T11:45",
+              "author": "gastroenterology",
+              "body": "Gastroenterology & Hepatology - New Consultation\nDate of visit: 05/13/2025\n\nDear colleague,\n\nMs. Madden is a 59-year-old woman with breast cancer (left breast 2018, right ER-positive 2021, on tamoxifen) and a recent neurology evaluation for neuropathy, sent for right upper quadrant pain and liver masses. Over two months the RUQ pain has progressed and she has lost 10 kg without trying. She denies fevers, chills and any change in bowel habit. Remote cholecystectomy. NKDA.\n\nVital signs stable; weight 60.0 kg. Mild RUQ tenderness to palpation. No jaundice; no ascites. No stigmata of chronic liver disease.\n\nData: alkaline phosphatase mildly elevated, bilirubin normal. Ultrasound with multiple hypoechoic liver lesions; CT confirms multiple liver masses with irregular borders, no extrahepatic disease seen.\n\nImpression: Multiple liver masses, almost certainly secondary malignancy, most likely metastatic breast carcinoma. No evidence of primary liver disease or biliary obstruction.\n\nPlan: Ultrasound-guided core biopsy of a liver lesion arranged with interventional radiology for next week, with ER and HER2 testing requested. We will forward results to you and to her oncologist. No GI follow-up needed unless biopsy shows otherwise.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "weight_kg": 60.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "procedure_visit",
+          "start": "2025-05-21T08:00",
+          "end": "2025-05-21T13:00",
+          "service": "Interventional Radiology (outside)",
+          "reason": "Liver lesion biopsy",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-05-21T09:10",
+              "text": "Specimen: liver, segment 7 lesion, ultrasound-guided core needle biopsy (3 cores, 18-gauge).\nMicroscopic: cores of liver parenchyma infiltrated by nests and cords of malignant epithelial cells with moderate nuclear pleomorphism, in a desmoplastic stroma. Background liver unremarkable.\nImmunohistochemistry: tumor cells positive for GATA3 and cytokeratin 7, negative for cytokeratin 20 and TTF-1. Estrogen receptor positive. HER2 negative (IHC 1+).",
+              "conclusion": "Liver, biopsy: metastatic carcinoma consistent with breast primary. ER positive, HER2 negative.",
+              "issued": "2025-05-23T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Liver biopsy",
+              "date": "2025-05-27T09:15",
+              "author": "interventional radiology",
+              "body": "Interventional Radiology - Procedure Note (05/21/2025)\nProcedure: ultrasound-guided percutaneous core biopsy, segment 7 liver lesion.\nConsent obtained. Moderate sedation. INR and platelets acceptable. 18G coaxial, 3 cores, gelfoam tract embolization. No immediate complication. Observed 4 hours, discharged home.\nPathology (05/23): metastatic carcinoma consistent with breast primary, ER positive, HER2 negative. Results sent to ordering GI, oncology and PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "portal_message",
+          "start": "2025-05-27T19:30",
+          "reason": "Biopsy result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Biopsy",
+              "date": "2025-05-27T19:30",
+              "author": "patient",
+              "body": "Oncology called me Friday. It is the breast cancer in my liver. I see them next Tuesday to talk about treatment. I'm okay, mostly. I wanted you to hear it from me."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Biopsy",
+              "date": "2025-05-28T07:20",
+              "author": "PCP",
+              "body": "Janet, thank you for telling me yourself. I'm so sorry. I've read the report. After you meet with oncology, let's sit down together - I'd like to hear how you're doing and make sure we have the rest of your care lined up around their plan. I'll have the front desk hold a slot for you in mid-June. Message me anytime before then."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "specialist_visit",
+          "start": "2025-06-03T10:00",
+          "service": "Medical Oncology (outside)",
+          "reason": "Metastatic breast cancer, treatment planning",
+          "medications": [
+            {
+              "drug_text": "tamoxifen 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Progression to liver metastases"
+            },
+            {
+              "drug_text": "letrozole 2.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 2.5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Metastatic ER-positive breast cancer"
+            },
+            {
+              "drug_text": "palbociclib 125 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily on days 1-21 of each 28-day cycle",
+              "dose": {
+                "value": 125,
+                "unit": "mg"
+              },
+              "frequency": "DAILY days 1-21 q28d",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Metastatic ER-positive breast cancer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical oncology visit",
+              "date": "2025-06-06T14:00",
+              "author": "oncology",
+              "body": "Medical Oncology - Clinic Note\nDate of service: 06/03/2025\n\nDx: Metastatic breast carcinoma to liver, ER+, HER2- (biopsy 05/21/2025), arising on adjuvant tamoxifen for R breast stage IIA ER+ cancer (2021). Remote L breast stage II IDC (2018). Surgically menopausal since BSO 02/2024.\n\nWe reviewed the biopsy and imaging; disease is limited to the liver. Goals of treatment discussed: not curable, treatable, aim is control and quality of life. She understands and wishes to proceed.\n\nPlan:\n- Stop tamoxifen.\n- Start letrozole 2.5 mg daily and palbociclib 125 mg daily days 1-21 of 28.\n- CBC on days 1 and 15 for the first two cycles, then monthly (neutropenia expected).\n- Restaging CT in about 3 months.\n- Baseline DXA (aromatase inhibitor) - requested from PCP.\n- Continue oxycodone/APAP PRN, PEG.\n\nMedical Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "imaging",
+          "start": "2025-06-10T08:00",
+          "reason": "Annual surveillance mammogram, left breast",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2025-06-10T08:00",
+              "text": "Left diagnostic mammogram with tomosynthesis. Comparison 06/11/2024 and 06/20/2023.\nScattered fibroglandular density. Lumpectomy scar upper outer quadrant, unchanged. No suspicious mass, calcification or architectural distortion apart from the known scar.",
+              "conclusion": "BI-RADS 2, benign. Continue annual imaging."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T15:00",
+          "end": "2025-06-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after new diagnosis of metastatic breast cancer",
+          "vitals": {
+            "bp": [
+              109,
+              77
+            ],
+            "hr": 67,
+            "spo2": 98,
+            "weight_kg": 60.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-17T15:00"
+            },
+            {
+              "procedure": "Advance care planning, first 30 minutes",
+              "performed": "2025-06-17T15:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2025",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "Osteopenia, starting aromatase inhibitor"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-06-17T18:30",
+              "author": "PCP",
+              "body": "Follow-up, liver mets.\nBiopsy 5/21 metastatic breast ca, ER+/HER2-. Oncology stopped tamoxifen and started letrozole + palbociclib 6/3; cycle 1 going ok, a bit tired. RUQ ache 4/10, oxycodone/APAP 1-2/day. Weight 60.5 (60.0 at GI).\nMood: understandably shaken - crying more, sleep broken, still gardening some. PHQ-9 11, item 9 = 0. Declines a dose change for now; wants to restart counseling - gave her the oncology social work and therapist contacts.\nMeds: letrozole 2.5, palbociclib 125 d1-21, escitalopram 10, oxycodone/APAP prn, PEG, ibuprofen prn, Ca/D, MVI. NKDA.\nExam: thin, tired, appropriate. Sclerae anicteric. Mild RUQ tenderness. No edema.\n\nAdvance care planning (25 min): talked about what matters most to her - staying at home, her garden, not being kept alive on machines if there is no realistic chance of recovery. Full code for now. She will think about who to name as health care proxy; form given. Revisit at next visit.\n\nA/P\n1. Metastatic ER+ breast ca to liver - per onc.\n2. MDD recurrent, worsened in context - counseling, continue escitalopram 10, recheck 2-3 mo.\n3. Osteopenia + new AI - DXA ordered (onc request).\n4. Pain - per onc, stable."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "imaging",
+          "start": "2025-07-22T09:30",
+          "reason": "Osteopenia, aromatase inhibitor baseline",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2025-07-22T09:30",
+              "text": "Dual-energy x-ray absorptiometry, lumbar spine and left hip.\nIndication: osteopenia; aromatase inhibitor therapy.\nLumbar spine L1-L4: T-score -1.4.\nLeft femoral neck: T-score -1.9.\nLeft total hip: within the osteopenic range.\nNo vertebral levels excluded.",
+              "conclusion": "Osteopenia. Lowest T-score -1.9 at the left femoral neck."
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2025",
+              "action": "done",
+              "date": "2025-07-22T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "DXA result to patient",
+              "date": "2025-07-24T10:05",
+              "author": "PCP",
+              "body": "Hi Janet, the bone density shows osteopenia (thinner than average bone, but not osteoporosis), about where your earlier scan put you. Keep taking the calcium and vitamin D twice a day and keep walking. I've sent the report to oncology since letrozole can thin bones; we'll repeat it in 2 years."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-02a",
+          "kind": "imaging",
+          "start": "2025-09-02T11:00",
+          "service": "Medical Oncology (outside)",
+          "reason": "Restaging, metastatic breast cancer",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-09-02T11:00",
+              "text": "CT abdomen and pelvis with IV contrast.\nComparison: 05/06/2025.\nLiver: the multiple hypoattenuating hepatic metastases are smaller; segment 7 index lesion now 2.0 x 1.7 cm (previously 3.2 x 2.8 cm). No new liver lesion.\nAdrenal glands: normal.\nPancreas, spleen, kidneys: unremarkable. No lymphadenopathy. No ascites.\nPelvis: post-hysterectomy, unremarkable.\nBones: no suspicious lesion.",
+              "conclusion": "Partial response of hepatic metastases. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology restaging update",
+              "date": "2025-09-05T13:20",
+              "author": "oncology",
+              "body": "Medical Oncology - brief update to PCP\nRestaging CT 09/02/2025 shows partial response in the liver and no new disease. Tolerating letrozole/palbociclib with expected mild neutropenia, no dose change. Continue current therapy; next restaging in about 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 75,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 63.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-07T09:50",
+              "results": [
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 112
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-07T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 117
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 70
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 209
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 139
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-07T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-07T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T09:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-07T12:40",
+              "author": "PCP",
+              "body": "Annual exam. 59, turns 60 Sunday.\n\nInterval: letrozole + palbociclib since June; Sept CT partial response in the liver. Fatigue mild in the last week of each cycle. RUQ ache much less, pain 3/10, oxycodone/APAP maybe every other day now. Weight up to 63.0. Back in counseling; mood better - PHQ-9 6. Health care proxy form completed and scanned to chart. Feet/hands numbness unchanged since spring.\n\nMeds: letrozole 2.5, palbociclib 125 d1-21/28, escitalopram 10, oxycodone/APAP 5/325 prn, PEG prn, ibuprofen prn, Ca/D BID, MVI.\nNKDA.\n\nPrevention: colon 2019 -> 2029. No Pap (post-TLH benign). L mammo 6/2025 BI-RADS 2. DXA 7/2025 osteopenia. Shingrix and PCV20 done. Tdap 2016 - due next year. Flu + COVID today.\n\nExam: vitals normal. Looks better than June. Sclerae anicteric. Neck no nodes. Heart RRR. Lungs clear. Abd soft, minimal RUQ tenderness. No edema. Sensory: gloves/stocking reduced vibration as before.\n\nA/P\n1. Metastatic breast ca to liver, responding - per onc.\n2. MDD recurrent - improving again.\n3. Chemo neuropathy - stable.\n4. Osteopenia on AI - Ca/D, DXA 2027.\n5. Labs: CMP (ALP), lipids, A1c."
+            },
+            {
+              "type": "Clinical Note",
+              "title": "Immunizations",
+              "date": "2025-10-07T09:45",
+              "author": "MA",
+              "body": "Influenza 2025-26 trivalent IM R deltoid; Pfizer COVID 2025-26 IM L deltoid. VIS given, no reaction."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "labs": {
+              "Alkaline Phosphatase": 112
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "portal_message",
+          "start": "2025-10-09T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "date": "2025-10-09T12:10",
+              "author": "PCP",
+              "body": "Good news - your alkaline phosphatase (the liver enzyme that was up in April) is back to normal at 112, and the rest of your liver and kidney tests and A1c are normal too. Cholesterol is about where it always runs. Happy early birthday."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mood follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2025-11-17T15:30",
+              "author": "front desk",
+              "body": "Pt called to cancel 11/18 follow-up - conflicts with an oncology lab draw that got moved. Feels fine. Will reschedule after the holidays."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T10:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - escitalopram",
+              "date": "2025-12-09T10:20",
+              "author": "MA",
+              "body": "Pharmacy requesting escitalopram 10 mg 90-day. Seen 10/7. Pended."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2025-12-09T13:00",
+              "author": "PCP",
+              "body": "Escitalopram 10 mg daily #90, 1 refill sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-27a",
+          "kind": "ed_visit",
+          "start": "2026-02-27T07:10",
+          "end": "2026-02-27T13:20",
+          "service": "Emergency Medicine (outside)",
+          "reason": "Syncope, fatigue, dizziness",
+          "conditions": [
+            {
+              "label": "Secondary malignant neoplasm of adrenal gland",
+              "action": "diagnosed",
+              "onset": "2026-02-27",
+              "note": "Bilateral adrenal metastases from breast cancer.",
+              "icd10": "C79.70"
+            },
+            {
+              "label": "Primary adrenal insufficiency",
+              "action": "diagnosed",
+              "onset": "2025-12-15",
+              "note": "Due to bilateral adrenal metastases.",
+              "icd10": "E27.1"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-02-27T07:15",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 102,
+              "rr": 18,
+              "temp_c": 36.6,
+              "spo2": 98
+            },
+            {
+              "time": "2026-02-27T08:40",
+              "bp": [
+                94,
+                62
+              ],
+              "hr": 96,
+              "rr": 16,
+              "spo2": 98
+            },
+            {
+              "time": "2026-02-27T12:30",
+              "bp": [
+                108,
+                68
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-27T07:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 128
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 95
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 65
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-27T08:00",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 3
+                },
+                {
+                  "test": "ACTH",
+                  "loinc": "2141-0",
+                  "unit": "pg/mL",
+                  "value": 486
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-27T09:05",
+              "results": [
+                {
+                  "test": "Cortisol 60 minutes after cosyntropin",
+                  "loinc": "2143-6",
+                  "unit": "ug/dL",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-02-27T07:25",
+              "text": "Sinus tachycardia, rate 101. Normal axis. PR, QRS and QT intervals normal. No ST or T-wave changes. No peaked T waves.",
+              "conclusion": "Sinus tachycardia, otherwise normal ECG."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-02-27T10:30",
+              "text": "CT abdomen and pelvis with IV contrast.\nComparison: 09/02/2025.\nAdrenal glands: new bilateral adrenal masses, right 3.6 cm and left 4.1 cm, heterogeneously enhancing, not present on the prior study.\nLiver: known hepatic metastases remain, smaller than on 05/06/2025; no new liver lesion.\nPancreas, spleen, kidneys: unremarkable. No lymphadenopathy. No ascites.\nPelvis: post-hysterectomy, unremarkable.\nBones: no suspicious lesion.",
+              "conclusion": "New bilateral adrenal masses, consistent with metastases. Treated hepatic metastases without new liver disease."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-27T07:10"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-02-27T07:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-03-03T09:00",
+              "author": "emergency medicine",
+              "body": "Emergency Department - Physician Record\nDate of service: 02/27/2026, arrival 07:10 by ambulance\nPatient: Janet Madden, 60F\n\nCC: passed out at home this morning.\n\nHPI: 60-year-old woman with metastatic ER+ breast cancer to the liver on letrozole and palbociclib. Weeks of worsening tiredness and lightheadedness on standing; this morning she stood up from the kitchen table, felt the room go gray and woke on the floor, no injury, no incontinence, no tongue biting, back to herself within a minute. She has been craving salt - salting everything, eating pickles from the jar. About 10 lb lost over the past two months. No chest pain, palpitations, fever, vomiting, diarrhea or bleeding.\n\nMeds (per patient and pharmacy list): letrozole 2.5 mg daily, palbociclib 125 mg days 1-21, escitalopram 10 mg, oxycodone/acetaminophen 5/325 PRN, polyethylene glycol PRN, ibuprofen PRN, calcium/vitamin D, multivitamin. Allergies: NKDA.\n\nExam: BP 90/60 supine, HR 102. Orthostatic: symptomatic with a fall in pressure on standing, test stopped. Thin, tired. Skin hyperpigmented, darkest in the palmar creases and the mastectomy and laparoscopic scars. Heart tachycardic, regular. Lungs clear. Abdomen soft, mild RUQ tenderness. No focal neurologic deficit. No head injury.\n\nResults: Na 128, K 5.5, Cl 95, HCO3 24, BUN 18, Cr 0.9, glucose 65. 08:00 cortisol 3. Cosyntropin 250 mcg IV at 08:05; 60-minute cortisol 5. ACTH (drawn with the baseline cortisol) 486, resulted later in the day. ECG sinus tachycardia, no hyperkalemic changes. CT A/P: new bilateral adrenal masses (R 3.6 cm, L 4.1 cm) consistent with metastases; liver lesions smaller than in May.\n\nED course: D50 25 mL for glucose 65, then dextrose-containing saline. 2 L normal saline. Hydrocortisone 100 mg IV after the stimulation sample. BP 108/68, HR 84 by 12:30; dizziness improved.\n\nImpression:\n1. Adrenal insufficiency, primary, from bilateral adrenal metastases - adrenal crisis presentation.\n2. Syncope due to #1.\n3. Hyponatremia, hyperkalemia, hypoglycemia due to #1.\n4. Metastatic breast cancer with new adrenal involvement.\n\nDisposition: admitted to medicine.\n\nEmergency Medicine"
+            }
+          ],
+          "state": {
+            "weight_kg": 58.5,
+            "labs": {
+              "Bicarbonate": 24,
+              "Blood Urea Nitrogen": 18,
+              "Chloride": 95,
+              "Creatinine": 0.9,
+              "Glucose": 65,
+              "Potassium": 5.5,
+              "Sodium": 128
+            }
+          }
+        },
+        {
+          "id": "2026-02-27b",
+          "kind": "hospital_admission",
+          "start": "2026-02-27T13:20",
+          "end": "2026-03-02T11:30",
+          "service": "Hospital Medicine (outside)",
+          "reason": "Adrenal crisis, bilateral adrenal metastases",
+          "medications": [
+            {
+              "drug_text": "hydrocortisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (15 mg) on waking and 1 tablet (5 mg) at 2 PM. Double or triple doses on sick days as instructed.",
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary adrenal insufficiency"
+            },
+            {
+              "drug_text": "fludrocortisone acetate 0.1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 0.1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary adrenal insufficiency"
+            },
+            {
+              "drug_text": "hydrocortisone sodium succinate 100 MG Injection",
+              "action": "historical",
+              "sig": "Inject 100 mg into the thigh muscle once for vomiting, collapse or inability to take oral hydrocortisone, then call 911",
+              "frequency": "ONCE PRN",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "Adrenal crisis emergency kit"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-02T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-27T14:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-03-02T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-03-03T09:05",
+              "author": "hospital medicine",
+              "body": "Discharge Summary - Hospital Medicine\nAdmitted 02/27/2026, discharged 03/02/2026\n\nPrincipal diagnosis: adrenal crisis due to primary adrenal insufficiency from bilateral adrenal metastases.\nOther: metastatic ER+/HER2- breast cancer (liver, now adrenals); depression; chemotherapy-induced neuropathy; osteopenia.\n\nHospital course: Admitted from the ED after syncope with hypotension, hyponatremia, hyperkalemia and hypoglycemia; 08:00 cortisol 3 with a 60-minute post-cosyntropin cortisol of 5 and ACTH 486, confirming primary adrenal insufficiency. CT showed new bilateral adrenal masses. Treated with hydrocortisone 50 mg IV every 6 hours and IV fluids, tapered to oral hydrocortisone on day 3, with fludrocortisone added for mineralocorticoid replacement. Orthostatic symptoms resolved and she walked the unit independently. Sodium 134 and potassium 4.6 on the day of discharge; glucose normal throughout after day 1. Endocrinology saw her in hospital and will follow as an outpatient. Oncology informed of new adrenal disease.\n\nDischarge medications:\nNEW hydrocortisone 15 mg on waking and 5 mg at 2 PM\nNEW fludrocortisone 0.1 mg daily\nNEW hydrocortisone sodium succinate 100 mg IM emergency kit (taught to self-inject)\nCONTINUE letrozole 2.5 mg daily and palbociclib 125 mg days 1-21 pending oncology review; escitalopram 10 mg daily; oxycodone/acetaminophen 5/325 PRN; polyethylene glycol PRN; ibuprofen PRN; calcium/vitamin D; multivitamin.\n\nPatient education: sick-day rules (double the hydrocortisone dose for fever or illness; triple for severe illness; injection and 911 if vomiting), medical alert ID, wallet steroid card provided.\n\nFollow-up: PCP within 1 week; endocrinology 2 weeks; oncology 2-3 weeks. BMP at PCP visit.\nCondition at discharge: good. Allergies: NKDA."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bicarbonate": 25,
+              "Chloride": 100,
+              "Glucose": 92,
+              "Potassium": 4.6,
+              "Sodium": 134
+            }
+          }
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "telephone",
+          "start": "2026-03-03T10:15",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional care outreach",
+              "date": "2026-03-03T10:30",
+              "author": "RN",
+              "body": "Post-discharge call (d/c 3/2, adrenal crisis). Pt home, says she feels 'like a person again'. No dizziness standing, eating and drinking well. Picked up hydrocortisone, fludrocortisone and the injection kit yesterday; reviewed timing 15 mg on waking / 5 mg at 2 pm. Reviewed sick-day doubling and when to use the shot. Has endo appt 3/12. TCM visit booked Thu 3/5 with PCP; BMP that day."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-05a",
+          "kind": "office_visit",
+          "start": "2026-03-05T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, adrenal insufficiency",
+          "vitals": {
+            "bp": [
+              115,
+              85
+            ],
+            "hr": 64,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 58.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-05T11:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 68
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-05T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2026-03-05T14:40",
+              "author": "PCP",
+              "body": "TCM visit. Admitted 2/27-3/2 after syncope at home: adrenal crisis from primary adrenal insufficiency, new bilateral adrenal mets on CT. Discharge summary and ED record reviewed in full.\n\nNow: energy much better, no lightheadedness, salt craving gone, appetite good. Taking hydrocortisone 15 on waking / 5 at 2 pm and fludrocortisone 0.1 daily, alarms on her phone. Kit in her purse. Wearing a medical alert bracelet.\nMeds reconciled: hydrocortisone, fludrocortisone, IM hydrocortisone kit, letrozole, palbociclib (onc to review), escitalopram 10, oxycodone/APAP prn, PEG prn, ibuprofen prn, Ca/D, MVI.\n\nExam: BP normal, no orthostatic drop sitting to standing. Wt 58.8. Skin still darker in creases and scars. Heart regular, lungs clear, mild RUQ tenderness, no edema.\n\nBMP today: Na 137, K 4.3.\n\nA/P\n1. Primary adrenal insufficiency (adrenal mets) - stable on replacement. Sick-day rules reviewed again with teach-back; she lives alone, so asked her to tell a neighbor where the kit is. Endo 3/12.\n2. Metastatic breast ca, new adrenal progression - oncology appt pending.\n3. Weight 58.8, recheck in 2 months.\n4. Tdap due this year - at next visit.\nRTC 2 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 58.8,
+            "labs": {
+              "Bicarbonate": 26,
+              "Chloride": 102,
+              "Potassium": 4.3,
+              "Sodium": 137
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "specialist_visit",
+          "start": "2026-03-12T13:30",
+          "service": "Endocrinology (outside)",
+          "reason": "Primary adrenal insufficiency",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "date": "2026-03-17T08:50",
+              "author": "endocrinology",
+              "body": "Endocrinology - Outpatient Consultation (03/12/2026)\n\nDear colleague,\n\nI saw Ms. Madden after her admission for adrenal crisis. The biochemistry - low 08:00 cortisol of 3, flat response to cosyntropin (5 at 60 minutes), ACTH 486, potassium 5.5 with hyponatremia - together with the new bilateral adrenal metastases establishes primary adrenal insufficiency from metastatic replacement of both glands.\n\nShe is well on hydrocortisone 15 mg on waking and 5 mg at 2 pm with fludrocortisone 0.1 mg daily. Seated blood pressure normal without postural drop. Sodium and potassium normal at her PCP visit.\n\nRecommendations: continue current doses; adjust fludrocortisone by blood pressure, postural symptoms and potassium. Sick-day rules reinforced. Injection technique reviewed with a trainer device. Stress-dose coverage for procedures and any future surgery. Return in 3 months with BMP.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "specialist_visit",
+          "start": "2026-03-17T10:00",
+          "service": "Medical Oncology (outside)",
+          "reason": "Progression to adrenal glands",
+          "medications": [
+            {
+              "drug_text": "letrozole 2.5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Disease progression (adrenal metastases)"
+            },
+            {
+              "drug_text": "palbociclib 125 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Disease progression (adrenal metastases)"
+            },
+            {
+              "drug_text": "5 ML fulvestrant 50 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "500 mg (two 250 mg injections) IM on days 1, 15 and 29, then every 28 days, given in oncology clinic",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "Days 1, 15, 29 then monthly",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "Metastatic ER-positive breast cancer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical oncology visit",
+              "date": "2026-03-20T12:15",
+              "author": "oncology",
+              "body": "Medical Oncology - Clinic Note\nDate of service: 03/17/2026\n\nDx: Metastatic breast carcinoma, ER+/HER2-, liver (05/2025) and now bilateral adrenal glands (02/2026), with primary adrenal insufficiency.\n\nInterval: hospitalized 02/27-03/02 with adrenal crisis; doing well on hydrocortisone/fludrocortisone. CT 02/27 shows new bilateral adrenal masses while the liver lesions continued to shrink - progression on letrozole/palbociclib after about 9 months.\n\nPlan:\n- Stop letrozole and palbociclib.\n- Start fulvestrant 500 mg IM days 1, 15, 29 then every 28 days; first dose given today. Stress dosing not required for injections.\n- Restaging CT in 3 months.\n- Continue pain regimen.\n\nMedical Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "portal_message",
+          "start": "2026-04-14T09:05",
+          "reason": "Question about dental visit and refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dentist and refill",
+              "date": "2026-04-14T09:05",
+              "author": "patient",
+              "body": "Two things: I have a routine cleaning next week - do I need to take extra hydrocortisone for that? And I'm down to 10 days of the fludrocortisone, the hospital only gave me one month. Can you send it to my usual pharmacy?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dentist and refill",
+              "date": "2026-04-14T12:20",
+              "author": "PCP",
+              "body": "Hi Janet - for a routine cleaning you don't need extra. If you ever need an extraction or anything under numbing that is more than a quick filling, check with endocrinology first; they may want a one-time extra dose. Fludrocortisone 0.1 mg daily, 90 days with refills, sent to your pharmacy. I sent the hydrocortisone too so they line up."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              126,
+              84
+            ],
+            "hr": 63,
+            "spo2": 99,
+            "weight_kg": 60.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-12T09:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-12T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-05-12T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-05-12T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-05-12T12:10",
+              "author": "PCP",
+              "body": "2-month f/u.\nAdrenal insufficiency: hydrocortisone 15/5, fludro 0.1. No dizziness, no salt craving, no sick days so far. Endo happy.\nOnc: fulvestrant since 3/17, injections monthly now; tolerating, mild soreness at injection sites. Restaging CT next month.\nPain 3/10, oxycodone/APAP a few times a week.\nMood: PHQ-9 6. Garden is going in. Continues escitalopram 10; counseling monthly.\nNeuropathy unchanged.\nWt 60.5 (58.8 in March).\n\nExam: BP normal sitting and standing. Skin creases less dark. Heart/lungs normal. Abd soft, minimal RUQ tenderness. No edema.\n\nA/P\n1. Primary adrenal insufficiency - stable. BMP today.\n2. Metastatic ER+ breast ca on fulvestrant - per onc.\n3. MDD recurrent - stable.\n4. Tdap given today (last 2016).\nRTC September, flu shot then."
+            },
+            {
+              "type": "Clinical Note",
+              "title": "Immunization",
+              "date": "2026-05-12T09:52",
+              "author": "MA",
+              "body": "Tdap 0.5 mL IM L deltoid. VIS given. No reaction."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "portal_message",
+          "start": "2026-05-14T08:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "date": "2026-05-14T08:30",
+              "author": "PCP",
+              "body": "Sodium, potassium, sugar and kidney function all normal on your current doses. I've copied endocrinology."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "outside_records",
+          "start": "2026-06-16T14:00",
+          "reason": "Endocrinology follow-up letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology follow-up",
+              "date": "2026-06-16T14:00",
+              "author": "endocrinology",
+              "body": "Endocrinology follow-up (06/11/2026): Doing well on hydrocortisone 15 mg/5 mg and fludrocortisone 0.1 mg. BP normal without postural drop; recent BMP normal. No change. Return in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "lab_only",
+          "start": "2026-07-14T08:10",
+          "reason": "Electrolyte check on replacement therapy",
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-14T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 119
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.7
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-14T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results to patient",
+              "date": "2026-07-16T10:40",
+              "author": "PCP",
+              "body": "Janet, July labs look good: sodium and potassium normal, liver tests normal. Copy sent to oncology and endocrinology."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T17:25",
+          "reason": "Flu shot timing",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu shot",
+              "date": "2026-08-18T17:25",
+              "author": "patient",
+              "body": "The pharmacy has flu shots already. Is it fine to get it with my fulvestrant injections and the steroids, or should I wait for my appointment with you on Sept 10?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flu shot",
+              "date": "2026-08-19T09:15",
+              "author": "MA",
+              "body": "Hi Janet, per the doctor: the flu shot is fine with fulvestrant and your hydrocortisone, no extra steroid needed. We'll have this season's vaccine here by your 9/10 visit, so you can get it then or at the pharmacy, whichever is easier. If you get it at the pharmacy just let us know the date."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, adrenal insufficiency and depression; flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acquired absence of right breast and nipple|Z90.11": {
+        "code": "Z90.11",
+        "display": "Acquired absence of right breast and nipple",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Complex atypical endometrial hyperplasia|N85.02": {
+        "code": "N85.02",
+        "display": "Endometrial intraepithelial neoplasia [EIN]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Drug-induced polyneuropathy|G62.0": {
+        "code": "G62.0",
+        "display": "Drug-induced polyneuropathy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Endometrial hyperplasia|N85.00": {
+        "code": "N85.00",
+        "display": "Endometrial hyperplasia, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Neoplasm related pain|G89.3": {
+        "code": "G89.3",
+        "display": "Neoplasm related pain (acute) (chronic)",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Primary adrenal insufficiency|E27.1": {
+        "code": "E27.1",
+        "display": "Primary adrenocortical insufficiency",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary malignant neoplasm of adrenal gland|C79.70": {
+        "code": "C79.70",
+        "display": "Secondary malignant neoplasm of unspecified adrenal gland",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary malignant neoplasm of liver|C78.7": {
+        "code": "C78.7",
+        "display": "Secondary malignant neoplasm of liver and intrahepatic bile duct",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Thoracic outlet syndrome|G54.0": {
+        "code": "G54.0",
+        "display": "Brachial plexus disorders",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "5 ML fulvestrant 50 MG/ML Prefilled Syringe": {
+        "code": "727762",
+        "display": "5 ML fulvestrant 50 MG/ML Prefilled Syringe",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "estradiol 1 MG Oral Tablet": {
+        "code": "197658",
+        "display": "estradiol 1 MG Oral Tablet",
+        "ingredient": "estradiol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "fludrocortisone acetate 0.1 MG Oral Tablet": {
+        "code": "313979",
+        "display": "fludrocortisone acetate 0.1 MG Oral Tablet",
+        "ingredient": "fludrocortisone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "hydrocortisone 5 MG Oral Tablet": {
+        "code": "197787",
+        "display": "hydrocortisone 5 MG Oral Tablet",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "hydrocortisone sodium succinate 100 MG Injection": {
+        "code": "238755",
+        "display": "hydrocortisone 100 MG Injection",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ibuprofen 400 MG Oral Tablet": {
+        "code": "197805",
+        "display": "ibuprofen 400 MG Oral Tablet",
+        "ingredient": "ibuprofen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "letrozole 2.5 MG Oral Tablet": {
+        "code": "200064",
+        "display": "letrozole 2.5 MG Oral Tablet",
+        "ingredient": "letrozole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "palbociclib 125 MG Oral Capsule": {
+        "code": "1601388",
+        "display": "palbociclib 125 MG Oral Capsule",
+        "ingredient": "palbociclib",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "progesterone 100 MG Oral Capsule": {
+        "code": "260243",
+        "display": "progesterone 100 MG Oral Capsule",
+        "ingredient": "progesterone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "tamoxifen 20 MG Oral Tablet": {
+        "code": "313195",
+        "display": "tamoxifen 20 MG Oral Tablet",
+        "ingredient": "tamoxifen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "ACTH": {
+        "code": "2141-0",
+        "display": "Corticotropin [Mass/volume] in Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Cortisol 60 minutes after cosyntropin": {
+        "code": "2143-6",
+        "display": "Cortisol [Mass/volume] in Serum or Plasma",
+        "unit": "ug/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Estradiol": {
+        "code": "2243-4",
+        "display": "Estradiol (E2) [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Luteinizing hormone": {
+        "code": "10501-5",
+        "display": "Lutropin [Units/volume] in Serum or Plasma",
+        "unit": "mIU/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\"",
+      "drug \"multivitamin Oral Tablet\""
+    ]
+  }
+}

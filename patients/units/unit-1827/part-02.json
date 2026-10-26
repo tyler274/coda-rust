@@ -1,0 +1,802 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001827",
+   "events": [
+    {
+     "id": "2023-02-07a",
+     "kind": "office_visit",
+     "start": "2023-02-07T15:40",
+     "end": "2023-02-07T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Contamination fears, hand washing",
+     "medications": [
+      {
+       "drug": "montelukast 10 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Precaution given new psychiatric symptoms"
+      },
+      {
+       "drug_text": "fluticasone propionate 0.044 MG/ACTUAT Metered Dose Inhaler",
+       "action": "start",
+       "sig": "Inhale 2 puffs twice daily. Rinse mouth after use",
+       "dose": {
+        "value": 88,
+        "unit": "mcg"
+       },
+       "frequency": "BID",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "Mild persistent asthma"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-02-07T15:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "psych-referral",
+       "action": "placed",
+       "order": "Psychiatry referral",
+       "category": "referral",
+       "to": "Psychiatry",
+       "reason": "Contamination fears with excessive hand washing and cleaning"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit — contamination worries",
+       "author": "PCP",
+       "date": "2023-02-07T18:05",
+       "body": "CC: \"I can't stop washing.\"\n\nHPI: 31 y/o F, came in specifically for this. For several months she has been preoccupied with germs and getting sick from them. Washes her hands many times a day and cleans the apartment over and over to settle the fear. She knows it's more than it should be. It's eating into her day and she's embarrassed by it. Not depressed; PHQ-9 = 3. No thoughts of self-harm. No alcohol increase, no drugs.\n\nAsthma: fine. Albuterol rarely. Still on montelukast nightly.\n\nMeds: montelukast 10 mg nightly, albuterol HFA PRN, sumatriptan 50 mg PRN, HCTZ 25 mg daily.\nAllergies: NKDA; seasonal tree and grass pollens.\nFH: sister with MDD.\n\nExam: BP 126/65, HR 74, RR 15, T 36.8, SpO2 98%. Wt 66.8 kg.\nAnxious but engaged, good eye contact, thought process organized. Hands: dry skin over the knuckles. Lungs clear. Heart regular.\n\nA/P\n1. Contamination fears with washing/cleaning rituals — sounds obsessive-compulsive in character. Referring to psychiatry for diagnosis and treatment; she's open to it. Gave crisis line info though no safety concerns today.\n2. Mild persistent asthma — montelukast carries a boxed warning for neuropsychiatric effects. I'm not saying it caused this, but with new psychiatric symptoms I'd rather take it off the table. Stopping montelukast. Starting fluticasone HFA 44 mcg, 2 puffs twice daily, rinse after. Albuterol PRN unchanged. Video check in about 2 months.\n3. Others unchanged."
+      }
+     ],
+     "state": {
+      "bp": [
+       104,
+       68
+      ]
+     }
+    },
+    {
+     "id": "2023-02-10a",
+     "kind": "pharmacy",
+     "start": "2023-02-10T09:15",
+     "reason": "Prior authorization",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Fluticasone HFA prior auth",
+       "author": "MA",
+       "date": "2023-02-10T09:15",
+       "body": "Pharmacy notice: fluticasone propionate HFA 44 mcg requires prior authorization under her plan. Submitted through the payer portal: dx mild persistent asthma, montelukast discontinued 2/7/23 (neuropsychiatric precaution), albuterol PRN. Awaiting determination."
+      },
+      {
+       "type": "Prior Authorization",
+       "title": "Fluticasone HFA prior auth approved",
+       "author": "MA",
+       "date": "2023-02-13T14:30",
+       "body": "PA approved for 12 months. Pharmacy notified, pt texted that it's ready."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-09a",
+     "kind": "specialist_visit",
+     "start": "2023-03-09T10:00",
+     "service": "Psychiatry",
+     "reason": "Contamination obsessions, washing compulsions",
+     "conditions": [
+      {
+       "label": "Obsessive-compulsive disorder",
+       "action": "diagnosed"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "sertraline 50 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Obsessive-compulsive disorder"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-03-09T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-03-09T11:00",
+       "results": [
+        {
+         "test": "Sodium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-03-09T11:00",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "psych-referral",
+       "action": "done",
+       "date": "2023-03-09T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry initial evaluation",
+       "author": "psychiatry",
+       "date": "2023-03-13T11:40",
+       "body": "OUTPATIENT PSYCHIATRY — INITIAL EVALUATION\nDate of service: 03/09/2023\nReferral source: primary care\n\nIdentifying data: 31 year old woman, graphic designer, with mild persistent asthma and seasonal allergic rhinitis, both evaluated last year (primary care and ENT).\n\nChief concern: fear of germs.\n\nHistory: For about six months she has been troubled by intrusive worries that she will pick up germs and become ill. To quiet the fear she washes her hands and cleans her home, and this now takes several hours of each day. She is clear that the fear is out of proportion and does not make sense to her, yet she cannot keep herself from acting on it. No prior psychiatric treatment. Denies alcohol misuse or any substance use.\n\nMedications: albuterol inhaler as needed; fluticasone inhaler twice daily; sumatriptan as needed; hydrochlorothiazide 25 mg daily.\nAllergies: no known drug allergies; seasonal pollens.\nFamily history: mother with SLE; father with asthma and seasonal allergies; sister with major depressive disorder.\n\nVitals: within normal limits.\nExam: skin of both hands dry, cracked and reddened.\nMental status: casually dressed, cooperative, anxious affect, speech normal, thought process linear, content notable for contamination obsessions with insight intact. No suicidal or homicidal ideation. No psychotic features.\n\nLabs today: CBC, TSH and basic metabolic panel all within normal limits.\n\nDiagnosis: Obsessive-compulsive disorder, contamination type, with good insight.\n\nPlan:\n1. Start sertraline 50 mg daily. Discussed expected time to benefit, GI upset early on, and to call with any worsening anxiety or suicidal thoughts.\n2. Follow up in clinic in about six months; sooner as needed.\n\nPsychiatry"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 1.9
+      },
+      "bp": [
+       110,
+       70
+      ]
+     }
+    },
+    {
+     "id": "2023-03-14a",
+     "kind": "portal_message",
+     "start": "2023-03-14T19:48",
+     "reason": "Psychiatry update",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Saw psychiatry",
+       "author": "patient",
+       "date": "2023-03-14T19:48",
+       "body": "Just letting you know I saw psychiatry last week. They said OCD and started me on sertraline 50. Also the new inhaler is going fine, I haven't needed the albuterol much."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Saw psychiatry",
+       "author": "PCP",
+       "date": "2023-03-15T07:35",
+       "body": "Thanks for letting me know, and good for you for going. Their letter came in and I've updated your list with the sertraline. It can take several weeks to kick in. Talk soon at the asthma check."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-18a",
+     "kind": "telehealth_visit",
+     "start": "2023-04-18T12:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Asthma follow-up after controller change",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2023-04-18T12:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth — asthma check",
+       "author": "PCP",
+       "date": "2023-04-18T12:36",
+       "body": "Video visit from her office.\n\nTen weeks on fluticasone 44, 2 puffs BID since stopping montelukast. Breathing has been good: no night symptoms, no limitation, albuterol twice in the whole time. Rinsing after doses, no hoarseness or thrush. Spring nose symptoms starting; taking her OTC antihistamine.\nOn sertraline 50 from psychiatry for about 6 weeks, tolerating it. Handwashing a bit less, she thinks.\n\nNo distress on video, full sentences.\n\nA/P: Mild persistent asthma — well controlled on low-dose ICS. Continue fluticasone 44 2 puffs BID, albuterol PRN. Seasonal rhinitis — OTC antihistamine. Next asthma review at the fall physical."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-05a",
+     "kind": "specialist_visit",
+     "start": "2023-09-05T13:30",
+     "service": "Psychiatry",
+     "reason": "Psychiatry follow-up, persistent worry",
+     "conditions": [
+      {
+       "label": "Generalized anxiety disorder",
+       "action": "diagnosed"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "sertraline 50 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Dose increase"
+      },
+      {
+       "drug": "sertraline 100 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Generalized anxiety disorder; obsessive-compulsive disorder"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry follow-up",
+       "author": "psychiatry",
+       "date": "2023-09-07T16:10",
+       "body": "OUTPATIENT PSYCHIATRY — FOLLOW-UP\nDate of service: 09/05/2023\n\n32 year old woman with obsessive-compulsive disorder (contamination), mild persistent asthma and seasonal allergic rhinitis, last seen here six months ago and started on sertraline 50 mg.\n\nInterval: The contamination rituals have settled; she denies any current compulsions. What brings her in now is something broader. For the last 10 to 12 months she has felt wound up nearly all the time, including on days when nothing is going wrong. Small things spiral into worst-case thinking: whether the curling iron is still plugged in, whether a tire will blow out on a short drive across town. Most nights she lies awake a long time before sleep comes, and she wakes in the night running lists and imagining disasters. In the daytime she is tired and her concentration at work has slipped; tension headaches are more frequent. Her job allows flexible hours, but she is drained by midday. She has started skipping team meetings, worried that colleagues will judge her if she forgets to contribute something.\n\nShe took three weeks away this summer hoping a change of scene would help: visiting friends in Colorado, driving through national parks in Utah, and ending at a desert pottery retreat in Arizona. She enjoyed parts of it, but the worry came along. When a friend's dog developed diarrhea, she spent hours online looking up after-hours animal hospitals.\n\nShe goes to a pottery studio twice a week and finds it calming when she can focus. She has more than 200 regional hot sauces on shelves in her kitchen. She recently started buying contemporary art online, which has been more stressful than she expected. In a stable relationship. Drinks socially, no recreational drugs.\n\nROS: no panic attacks, no hallucinations, no flashbacks. Appetite normal. Notices a clenched jaw and some queasiness on her worst days.\n\nMental status: mildly restless, cooperative, affect appropriate, thought process logical and goal-directed. No suicidal ideation.\n\nAssessment:\n1. Generalized anxiety disorder.\n2. Obsessive-compulsive disorder, compulsions currently in remission on sertraline.\n\nPlan: She agrees to treatment and would like to avoid anything sedating or habit-forming. Increase sertraline to 100 mg daily. Sleep hygiene reviewed. Follow up in about six months, sooner as needed.\n\nPsychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2023-09-26a",
+     "kind": "annual_physical",
+     "start": "2023-09-26T08:20",
+     "end": "2023-09-26T09:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Yearly physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-09-26T09:00",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-09-26T09:00",
+       "results": [
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2023-09-26T08:50",
+       "issued": "2023-10-03T15:20",
+       "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV (cobas): not detected.",
+       "conclusion": "NILM. High-risk HPV not detected."
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2023-09-26T08:20"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-09-26T09:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2023-09-26T09:07"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-09-26T13:30",
+       "body": "YEARLY PHYSICAL\n32 y/o F.\n\nInterval history:\n- Psychiatry 3/2023: OCD, started sertraline 50. Seen again 9/5: compulsions have settled, but they diagnosed generalized anxiety disorder and went up to sertraline 100 mg. She says the worry is the bigger problem now; she's hopeful about the higher dose. Pottery twice a week helps.\n- Asthma: very well controlled on fluticasone 44 2 puffs BID. Albuterol a handful of times since spring. No night waking. ACT score above 20 (controlled range).\n- Spring rhinitis handled with OTC antihistamine.\n- Migraine: a couple of times a month, sumatriptan works.\nPHQ-9 = 4. No SI.\n\nMeds: fluticasone HFA 44 mcg 2 puffs BID; albuterol HFA PRN; sertraline 100 mg daily (psychiatry); sumatriptan 50 mg PRN (max 200/day); HCTZ 25 mg daily.\nAllergies: NKDA. Seasonal tree and grass pollens.\nSocial: graphic designer, stable relationship. Never smoker. Alcohol 1-2/month.\n\nExam: BP 108/68, HR 79, RR 14, T 37.2, SpO2 99%. Wt 66.4 kg.\nNAD. HEENT normal. Neck supple, no adenopathy. Lungs clear. Heart RRR without murmur. Abdomen soft. Pelvic: external genitalia normal, vaginal walls and cervix normal, co-test collected. Skin: few comedones on chin. Ext no edema. Mood a little tense, affect full.\n\nA/P\n1. Health maintenance: cervical co-test (cytology + HPV) collected. Fasting lipids and BMP today. Flu vaccine and 2023-24 COVID vaccine given.\n2. Mild persistent asthma — well controlled on ICS. Continue.\n3. GAD and OCD — managed by psychiatry, sertraline 100 mg. Will keep screening.\n4. Migraine without aura — stable.\n5. Allergic rhinitis, acne — no change.\n6. HCTZ — continue.\n\nRTC 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-28a",
+     "kind": "portal_message",
+     "start": "2023-09-28T07:40",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lipids and BMP",
+       "author": "PCP",
+       "date": "2023-09-28T07:40",
+       "body": "Your labs from the physical look good. Cholesterol: total 178, LDL 97, HDL 59, triglycerides 109, all in the healthy range, so no need to repeat this for several years. Metabolic panel normal (potassium 4.4, creatinine 0.8). Pap/HPV still pending, I'll send that separately."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-04a",
+     "kind": "portal_message",
+     "start": "2023-10-04T08:05",
+     "reason": "Cervical screening result",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Pap and HPV result",
+       "author": "PCP",
+       "date": "2023-10-04T08:05",
+       "body": "Your Pap and HPV test from the physical are both normal (no abnormal cells, high-risk HPV not detected). With a normal co-test the next one is due in 5 years."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Pap and HPV result",
+       "author": "patient",
+       "date": "2023-10-04T09:12",
+       "body": "Great, thank you."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-12a",
+     "kind": "pharmacy",
+     "start": "2023-12-12T10:30",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Inhaler refills",
+       "author": "MA",
+       "date": "2023-12-12T10:30",
+       "body": "Refill requests: fluticasone HFA 44 mcg (last fill 9/2023) and albuterol HFA (last fill 9/2022). Pt confirms albuterol is expiring, not running out. Routed."
+      },
+      {
+       "type": "Refill Request",
+       "title": "Inhaler refills approved",
+       "author": "PCP",
+       "date": "2023-12-12T12:15",
+       "body": "Fluticasone 44 sent x 3 refills. Albuterol 1 inhaler. Fine to replace the expired one; rare use is what we want."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-06a",
+     "kind": "pharmacy",
+     "start": "2024-02-06T11:00",
+     "reason": "Prior authorization renewal",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Fluticasone HFA PA renewal",
+       "author": "MA",
+       "date": "2024-02-06T11:00",
+       "body": "Fluticasone HFA 44 mcg PA expires 2/13. Renewal submitted with 4/2023 note documenting control on current dose. Approved same day through 2/2025."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-12a",
+     "kind": "specialist_visit",
+     "start": "2024-03-12T11:00",
+     "service": "Psychiatry",
+     "reason": "Psychiatry follow-up",
+     "conditions": [
+      {
+       "label": "SSRI-induced sexual dysfunction",
+       "icd10": "R37",
+       "action": "diagnosed"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2024-03-12T11:05",
+       "bp": [
+        120,
+        78
+       ],
+       "hr": 88,
+       "rr": 16,
+       "temp_c": 37.0
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry follow-up",
+       "author": "psychiatry",
+       "date": "2024-03-14T09:20",
+       "body": "OUTPATIENT PSYCHIATRY — FOLLOW-UP\nDate of service: 03/12/2024\n\n32 year old woman with OCD (diagnosed here March 2023) and GAD (September 2023), maintained on sertraline 100 mg daily.\n\nInterval: The worry remains hard to control. She feels restless and tired, has trouble concentrating, is irritable, carries tension in her muscles and sleeps poorly. New since she has been on sertraline: lower sex drive, and sex has become difficult for her. She raised this herself and it bothers her.\n\nMedications: sertraline 100 mg daily; albuterol inhaler as needed.\nAllergies: no known drug allergies; seasonal pollens.\nSocial: no substance use.\n\nVitals: BP 120/78, HR 88, RR 16, T 98.6 F (37 C).\nExam: unremarkable. Mental status: cooperative, mildly anxious, thought process logical, no suicidal ideation.\n\nAssessment:\n1. Generalized anxiety disorder, ongoing symptoms.\n2. Obsessive-compulsive disorder, compulsions not active.\n3. SSRI-induced sexual dysfunction.\n\nPlan: Continue sertraline 100 mg daily. Return in clinic.\n\nPsychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2024-04-23a",
+     "kind": "office_visit",
+     "start": "2024-04-23T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Asthma check",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2024-04-23T15:45",
+       "body": "Pt did not arrive for 3:20 asthma check. Called cell, left voicemail and sent text to reschedule."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Sorry I missed it",
+       "author": "patient",
+       "date": "2024-04-23T17:02",
+       "body": "So sorry, I had a client deadline and completely lost track of the time. Can I do a video visit instead?"
+      }
+     ]
+    },
+    {
+     "id": "2024-05-07a",
+     "kind": "telehealth_visit",
+     "start": "2024-05-07T12:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Asthma and rhinitis check",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2024-05-07T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth — asthma and spring allergies",
+       "author": "PCP",
+       "date": "2024-05-07T12:28",
+       "body": "Video visit (rescheduled from 4/23 no-show).\n\nAsthma: no nighttime symptoms, no activity limits, albuterol twice this spring during the worst pollen weeks. Fluticasone 44 2 puffs BID, rarely misses. ACT in the controlled range (above 20).\nRhinitis: usual spring flare, sneezing and itchy eyes, OTC antihistamine is taking the edge off.\nSaw psychiatry in March; sertraline 100 continues. She mentions they discussed a side effect, and she'd rather leave that with them.\n\nAppears well, no cough or audible wheeze during visit.\n\nA/P: Mild persistent asthma, well controlled. Continue current inhalers. Seasonal allergic rhinitis, OTC antihistamine. Physical in September."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-17a",
+     "kind": "annual_physical",
+     "start": "2024-09-17T08:00",
+     "end": "2024-09-17T08:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Yearly physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-09-17T08:45",
+       "results": [
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-09-17T08:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-09-17T08:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-09-17T08:40"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-09-17T08:42"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-09-17T11:50",
+       "body": "YEARLY PHYSICAL\n33 y/o F.\n\nInterval: psychiatry March 2024, sertraline 100 continued. Anxiety some days better than others; pottery still her best outlet. Asthma quiet on fluticasone 44 BID, albuterol maybe twice since May. Migraines a couple a month, sumatriptan effective.\nNew today: acne on the chin and jaw has been worse over the summer and she'd like to treat it this time. We ran out of time to do it justice; booked a separate visit in 3 weeks.\nPHQ-9 = 3.\n\nMeds: fluticasone HFA 44 mcg 2 puffs BID; albuterol HFA PRN; sertraline 100 mg daily; sumatriptan 50 mg PRN (max 200/day); HCTZ 25 mg daily.\nAllergies: NKDA. Seasonal tree and grass pollens.\n\nExam: BP 102/68, HR 69, RR 16, T 36.8, SpO2 99%. Wt 65.8 kg.\nWell. HEENT normal. Lungs clear. Heart regular, no murmur. Abdomen soft, nontender. Skin: inflammatory papules and a few pustules along the chin and jawline, comedones on the forehead, no nodules or scarring. Ext no edema.\n\nA/P\n1. Health maintenance — BMP and CBC. Flu and 2024-25 COVID vaccines today. Co-test normal 2023, next 2028. Lipids normal 2023.\n2. Acne vulgaris, flaring — dedicated visit 10/8.\n3. Mild persistent asthma — well controlled.\n4. GAD/OCD — psychiatry.\n5. Migraine without aura — stable.\n6. HCTZ — continue.\n\nRTC 3 weeks for acne, 1 year for physical."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-19a",
+     "kind": "portal_message",
+     "start": "2024-09-19T07:30",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2024-09-19T07:30",
+       "body": "Physical labs are normal. Metabolic panel: sodium 139, potassium 4.0, creatinine 0.79, calcium 9.4. Blood count normal, hemoglobin 13.4. See you on 10/8 for the acne visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "office_visit",
+     "start": "2024-10-08T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Acne",
+     "medications": [
+      {
+       "drug": "doxycycline hyclate 100 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule by mouth once daily with a full glass of water. Stay upright 30 minutes. Avoid sun exposure",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Acne vulgaris"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-10-08T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit — acne",
+       "author": "PCP",
+       "date": "2024-10-08T17:20",
+       "body": "CC: acne.\n\n33 y/o F with long-standing acne vulgaris, worse since the summer, mostly inflamed spots along the chin and jaw. Never had prescription treatment. Wants something that will actually work. Not pregnant, not planning pregnancy.\n\nMeds: fluticasone HFA 44 2 puffs BID; albuterol PRN; sertraline 100 mg daily; sumatriptan PRN; HCTZ 25 mg daily.\nAllergies: NKDA; seasonal pollens.\n\nExam: BP 107/75, HR 73. Wt 66.3 kg.\nModerate inflammatory papules and pustules chin/jawline, open and closed comedones forehead. No cysts or scarring.\n\nA/P: Acne vulgaris, moderate inflammatory.\n- Start doxycycline 100 mg once daily. Take with a full glass of water and stay upright afterward. Doxycycline makes skin burn easily in the sun: sunscreen SPF 30 or higher, hat, cover up, avoid long stretches in strong sun while on it.\n- Reassess in about 3 months; plan a time-limited course.\n\nOther problems unchanged."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-21a",
+     "kind": "telephone",
+     "start": "2024-10-21T08:35",
+     "reason": "Painful red rash",
+     "orders": [
+      {
+       "id": "derm-referral",
+       "action": "placed",
+       "order": "Dermatology referral",
+       "category": "referral",
+       "to": "Dermatology",
+       "reason": "Painful blistering rash face and forearms after sun exposure"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Painful rash after beach weekend",
+       "author": "PCP",
+       "date": "2024-10-21T09:05",
+       "body": "Pt called first thing. Spent the weekend at a beach resort. Since yesterday her face and forearms are red and painful, some small blisters. No trouble breathing, no swelling of lips or tongue, mouth and eyes fine, no fever. Started doxycycline 10/8. She photographed it for me in the portal: bright redness over cheeks and nose and the backs of both forearms.\n\nWant dermatology eyes on this today or tomorrow. Called their urgent line and got her in tomorrow morning. Told her: cool compresses, stay out of the sun, call back or go to urgent care if it spreads, blisters widely, involves her mouth or eyes, or she feels sick."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "specialist_visit",
+     "start": "2024-10-22T09:30",
+     "service": "Dermatology",
+     "reason": "Painful erythema face and forearms after sun exposure",
+     "conditions": [
+      {
+       "label": "Hydrochlorothiazide-induced photosensitivity",
+       "icd10": "L56.0",
+       "action": "diagnosed"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-10-22T10:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-10-22T10:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-10-22T10:20",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-referral",
+       "action": "done",
+       "date": "2024-10-22T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology consultation",
+       "author": "dermatology",
+       "date": "2024-10-23T08:10",
+       "body": "DERMATOLOGY — CONSULTATION\nDate of service: 10/22/2024\nRequesting clinician: primary care (urgent)\n\nHPI: 33 year old woman with acne vulgaris who takes hydrochlorothiazide. Two days of painful redness on the face and forearms that began after a weekend at a beach resort. An oral medicine for her acne was started two weeks ago. She has not used any new skin care products or makeup.\n\nCurrent medications (as provided):\n- albuterol HFA, PRN\n- fluticasone propionate 110 mcg inhaler: 2 puffs BID\n- doxycycline 100 mg daily\nAllergies: NKDA; seasonal pollens.\nSocial: never smoker; alcohol 1-2 drinks per month; graphic designer.\n\nExam: Well-demarcated erythematous patches studded with small vesicles over both cheeks, the nasal dorsum and the dorsal forearms bilaterally. Sun-protected skin spared. No oral or ocular mucosal involvement.\n\nLabs today: CBC, comprehensive metabolic panel and ESR within normal limits.\n\nAssessment: Phototoxic drug eruption — hydrochlorothiazide-induced photosensitivity.\n\nPlan:\n- Strict photoprotection; cool compresses; bland emollient.\n- Medication changes deferred to her PCP, who manages the hydrochlorothiazide and acne therapy.\n- Return if blistering extends or fails to settle.\n\nDermatology"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Erythrocyte Sedimentation Rate": 8
+      }
+     }
+    },
+    {
+     "id": "2024-10-23a",
+     "kind": "telephone",
+     "start": "2024-10-23T12:15",
+     "reason": "Dermatology letter, medication changes",
+     "medications": [
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Hydrochlorothiazide-induced photosensitivity"
+      },
+      {
+       "drug": "doxycycline hyclate 100 MG Oral Capsule",
+       "action": "stop",
+       "reason": "Photosensitizing; stopped during phototoxic reaction"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Hydrochlorothiazide",
+       "reaction": "Photosensitivity (blistering phototoxic eruption)",
+       "severity": "moderate",
+       "criticality": "low",
+       "type": "intolerance"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Derm letter — med changes",
+       "author": "PCP",
+       "date": "2024-10-23T12:40",
+       "body": "Derm letter in: hydrochlorothiazide-induced photosensitivity. Labs there normal.\n\nCalled pt. Skin still sore but no new blisters.\n- STOP hydrochlorothiazide. Added to allergy list as photosensitivity.\n- STOP doxycycline too. It's a sun-sensitizer on its own and I don't want two of them on board while her skin is blistered. Not listing it as an allergy.\n- Not starting anything else for the acne right now.\n- Nurse BP check in 2 weeks off HCTZ.\n\nMed list corrected: derm letter lists fluticasone 110 mcg, she is on 44 mcg 2 puffs BID. No change."
+      }
+     ],
+     "state": {
+      "bp": [
+       118,
+       75
+      ]
+     }
+    },
+    {
+     "id": "2024-11-06a",
+     "kind": "nurse_visit",
+     "start": "2024-11-06T16:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure check off hydrochlorothiazide",
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, straightforward MDM",
+       "performed": "2024-11-06T16:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "BP check",
+       "author": "RN",
+       "date": "2024-11-06T16:24",
+       "body": "BP check 2 weeks after stopping hydrochlorothiazide. BP 116/74, HR 78 seated, L arm, after 5 min rest. No headaches beyond her usual migraines, no swelling. Skin on face and arms healing, peeling now, no new blisters. Routed to PCP."
+      },
+      {
+       "type": "Result Note",
+       "title": "BP check reviewed",
+       "author": "PCP",
+       "date": "2024-11-06T17:40",
+       "body": "Normal off HCTZ. No BP medicine needed. We'll check it at visits."
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2024-11-06T16:15",
+       "bp": [
+        116,
+        74
+       ],
+       "hr": 78
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

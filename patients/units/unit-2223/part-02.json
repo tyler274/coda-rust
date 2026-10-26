@@ -1,0 +1,1698 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002223",
+   "events": [
+    {
+     "id": "2021-01-06a",
+     "kind": "office_visit",
+     "start": "2021-01-06T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fatigue, shortness of breath, leg swelling",
+     "state": {
+      "bp": [
+       146,
+       88
+      ],
+      "weight_kg": 87.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "cards-referral",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "progressive exertional dyspnea and edema, HFrEF"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2021-01-06T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Dyspnea and Edema",
+       "author": "PCP",
+       "date": "2021-01-06T12:10",
+       "body": "CC: tired, short of breath, legs swelling.\n\nHPI: Over roughly the last two months he has been more tired, gets winded walking up his driveway or carrying groceries, and both lower legs have been swelling, worse by evening. Home scale up about 6-7 lb over that time. No chest pain or pressure, no palpitations, no fainting. No fever or cough. Taking all medicines, no new ones, no extra salt that he can think of. Back pain stable.\n\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40 qAM, ASA 81, acetaminophen PRN. NKDA.\n\nExam: vitals as recorded, weight up from December. No distress at rest. JVP hard to judge with his neck habitus. Heart regular. Lungs clear. Pitting edema both legs to the mid-shin.\n\nA/P:\n1. Progressive exertional dyspnea, fatigue and bilateral edema in a man with HFrEF and CAD - needs cardiology evaluation and a new echo. Spoke with the cardiology office; seen on 1/18. They will draw labs and do the echo there.\n2. BP above his usual today; recheck at cardiology.\n3. Daily weights, low-salt diet reviewed. Go to the ED for chest pain, breathlessness at rest, or inability to lie flat."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-18a",
+     "kind": "specialist_visit",
+     "start": "2021-01-18T09:30",
+     "service": "Cardiology",
+     "reason": "Fatigue, exertional dyspnea, bilateral edema",
+     "vitals": {
+      "bp": [
+       150,
+       90
+      ],
+      "hr": 88,
+      "rr": 18
+     },
+     "state": {
+      "labs": {
+       "Creatinine": 1.95,
+       "Blood Urea Nitrogen": 34,
+       "Albumin": 3.3,
+       "Total Protein": 8.3
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-01-18T10:30",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 2.1
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 45
+        },
+        {
+         "test": "Albumin",
+         "value": 3.2
+        },
+        {
+         "test": "Total Protein",
+         "value": 8.5
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2021-01-18T10:30",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Glucose",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2021-01-18T11:15",
+       "text": "TRANSTHORACIC ECHOCARDIOGRAM\nIndication: heart failure with worsening dyspnea and edema.\nLeft ventricle: ventricular walls are increased in thickness. Chamber size is normal. LVEF 38%.\nDiastolic function: impaired left ventricular filling.\nRight ventricle: normal size.\nValves: no significant valvular abnormality; no significant stenosis or regurgitation.\nAtria: not dilated.\nPericardium: no effusion.",
+       "conclusion": "Thickened ventricular walls, normal-sized chambers, impaired diastolic filling, LVEF 38%. No significant valve disease."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral",
+       "action": "done",
+       "date": "2021-01-18T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Consultation",
+       "author": "cardiology",
+       "date": "2021-01-21T16:00",
+       "body": "CARDIOLOGY CONSULTATION\nDate of service: 01/18/2021\nReferring: primary care\n\nDear colleague,\n\nThank you for asking me to see Mr. Clark, a 68-year-old man with coronary disease (LAD stent 2015), heart failure with reduced ejection fraction, hypertension, type 2 diabetes, CKD 3b, a 2017 stroke and recently diagnosed lumbar stenosis, seen for two months of rising fatigue, breathlessness with exertion and swelling of both legs. He has had no chest pain, palpitations or syncope.\n\nMedications: lisinopril 20 mg daily, amlodipine 5 mg daily, furosemide 40 mg daily, metformin 1000 mg twice daily, aspirin 81 mg daily, acetaminophen as needed.\nAllergies: none known.\nFamily history: father MI at 62 and hypertension; mother type 2 diabetes and stroke at 70; no amyloidosis or autoimmune disease.\nSocial: never smoker; no alcohol now; retired accountant.\n\nExam: BP 150/90, HR 88, RR 18. Jugular venous pressure elevated. On auscultation there is a low-pitched rumble in diastole at the apex. Lungs clear. Pitting edema 2+ to the mid-shins on both sides.\n\nLabs today: creatinine 2.1 mg/dL and BUN 45 mg/dL; albumin low at 3.2 g/dL while total protein is high at 8.5 g/dL. Urinalysis positive for protein without blood or casts.\n\nEchocardiogram today: thickened ventricular walls, normal-sized chambers, impaired diastolic filling, LVEF 38%, no significant valve disease.\n\nImpression: Heart failure with congestion. The combination of thick walls with a normal-sized cavity and restrictive filling, proteinuria, low albumin and a high total protein raises concern for an infiltrative process, specifically amyloidosis, rather than ischemic progression alone.\n\nPlan:\n1. Serum protein electrophoresis with immunofixation and serum free light chains sent today.\n2. Referral to hematology, to be expedited if the studies show a monoclonal protein.\n3. No medication changes today; daily weights; low sodium diet.\n4. I will see him back after hematology.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2021-01-26a",
+     "kind": "outside_records",
+     "start": "2021-01-26T15:00",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-01-18T10:30",
+       "results": [
+        {
+         "test": "Monoclonal Protein Spike",
+         "value": 1.8
+        }
+       ],
+       "resulted": "2021-01-25T14:00"
+      },
+      {
+       "panel": null,
+       "collected": "2021-01-18T10:30",
+       "results": [
+        {
+         "test": "Lambda free light chain",
+         "value": 186,
+         "loinc": "33944-0",
+         "unit": "mg/L"
+        },
+        {
+         "test": "Kappa free light chain",
+         "value": 11,
+         "loinc": "36916-5",
+         "unit": "mg/L"
+        },
+        {
+         "test": "Kappa/Lambda free light chain ratio",
+         "value": 0.06,
+         "loinc": "48378-4",
+         "unit": "{ratio}"
+        }
+       ],
+       "resulted": "2021-01-25T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Outside Lab Results - Protein Studies",
+       "author": "MA",
+       "date": "2021-01-26T15:00",
+       "body": "Results received by fax from the cardiology office (collected 01/18/2021):\n- Serum protein electrophoresis: M-protein 1.8 g/dL\n- Immunofixation: IgG lambda monoclonal protein\n- Free lambda light chain 186 mg/L, free kappa 11 mg/L, kappa/lambda ratio 0.06\nRouted to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-28a",
+     "kind": "telephone",
+     "start": "2021-01-28T17:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Results Discussion",
+       "author": "PCP",
+       "date": "2021-01-28T17:20",
+       "body": "Called Mr. Clark about the protein studies cardiology sent. There is an abnormal IgG lambda protein and a very high lambda light chain. Together with the echo and urine protein, cardiology and I are concerned about AL amyloidosis. Explained this is a blood-cell (plasma cell) problem that can deposit protein in the heart and kidneys, that it is treatable, and that hematology needs to confirm it with a biopsy. Cardiology already arranged hematology for 2/11. He asked good questions, wrote everything down. Will call him after the hematology visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-29a",
+     "kind": "pharmacy",
+     "start": "2021-01-29T11:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-01-29T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Immunization Record Update",
+       "author": "MA",
+       "date": "2021-02-01T09:15",
+       "body": "State immunization registry: Pfizer-BioNTech COVID-19 vaccine dose 1 given 01/29/2021 at a community pharmacy clinic. Added to record. Dose 2 due 02/19."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-11a",
+     "kind": "specialist_visit",
+     "start": "2021-02-11T13:30",
+     "service": "Hematology/Oncology",
+     "reason": "Monoclonal protein, suspected AL amyloidosis",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-02-11T14:30",
+       "results": [
+        {
+         "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+         "value": 4850
+        },
+        {
+         "test": "Troponin-T HS Gen5",
+         "value": 62
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-02-12T08:00",
+       "results": [
+        {
+         "test": "Protein, 24 hour urine",
+         "value": 2.4,
+         "loinc": "2889-4",
+         "unit": "g/(24.h)"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Consultation",
+       "author": "hematology",
+       "date": "2021-02-15T11:00",
+       "body": "HEMATOLOGY/ONCOLOGY NEW PATIENT CONSULTATION\nDate of service: 02/11/2021\nReferred by: cardiology; copy to primary care\n\nReason: IgG lambda monoclonal protein with cardiac and renal findings concerning for AL amyloidosis.\n\nHistory: 68-year-old man with HFrEF, CAD with LAD stent, CKD 3b, hypertension, type 2 diabetes and prior stroke. Two to three months of progressive fatigue, exertional dyspnea and leg edema. Cardiology echo 01/18 showed thickened walls with a normal-sized cavity, impaired filling and LVEF 38%. Urine protein positive; albumin 3.2, total protein 8.5. SPEP M-protein 1.8 g/dL, IgG lambda; free lambda 186 mg/L, kappa 11 mg/L, ratio 0.06.\n\nMedications: lisinopril 20 mg, amlodipine 5 mg, furosemide 40 mg, metformin 1000 mg BID, aspirin 81 mg, acetaminophen PRN.\nAllergies: none known.\nFamily history: no amyloidosis or autoimmune disease.\n\nToday: NT-proBNP 4850 pg/mL, high-sensitivity troponin T 62 ng/L. 24-hour urine collection started; result 2.4 g protein per 24 hours.\n\nExam: edema 2+ both legs. No macroglossia. No periorbital bruising.\n\nAssessment: Lambda light chain monoclonal gammopathy with a phenotype strongly suggesting systemic AL amyloidosis involving the heart and kidneys.\n\nPlan:\n1. Abdominal fat pad aspirate with Congo red and amyloid typing.\n2. Bone marrow aspirate and biopsy.\n3. Return after both results to discuss treatment."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-19a",
+     "kind": "pharmacy",
+     "start": "2021-02-19T10:30",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-19T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Immunization Record Update",
+       "author": "MA",
+       "date": "2021-02-22T09:00",
+       "body": "Registry update: Pfizer-BioNTech COVID-19 vaccine dose 2 given 02/19/2021 at a community pharmacy clinic. Primary series complete."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-25a",
+     "kind": "procedure_visit",
+     "start": "2021-02-25T09:00",
+     "service": "Hematology/Oncology",
+     "reason": "Abdominal fat pad aspirate",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2021-02-25T09:00",
+       "issued": "2021-03-02T15:00",
+       "text": "SURGICAL PATHOLOGY\nSpecimen: abdominal subcutaneous fat pad, fine-needle aspirate.\nGross: multiple fragments of yellow adipose tissue.\nMicroscopic: adipose tissue with amorphous extracellular deposits around small vessels and between fat cells. Congo red stain positive with apple-green birefringence under polarized light.\nAmyloid typing (laser microdissection with mass spectrometry, reference laboratory): AL (lambda) type.",
+       "conclusion": "Abdominal fat pad: amyloid deposits, Congo red positive; typed as AL lambda."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Pathology Received - Fat Pad Aspirate",
+       "author": "MA",
+       "date": "2021-03-03T10:00",
+       "body": "Fat pad aspirate pathology report received from hematology (procedure 02/25/2021). Scanned to Media and routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-04a",
+     "kind": "procedure_visit",
+     "start": "2021-03-04T08:30",
+     "service": "Hematology/Oncology",
+     "reason": "Bone marrow biopsy",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2021-03-04T08:30",
+       "issued": "2021-03-09T12:00",
+       "text": "SURGICAL PATHOLOGY\nSpecimen: bone marrow aspirate and core biopsy, posterior iliac crest.\nMicroscopic: normocellular marrow with trilineage hematopoiesis. Plasma cells are increased, about 12% of cellularity, and are lambda light chain restricted by in situ hybridization. Congo red stain shows positive deposits in vessel walls.\nFlow cytometry: monotypic lambda plasma cell population.",
+       "conclusion": "Bone marrow with 12% lambda-restricted plasma cells and Congo red positive vascular deposits, consistent with AL amyloidosis."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Pathology Received - Bone Marrow",
+       "author": "MA",
+       "date": "2021-03-10T09:30",
+       "body": "Bone marrow biopsy pathology (03/04/2021) received from hematology. Scanned and routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-11a",
+     "kind": "specialist_visit",
+     "start": "2021-03-11T14:00",
+     "service": "Hematology/Oncology",
+     "reason": "AL amyloidosis treatment planning",
+     "conditions": [
+      {
+       "label": "Light chain (AL) amyloidosis",
+       "icd10": "E85.81",
+       "action": "diagnosed",
+       "onset": "2020-11-15",
+       "note": "systemic, lambda, cardiac and renal involvement"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "15 ML daratumumab 120 MG/ML / hyaluronidase-fihj 2000 UNT/ML Injection",
+       "sig": "1800 mg subcutaneously at the infusion center: weekly for cycles 1-2, every 2 weeks for cycles 3-6, then every 4 weeks",
+       "dose": {
+        "value": 1800,
+        "unit": "mg"
+       },
+       "frequency": "PER PROTOCOL",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "action": "start",
+       "reason": "AL amyloidosis"
+      },
+      {
+       "drug_text": "bortezomib 3.5 MG Injection",
+       "sig": "1.3 mg/m2 subcutaneously weekly at the infusion center",
+       "frequency": "WEEKLY",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "action": "start",
+       "reason": "AL amyloidosis"
+      },
+      {
+       "drug_text": "cyclophosphamide 500 MG Injection",
+       "sig": "300 mg/m2 IV weekly at the infusion center",
+       "frequency": "WEEKLY",
+       "route": "Intravenous",
+       "course": "chronic",
+       "action": "start",
+       "reason": "AL amyloidosis"
+      },
+      {
+       "drug_text": "dexamethasone 4 MG Oral Tablet",
+       "sig": "Take 5 tablets (20 mg) by mouth once weekly on treatment day",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "WEEKLY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "start",
+       "reason": "AL amyloidosis"
+      },
+      {
+       "drug_text": "acyclovir 400 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth twice daily",
+       "dose": {
+        "value": 400,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "start",
+       "reason": "zoster prophylaxis during daratumumab and bortezomib"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up - Diagnosis and Plan",
+       "author": "hematology",
+       "date": "2021-03-15T16:30",
+       "body": "HEMATOLOGY/ONCOLOGY FOLLOW-UP\nDate of service: 03/11/2021\n\nResults reviewed with Mr. Clark:\n- Fat pad aspirate (02/25): Congo red positive, apple-green birefringence; mass spectrometry typing AL lambda.\n- Bone marrow (03/04): 12% lambda-restricted plasma cells; Congo red positive vascular deposits.\n- Free lambda 186 mg/L, kappa 11 mg/L, ratio 0.06; M-protein 1.8 g/dL IgG lambda.\n- NT-proBNP 4850 pg/mL, hs-troponin T 62 ng/L; 24-hour urine protein 2.4 g.\n- Echo: thickened walls, normal cavity, impaired filling, LVEF 38%.\n\nDiagnosis: Systemic AL (lambda) amyloidosis with cardiac and renal involvement.\n\nDiscussion: Given the degree of cardiac involvement and his kidney function he is not a candidate for high-dose chemotherapy with stem cell rescue. We discussed daratumumab with cyclophosphamide, bortezomib and dexamethasone as standard first-line therapy, its goals (stopping new light chain production so organ function can stabilize), side effects (infusion reactions, neuropathy, infection, glucose rise with dexamethasone) and the schedule. He wishes to proceed.\n\nPlan:\n1. Dara-CyBorD starting 03/15/2021, 28-day cycles x 6:\n   - daratumumab 1800 mg subcutaneous weekly cycles 1-2, every 2 weeks cycles 3-6, then every 4 weeks to complete two years\n   - bortezomib 1.3 mg/m2 subcutaneous weekly\n   - cyclophosphamide 300 mg/m2 IV weekly\n   - dexamethasone 20 mg by mouth weekly (reduced dose for cardiac involvement)\n2. Acyclovir 400 mg twice daily for zoster prophylaxis.\n3. Free light chains each cycle. Weekly CBC on treatment.\n4. Dexamethasone will raise his sugars - primary care aware; continue home glucose checks.\n5. Cardiology co-managing volume.\n\nMedications otherwise unchanged: lisinopril 20 mg, amlodipine 5 mg, furosemide 40 mg, metformin 1000 mg BID, aspirin 81 mg.\nAllergies: none known."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-18a",
+     "kind": "office_visit",
+     "start": "2021-03-18T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after amyloidosis diagnosis",
+     "state": {
+      "bp": [
+       138,
+       82
+      ],
+      "weight_kg": 86.0,
+      "labs": {
+       "Glucose": 180
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2021-03-18T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-03-18T12:40",
+       "body": "S: Here to go over the new diagnosis and how we coordinate. Hematology confirmed systemic AL amyloidosis (lambda) with heart and kidney involvement - fat pad and marrow both positive. First Dara-CyBorD treatment was Monday 3/15; tolerated it, a little wired the night after the dexamethasone. Sugars run in the 200s the morning after dex. Breathing about the same; legs still swell by evening. Taking furosemide every morning.\n\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81, acetaminophen PRN. New: dexamethasone 20 mg weekly, acyclovir 400 BID. Weekly daratumumab, bortezomib and cyclophosphamide at the infusion center. NKDA.\n\nO: Vitals reviewed. Lungs clear. Heart regular. 1-2+ edema to mid-shin.\n\nA/P:\n1. Systemic AL amyloidosis on Dara-CyBorD - hematology leads; we will keep his list current and handle everything else.\n2. T2DM - expect steroid-day spikes. Check fasting and pre-supper sugars daily; send me the log in a month. Call for readings over 300 or lightheadedness. Continue metformin for now.\n3. HFrEF / edema - cardiology co-managing; daily weights.\n4. CKD 3b - labs are being drawn weekly at the infusion center; I will follow those.\nSpent extended time answering questions. RTC 2-3 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-20a",
+     "kind": "portal_message",
+     "start": "2021-04-20T08:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Sugar log",
+       "author": "patient",
+       "date": "2021-04-20T08:15",
+       "body": "Hello, here is the month of sugars you asked for. Day after the dexamethasone (Tuesdays) they run 210 to 265 in the morning and about the same before supper. By Thursday they are back to 140s and the rest of the week 130 to 155. Highest was 271 once. No dizzy spells. Treatments are going ok, tired the day after. Herb Clark"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Sugar log",
+       "author": "PCP",
+       "date": "2021-04-20T17:50",
+       "body": "Thanks for the careful log. That pattern is exactly what the weekly dexamethasone does and it settles within two days. As long as you stay under 300 and feel well, we will leave the metformin as it is - the dexamethasone part of your treatment is only for the first six months. Keep checking and let me know if anything changes. See you in June."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-08a",
+     "kind": "office_visit",
+     "start": "2021-06-08T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 8.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-06-08T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.6
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-06-08T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral",
+       "action": "placed",
+       "order": "Gastroenterology referral",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "oropharyngeal dysphagia, coughing with liquids"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2021-06-08T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-06-08T11:15",
+       "body": "S: Cycle 4 of Dara-CyBorD. Hematology says light chains are falling. Tired, but walking again. Edema a bit less.\nNew issue: for a few months (thinks since around February) he has trouble getting a swallow started, coughs and sputters with drinks, sometimes chokes on food. Once or twice liquid came out his nose. No weight loss. No heartburn, no food sticking low in the chest. No fevers or pneumonia.\nSugars: steroid days 200s-260s, other days 140s.\n\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81, acetaminophen PRN, dexamethasone 20 mg weekly, acyclovir 400 BID; daratumumab/bortezomib/cyclophosphamide at infusion center. NKDA.\n\nO: Vitals reviewed. Lungs clear. Heart regular. Edema 1+ ankles. Watched him drink water: brief cough after the second sip.\n\nLabs: A1c 8.6 today.\n\nA/P:\n1. Swallowing difficulty with coughing on liquids and nasal regurgitation - sounds oropharyngeal rather than esophageal. GI referral; they can arrange a modified barium swallow. Meanwhile small sips, sit upright, slow down.\n2. T2DM - A1c 8.6, driven by weekly dexamethasone, which stops after cycle 6 in August. Not adding a second agent now; recheck in fall off steroids.\n3. AL amyloidosis - on treatment, hematology following.\n4. HFrEF - stable to slightly better.\nRTC after GI."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-02a",
+     "kind": "specialist_visit",
+     "start": "2021-08-02T10:00",
+     "service": "Gastroenterology",
+     "reason": "Oropharyngeal dysphagia",
+     "conditions": [
+      {
+       "label": "Oropharyngeal dysphagia",
+       "icd10": "R13.12",
+       "action": "diagnosed",
+       "onset": "2021-02-01"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral",
+       "action": "done",
+       "date": "2021-08-02T10:00"
+      },
+      {
+       "id": "slp-referral",
+       "action": "placed",
+       "order": "Speech-language pathology swallow therapy",
+       "category": "referral",
+       "to": "Speech-Language Pathology",
+       "reason": "oropharyngeal dysphagia"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology Consultation",
+       "author": "gastroenterology",
+       "date": "2021-08-05T13:00",
+       "body": "GASTROENTEROLOGY CONSULTATION\nDate of service: 08/02/2021\nReferred by: primary care\n\nHistory: Mr. Clark is a 69-year-old man with systemic AL amyloidosis (on therapy with hematology), lumbar spinal stenosis, HFrEF, CKD 3b, hypertension, type 2 diabetes - poorly controlled this year on steroid-containing chemotherapy, A1c 8.6 in June - and an ischemic stroke in 2017 with mild residual left-sided weakness. For about six months he has had trouble starting a swallow. He coughs and chokes often while eating, liquids more than solids, and occasionally has nasal regurgitation. No odynophagia, no retrosternal food impaction, no weight loss.\n\nMedications: lisinopril 20 mg, amlodipine 5 mg, metformin 1000 mg BID, furosemide 40 mg, aspirin 81 mg, dexamethasone 20 mg weekly, acyclovir 400 mg BID, acetaminophen PRN; infusional daratumumab, bortezomib and cyclophosphamide.\nAllergies: none known.\nFamily history: father MI at 62, hypertension; mother type 2 diabetes, stroke at 70; no amyloidosis or autoimmune disease.\nSocial: never smoker, no alcohol, retired accountant.\n\nExamination: Speech is slightly slurred. Gag reflex reduced. Oral cavity otherwise unremarkable. Abdomen benign.\n\nVideofluoroscopic modified barium swallow (performed today with speech pathology): the swallow is slow to trigger; contrast pools in the valleculae; there is penetration into the laryngeal vestibule, without aspiration below the cords, across the consistencies tested.\n\nImpression: Oropharyngeal dysphagia.\n\nRecommendations:\n1. Speech-language pathology for swallow therapy and strategies (referral placed).\n2. Upright for all intake, small bites and sips.\n3. No esophageal evaluation needed at this time given the oropharyngeal pattern.\n4. Follow up as needed.\n\nGastroenterology"
+      }
+     ]
+    },
+    {
+     "id": "2021-08-10a",
+     "kind": "specialist_visit",
+     "start": "2021-08-10T13:00",
+     "service": "Hematology/Oncology",
+     "reason": "AL amyloidosis, end of cycle 6",
+     "state": {
+      "labs": {
+       "Glucose": 142,
+       "Total Protein": 7.6,
+       "Albumin": 3.4
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-08-10T13:20",
+       "results": [
+        {
+         "test": "Lambda free light chain",
+         "value": 24,
+         "loinc": "33944-0",
+         "unit": "mg/L"
+        },
+        {
+         "test": "Kappa free light chain",
+         "value": 12,
+         "loinc": "36916-5",
+         "unit": "mg/L"
+        },
+        {
+         "test": "Kappa/Lambda free light chain ratio",
+         "value": 0.5,
+         "loinc": "48378-4",
+         "unit": "{ratio}"
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "dexamethasone 4 MG Oral Tablet",
+       "sig": "Take 5 tablets (20 mg) by mouth once weekly on treatment day",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "WEEKLY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "stop",
+       "reason": "induction complete"
+      },
+      {
+       "drug_text": "bortezomib 3.5 MG Injection",
+       "sig": "1.3 mg/m2 subcutaneously weekly at the infusion center",
+       "frequency": "WEEKLY",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "action": "stop",
+       "reason": "induction complete"
+      },
+      {
+       "drug_text": "cyclophosphamide 500 MG Injection",
+       "sig": "300 mg/m2 IV weekly at the infusion center",
+       "frequency": "WEEKLY",
+       "route": "Intravenous",
+       "course": "chronic",
+       "action": "stop",
+       "reason": "induction complete"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology",
+       "date": "2021-08-12T15:30",
+       "body": "HEMATOLOGY/ONCOLOGY FOLLOW-UP\nDate of service: 08/10/2021\n\nMr. Clark has completed six cycles of daratumumab, cyclophosphamide, bortezomib and dexamethasone. Fatigue improving. Swallowing being evaluated by GI.\n\nFree lambda 24 mg/L, kappa 12 mg/L today (from 186 / 11 at diagnosis). This is a very good partial hematologic response.\n\nPlan:\n1. Stop dexamethasone, bortezomib and cyclophosphamide.\n2. Continue daratumumab 1800 mg subcutaneous every 4 weeks to complete two years of therapy (through March 2023).\n3. Continue acyclovir while on daratumumab.\n4. Free light chains every 3 months.\nAllergies: none known."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-24a",
+     "kind": "specialist_visit",
+     "start": "2021-08-24T14:00",
+     "service": "Speech-Language Pathology",
+     "reason": "Oropharyngeal dysphagia",
+     "orders": [
+      {
+       "id": "slp-referral",
+       "action": "done",
+       "date": "2021-08-24T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Speech-Language Pathology Evaluation",
+       "author": "speech-language pathology",
+       "date": "2021-08-27T10:00",
+       "body": "SPEECH-LANGUAGE PATHOLOGY - SWALLOW EVALUATION\nDate of service: 08/24/2021\nReferral: gastroenterology / primary care. Dx: oropharyngeal dysphagia.\nAllergies: none known.\n\nBackground: modified barium swallow 08/02/2021 with delayed swallow trigger, vallecular pooling and laryngeal penetration without aspiration.\n\nClinical swallow today: delayed trigger with thin liquid by cup; throat clear after consecutive sips. Chin-tuck posture reduced coughing with thin liquids. Solids managed with a second swallow to clear.\n\nPlan: 4 sessions of swallow therapy (effortful swallow, tongue-base and Shaker exercises), chin tuck with thin liquids, single small sips, double swallow with solids, upright 30 minutes after meals. Home program."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-28a",
+     "kind": "nurse_visit",
+     "start": "2021-09-28T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-09-28T10:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-09-28T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2021-09-28T10:15",
+       "body": "High-dose quadrivalent flu vaccine IM left deltoid. Hematology okayed timing between daratumumab doses. Tolerated well. Plans COVID booster at his pharmacy next month."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-12a",
+     "kind": "pharmacy",
+     "start": "2021-10-12T15:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-12T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Immunization Record Update",
+       "author": "MA",
+       "date": "2021-10-14T09:00",
+       "body": "Registry: Pfizer-BioNTech COVID-19 booster given 10/12/2021 at his pharmacy. Record updated."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-26a",
+     "kind": "outside_records",
+     "start": "2021-10-26T10:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Speech-Language Pathology Discharge Summary",
+       "author": "speech-language pathology",
+       "date": "2021-10-26T10:00",
+       "body": "SPEECH-LANGUAGE PATHOLOGY DISCHARGE SUMMARY\nDates of treatment: 08/24/2021 - 10/19/2021, 5 visits.\nDx: oropharyngeal dysphagia.\nAllergies: none known.\nProgress: independent with chin tuck for thin liquids, effortful and double swallow, and home exercise program. Patient reports much less coughing at meals. No pneumonia during care.\nDischarged to home program. Re-refer if coughing with meals increases, weight loss, or any pneumonia."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-09a",
+     "kind": "office_visit",
+     "start": "2021-11-09T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "vitals": {
+      "bp": [
+       148,
+       88
+      ]
+     },
+     "state": {
+      "bp": [
+       142,
+       84
+      ],
+      "labs": {
+       "Hemoglobin A1c": 7.4
+      }
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-11-09T14:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-11-09T14:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 12.5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "start",
+       "reason": "blood pressure and edema"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-11-09T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-11-09T16:00",
+       "body": "S: Off dexamethasone since August; on monthly daratumumab. Feels better than spring - more energy. Swallowing much improved after speech therapy, uses chin tuck. Still has ankle swelling by evening. Home BP has crept up, 140s/80s most days. No chest pain, no orthopnea.\n\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81, acetaminophen PRN, acyclovir 400 BID; daratumumab q4 weeks. NKDA.\n\nO: BP 148/88. Lungs clear. Heart regular. 1+ edema both ankles.\n\nA1c 7.4 today - down from 8.6 now that the steroid is done.\n\nA/P:\n1. HTN above goal with persistent ankle edema on furosemide 40 - add hydrochlorothiazide 12.5 mg each morning. BMP in 2 weeks for sodium and potassium.\n2. T2DM - A1c 7.4 off steroids; continue metformin.\n3. Oropharyngeal dysphagia - improved, home program.\n4. AL amyloidosis - daratumumab maintenance, hematology following.\nRTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "specialist_visit",
+     "start": "2021-11-16T13:00",
+     "service": "Hematology/Oncology",
+     "reason": "AL amyloidosis on daratumumab maintenance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology",
+       "date": "2021-11-18T12:00",
+       "body": "HEMATOLOGY/ONCOLOGY FOLLOW-UP\nDate of service: 11/16/2021\n\nDoing well on daratumumab every 4 weeks. No infusion reactions, no infections. Energy improving. Hydrochlorothiazide recently added by primary care for blood pressure and edema.\n\nFree light chains remain in very good partial response range, unchanged from August.\n\nPlan: continue daratumumab monthly and acyclovir. Free light chains every 3 months. Return 4 months.\nMedications: lisinopril 20, amlodipine 5, furosemide 40, hydrochlorothiazide 12.5, metformin 1000 BID, aspirin 81, acyclovir 400 BID, daratumumab q4 weeks.\nAllergies: none known."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-23a",
+     "kind": "lab_only",
+     "start": "2021-11-23T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "BMP after starting hydrochlorothiazide",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-11-23T08:00",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 136
+        },
+        {
+         "test": "Potassium",
+         "value": 3.8
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-11-23T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2021-11-23T16:10",
+       "body": "Two weeks on hydrochlorothiazide: sodium 136, potassium 3.8, creatinine at baseline. Fine to continue. Patient notified."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-14a",
+     "kind": "outside_records",
+     "start": "2021-12-14T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Report",
+       "author": "optometry",
+       "date": "2021-12-16T09:00",
+       "body": "DIABETIC EYE EXAMINATION\nDate of exam: 12/14/2021\nType 2 diabetes. Notes higher sugars earlier this year on chemotherapy steroids. No visual complaints. Allergies: none known.\nVA cc 20/25 OU. IOP 15/15.\nDilated fundus: no diabetic retinopathy OU. Macula flat OU.\nReturn 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-29a",
+     "kind": "ed_visit",
+     "start": "2022-01-29T16:40",
+     "end": "2022-01-30T13:30",
+     "service": "Emergency Medicine",
+     "reason": "Progressive dyspnea, orthopnea, leg swelling; possible medication reaction",
+     "vitals": {
+      "temp_c": 37.0,
+      "bp": [
+       135,
+       78
+      ],
+      "hr": 88,
+      "rr": 20
+     },
+     "state": {
+      "labs": {
+       "Chloride": 94
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-01-29T17:05",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 129
+        },
+        {
+         "test": "Potassium",
+         "value": 3.1
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2022-01-29T17:20",
+       "issued": "2022-01-29T17:55",
+       "text": "PORTABLE CHEST, 1 VIEW\nIndication: dyspnea, orthopnea.\nFindings: Pulmonary vascular congestion with interstitial and perihilar airspace opacities in both lungs consistent with pulmonary edema. No pneumothorax. Cardiac silhouette within the limits of a portable technique.",
+       "conclusion": "Pulmonary edema."
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Hydrochlorothiazide adverse reaction",
+       "icd10": "T50.2X5A",
+       "action": "diagnosed",
+       "onset": "2022-01-28"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 12.5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "stop",
+       "reason": "angioedema and hyponatremia/hypokalemia"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Hydrochlorothiazide",
+       "reaction": "Angioedema",
+       "severity": "moderate",
+       "criticality": "high",
+       "type": "allergy"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2022-01-29T16:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Record",
+       "author": "emergency medicine",
+       "date": "2022-01-31T09:30",
+       "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nDate of service: 01/29/2022, arrival 16:40\n\nCC: short of breath, can't lie flat, legs swollen; \"is this a reaction to my new pill?\"\n\nHPI: 69M with systemic AL amyloidosis on daratumumab, HFrEF, CAD with LAD stent, CKD 3b, HTN, T2DM, prior stroke. For a week, steadily worse breathlessness, now sleeping propped up, legs more swollen. Yesterday his upper lip swelled for a few hours; it went down on its own overnight. Hydrochlorothiazide was added about 11 weeks ago.\n\nMeds: lisinopril 20, amlodipine 5, furosemide 40, hydrochlorothiazide 12.5, metformin 1000 BID, aspirin 81, acyclovir 400 BID, daratumumab monthly.\nAllergies on arrival: none known.\n\nExam: T 37.0 C, BP 135/78, P 88, RR 20. Lips and tongue without swelling now; airway patent, no stridor. JVD present. S3 gallop. Crackles in both lung fields. 2+ pitting edema of the lower extremities.\n\nData: Na 129, K 3.1. Chest x-ray: pulmonary edema.\n\nED course: IV furosemide with good urine output; oral potassium replacement. Breathing improved. Placed in observation overnight; sodium and potassium improving on morning recheck; comfortable lying at 30 degrees by morning.\n\nImpression:\n1. Pulmonary edema / volume overload in chronic HFrEF with cardiac amyloidosis.\n2. Hyponatremia and hypokalemia with a reported episode of lip angioedema - adverse reaction to hydrochlorothiazide.\n\nDisposition: discharged 01/30/2022. Hydrochlorothiazide stopped and entered as an allergy (angioedema, electrolyte abnormalities). Continue furosemide 40 mg every morning. Follow up with primary care within 3-5 days and cardiology within 2 weeks. Return for breathlessness at rest, chest pain, or any lip or tongue swelling."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-02a",
+     "kind": "office_visit",
+     "start": "2022-02-02T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-ED follow-up",
+     "state": {
+      "bp": [
+       132,
+       78
+      ],
+      "weight_kg": 85.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-02-02T11:10",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 135
+        },
+        {
+         "test": "Potassium",
+         "value": 4.0
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Hydrochlorothiazide adverse reaction",
+       "icd10": "T50.2X5A",
+       "action": "resolved"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2022-02-02T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-ED Follow-up",
+       "author": "PCP",
+       "date": "2022-02-02T12:20",
+       "body": "S: Seen in the ED 1/29 with pulmonary edema, low sodium and potassium, and a lip-swelling episode the day before; observed overnight, IV furosemide, hydrochlorothiazide stopped. ED record reviewed. Since home: breathing much better, sleeping on 1-2 pillows, legs down. No further lip or tongue swelling. Weight down 5 lb at home.\n\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81, acetaminophen PRN, acyclovir 400 BID; daratumumab q4 weeks.\nAllergies: hydrochlorothiazide - angioedema, electrolyte abnormalities.\n\nO: Vitals reviewed. No lip or tongue swelling. Lungs clear. Heart regular, no gallop today. Trace ankle edema.\n\nLabs today: sodium 135, potassium 4.0.\n\nA/P:\n1. Hydrochlorothiazide reaction (angioedema, hyponatremia, hypokalemia) - resolved off the drug. Allergy entered. My addition in November; noted for the record.\n2. HFrEF with amyloid heart - improved after diuresis; continue furosemide 40, daily weights; ED record forwarded to cardiology.\n3. HTN - acceptable today without the thiazide.\nRTC 2 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-10a",
+     "kind": "specialist_visit",
+     "start": "2022-03-10T13:30",
+     "service": "Hematology/Oncology",
+     "reason": "AL amyloidosis on daratumumab maintenance",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-03-10T13:45",
+       "results": [
+        {
+         "test": "Lambda free light chain",
+         "value": 22,
+         "loinc": "33944-0",
+         "unit": "mg/L"
+        },
+        {
+         "test": "Kappa free light chain",
+         "value": 12,
+         "loinc": "36916-5",
+         "unit": "mg/L"
+        },
+        {
+         "test": "Kappa/Lambda free light chain ratio",
+         "value": 0.55,
+         "loinc": "48378-4",
+         "unit": "{ratio}"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology",
+       "date": "2022-03-14T10:00",
+       "body": "HEMATOLOGY/ONCOLOGY FOLLOW-UP\nDate of service: 03/10/2022\n\nED visit in January for volume overload with a hydrochlorothiazide reaction; better since. Continues daratumumab every 4 weeks without reactions.\n\nFree lambda 22 mg/L, kappa 12 mg/L. Very good partial response maintained.\n\nPlan: continue daratumumab to March 2023, acyclovir. Light chains every 3 months; visit in 6 months.\nAllergies: hydrochlorothiazide (angioedema, electrolyte abnormalities)."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-12a",
+     "kind": "office_visit",
+     "start": "2022-04-12T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.0,
+       "Total Protein": 7.4,
+       "Microalbumin/Creatinine Ratio": 700
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-04-12T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-04-12T09:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2022-04-12T09:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-04-12T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-04-12T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2022-04-12T10:30",
+       "body": "S: Doing well. Hematology happy with his numbers. Breathing at his baseline, walks his road. Swallowing fine with chin tuck. Back occasionally achy, uses acetaminophen.\n\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81, acetaminophen PRN, acyclovir 400 BID; daratumumab q4 weeks.\nAllergies: hydrochlorothiazide (angioedema, electrolyte abnormalities).\n\nO: Lungs clear. Heart regular. Trace ankle edema.\n\nA/P: HTN, T2DM, HFrEF, CKD 3b, AL amyloidosis - stable. A1c and BMP today. PCV20 given today (no prior pneumococcal vaccine on record). RTC summer for wellness visit."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Results",
+       "author": "PCP",
+       "date": "2022-04-13T12:00",
+       "body": "A1c around 7, kidney function stable, potassium normal. No changes."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-17a",
+     "kind": "portal_message",
+     "start": "2022-05-17T07:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refills",
+       "author": "patient",
+       "date": "2022-05-17T07:50",
+       "body": "Good morning. The mail order says my metformin and furosemide need a new prescription. Can you send them? Thank you. Herb"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Refills",
+       "author": "MA",
+       "date": "2022-05-17T11:30",
+       "body": "Hi Mr. Clark, new 90-day prescriptions for metformin 1000 mg and furosemide 40 mg with 3 refills were sent to your mail-order pharmacy this morning per the doctor."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-19a",
+     "kind": "annual_physical",
+     "start": "2022-07-19T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-07-19T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.0
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-07-19T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-07-19T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-07-19T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-07-19T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Medicare Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-07-19T10:45",
+       "body": "MEDICARE ANNUAL WELLNESS VISIT (subsequent)\n\nIndependent in ADLs/IADLs. Still drives. No falls. Mood good, PHQ-2 1 (some tired days). Hearing adequate. Eyes checked yearly. Lives in Southampton; gardens a little.\n\nProblems: HTN; T2DM with CKD; CAD s/p LAD stent; HFrEF with cardiac AL amyloidosis; systemic AL amyloidosis on daratumumab maintenance; CKD 3b; lumbar spinal stenosis; oropharyngeal dysphagia (improved); prior stroke with mild left arm/hand weakness.\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81, acetaminophen PRN, acyclovir 400 BID; daratumumab q4 weeks.\nAllergies: hydrochlorothiazide (angioedema, electrolyte abnormalities).\n\nExam: lungs clear, heart regular, trace edema. Timed up-and-go normal.\n\nPrevention: PCV20 4/2022. Shingrix complete. COVID primary + booster. Flu this fall. Colonoscopy 2016 normal. Tdap 2016.\nLabs: A1c 7.0 today; CMP, lipids, CBC, urine albumin/creatinine."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-13a",
+     "kind": "specialist_visit",
+     "start": "2022-09-13T13:30",
+     "service": "Hematology/Oncology",
+     "reason": "AL amyloidosis on daratumumab maintenance",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-09-13T13:45",
+       "results": [
+        {
+         "test": "Lambda free light chain",
+         "value": 20,
+         "loinc": "33944-0",
+         "unit": "mg/L"
+        },
+        {
+         "test": "Kappa free light chain",
+         "value": 13,
+         "loinc": "36916-5",
+         "unit": "mg/L"
+        },
+        {
+         "test": "Kappa/Lambda free light chain ratio",
+         "value": 0.65,
+         "loinc": "48378-4",
+         "unit": "{ratio}"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology",
+       "date": "2022-09-15T11:00",
+       "body": "HEMATOLOGY/ONCOLOGY FOLLOW-UP\nDate of service: 09/13/2022\n\nContinues daratumumab every 4 weeks. No infections. Stable breathing.\n\nFree lambda 20 mg/L, kappa 13 mg/L. Response maintained.\n\nPlan: continue to complete two years in March 2023, then observation. Return 6 months.\nAllergies: hydrochlorothiazide (angioedema, electrolyte abnormalities)."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-04a",
+     "kind": "office_visit",
+     "start": "2022-10-04T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Trouble rising from chairs and climbing stairs",
+     "state": {
+      "labs": {
+       "Thyroid Stimulating Hormone": 2.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-10-04T10:40",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-10-04T10:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-04T10:45"
+      }
+     ],
+     "orders": [
+      {
+       "id": "rheum-referral",
+       "action": "placed",
+       "order": "Rheumatology referral",
+       "category": "referral",
+       "to": "Rheumatology",
+       "reason": "proximal muscle weakness"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2022-10-04T10:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-04T10:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Weakness",
+       "author": "PCP",
+       "date": "2022-10-04T11:50",
+       "body": "S: For about a month, hard to get up out of a low chair or the car, and he pulls himself up the stairs with the railing. More tired. Reaching up to the top shelf is harder. No falls, no muscle pain to speak of, no rash. No new medications. Breathing at baseline.\n\nMeds: lisinopril 20, amlodipine 5, metformin 1000 BID, furosemide 40, ASA 81, acetaminophen PRN, acyclovir 400 BID; daratumumab q4 weeks.\nAllergies: hydrochlorothiazide (angioedema, electrolyte abnormalities).\n\nO: Vitals reviewed. Rises from chair only using his arms. Weakness of shoulder abduction and hip flexion both sides; distal strength full; mild left grip weakness as before. Reflexes present. No rash.\n\nA/P:\n1. Subacute symmetric proximal weakness - broad differential (inflammatory myopathy, amyloid myopathy, thyroid, medication). TSH and BMP today; rheumatology referral, earliest slot 11/1.\n2. HD flu vaccine today.\n3. Other problems stable."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "pharmacy",
+     "start": "2022-10-18T14:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-18T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Immunization Record Update",
+       "author": "MA",
+       "date": "2022-10-20T09:00",
+       "body": "Registry: Pfizer-BioNTech bivalent COVID-19 booster 10/18/2022 at his pharmacy. Record updated."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-01a",
+     "kind": "specialist_visit",
+     "start": "2022-11-01T09:30",
+     "service": "Rheumatology",
+     "reason": "Proximal muscle weakness",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-11-01T10:30",
+       "results": [
+        {
+         "test": "Creatine Kinase",
+         "value": 3200
+        },
+        {
+         "test": "Erythrocyte Sedimentation Rate",
+         "value": 72
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "rheum-referral",
+       "action": "done",
+       "date": "2022-11-01T09:30"
+      },
+      {
+       "id": "emg",
+       "action": "placed",
+       "order": "Nerve conduction study and EMG",
+       "category": "procedure",
+       "reason": "proximal weakness, elevated CK"
+      },
+      {
+       "id": "muscle-bx",
+       "action": "placed",
+       "order": "Muscle biopsy",
+       "category": "procedure",
+       "reason": "suspected inflammatory myopathy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology Consultation",
+       "author": "rheumatology",
+       "date": "2022-11-04T14:00",
+       "body": "RHEUMATOLOGY CONSULTATION\nDate of service: 11/01/2022\nReferred by: primary care\n\nHPI: 70-year-old man with systemic AL amyloidosis (daratumumab maintenance, hematologic response), HFrEF, CKD 3b and prior dyspnea work-ups, who has had two months of trouble getting up from chairs and going up stairs, with growing fatigue and some breathlessness on exertion. No trauma. No muscle cramps, no rash, no joint swelling.\n\nPMH also: hypertension and type 2 diabetes, both well controlled (A1c 7.0 in July); CAD with LAD stent; lumbar spinal stenosis; oropharyngeal dysphagia; stroke 2017 with mild left-sided weakness.\nMedications: lisinopril 20 mg, amlodipine 5 mg, metformin 1000 mg BID, furosemide 40 mg, aspirin 81 mg, acyclovir 400 mg BID, acetaminophen PRN, daratumumab monthly.\nAllergies: hydrochlorothiazide (angioedema, electrolyte abnormalities).\nFamily history: no autoimmune disease or amyloidosis; father MI at 62; mother diabetes and stroke at 70.\nSocial: no tobacco, alcohol or drugs.\n\nExam: Weakness of the deltoids, biceps and quadriceps, symmetric on the two sides. Distal strength preserved. Deep tendon reflexes intact. Sensation intact. No heliotrope rash, Gottron papules or other rash. No synovitis.\n\nLabs: creatine kinase 3,200 U/L (reference 22-198). ESR 72 mm/hr.\n\nImpression: Proximal symmetric myopathy with a markedly raised CK and ESR - inflammatory myopathy (polymyositis) is most likely. Amyloid myopathy is in the differential given his history and needs to be excluded on biopsy.\n\nPlan:\n1. EMG/nerve conduction study.\n2. Muscle biopsy (vastus lateralis) with Congo red stain.\n3. Will start treatment once the biopsy is back."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-15a",
+     "kind": "procedure_visit",
+     "start": "2022-11-15T08:00",
+     "service": "Neurology",
+     "reason": "EMG for proximal weakness",
+     "reports": [
+      {
+       "study": "Nerve conduction study and EMG",
+       "performed": "2022-11-15T08:00",
+       "text": "NERVE CONDUCTION STUDY AND NEEDLE EMG\nIndication: proximal weakness, CK 3,200.\nNerve conductions: sensory and motor studies in the right arm and leg are normal in amplitude, latency and velocity.\nNeedle EMG: right deltoid, biceps, iliopsoas and vastus lateralis show fibrillation potentials and short-duration, low-amplitude, polyphasic motor units with early recruitment. Distal muscles normal.",
+       "conclusion": "Irritable proximal myopathy. Normal nerve conduction studies."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Nerve conduction study with needle EMG",
+       "performed": "2022-11-15T08:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "emg",
+       "action": "done",
+       "date": "2022-11-15T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "EMG Report Received",
+       "author": "MA",
+       "date": "2022-11-17T09:00",
+       "body": "EMG/NCS report (11/15/2022) received from the outside neurophysiology lab, ordered by rheumatology. Scanned and routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-29a",
+     "kind": "procedure_visit",
+     "start": "2022-11-29T09:00",
+     "service": "Rheumatology",
+     "reason": "Muscle biopsy",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2022-11-29T09:00",
+       "issued": "2022-12-05T13:00",
+       "text": "SURGICAL PATHOLOGY\nSpecimen: skeletal muscle, right vastus lateralis, open biopsy.\nMicroscopic: Endomysial inflammatory infiltrates of lymphocytes surround and invade non-necrotic muscle fibers; immunostains show these are predominantly CD8-positive T cells. No perifascicular atrophy. No vasculitis.\nCongo red: negative; no amyloid deposits.",
+       "conclusion": "Inflammatory myopathy with endomysial CD8 T cells invading non-necrotic fibers, consistent with polymyositis. No amyloid."
+      }
+     ],
+     "orders": [
+      {
+       "id": "muscle-bx",
+       "action": "done",
+       "date": "2022-11-29T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Pathology Received - Muscle Biopsy",
+       "author": "MA",
+       "date": "2022-12-06T09:00",
+       "body": "Muscle biopsy pathology (11/29/2022) received from rheumatology. Scanned and routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "specialist_visit",
+     "start": "2022-12-06T10:00",
+     "service": "Rheumatology",
+     "reason": "Polymyositis treatment",
+     "conditions": [
+      {
+       "label": "Polymyositis",
+       "icd10": "M33.20",
+       "action": "diagnosed",
+       "onset": "2022-09-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "sig": "Take 3 tablets (60 mg) by mouth every morning with food",
+       "dose": {
+        "value": 60,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "start",
+       "reason": "polymyositis"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Glucose": 170
+      },
+      "weight_kg": 86.0
+     },
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Rheumatology Follow-up",
+       "author": "rheumatology",
+       "date": "2022-12-08T15:00",
+       "body": "RHEUMATOLOGY FOLLOW-UP\nDate of service: 12/06/2022\n\nEMG: irritable proximal myopathy, normal nerve conductions. Muscle biopsy: endomysial CD8 T-cell inflammation invading non-necrotic fibers; Congo red negative, so no amyloid myopathy.\n\nDiagnosis: Polymyositis.\n\nPlan:\n1. Prednisone 60 mg daily, with a taper planned once CK falls and strength returns.\n2. TPMT activity sent; azathioprine as a steroid-sparing agent once it results. Methotrexate avoided given his kidney function.\n3. Prednisone will raise glucose - please follow his diabetes closely.\n4. CK and strength check in 4-5 weeks.\nAllergies: hydrochlorothiazide (angioedema, electrolyte abnormalities)."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-08a",
+     "kind": "telephone",
+     "start": "2022-12-08T15:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prednisone and Glucose",
+       "author": "RN",
+       "date": "2022-12-08T15:40",
+       "body": "Called patient per PCP after rheumatology letter. Started prednisone 60 mg daily on 12/7. Reviewed: check sugar fasting and before supper daily, write them down, send readings in 2 weeks or call for anything over 300, excessive thirst, or confusion. Take prednisone with breakfast. He has plenty of strips. Verbalized understanding.\nAddendum (PCP): agree. Continue metformin; will adjust if sugars run high."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-20a",
+     "kind": "outside_records",
+     "start": "2022-12-20T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Report",
+       "author": "optometry",
+       "date": "2022-12-22T09:00",
+       "body": "DIABETIC EYE EXAMINATION\nDate of exam: 12/20/2022\nType 2 diabetes; recently started prednisone. No visual complaints. Allergies: hydrochlorothiazide.\nVA cc 20/25 OD, 20/30 OS. IOP 16/16.\nDilated fundus: no diabetic retinopathy OU.\nReturn 12 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,278 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001891",
+      "given": "Abigail",
+      "family": "Lemieux",
+      "birth_date": "1999-10-08",
+      "address_line": "14 Loudville Road, Apt 3, Easthampton, MA 01027",
+      "phone": "+1-978-555-0111",
+      "email": "abigail.lemieux@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with type 1 diabetes since 2019 on basal-bolus insulin through outside endocrinology, joined in 2022. In 2025 she had left malignant otitis externa after lake swimming, treated with six weeks of ciprofloxacin under ENT; in 2026 a severe hypoglycemic episode with loss of consciousness after skipping breakfast, reversed by EMS glucagon.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "telephone",
+          "start": "2022-08-30T10:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2022-08-30T10:12",
+              "body": "Caller is a 22 y/o grad student who moved to Easthampton for her program and wants a PCP here. Student health plan through the university; membership paperwork emailed. Has type 1 diabetes, sees an outside endocrinology group and plans to keep them. Booked new patient physical 9/13 at 9:00. Asked her to bring her insulin pens or a med list and to sign a release for her old student health records. Release form sent by email."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T09:00",
+          "end": "2022-09-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical, establish care",
+          "conditions": [
+            {"label": "Type 1 diabetes mellitus without complications", "action": "history", "onset": "2019-03-01", "note": "basal-bolus insulin since diagnosis; managed by outside endocrinology"}
+          ],
+          "medications": [
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 20 units under the skin at bedtime", "dose": {"value": 20, "unit": "units"}, "frequency": "DAILY", "route": "Subcutaneous", "course": "chronic", "reason": "type 1 diabetes; prescribed by endocrinology"},
+            {"drug_text": "3 ML insulin aspart, human 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 8 units under the skin before meals", "dose": {"value": 8, "unit": "units"}, "frequency": "TID", "route": "Subcutaneous", "course": "chronic", "reason": "type 1 diabetes; prescribed by endocrinology"},
+            {"drug_text": "glucagon (rDNA) 1 MG Injection", "action": "historical", "sig": "Inject 1 mg into the muscle as needed for severe hypoglycemia", "dose": {"value": 1, "unit": "mg"}, "frequency": "PRN", "route": "Intramuscular", "course": "chronic", "reason": "severe hypoglycemia rescue; prescribed by endocrinology"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 57.2, "height_cm": 165.0, "labs": {"Hemoglobin A1c": 6.9, "Thyroid Stimulating Hormone": 1.8, "Microalbumin/Creatinine Ratio": 7, "Low Density Lipoprotein": 90}},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T09:50", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-13T09:50", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T09:50", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-13T09:50", "results": [
+              {"test": "Hemoglobin A1c"},
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Microalbumin/Creatinine Ratio"},
+              {"test": "Tissue Transglutaminase IgA", "text": "Negative"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Rare, less than 1 drink per month"},
+            {"item": "Occupation", "value": "Graduate student"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2022-09-13T09:55"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-09-13T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-09-13T09:50"},
+            {"procedure": "Immunization administration", "performed": "2022-09-13T09:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2022-09-13T10:20",
+              "body": "22 y/o woman establishing primary care. Started a graduate program this fall and moved to Easthampton.\n\nType 1 diabetes: diagnosed in 2019, on basal-bolus insulin from the start. Glargine 20 units at bedtime, aspart 8 units with meals, has a glucagon kit. Sees an outside endocrinology group about twice a year and wants to stay with them; they write all her insulin scripts. Fingersticks several times a day. Denies any severe lows, ED visits or DKA since diagnosis. Runs most days.\n\nPMH: T1DM as above. PSH: wisdom teeth out at 18. Meds as above. Allergies: NKDA.\nFH: maternal aunt with Hashimoto thyroiditis; paternal grandfather with type 2 diabetes.\nSH: grad student, lives with a roommate. Never smoker. Alcohol rarely, less than one drink a month. No drugs.\n\nROS negative in full: no polyuria, vision change, numbness, chest pain, dyspnea, GI or GU complaints.\n\nExam: well appearing, vitals as charted. HEENT normal, TMs clear. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, insulin sites on abdomen and thighs without lipohypertrophy. Skin clear. Feet: no lesions or calluses, DP and PT pulses 2+, monofilament and vibration intact bilaterally. Neuro grossly normal.\nPHQ-2: 0.\n\nA/P\n1. Type 1 diabetes, by her report well controlled. Continue regimen per endocrinology. A1c, CMP, lipids, TSH (family history of Hashimoto plus T1DM), urine microalbumin/creatinine, CBC. Celiac screen with tTG IgA once since we have no record of one. Will request her endocrinology notes.\n2. Health maintenance: HIV and hep C screening today. Tdap given, last one was around age 11. Flu and COVID booster in a few weeks when the fall vaccines are in. Old student health records requested for Pap and vaccine history. Yearly dilated eye exam: she will book with an optometrist.\n3. Return in a year for a physical, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2022-09-16T14:40",
+              "body": "Hi Abigail, your labs from Tuesday are back. Kidney and liver tests, blood counts, cholesterol and thyroid are all normal, and there is no protein leaking into the urine. The celiac antibody, HIV and hepatitis C screens were negative. Your A1c is right where your endocrinologist would want it. Nothing to change. Good to meet you this week."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "outside_records",
+          "start": "2022-09-27T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior records received",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2010-11-09T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2010-11-09T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2010-11-09T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2011-01-11T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2011-05-17T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2016-10-18T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-06T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-27T13:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior University Student Health Service",
+              "author": "MA",
+              "date": "2022-09-27T11:05",
+              "body": "Records received by fax from her undergraduate student health service, 2017 to 2021, scanned to media.\n\nAbstracted:\n- Type 1 diabetes diagnosed spring 2019; care transferred to endocrinology at that time, basal-bolus insulin.\n- Wisdom teeth removed by oral surgery in 2018, uncomplicated.\n- Pap 2021: negative for intraepithelial lesion or malignancy.\n- Allergies: none recorded.\n- Immunizations: childhood series documented complete (hep B, MMR x2, varicella x2). Tdap and MenACWY at 11, MenACWY booster at 17, HPV quadrivalent x3 2010-2011, COVID Pfizer x2 April 2021. Entered into the immunization record.\n\nNo other problems listed. Forwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T16:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T16:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2022-10-04T16:50",
+              "body": "In for fall vaccines after class. Screening questions negative, VIS given. Flu quadrivalent 0.5 mL IM left deltoid. Pfizer bivalent booster IM right deltoid. Lot numbers in the immunization record. Sat 15 min, no reaction. Reminded her to check her sugar if she feels off tonight; she laughed and said she checks anyway."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-23a",
+          "kind": "portal_message",
+          "start": "2023-03-23T20:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "endocrinology visit update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endo appointment",
+              "author": "patient",
+              "date": "2023-03-23T20:14",
+              "body": "Hi, just letting you know I saw my endocrinologist on Tuesday. Everything was fine and nothing changed. You said you wanted their notes so I wasn't sure if they send them automatically?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endo appointment",
+              "author": "RN",
+              "date": "2023-03-24T09:02",
+              "body": "Thanks for the heads up. They don't always send them on their own, so I faxed a request to their office this morning. We'll let you know if anything in it needs attention."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "outside_records",
+          "start": "2023-03-29T13:20",
+          "service": "Endocrinology",
+          "reason": "endocrinology follow-up letter",
+          "labs": [
+            {"panel": null, "collected": "2023-03-21T10:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2023-03-29T13:20",
+              "body": "Date of visit: 03/21/2023\nRe: Abigail Lemieux, DOB 10/08/1999\n\nDear colleague,\n\nMs. Lemieux returns for routine follow-up of type 1 diabetes, diagnosed 2019. She remains on insulin glargine 20 units at bedtime and insulin aspart 8 units before meals, with a glucagon kit at home. Meter download reviewed: readings mostly in range, a few post-meal highs, no values below 70 and no symptomatic lows. Running regularly, adjusting food around runs on her own.\n\nExam: BP and weight stable. Injection sites without lipohypertrophy. Feet with normal sensation.\n\nA1c today at target.\n\nAssessment and plan: Type 1 diabetes, well controlled on a basal-bolus regimen. No dose change. Prescriptions renewed for glargine, aspart, pen needles, strips and glucagon. Return in 6 months with A1c.\n\nAllergies: NKDA.\n\nThank you for allowing us to share in her care.\n\nOutside endocrinology group"
+            }
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "outside_records",
+          "start": "2023-07-11T10:40",
+          "service": "Optometry",
+          "reason": "diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic Eye Examination",
+              "author": "optometry",
+              "date": "2023-07-11T10:40",
+              "body": "Diabetic eye examination report\nPatient: Abigail Lemieux   DOB: 10/08/1999\nExam date: 06/27/2023\n\nHistory: type 1 diabetes since 2019, on insulin. No visual complaints. No allergies to medications.\n\nCorrected visual acuity normal in each eye. Pupils equal and reactive, no APD. Intraocular pressures normal. Anterior segment unremarkable OU.\nDilated fundus exam: optic nerves pink and sharp with healthy cupping OU. Macula flat with good foveal reflex OU. Vessels normal caliber. No hemorrhages, microaneurysms or exudates in either eye.\n\nImpression: type 1 diabetes without diabetic retinopathy, both eyes.\nPlan: dilated exam again in 12 months.\n\nOutside optometry practice"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-19T09:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-19T09:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-19T09:10", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Microalbumin/Creatinine Ratio"}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-09-19T09:05"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-19T08:30"},
+            {"procedure": "Venipuncture", "performed": "2023-09-19T09:10"},
+            {"procedure": "Immunization administration", "performed": "2023-09-19T09:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2023-09-19T09:40",
+              "body": "Annual physical. Second year of her program, doing fine.\n\nT1DM: endocrinology letter from March reviewed, A1c at goal, no dose change. Still glargine 20 qhs, aspart 8 with meals, glucagon kit in her backpack. No lows needing help from anyone. Dilated eye exam in June, no retinopathy, report on file. Running 4-5 days a week.\n\nNo new problems. No new meds. NKDA. FH and SH unchanged; never smoker, alcohol rare.\n\nROS: negative.\nPHQ-9: 2, mostly sleep around deadlines.\n\nExam: vitals as charted, weight steady. HEENT normal. Neck supple, thyroid normal. Heart RRR. Lungs clear. Abdomen benign, injection sites fine. Feet: skin intact, pulses 2+, monofilament normal both feet. Neuro intact.\n\nA/P\n1. Type 1 diabetes, controlled per endo. CMP, lipids, TSH, urine microalbumin today. A1c deferred to endocrinology.\n2. Prevention: PCV20 today given diabetes. Flu and updated COVID next month once in stock. Pap due 2024. HIV/HCV already done.\n3. Physical next fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-09-21T12:15",
+              "body": "Abigail, your labs are all normal: kidney function, liver, cholesterol, thyroid, and the urine protein check. Nothing to do. See you next fall, or sooner if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T15:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T15:50"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-10-10T16:05",
+              "body": "Fall vaccines. Screening negative, VIS reviewed. Flu 0.5 mL IM L deltoid; 2023-24 Pfizer COVID IM R deltoid. Observed 15 minutes, tolerated well, left ambulatory."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

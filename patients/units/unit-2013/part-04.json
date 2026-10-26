@@ -1,0 +1,438 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001101",
+      "events": [
+        {
+          "id": "2022-01-12a",
+          "kind": "pharmacy",
+          "start": "2022-01-12T14:40",
+          "reason": "Mail-order prescription transfer",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Mail-order pharmacy: new prescriptions requested",
+              "author": "MA",
+              "date": "2022-01-12T14:40",
+              "body": "Fax from plan's mail-order pharmacy: pt enrolled in 90-day mail order for 2022, requesting new prescriptions for metformin 1000 mg, amlodipine 5 mg, atorvastatin 20 mg. Aspirin is OTC, not needed.\nPended to PCP with current sigs.\n\nPCP: signed and sent, 90 days x 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "office_visit",
+          "start": "2022-03-24T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "state": {
+            "weight_kg": 93.0,
+            "labs": {
+              "Hemoglobin A1c": 7.6,
+              "Glucose": 150
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-24T16:35",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-24T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-03-24T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "F/u DM, HTN, PAD",
+              "author": "PCP",
+              "date": "2022-03-24T17:20",
+              "body": "Doing well. Kept walking through the winter on a treadmill at the office building gym. Weight continues to come down slowly (92.6 kg). Numb feet unchanged; checks them every night. No calf pain walking, no chest pain or SOB. Taking all meds; mail order working.\n\nBP 137/87, HR 69.\nHeart regular, lungs clear. Feet: calluses pared down by him with pumice, skin intact, no ulcer, monofilament reduced, pulses diminished but present.\n\n1. T2DM w/ CKD 1, neuropathy - A1c today. Continue metformin and diet plan.\n2. HTN - 137/87 today, near goal. Continue amlodipine 5.\n3. PAD - walking, aspirin, statin.\n4. Hyperlipidemia - atorvastatin 20.\n\nRTC 3-4 mo."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-25a",
+          "kind": "portal_message",
+          "start": "2022-03-25T10:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c",
+              "author": "RN",
+              "date": "2022-03-25T10:20",
+              "body": "Hi Gary, PCP reviewed your labs. A1c is 7.5%, coming down nicely from 7.8% in November. Kidney tests normal. Keep it up! Next visit July."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-11a",
+          "kind": "portal_message",
+          "start": "2022-05-11T21:14",
+          "reason": "Referral request",
+          "orders": [
+            {
+              "id": "uro-2022",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "erectile dysfunction, type 2 diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Private question",
+              "author": "patient",
+              "date": "2022-05-11T21:14",
+              "body": "This is a little embarrassing to ask. For a few months now I have trouble keeping an erection. It used to be fine. Is this a diabetes thing? Could I see a urologist about it? I'd rather not go over it at my regular appointment if that's ok. Thanks, Gary"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Private question",
+              "author": "PCP",
+              "date": "2022-05-12T07:55",
+              "body": "Not embarrassing at all, Gary, and thank you for asking. Yes, diabetes is one of the most common reasons, through its effect on blood vessels and nerves, which you already know about from your feet. I've placed a referral to urology; their office will call you to schedule. If you notice any chest pain or shortness of breath with exertion in the meantime, please tell me right away, since the same blood vessel changes can affect the heart."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-29a",
+          "kind": "outside_records",
+          "start": "2022-06-29T16:10",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Optometry diabetic eye exam (exam 06/24/2022)",
+              "author": "optometry",
+              "date": "2022-06-29T16:10",
+              "body": "Diabetic eye examination 06/24/2022 - Gary Kowalczyk.\nAcuity with correction 20/20 each eye. Pressures normal.\nDilated retinal exam OU: no hemorrhages, microaneurysms or exudates. No diabetic retinopathy. No macular edema.\nRecommend annual dilated exam.\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2022-07-13a",
+          "kind": "office_visit",
+          "start": "2022-07-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {
+            "weight_kg": 91.4,
+            "labs": {
+              "Hemoglobin A1c": 7.2,
+              "Glucose": 146
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-07-13T08:30",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-13T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-07-13T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes f/u",
+              "author": "PCP",
+              "date": "2022-07-13T09:10",
+              "body": "S: Routine 4-month DM visit. Feels well, walking daily, eating to plan. Urology appointment 8/3. No chest discomfort, dyspnea or claudication. Feet numb, unchanged.\nO: BP 127/77, HR 65, wt 91.4 kg. Lungs clear, RRR. Feet intact, no ulcer.\nA/P: T2DM - A1c today, BMP. HTN at goal. Continue all meds. Urology pending for ED. RTC November for annual labs.\n\nAddendum 7/14: A1c 7.2%, best since he joined the practice."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-15a",
+          "kind": "portal_message",
+          "start": "2022-07-15T09:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c 7.2",
+              "author": "PCP",
+              "date": "2022-07-15T09:00",
+              "body": "Gary, A1c 7.2% - lowest since you've been with us, down a full point from last summer. Kidney numbers fine. That's all your work. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-08a",
+          "kind": "outside_records",
+          "start": "2022-08-08T11:30",
+          "reason": "Urology consult letter",
+          "conditions": [
+            {
+              "label": "Erectile dysfunction",
+              "action": "diagnosed",
+              "onset": "2022-02-01",
+              "note": "organic, secondary to diabetes, per urology 08/03/2022"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sildenafil 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth about 1 hour before sexual activity as needed; no more than once daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Erectile dysfunction (prescribed by urology)"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-2022",
+              "action": "done",
+              "date": "2022-08-08T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology consultation (visit 08/03/2022)",
+              "author": "urology",
+              "date": "2022-08-08T11:30",
+              "body": "UROLOGY ASSOCIATES\nNew patient consultation - 08/03/2022\nRe: Gary Kowalczyk, 61 M\n\nReferred for: erectile dysfunction.\n\nHPI: Six months of difficulty maintaining erections sufficient for intercourse. Onset gradual. No penile curvature or pain. Has type 2 diabetes with peripheral neuropathy. No pelvic surgery or trauma.\n\nMedications (as reported): metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 20 mg daily, aspirin 81 mg daily. No OTC medications or supplements.\nAllergies: ACE inhibitor (cough).\nSocial: never smoker, no alcohol.\nROS: denies chest pain, palpitations, shortness of breath.\n\nExam: BP 138/86, pulse 78. Otherwise unremarkable, including genitourinary exam. Pedal pulses decreased bilaterally.\n\nData: Most recent hemoglobin A1c 7.2% (PCP records).\n\nImpression: Organic erectile dysfunction secondary to diabetes mellitus (vascular and neuropathic contribution likely).\n\nPlan:\n- Sildenafil 50 mg by mouth about one hour before sexual activity as needed, no more than once in 24 hours. May increase to 100 mg if inadequate response; discussed side effects (headache, flushing, nasal congestion, visual tinge).\n- Do not take with any nitrate medication (nitroglycerin, isosorbide). Seek care for an erection lasting more than 4 hours.\n- Continue diabetes and vascular risk management with PCP.\n- Follow up in urology as needed.\n\nThank you for the referral.\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "pharmacy",
+          "start": "2022-08-24T10:45",
+          "reason": "Insurance quantity limit",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Sildenafil - plan quantity limit",
+              "author": "MA",
+              "date": "2022-08-24T10:45",
+              "body": "Pharmacy called: pt's plan covers sildenafil 50 mg up to 6 tablets per 30 days; urology wrote for #10. Pharmacy will fill #6 on insurance. Pt aware, says the cash price for the generic is low and he'll pay out of pocket if he needs more. No prior auth pathway for quantity override on this plan. FYI to PCP, no action."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-20T12:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-20T12:16"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-20T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2022-10-20T12:30",
+              "body": "Flu (quadrivalent) L deltoid, Pfizer bivalent COVID booster R deltoid. VIS for both. 15 min observation, fine. Last COVID dose 11/6/2021."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "office_visit",
+          "start": "2022-11-16T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, annual labs",
+          "state": {
+            "weight_kg": 89.6,
+            "labs": {
+              "Hemoglobin A1c": 7.3,
+              "Glucose": 148,
+              "Low Density Lipoprotein": 129,
+              "Total Cholesterol": 212,
+              "Triglycerides": 238,
+              "High Density Lipoprotein": 42,
+              "Microalbumin/Creatinine Ratio": 43
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-11-16T10:20",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-11-16T10:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-16T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-16T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-11-16T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-11-16T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual DM visit",
+              "author": "PCP",
+              "date": "2022-11-16T11:00",
+              "body": "SUBJECTIVE: Saw urology 8/3 for ED; started sildenafil 50 prn, using it occasionally, works. Diet and walking continue; weight 89.8 kg (was 95.0 a year ago). Feet numb, stable, no wounds. No exertional symptoms, no claudication. Flu and bivalent COVID 10/20.\nMeds reconciled: metformin 1000 BID, amlodipine 5, atorvastatin 20, aspirin 81, sildenafil 50 prn (urology). Urology letter lists lisinopril - not taking since 6/2020 (ACE-I cough).\n\nOBJECTIVE: BP 139/79, HR 66, SpO2 96%.\nGen: well. CV: regular rhythm, no murmur. Resp: clear. Ext: no edema.\nFoot exam: skin dry, small metatarsal calluses, no ulcer or maceration; monofilament diminished both feet; DP/PT diminished bilaterally.\n\nASSESSMENT/PLAN:\n1. T2DM with CKD 1 and polyneuropathy - annual A1c, CMP, UACR today.\n2. HTN - amlodipine 5.\n3. Hyperlipidemia - lipids today, atorvastatin 20.\n4. PAD, mild - stable.\n5. ED - sildenafil per urology. Reminded: never with nitrates.\n6. Obesity - BMI now below 30; continue.\n\nRTC 4-5 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-18a",
+          "kind": "portal_message",
+          "start": "2022-11-18T15:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Annual labs",
+              "author": "PCP",
+              "date": "2022-11-18T15:30",
+              "body": "Hi Gary,\nA1c 7.2%, holding steady. Kidney filtration (eGFR 99) and liver tests normal; urine albumin 42, unchanged. LDL 122, HDL 41, triglycerides 247. Blood count normal.\nNo medication changes. See you in the spring."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

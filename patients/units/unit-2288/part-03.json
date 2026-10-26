@@ -1,0 +1,84 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002288",
+      "events": [
+        {
+          "id": "2023-01-24a",
+          "kind": "outside_records",
+          "start": "2023-01-24T13:30",
+          "reason": "Cardiology annual letter received",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Annual Follow-up (01/17/2023)", "author": "cardiology", "date": "2023-01-24T13:30", "body": "Cardiology, amyloid clinic follow-up, 01/17/2023\n\nOne year on tafamidis, taking it daily without side effects. Breathless only on hills; edema controlled on furosemide 20 mg. No chest pain, no syncope, no palpitations.\nExam: BP and heart rate normal, regular rhythm. JVP normal. No edema. Lungs clear.\nImpression: wild-type ATTR cardiac amyloidosis, stable symptoms.\nPlan: continue tafamidis 61 mg daily and furosemide 20 mg daily. Primary care to continue kidney and potassium checks. Return in one year.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "telephone",
+          "start": "2023-02-07T11:15",
+          "reason": "Prior authorization renewal",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Tafamidis PA renewal", "author": "RN", "date": "2023-02-07T11:15", "body": "Specialty pharmacy called: tafamidis prior authorization up for annual renewal, cardiology submitting. They asked us to confirm he's still on furosemide and atorvastatin for their profile; confirmed. Patient has 3 weeks of capsules on hand."}
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "office_visit",
+          "start": "2023-03-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-21T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-03-21T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-03-21T10:45", "body": "Neurology added entacapone in December; he thinks mornings are maybe a little easier, hard to say. Wife agrees it's not dramatic.\nNeurology asked us to keep an eye on mood. PHQ-9 6 today: low energy and less interest in his puzzles, sleep fine, no thoughts of self-harm. He says he's 'just quieter.' Offered a referral to a counselor who sees people with Parkinson's; he'd rather not right now, and his wife will let us know if that changes.\nCardiac: stable, cardiology letter from January reviewed.\nExam: hypomimia, soft voice, rest tremor R. Heart regular. Lungs clear. No edema.\nA/P\n1. PD: on entacapone per neurology.\n2. Mood disorder related to PD: mild; counseling offered, declined for now; rescreen at each visit.\n3. ATTR-wt cardiac amyloidosis: BMP today.\n4. Achalasia, CAD: stable.\nAWV in the fall."}
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "portal_message",
+          "start": "2023-03-22T08:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2023-03-22T08:05", "body": "Ron, kidney function and potassium from yesterday are stable and fine on the furosemide. No changes."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "medications": [
+            {"drug_text": "entacapone 200 MG Oral Tablet", "action": "stop", "reason": "Stopped by neurology 6/2023, no added benefit"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-09-26T09:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-26T09:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-26T09:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2023-09-26T09:00"}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2023-09-26T09:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-26T09:37"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-09-26T09:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2023-09-26T10:00", "body": "AWV, with wife.\nMed reconciliation: he brought bottles, no entacapone among them. Says neurology stopped it in June because it wasn't adding anything; we never got that note. Removed from list. Current: carbidopa/levodopa 25/100 TID, pramipexole ER 1.5 mg, tafamidis 61 mg, furosemide 20 mg, atorvastatin 20 mg, aspirin 81 mg.\nFunction: independent in self-care, slower. No falls. TUG 13 s. Mini-Cog 5/5.\nMood: PHQ-9 5, still declines counseling.\nExam: rest tremor R, hypomimia. Heart regular, no murmur. Lungs clear. No edema.\nVaccines: high-dose flu, updated COVID, and RSV vaccine today (heart disease, age).\nLabs today. Return in 6 months."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "portal_message",
+          "start": "2023-12-12T18:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Appointment", "author": "patient", "date": "2023-12-12T18:30", "body": "Can we move my March appointment to the afternoon? Mornings are when I am slowest. Thank you, Ron"},
+            {"type": "Patient Message", "title": "RE: Appointment", "author": "front desk", "date": "2023-12-13T09:10", "body": "Hi Ron, done: you're now 3/19 at 2:30 pm."}
+          ]
+        }
+      ]
+    }
+  ]
+}

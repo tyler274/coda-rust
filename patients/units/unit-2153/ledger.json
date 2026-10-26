@@ -1,0 +1,1480 @@
+{
+  "unit": "unit-2153",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002153",
+      "given": "Theo",
+      "family": "Esposito",
+      "birth_date": "1986-12-14",
+      "address_line": "9 Wapping Bend Road",
+      "phone": "+1-201-555-0137",
+      "email": "theo.esposito@example.test",
+      "marital_status": "single",
+      "summary": "Adult with cystic fibrosis and pancreatic insufficiency, bronchiectasis and nasal polyposis, followed by an outside CF center, who joins the practice in 2024. Vitamin A deficiency with night blindness and conjunctival keratinization is found weeks later and repleted; in 2026 weight loss and steatorrhea lead to a higher enzyme dose, a second vitamin A course and a CFTR modulator.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:12",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2024-08-27T10:12",
+              "author": "front desk",
+              "body": "Caller wants to join the practice. Lives in Deerfield, works days at a warehouse as an inventory clerk, prefers early appointments. Says he has CF and gets his lung care at a CF center, wants a regular doctor for everything else. PPO card info entered. Booked new patient visit Tue 9/10 at 8:00. Signed release sent by email; records request faxed to his prior primary care office today."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "outside_records",
+          "start": "2024-09-04T14:30",
+          "reason": "Prior primary care records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2020-06-11T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "date": "2024-09-04T14:30",
+              "author": "MA",
+              "body": "38 pages received by fax from prior primary care office, abstracted for the new patient visit.\n\nProblem list on their summary: cystic fibrosis with pancreatic insufficiency, bronchiectasis, chronic rhinosinusitis with nasal polyps. CF care listed as managed by the CF center.\nSurgeries: sinus surgery (FESS) 2023; T&A as a child.\nMeds per their list (all from CF center): Creon with meals and snacks, CF multivitamin, vitamin D3 2000 units, azithromycin 250 mg MWF, albuterol inhaler, saline nasal spray.\nAllergies: sulfa antibiotics, IV contrast. No reactions listed.\nImmunizations: Tdap 06/2020. Childhood series documented complete, including hep B.\nNo abnormal labs in the packet. Scanned to media."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:00",
+          "end": "2024-09-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Cystic fibrosis",
+              "action": "history",
+              "note": "With exocrine pancreatic insufficiency; followed at an adult CF center"
+            },
+            {
+              "label": "Bronchiectasis",
+              "action": "history",
+              "note": "Chronic, CF-related"
+            },
+            {
+              "label": "Chronic rhinosinusitis with nasal polyps",
+              "action": "history",
+              "note": "FESS 2023"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth with each meal",
+              "dose": {
+                "value": 1,
+                "unit": "capsule"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pancreatic insufficiency"
+            },
+            {
+              "drug_text": "amylase 30000 UNT / lipase 6000 UNT / protease 19000 UNT Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 3 capsules by mouth with each snack",
+              "dose": {
+                "value": 3,
+                "unit": "capsule"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pancreatic insufficiency"
+            },
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (CF fat-soluble formulation) by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (2,000 units) by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[IU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "azithromycin 250 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times weekly (Mon/Wed/Fri)",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bronchiectasis"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs twice daily",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "BID",
+              "route": "Inhalation",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "sodium chloride 9 MG/ML Nasal Spray",
+              "action": "historical",
+              "sig": "2 sprays in each nostril twice daily",
+              "dose": {
+                "value": 2,
+                "unit": "spray"
+              },
+              "frequency": "BID",
+              "route": "Nasal",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "type": "allergy"
+            },
+            {
+              "substance": "Iodinated contrast media",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              77
+            ],
+            "hr": 74,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 64.0,
+            "height_cm": 175.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Inventory clerk"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-09-10T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-09-10T09:40",
+              "author": "PCP",
+              "body": "37M joining the practice. Has cystic fibrosis with pancreatic insufficiency and is seen every few months at an adult CF center, which writes all his CF prescriptions. He wants us for general medicine, prevention and coordination. Prior PCP records reviewed.\n\nHe feels at his usual baseline. Daily cough with some sputum is his normal and has not changed. Sinuses better since the 2023 surgery. Stools manageable on his Creon. No recent antibiotics courses.\n\nPMH: CF with pancreatic insufficiency; bronchiectasis; chronic rhinosinusitis with nasal polyps.\nPSH: FESS 2023. T&A at age 8.\nMeds (CF center): Creon 36,000 x1 with meals, Creon 6,000 x3 with snacks; CF multivitamin daily; vitamin D3 2000 units daily; azithromycin 250 mg M/W/F; albuterol HFA 2 puffs BID; 0.9% saline nasal spray 2 sprays each side BID.\nAllergies: sulfonamide antibiotics, iodinated contrast (he does not remember the reactions).\nFH: second cousin with CF. Maternal grandmother had type 2 diabetes. Father has high blood pressure.\nSH: single, lives in Deerfield. Inventory clerk. Never smoked, no alcohol, no drugs.\nPHQ-2: 0.\n\nExam: slim, comfortable, conversational. Vitals as recorded. Conjunctivae clear, nares without visible polyps, oropharynx clear. Neck supple, no adenopathy. Lungs clear today, no crackles or wheeze. Heart RRR without murmur. Abdomen soft, nontender. No clubbing or edema. Skin without rash.\n\nA/P\n1. CF with pancreatic insufficiency, bronchiectasis, CRSwNP: stable, managed by CF center. Asked him to have their letters sent here after each visit.\n2. Health maintenance: CBC, CMP, lipids today; one-time HIV and hep C screening, he agrees. Flu shot and pneumococcal vaccine (chronic lung disease) at a nurse visit in October once flu vaccine is in. Tdap current (2020).\n3. Return in a year for a physical, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "height_cm": 175.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2024-09-12T16:05",
+              "author": "PCP",
+              "body": "Theo, everything from Tuesday came back fine. Blood counts and kidney and liver tests are normal, cholesterol is reasonable for now and needs nothing, and the HIV and hepatitis C screens are negative. No changes. We'll see you in October for the flu shot and pneumonia vaccine."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "portal_message",
+          "start": "2024-10-03T21:18",
+          "reason": "Vision at night, dry eyes",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Eyes",
+              "date": "2024-10-03T21:18",
+              "author": "patient",
+              "body": "Hi, not urgent but wanted to ask. Over the last while it's gotten really hard to see once it gets dark, driving home from work at dusk is getting sketchy. My eyes also feel dry and irritated a lot, kind of gritty. Should I get this looked at? I see the CF clinic on the 14th."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Eyes",
+              "date": "2024-10-04T08:22",
+              "author": "PCP",
+              "body": "Thanks for letting me know. With CF, trouble seeing in the dark plus dry eyes can come from low levels of some vitamins you absorb with fat, so please bring this up first thing at your CF visit on the 14th, they will likely check levels. I'll also send them a note. Until then, avoid driving after dark if you can. If you get eye pain, redness that won't settle, or any loss of vision during the day, call us the same day."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and pneumococcal vaccines",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T07:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T07:45"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-10-22T07:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Immunizations",
+              "date": "2024-10-22T07:55",
+              "author": "RN",
+              "body": "Here before work for vaccines per PCP plan. Afebrile, no current illness. Allergies reviewed (sulfa antibiotics, IV contrast), no vaccine reactions in the past. VIS given for both.\nInfluenza vaccine 0.5 mL IM left deltoid.\nPCV20 0.5 mL IM right deltoid.\nObserved 15 min, tolerated well. Mentioned his CF visit last week, they started him on vitamin A capsules."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "outside_records",
+          "start": "2024-10-24T11:15",
+          "reason": "CF center consult letter and pathology",
+          "conditions": [
+            {
+              "label": "Vitamin A deficiency",
+              "action": "diagnosed",
+              "onset": "2024-10-14",
+              "note": "Night blindness, conjunctival keratinization, dry scaly skin; retinol 14 ug/dL",
+              "icd10": "E50.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "vitamin A 10000 UNT Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily for 8 weeks",
+              "dose": {
+                "value": 10000,
+                "unit": "[IU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Vitamin A deficiency"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-14T10:20",
+              "resulted": "2024-10-17T13:00",
+              "results": [
+                {
+                  "test": "Vitamin A",
+                  "loinc": "2923-1",
+                  "unit": "ug/dL",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-10-14T10:40",
+              "text": "SPECIMEN: Skin, left dorsal forearm, punch biopsy (3 mm).\nCLINICAL HISTORY: Adult with cystic fibrosis and pancreatic insufficiency; dry scaly skin; night blindness.\nGROSS: One tan skin punch, 3 mm diameter, 0.4 cm deep, bisected and entirely submitted.\nMICROSCOPIC: Sections show skin with compact hyperkeratosis overlying an epidermis of normal thickness. No parakeratosis, no interface change, no inflammatory infiltrate of note. Dermis and adnexa unremarkable. No fungal elements on PAS stain.",
+              "conclusion": "Skin, left forearm, punch biopsy: hyperkeratosis. Findings are compatible with the clinical impression of vitamin A deficiency.",
+              "issued": "2024-10-18T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "CF Center Pulmonology Visit (10/14/2024)",
+              "date": "2024-10-24T11:15",
+              "author": "pulmonology",
+              "body": "Adult Cystic Fibrosis Program, Pulmonary Medicine\nDate of visit: 10/14/2024\nRe: Theo Esposito, DOB 12/14/1986\n\nDear Colleague,\n\nI saw Theo today in CF clinic. Thank you for the heads-up about his eyes.\n\nHe describes several months of steadily worsening vision in dim light, now enough that he avoids driving at dusk, along with eyes that keep feeling dry and irritated. He also feels he has been picking up more chest colds and skin infections than usual over the same stretch, none needing a clinic visit. On review of his eating, most of what he eats is rice and bread; he takes very few vegetables, meat, eggs or dairy.\n\nCurrent regimen: Creon 36,000 units lipase with meals and 18,000 units with snacks; CF multivitamin daily; vitamin D3 2000 units daily; azithromycin 250 mg Mon/Wed/Fri; albuterol HFA 2 puffs twice daily; saline 0.9% nasal spray 2 sprays per nostril twice daily.\nAllergies: sulfonamide antibiotics, iodinated contrast media.\n\nOn examination his skin is dry and scaly. There are keratinized patches of the bulbar conjunctiva. The rest of the examination, including chest, was unremarkable.\n\nSerum vitamin A (retinol) is low at 14 ug/dL. I took a punch biopsy of a scaly patch on the left forearm; pathology shows hyperkeratosis.\n\nImpression: Vitamin A deficiency with nyctalopia and conjunctival xerosis (keratinizing squamous metaplasia of the conjunctiva) and cutaneous hyperkeratosis, on a background of CF with pancreatic insufficiency and a very limited diet. CF lung and sinus disease otherwise stable.\n\nPlan:\n- Vitamin A 10,000 units by mouth daily for 8 weeks, then stop and recheck a level.\n- Met with our CF dietitian today to broaden his diet and take enzymes with every meal and snack.\n- Continue the rest of the regimen unchanged.\n- Return in about 3 months.\n\nSincerely,\nAttending physician, Adult CF Program"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Indexing: CF Center Letter and Pathology",
+              "date": "2024-10-24T11:30",
+              "author": "MA",
+              "body": "CF center letter from 10/14 and skin biopsy path report received by fax, scanned and routed to PCP. New med from CF center: vitamin A 10,000 units daily x 8 weeks, added to med list as outside med."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2024-10-24T17:40",
+              "author": "PCP",
+              "body": "Reviewed CF clinic letter and biopsy. Vitamin A deficiency with night blindness and conjunctival changes, retinol 14. On 8 weeks of vitamin A through CF center, plus dietitian. Added to problem list. Nothing further needed from us; CF center rechecking the level after the course."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "portal_message",
+          "start": "2024-11-04T12:31",
+          "reason": "Outside COVID vaccine",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-11-01T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid shot",
+              "date": "2024-11-04T12:31",
+              "author": "patient",
+              "body": "Got the new covid shot Friday at the pharmacy, Pfizer. Just so you have it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Covid shot",
+              "date": "2024-11-04T14:02",
+              "author": "MA",
+              "body": "Thank you Theo, it's in your chart now with the date of 11/1."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "pharmacy",
+          "start": "2024-12-09T09:50",
+          "reason": "Prior authorization request, Creon",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization Request",
+              "date": "2024-12-09T09:50",
+              "author": "MA",
+              "body": "Fax from insurer: annual prior authorization renewal needed for Creon 36,000 and 6,000 capsules. Prescriber on file is the CF center, not us. Called CF center pharmacy line, they will submit the renewal. Faxed the request over to them. Left patient a voicemail so he isn't surprised if the pharmacy holds the fill a day or two."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-30a",
+          "kind": "outside_records",
+          "start": "2025-01-30T10:05",
+          "reason": "CF center follow-up letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-21T09:40",
+              "resulted": "2025-01-24T12:00",
+              "results": [
+                {
+                  "test": "Vitamin A",
+                  "loinc": "2923-1",
+                  "unit": "ug/dL",
+                  "value": 41
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "CF Center Pulmonology Follow-up (1/21/2025)",
+              "date": "2025-01-30T10:05",
+              "author": "pulmonology",
+              "body": "Adult Cystic Fibrosis Program, Pulmonary Medicine\nDate of visit: 01/21/2025\nRe: Theo Esposito, DOB 12/14/1986\n\nDear Colleague,\n\nTheo returned after finishing his 8-week vitamin A course in mid-December. He can see normally in low light again and is driving after dark without trouble. His eyes no longer feel dry or irritated, and the skin on his arms is noticeably less dry. He has been working with our dietitian and now eats a wider range of foods, including vegetables, eggs and chicken most days.\n\nRegimen: Creon 36,000 units with meals and 18,000 units with snacks; CF multivitamin daily; vitamin D3 2000 units daily; azithromycin 250 mg M/W/F; albuterol HFA 2 puffs BID; saline nasal spray BID.\nAllergies: sulfonamide antibiotics; iodinated contrast media.\n\nExam: conjunctivae now clear without keratinized patches. Skin with only mild dryness. Chest clear.\n\nRetinol today 41 ug/dL, back in the normal range.\n\nAssessment: Vitamin A deficiency, repleted, with resolution of night blindness and eye findings. CF otherwise stable.\nPlan: No further vitamin A beyond his CF multivitamin. Keep enzymes with all meals and snacks. Recheck vitamin levels with his annual CF labs. Return in about 3 to 6 months.\n\nSincerely,\nAttending physician, Adult CF Program"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2025-01-30T16:50",
+              "author": "PCP",
+              "body": "CF center follow-up reviewed. Retinol 41 after the course, night vision and eyes back to normal. Vitamin A capsules done; marked completed on med list. Vitamin A deficiency stays on the list for now since they will keep checking levels."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "portal_message",
+          "start": "2025-04-08T07:14",
+          "reason": "Work note request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Note for work",
+              "date": "2025-04-08T07:14",
+              "author": "patient",
+              "body": "My new supervisor wants something on file saying I have regular medical appointments every few months (the CF clinic visits take most of a day with the drive). Could you write a short note? Doesn't need details."
+            },
+            {
+              "type": "Letter",
+              "title": "Work Letter",
+              "date": "2025-04-08T12:40",
+              "author": "PCP",
+              "body": "To whom it may concern,\n\nTheo Esposito is a patient of this practice. He has a chronic medical condition that requires specialty clinic visits roughly every three months, and each visit may take most of a working day including travel. Please allow time off for these appointments.\n\nPrimary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "telephone",
+          "start": "2025-06-09T15:22",
+          "reason": "Cancel appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2025-06-09T15:22",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's check-in, mid-year inventory count at work all week. Says he feels fine. Offered later June slots, he'd rather just do his physical in the fall. Booked 9/29 8:00 physical."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "outside_records",
+          "start": "2025-08-20T13:10",
+          "reason": "CF center routine letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "CF Center Pulmonology Visit (8/11/2025)",
+              "date": "2025-08-20T13:10",
+              "author": "pulmonology",
+              "body": "Adult Cystic Fibrosis Program\nVisit 08/11/2025, routine quarterly\nRe: Theo Esposito, DOB 12/14/1986\n\nDear Colleague,\n\nRoutine visit. Theo reports he is at his usual baseline: chronic cough unchanged, no recent exacerbation, sinuses quiet, stools controlled on current enzymes. Night vision remains normal. Diet varied.\n\nMeds: Creon 36,000 units with meals and 18,000 with snacks; CF multivitamin; vitamin D3 2000 units daily; azithromycin 250 mg M/W/F; albuterol HFA 2 puffs BID; saline 0.9% nasal spray BID.\nAllergies: sulfonamide antibiotics; iodinated contrast media.\n\nExam unchanged from prior, chest clear.\n\nAssessment and plan: CF with pancreatic insufficiency, bronchiectasis and nasal polyposis, stable. No changes. Return in 3 to 4 months.\n\nAttending physician, Adult CF Program"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-29a",
+          "kind": "annual_physical",
+          "start": "2025-09-29T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              68
+            ],
+            "hr": 83,
+            "rr": 18,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 64.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-29T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-29T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 59
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-29T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-29T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-29T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-29T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-29T10:15",
+              "author": "PCP",
+              "body": "38M for yearly exam. Doing well. CF clinic in August said stable, no changes. Breathing at his baseline, no flare this year. Night vision normal since the vitamin A course last fall, eyes fine. Eating a broader diet than last year. Bowels regular for him. Working full time.\n\nMeds (CF center): Creon 36,000 x1 with meals, 6,000 x3 with snacks; CF multivitamin; D3 2000 units; azithromycin 250 M/W/F; albuterol 2 puffs BID; saline nasal BID.\nAllergies: sulfa antibiotics, iodinated contrast.\nNever smoker, no alcohol. PHQ-9: 1.\n\nExam: thin build, well. Vitals reviewed. Eyes: conjunctivae clear. Nasal mucosa pink. Lungs clear without crackles. Cardiac regular, no murmur. Abdomen soft, nontender, no masses. Skin with slight dryness on shins, no scaling. No clubbing.\n\nA/P\n- Preventive: flu vaccine today. He gets his COVID shot at the pharmacy. CBC and CMP drawn. Pneumococcal done 2024, Tdap 2020.\n- CF, bronchiectasis, CRSwNP: per CF center, stable.\n- Vitamin A deficiency: repleted, monitored by CF center.\nSee in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "portal_message",
+          "start": "2025-10-01T13:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-10-01T13:20",
+              "author": "PCP",
+              "body": "Hi Theo, Monday's blood count and chemistry panel are normal. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "portal_message",
+          "start": "2025-10-20T19:02",
+          "reason": "Outside COVID vaccine",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-17T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid vaccine",
+              "date": "2025-10-20T19:02",
+              "author": "patient",
+              "body": "FYI did this year's covid booster at the pharmacy Friday 10/17."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T20:47",
+          "reason": "Weight loss, stool changes",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Losing weight",
+              "date": "2026-03-10T20:47",
+              "author": "patient",
+              "body": "I've been dropping weight since around January without trying, my belt is two notches tighter. Bathroom trips are more often and the stools are big, greasy looking, float and are hard to flush. My skin on my arms and legs is also really dry and flaky again even with lotion. I'm taking the Creon like always. Should I come in or just call CF clinic? My next CF appointment isn't until May."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Losing weight",
+              "date": "2026-03-11T08:15",
+              "author": "PCP",
+              "body": "Please come in so I can get a weight and look you over. Front desk will call with a time next week. I'll also be in touch with your CF team about seeing you sooner than May."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "office_visit",
+          "start": "2026-03-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Unintentional weight loss",
+          "vitals": {
+            "bp": [
+              111,
+              76
+            ],
+            "hr": 78,
+            "rr": 18,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 61.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-17T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: Weight Loss",
+              "date": "2026-03-17T09:30",
+              "author": "PCP",
+              "body": "S: 39M with CF/pancreatic insufficiency. Since about mid-January has lost weight without trying. Stools more frequent, bulky, float, hard to flush. Skin on arms and shins drier and flaking despite moisturizer. Says he takes Creon with meals and snacks as prescribed. No belly pain, no blood in stool, no travel. Breathing at baseline, no fevers.\n\nMeds: unchanged from CF center list (Creon 36,000 with meals, 6,000 x3 with snacks; CF multivitamin; D3; azithromycin M/W/F; albuterol; saline spray).\nAllergies: sulfa abx, IV contrast.\n\nO: Weight 61.6 kg, down from 64 range last fall. Thin. Lungs clear. Abdomen soft, nontender, no organomegaly. Dry, scaly patches on the extensor surfaces of both forearms and shins. Conjunctivae clear.\n\nA/P: Unintentional weight loss with steatorrhea-type stools and recurrent dry, scaly skin in CF with pancreatic insufficiency. Most likely malabsorption with enzyme dosing no longer enough; also worry about fat-soluble vitamins again given last year's vitamin A deficiency. His CF team does stool fat and vitamin levels in house, so I'm not duplicating labs here. Called the CF clinic nurse line: moved up to 4/13. He'll message if he loses more weight before then or develops pain or fever."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-23a",
+          "kind": "outside_records",
+          "start": "2026-04-23T10:40",
+          "reason": "CF center visit letter",
+          "medications": [
+            {
+              "drug_text": "amylase 30000 UNT / lipase 6000 UNT / protease 19000 UNT Delayed Release Oral Capsule",
+              "action": "stop",
+              "reason": "Dose increased by CF center"
+            },
+            {
+              "drug_text": "amylase 30000 UNT / lipase 6000 UNT / protease 19000 UNT Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2 capsules by mouth with each meal (with one 36,000 capsule) and 4 capsules with each snack",
+              "dose": {
+                "value": 4,
+                "unit": "capsule"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pancreatic insufficiency"
+            },
+            {
+              "drug_text": "vitamin A 10000 UNT Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily for 8 weeks",
+              "dose": {
+                "value": 10000,
+                "unit": "[IU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Vitamin A deficiency"
+            },
+            {
+              "drug_text": "elexacaftor 100 MG / ivacaftor 75 MG / tezacaftor 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every morning with fat-containing food",
+              "dose": {
+                "value": 2,
+                "unit": "tablet"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Cystic fibrosis"
+            },
+            {
+              "drug_text": "ivacaftor 150 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every evening with fat-containing food, about 12 hours after the morning dose",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Cystic fibrosis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-13T10:15",
+              "resulted": "2026-04-13T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-13T10:15",
+              "resulted": "2026-04-16T11:00",
+              "results": [
+                {
+                  "test": "Vitamin A",
+                  "loinc": "2923-1",
+                  "unit": "ug/dL",
+                  "value": 19
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-13T10:30",
+              "resulted": "2026-04-14T09:20",
+              "results": [
+                {
+                  "test": "Fecal fat, qualitative",
+                  "loinc": "2270-7",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-13T10:15",
+              "resulted": "2026-04-13T15:10",
+              "results": [
+                {
+                  "test": "Alanine aminotransferase",
+                  "loinc": "1742-6",
+                  "unit": "U/L",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate aminotransferase",
+                  "loinc": "1920-8",
+                  "unit": "U/L",
+                  "value": 22
+                },
+                {
+                  "test": "Bilirubin, total",
+                  "loinc": "1975-2",
+                  "unit": "mg/dL",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "CF Center Pulmonology Visit (4/13/2026)",
+              "date": "2026-04-23T10:40",
+              "author": "pulmonology",
+              "body": "Adult Cystic Fibrosis Program, Pulmonary Medicine\nDate of visit: 04/13/2026\nRe: Theo Esposito, DOB 12/14/1986\n\nDear Colleague,\n\nThanks for getting Theo in to us early. He is a 39-year-old man with CF and pancreatic insufficiency whom we treated for vitamin A deficiency in October 2024 after he presented with night blindness and dry, irritated eyes. For the past three months he has been losing weight without meaning to, and his skin has been getting worse. He passes frequent, bulky stools that float and are difficult to flush. His skin has become drier and scalier, mostly on the arms and shins, even though he moisturizes. No abdominal pain, no blood in the stool, no recent travel. He eats a normal, unrestricted diet and uses no alcohol or drugs.\n\nCurrent regimen: Creon 36,000 units with meals and 18,000 units with snacks; CF multivitamin; vitamin D3 2000 units daily; azithromycin 250 mg M/W/F; albuterol HFA 2 puffs BID; saline 0.9% nasal spray BID.\nAllergies: sulfonamide antibiotics; iodinated contrast media.\n\nExam: Weight 59.5 kg. He looks thin. Dry, scaly patches over the extensor surfaces of the arms and legs. Chest clear. Abdomen soft, nontender.\n\nLabs: hemoglobin 12.4 g/dL with MCV 89 fL, a normocytic anemia. Qualitative fecal fat positive. Retinol 19 ug/dL, low again. ALT 24 U/L, AST 22 U/L, total bilirubin 0.5 mg/dL, normal.\n\nAssessment:\n1. Weight loss with fat malabsorption on current enzyme dosing.\n2. Vitamin A deficiency, recurrent, with skin changes.\n3. Normocytic anemia.\n4. CF lung and sinus disease stable. Genotype F508del/F508del, eligible for elexacaftor/tezacaftor/ivacaftor.\n\nPlan:\n- Increase pancrelipase to 48,000 units lipase with meals (one Creon 36,000 plus two Creon 6,000) and 24,000 units with snacks (four Creon 6,000).\n- Vitamin A 10,000 units daily for 8 weeks.\n- Start elexacaftor/tezacaftor/ivacaftor: two tablets (elexacaftor 100 mg/tezacaftor 50 mg/ivacaftor 75 mg) every morning and one ivacaftor 150 mg tablet every evening, about 12 hours apart, each with fat-containing food and his enzymes. Our specialty pharmacy will ship it. We will check ALT, AST and bilirubin every 3 months for the first year, then yearly; today's baseline is normal.\n- Seen by our dietitian today.\n- Weight check with you in about 6 to 8 weeks; we will see him back in 3 months with a vitamin A level.\n\nSincerely,\nAttending physician, Adult CF Program"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2026-04-23T17:05",
+              "author": "PCP",
+              "body": "CF letter 4/13 reviewed. Weight 59.5 there, fecal fat positive, retinol 19, Hgb 12.4 normocytic. Creon raised to 48k with meals / 24k with snacks; vitamin A 10,000 units daily x8 wk restarted. Starting elexacaftor/tezacaftor/ivacaftor (Trikafta) 2 tabs AM + ivacaftor 150 mg PM through the CF center, which follows LFTs every 3 months the first year; baseline LFTs normal. Med list updated. Will book him for a weight and CBC check early June."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.5,
+            "labs": {
+              "Hemoglobin": 12.4,
+              "Mean Corpuscular Volume": 89
+            }
+          }
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "pharmacy",
+          "start": "2026-05-05T11:25",
+          "reason": "Prior authorization, Creon quantity",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization: Quantity Limit",
+              "date": "2026-05-05T11:25",
+              "author": "MA",
+              "body": "Pharmacy faxed us: plan rejected the new Creon 6,000 fill for exceeding quantity limit. CF center wrote the new dose, so faxed the rejection to their pharmacist, who is filing the override. Update 15:40: CF center called back, override approved. Pt notified by voicemail, pharmacy filling today."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "office_visit",
+          "start": "2026-06-09T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weight and anemia follow-up",
+          "vitals": {
+            "bp": [
+              121,
+              84
+            ],
+            "hr": 89,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 61.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-09T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 202
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-06-09T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-09T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: Weight, Anemia",
+              "date": "2026-06-09T08:55",
+              "author": "PCP",
+              "body": "Weight recheck after CF clinic raised his enzymes in April. He's taking the higher Creon dose with every meal and snack, and Trikafta since late April (2 tablets with breakfast, ivacaftor with dinner) with no rash or belly pain; stools fewer and more formed, not floating much now. Skin less flaky. Finishing the vitamin A capsules this week. Appetite good.\n\nWeight 61.0 kg (59.5 at CF clinic 4/13). Thin, well appearing. Lungs clear. Skin on forearms and shins dry but much less scaly.\n\nA/P\n- Weight loss/malabsorption: turning around on the higher enzyme dose. CF center sees him in July.\n- Normocytic anemia (Hgb 12.4 in April): CBC today.\n- CF: on elexacaftor/tezacaftor/ivacaftor through the CF center, which is checking liver tests every 3 months; next with them in July.\n- Vitamin A deficiency: on repletion through CF center, level due with them in July.\nPhysical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "labs": {
+              "Hemoglobin": 13.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-11a",
+          "kind": "portal_message",
+          "start": "2026-06-11T12:10",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood Count",
+              "date": "2026-06-11T12:10",
+              "author": "PCP",
+              "body": "Theo, your hemoglobin is 13.0, up from 12.4 in April. Still a touch below normal, but moving the right way as your absorption improves. We'll repeat it at your physical in the fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood Count",
+              "date": "2026-06-11T18:44",
+              "author": "patient",
+              "body": "Good to hear, thanks."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "outside_records",
+          "start": "2026-07-22T09:30",
+          "reason": "CF center follow-up letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-13T09:50",
+              "resulted": "2026-07-16T13:15",
+              "results": [
+                {
+                  "test": "Vitamin A",
+                  "loinc": "2923-1",
+                  "unit": "ug/dL",
+                  "value": 36
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-13T09:50",
+              "resulted": "2026-07-13T15:30",
+              "results": [
+                {
+                  "test": "Alanine aminotransferase",
+                  "loinc": "1742-6",
+                  "unit": "U/L",
+                  "value": 27
+                },
+                {
+                  "test": "Aspartate aminotransferase",
+                  "loinc": "1920-8",
+                  "unit": "U/L",
+                  "value": 25
+                },
+                {
+                  "test": "Bilirubin, total",
+                  "loinc": "1975-2",
+                  "unit": "mg/dL",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "CF Center Pulmonology Follow-up (7/13/2026)",
+              "date": "2026-07-22T09:30",
+              "author": "pulmonology",
+              "body": "Adult Cystic Fibrosis Program\nDate of visit: 07/13/2026\nRe: Theo Esposito, DOB 12/14/1986\n\nDear Colleague,\n\nThree-month follow-up after we increased his enzymes and started elexacaftor/tezacaftor/ivacaftor. He takes it morning and evening with food and has had no side effects. Theo completed the 8 weeks of vitamin A in early June. Stools are now formed and less frequent, and his skin is much improved. He feels well and his breathing is at baseline.\n\nMeds: Creon 36,000 one with meals plus Creon 6,000 two with meals, and Creon 6,000 four with snacks; elexacaftor/tezacaftor/ivacaftor two tablets every morning and ivacaftor 150 mg every evening; CF multivitamin; vitamin D3 2000 units daily; azithromycin 250 mg M/W/F; albuterol HFA 2 puffs BID; saline nasal spray BID.\nAllergies: sulfonamide antibiotics; iodinated contrast media.\n\nWeight 62.0 kg, up from 59.5 in April. Skin mildly dry, no scaling. Chest clear.\nRetinol 36 ug/dL. ALT 27 U/L, AST 25 U/L, total bilirubin 0.7 mg/dL, normal.\n\nPlan: continue pancrelipase 48,000 units with meals and 24,000 with snacks. Continue elexacaftor/tezacaftor/ivacaftor; liver tests again at the next visit, every 3 months through the first year, then yearly. Stay on the CF multivitamin. Return in 3 months.\n\nAttending physician, Adult CF Program"
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0
+          }
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T06:52",
+          "reason": "Schedule physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-08-18T06:52",
+              "author": "patient",
+              "body": "Can I get my yearly physical on the books for sometime in late September? Early morning works best before my shift."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-08-18T09:30",
+              "author": "front desk",
+              "body": "You're set for Tuesday 9/22 at 8:00 am. We can give your flu shot that day too."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:00",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Vitamin A deficiency|E50.9": {
+        "code": "E50.9",
+        "display": "Vitamin A deficiency, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule": {
+        "code": "1373325",
+        "display": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
+        "ingredient": "amylase",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "amylase 30000 UNT / lipase 6000 UNT / protease 19000 UNT Delayed Release Oral Capsule": {
+        "code": "855499",
+        "display": "amylase 30000 UNT / lipase 6000 UNT / protease 19000 UNT Delayed Release Oral Capsule",
+        "ingredient": "amylase",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "elexacaftor 100 MG / ivacaftor 75 MG / tezacaftor 50 MG Oral Tablet": {
+        "code": "2257011",
+        "display": "elexacaftor 100 MG / ivacaftor 75 MG / tezacaftor 50 MG Oral Tablet",
+        "ingredient": "elexacaftor",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ivacaftor 150 MG Oral Tablet": {
+        "code": "1243046",
+        "display": "ivacaftor 150 MG Oral Tablet",
+        "ingredient": "ivacaftor",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "sodium chloride 9 MG/ML Nasal Spray": {
+        "code": "351179",
+        "display": "sodium chloride 9 MG/ML Nasal Spray",
+        "ingredient": "sodium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "vitamin A 10000 UNT Oral Capsule": {
+        "code": "313638",
+        "display": "vitamin A 10000 UNT Oral Capsule",
+        "ingredient": "vitamin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Alanine aminotransferase": {
+        "code": "1742-6",
+        "display": "Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Aspartate aminotransferase": {
+        "code": "1920-8",
+        "display": "Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bilirubin, total": {
+        "code": "1975-2",
+        "display": "Bilirubin.total [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fecal fat, qualitative": {
+        "code": "2270-7",
+        "display": "Fat [Presence] in Stool",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Vitamin A": {
+        "code": "2923-1",
+        "display": "Retinol [Mass/volume] in Serum or Plasma",
+        "unit": "ug/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"multivitamin Oral Tablet\""
+    ]
+  }
+}

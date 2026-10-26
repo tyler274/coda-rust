@@ -1,0 +1,853 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002007",
+      "given": "Chad",
+      "family": "Whitney",
+      "birth_date": "1968-11-05",
+      "address_line": "18 Glendale Street, Easthampton, MA 01027",
+      "phone": "+1-802-555-0156",
+      "email": "chad.whitney@example.test",
+      "marital_status": "single",
+      "summary": "High school science teacher who joined in 2023 with hypercholesterolemia and chronic low back pain; hypertension diagnosed late 2024. A 2025 flame burn of the abdominal wall led to excision and grafting complicated by postoperative ileus, and in March 2026 he survived a refractory VF arrest on a basketball court and now has an ICD.",
+      "events": [
+        {
+          "id": "2023-08-14a",
+          "kind": "telephone",
+          "start": "2023-08-14T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "author": "front desk",
+              "date": "2023-08-14T10:20",
+              "body": "Caller is a 54 y/o man looking for a new PCP; his previous doctor retired in the spring and he hasn't been seen since. Teaches high school science, wants something before school starts back. Membership explained, he's fine with it. Booked new patient physical Tue 8/22 at 9:00. Intake packet and records release emailed. Asked him to bring his pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T09:00",
+          "end": "2023-08-22T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit, establish care",
+          "conditions": [
+            {
+              "label": "Pure hypercholesterolemia",
+              "action": "history",
+              "onset": "2018-03-01",
+              "note": "on atorvastatin since 2018 per patient"
+            },
+            {
+              "label": "Chronic low back pain",
+              "action": "history",
+              "note": "mechanical, years"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "note": "20 pack-years, quit 2019"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "atorvastatin 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypercholesterolemia"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth as needed for back pain",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "low back pain"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 86.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Low Density Lipoprotein": 108,
+              "High Density Lipoprotein": 45,
+              "Triglycerides": 140,
+              "Total Cholesterol": 181,
+              "Hemoglobin A1c": 5.4,
+              "Prostate Specific Antigen": 0.9
+            },
+            "bp": [
+              122,
+              78
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school science teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2023-08-22T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T10:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "former smoker, 20 pack-years, quit 2019"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-08-22T10:05",
+              "body": "NEW PATIENT — establish care\n\n54M, HS science teacher, here to establish. Prior PCP retired this spring; records release signed today.\n\nHPI: Feels well. Two longstanding issues:\n1. High cholesterol — put on atorvastatin 20 by his old doctor in 2018. Takes it every night, no muscle aches. Doesn't remember his numbers.\n2. Low back — achy lower back on and off for years, worse after long days on his feet in the lab or yard work, settles with rest and Tylenol. No radiation down the legs, no numbness or weakness, no bowel or bladder change, no night pain, no weight loss. Uses acetaminophen 500 mg maybe a few times a month.\n\nPMH: hyperlipidemia, chronic mechanical LBP. No surgeries. No hospitalizations.\nMeds: atorvastatin 20 mg nightly; acetaminophen 500 mg PRN.\nAllergies: NKDA.\nFHx: Father died suddenly at 64, \"his heart,\" had high blood pressure. Mother — type 2 diabetes and high cholesterol. One sibling with high blood pressure.\nSHx: Teaches chemistry and physics at the high school. Smoked about a pack a day for 20 years, quit 2019, no relapses, no vaping. Alcohol a couple of drinks a month. No drugs. Plays pickup basketball on weekends, walks.\n\nROS: negative except as above. No chest pain, no exertional symptoms on the court, no palpitations, no syncope.\n\nExam: Well-appearing, NAD. Vitals reviewed and normal, BP fine today. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Back: no midline tenderness, mild paraspinal tightness L>R, full flexion with mild discomfort, SLR negative bilaterally. Strength and reflexes symmetric in the legs. Skin no rash. No edema.\n\nPHQ-2 0. AUDIT-C 1.\n\nA/P:\n# Hypercholesterolemia — continue atorvastatin 20. Lipids and CMP today.\n# Chronic low back pain, mechanical, no red flags — core and hip stretching handout, acetaminophen as needed. Revisit if it limits him.\n# Former smoker, 20 pk-yr, quit 4 yrs ago — meets criteria for annual low-dose CT lung screening. Discussed what it can and can't do, false positives. He'd like to do it. Ordered.\n# Health maintenance — CBC, CMP, lipids, A1c (mom with diabetes). One-time HIV and hep C screens. Talked through PSA pros/cons; he wants it checked. He says colonoscopy at 50 was clean — will confirm when records arrive. Flu/COVID/Shingrix in October when the fall vaccines are in.\n\nRTC for physical next fall, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-25a",
+          "kind": "portal_message",
+          "start": "2023-08-25T08:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2023-08-25T08:40",
+              "body": "Hi Chad — your bloodwork from Tuesday is back. Kidney and liver tests, blood counts and A1c are all normal, and the HIV and hepatitis C screens were negative. PSA is in the normal range for your age. On the atorvastatin your LDL is a little over 100, which is a reasonable place for you right now — keep taking it as you have been. The lung CT scheduling office should be calling you. Have a good start to the school year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-06a",
+          "kind": "outside_records",
+          "start": "2023-09-06T14:10",
+          "reason": "prior practice records received",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2014-06-03T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care Practice",
+              "author": "MA",
+              "date": "2023-09-06T14:10",
+              "body": "Records received by fax from prior PCP (practice closed after physician retirement), 38 pages, scanned to media.\n\nAbstracted for the chart:\n- Hyperlipidemia; atorvastatin 20 mg started 03/2018. Lipids on file 2019-2022, LDL roughly 100-115 on treatment.\n- Screening colonoscopy 2019: no polyps, repeat in 10 years.\n- Tdap 06/2014.\n- Tobacco: documented ~1 ppd, quit 2019.\n- No surgical history listed. BP readings in the old notes all normal.\nForwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "imaging",
+          "start": "2023-09-19T15:45",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-09-19T15:45",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (BASELINE)\nIndication: 54-year-old former smoker, 20 pack-years, quit 2019.\nTechnique: Low-dose helical CT of the chest without IV contrast.\nComparison: None.\nFindings: No pulmonary nodules. No consolidation or pleural effusion. Central airways patent. Heart size normal; no pericardial effusion. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable. No suspicious osseous lesion.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening with low-dose CT in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-09-19T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "author": "PCP",
+              "date": "2023-09-20T07:55",
+              "body": "Baseline screening CT negative, Lung-RADS 1. Repeat in a year. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:30",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T15:37"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-10-10T15:39"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-10-10T15:55",
+              "body": "In after school for vaccines. Screening questions negative, VIS sheets given for all three.\nFlu (quadrivalent) 0.5 mL IM L deltoid.\nCOVID 2023-24 Pfizer 0.3 mL IM R deltoid.\nShingrix dose 1 0.5 mL IM L deltoid, separate site from flu.\nTolerated well, observed 15 min. Told to expect a sore arm and maybe a rough day after the Shingrix. Dose 2 due in 2-6 months — booked for mid-January."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "nurse_visit",
+          "start": "2024-01-16T15:40",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-01-16T15:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-01-16T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2024-01-16T15:55",
+              "body": "Shingrix #2 given 0.5 mL IM R deltoid. After dose 1 he had a tired, achy day and a sore arm, nothing more. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "pharmacy",
+          "start": "2024-02-20T11:15",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2024-02-20T11:15",
+              "body": "Pharmacy fax: atorvastatin 20 mg, last filled by old prescriber, no refills left. Sent 90-day supply with 3 refills per PCP standing protocol. Lipids done 8/23."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "low back pain follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-16T15:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-referral-2024",
+              "action": "placed",
+              "order": "Physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "chronic mechanical low back pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Low Back",
+              "author": "PCP",
+              "date": "2024-04-16T16:20",
+              "body": "S: Back to talk about his back. Same pattern he's had for years — dull ache across the low back by the end of a long day, stiff in the mornings for a few minutes. Nothing new. Wants to get ahead of it before he's doing yard work and basketball all summer. Tylenol a few times a month still does the job. Denies leg pain, numbness, weakness, saddle symptoms, bladder/bowel change, fevers, weight loss.\n\nO: Vitals ok. Walks normally, heel and toe walk fine. No spinal tenderness. Paraspinal tightness bilat lumbar. Flexion to mid-shin. SLR neg both sides. Strength 5/5 LE, patellar and Achilles reflexes 2+ symmetric. Sensation intact.\n\nA/P: Chronic mechanical low back pain, stable, no red flags, no imaging indicated.\n- PT referral for core strengthening and a home program — he likes the idea of having a routine.\n- Acetaminophen PRN as before.\n- Pain 3/10 today.\nF/u at his physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-02a",
+          "kind": "outside_records",
+          "start": "2024-05-02T09:30",
+          "reason": "physical therapy evaluation received",
+          "orders": [
+            {
+              "id": "pt-referral-2024",
+              "action": "done",
+              "date": "2024-05-02T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Physical Therapy Initial Evaluation",
+              "author": "physical therapy",
+              "date": "2024-05-02T09:30",
+              "body": "Outpatient Physical Therapy — Initial Evaluation (seen 04/29/2024)\nReferral: chronic mechanical low back pain.\n\nSubjective: Intermittent low back ache for several years, worse with prolonged standing and lifting, eased by rest. Goal: stay active with weekend basketball and yard work without flares.\nObjective: Lumbar flexion mildly limited by end-range tightness; extension full. Hip flexor and hamstring tightness bilaterally. Core endurance reduced (plank 35 s). Neuro screen negative; slump and SLR negative.\nAssessment: Mechanical low back pain with deconditioning of trunk stabilizers and posterior chain tightness. Good rehab potential.\nPlan: 4 visits over 6 weeks, then independent home exercise program. Program issued today; patient demonstrated correctly.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-14a",
+          "kind": "outside_records",
+          "start": "2024-06-14T10:00",
+          "reason": "physical therapy discharge summary",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Physical Therapy Discharge Summary",
+              "author": "physical therapy",
+              "date": "2024-06-14T10:00",
+              "body": "Outpatient Physical Therapy — Discharge Summary\nDiagnosis: chronic mechanical low back pain.\nVisits attended: 4 of 4.\nProgress: Reports fewer end-of-day aches and no flares during the treatment period. Trunk endurance and hamstring flexibility improved. Independent and consistent with home exercise program.\nStatus: Goals met. Discharged to home program. Re-referral welcome if symptoms return.\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T15:30",
+          "end": "2024-10-22T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "bp": [
+              148,
+              92
+            ]
+          },
+          "vitals": {
+            "bp": [
+              148,
+              92
+            ]
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T16:25",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T16:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-22T16:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-22T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T16:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-22T16:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual screening, former smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-22T16:20",
+              "body": "ANNUAL PHYSICAL\n\n55M. Doing well. Back has behaved since he finished PT in June; does the home exercises \"most days.\" Still on atorvastatin nightly, no side effects. No chest pain, dyspnea, palpitations or syncope, including on the basketball court. No headaches or vision change.\n\nMeds: atorvastatin 20 mg daily, acetaminophen 500 mg prn (rare).\nAllergies: NKDA.\nSocial: teaching, busy fall. Ex-smoker since 2019. ETOH a couple drinks/month.\nFHx unchanged: father sudden cardiac death at 64 with HTN; mother DM2/HLD; sibling HTN.\n\nVitals: BP 148/92 on arrival and about the same sitting quietly at the end of the visit. Others normal. First elevated reading we have for him; old records all normal.\n\nExam: NAD. Fundi not examined. Neck no bruit. Heart RRR, no murmur, no gallop. Lungs clear. Abdomen soft, nontender, no bruit. Pulses 2+ and equal. No edema. Back nontender.\nPHQ-2 0, AUDIT-C 1.\n\nA/P:\n# Elevated BP without a diagnosis of hypertension yet — one office reading; with his family history this needs follow-through. Buy an upper-arm cuff, check mornings and evenings for a week or two, bring the log. Recheck visit in about a month. Lower salt, keep moving. No medication today.\n# Hypercholesterolemia — lipids today, continue atorvastatin 20.\n# Lung screening — due, ordered.\n# HM: CMP, CBC, A1c today. Flu and COVID given. Shingrix done. Colonoscopy 2019 normal, next 2029. PSA last year normal, will revisit next year.\n"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T12:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-10-24T12:05",
+              "body": "Chad, labs from Tuesday look fine: kidney function, potassium, sugar and A1c normal, cholesterol on the atorvastatin about where it was last year. Nothing to change there. The thing I care most about right now is that blood pressure — please do keep that home log and bring it to the recheck we set up for late November."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "imaging",
+          "start": "2024-10-29T16:10",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-10-29T16:10",
+              "text": "LOW-DOSE CT CHEST FOR LUNG CANCER SCREENING (ANNUAL)\nClinical: former smoker, 20 pack-years, quit 2019.\nTechnique: Low-dose non-contrast CT of the chest.\nComparison: 09/19/2023.\nLungs: No nodules. No airspace disease, no effusion, no pneumothorax.\nMediastinum: No lymphadenopathy. Normal heart size.\nUpper abdomen and bones: Unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Next annual low-dose CT in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-10-29T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "author": "PCP",
+              "date": "2024-10-30T07:40",
+              "body": "Annual LDCT negative again, Lung-RADS 1. Portal note sent. Due 10/2025."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-27a",
+          "kind": "office_visit",
+          "start": "2024-11-27T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure recheck",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2024-10-22"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "essential hypertension"
+            }
+          ],
+          "state": {
+            "bp": [
+              152,
+              94
+            ]
+          },
+          "vitals": {
+            "bp": [
+              158,
+              96
+            ]
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-27T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-dec-2024",
+              "action": "placed",
+              "order": "Basic metabolic panel",
+              "category": "lab",
+              "reason": "starting ACE inhibitor"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Blood Pressure",
+              "author": "PCP",
+              "date": "2024-11-27T09:05",
+              "body": "BP recheck. Brought a neat handwritten log, upper-arm cuff, AM and PM for 12 days: almost all readings in the 150s over the 90s, average about 152/94. No headache, chest pain, visual change, dyspnea or edema. Didn't change much on salt — admits the school cafeteria is a problem.\n\nOffice BP today 158/96 (repeat after 5 min similar). HR regular.\nHeart RRR no murmur, lungs clear, no edema.\n\nA/P: Essential hypertension — confirmed by home readings and two office visits. Strong family history (father died suddenly at 64 with HTN, sibling HTN). Labs last month: normal creatinine and potassium, A1c normal.\n- Start lisinopril 10 mg once daily. Went over side effects: lightheadedness early on, dry cough, rare lip/tongue swelling — stop and call or go to the ED if that happens.\n- BMP in about 10 days to check potassium and creatinine; ordered, can go to the lab Friday the 6th.\n- Keep logging. Recheck visit Dec 9.\n- Diet: salt is the big one for him. DASH handout."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "portal_message",
+          "start": "2024-12-04T21:15",
+          "reason": "lightheaded on standing",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lightheaded",
+              "author": "patient",
+              "date": "2024-12-04T21:15",
+              "body": "Hi, since starting the blood pressure pill last week I get a quick lightheaded feeling when I stand up fast. It goes away in a second or two. Otherwise fine. Is that normal or should I stop it? My home numbers are way down. Chad"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lightheaded",
+              "author": "RN",
+              "date": "2024-12-05T08:20",
+              "body": "Hi Chad, thanks for letting us know. That can happen in the first couple of weeks on lisinopril as your body adjusts to a lower pressure. Keep taking it, stand up in stages, and drink plenty of water. Please still get your bloodwork Friday and keep your visit Monday the 9th so the doctor can check you. If you pass out, feel your heart racing, or the lightheadedness is getting worse, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-06a",
+          "kind": "lab_only",
+          "start": "2024-12-06T07:20",
+          "reason": "BMP after starting lisinopril",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-06T07:20",
+              "resulted": "2024-12-06T13:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-06T07:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-dec-2024",
+              "action": "done",
+              "date": "2024-12-06T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP result",
+              "author": "PCP",
+              "date": "2024-12-06T15:30",
+              "body": "BMP one week on lisinopril: creatinine and potassium unchanged from October, sodium normal. OK to continue. Will review at Monday's visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "office_visit",
+          "start": "2024-12-09T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up, lightheaded on standing",
+          "state": {
+            "bp": [
+              124,
+              80
+            ]
+          },
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 84
+          },
+          "measure": [
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-12-09T16:05",
+              "text": "12-lead ECG at rest. Sinus rhythm. PR, QRS and QT intervals within normal limits. Normal axis. No ST-segment or T-wave abnormality. No prior for comparison.",
+              "conclusion": "Normal sinus rhythm. Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-09T15:45"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2024-12-09T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Hypertension Follow-up",
+              "author": "PCP",
+              "date": "2024-12-09T16:30",
+              "body": "Subjective: Follow-up of hypertension diagnosed on 11/27. He picked up the lisinopril two days after that visit, so he's 10 days in, hasn't missed a dose. Since starting he's had a brief lightheaded feeling when he stands up fast — getting up from the desk after grading, out of a chair at home. Lasts a second or two, no room-spinning, no blackout, never fallen. Otherwise feels fine. No chest pain, shortness of breath, palpitations. No orthopnea or PND, no ankle swelling. No cough so far. Home readings have come down to the 120s/70s-80s.\n\nMeds: lisinopril 10 mg daily (new 11/27), atorvastatin 20 mg, acetaminophen PRN.\nAllergies: NKDA.\n\nObjective: BP 120/78, HR 84. Orthostatic check lying then standing at 1 and 3 minutes: no drop meeting orthostatic criteria; he said he felt faintly lightheaded for a moment on first standing, which passed. Heart regular, no murmur. Lungs clear. No edema. Neuro nonfocal, gait normal.\nBMP from 12/6: creatinine and electrolytes normal.\nECG today: normal sinus rhythm, normal intervals, no ST-T changes.\n\nAssessment/Plan:\n1. Essential hypertension, responding well to lisinopril 10 mg — home and office readings at goal already.\n2. Brief lightheadedness on rapid standing, early in ACE-inhibitor therapy, no orthostatic hypotension on testing, normal ECG and labs. Expect it to fade. Rise in stages, keep up fluids, especially on long teaching days. Call if it worsens, if he faints, or if he has palpitations.\n- Continue lisinopril 10 mg. Keep checking BP a few times a week.\n- Follow-up in 3 months."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002110",
+      "given": "Christopher",
+      "family": "Hebert",
+      "birth_date": "1976-07-20",
+      "address_line": "27 Fruit Street, Apt 2B",
+      "phone": "+1-508-555-0154",
+      "email": "christopher.hebert@example.test",
+      "marital_status": "single",
+      "summary": "Unemployed former stock clerk with poorly controlled type 2 diabetes who joins in 2022 and is found to have syphilitic aortitis with aortic regurgitation, then ankylosing spondylitis. Repeated MSSA infections (foot ulcer bacteremia, mitral then aortic endocarditis) lead to heart failure and aortic root and valve replacement in late 2025.",
+      "events": [
+        {
+          "id": "2022-03-07a",
+          "kind": "telephone",
+          "start": "2022-03-07T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2022-03-07T10:12", "body": "Caller wants to transfer care here; says his old office has had three different doctors in two years and he wants one person to call. Medicaid card verified, plan active. First visit set for Tue 3/22 at 9:00, 60 min slot. Release of records signed by phone (will sign paper at visit) and request faxed to his prior primary care office. Asked him to bring all pill bottles and his insulin pen."}
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "establish_care",
+          "start": "2022-03-22T09:00",
+          "end": "2022-03-22T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; diabetes; short of breath with exertion",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with hyperglycemia", "action": "diagnosed", "onset": "2016-01-01", "note": "long-standing, poorly controlled per patient and prior records pending"},
+            {"label": "Long-term current use of insulin", "action": "diagnosed", "onset": "2019-01-01"},
+            {"label": "Chronic low back pain", "action": "diagnosed", "onset": "2015-01-01"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "onset": "2007-01-01"},
+            {"label": "Recurrent acute iridocyclitis", "icd10": "H20.029", "action": "history", "onset": "2010-01-01", "note": "recurrent anterior uveitis, quiet now"},
+            {"label": "Recurrent oral aphthae", "icd10": "K12.0", "action": "history", "onset": "2005-01-01"},
+            {"label": "Other psychoactive substance dependence, in remission", "icd10": "F19.21", "action": "history", "onset": "1998-01-01", "note": "remote intravenous drug use, in remission"},
+            {"label": "Syphilis, unspecified", "icd10": "A53.9", "action": "history", "onset": "2002-01-01", "note": "diagnosed about 20 years ago, never treated per patient"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "type 2 diabetes"},
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 30 units under the skin at bedtime", "dose": {"value": 30, "unit": "unit"}, "frequency": "QHS", "route": "Subcutaneous", "course": "chronic", "reason": "type 2 diabetes"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "diabetes, kidney protection"},
+            {"drug_text": "naproxen 250 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily as needed for back pain", "dose": {"value": 250, "unit": "mg"}, "frequency": "BID PRN", "route": "Oral", "course": "chronic", "reason": "low back pain"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [144, 56], "weight_kg": 84.0, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 9.4, "Glucose": 196, "Low Density Lipoprotein": 112, "High Density Lipoprotein": 38, "Triglycerides": 186, "Microalbumin/Creatinine Ratio": 12}},
+          "vitals": {"bp": [144, 56], "hr": 104},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm", "temp_c"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "1-2 drinks per month"},
+            {"item": "Occupation", "value": "Unemployed; former warehouse stock clerk"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-03-22T10:15", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-03-22T10:15", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-03-22T10:15", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Total Cholesterol"}]},
+            {"panel": null, "collected": "2022-03-22T10:15", "resulted": "2022-03-23T14:40", "results": [
+              {"test": "Hemoglobin A1c", "value": 9.4},
+              {"test": "Microalbumin/Creatinine Ratio"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis B Surface Antigen", "text": "Nonreactive"},
+              {"test": "Hepatitis B Surface Antibody", "text": "Negative (not immune)"},
+              {"test": "Rapid Plasma Reagin", "text": "Reactive, titer 1:8"},
+              {"test": "Treponema pallidum antibody", "loinc": "24110-9", "text": "Reactive"}
+            ]}
+          ],
+          "orders": [
+            {"id": "cards-referral-2022", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "diastolic murmur, wide pulse pressure, exertional dyspnea"}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, unspecified", "date": "2021-05-11T00:00"},
+            {"vaccine": "COVID-19, unspecified", "date": "2021-06-08T00:00"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, high MDM", "performed": "2022-03-22T09:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-03-22T10:05", "body": "45M transferring care. Wants a doctor who will actually pick up the phone.\n\nCC: diabetes, and winded on stairs for the last few months.\n\nHPI: Says the sugars have never been good. On metformin 1000 twice a day and glargine 30 units at night, takes both most days, misses the evening metformin when he skips supper. Doesn't check fingersticks much, meter is somewhere. No hypoglycemia that he knows of. Separately, since around the holidays he gets short of breath going up the two flights to his apartment and is more tired than he thinks he should be. No chest pain. Feels his heart thump sometimes. No leg swelling noticed.\n\nPMH (per pt, old records requested): T2DM. Low back pain for years, worse mornings, uses naproxen when it flares. Eye inflammation (uveitis) several times in the past, treated with drops by an eye doctor, nothing in over a year. Mouth canker sores that come and go. Told he had syphilis around age 25 at a clinic; he never went back for the shots. Used IV drugs years ago, none in a long time, not interested in discussing further today but open about it.\nPSH: tooth pulled at 20. Right thigh abscess drained at 40.\nMeds: metformin 1000 BID, glargine 30u qHS, lisinopril 10 daily, naproxen 250 BID prn.\nAllergies: none known.\nFH: father diabetic from age 50. Mother high blood pressure. Brother has ankylosing spondylitis. Father's father had an AAA.\nSH: lives alone, apartment. Out of work, last job stocking shelves in a warehouse. Smokes about half a pack a day, has for ~15 yrs. Drinks once or twice a month. COVID shots x2 last spring.\n\nROS: + exertional dyspnea, fatigue, occasional pounding heartbeat. No fever, weight change, orthopnea, syncope. No vision changes or red eye now.\n\nExam: Thin-ish, comfortable at rest. BP 144/56, HR 104, rest of vitals in flowsheet. Bounding radial pulse. Heart: tachycardic, regular, soft blowing diastolic murmur along the left sternal border, no gallop. Lungs clear. No JVD. Abd benign. Ext: no edema, feet with intact skin, monofilament normal, pulses palpable. Spine: stiff with forward bending, nontender.\n\nA/P:\n1. Diastolic murmur with wide pulse pressure and exertional symptoms. Concerned about aortic regurgitation. Referring to cardiology for exam and echo, asked them to see him soon. Given the syphilis history, checking RPR with treponemal antibody today.\n2. T2DM, poorly controlled by history. A1c, CMP, lipids, urine microalbumin today. Will adjust once I see numbers and his records.\n3. Back pain: long-standing, continue naproxen as he uses it. Will revisit.\n4. Tobacco: advised to quit, not ready. Will keep asking.\n5. Screening: HIV, hep C, hep B serologies today. Colon screening and vaccines next visit.\nReturn 3 months, sooner after cardiology."}
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "portal_message",
+          "start": "2022-03-24T16:20",
+          "reason": "lab results",
+          "orders": [
+            {"id": "id-referral-2022", "action": "placed", "order": "Infectious disease referral", "category": "referral", "to": "Infectious Disease", "reason": "reactive RPR 1:8 and treponemal antibody, untreated syphilis, suspected aortic involvement"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Result note: new patient labs", "author": "PCP", "date": "2022-03-24T16:05", "body": "RPR reactive at 1:8 with reactive treponemal antibody, fits the untreated syphilis he described. Has never been treated, and with the murmur I want ID involved before anyone gives penicillin so they can decide on a spinal tap. Referral placed. A1c 9.4. HIV, hep C, hep B surface antigen all nonreactive; not immune to hep B, will vaccinate. Kidney function and blood count fine."},
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2022-03-24T16:20", "body": "Hi Christopher, your blood work is back. The syphilis test is positive, which matches what you told me. It has never been treated, so I am sending you to an infectious disease doctor who will treat it, likely with a short series of penicillin shots. Their office will call you. Your A1c (3 month sugar average) is 9.4, which is high; we will work on that together. Your kidneys and blood counts look good. You are not immune to hepatitis B, so I will offer that vaccine at your next visit. Call or text if you want to talk any of this over."},
+            {"type": "Patient Message", "title": "RE: Your lab results", "author": "patient", "date": "2022-03-24T19:48", "body": "ok thanks. i kind of figured. will that be why my heart is acting up"},
+            {"type": "Patient Message", "title": "RE: Your lab results", "author": "PCP", "date": "2022-03-25T08:10", "body": "It might be part of it. Untreated syphilis can affect the aorta and the valve next to it. The cardiologist and the echo will tell us. Keep that appointment."}
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "outside_records",
+          "start": "2022-04-12T11:30",
+          "reason": "records from prior primary care office",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records received", "author": "MA", "date": "2022-04-12T11:30", "body": "38 pages received by fax from prior primary care office, scanned to media. Summary for PCP: diabetes listed since 2016, insulin glargine added 2019. Lisinopril for diabetes. Naproxen for back pain. Uveitis episodes seen by outside ophthalmology. Colon cancer screening not done there. Last eye exam 2020, no retinopathy noted. No cardiology or ID notes in the packet. Med list matches what pt brought."}
+          ]
+        },
+        {
+          "id": "2022-05-09a",
+          "kind": "specialist_visit",
+          "start": "2022-05-09T13:30",
+          "service": "Cardiology",
+          "reason": "aortic regurgitation evaluation",
+          "conditions": [
+            {"label": "Syphilitic aortitis", "icd10": "A52.02", "action": "diagnosed", "onset": "2022-05-09"},
+            {"label": "Nonrheumatic aortic (valve) insufficiency", "icd10": "I35.1", "action": "diagnosed", "onset": "2022-05-09"},
+            {"label": "Mitral valve prolapse", "action": "diagnosed", "onset": "2022-05-09"}
+          ],
+          "medications": [
+            {"drug": "carvedilol 6.25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with food", "dose": {"value": 6.25, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "palpitations, aortic regurgitation (cardiology)"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "aortitis (cardiology)"}
+          ],
+          "vitals": {"bp": [145, 55], "hr": 110},
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2022-05-09T12:50", "text": "PA and lateral views. The ascending aorta is dilated. Heart size at the upper limit of normal. Lungs clear. No pleural effusion or pneumothorax. Bones unremarkable.", "conclusion": "Dilated ascending aorta."},
+            {"study": "Transthoracic echocardiogram", "performed": "2022-05-09T14:20", "text": "Technically adequate study. Aortic root dilated. Aortic valve leaflets thickened with a regurgitant jet in diastole. Mitral valve shows prolapse of the leaflets. Left ventricular systolic function normal. Right ventricle normal in size and function. No pericardial effusion.", "conclusion": "Aortic root dilatation with aortic regurgitation. Mitral valve prolapse."}
+          ],
+          "orders": [
+            {"id": "cards-referral-2022", "action": "done", "date": "2022-05-09T13:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology consultation (received 5/31/2022)", "author": "cardiology", "date": "2022-05-31T09:40", "body": "Outside cardiology group. Visit date 05/09/2022.\n\nReason for consult: murmur and exertional symptoms, referred by primary care.\n\nHistory: 45-year-old man who has had shortness of breath and fatigue with exertion for roughly half a year, plus intermittent palpitations; at night he notices his heart racing. Primary care checked syphilis serology, reactive. He reports an untreated syphilis diagnosis about two decades ago.\n\nMedications at visit: metformin, insulin glargine, lisinopril, naproxen as needed.\nAllergies: NKDA.\nSocial: current smoker, half a pack daily; rare alcohol.\nFamily: paternal grandfather with AAA.\n\nExam: BP 145/55, pulse 110 and collapsing in quality. On auscultation there is a high-pitched blowing early diastolic murmur at the left sternal border, third interspace, loudest with him sitting up and leaning forward at end-expiration. Lungs clear. No edema.\n\nStudies today: Chest radiograph with a dilated ascending aorta. Echocardiogram with aortic root dilatation and aortic regurgitation; incidental mitral valve prolapse.\n\nImpression:\n1. Syphilitic aortitis with aortic root dilatation.\n2. Aortic regurgitation.\n3. Mitral valve prolapse.\n\nPlan: Start carvedilol 6.25 mg twice daily and aspirin 81 mg daily. Agree with infectious disease evaluation and treatment of syphilis. Return in about a year or sooner with symptoms. Smoking cessation strongly advised.\n\nThank you for this referral."}
+          ]
+        },
+        {
+          "id": "2022-05-31a",
+          "kind": "telephone",
+          "start": "2022-05-31T11:05",
+          "reason": "cardiology letter received; medication list update",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Med reconciliation after cardiology", "author": "RN", "date": "2022-05-31T11:05", "body": "Cardiology letter came in today. Called pt to reconcile: he did start carvedilol 6.25 twice a day and aspirin 81 after that visit on 5/9, filled the same day. Some lightheadedness the first few days, now gone. Updated med list. He has ID appointment 6/6. Reminded about diabetes visit end of June."}
+          ]
+        },
+        {
+          "id": "2022-06-06a",
+          "kind": "specialist_visit",
+          "start": "2022-06-06T10:00",
+          "service": "Infectious Disease",
+          "reason": "late syphilis with aortic involvement",
+          "conditions": [
+            {"label": "Syphilis, unspecified", "icd10": "A53.9", "action": "resolved", "note": "reclassified as late syphilis with cardiovascular involvement (syphilitic aortitis)"}
+          ],
+          "medications": [
+            {"drug_text": "penicillin G benzathine 600000 UNT/ML Injectable Suspension", "action": "historical", "sig": "2.4 million units IM once weekly for 3 doses (given in ID clinic)", "dose": {"value": 2400000, "unit": "unit"}, "frequency": "WEEKLY", "route": "Intramuscular", "course": "short", "reason": "late syphilis with cardiovascular involvement"}
+          ],
+          "orders": [
+            {"id": "id-referral-2022", "action": "done", "date": "2022-06-06T10:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious disease consultation (received 6/10/2022)", "author": "infectious disease", "date": "2022-06-10T14:15", "body": "Outside infectious disease clinic. Seen 06/06/2022, with follow-up injections 06/13 and 06/20.\n\nQuestion: reactive RPR 1:8 and treponemal antibody in a man with untreated syphilis remotely and newly found aortic root dilatation with aortic regurgitation.\n\nAssessment: late (tertiary) syphilis with cardiovascular involvement. No headache, visual change, hearing loss, gait problem or memory complaint; neurologic examination normal. Given the cardiovascular disease, we performed a lumbar puncture today to exclude neurosyphilis: CSF white cell count and protein within normal limits, CSF VDRL nonreactive.\n\nPlan: benzathine penicillin G 2.4 million units IM weekly for three doses. First dose given today without reaction; he was observed afterward and counseled on possible fever and aches in the first day. Repeat RPR at 6, 12 and 24 months; we would expect at least a fourfold fall in titer. Can be drawn at his primary care lab with results to us.\n\nAllergies: NKDA. HIV negative per PCP records.\n\nAddendum 06/20/2022: third and final dose administered. Course complete."}
+          ]
+        },
+        {
+          "id": "2022-06-28a",
+          "kind": "office_visit",
+          "start": "2022-06-28T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up; vaccines",
+          "state": {"labs": {"Hemoglobin A1c": 9.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-06-28T14:40", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-06-28T14:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2022-06-28T14:35"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-06-28T14:36"},
+            {"vaccine": "Tdap", "date": "2022-06-28T14:37"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-06-28T14:00"},
+            {"procedure": "Immunization administration", "performed": "2022-06-28T14:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2022-06-28T14:50", "body": "Finished the three penicillin shots at ID last week, felt achy after the first one and that was all. Cardiology started carvedilol and baby aspirin; tolerating. Still gets winded on the stairs, no worse. No chest pain.\n\nDiabetes: still not checking sugars, admits to soda most days. Wants to try harder before adding anything. Taking metformin and the glargine.\n\nExam: vitals reviewed. Same diastolic murmur LSB. Lungs clear. No edema. Feet intact.\n\nA/P:\n- T2DM: A1c today. Talked about cutting soda and evening snacks. Same metformin and glargine for now.\n- Syphilitic aortitis / aortic regurgitation: treated per ID; RPR again in December. Cardiology in a year.\n- Vaccines: Heplisav #1 today, second in a month. PCV20 and Tdap also today.\n- Colon screening: FIT kit given, he would rather that than a scope.\n- Smoking: not ready.\nRTC 4 months."},
+            {"type": "Result Note", "title": "Result note", "author": "PCP", "date": "2022-06-29T09:15", "body": "A1c still high, about where it was. BMP fine. Discussed by phone; he wants to keep working on diet first."}
+          ]
+        },
+        {
+          "id": "2022-07-28a",
+          "kind": "nurse_visit",
+          "start": "2022-07-28T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hepatitis B vaccine dose 2",
+          "immunizations": [
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2022-07-28T09:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-07-28T09:35"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse visit: Heplisav-B #2", "author": "RN", "date": "2022-07-28T09:50", "body": "Second Heplisav-B given IM left deltoid. Series complete. Waited 15 minutes, no problems. FIT kit still on his kitchen counter by his account; reminded him to send it."}
+          ]
+        },
+        {
+          "id": "2022-08-17a",
+          "kind": "outside_records",
+          "start": "2022-08-17T15:00",
+          "reason": "diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Eye exam report (optometry)", "author": "optometry", "date": "2022-08-17T15:00", "body": "Dilated diabetic eye examination 08/10/2022. Visual acuity 20/25 OD, 20/20 OS. Anterior chambers deep and quiet both eyes, no cells or flare, no synechiae. Lens clear. Fundus: no diabetic retinopathy either eye; optic nerves healthy. Impression: no diabetic retinopathy; history of anterior uveitis, quiet. Return 12 months, sooner for any red or painful eye."}
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "office_visit",
+          "start": "2022-10-24T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "back pain follow-up; short of breath lying flat",
+          "medications": [
+            {"drug": "furosemide 40 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "orthopnea with aortic regurgitation"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-24T11:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-10-24T11:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2022-10-24T11:20", "resulted": "2022-10-26T10:30", "results": [
+              {"test": "HLA-B27 antigen", "loinc": "4821-5", "text": "Positive"},
+              {"test": "Erythrocyte Sedimentation Rate", "value": 38},
+              {"test": "C Reactive Protein", "value": 16}
+            ]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2022-10-24T10:55", "text": "Normal sinus rhythm. Normal axis. PR and QRS intervals normal. No ST or T wave changes.", "conclusion": "Normal sinus rhythm with no conduction abnormality."},
+            {"study": "Lumbar spine X-ray", "performed": "2022-10-24T12:10", "text": "AP and lateral views of the lumbar spine; the AP view includes both sacroiliac joints. Vertebral body heights and alignment maintained. Disc spaces preserved. Both sacroiliac joints show erosions with subchondral sclerosis and joint margin irregularity, symmetric. No fracture.", "conclusion": "Bilateral sacroiliitis."}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-24T11:15"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-10-24T10:30"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2022-10-24T10:55"},
+            {"procedure": "Immunization administration", "performed": "2022-10-24T11:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-10-24T11:40", "body": "Back for the back pain we put off last time. Also new breathing complaint.\n\nBack: lower back, years. Worst first thing in the morning and after sitting; loosens up when he walks around or does stretches, and lying in bed doesn't help at all. Naproxen takes the edge off. Also sore at the back of both heels. Brother has ankylosing spondylitis.\n\nBreathing: last few weeks needs two pillows, wakes up feeling smothered if he slides flat. Still winded on stairs as before. No chest pain, no leg swelling he has seen.\n\nExam: vitals in flowsheet. Lumbar spine: forward flexion and side bending clearly limited. Tender over both Achilles insertions. Heart: decrescendo diastolic murmur along the left sternal border, unchanged. Lungs clear today. No edema. JVP not elevated sitting.\n\nECG in office: sinus, normal intervals, nothing new.\n\nA/P:\n1. Inflammatory-pattern back pain with heel enthesitis and a brother with AS. Lumbar films including SI joints, HLA-B27, ESR, CRP, CBC today. Continue naproxen as needed meanwhile.\n2. Orthopnea in known aortic regurgitation. Starting furosemide 40 mg each morning. BMP today and in 2 weeks. Messaging cardiology so they know and can see him sooner if they want.\n3. Flu shot today.\nRTC after results."},
+            {"type": "Telephone Encounter", "title": "Message to cardiology", "author": "PCP", "date": "2022-10-24T12:30", "body": "Faxed note to outside cardiology: new two-pillow orthopnea in their patient with syphilitic aortitis and AR, started furosemide 40 daily today, asked whether they want to move up his follow-up. No reply received."}
+          ]
+        },
+        {
+          "id": "2022-10-26a",
+          "kind": "telephone",
+          "start": "2022-10-26T15:30",
+          "reason": "results: back pain workup",
+          "conditions": [
+            {"label": "Ankylosing spondylitis of unspecified sites in spine", "action": "diagnosed", "onset": "2015-01-01"},
+            {"label": "Chronic low back pain", "action": "resolved", "note": "explained by ankylosing spondylitis"}
+          ],
+          "orders": [
+            {"id": "rheum-referral-2022", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "new ankylosing spondylitis, HLA-B27 positive, bilateral sacroiliitis"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Result note: back pain workup", "author": "PCP", "date": "2022-10-26T15:10", "body": "HLA-B27 positive. ESR 38, CRP 16, both up. CBC normal. Films show bilateral sacroiliitis. Together with his history and exam this is ankylosing spondylitis. Rheumatology referral placed. Uveitis history fits too."},
+            {"type": "Telephone Encounter", "title": "Results call", "author": "PCP", "date": "2022-10-26T15:30", "body": "Called pt. Explained ankylosing spondylitis, same as his brother. Keep naproxen as he has been using it, keep moving. Rheumatology will call. He asked whether this has anything to do with his heart: told him the aortic problem we know of is from syphilis, but rheumatology will look at everything. Breathing a little better on the water pill already, slept on one pillow last night."}
+          ]
+        },
+        {
+          "id": "2022-11-01a",
+          "kind": "portal_message",
+          "start": "2022-11-01T08:42",
+          "reason": "medication question",
+          "documents": [
+            {"type": "Patient Message", "title": "water pill", "author": "patient", "date": "2022-11-01T08:42", "body": "do i have to take the water pill in the morning. i have appointments some days and cant find a bathroom"},
+            {"type": "Patient Message", "title": "RE: water pill", "author": "RN", "date": "2022-11-01T10:15", "body": "Hi Christopher. You can take it a little later on those days, like right after your appointment, but try not to take it after about 2 pm or you will be up at night. Please come in for the blood test on 11/7 to check your kidneys and potassium."}
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "lab_only",
+          "start": "2022-11-07T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "BMP after starting furosemide",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-11-07T08:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}]}
+          ],
+          "procedures": [
+            {"procedure": "Venipuncture", "performed": "2022-11-07T08:20"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Result note", "author": "PCP", "date": "2022-11-07T16:00", "body": "Potassium and creatinine fine on furosemide. No change."}
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "lab_only",
+          "start": "2022-12-12T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6-month RPR for ID; FIT returned",
+          "labs": [
+            {"panel": null, "collected": "2022-12-12T09:05", "results": [
+              {"test": "Rapid Plasma Reagin", "text": "Reactive, titer 1:4"},
+              {"test": "Fecal Immunochemical Test", "text": "Negative"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Venipuncture", "performed": "2022-12-12T09:05"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Result note", "author": "PCP", "date": "2022-12-13T12:20", "body": "RPR down to 1:4 from 1:8 six months after treatment. Copy faxed to ID. FIT negative, finally came back. Portal note sent."}
+          ]
+        }
+      ]
+    }
+  ]
+}

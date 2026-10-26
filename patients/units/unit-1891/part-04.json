@@ -1,0 +1,156 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001891",
+      "events": [
+        {
+          "id": "2026-01-06a",
+          "kind": "portal_message",
+          "start": "2026-01-06T08:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pen needle refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pen needles",
+              "author": "patient",
+              "date": "2026-01-06T08:55",
+              "body": "Hi, I'm almost out of pen needles and my endo's office is closed until next week for the holidays. Pharmacy says the script ran out of refills. Is there any way you can help?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pen needles",
+              "author": "RN",
+              "date": "2026-01-06T10:40",
+              "body": "Reached the covering provider for your endocrinology group; they sent a new pen needle prescription with refills to your pharmacy this morning. Should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-17a",
+          "kind": "ed_visit",
+          "start": "2026-05-17T11:05",
+          "end": "2026-05-17T15:20",
+          "service": "Emergency Medicine",
+          "reason": "hypoglycemia, found unresponsive",
+          "conditions": [
+            {"label": "Type 1 diabetes mellitus with hypoglycemia with coma", "icd10": "E10.641", "action": "diagnosed", "onset": "2026-05-17", "note": "found unresponsive; EMS glucagon"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2026-05-17T10:42", "results": [{"test": "Glucose, capillary (point of care)", "loinc": "41653-7", "unit": "mg/dL", "value": 38}]},
+            {"panel": null, "collected": "2026-05-17T11:08", "results": [{"test": "Glucose, capillary (point of care)", "loinc": "41653-7", "unit": "mg/dL", "value": 96}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-05-17T11:05"}],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2026-05-19T08:30",
+              "body": "Regional hospital emergency department. Date of service 05/17/2026, arrival 11:05 by ambulance.\n\nCC: hypoglycemia, found unresponsive.\n\nHPI: 26F with type 1 diabetes on basal-bolus insulin, followed by endocrinology; seen here a year ago for an ear infection. Roommate found her unresponsive in her room late this morning and called 911. She had been up very late studying and had not eaten breakfast. Per EMS run sheet: diaphoretic and unresponsive on their arrival, fingerstick glucose 38; glucagon 1 mg IM given at once, and she began to wake within minutes. By arrival here she is awake, oriented and answering questions, amnestic for the event. Took her usual glargine 20 units at bedtime. Did not take any aspart this morning since she didn't eat. No alcohol. No recent illness, no extra exercise yesterday. No seizure activity witnessed, no incontinence, no injury per roommate.\n\nPMH: T1DM; left malignant otitis externa 2025, resolved.\nMeds: insulin glargine 20 units SC qhs; insulin aspart 8 units SC with meals; glucagon 1 mg IM PRN.\nAllergies: NKDA.\nSH: graduate student, lives with a roommate. Never smoker. Alcohol rare.\n\nExam: vitals reviewed. Awake, alert, oriented x3, conversant. Skin warm, drying. No head or tongue injury. Pupils equal and reactive. Heart regular. Lungs clear. Neuro nonfocal, gait steady.\n\nData: EMS fingerstick 38. ED point-of-care glucose on arrival 96.\n\nCourse: given juice and a meal tray, which she finished. Repeat glucose checks over the observation period stayed in range. Glucagon had brought her glucose back up in the field.\n\nImpression: severe hypoglycemia with loss of consciousness in type 1 diabetes, from a missed meal after bedtime basal insulin.\n\nDisposition: observed and discharged home the same afternoon with her roommate. Insulin doses unchanged. Eat before studying late, check glucose at bedtime and on waking. Keep her glucagon kit with her; roommate should know how to use it. Follow up with primary care and endocrinology this week. Return for any further severe low."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "telephone",
+          "start": "2026-05-18T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient Call After ED Visit",
+              "author": "RN",
+              "date": "2026-05-18T08:15",
+              "body": "Pt called. Was in the ED yesterday after her roommate found her passed out with a low sugar; EMS gave glucagon. Discharged same day. Feels tired but OK this morning, ate breakfast, fingerstick normal before calling. No lows overnight. Has not called endo yet; encouraged her to call them today. Booked with PCP Wed 5/20 at 10:30. Advised no driving until she has been seen. ED record requested."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "office_visit",
+          "start": "2026-05-20T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for severe hypoglycemia",
+          "conditions": [
+            {"label": "Type 1 diabetes mellitus with hypoglycemia with coma", "icd10": "E10.641", "action": "resolved", "note": "single episode 05/17/2026 after a missed meal"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-20T10:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "author": "PCP",
+              "date": "2026-05-20T11:15",
+              "body": "Follow-up after ED visit 5/17. ED record received yesterday and reviewed.\n\nSunday morning her roommate found her unresponsive after she had stayed up late studying and skipped breakfast. EMS: diaphoretic, unresponsive, fingerstick 38; glucagon 1 mg IM, woke quickly. 96 on ED arrival, ate, observed, sent home same day. Her first severe low since diagnosis; she had none at her last endo visit and none before.\n\nSince then: feels back to normal. Eating on schedule. Checking before bed and when she wakes; no readings she'd call low. Same doses: glargine 20 at bedtime, aspart 8 before meals. Has her endocrinology appointment in June and left a message with them Monday. Her own glucagon kit was never used and is in date; she has shown her roommate where it is.\n\nExam: vitals as charted. Alert, well. No bruising or injury. Heart RRR. Lungs clear. Neuro nonfocal.\n\nA/P\n1. Severe hypoglycemia with loss of consciousness, single episode, explained by a missed meal on her usual bedtime glargine. Resolved. No dose change today; dosing stays with endocrinology, who I am messaging.\n- Don't skip meals on glargine nights, especially during exam weeks; eat something when studying late.\n- Check glucose at bedtime and on waking, and before any drive.\n- Roommate to be shown how to give the glucagon kit, not just where it is.\n- No driving until endocrinology has gone over the episode with her.\n2. T1DM otherwise stable.\nPhysical due in the fall."
+            },
+            {
+              "type": "Letter",
+              "title": "Message to Endocrinology",
+              "author": "PCP",
+              "date": "2026-05-20T11:30",
+              "body": "To the endocrinology group following Abigail Lemieux (DOB 10/08/1999):\n\nFYI, she was seen in a regional ED on 5/17 for severe hypoglycemia with loss of consciousness after a missed breakfast; EMS glucose 38, glucagon IM, 96 on arrival, discharged the same day. I saw her today and she is well. Current doses unchanged (glargine 20 units qhs, aspart 8 units AC). I have deferred any regimen change to you and advised no driving until you have reviewed the episode. She has a visit with you in June. ED record attached.\n\nPrimary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T18:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "endocrinology visit update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endo visit",
+              "author": "patient",
+              "date": "2026-06-16T18:40",
+              "body": "Hi, saw endo last week. We went over what happened in May. They didn't change any doses and said the plan you gave me (not skipping meals, checking at night and in the morning) is the right one. No more lows since then."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endo visit",
+              "author": "PCP",
+              "date": "2026-06-17T07:55",
+              "body": "Thanks for the update, glad it's been quiet. We haven't gotten their note, so I'll ask them for a copy. See you at your physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "schedule physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling my physical",
+              "author": "patient",
+              "date": "2026-08-11T13:10",
+              "body": "Hi! Can I book my yearly physical for September? Tuesdays are best for me, mornings."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling my physical",
+              "author": "front desk",
+              "date": "2026-08-11T15:02",
+              "body": "You're booked for Tuesday 9/22 at 8:30 am. Please come fasting; labs will be drawn at the visit. Flu and COVID shots should be in by then too."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

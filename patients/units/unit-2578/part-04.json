@@ -1,0 +1,302 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002578",
+      "events": [
+        {
+          "id": "2026-01-31a",
+          "kind": "ed_visit",
+          "start": "2026-01-31T11:25",
+          "end": "2026-01-31T16:10",
+          "service": "Emergency Medicine",
+          "reason": "fever, headache, neck stiffness, rash",
+          "conditions": [
+            {
+              "label": "Acute bacterial meningitis",
+              "icd10": "G00.9",
+              "action": "diagnosed",
+              "onset": "2026-01-29",
+              "note": "clinical diagnosis; lumbar puncture deferred"
+            },
+            {
+              "label": "Meningococcemia",
+              "icd10": "A39.2",
+              "action": "diagnosed",
+              "onset": "2026-01-29"
+            },
+            {
+              "label": "Thrombocytopenia",
+              "action": "diagnosed",
+              "onset": "2026-01-31"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-01-31T11:30",
+              "temp_c": 39.2,
+              "hr": 110,
+              "bp": [
+                90,
+                60
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-31T11:50",
+              "resulted": "2026-01-31T12:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 50
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-31T11:50",
+              "resulted": "2026-01-31T12:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 18
+                },
+                {
+                  "test": "aPTT",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 45
+                },
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 150
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-31T11:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Note",
+              "author": "emergency medicine",
+              "date": "2026-02-24T10:05",
+              "body": "Regional hospital emergency department. Service date 01/31/2026. Sent to PCP on request 02/24/2026.\n\n21M with seasonal allergies and acne, two prior admissions here for bacterial meningitis (8/2024, 3/2025). Two days of fever, headache and neck stiffness. Rash he describes as not itchy, first on his trunk and now on his arms and legs. Roommate was diagnosed with bacterial meningitis recently.\nMeds: cetirizine as needed, adapalene. NKDA.\n\nT 39.2 C, HR 110, BP 90/60.\nPetechial rash, coalescing into purpura in areas. Nuchal rigidity.\n\nWBC 15.0, Hgb 13.5, plt 50.\nPT 18 s (ref 11-13.5), PTT 45 s (ref 25-35), fibrinogen 150 mg/dL (ref 200-400).\n\nImpression: meningococcemia with thrombocytopenia and prolonged clotting times; clinical bacterial meningitis.\nLP deferred given platelets and coags. Ceftriaxone 2 g IV given. Fluids. Droplet precautions. Admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-02a",
+          "kind": "telephone",
+          "start": "2026-02-02T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "family call, patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call From Patient's Mother",
+              "author": "PCP",
+              "date": "2026-02-02T09:30",
+              "body": "Mother called. Gavin was admitted Saturday, same hospital, fever and rash again. She says his roommate had meningitis a couple of weeks ago. He is on IV antibiotics and they told her his platelets are low. Talking and eating some as of last night. Told her I'd like to see him within a week or two of getting home and asked her to have him text me when he's out. Requested records again."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "home from hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "discharged",
+              "author": "patient",
+              "date": "2026-02-10T13:20",
+              "body": "home since yesterday, they kept me 9 days this time. done with the IV antibiotics, nothing to take. really tired"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: discharged",
+              "author": "PCP",
+              "date": "2026-02-10T14:05",
+              "body": "Glad you're out. Tired is expected for a while. I have you Tuesday 2/17 at 1:20, and we'll check your blood count and clotting labs. Text me any time before then if the fever, headache or rash come back."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "office_visit",
+          "start": "2026-02-17T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up, meningococcemia",
+          "conditions": [
+            {
+              "label": "Acute bacterial meningitis",
+              "icd10": "G00.9",
+              "action": "resolved"
+            },
+            {
+              "label": "Meningococcemia",
+              "icd10": "A39.2",
+              "action": "resolved"
+            },
+            {
+              "label": "Thrombocytopenia",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-17T13:55",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-02-17T13:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-17T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-17T13:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "author": "PCP",
+              "date": "2026-02-17T14:10",
+              "body": "Third admission. Seen one week after discharge.\n\nPer Gavin and his mother's call: ED 1/31 after two days of fever, headache, stiff neck and a spreading rash; roommate had bacterial meningitis shortly before. Told his platelets and clotting were off and they did not do a spinal tap. About 9 days of IV antibiotics, home 2/9, no antibiotic after. We still have no ED note or discharge summary; front desk sending another request today.\n\nNow: tired, sleeping a lot, slowly better. No headache, fever, neck pain, bleeding or bruising. Rash has faded. Hearing and vision normal. Plans to go back to class next week.\nMeds: cetirizine PRN, adapalene. NKDA.\n\nExam: well-appearing. Afebrile, vitals normal. Skin: no petechiae, purpura or scarring. Neck supple. Heart regular, lungs clear. Alert, oriented, cranial nerves intact, strength and gait normal.\n\nA/P\n1. Meningococcemia with thrombocytopenia and clinical bacterial meningitis, treated, recovering. CBC and PT/INR today.\n2. Return to class as tolerated.\n3. Allergic rhinitis and acne unchanged.\nFollow up by message with results."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "author": "front desk",
+              "date": "2026-02-17T15:00",
+              "body": "Faxed a records request to the regional hospital's health information department for the 1/31/2026 ED visit and the admission (ED note, discharge summary, labs). Second request; first was called in 2/2."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "portal_message",
+          "start": "2026-02-18T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "result note",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs From Tuesday",
+              "author": "PCP",
+              "date": "2026-02-18T09:40",
+              "body": "Your platelets are back to normal and your clotting test is normal too. White count and hemoglobin are fine. Keep resting and ease back into classes."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "portal_message",
+          "start": "2026-04-21T19:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "allergy symptoms",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "pollen",
+              "author": "patient",
+              "date": "2026-04-21T19:50",
+              "body": "allergies are kicking in. just the cetirizine every day like before?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: pollen",
+              "author": "PCP",
+              "date": "2026-04-21T20:30",
+              "body": "Yes, every day until the pollen dies down in June. Let me know if it isn't enough."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T12:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "college health form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Health form for fall",
+              "author": "patient",
+              "date": "2026-08-18T12:25",
+              "body": "school wants the health form again before fall housing. uploading it here. do I need to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Health form for fall",
+              "author": "MA",
+              "date": "2026-08-18T15:10",
+              "body": "Got the form. The doctor will complete it at your physical, booked for Thursday 9/10 at 3:20. If your school needs it sooner than that, tell us the deadline and we'll see what we can do."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "annual_physical",
+          "start": "2026-09-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

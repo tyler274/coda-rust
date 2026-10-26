@@ -1,0 +1,4910 @@
+{
+  "unit": "unit-1834",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001834",
+      "given": "Tamika",
+      "family": "Washington",
+      "birth_date": "1987-02-18",
+      "address_line": "212 Federal Street, Apt 3",
+      "phone": "+1-802-555-0166",
+      "email": "tamika.washington@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher with ulcerative colitis on mesalamine who joins in 2019. Hypercalcemia in 2021 leads to parathyroidectomy for an adenoma, then persistent calcitriol-mediated hypercalcemia reveals sarcoidosis, later with a facial palsy and, in 2025, enteropathic arthritis.",
+      "events": [
+        {
+          "id": "2019-08-06a",
+          "kind": "telephone",
+          "start": "2019-08-06T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2019-08-06T10:12",
+              "author": "front desk",
+              "body": "Caller is a 32 y/o teacher in Greenfield looking for a new PCP; her old office closed its internal medicine side. Membership explained, she wants to sign up. Release signed over email for her prior PCP and her GI office. New patient slot given for 8/20 at 3:30, after her summer program ends."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-15a",
+          "kind": "outside_records",
+          "start": "2019-08-15T14:40",
+          "reason": "prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2019-08-15T14:40",
+              "author": "front desk",
+              "body": "Records received by fax, 38 pages, scanned.\n\nSummary pulled for chart prep (MA): ulcerative colitis since about 2015, followed by outside GI, on mesalamine 1.2 g twice daily, last GI note says remission. No surgeries. NKDA. Pap with HPV co-test 06/2018 negative/negative. Tetanus last given 2008. Last BMP and CBC 06/2018 unremarkable."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-20a",
+          "kind": "establish_care",
+          "start": "2019-08-20T15:30",
+          "end": "2019-08-20T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Ulcerative colitis",
+              "action": "history",
+              "onset": "2015-05-01",
+              "note": "followed by outside GI; in remission on mesalamine"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "mesalamine 1200 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (1.2 g) by mouth twice daily",
+              "dose": {
+                "value": 1200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ulcerative colitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              101,
+              72
+            ],
+            "hr": 69,
+            "temp_c": 36.3,
+            "spo2": 99,
+            "weight_kg": 71.5,
+            "height_cm": 164.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-08-20T16:35",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-08-20T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-08-20T16:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 185
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-08-20T16:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-08-20T16:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-08-20T15:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-08-20T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-08-20T17:10",
+              "author": "PCP",
+              "body": "Establishing care. 32 y/o woman, teaches second grade in town, here to set up primary care after her prior office stopped seeing adults.\n\nHPI: Feels well. UC dx around 2015 after months of bloody stools; scoped then by her GI, who she still sees about once a year. On mesalamine 1.2 g BID since, no flare she can recall in the last 2-3 years. BMs 1-2/day formed, no blood. No steroids in years.\n\nPMH: ulcerative colitis. PSH: none. Meds: mesalamine 1.2 g BID. Allergies: NKDA.\nFH: mother with lupus. Father with type 2 DM. Maternal aunt with sarcoidosis. A paternal cousin with UC.\nSH: Lives alone in an apartment near downtown. Never smoker. Alcohol a drink or so a month at most. No drugs. Walks most evenings.\nGYN: regular cycles. Pap/HPV 06/2018 negative per old records.\n\nROS: negative in detail.\n\nExam: well-appearing. HEENT normal. Neck supple, thyroid not enlarged. Heart RRR, no murmur. Lungs clear throughout. Abdomen soft, nontender, no masses. Skin clear. Extremities no edema. Neuro grossly nonfocal. Mood and affect normal.\n\nA/P:\n1. UC in remission on mesalamine. Continue. GI follow-up as scheduled with her own GI. CMP/CBC today.\n2. Health maintenance: Tdap today (last tetanus 2008). One-time HIV and hep C screen today, she agrees. Lipids and TSH with the draw. Pap not due until 2023. Flu shot in the fall.\n3. RTC 1 year for physical, sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-08-22a",
+          "kind": "portal_message",
+          "start": "2019-08-22T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-08-22T12:05",
+              "author": "PCP",
+              "body": "Hi Tamika, everything from Tuesday came back normal: kidney and liver tests, calcium, blood counts, thyroid and cholesterol. The HIV and hepatitis C screens were negative. Good to meet you. See you next summer for a physical."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "date": "2019-10-08T15:58",
+              "author": "RN",
+              "body": "Came after school for flu vaccine. No egg allergy, no prior reaction. 0.5 mL IM left deltoid. Waited 15 min, no reaction. VIS reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-30a",
+          "kind": "outside_records",
+          "start": "2020-03-30T11:20",
+          "reason": "GI follow-up letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gastroenterology follow-up letter",
+              "date": "2020-03-30T11:20",
+              "author": "gastroenterology",
+              "body": "Gastroenterology clinic, follow-up letter to primary care.\n\nSeen by video for her annual ulcerative colitis visit. She reports one to two formed stools daily without bleeding, urgency or nocturnal stools. No extraintestinal symptoms. Weight stable by her report.\n\nMedications: mesalamine 1.2 g twice daily. Allergies: none known.\n\nImpression: ulcerative colitis in clinical remission on mesalamine monotherapy.\nPlan: continue mesalamine at current dose. Labs with her primary care draws are fine. Return in one year, sooner for any bleeding or change in stool pattern. Surveillance colonoscopy will be timed from her diagnosis date and discussed at a future visit."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-25a",
+          "kind": "annual_physical",
+          "start": "2020-08-25T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              82
+            ],
+            "hr": 77,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 71.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-08-25T09:10",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-08-25T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-08-25T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-08-25T09:30",
+              "author": "PCP",
+              "body": "Annual. Masked visit. Getting ready for a hybrid fall at school and not thrilled about it, but sleeping OK and mood fine. PHQ-2 0.\n\nUC: quiet, saw GI by video in March, no changes. Taking mesalamine twice a day, misses an evening dose maybe once a week.\n\nROS otherwise negative. No cough, no bowel change, no joint pain.\n\nExam: NAD. HEENT clear. Neck no adenopathy or thyromegaly. Heart regular, no murmur. Lungs clear. Abd soft, NT. Skin without lesions. Ext no edema.\n\nPlan: CMP, CBC today. Flu shot in October. Pap due 2023. Continue mesalamine; reminded her that steady twice-daily dosing matters more than timing. Next physical in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-08-26a",
+          "kind": "portal_message",
+          "start": "2020-08-26T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2020-08-26T16:40",
+              "author": "PCP",
+              "body": "Labs from yesterday are all normal: blood counts, kidney and liver function, electrolytes and calcium. Nothing to change. Have a good start to the year."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T15:34"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T15:34"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "date": "2020-10-06T15:40",
+              "author": "RN",
+              "body": "Influenza vaccine 0.5 mL IM right deltoid. Screening negative. Tolerated well, observed in the parking lot per current protocol, left without issue."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-12a",
+          "kind": "pharmacy",
+          "start": "2021-01-12T09:50",
+          "reason": "prior authorization renewal",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Mesalamine prior authorization",
+              "date": "2021-01-12T09:50",
+              "author": "MA",
+              "body": "Pharmacy faxed: new plan year, insurer requires PA renewal for mesalamine DR 1.2 g tabs. Her GI usually writes it but she asked us to help since GI office is slow. Completed PA online with dx UC and duration of therapy; approved for 12 months, ref number in media tab. Pharmacy notified, pt notified by portal."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-09a",
+          "kind": "office_visit",
+          "start": "2021-03-09T16:00",
+          "reason": "check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "portal_message",
+          "start": "2021-05-04T19:22",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-10T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-01T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine card",
+              "date": "2021-05-04T19:22",
+              "author": "patient",
+              "body": "Hi, I got both Pfizer shots through the teacher clinic at the high school, April 10 and May 1. Attaching a photo of my card for your records. Second one knocked me out for a day but I'm fine now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine card",
+              "date": "2021-05-05T08:30",
+              "author": "MA",
+              "body": "Thanks! Both doses entered in your chart from the card."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "office_visit",
+          "start": "2021-09-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, constipation",
+          "vitals": {
+            "bp": [
+              110,
+              64
+            ],
+            "hr": 69,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 72.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-08T16:20",
+              "resulted": "2021-09-09T07:40",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-08T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-08T16:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-08T16:20",
+              "resulted": "2021-09-10T08:15",
+              "results": [
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 86
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-09-08T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-09-08T16:45",
+              "author": "PCP",
+              "body": "CC: tired, constipated, down.\n\nSince about April she has been running on empty. Sleeps 8 hours and wakes unrefreshed. Getting through the school day and then on the couch by 5. Bowels slower than her baseline: every 2-3 days, hard, no blood, which is unusual for her given the UC. Mood lower over the same stretch, less interest in seeing friends, no hopelessness, no thoughts of self-harm. Blames the year of hybrid teaching at first but says summer didn't fix it. No weight change she has noticed, no fevers, no cough, no abdominal pain. Thirstier than usual maybe. Periods regular.\n\nMeds: mesalamine 1.2 g BID. NKDA.\n\nPHQ-9 9, item 9 zero.\n\nExam: tired-appearing but in no distress. Thyroid normal size, no nodules. Neck no masses. Heart RRR. Lungs clear. Abdomen soft, nontender, normal bowel sounds. Skin normal. No edema.\n\nA/P: fatigue, constipation and low mood together for ~5 months. Differential includes thyroid, anemia, a metabolic cause such as calcium, and depression. CMP, CBC, TSH today. If calcium is up will add PTH to the same specimen. Talked about mood; she would rather sort out the physical side first, and agrees to a follow-up PHQ in a few weeks. Fiber and fluids for the constipation in the meantime."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-10a",
+          "kind": "telephone",
+          "start": "2021-09-10T12:30",
+          "reason": "abnormal labs",
+          "conditions": [
+            {
+              "label": "Hypercalcemia",
+              "action": "diagnosed",
+              "onset": "2021-09-08",
+              "icd10": "E83.52"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "hypercalcemia with elevated PTH"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab follow-up call",
+              "date": "2021-09-10T12:30",
+              "author": "PCP",
+              "body": "Called pt at lunch. Calcium 11.1 with albumin 4.3, so true hypercalcemia. PTH added on came back 86, high. TSH and CBC normal, creatinine normal. Explained that a high calcium with a high PTH usually points to an overactive parathyroid gland, which could explain the fatigue, constipation and mood. Referral to endocrinology placed. Asked her to keep up fluids, avoid calcium supplements or antacids, and to call for confusion, vomiting or abdominal pain. She was relieved there might be a reason."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-05T15:33"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-05T15:33"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "date": "2021-10-05T15:40",
+              "author": "RN",
+              "body": "Flu vaccine IM left deltoid, no issues. Pt asked when her endo appointment is; confirmed 10/18 with the outside endocrinology office, info given."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-18a",
+          "kind": "specialist_visit",
+          "start": "2021-10-18T10:00",
+          "service": "Endocrinology",
+          "reason": "hypercalcemia",
+          "conditions": [
+            {
+              "label": "Hyperparathyroidism, primary",
+              "action": "diagnosed",
+              "onset": "2021-09-08"
+            },
+            {
+              "label": "Osteopenia",
+              "action": "diagnosed",
+              "onset": "2021-10-18"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 78
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-10-18T10:45",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-10-18T10:45",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 2.4
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "text": "Elevated"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-10-20T08:00",
+              "results": [
+                {
+                  "test": "Calcium 24 hour urine",
+                  "loinc": "6874-2",
+                  "unit": "mg/(24.h)",
+                  "value": 340
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2021-10-18T11:30",
+              "text": "Lumbar spine and bilateral hip DXA. Bone mineral density is decreased at the measured sites compared with young adult reference, in the osteopenic range. No prior study for comparison.",
+              "conclusion": "Low bone mass consistent with osteopenia."
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "done",
+              "date": "2021-10-18T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "date": "2021-10-29T09:15",
+              "author": "endocrinology",
+              "body": "Outside endocrinology clinic. Consultation, date of service 10/18/2021.\n\nThank you for asking us to see Ms. Washington, 34, for hypercalcemia.\n\nShe describes six months of tiredness, slower bowels and lower mood. No kidney stones, no fractures. Not on calcium, vitamin D, thiazides or lithium. She mentions her mother had surgery on a gland in her neck years ago; details unknown.\n\nMeds: mesalamine 1.2 g twice daily. Allergies: none known.\nSocial: teacher, never smoker, rare alcohol.\n\nBP 130/85, HR 78. Well-appearing, no neck mass, examination otherwise unremarkable.\n\nData: calcium 11.2 mg/dL, phosphate 2.4 mg/dL (low), creatinine 0.9 mg/dL, PTH elevated. Your PTH of 86 noted. 24-hour urine calcium 340 mg/24 h, hypercalciuric. DXA today: osteopenia at spine and hips.\n\nAssessment: PTH-dependent hypercalcemia with low phosphate, consistent with primary hyperparathyroidism. Young age, hypercalciuria and low bone density all meet criteria for surgery.\nPlan: parathyroid sestamibi imaging, then referral to endocrine surgery. Avoid dehydration. We will see her after surgery.\n\nAllergies: NKDA."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Calcium": 11.2
+            }
+          }
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "office_visit",
+          "start": "2021-11-16T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pre-operative evaluation",
+          "vitals": {
+            "bp": [
+              122,
+              66
+            ],
+            "hr": 72,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 72.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-16T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-11-16T16:00",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.1
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-16T16:00",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-11-16T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Evaluation",
+              "date": "2021-11-16T16:20",
+              "author": "PCP",
+              "body": "Pre-op H&P requested by the endocrine surgery group for a focused parathyroidectomy planned 11/30. Sestamibi done 11/3 per the patient, \"lit up one spot on the left\"; we do not have the report yet.\n\nNo prior anesthesia. No bleeding history, no family history of anesthesia problems. Climbs two flights of stairs with her class without stopping. No chest pain or palpitations. Fatigue unchanged.\n\nMeds: mesalamine. NKDA.\n\nExam: airway unremarkable, neck supple without palpable mass. Heart regular, no murmur. Lungs clear. Abdomen benign.\n\nA/P: low-risk patient for low-risk surgery. No further testing needed beyond CBC, BMP and urine hCG requested by surgery. OK to continue mesalamine through surgery unless anesthesia says otherwise. Form faxed back to surgery."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-12-03a",
+          "kind": "portal_message",
+          "start": "2021-12-03T18:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Had my surgery",
+              "date": "2021-12-03T18:10",
+              "author": "patient",
+              "body": "Just letting you know the parathyroid surgery was Tuesday and I went home the same day. Throat is sore and the incision is a little puffy but OK. They said one gland was taken out. Do I need labs with you or with them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Had my surgery",
+              "date": "2021-12-04T09:20",
+              "author": "PCP",
+              "body": "Glad it went smoothly. The surgeons and endocrinology usually check your calcium afterward, so follow their plan. Some puffiness at the incision is common in the first week; call them if it gets red, hot or swells quickly. Can you ask them to send us the operative report and pathology? We have not received anything yet."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "office_visit",
+          "start": "2021-12-20T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shortness of breath, cough, leg bumps",
+          "conditions": [
+            {
+              "label": "Sarcoidosis of lung with sarcoidosis of lymph nodes",
+              "action": "diagnosed",
+              "onset": "2021-10-20",
+              "note": "clinical diagnosis: hilar adenopathy, erythema nodosum, high ACE and calcitriol",
+              "icd10": "D86.2"
+            },
+            {
+              "label": "Erythema nodosum",
+              "action": "diagnosed",
+              "onset": "2021-12-01",
+              "icd10": "L52"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              68
+            ],
+            "hr": 72,
+            "rr": 14,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 72.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-12-20T16:05",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-12-20T16:05",
+              "resulted": "2021-12-23T10:00",
+              "results": [
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 8
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 34
+                },
+                {
+                  "test": "1,25-dihydroxyvitamin D",
+                  "loinc": "62290-2",
+                  "unit": "pg/mL",
+                  "value": 96
+                },
+                {
+                  "test": "Angiotensin converting enzyme",
+                  "loinc": "2742-5",
+                  "unit": "U/L",
+                  "value": 104
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-12-22T08:00",
+              "resulted": "2021-12-27T14:00",
+              "results": [
+                {
+                  "test": "Calcium 24 hour urine",
+                  "loinc": "6874-2",
+                  "unit": "mg/(24.h)",
+                  "value": 360
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2021-12-20T16:30",
+              "text": "PA and lateral views. Bilateral hilar lymphadenopathy. Lungs are otherwise clear without consolidation. No pleural effusion or pneumothorax. Heart size normal.",
+              "conclusion": "Bilateral hilar lymphadenopathy."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2021-12-20T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-12-20T17:50",
+              "author": "PCP",
+              "body": "S: Three weeks out from parathyroid surgery (outside surgery group; op note still not here). Since about late October she has been getting more winded climbing to her classroom, with a dry hacking cough, and she is still worn out. A few weeks ago painful red lumps came up on both shins. No joint pain or swelling, no red or painful eyes, no travel, no sick contacts beyond the usual classroom colds, no fever she has measured. Neck incision healing. She says the surgeons told her the calcium \"didn't come down as much as they hoped.\"\n\nMeds: mesalamine 1.2 g BID. NKDA.\nFH notable for a maternal aunt with sarcoidosis.\n\nO: vitals normal, sat normal on room air. Neck: healing low transverse incision, no hematoma. Lungs: fine crackles at both bases. Heart regular. Shins: several tender, warm, raised red-violet nodules over both anterior shins, 1 to 3 cm, no ulceration. No joint effusions. Eyes white and quiet.\n\nA/P:\n1. Cough, exertional dyspnea, bibasilar crackles and erythema nodosum in a young Black woman with an aunt with sarcoid: sarcoidosis is the leading concern. CXR today.\n2. Hypercalcemia persisting after parathyroidectomy. Repeat CMP plus PTH, 25-OH and 1,25-OH vitamin D, and ACE. 24-hour urine calcium again; jug given.\n3. UC quiet. Continue mesalamine.\nWill call with results.\n\nAddendum 18:40: CXR read: bilateral hilar lymphadenopathy, lungs otherwise clear. With the erythema nodosum this is very likely sarcoidosis; added to problem list as a clinical diagnosis pending labs. Called pt and explained."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-12-28a",
+          "kind": "telephone",
+          "start": "2021-12-28T11:15",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results and plan",
+              "date": "2021-12-28T11:15",
+              "author": "PCP",
+              "body": "Spoke with pt (school vacation, home). Results: calcium 11.8, creatinine 0.9, albumin 4.2. PTH 8, now low, as it should be with the adenoma out. 25-OH vit D 34 normal but 1,25-OH vit D 96, high. ACE 104, high. 24-hr urine calcium 360.\n\nInterpretation: the calcium is now coming from the sarcoidosis, which makes active vitamin D. Fits with the hilar nodes and the shin nodules. Advised: no calcium or vitamin D supplements, limit high-calcium antacids, drink plenty of water, avoid long sun exposure. Discussed that sarcoid with this picture can settle on its own; plan to recheck in about 3 months and refer on if not improving. She will forward these to her endocrinologist. Call for vomiting, confusion, chest pain or worsening breathing."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-18a",
+          "kind": "outside_records",
+          "start": "2022-01-18T13:05",
+          "reason": "GI follow-up letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gastroenterology follow-up letter",
+              "date": "2022-01-18T13:05",
+              "author": "gastroenterology",
+              "body": "Gastroenterology clinic, annual visit 01/11/2022.\n\nUlcerative colitis remains quiet: formed stools once or twice a day, no blood, no nocturnal symptoms. She tells us she had parathyroid surgery in November and has new lung and skin findings under evaluation for sarcoidosis by her primary care physician.\n\nMedications: mesalamine 1.2 g twice daily. Allergies: none known.\n\nAbdomen soft and nontender.\n\nImpression: UC in remission on mesalamine. Plan: continue current dose. Surveillance colonoscopy to be scheduled in a future year based on disease duration. Return in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-07a",
+          "kind": "telephone",
+          "start": "2022-02-07T09:40",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request, endocrine surgery",
+              "date": "2022-02-07T09:40",
+              "author": "front desk",
+              "body": "Second request faxed to the outside endocrine surgery group for the 11/30/21 operative note, pathology and the sestamibi report. Their records line says it was sent to the wrong fax number in December. Resending this week."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-14a",
+          "kind": "outside_records",
+          "start": "2022-02-14T15:30",
+          "reason": "surgical records",
+          "conditions": [
+            {
+              "label": "Hyperparathyroidism, primary",
+              "action": "resolved",
+              "note": "single left inferior adenoma removed 2021-11-30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-11-30T09:40",
+              "text": "Specimen: left inferior parathyroid, excision. Gross: a single tan-brown ovoid nodule received fresh. Microscopic: hypercellular parathyroid tissue composed predominantly of chief cells with a compressed rim of normal parathyroid tissue at the edge; no atypia, capsular or vascular invasion. Margins not applicable.",
+              "conclusion": "Parathyroid adenoma.",
+              "issued": "2021-12-02T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrine surgery records packet",
+              "date": "2022-02-14T15:30",
+              "author": "endocrine surgery",
+              "body": "Outside endocrine surgery group. Records packet: imaging, operative report and pathology.\n\nParathyroid sestamibi SPECT/CT, 11/03/2021: a single persistent focus of tracer retention at the lower pole of the left thyroid lobe, compatible with a left inferior parathyroid adenoma. No ectopic focus.\n\nOperative report, 11/30/2021. Procedure: focused left inferior parathyroidectomy under general anesthesia with intraoperative PTH monitoring. Indication: primary hyperparathyroidism with hypercalciuria and osteopenia, age under 50. Findings: an enlarged left inferior gland, excised intact. Intraoperative PTH fell by more than half from baseline at ten minutes. Estimated blood loss minimal. No complications. Discharged home the same day.\n\nPost-operative check, 12/14/2021: incision healing well; voice normal. Serum calcium remains elevated; PTH appropriately low. Persistent hypercalcemia with suppressed PTH is not explained by residual parathyroid disease; patient advised to see her primary care physician for further evaluation.\n\nAllergies: no known drug allergies."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-21a",
+          "kind": "office_visit",
+          "start": "2022-03-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "sarcoidosis recheck",
+          "vitals": {
+            "bp": [
+              113,
+              79
+            ],
+            "hr": 60,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 72.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-21T16:15",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-03-21T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "erythema nodosum, recurrent tender shin nodules"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-03-21T16:40",
+              "author": "PCP",
+              "body": "3-month recheck, presumed sarcoidosis.\n\nCough is still there, dry, worse talking all day at school. Winded on the stairs but managing. The shin bumps faded in January and two new ones came up this month, sore when she bumps them on a desk. No joint pain, no eye symptoms. Energy maybe slightly better since surgery. No supplements.\n\nSurgery records arrived last month: single left inferior adenoma removed, path confirmed adenoma; their post-op check found calcium still up with a low PTH.\n\nExam: vitals fine. Lungs with a few fine crackles at both bases, unchanged. Two tender erythematous nodules on the right shin, one on the left. Neck scar well healed.\n\nA/P:\n1. Sarcoidosis, lung and hilar nodes, clinical dx. Symptoms smoldering. CMP today for calcium. She would like someone to look at the shin nodules since they keep recurring; dermatology referral placed. If cough not better by summer, pulmonology.\n2. Hyperparathyroidism treated, resolved.\n3. UC stable.\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Calcium": 11.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-23a",
+          "kind": "portal_message",
+          "start": "2022-03-23T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Calcium result",
+              "date": "2022-03-23T07:55",
+              "author": "PCP",
+              "body": "Your calcium is still elevated, about where it was in December. Kidney function is normal. Keep up the water and keep avoiding calcium and vitamin D supplements. We will recheck at your next visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "pharmacy",
+          "start": "2022-05-17T11:10",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2022-05-17T11:10",
+              "author": "MA",
+              "body": "Pharmacy refill request for mesalamine DR 1.2 g, #180 for 90 days. GI prescriber's script ran out of refills and GI office closed for a staff day. Per PCP OK to send one 90-day fill as a bridge. Sent. Pt informed and reminded to have GI renew."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-07a",
+          "kind": "office_visit",
+          "start": "2022-06-07T15:50",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-07-05a",
+          "kind": "portal_message",
+          "start": "2022-07-05T20:14",
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "sarcoidosis with persistent cough and dyspnea"
+            },
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2022-06-27T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dermatology visit",
+              "date": "2022-07-05T20:14",
+              "author": "patient",
+              "body": "Sorry I missed my June appointment, last week of school was chaos. I did see the dermatologist on June 27. She said the shin bumps are erythema nodosum from the sarcoid and they're mild right now. They did a chest x-ray there too and she said the lymph nodes in my chest are still big but nothing in the lungs. Blood work showed my calcium is still high. She said I should see a lung specialist to get a biopsy and confirm everything. The cough is still around and I get tired easily. Can you send a referral?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dermatology visit",
+              "date": "2022-07-06T07:45",
+              "author": "PCP",
+              "body": "Thanks for the update, and no problem about June. Pulmonology referral placed today; their office will call you to schedule. We have not received the dermatology note, so we will request it. Let's set up a visit before school starts."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-06a",
+          "kind": "telephone",
+          "start": "2022-07-06T10:30",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Dermatology records request",
+              "date": "2022-07-06T10:30",
+              "author": "front desk",
+              "body": "Requested 6/27/22 visit note from outside dermatology. Their front desk says note is not finalized; will fax when signed."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "annual_physical",
+          "start": "2022-08-30T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              110,
+              74
+            ],
+            "hr": 64,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 73.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-30T08:55",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 10.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-08-30T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-08-30T08:55",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-08-30T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-08-30T09:20",
+              "author": "PCP",
+              "body": "Annual exam. Back to school next week, her 10th year teaching.\n\nInterval: dermatology 6/27 (note never came; by her report EN from sarcoid, CXR with hilar nodes and clear lungs, calcium high, advised pulmonology). Pulmonology referral placed 7/6; first available is 12/19.\n\nCough steady, not worse. Mild dyspnea on stairs. No fevers. Shins clear this month. Bowels normal. Mood OK, PHQ-2 1.\n\nMeds: mesalamine 1.2 g BID. NKDA.\n\nExam: well. Eyes clear. Neck scar fine, no adenopathy. Heart regular. Lungs: faint bibasilar crackles. Abd soft. Skin: no nodules on the shins today. No edema.\n\nPlan: CMP, CBC with diff, UA. Flu and COVID booster in October. Pap next year. Keep the 12/19 pulmonology appointment; call if breathing worsens and we can push for sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T15:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2022-10-04T15:55",
+              "author": "RN",
+              "body": "Flu IM left deltoid and bivalent COVID booster IM right deltoid. Screening questions negative. Observed 15 minutes, fine. Expect a sore arm and maybe a tired day; Tylenol ok."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "specialist_visit",
+          "start": "2022-12-19T13:30",
+          "service": "Pulmonology",
+          "reason": "sarcoidosis",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 80,
+            "rr": 18,
+            "temp_c": 37.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-19T14:20",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 10.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-19T14:20",
+              "results": [
+                {
+                  "test": "Angiotensin converting enzyme",
+                  "loinc": "2742-5",
+                  "unit": "U/L",
+                  "text": "Elevated"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-19T14:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.03
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 217
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.4
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-12-19T14:20",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2022-12-19T14:00",
+              "text": "PA and lateral chest. Bilateral hilar adenopathy persists. New fine reticular opacities in both lungs. No effusion. Cardiomediastinal silhouette otherwise normal.",
+              "conclusion": "Bilateral hilar adenopathy with reticular opacities, consistent with known sarcoidosis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2022-12-19T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology consultation",
+              "date": "2023-01-04T10:20",
+              "author": "pulmonology",
+              "body": "Outside pulmonary clinic. New consultation 12/19/2022.\n\nReason: sarcoidosis, referred by primary care.\n\nShe is a 35-year-old teacher with ulcerative colitis, a parathyroid adenoma removed in 11/2021, and a clinical diagnosis of sarcoidosis since 12/2021. For the past three months she reports a dry cough, mild breathlessness and some evenings with low fevers. No travel. Never smoker.\n\nMedications: mesalamine. Allergies: NKDA.\n\nT 37.8 C, BP 120/75, HR 80, RR 18. Fine crackles at both lung bases. No rash on the skin today; no palpable peripheral lymph nodes.\n\nLabs: calcium 10.8 mg/dL; ACE elevated; CBC and liver tests within normal limits. Tuberculin skin test placed and read here: negative.\nChest radiograph: bilateral hilar adenopathy and reticular opacities.\n\nImpression: pulmonary sarcoidosis with hilar adenopathy and parenchymal involvement, mildly symptomatic.\nPlan: observation for now. Return in six months with repeat chest film. If imaging or symptoms progress, tissue sampling of the mediastinal nodes would be the next step.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-05a",
+          "kind": "portal_message",
+          "start": "2023-01-05T16:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung doctor note",
+              "date": "2023-01-05T16:30",
+              "author": "PCP",
+              "body": "We received the pulmonology note from December. They see the sarcoid in the chest nodes and some in the lung tissue, and want to watch it for now and see you again in about six months. The TB skin test was negative. Let me know if the cough or fevers get worse before then."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "telehealth_visit",
+          "start": "2023-03-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cough follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-03-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2023-03-14T16:25",
+              "author": "PCP",
+              "body": "Video, she is at home after school; two identifiers confirmed.\n\nCough about the same. Fevers have stopped. Breathing OK on flat ground. Pants a bit looser, she thinks a few pounds down this winter, not trying. No night sweats. Eating normally.\n\nObserved: speaking full sentences, no cough during the call, no distress.\n\nA/P: stable symptomatic sarcoidosis, on observation per pulmonology. Possible weight loss; come in for weight and labs in the spring. Pulmonology return in June."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-10a",
+          "kind": "office_visit",
+          "start": "2023-05-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "weight loss, cough",
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ],
+            "hr": 64,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 67.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-05-10T16:15",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 10.7
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-05-10T16:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-10T16:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-10T15:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "multisystem sarcoidosis with weight loss"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-05-10T16:50",
+              "author": "PCP",
+              "body": "Weight check and cough.\n\nDown about 10 lb from her usual, 67.6 kg today. Not dieting. Dry cough for months, worse again since March, more tired than she was in the winter. No fevers now, no night sweats, no hemoptysis. Bowels normal, no blood; UC quiet. No joint pain.\n\nExam: thinner. Lungs: fine crackles both bases. No lymph nodes in neck, axillae or groin. Heart regular. Shins clear.\n\nA/P:\n1. Sarcoidosis with weight loss and ongoing cough. CMP, CBC with diff, TSH. Pulmonology has her back in June but she has now had lung, skin and calcium involvement and is losing weight; referring to rheumatology for a multisystem evaluation as well. She is fine with that.\n2. Hypercalcemia, sarcoid-related, persistent; labs today.\n3. UC in remission."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.6,
+            "labs": {
+              "Calcium": 11.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-12a",
+          "kind": "portal_message",
+          "start": "2023-05-12T08:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-05-12T08:10",
+              "author": "PCP",
+              "body": "Calcium is still high, a little lower than last year. Blood counts, kidney function and thyroid are normal. Rheumatology should call you about an appointment."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "specialist_visit",
+          "start": "2023-06-21T09:30",
+          "service": "Rheumatology",
+          "reason": "sarcoidosis",
+          "vitals": {
+            "bp": [
+              115,
+              71
+            ],
+            "hr": 62,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-06-21T10:20",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-21T10:20",
+              "results": [
+                {
+                  "test": "Angiotensin converting enzyme",
+                  "loinc": "2742-5",
+                  "unit": "U/L",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "1,25-dihydroxyvitamin D",
+                  "loinc": "62290-2",
+                  "unit": "pg/mL",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2023-06-21T10:00",
+              "text": "PA and lateral. Bilateral hilar lymphadenopathy. Reticulonodular infiltrates in both lungs. No pleural effusion. Heart size normal.",
+              "conclusion": "Bilateral hilar lymphadenopathy with reticulonodular infiltrates."
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral",
+              "action": "done",
+              "date": "2023-06-21T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology consultation",
+              "date": "2023-08-14T11:00",
+              "author": "rheumatology",
+              "body": "Outside rheumatology practice. Consultation, date of service 06/21/2023.\n\nMs. Washington, 36, referred for sarcoidosis with weight loss. Pulmonology saw her six months ago. Over the last three months she has had a dry cough, fatigue and an unintended loss of about ten pounds. She denies fever, night sweats and coughing blood. No joint pain or swelling, no eye complaints today.\n\nPast history: ulcerative colitis; primary hyperparathyroidism; sarcoidosis.\nMedications: mesalamine 1.2 g twice daily. Allergies: NKDA.\nFamily history: maternal aunt with sarcoidosis, mother with lupus, father with type 2 diabetes, a paternal cousin with ulcerative colitis.\n\nAfebrile, vital signs normal. Bibasilar crackles. No palpable lymphadenopathy. No synovitis. Skin clear.\n\nLabs: calcium 11.2 mg/dL, creatinine 0.9 mg/dL, ACE elevated, 1,25-dihydroxyvitamin D elevated.\nChest radiograph: bilateral hilar lymphadenopathy with reticulonodular infiltrates.\n\nAssessment: sarcoidosis with pulmonary, nodal, cutaneous and calcium involvement, now with constitutional symptoms. No tissue diagnosis to date.\nRecommendations: mediastinal lymph node biopsy to establish the diagnosis histologically; I have contacted her pulmonologist, who will arrange EBUS. Follow up with us as needed afterward."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "procedure_visit",
+          "start": "2023-07-18T08:00",
+          "end": "2023-07-18T12:30",
+          "service": "Pulmonology",
+          "reason": "mediastinal lymph node biopsy",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-07-18T09:15",
+              "text": "Specimen: mediastinal lymph node (subcarinal), endobronchial ultrasound-guided transbronchial needle aspiration with cell block. Microscopic: multiple well-formed noncaseating epithelioid granulomas with scattered multinucleated giant cells in a background of lymphocytes. No necrosis. AFB and GMS stains negative for organisms. No malignant cells.",
+              "conclusion": "Noncaseating granulomatous inflammation, consistent with sarcoidosis.",
+              "issued": "2023-07-21T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "EBUS procedure and pathology",
+              "date": "2023-07-27T13:40",
+              "author": "pulmonology",
+              "body": "Outside pulmonology. Procedure note 07/18/2023: flexible bronchoscopy with endobronchial ultrasound-guided transbronchial needle aspiration of the subcarinal lymph node station under moderate sedation. Airways normal. Enlarged subcarinal and hilar nodes visualized; subcarinal node sampled with several passes. No complications; discharged home the same day.\n\nPathology: noncaseating granulomas, special stains negative, no malignancy.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-28a",
+          "kind": "portal_message",
+          "start": "2023-07-28T10:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Biopsy result",
+              "date": "2023-07-28T10:05",
+              "author": "PCP",
+              "body": "Hi Tamika, the pathology from your bronchoscopy came in yesterday. It shows the granulomas typical of sarcoidosis, with no infection and no cancer. So the diagnosis we suspected is now confirmed. Your pulmonologist will go over next steps; let's talk at your physical in September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Biopsy result",
+              "date": "2023-07-28T13:22",
+              "author": "patient",
+              "body": "Thank you, that's a relief honestly. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-14b",
+          "kind": "telephone",
+          "start": "2023-08-14T11:20",
+          "reason": "records received",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rheumatology note received",
+              "date": "2023-08-14T11:20",
+              "author": "MA",
+              "body": "Rheumatology consult from 6/21 finally received after two requests. Scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "annual_physical",
+          "start": "2023-09-12T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              73
+            ],
+            "hr": 66,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 67.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T08:50",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-12T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 194
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 133
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-09-12T08:40",
+              "text": "Specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2023-09-19T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-12T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-12T09:15",
+              "author": "PCP",
+              "body": "Annual. School started last week.\n\nSarcoid: EBUS 7/18 confirmed noncaseating granulomas. Rheumatology letter (6/21) recommended the biopsy and has her follow as needed. Pulmonology continuing to observe. Cough lingers, weight has held. No fever.\nUC: no flares; she did not see GI this year, plans to call them.\n\nMeds: mesalamine. NKDA. PHQ-2 1.\n\nExam: well. Lungs: soft bibasilar crackles. Heart regular. Breasts without masses. Pelvic: normal external genitalia, cervix normal, Pap with HPV collected. Shins clear. No edema.\n\nPlan: CMP, lipids. Pap/HPV sent. Flu and updated COVID next month. GI follow-up reminder."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "portal_message",
+          "start": "2023-09-20T17:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "date": "2023-09-20T17:00",
+              "author": "PCP",
+              "body": "Your Pap and HPV test are normal, so the next one is due in 5 years. Cholesterol is fine. Calcium is still mildly high, as expected with the sarcoid."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-03T15:34"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-03T15:34"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-03T15:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2023-10-03T15:50",
+              "author": "RN",
+              "body": "Influenza IM right deltoid, 2023-24 COVID IM left deltoid. No contraindications. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "office_visit",
+          "start": "2023-12-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, blurry vision",
+          "vitals": {
+            "bp": [
+              122,
+              80
+            ],
+            "hr": 78,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 67.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-13T16:10",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-13T16:10",
+              "results": [
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2023-12-13T16:30",
+              "text": "PA and lateral. Prominent bilateral hilar fullness. No lung infiltrate. No pleural effusion. Heart size normal.",
+              "conclusion": "Prominent bilateral hilar fullness without infiltrate or effusion."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-13T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "blurry vision and dry irritated eyes in sarcoidosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-12-13T17:05",
+              "author": "PCP",
+              "body": "F/u sarcoid and calcium.\n\nHalf a year of feeling weak and worn down, achy in a vague way through the muscles and joints without any swelling, mild headaches now and then. Vision goes blurry on and off, mostly reading student work at her desk. Harder to concentrate, says she is slower getting report cards done. Mild breathlessness carrying groceries up to her apartment. No cough lately, no wheeze, no fevers or sweats. Last few weeks her eyes feel dry and gritty.\n\nMeds: mesalamine 1.2 g BID. NKDA.\n\nT 36.8, BP 122/80, P 78, RR 14.\nExam: eyes without redness, pupils equal and reactive. Heart regular, no murmur. Lungs clear today. Neuro: strength 5/5 throughout, reflexes 2+ and symmetric. Skin: scattered firm, mildly tender red nodules over both anterior shins.\n\nA/P:\n1. Sarcoidosis with fatigue, eye symptoms and recurrent erythema nodosum. Eye symptoms in sarcoid need an eye exam to look for inflammation; ophthalmology referral. CXR today.\n2. Hypercalcemia: CMP and PTH.\n3. UC stable.\nAddendum: CXR with prominent hilar fullness, no infiltrate or effusion. Calcium still elevated, renal function normal, PTH 7 (suppressed), unchanged picture."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.4,
+            "labs": {
+              "Calcium": 11.3
+            }
+          },
+          "measure": [
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "outside_records",
+          "start": "2024-01-22T14:15",
+          "reason": "ophthalmology letter",
+          "medications": [
+            {
+              "drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+              "action": "historical",
+              "sig": "1 drop in each eye up to four times daily as needed for dryness",
+              "dose": {
+                "value": 1,
+                "unit": "drop"
+              },
+              "frequency": "PRN",
+              "route": "Ophthalmic",
+              "course": "chronic",
+              "reason": "ocular surface dryness"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "done",
+              "date": "2024-01-16T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology consultation",
+              "date": "2024-01-22T14:15",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology group. Visit 01/16/2024.\n\nReferred for intermittent blurred vision and dry, gritty eyes in a patient with biopsy-proven sarcoidosis.\n\nVisual acuity 20/20 each eye with near correction not required. Pupils equal, no afferent defect. Intraocular pressures normal. Slit lamp: lids and lashes normal; conjunctiva quiet; reduced tear film break-up time both eyes with mild punctate staining inferiorly; anterior chamber deep and quiet, no cells or flare; no keratic precipitates; iris without nodules. Dilated exam: clear vitreous, normal optic discs, macula and vessels normal, no periphlebitis or choroidal lesions.\n\nImpression: no evidence of uveitis or posterior segment sarcoidosis. Ocular surface dryness, likely accounting for the fluctuating blur with reading.\nPlan: preservative-free carboxymethylcellulose artificial tears up to four times daily, screen breaks when grading. Yearly eye exam given her sarcoidosis, sooner for redness, pain or light sensitivity.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "portal_message",
+          "start": "2024-01-23T07:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Eye doctor letter",
+              "date": "2024-01-23T07:40",
+              "author": "PCP",
+              "body": "Good news from the eye doctor: no inflammation inside the eyes from the sarcoid. The blur seems to be from dry eyes, so use the artificial tears they recommended. They want to see you once a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "office_visit",
+          "start": "2024-04-09T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "sarcoidosis follow-up",
+          "vitals": {
+            "bp": [
+              108,
+              66
+            ],
+            "hr": 71,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 68.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-04-09T16:10",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-04-09T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.55
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-09T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-04-09T16:30",
+              "author": "PCP",
+              "body": "Routine follow-up.\n\nEyes better with the drops, blur only at the end of long grading nights. Energy so-so, better on weekends. Occasional dry cough, nothing new. No fevers. Shins clear since January. UC quiet.\n\nMeds: mesalamine 1.2 g BID, artificial tears prn. NKDA.\n\nExam: well. Lungs clear. Heart regular. Skin clear.\n\nA/P: sarcoidosis, stable on observation; calcium recheck today. Ophthalmology yearly. Pulmonology follow-up is overdue; she will call them. UC: continue mesalamine. RTC at physical in September."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Calcium": 11.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-11a",
+          "kind": "portal_message",
+          "start": "2024-04-11T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-04-11T12:20",
+              "author": "PCP",
+              "body": "Calcium remains mildly elevated and steady. Blood counts and kidney function are normal."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "outside_records",
+          "start": "2024-06-11T10:30",
+          "reason": "GI follow-up letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gastroenterology follow-up letter",
+              "date": "2024-06-11T10:30",
+              "author": "gastroenterology",
+              "body": "Gastroenterology, office visit 06/04/2024. Ulcerative colitis in sustained clinical remission on mesalamine 1.2 g twice daily. No rectal bleeding, one or two formed stools daily. Sarcoidosis followed by pulmonology. Abdomen benign. Plan: continue mesalamine; renewed prescription for one year with refills. Return in one year. Allergies: no known drug allergies."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "portal_message",
+          "start": "2024-08-27T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Work form",
+              "date": "2024-08-27T20:05",
+              "author": "patient",
+              "body": "Hi, the district wants a health form for staff with chronic conditions this year (just confirming I can work and listing any accommodations). Can you fill it out at my physical? Nothing needs to change, I just want it on file in case I have more appointments."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Work form",
+              "date": "2024-08-28T08:15",
+              "author": "MA",
+              "body": "Sure, bring it to your physical on 9/10 and the doctor will complete it."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              77
+            ],
+            "hr": 63,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 70.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-10T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-10T09:05",
+              "author": "PCP",
+              "body": "Annual. Weight back up to 69.6 kg. Feels about as good as she has in a couple of years. Cough rare. Eyes fine with drops. UC quiet, saw GI in June. Has not rescheduled pulmonology; given their number again.\n\nMeds: mesalamine 1.2 g BID, carboxymethylcellulose drops prn. NKDA. PHQ-2 0.\n\nExam: well. Eyes quiet. Neck no adenopathy. Heart regular. Lungs clear. Abdomen soft. Shins clear. Neuro nonfocal.\n\nPlan: CMP, UA. District health form completed: no restrictions. Flu and COVID in October. Pap next due 2028. Mammogram to start at 40."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:33"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T15:33"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2024-10-08T15:48",
+              "author": "RN",
+              "body": "Flu (trivalent) IM left deltoid, 2024-25 COVID IM right deltoid. Tolerated without issue, out after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "office_visit",
+          "start": "2024-12-03T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right facial weakness",
+          "vitals": {
+            "bp": [
+              126,
+              67
+            ],
+            "hr": 65,
+            "temp_c": 36.9,
+            "spo2": 99
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-03T12:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral, urgent",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "right peripheral facial weakness in sarcoidosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Same-day request",
+              "date": "2024-12-03T07:20",
+              "author": "RN",
+              "body": "Pt texted: right side of face feels heavy and her smile is crooked, building for about a week. No arm or leg weakness, speech clear, no headache. Coworker noticed it. Triage: gradual, face only, more than a week. Same-day slot at her lunch break 12:10."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Same-day Visit",
+              "date": "2024-12-03T12:50",
+              "author": "PCP",
+              "body": "About a week of gradually worsening right facial weakness. Started as trouble whistling and a droop at the corner of her mouth, now the right eye doesn't close all the way and it waters. No limb weakness, numbness, vision loss, speech or swallowing trouble, no ear pain or vesicles. Dry cough has crept back over the last couple of months, some breathlessness. No fever.\n\nExam: vitals normal. Right facial weakness involving forehead, eye closure and mouth; left side normal. No vesicles in the ear canal. Other cranial nerves intact. Strength and sensation normal in all four limbs, reflexes symmetric, gait normal.\n\nA/P: right peripheral facial nerve palsy, progressive over a week, in a patient with biopsy-proven sarcoidosis; facial nerve involvement from sarcoid is a real possibility. No central signs. Urgent neurology referral, office called directly and fit her in 12/16. Eye protection now: artificial tears through the day, tape the lid closed at night. Return or ED for any limb weakness, speech change or a severe headache."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-12-16a",
+          "kind": "specialist_visit",
+          "start": "2024-12-16T10:30",
+          "service": "Neurology",
+          "reason": "right facial weakness",
+          "conditions": [
+            {
+              "label": "Sarcoidosis of other sites",
+              "action": "diagnosed",
+              "onset": "2024-11-25",
+              "note": "right facial nerve palsy (neurosarcoidosis)",
+              "icd10": "D86.89"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 77,
+            "temp_c": 36.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-16T11:20",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-16T11:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 229
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-16T11:20",
+              "results": [
+                {
+                  "test": "Angiotensin converting enzyme",
+                  "loinc": "2742-5",
+                  "unit": "U/L",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-12-16T11:00",
+              "text": "PA and lateral. Bilateral hilar lymphadenopathy. No consolidation or effusion. Heart size normal.",
+              "conclusion": "Bilateral hilar lymphadenopathy."
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2024-12-16T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "date": "2025-01-06T09:45",
+              "author": "neurology",
+              "body": "Outside neurology clinic. Consultation 12/16/2024.\n\nReason: right facial weakness, urgent referral from primary care.\n\nShe is 37, with biopsy-confirmed sarcoidosis (pulmonary and nodal), ulcerative colitis and a prior parathyroid adenoma, last seen by her physician a year ago for fatigue and eye complaints. Three weeks of progressive weakness of the right face. Two months of persistent dry cough with occasional breathlessness. No fever, weight loss or night sweats.\n\nMedications: mesalamine; artificial tears. Allergies: NKDA.\nFamily history: maternal aunt with sarcoidosis, mother with lupus, father with type 2 diabetes, paternal cousin with ulcerative colitis.\n\nExamination: right lower motor neuron facial palsy with drooping of the mouth, incomplete closure of the right eye and inability to raise the right eyebrow. Remaining cranial nerves normal. Motor, sensory, reflexes and coordination normal. Lungs without wheezes, rales or rhonchi.\n\nLabs: calcium 11.2 mg/dL, ACE elevated, CBC normal, ANA negative, RF negative.\nChest radiograph: bilateral hilar lymphadenopathy.\n\nImpression: right facial nerve palsy attributed to neurosarcoidosis, the most common cranial neuropathy in sarcoid.\nPlan: protect the right cornea with lubricating drops during the day and taping at night; eye patch outdoors on windy days. Expect gradual recovery over weeks to months. Return if new cranial nerve or limb symptoms develop."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-12-18a",
+          "kind": "portal_message",
+          "start": "2024-12-18T21:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Eye taping",
+              "date": "2024-12-18T21:10",
+              "author": "patient",
+              "body": "Neurology said this is from the sarcoid and should get better on its own over time. The taping at night is awkward. Is there a better tape to use? And can I keep using the same drops all day?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Eye taping",
+              "date": "2024-12-19T08:05",
+              "author": "RN",
+              "body": "Paper surgical tape from any pharmacy works best and is gentle on the skin; close the lid fully, then tape horizontally across it. Yes, the same artificial tears are fine as often as you need during the day. Call if the eye becomes red or painful or your vision changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-07a",
+          "kind": "telephone",
+          "start": "2025-01-07T10:15",
+          "reason": "records received",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Neurology note received",
+              "date": "2025-01-07T10:15",
+              "author": "MA",
+              "body": "Neurology consult 12/16/24 received 1/6, scanned and routed to PCP. Pt has f/u here 2/11."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "facial palsy follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              74
+            ],
+            "hr": 70,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 68.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-02-11T16:15",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-11T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-02-11T16:35",
+              "author": "PCP",
+              "body": "Follow-up right facial palsy (neurosarcoid per neurology 12/16).\n\nSlowly coming back: can close the eye now with effort, still tapes at night. Smile still a little lopsided. Eye not red or painful. Cough settled again.\n\nExam: right face with mild residual weakness, eye closes fully with effort, forehead moves partially. Cornea clear by penlight. Lungs clear. Remainder nonfocal.\n\nA/P: improving facial palsy. Keep lubricating until full closure without effort. Calcium today. Recheck at physical; neurology as needed."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Calcium": 11.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "portal_message",
+          "start": "2025-05-20T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "date": "2025-05-20T19:40",
+              "author": "patient",
+              "body": "Can I move my physical to after school gets out? Mid to late June works best. Also my face is basically back to normal, I stopped taping a few weeks ago."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "date": "2025-05-21T09:00",
+              "author": "front desk",
+              "body": "You're booked for Tuesday 6/17 at 9:00. Glad to hear about your face!"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "annual_physical",
+          "start": "2025-06-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Sarcoidosis of other sites",
+              "action": "resolved",
+              "note": "right facial palsy recovered",
+              "icd10": "D86.89"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              84
+            ],
+            "hr": 66,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 71.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-17T09:40",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 10.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-06-17T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-06-17T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 186
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-06-17T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-06-17T09:50",
+              "author": "PCP",
+              "body": "Annual, first week of summer break.\n\nFace fully recovered; stopped taping in April and only uses drops occasionally. Cough gone for now. Energy decent. UC quiet, sees GI this month. No joint complaints.\n\nMeds: mesalamine 1.2 g BID, artificial tears prn. NKDA. PHQ-9 2.\n\nExam: symmetric facial movement, eye closure complete. Lungs clear. Heart regular. Abdomen soft. Skin clear. No synovitis.\n\nPlan: facial palsy resolved. CMP, CBC with diff, lipids. Flu and COVID in the fall. Ophthalmology yearly visit due; reminded."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "portal_message",
+          "start": "2025-06-19T11:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-06-19T11:30",
+              "author": "PCP",
+              "body": "Labs look stable: calcium still a touch high as it has been, kidney function, blood counts and cholesterol all normal. Enjoy the summer."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T15:32"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T15:32"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T15:34"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2025-10-07T15:45",
+              "author": "RN",
+              "body": "Influenza and 2025-26 COVID vaccines given IM, one in each deltoid. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "telephone",
+          "start": "2025-12-10T17:20",
+          "reason": "joint swelling with fever",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Triage call",
+              "date": "2025-12-10T17:20",
+              "author": "PCP",
+              "body": "Pt called after school. Two weeks of right knee pain and swelling, now the left ankle too, getting worse; low-grade temps to about 100 at home; a rash on her lower legs. Limping, hard to stand at the board. No injury. Bowels normal.\n\nA hot swollen knee with fever needs the joint tapped to exclude infection today or tomorrow; we cannot do that safely in the office this evening. Advised ED. She will go first thing in the morning if tonight's temp stays under 101, tonight if higher or if she can't bear weight."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "ed_visit",
+          "start": "2025-12-11T07:40",
+          "end": "2025-12-11T13:10",
+          "service": "Emergency Medicine",
+          "reason": "right knee and left ankle swelling, fever",
+          "conditions": [
+            {
+              "label": "Enteropathic arthropathies, multiple sites",
+              "action": "diagnosed",
+              "onset": "2025-11-27",
+              "note": "peripheral arthritis associated with ulcerative colitis",
+              "icd10": "M07.69"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain, max 6 tablets a day",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "joint pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-12-11T07:48",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 92,
+              "rr": 16,
+              "temp_c": 37.9,
+              "spo2": 99
+            },
+            {
+              "time": "2025-12-11T12:45",
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 37.4,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-11T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 6.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-11T08:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 45
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 32
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-11T09:30",
+              "results": [
+                {
+                  "test": "Synovial fluid leukocytes",
+                  "loinc": "26469-7",
+                  "unit": "/uL",
+                  "value": 16400
+                },
+                {
+                  "test": "Synovial fluid crystals",
+                  "loinc": "5781-0",
+                  "text": "No crystals seen"
+                },
+                {
+                  "test": "Synovial fluid Gram stain",
+                  "loinc": "14363-6",
+                  "text": "No organisms seen"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-11T09:30",
+              "resulted": "2025-12-14T10:00",
+              "results": [
+                {
+                  "test": "Synovial fluid culture",
+                  "loinc": "621-3",
+                  "text": "No growth at 72 hours"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Knee X-ray",
+              "performed": "2025-12-11T08:40",
+              "text": "Right knee, three views. Soft tissue swelling and suprapatellar fullness. Joint spaces preserved. No erosions. Bone mineralization normal. No fracture.",
+              "conclusion": "Soft tissue swelling without joint space narrowing, erosion or osteopenia."
+            },
+            {
+              "study": "Ankle X-ray",
+              "performed": "2025-12-11T08:45",
+              "text": "Left ankle, three views. Periarticular soft tissue swelling. Mortise intact, joint spaces preserved. No erosions. Normal mineralization. No fracture.",
+              "conclusion": "Soft tissue swelling without joint space narrowing, erosion or osteopenia."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-12-11T07:40"
+            },
+            {
+              "procedure": "Arthrocentesis or injection, major joint",
+              "performed": "2025-12-11T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2025-12-12T08:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Physician record, 12/11/2025.\n\nCC: right knee and left ankle pain and swelling.\n\nHPI: 38-year-old woman with sarcoidosis, ulcerative colitis, a past parathyroid problem and a prior facial nerve palsy. Two weeks of increasing pain and swelling of the right knee, then the left ankle, with low-grade fevers at home and a rash on both lower legs. No trauma, no tick bite she knows of, no new sexual partner, no urinary or eye symptoms. Her colitis is well controlled on mesalamine.\n\nMeds: mesalamine, artificial tears. Allergies: NKDA.\n\nExam: T 37.9 C, HR 92, BP 124/78, RR 16, SpO2 99%. Right knee warm with effusion, motion limited by pain. Left ankle warm and swollen, similar. No deformity. Pustular rash over both lower legs. Lungs clear. Abdomen soft.\n\nArthrocentesis, right knee, lateral approach, sterile technique, after consent: about 25 mL cloudy yellow fluid. Tolerated well.\n\nResults: hemoglobin 12.1 g/dL, WBC 9,800/uL. ESR 45 mm/h. CRP 3.2 mg/dL. RF negative, ANA negative. Synovial fluid WBC 16,400/uL, no crystals, Gram stain without organisms; culture pending at discharge.\nRadiographs right knee and left ankle: soft tissue swelling only, no joint space narrowing, erosions or osteopenia.\n\nMDM: inflammatory oligoarthritis of large lower-extremity joints in a patient with ulcerative colitis; synovial count and Gram stain do not suggest septic arthritis. Most consistent with enteropathic (IBD-associated) peripheral arthritis. NSAIDs avoided given her colitis.\n\nDisposition: discharged. Acetaminophen for pain, rest and ice. Follow up with primary care this week and rheumatology. Return for fever above 101, a hotter or more swollen joint, or inability to bear weight. The lab will call if the culture grows."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "ED culture result",
+              "date": "2025-12-14T11:10",
+              "author": "RN",
+              "body": "Called by the hospital lab: right knee fluid culture no growth at 72 hours. Pt informed; knee still swollen but fever gone. Post-ED visit stays 12/16."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "office_visit",
+          "start": "2025-12-16T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-ED follow-up, knee and ankle",
+          "vitals": {
+            "bp": [
+              123,
+              69
+            ],
+            "hr": 72,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 69.8
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-16T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral-2",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "enteropathic peripheral arthritis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2025-12-16T16:20",
+              "author": "PCP",
+              "body": "Seen in the ED 12/11 for a swollen right knee and left ankle with fevers. ED record received: knee tapped, synovial WBC 16,400, no crystals, Gram stain negative; culture final no growth. ESR 45, CRP 3.2 mg/dL, RF and ANA negative. X-rays soft tissue swelling only. ED dx enteropathic (IBD-related) arthritis.\n\nNow: no fever since the weekend. Knee less tight after the tap, still sore on stairs; ankle swollen in the evenings. Pain 4/10 with acetaminophen. The rash on her legs is fading. UC quiet, no bleeding.\n\nExam: afebrile. Right knee with a small effusion, warm, flexion to about 100 degrees. Left ankle mildly swollen and tender. Lower legs with a few fading spots. Lungs clear.\n\nA/P:\n1. Enteropathic peripheral arthritis with UC. Rheumatology referral, asked for the soonest slot. Acetaminophen as needed; avoid ibuprofen and naproxen because of the colitis. Out of work rest of this week; note given.\n2. UC: let GI know about the arthritis; she will message them.\n3. Sarcoidosis, hypercalcemia: unchanged plan."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "pharmacy",
+          "start": "2026-01-21T10:40",
+          "reason": "pharmacy query",
+          "medications": [
+            {
+              "drug_text": "sulfasalazine 500 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 7 days, then 2 tablets twice daily with food",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "enteropathic arthritis"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral-2",
+              "action": "done",
+              "date": "2026-01-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call",
+              "date": "2026-01-21T10:40",
+              "author": "MA",
+              "body": "Pharmacist called: filled sulfasalazine DR 500 mg from outside rheumatology on 1/14 (1 BID x 7 days then 2 BID), and their system flagged it alongside mesalamine. Wanted to confirm we are aware of both. We had no rheumatology note yet. Per PCP: rheumatology and GI manage these; the overlap is a known combination, OK to dispense both. Added sulfasalazine to med list as an outside prescription. Rheumatology office asked for their note and lab plan."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Rheumatology office callback",
+              "date": "2026-01-22T14:05",
+              "author": "MA",
+              "body": "Rheumatology office returned call: they want CBC and CMP at 2-4 weeks, then every 3 months while on sulfasalazine, drawn here and faxed to them. Letter to follow. Lab-only visit booked 2/10."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "lab_only",
+          "start": "2026-02-10T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "sulfasalazine monitoring",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-02-10T07:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.85
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-02-10T07:35",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Calcium",
+                  "value": 11.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-10T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "date": "2026-02-11T12:15",
+              "author": "PCP",
+              "body": "Sulfasalazine 4-week labs: blood counts normal including neutrophils, liver enzymes and kidney function normal. Calcium mildly elevated as usual. Faxed to rheumatology. Portal note sent to patient."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Calcium": 10.9
+            }
+          }
+        },
+        {
+          "id": "2026-03-02a",
+          "kind": "outside_records",
+          "start": "2026-03-02T13:20",
+          "reason": "rheumatology letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology consultation",
+              "date": "2026-03-02T13:20",
+              "author": "rheumatology",
+              "body": "Outside rheumatology practice. Visit 01/14/2026.\n\nReferred after an ED visit for oligoarthritis of the right knee and left ankle. Known to us from 2023 for sarcoidosis. Joint symptoms since late November with fevers; ED synovial fluid inflammatory without crystals or infection, culture negative, ESR and CRP elevated, RF and ANA negative, radiographs without erosions.\n\nNow: right knee and left ankle still painful and swollen by evening, morning stiffness under an hour. UC quiet on mesalamine. No back pain, no eye redness.\n\nExam: small right knee effusion, mild left ankle synovitis. No other joint involvement. Skin clear.\n\nAssessment: peripheral enteropathic arthritis, large-joint, associated with ulcerative colitis.\nPlan: start sulfasalazine 500 mg twice daily for one week, then 1000 mg twice daily. Discussed with her gastroenterologist; mesalamine continues. CBC and CMP at 2-4 weeks and every 3 months, drawn with primary care. Avoid NSAIDs. Follow up in 3 months.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "outside_records",
+          "start": "2026-04-27T10:50",
+          "reason": "rheumatology follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up",
+              "date": "2026-04-27T10:50",
+              "author": "rheumatology",
+              "body": "Outside rheumatology. Follow-up 04/15/2026.\n\nOn sulfasalazine 1000 mg twice daily since late January with mild nausea in the first week only. Knee and ankle swelling have settled; she is back to full days at school without limping. No new joints.\n\nExam: no effusion at the right knee, full range; left ankle without synovitis.\n\nMonitoring labs from 02/10 normal.\n\nAssessment: enteropathic peripheral arthritis, in remission on sulfasalazine.\nPlan: continue sulfasalazine 1000 mg twice daily; labs every 3 months with primary care; return in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "lab_only",
+          "start": "2026-05-12T07:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "sulfasalazine monitoring",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-05-12T07:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 200
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 26
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-12T07:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Calcium",
+                  "value": 11.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-12T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "date": "2026-05-13T08:40",
+              "author": "PCP",
+              "body": "3-month sulfasalazine labs normal: counts, liver and kidney tests. Calcium unchanged at its usual mildly elevated level. Faxed to rheumatology."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "annual_physical",
+          "start": "2026-06-23T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              74
+            ],
+            "hr": 54,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 70.3
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-06-23T09:40",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-06-23T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-06-23T09:55",
+              "author": "PCP",
+              "body": "Annual. School out last week.\n\nJoints quiet since spring on sulfasalazine; rheumatology happy. No fevers. Occasional dry cough, nothing new. Face normal. Eyes fine, uses drops now and then; has not seen ophthalmology this year, will book. UC no flares, GI visit coming up next month.\n\nMeds: mesalamine 1.2 g BID, sulfasalazine 1000 mg BID, artificial tears prn. NKDA. PHQ-2 0.\n\nExam: well. Facial movement symmetric. Lungs clear. Heart regular. Abdomen soft. Joints without effusion or warmth. Shins clear.\n\nPlan: UA today; blood work drawn in May is current. Next sulfasalazine labs in August. Flu and COVID this fall. Mammogram screening at 40 next February; order placed at the next visit. Follow-up in September for sarcoid and calcium."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs before school",
+              "date": "2026-08-18T18:30",
+              "author": "patient",
+              "body": "Teacher PD days start next week. Can I do my August blood work at the September appointment instead? Also the pharmacy says my sulfasalazine refills are done, rheumatology already sent a new one so just FYI."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs before school",
+              "date": "2026-08-18T20:05",
+              "author": "PCP",
+              "body": "Yes, we can draw everything at the September visit. Thanks for the heads-up on the refill."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T15:30",
+          "reason": "sarcoidosis and calcium follow-up, sulfasalazine labs",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Enteropathic arthropathies, multiple sites|M07.69": {
+        "code": "M07.69",
+        "display": "Enteropathic arthropathies, multiple sites",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Erythema nodosum|L52": {
+        "code": "L52",
+        "display": "Erythema nodosum",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypercalcemia|E83.52": {
+        "code": "E83.52",
+        "display": "Hypercalcemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Sarcoidosis of lung with sarcoidosis of lymph nodes|D86.2": {
+        "code": "D86.2",
+        "display": "Sarcoidosis of lung with sarcoidosis of lymph nodes",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Sarcoidosis of other sites|D86.89": {
+        "code": "D86.89",
+        "display": "Sarcoidosis of other sites",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution": {
+        "code": "1188426",
+        "display": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+        "ingredient": "carboxymethylcellulose",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "sulfasalazine 500 MG Delayed Release Oral Tablet": {
+        "code": "313142",
+        "display": "sulfasalazine 500 MG Delayed Release Oral Tablet",
+        "ingredient": "sulfasalazine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "1,25-dihydroxyvitamin D": {
+        "code": "62290-2",
+        "display": "1,25-Dihydroxyvitamin D [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Angiotensin converting enzyme": {
+        "code": "2742-5",
+        "display": "Angiotensin converting enzyme [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Calcium 24 hour urine": {
+        "code": "6874-2",
+        "display": "Calcium [Mass/time] in 24 hour Urine",
+        "unit": "mg/(24.h)",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Synovial fluid Gram stain": {
+        "code": "14363-6",
+        "display": "Microscopic observation [Identifier] in Synovial fluid by Gram stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Synovial fluid crystals": {
+        "code": "5781-0",
+        "display": "Crystals [type] in Synovial fluid by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Synovial fluid culture": {
+        "code": "621-3",
+        "display": "Bacteria identified in Synovial fluid by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Synovial fluid leukocytes": {
+        "code": "26469-7",
+        "display": "Leukocytes [#/volume] in Synovial fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

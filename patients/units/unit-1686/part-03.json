@@ -1,0 +1,531 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001686",
+      "events": [
+        {
+          "id": "2026-01-14a",
+          "kind": "telehealth_visit",
+          "start": "2026-01-14T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia check in pregnancy",
+          "orders": [
+            {
+              "id": "cbc-2026-01",
+              "action": "placed",
+              "order": "CBC and iron studies",
+              "category": "lab",
+              "reason": "Iron deficiency anemia, pregnancy"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-01-14T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2026-01-14T16:15",
+              "body": "Video visit from her car in the school lot, identity verified.\n\n33F G4P3 at 20w3d. Here for the mid-pregnancy iron check we planned. OB visits on schedule, nothing new from them. Taking levothyroxine on waking, iron at night, prenatal daily. No dizziness, no bleeding.\n\nHx relevant: PPH x2 (2023 atony/home birth, transfused 2u; 2024 vaginal wall laceration, OR repair). OB planning hospital delivery with hemorrhage precautions.\n\nExam (video): well appearing, speaking comfortably, no distress.\n\nA/P\n- Iron deficiency anemia in pregnancy: CBC + iron studies tomorrow. Continue ferrous sulfate. Results to OB.\n- Hypothyroidism: TSH 9/25 in range, continue 75 mcg.\nf/u after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-15a",
+          "kind": "lab_only",
+          "start": "2026-01-15T07:25",
+          "reason": "CBC and iron studies",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.4,
+              "Hematocrit": 34.0,
+              "Ferritin": 15,
+              "Transferrin Saturation": 12
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-15T07:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-01-15T07:25",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 15
+                },
+                {
+                  "test": "Iron"
+                },
+                {
+                  "test": "Transferrin Saturation"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-15T07:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-2026-01",
+              "action": "done",
+              "date": "2026-01-15T07:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC and Iron",
+              "author": "PCP",
+              "date": "2026-01-15T17:10",
+              "body": "Hgb 11.4, ferritin 15 at 20 wks. In line with her prior pregnancies. Continue oral iron. Faxed to OB.\n\nPortal: \"Blood count 11.4 and iron 15, about the same as your last two pregnancies at this point. Keep up the iron. Copy sent to your OB.\""
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "outside_records",
+          "start": "2026-03-12T09:50",
+          "reason": "Immunization record from OB",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-03-10T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB Immunization Record",
+              "author": "front desk",
+              "date": "2026-03-12T09:50",
+              "body": "Vaccine record received from OB: Tdap 03/10/2026 (28 wks). Entered."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "pharmacy",
+          "start": "2026-04-21T14:35",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Ferrous Sulfate Refill",
+              "author": "MA",
+              "date": "2026-04-21T14:35",
+              "body": "Pharmacy request: ferrous sulfate 325 mg tab, #90. Last Hgb 11.4 (1/15/26). Pended, PCP approved with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-31a",
+          "kind": "hospital_admission",
+          "start": "2026-05-31T14:10",
+          "end": "2026-06-02T13:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Lightheadedness and weakness after recent delivery",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved",
+              "onset": "2025-08-24",
+              "note": "Delivered 2026-05-27"
+            },
+            {
+              "label": "Postpartum hemorrhage",
+              "icd10": "O72.1",
+              "action": "diagnosed",
+              "onset": "2026-05-27",
+              "note": "After manual removal of retained placenta"
+            },
+            {
+              "label": "Hemorrhagic shock",
+              "icd10": "O75.1",
+              "action": "diagnosed",
+              "onset": "2026-05-31"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "icd10": "D62",
+              "action": "diagnosed",
+              "onset": "2026-05-31"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-05-31T14:15",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 37.1
+            },
+            {
+              "time": "2026-05-31T15:40",
+              "bp": [
+                85,
+                55
+              ],
+              "hr": 128
+            },
+            {
+              "time": "2026-05-31T22:00",
+              "bp": [
+                110,
+                68
+              ],
+              "hr": 94
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 8.9,
+              "Hematocrit": 27.0
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-31T14:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 21.0
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-05-31T14:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time"
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-01T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.0
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-02T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.0
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2026-05-31T17:05",
+              "text": "Transabdominal and transvaginal imaging of the postpartum pelvis. The uterus is enlarged as expected 4 days postpartum. The endometrial stripe is thin without echogenic material or internal vascularity to suggest retained products of conception. No intrauterine or adnexal fluid collection. Ovaries unremarkable. No free fluid in the pelvis.",
+              "conclusion": "Expected postpartum uterus. No retained products of conception. No fluid collection."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-05-31T14:10"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-06-02T12:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetrics Readmission Discharge Summary",
+              "author": "obstetrics",
+              "date": "2026-06-03T09:40",
+              "body": "DISCHARGE SUMMARY, OBSTETRICS (READMISSION)\nPatient: Holly Barrett, 33 y/o, G4P4004\nAdmitted 05/31/2026. Discharged 06/02/2026.\n\nRecent delivery: admitted here 05/27/2026 at 39w3d with an uncomplicated vaginal delivery; the placenta was retained and removed manually. Pre-delivery Hgb 12. Discharged home 05/29.\n\nReason for readmission: two days after going home she became lightheaded and steadily weaker and was brought back.\n\nOn arrival: BP 90/60, HR 120, RR 22, T 37.1 C. Abdomen soft, minimally tender. Bleeding no more than normal lochia. Hgb 7.0 (from 12 before delivery). Coags normal. Bedside FAST: no free fluid in the abdomen. After aggressive IV crystalloid, BP remained 85/55 with HR 128; managed as hemorrhagic shock.\n\nCourse: Transfused 3 units packed red cells. Afterward BP 110/68, HR 94, mentating normally. Pelvic ultrasound showed no retained products and no fluid collection. Post-transfusion Hgb 8.7 on 6/1; 8.9 on 6/2 and stable. No further bleeding beyond lochia during the stay.\n\nPMH: hypothyroidism; iron deficiency anemia; PPH 06/2023 (atony) and 09/2024 (vaginal wall laceration).\nAllergies: penicillin (rash); latex (contact dermatitis).\n\nDischarge diagnoses: postpartum hemorrhage following manual removal of retained placenta; hemorrhagic shock, resolved with transfusion; acute blood loss anemia.\nDischarge medications: levothyroxine 75 mcg daily; ferrous sulfate 325 mg daily; prenatal vitamin daily.\nFollow-up: PCP within 1 week for CBC. OB postpartum visit as scheduled. Return for heavy bleeding, fainting, or fever."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "telephone",
+          "start": "2026-06-03T11:05",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2026-06-03T11:05",
+              "body": "TCM outreach. Readmitted 5/31-6/2 for hemorrhagic shock after 5/27 delivery (manual placenta removal), got 3 units. Summary received this morning.\n\nSpoke with pt. Home, resting. Lightheaded once on standing yesterday, sat down and it passed. Bleeding light. Eating and drinking. Meds unchanged: levothyroxine, ferrous sulfate, prenatal.\nReviewed when to call 911 vs go to L&D: fainting, soaking a pad an hour, racing heart at rest, fever.\nPCP visit Mon 6/8 10:40."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "office_visit",
+          "start": "2026-06-08T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, postpartum hemorrhage with shock",
+          "conditions": [
+            {
+              "label": "Hemorrhagic shock",
+              "icd10": "O75.1",
+              "action": "resolved",
+              "onset": "2026-05-31"
+            },
+            {
+              "label": "Postpartum hemorrhage",
+              "icd10": "O72.1",
+              "action": "resolved",
+              "onset": "2026-05-27"
+            }
+          ],
+          "state": {
+            "weight_kg": 72.5,
+            "labs": {
+              "Hemoglobin": 9.7,
+              "Hematocrit": 29.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-08T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.5
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-06-08T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-08T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2026-06-08T10:40",
+              "body": "TCM visit.\n\nDelivered 5/27 (4th baby), retained placenta removed manually, home 5/29. Readmitted 5/31 lightheaded and weak, Hgb 7 from 12, BP stayed 85/55 HR 128 after fluids. FAST negative, pelvic US no retained tissue or collection. 3 u PRBC, Hgb 8.7 then 8.9. Home 6/2.\n\nToday: up and around the house, tired. One lightheaded spell 6/2, none since. Lochia light. No fever. Eating ok. Mood \"tired, not sad.\" Has help at home. Taking levothyroxine, ferrous sulfate, prenatal vitamin.\n\nExam: vitals as charted, no orthostatic symptoms on standing. Pale conjunctivae. Heart RRR, no murmur. Lungs clear. Abd soft, nontender, fundus below umbilicus. No calf tenderness or edema.\nPHQ-9: 4.\n\nA/P\n1. Hemorrhagic shock from postpartum hemorrhage, resolved after transfusion. PPH resolved.\n2. Acute blood loss anemia on chronic iron deficiency: CBC today. Continue ferrous sulfate 325 daily. CBC + iron studies in ~6 wks.\n3. Hypothyroidism: continue 75 mcg; TSH at next visit.\n4. Third PPH in her last three deliveries; OB aware and following.\nTCM: RN contact 6/3, both admissions reviewed, meds reconciled."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC",
+              "author": "PCP",
+              "date": "2026-06-08T16:45",
+              "body": "Hgb 9.7, up from 8.9 at discharge. Portal: \"Your blood count is climbing (9.7). Stay on the iron. Labs again in about 6 weeks.\""
+            }
+          ]
+        },
+        {
+          "id": "2026-06-11a",
+          "kind": "portal_message",
+          "start": "2026-06-11T13:22",
+          "reason": "Leave paperwork",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leave form",
+              "author": "patient",
+              "date": "2026-06-11T13:22",
+              "body": "Hi, the district HR office wants a medical certification for my leave since I was readmitted. OB filled out one for the delivery but HR says they want something covering the hospital stay too. I uploaded the form. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leave form",
+              "author": "front desk",
+              "date": "2026-06-12T10:05",
+              "body": "Hi Holly, we got the form. Your doctor completed and signed it this morning and it has been faxed to the number on page 1. A copy is in your documents tab."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "lab_only",
+          "start": "2026-07-20T08:10",
+          "reason": "Anemia recheck",
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.9,
+              "Hematocrit": 32.5,
+              "Ferritin": 11,
+              "Transferrin Saturation": 9
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-20T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-07-20T08:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 11
+                },
+                {
+                  "test": "Iron"
+                },
+                {
+                  "test": "Transferrin Saturation"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-20T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC and Iron",
+              "author": "PCP",
+              "date": "2026-07-21T07:35",
+              "body": "Hgb 10.9 (8.9 at discharge 6/2, 9.7 on 6/8). Ferritin 11, lowest on record here. Continue ferrous sulfate daily; recheck CBC, iron, TSH at September visit.\n\nPortal: \"Hi Holly, your hemoglobin is up to 10.9, good progress. Your iron stores are low (ferritin 11), which isn't surprising after the blood loss, so keep taking the iron every day. We'll recheck everything, thyroid too, at your September visit.\""
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T20:47",
+          "reason": "Question about iron",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron",
+              "author": "patient",
+              "date": "2026-08-24T20:47",
+              "body": "Hi, I'm feeling a lot more like myself and I go back to school next week. Do I keep taking the iron until my appointment, or can I stop when this bottle runs out? Also is my appointment still the 22nd?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron",
+              "author": "RN",
+              "date": "2026-08-25T08:30",
+              "body": "Hi Holly, glad you're feeling better! Please keep taking the iron daily; your iron stores were still low in July, and you have refills at the pharmacy. Your appointment is Tuesday 9/22 at 3:40 and the doctor will check labs that day. Good luck with the first week back."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia and thyroid follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

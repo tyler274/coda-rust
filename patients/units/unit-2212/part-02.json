@@ -1,0 +1,271 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002212",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "imaging",
+          "start": "2025-01-21T08:15",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-01-21T08:15",
+              "text": "INDICATION: Annual lung cancer screening, former smoker, 30 pack-years.\nCOMPARISON: 01/16/2024.\nTECHNIQUE: Low-dose non-contrast CT chest.\nFINDINGS: No pulmonary nodules. No consolidation, effusion or pneumothorax. Central airways clear. Normal heart size, no pericardial effusion. No adenopathy. Cholecystectomy clips. Bones unremarkable.",
+              "conclusion": "Lung-RADS 1. Negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [{"id": "ldct-2025", "action": "done", "date": "2025-01-21T08:15"}]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-11T14:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2025-02-11T14:05", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-11T13:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: diabetes, hypertension",
+              "author": "PCP",
+              "date": "2025-02-11T14:10",
+              "body": "S: Routine f/u. Winter has been quiet, mostly indoors, shoveling his own driveway. No CP, no SOB with shoveling, no palpitations. Taking meds. Kiosk BPs mid-140s.\n\nO: BP/HR as charted. Regular. Lungs clear. Ext no edema. Feet intact.\n\nLDCT 1/21: Lung-RADS 1.\n\nA/P\nT2DM: A1c today; continue metformin 1000 BID.\nHTN: continue lisinopril 20.\nHLD: atorvastatin 40.\nFormer smoker: 18 months out.\n\nRTC 4 mo."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-03a",
+          "kind": "portal_message",
+          "start": "2025-04-03T08:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "author": "patient",
+              "date": "2025-04-03T08:52",
+              "body": "Hi, the pharmacy says I'm out of refills on the atorvastatin. Can you send a new one? Same pharmacy. Thanks, Stanley Kaminski"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "author": "MA",
+              "date": "2025-04-03T10:30",
+              "body": "Atorvastatin 40 mg, 90 days with 3 refills, sent this morning per the doctor. Let us know if it's not ready by tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-10T09:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2025-06-10T09:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-06-10T09:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-06-10T09:50",
+              "body": "Doing well, garden is in. No new complaints. Meds unchanged, adherent.\n\nExam: BP as charted, heart regular, lungs clear, no edema.\n\nPlan: A1c and BMP today. Continue current regimen. Eye exam next month already booked. Wellness visit in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "outside_records",
+          "start": "2025-07-08T14:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination report",
+              "author": "optometry",
+              "date": "2025-07-08T14:10",
+              "body": "Diabetic Eye Exam\nDate of exam: 07/01/2025\n\nVA cc 20/25 OU. IOP 16 OD, 15 OS.\nDilated exam: lens clear OU. Discs pink and sharp, C/D 0.3. Maculae normal. No microaneurysms, hemorrhages or exudates. Periphery flat.\n\nAssessment: no diabetic retinopathy OU. Return in 12 months.\nAllergies: none known."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-14a",
+          "kind": "office_visit",
+          "start": "2025-08-14T10:00",
+          "end": "2025-08-14T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Palpitations and shortness of breath with exertion",
+          "conditions": [
+            {"label": "Atrial fibrillation, unspecified", "icd10": "I48.91", "action": "diagnosed", "onset": "2025-06-14"}
+          ],
+          "vitals": {"bp": [142, 88], "hr": 98, "spo2": 97},
+          "measure": ["weight_kg", "temp_c", "rr"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-14T10:40", "results": [{"test": "Hemoglobin", "value": 14.2}, {"test": "Platelets", "value": 250}, {"test": "White Blood Cells"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-08-14T10:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.0}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-08-14T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine", "value": 1.1}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2025-08-14T10:40", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Hemoglobin A1c"}]}
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-08-14T10:15",
+              "text": "Atrial fibrillation. Ventricular rate 100. Irregularly irregular, no discernible P waves. Normal axis. QRS 92 ms. No acute ST-segment or T-wave changes.",
+              "conclusion": "Atrial fibrillation, ventricular rate 100."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2025-08-14T10:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-08-14T10:15"}
+          ],
+          "orders": [
+            {"id": "tte-2025", "action": "placed", "order": "Transthoracic echocardiogram", "category": "imaging", "reason": "New atrial fibrillation"},
+            {"id": "cards-referral", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "New atrial fibrillation; anticoagulation discussion"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: palpitations",
+              "author": "PCP",
+              "date": "2025-08-14T11:20",
+              "body": "CC: heart \"fluttering\"\n\nHPI: 68M with HTN, T2DM, HLD, ex-smoker. Since around mid-June has noticed episodes of his heart racing and skipping, some lasting most of an afternoon. A bit winded carrying the hose up the slope to the garden, which is new for him. Denies chest pain, lightheadedness or passing out. No caffeine change, no new meds or supplements. Alcohol unchanged, a beer or two weekly.\n\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40. NKDA.\n\nExam: BP 142/88, HR 98 and irregularly irregular, SpO2 97% RA. Comfortable. JVP flat. Heart irregular, no murmur. Lungs clear throughout. No leg edema.\n\nECG in office: AF, rate 100, no acute ST changes.\nLabs drawn today, results back this afternoon: Hgb 14.2, plt 250, INR 1.0, Cr 1.1. TSH and A1c pending.\n\nA/P\n1. Atrial fibrillation, new, unknown duration but symptoms ~2 months. Rate under 110 at rest and he is stable, so no rate drug started today. CHA2DS2-VASc 3 (HTN, DM, age 65-74), annual stroke risk meaningfully elevated. Recommended apixaban 5 mg BID; went over bleeding risk vs stroke risk and his brother's stroke. He does not want to be on a blood thinner right now and would like to talk to a heart doctor first. Respect that; will revisit. TSH today. Echo ordered. Cardiology referral placed. Return precautions: chest pain, fainting, sustained fast heartbeat, any weakness/numbness/speech change - call 911.\n2. HTN - 142/88, continue lisinopril 20.\n3. T2DM - A1c pending, continue metformin.\n4. HLD - continue atorvastatin 40.\n\nTotal time 50 min."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "portal_message",
+          "start": "2025-08-18T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid and other results",
+              "author": "PCP",
+              "date": "2025-08-18T09:15",
+              "body": "Mr. Kaminski, your thyroid test is normal, so that isn't the cause of the irregular heartbeat. A1c is about the same as your last few. Echo is booked for the 27th and the cardiology office will call you with a date. The offer on the blood thinner stands any time you want to talk about it again."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "imaging",
+          "start": "2025-08-27T13:00",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-08-27T13:00",
+              "text": "INDICATION: Atrial fibrillation.\nLEFT VENTRICLE: Normal size and wall thickness. Normal systolic function, LVEF 60% by visual estimate. No regional wall motion abnormality.\nRIGHT VENTRICLE: Normal size and function.\nATRIA: Left atrium normal in size. Right atrium normal.\nVALVES: Aortic valve trileaflet, no stenosis or regurgitation. Mitral valve structurally normal, trace regurgitation. Tricuspid trace regurgitation. Pulmonic normal.\nPERICARDIUM: No effusion.\nIVC normal size with respiratory variation.",
+              "conclusion": "Normal biventricular size and function, LVEF 60%. Normal left atrial size. No significant valvular disease."
+            }
+          ],
+          "orders": [{"id": "tte-2025", "action": "done", "date": "2025-08-27T13:00"}]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "specialist_visit",
+          "start": "2025-09-17T14:30",
+          "service": "Cardiology",
+          "reason": "New atrial fibrillation",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-09-17T14:40",
+              "text": "Sinus rhythm, rate 72. PR 170 ms, QRS 94 ms, QTc 420 ms. Normal axis. No ST-T abnormality.",
+              "conclusion": "Normal sinus rhythm. Normal ECG."
+            }
+          ],
+          "orders": [{"id": "cards-referral", "action": "done", "date": "2025-09-17T14:30"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation",
+              "author": "cardiology",
+              "date": "2025-09-19T10:00",
+              "body": "Outpatient cardiology consultation\n\nThank you for referring Mr. Kaminski, 68, for atrial fibrillation found at your office on 8/14.\n\nHe reports intermittent palpitations since early summer. Since your visit he has felt a few shorter spells, none in the past week. No chest discomfort, presyncope or syncope.\n\nHistory: hypertension, type 2 diabetes, hyperlipidemia, former smoker (30 pack-years, quit 2023). Cholecystectomy, inguinal hernia repair.\nMedications: metformin 1000 mg twice daily, lisinopril 20 mg daily, atorvastatin 40 mg daily.\nAllergies: no known drug allergies.\nFamily: father MI at 61, brother stroke at 65.\n\nExam: vitals in flowsheet. Regular rhythm today, no murmur, lungs clear, no edema.\n\nECG today: sinus rhythm 72, normal intervals.\nEcho 8/27: LVEF 60%, normal LA size, no significant valve disease.\nTSH normal per your records.\n\nImpression: paroxysmal atrial fibrillation, structurally normal heart. CHA2DS2-VASc 3.\n\nRecommendations:\n1. Oral anticoagulation recommended: apixaban 5 mg twice daily (no dose-reduction criteria). We discussed this at length. He understands his stroke risk and declines anticoagulation for now. He knows he can change his mind at any time.\n2. No rate or rhythm drug at present given infrequent, tolerable episodes and sinus rhythm today.\n3. Seek emergency care for sustained rapid palpitations, chest pain, fainting or stroke symptoms.\n4. Follow-up in cardiology in 4 months.\n\nSincerely,\nOutpatient Cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-12a",
+          "kind": "ed_visit",
+          "start": "2025-10-12T15:40",
+          "end": "2025-10-12T21:30",
+          "service": "Emergency Medicine",
+          "reason": "Palpitations and shortness of breath",
+          "vitals": [
+            {"time": "2025-10-12T15:45", "bp": [90, 60], "hr": 170, "rr": 22, "spo2": 94},
+            {"time": "2025-10-12T17:30", "bp": [124, 76], "hr": 82}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-12T15:55", "results": [{"test": "White Blood Cells", "value": 7.5}, {"test": "Hemoglobin", "value": 14.0}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-12T15:55", "results": [{"test": "Sodium", "value": 140}, {"test": "Potassium", "value": 4.2}, {"test": "Creatinine", "value": 1.0}, {"test": "Glucose", "value": 180}]}
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-10-12T15:50",
+              "text": "Atrial fibrillation with rapid ventricular rate, approximately 170. Narrow QRS. No ST-segment elevation or depression. No T-wave inversion.",
+              "conclusion": "Atrial fibrillation, rapid ventricular rate. No ischemic changes."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-10-12T17:20",
+              "text": "Sinus rhythm, rate 82. Normal intervals. No ST-T abnormality.",
+              "conclusion": "Sinus rhythm following cardioversion."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-10-12T15:40"},
+            {"procedure": "Cardioversion, external", "performed": "2025-10-12T17:05"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department physician record",
+              "author": "emergency medicine",
+              "date": "2025-10-14T08:30",
+              "body": "EMERGENCY DEPARTMENT RECORD (received 10/14/2025)\nDate of service: 10/12/2025\n\nCC: palpitations, short of breath\n\nHPI: 68-year-old man with hypertension, type 2 diabetes and paroxysmal AF diagnosed this August, not anticoagulated, who was raking out garden beds about two hours before arrival when his heart started pounding and he became short of breath. Has not let up. Denies chest pain, near-fainting or fainting.\n\nPMH: HTN, T2DM, hyperlipidemia, paroxysmal AF, former smoker.\nMeds: metformin, lisinopril, atorvastatin. Allergies: NKDA.\n\nTriage: BP 90/60, HR 170, RR 22, SpO2 94% on room air.\nExam: anxious, alert, speaking full sentences. Neck veins not distended. Tachycardic and irregular. Lungs clear, no rales. No peripheral edema. Neuro nonfocal.\n\nECG: AF with RVR ~170, narrow complex, no ST or T-wave abnormality.\nLabs: WBC 7.5, Hgb 14, Plt 250. Na 140, K 4.2, Cr 1.0, glucose 180.\n\nCourse: Hypotensive with rapid AF, onset clearly under 48 hours. Procedural sedation, synchronized cardioversion, single 200 J biphasic shock, converted to sinus. Post-procedure BP 124/76, HR 82 sinus. Recovered from sedation without event and was walking around the department.\n\nAnticoagulation: CHA2DS2-VASc 3. Advised apixaban, including the recommended period after cardioversion. Patient declined after discussion; capacity intact; understands risk of stroke. He will follow up with his cardiologist.\n\nImpression: paroxysmal AF with RVR and hypotension, cardioverted to sinus rhythm.\nDisposition: home in stable condition at 21:30. PCP follow-up within the week, cardiology follow-up as scheduled. Return for recurrent palpitations, chest pain, fainting, weakness or speech trouble.\n\nEmergency Medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "office_visit",
+          "start": "2025-10-16T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, atrial fibrillation",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-10-16T11:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-10-16T11:00"},
+            {"procedure": "Immunization administration", "performed": "2025-10-16T11:25"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-16T11:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-16T11:22"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED follow-up",
+              "author": "PCP",
+              "date": "2025-10-16T11:40",
+              "body": "Seen in the ED Sunday for AF with fast rate and low BP; cardioverted to sinus, sent home. ED record reviewed.\n\nSince then feels back to normal. No palpitations, breathing fine, no chest pain.\n\nExam: BP and pulse as charted, regular. Lungs clear. No edema.\n\nA/P\n1. Paroxysmal AF, s/p cardioversion 10/12, in sinus today. Discussed again, more directly this time, that this episode raises the stakes and that apixaban is what I recommend. He still prefers not to take it. Documented. He knows the stroke warning signs and to call 911. Cardiology f/u is in January; asked their office to see him sooner if a slot opens.\n2. HTN, T2DM, HLD unchanged. A1c today.\n3. Flu (high-dose) and updated COVID today.\n\nRTC 3-4 months."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

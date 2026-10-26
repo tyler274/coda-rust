@@ -1,0 +1,3715 @@
+{
+  "unit": "unit-2832",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002832/2025-08-20a: allergen \"Heparin\" not in catalog (text only)",
+    "MRN00002832/2025-08-20a: reaction \"Heparin-induced thrombocytopenia with thrombosis\" not in catalog (text only)",
+    "left text-only (not verified): drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\"",
+    "left text-only (not verified): drug \"0.7 ML enoxaparin sodium 100 MG/ML Prefilled Syringe\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002832",
+      "given": "Sandra",
+      "family": "Kendall",
+      "birth_date": "1957-04-10",
+      "address_line": "47 Larkspur Lane",
+      "phone": "+1-518-555-0189",
+      "email": "sandra.kendall@example.test",
+      "marital_status": "single",
+      "summary": "Retired teacher with non-valvular atrial fibrillation on warfarin managed by the practice, hypertension, hyperlipidemia and hip and knee osteoarthritis. A heparin bridge for her 2025 right hip replacement caused HIT with a left femoral arterial thrombus; heparin prophylaxis after her January 2026 left knee replacement brought a DVT, a segmental PE and recurrent thrombocytopenia. Outside records arrive late or not at all.",
+      "events": [
+        {
+          "id": "2023-09-05a",
+          "kind": "telephone",
+          "start": "2023-09-05T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2023-09-05T10:20",
+              "author": "front desk",
+              "body": "Ms. Kendall phoned about becoming a patient. Recently retired from teaching, says her old office keeps losing her INR results and she wants one place for everything. Takes warfarin for an irregular heart rhythm, needs INR checks about monthly. Medicare A and B. Booked new patient visit 9/12 at 9:00. Records release form emailed to her; she will sign and send to her prior practice."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; atrial fibrillation on warfarin",
+          "conditions": [
+            {
+              "label": "Atrial fibrillation, non-valvular",
+              "action": "history",
+              "onset": "2016-01-01",
+              "note": "rate control and warfarin, managed by prior practice",
+              "icd10": "I48.91"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2010-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2012-01-01"
+            },
+            {
+              "label": "Primary osteoarthritis of hip",
+              "action": "history",
+              "onset": "2018-01-01",
+              "note": "both hips, right worse"
+            },
+            {
+              "label": "Bilateral primary osteoarthritis of knee",
+              "action": "history",
+              "onset": "2018-01-01"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "note": "laparoscopic cholecystectomy years ago"
+            },
+            {
+              "label": "Presence of intraocular lens",
+              "action": "history",
+              "note": "bilateral cataract extraction years ago",
+              "icd10": "Z96.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "warfarin sodium 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every evening, or as directed per INR (goal 2.0-3.0)",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "atrial fibrillation"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "atrial fibrillation rate control"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "atorvastatin 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperlipidemia"
+            },
+            {
+              "drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1-2 tablets by mouth every 6 hours as needed for joint pain, no more than 6 tablets a day",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "osteoarthritis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              143,
+              90
+            ],
+            "hr": 76,
+            "spo2": 98,
+            "weight_kg": 70.7,
+            "height_cm": 161.7
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-09-12T09:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.7
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 32.9
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 glasses of wine per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired elementary school teacher"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-09-12T09:30",
+              "text": "Irregularly irregular rhythm without discernible P waves. Controlled ventricular response. Normal QRS duration and axis. No acute ST-T changes.",
+              "conclusion": "Atrial fibrillation with controlled ventricular rate."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-12T09:00"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2023-09-12T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T11:05",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n66 y/o retired elementary school teacher transferring care. Main reason for the switch is anticoagulation: has had AF for years, on warfarin with a goal INR of 2-3, and wants her INRs run and acted on in one place.\n\nAF: no palpitations she notices, no lightheadedness, no exertional chest discomfort. Never had a stroke or bleed on warfarin. Rate controlled on metoprolol succinate.\nHTN: home readings low 130s. On lisinopril.\nLipids: on atorvastatin for years, no muscle complaints.\nJoints: both hips and both knees ache with standing and stairs, right hip the worst. Uses acetaminophen, avoids ibuprofen because of the warfarin. Walks with friends most mornings, slower than she used to.\n\nPSH: cholecystectomy (laparoscopic) and cataract surgery both eyes, years ago.\nMeds: warfarin 5 mg nightly, metoprolol succinate 50 mg daily, lisinopril 20 mg daily, atorvastatin 20 mg daily, calcium carbonate/vitamin D 600 mg/400 IU twice daily, acetaminophen prn.\nAllergies: sulfa (rash).\nFH: father had an MI at 72 and high blood pressure. Mother had AF and an ischemic stroke at 75. Sister had a DVT after a delivery. No bleeding disorders in the family.\nSH: lives alone in Amherst. Quit cigarettes about 20 years ago, 20 pack-years. Wine 1-2 glasses a week. Drives, independent.\n\nExam: well, pleasant. HEENT unremarkable. Neck supple, no JVD. Heart irregularly irregular, rate controlled, no murmur. Lungs clear. Abdomen soft, healed laparoscopic scars. Extremities without edema; hips with reduced internal rotation, right more than left, crepitus at both knees. Neuro grossly intact.\n\nECG: AF, rate controlled, no acute changes.\n\nA/P\n1. Non-valvular AF on warfarin. INR today, we will take over INR management; monthly checks to start. Discussed bleeding precautions and checking with us before any antibiotic.\n2. HTN, controlled. Continue lisinopril.\n3. Hyperlipidemia. Continue atorvastatin; lipids with yearly labs.\n4. OA hips/knees. Acetaminophen as needed; keep walking.\n5. Health maintenance: records requested from prior practice. Flu and COVID shots next month.\n\nReturn 3 months, INR in 4 weeks."
+            },
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2023-09-12T15:30",
+              "author": "RN",
+              "body": "INR from this morning is in range. Spoke with pt: continue warfarin 5 mg nightly, recheck in 4 weeks (10/10)."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              82
+            ],
+            "weight_kg": 71.0,
+            "height_cm": 163.0,
+            "labs": {
+              "Low Density Lipoprotein": 94,
+              "Prothrombin Time-International Normalized Ratio": 2.5,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Total Cholesterol": 172
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Practice",
+              "date": "2023-09-26T13:00",
+              "author": "outside primary care",
+              "body": "Records received from prior primary care office (about 40 pages), reviewed and abstracted.\n\nProblems: atrial fibrillation, nonvalvular, on warfarin. Hypertension. Hyperlipidemia. Osteoarthritis, hips and knees.\nSurgical: laparoscopic cholecystectomy; cataract extraction OU.\nMeds match what the patient reported.\nAllergy: sulfa drugs - rash.\nScreening: colonoscopy 2019, normal, repeat in 10 years. Screening mammogram March 2023, BI-RADS 1. Tdap 2019.\nINR log from the past year mostly in 2-3 range on 5 mg daily.\n\nNo outstanding referrals. Scanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "lab_only",
+          "start": "2023-10-10T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-10-10T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-10T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2023-10-10T14:10",
+              "author": "RN",
+              "body": "INR reviewed. Left VM: same dose, warfarin 5 mg every night. Next INR 11/14. Flu/COVID vaccine visit already booked 10/17."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-17T10:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T10:38"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-17T10:41"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2023-10-17T10:55",
+              "author": "RN",
+              "body": "Here for fall vaccines. On warfarin: fine-gauge needle, firm pressure 2 minutes after each. High-dose flu L deltoid, updated COVID R deltoid, PCV20 L deltoid (no prior pneumococcal vaccine per outside records). VIS provided. Observed 15 minutes, no reaction. Small bruise L arm expected, told her it may show."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "lab_only",
+          "start": "2023-11-14T08:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-11-14T08:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-14T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2023-11-14T13:45",
+              "author": "RN",
+              "body": "INR reviewed with PCP. No change, 5 mg nightly. Repeat with her December visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "AF and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              141,
+              87
+            ],
+            "hr": 67,
+            "spo2": 96,
+            "weight_kg": 70.9
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-12-12T14:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-12-12T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-12-12T14:50",
+              "author": "PCP",
+              "body": "S: 3-month check. Feels well. No palpitations, no bleeding gums or dark stools. Bruised easily after the October shots, gone now. Hips and knees same, acetaminophen a few times a week.\nO: vitals in flowsheet. Irregularly irregular, rate controlled. Lungs clear. No edema.\nA/P: AF on warfarin, rate controlled; INR today. HTN at goal. OA stable. Yearly labs and wellness visit in March. INR monthly in the meantime."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "lab_only",
+          "start": "2024-01-09T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-01-09T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-09T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2024-01-09T15:00",
+              "author": "RN",
+              "body": "INR reviewed. Pt aware via portal, continue current dose. Next 2/13."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "nurse_visit",
+          "start": "2024-02-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Lab Appointment",
+              "date": "2024-02-13T11:30",
+              "author": "MA",
+              "body": "Did not come for INR draw this morning. Called: she forgot, roads were icy anyway. Rebooked 2/20 8:00."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "lab_only",
+          "start": "2024-02-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-02-20T08:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-20T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2024-02-20T14:20",
+              "author": "RN",
+              "body": "INR reviewed by PCP, no dose change. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "annual_physical",
+          "start": "2024-03-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              132,
+              80
+            ],
+            "hr": 55,
+            "spo2": 98,
+            "weight_kg": 72.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-12T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-12T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-12T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 70
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 101
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-12T09:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-12T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-12T09:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-03-12T09:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2024-03-12T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-03-12T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-03-12T10:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            },
+            {
+              "id": "dxa-2024",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "osteoporosis screening, age 66"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-03-12T10:40",
+              "author": "PCP",
+              "body": "MEDICARE AWV (initial)\n\nHealth risk assessment reviewed. Lives alone, independent with daily activities, drives, manages her own pills with a weekly organizer. No falls in the past year. Hearing and vision fine (post cataract surgery). PHQ-2 0. No memory concerns; recall intact on screening.\n\nAF/HTN/lipids stable on current regimen; INR drawn with labs today. Hips: right hip slowly worse, more stiffness getting out of the car. Not ready to talk about surgery yet.\n\nPrevention:\n- Colonoscopy 2019 normal, next 2029\n- Mammogram due this spring - ordered\n- DXA - never had one; ordered\n- Hep C and HIV screening today (one-time)\n- Shingrix #1 today, #2 in 2-6 months\n- Pneumococcal done (PCV20 10/2023); Tdap 2019\n\nAdvance care planning: she has a health care proxy at home, will bring a copy.\n\nExam unchanged from December; irregular rhythm, rate controlled; lungs clear; no edema.\n\nPlan: labs pending, continue meds, INR monthly, AF/BP follow-up in summer."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2024-03-13T12:15",
+              "author": "PCP",
+              "body": "Sandra, your yearly labs are back. Kidney and liver tests, blood count and thyroid are normal. LDL is in a good place on atorvastatin. Hepatitis C and HIV screens negative. INR in range, stay on 5 mg. Next INR in 4 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "lab_only",
+          "start": "2024-04-09T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-04-09T08:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-04-09T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2024-04-09T13:30",
+              "author": "RN",
+              "body": "INR reviewed. Continue warfarin 5 mg. Recheck 5/7 with her visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "imaging",
+          "start": "2024-04-23T10:00",
+          "service": "Radiology",
+          "reason": "screening mammogram and bone density",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-04-23T10:00",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison: outside study March 2023. The breasts are scattered fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1, negative. Routine annual screening."
+            },
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2024-04-23T10:30",
+              "text": "DXA of the lumbar spine (L1-L4) and left hip. Right hip not scanned per protocol preference for nondominant side. Bone mineral density at the lumbar spine, femoral neck and total hip is within the normal range for young adult reference.",
+              "conclusion": "Normal bone density. Repeat per clinical judgment."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-04-23T10:00"
+            },
+            {
+              "id": "dxa-2024",
+              "action": "done",
+              "date": "2024-04-23T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Imaging Results",
+              "date": "2024-04-24T09:10",
+              "author": "PCP",
+              "body": "Mammogram negative, see you next year for the repeat. Bone density normal at the spine and hip - keep the calcium/vitamin D and the walking."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "office_visit",
+          "start": "2024-05-07T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right hip pain",
+          "vitals": {
+            "bp": [
+              133,
+              79
+            ],
+            "hr": 73,
+            "weight_kg": 70.4
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-05-07T15:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-07T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-hip-2024",
+              "action": "placed",
+              "order": "Orthopedic surgery referral",
+              "category": "referral",
+              "to": "Orthopedic Surgery",
+              "reason": "advanced right hip osteoarthritis, considering arthroplasty"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hip Pain",
+              "date": "2024-05-07T16:05",
+              "author": "PCP",
+              "body": "CC: R hip.\n\nRight groin/hip ache has crept up over the winter. Now stops her at about 20 minutes of walking, gave up the morning walking group last month. Night pain a few times a week. Acetaminophen takes the edge off. No fall, no injury. No back pain radiating down the leg. Left hip and both knees bother her too but much less.\n\nExam: antalgic gait favoring the right. R hip internal rotation markedly limited and reproduces groin pain; L hip mildly limited. Knees with crepitus, no effusion. Distal pulses intact, sensation normal.\n\nA/P: R hip OA, progressing and now limiting function despite acetaminophen. No NSAIDs given warfarin. Referred to orthopedics to discuss options including replacement; they will get their own films. INR today. Continue current meds."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "nurse_visit",
+          "start": "2024-06-11T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2 and INR",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-06-11T09:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-06-11T09:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-06-11T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization and INR",
+              "date": "2024-06-11T09:45",
+              "author": "RN",
+              "body": "Second Shingrix given R deltoid, pressure held 2 min (warfarin). Felt tired for a day after the first dose. INR drawn. Ortho appointment is 6/27."
+            },
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2024-06-11T15:10",
+              "author": "RN",
+              "body": "INR reviewed, no change to dose. Next INR in 6 weeks per PCP since she has been steady."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "specialist_visit",
+          "start": "2024-06-27T13:00",
+          "service": "Orthopedic Surgery",
+          "reason": "right hip osteoarthritis",
+          "orders": [
+            {
+              "id": "ortho-hip-2024",
+              "action": "done",
+              "date": "2024-06-27T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Surgery Consultation",
+              "date": "2024-07-02T10:00",
+              "author": "orthopedic surgery",
+              "body": "Orthopaedic Surgery - Joint Replacement Service\nDate of visit: 06/27/2024\nRE: Sandra Kendall, DOB 04/10/1957\n\nThank you for the referral. Ms. Kendall is a 67-year-old woman with right hip pain for several years, worse this past year, now limiting her walking and waking her at night.\n\nPMH: atrial fibrillation on warfarin, hypertension, hyperlipidemia, OA of hips and knees.\nMedications: warfarin, metoprolol succinate, lisinopril, atorvastatin, calcium/vitamin D, acetaminophen as needed.\nAllergies: sulfa (rash).\n\nExam: antalgic gait. Right hip flexion to 95 degrees with internal rotation to 5 degrees, painful at end range. Left hip with mildly reduced rotation. Neurovascularly intact distally.\n\nImaging: AP pelvis and right hip radiographs today show advanced osteoarthritis of the right hip with joint space loss and marginal osteophytes. Milder degenerative change on the left.\n\nImpression: end-stage right hip osteoarthritis.\n\nPlan: we discussed total hip arthroplasty versus continued conservative care. She would like to wait and get through another year, and is thinking of next summer. Continue acetaminophen and activity as tolerated. She will call when ready and we will arrange pre-operative evaluation, including a plan for her anticoagulation.\n\nOrthopaedic Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "lab_only",
+          "start": "2024-07-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-07-23T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-23T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2024-07-23T14:00",
+              "author": "RN",
+              "body": "INR reviewed, pt notified by portal. Same dose. Ortho note scanned - she is holding off on the hip until next year."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "office_visit",
+          "start": "2024-08-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "AF and hypertension follow-up",
+          "vitals": {
+            "bp": [
+              127,
+              88
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 71.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-08-13T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-08-13T11:15",
+              "author": "PCP",
+              "body": "Routine follow-up. Saw ortho, decided to put the hip off a year; managing with acetaminophen and a cane on long days. No palpitations, no bleeding. Home BPs fine.\n\nExam: irregular rhythm, rate controlled. Lungs clear. No edema.\n\nA/P: AF/HTN/HLD stable, no changes. INR was in range in July; next one in September with her fall shots. Return in 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "nurse_visit",
+          "start": "2024-09-24T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines and INR",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-09-24T09:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-09-24T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-24T09:43"
+            },
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2024-09-24T09:46"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations and INR",
+              "date": "2024-09-24T10:05",
+              "author": "RN",
+              "body": "Flu (high-dose) L deltoid, COVID R deltoid, RSV L deltoid lower site. Pressure 2 min each. Observed, fine. INR drawn. She asked to space INRs out a bit more since they have been steady - PCP OK with every 6-8 weeks if in range."
+            },
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2024-09-24T15:20",
+              "author": "RN",
+              "body": "INR in range. Continue 5 mg. Next INR mid-November."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "lab_only",
+          "start": "2024-11-12T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-11-12T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-12T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2024-11-12T13:50",
+              "author": "RN",
+              "body": "INR reviewed. No change. She postponed her November follow-up to after the holidays; fine per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "portal_message",
+          "start": "2024-12-10T19:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill Request",
+              "date": "2024-12-10T19:40",
+              "author": "patient",
+              "body": "Hello - my mail order pharmacy says the metoprolol and atorvastatin prescriptions are out of refills. Could you send new ones for 90 days? Thank you. Sandra"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Refill Request - Reply",
+              "date": "2024-12-11T09:05",
+              "author": "RN",
+              "body": "Hi Sandra, new 90-day prescriptions with refills for metoprolol succinate and atorvastatin went to your mail order pharmacy today. Your next INR is due in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "lab_only",
+          "start": "2025-01-14T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-01-14T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-14T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2025-01-14T14:30",
+              "author": "RN",
+              "body": "INR reviewed with PCP. No change. Rescheduled her AF follow-up into March with the wellness visit at her request."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "lab_only",
+          "start": "2025-02-25T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-02-25T08:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-25T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "INR Question",
+              "date": "2025-02-25T17:10",
+              "author": "patient",
+              "body": "Did my INR come back? I had a little more wine than usual at a birthday dinner on Saturday and wondered if that shows up. Sandra"
+            },
+            {
+              "type": "Patient Message",
+              "title": "INR Question - Reply",
+              "date": "2025-02-26T08:50",
+              "author": "RN",
+              "body": "Hi Sandra, your INR from yesterday is in your goal range, so no change - 5 mg every evening. An occasional extra glass is fine; it is big swings that move the INR. See you March 11."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "annual_physical",
+          "start": "2025-03-11T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              133,
+              82
+            ],
+            "hr": 58,
+            "spo2": 98,
+            "weight_kg": 71.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-11T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 98
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-11T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-03-11T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 67
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 110
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-03-11T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-03-11T09:20",
+              "text": "Atrial fibrillation, controlled ventricular response. Normal QRS. No ST elevation or depression. Unchanged from 09/2023.",
+              "conclusion": "Atrial fibrillation, rate controlled; no change."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-03-11T09:00"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-03-11T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-03-11T10:30",
+              "author": "PCP",
+              "body": "AWV, subsequent.\n\nNo falls. Still independent; uses a cane outdoors on bad hip days. PHQ-2 1 (a slow winter, nothing more). Health care proxy copy now scanned.\n\nRight hip: has called ortho, planning the replacement for early July after a family reunion in June. Wants to know what happens with the warfarin around surgery - explained the surgeons usually decide the hold and any bridging and we will see her for a pre-op visit in June.\n\nAF: no symptoms. ECG unchanged. BP fine. Lipids on yearly labs.\n\nExam: irregularly irregular, controlled. Lungs clear. Abd benign. Antalgic gait right. No edema.\n\nPrevention: mammogram ordered. Colonoscopy due 2029. Vaccines current; flu/COVID in fall.\n\nPlan: labs today, continue all meds, INR every 6 weeks, pre-op visit in June."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2025-03-12T11:40",
+              "author": "PCP",
+              "body": "Labs reviewed: metabolic panel, CBC and lipids all fine. INR in range. Released to portal with a short note. No changes."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "lab_only",
+          "start": "2025-04-08T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-04-08T08:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-08T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2025-04-08T13:15",
+              "author": "RN",
+              "body": "INR reviewed, same dose. Next in 5 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-29a",
+          "kind": "imaging",
+          "start": "2025-04-29T11:00",
+          "service": "Radiology",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-04-29T11:00",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 04/2024. Scattered fibroglandular tissue. No new mass, distortion or suspicious calcification.",
+              "conclusion": "BI-RADS 1, negative. Annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-04-29T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram Result",
+              "date": "2025-04-30T10:00",
+              "author": "MA",
+              "body": "Normal screening mammogram letter mailed to patient per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "lab_only",
+          "start": "2025-05-13T08:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-05-13T08:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-13T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2025-05-13T14:05",
+              "author": "RN",
+              "body": "INR reviewed. No change. Surgery date confirmed 7/7; pre-op visit booked 6/10."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pre-operative evaluation, right total hip arthroplasty",
+          "vitals": {
+            "bp": [
+              142,
+              82
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 71.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-10T14:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-10T14:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 219
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-06-10T14:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-06-10T13:55",
+              "text": "Atrial fibrillation with controlled ventricular rate. Normal axis and intervals. No acute changes; unchanged from 03/2025.",
+              "conclusion": "Atrial fibrillation, rate controlled, unchanged."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-10T13:40"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-06-10T13:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Evaluation",
+              "date": "2025-06-10T14:45",
+              "author": "PCP",
+              "body": "PRE-OP H&P\nProcedure: elective R total hip arthroplasty, 7/7/2025, outside orthopedics.\n\nFunctional capacity: climbs a flight of stairs and walks several blocks, limited by the hip, not by breath or chest symptoms. No chest pain, syncope, orthopnea or edema. No prior anesthesia problems (cholecystectomy, cataracts).\n\nMeds/allergies reviewed: warfarin 5 mg, metoprolol succinate 50, lisinopril 20, atorvastatin 20, calcium/D, acetaminophen. Sulfa - rash.\n\nExam: irregularly irregular, controlled; no murmur. Lungs clear. No edema. Airway unremarkable.\nECG: AF, controlled, unchanged.\nLabs today: BMP, CBC, INR - will forward.\n\nAssessment: 68F with rate-controlled nonvalvular AF, controlled HTN. No active cardiac conditions; acceptable risk for planned intermediate-risk surgery.\n\nRecommendations: continue metoprolol through surgery including morning of. Hold lisinopril morning of surgery. Warfarin interruption and any bridging per the surgical team's anticoagulation protocol - they have said they will send a written plan. Resume home meds post-op as able.\n\nCopy faxed to orthopedics."
+            },
+            {
+              "type": "Result Note",
+              "title": "Pre-op Labs",
+              "date": "2025-06-11T09:20",
+              "author": "PCP",
+              "body": "Pre-op BMP, CBC and INR unremarkable; INR in range. Results faxed to ortho pre-admission testing."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "specialist_visit",
+          "start": "2025-06-17T10:00",
+          "service": "Orthopedic Surgery",
+          "reason": "pre-operative anticoagulation plan",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Pre-operative Anticoagulation Instructions",
+              "date": "2025-06-19T12:00",
+              "author": "orthopedic surgery",
+              "body": "Orthopaedic Surgery - Pre-Admission Testing\nPatient: Sandra Kendall  DOB 04/10/1957\nProcedure: Right total hip arthroplasty, 07/07/2025\nAllergies: Sulfa (rash)\n\nPerioperative anticoagulation plan (reviewed with patient at pre-admission visit 06/17/2025):\n- Last dose of warfarin: evening of 07/01/2025.\n- Begin enoxaparin 70 mg subcutaneously every 12 hours on 07/03/2025. Last dose the morning of 07/06/2025.\n- Post-operatively, enoxaparin to resume with warfarin restarted per inpatient team until INR is therapeutic.\n- INR to be checked on the morning of surgery.\n\nPrescription for enoxaparin sent to patient's local pharmacy. Teaching completed for self-injection.\n\nPlease continue to manage her INR after discharge.\n\nOrthopaedic Surgery Pre-Admission Testing"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "telephone",
+          "start": "2025-06-24T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "peri-operative warfarin instructions",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Peri-op Warfarin Call",
+              "date": "2025-06-24T11:15",
+              "author": "RN",
+              "body": "Called pt to go over the ortho anticoagulation letter. She has it on her fridge. Last warfarin Tues 7/1 evening, enoxaparin shots start Thurs 7/3, last shot Sun morning 7/6. She did a practice injection with the pre-admission nurse. Reminded her: no aspirin or ibuprofen, call with any bleeding. She will call us after discharge to set up INRs."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-03a",
+          "kind": "pharmacy",
+          "start": "2025-07-03T09:30",
+          "service": "Pharmacy",
+          "reason": "fill notification",
+          "medications": [
+            {
+              "drug_text": "0.7 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 70 mg subcutaneously every 12 hours as directed (pre-operative bridge)",
+              "dose": {
+                "value": 70,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "peri-operative bridge for warfarin interruption"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Pharmacy Fill Notification",
+              "date": "2025-07-03T09:30",
+              "author": "pharmacy",
+              "body": "Dispensed 07/03/2025: enoxaparin 70 mg/0.7 mL prefilled syringe, #8, inject 70 mg SC every 12 hours as directed. Prescriber: outside orthopaedic surgery. Interaction alert noted: warfarin on profile - prescriber's bridging plan on file."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-07a",
+          "kind": "hospital_admission",
+          "start": "2025-07-07T06:00",
+          "end": "2025-07-17T13:00",
+          "service": "Orthopedic Surgery",
+          "reason": "elective right total hip arthroplasty",
+          "conditions": [
+            {
+              "label": "Presence of right artificial hip joint",
+              "action": "diagnosed",
+              "onset": "2025-07-07"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.7 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "stop",
+              "reason": "heparin-induced thrombocytopenia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-07T06:30",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-10T05:45",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 80
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-17T06:00",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 168
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-07-17T06:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Total hip arthroplasty",
+              "performed": "2025-07-07T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary - Orthopedic Surgery",
+              "date": "2025-08-20T10:30",
+              "author": "orthopedic surgery",
+              "body": "DISCHARGE SUMMARY\nAdmitted: 07/07/2025  Discharged: 07/17/2025\nService: Orthopaedic Surgery (Hospital Medicine and Vascular Surgery consulting)\nPatient: Sandra Kendall, 68F\n\nAllergies at discharge: HEPARIN (heparin-induced thrombocytopenia - all heparin products including LMWH and flushes). Sulfa (rash).\n\nPrincipal procedure: Right total hip arthroplasty, 07/07/2025. Uncomplicated intraoperatively.\n\nDischarge diagnoses:\n1. Right hip osteoarthritis, s/p right THA\n2. Heparin-induced thrombocytopenia\n3. Acute arterial thrombosis, left femoral artery\n4. Atrial fibrillation on chronic warfarin\n5. Hypertension; hyperlipidemia\n\nHospital course: Warfarin had been held from 07/01 with an enoxaparin bridge from 07/03, resumed after surgery. On post-operative day 3 (07/10) she reported new pain in the left foot. The foot was pale and cool with diminished dorsalis pedis and posterior tibial pulses. Platelets had fallen from 240 K/uL on admission to 80 K/uL. PT and aPTT were normal. Arterial duplex showed thrombus in the left femoral artery. HIT was suspected; all heparin was stopped and an argatroban infusion begun. PF4/heparin antibody ELISA returned positive (OD 1.84). Vascular surgery evaluated and recommended anticoagulation without operative intervention. Foot pain and pallor resolved and pedal pulses were again palpable by 07/14. Warfarin was restarted at 5 mg once platelets recovered above 150 K, overlapped with argatroban until INR therapeutic.\n\nAt discharge: platelets 168 K/uL, INR 2.6. Hip incision clean, weight bearing as tolerated with walker. Left foot warm, pulses palpable.\n\nDischarge medications: warfarin 5 mg nightly (INR goal 2-3), metoprolol succinate 50 mg daily, lisinopril 20 mg daily, atorvastatin 20 mg daily, calcium carbonate/vitamin D twice daily, acetaminophen as needed. Enoxaparin discontinued.\n\nFollow-up: PCP within 1-2 weeks for CBC and INR. Orthopaedics at 6 weeks. HEPARIN ALLERGY TO BE ADDED TO ALL RECORDS; avoid all heparin products lifelong.\n\nDictated by Hospital Medicine for Orthopaedic Surgery. Faxed 08/20/2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-18a",
+          "kind": "telephone",
+          "start": "2025-07-18T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "home after hip surgery",
+          "conditions": [
+            {
+              "label": "Heparin-induced thrombocytopenia",
+              "action": "diagnosed",
+              "onset": "2025-07-10",
+              "note": "after enoxaparin bridge (per patient; summary pending)",
+              "icd10": "D75.822"
+            },
+            {
+              "label": "Arterial thrombosis of left femoral artery",
+              "action": "diagnosed",
+              "onset": "2025-07-10",
+              "note": "HIT-associated",
+              "icd10": "I74.3"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge Call",
+              "date": "2025-07-18T09:50",
+              "author": "RN",
+              "body": "Pt called, home since yesterday afternoon. Hip went fine but she says on day 3 her left foot went cold and white and they found a clot in the leg artery - told her it was from a reaction to the blood thinner shots, platelets dropped. Was on an IV blood thinner, now back on warfarin 5 mg. Foot feels normal now. Using walker, home PT starting Monday. No discharge paperwork in our system yet - asked her to bring her packet. Post-discharge visit with PCP booked 7/24, CBC and INR then. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge Call - PCP Note",
+              "date": "2025-07-18T12:30",
+              "author": "PCP",
+              "body": "Read. Sounds like HIT with arterial thrombosis. Will request the discharge summary. See 7/24."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "office_visit",
+          "start": "2025-07-24T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up after right hip replacement",
+          "conditions": [
+            {
+              "label": "Arterial thrombosis of left femoral artery",
+              "action": "resolved",
+              "note": "clinically resolved on anticoagulation",
+              "icd10": "I74.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              78
+            ],
+            "hr": 70,
+            "spo2": 98,
+            "weight_kg": 70.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-24T10:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-07-24T10:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-07-24T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2025-07-24T11:10",
+              "author": "PCP",
+              "body": "TCM visit. Discharged 7/17 after R THA 7/7. Contact made 7/18.\n\nPer patient (summary not yet received; she forgot the packet): on post-op day 3 her left foot turned pale and painful, platelet count had dropped, a clot was found in the left femoral artery, and she was told it was heparin-induced thrombocytopenia from the enoxaparin. Treated with an IV non-heparin anticoagulant, no surgery on the leg. Back on warfarin 5 mg before discharge.\n\nToday: hip sore but improving, walker in the house, cane outside. Home PT twice a week. Left foot normal - no pain, no color change, no numbness. No bleeding, no calf pain, no chest pain or dyspnea.\n\nExam: incision R lateral hip healing, staples out, no erythema. L foot warm, normal color, DP and PT pulses 2+ bilaterally. No calf tenderness. Irregular rhythm, rate controlled. Lungs clear.\n\nA/P:\n1. HIT with L femoral arterial thrombosis, July 2025 - foot recovered. Problem list updated. She must never receive heparin of any kind; told her to say so at every visit, ER and pharmacy. CBC today to confirm platelet recovery.\n2. AF on warfarin - INR today, then weekly x2 given recent restart.\n3. s/p R THA - PT, ortho follow-up at 6 weeks.\n4. Records request to hospital for discharge summary."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC and INR",
+              "date": "2025-07-24T16:40",
+              "author": "PCP",
+              "body": "Platelets 231, fully recovered. INR in range on 5 mg. Called pt with results. INR again in 2 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-07a",
+          "kind": "lab_only",
+          "start": "2025-08-07T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-08-07T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-07T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2025-08-07T13:40",
+              "author": "RN",
+              "body": "INR in range. Continue 5 mg. Next in 4-5 weeks. Hospital records still not received - second fax request sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "outside_records",
+          "start": "2025-08-20T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital discharge summary received",
+          "allergies": [
+            {
+              "substance": "Heparin",
+              "reaction": "Heparin-induced thrombocytopenia with thrombosis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2025-08-20T16:15",
+              "author": "PCP",
+              "body": "Discharge summary from July hip admission finally received and reviewed. Confirms HIT (PF4 antibody positive) with left femoral arterial thrombosis on POD3, treated with argatroban, no vascular procedure, warfarin resumed. Heparin added to allergy list today - all heparin products. Med list matches ours. Nothing further needed now."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "specialist_visit",
+          "start": "2025-08-21T14:00",
+          "service": "Orthopedic Surgery",
+          "reason": "6-week post-operative visit, right hip",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Post-operative Visit",
+              "date": "2025-08-26T09:00",
+              "author": "orthopedic surgery",
+              "body": "Joint Replacement Clinic - 6 weeks s/p R THA (07/07/2025)\nAllergies: Heparin (HIT), Sulfa (rash)\n\nDoing well. Off walker, cane for distance. Pain minimal, acetaminophen occasionally. Hospital course notable for HIT with left femoral arterial thrombus, resolved.\n\nExam: incision well healed. Hip flexion to 100 degrees, painless. Neurovascularly intact bilaterally.\nRadiographs: well-positioned, well-fixed components, no complication.\n\nPlan: advance activity, continue home exercise program. Return 1 year post-op or sooner as needed. She mentioned her left knee is now her main complaint; she will schedule an evaluation this fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "lab_only",
+          "start": "2025-09-09T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-09-09T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-09T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2025-09-09T14:00",
+              "author": "RN",
+              "body": "INR in range. No change. Next with flu shot in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines and INR",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-10-07T09:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-07T09:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T09:33"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations and INR",
+              "date": "2025-10-07T09:50",
+              "author": "RN",
+              "body": "Allergies verified incl. HEPARIN (HIT). High-dose flu L deltoid, COVID R deltoid, pressure held. Tolerated. INR drawn. Knee consult with ortho 10/21."
+            },
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2025-10-07T14:45",
+              "author": "RN",
+              "body": "INR in range, continue 5 mg."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "specialist_visit",
+          "start": "2025-10-21T11:00",
+          "service": "Orthopedic Surgery",
+          "reason": "left knee osteoarthritis",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Surgery - Left Knee",
+              "date": "2025-10-24T15:00",
+              "author": "orthopedic surgery",
+              "body": "Joint Replacement Clinic\nPatient: Sandra Kendall  DOB 04/10/1957\nAllergies: Heparin (HIT), Sulfa (rash)\n\nNow 3 months out from a successful right THA. Left knee pain has become the limiting problem: medial and anterior pain with stairs, standing and getting up from a chair, stiffness after sitting. Acetaminophen partially helps.\n\nExam: mild varus, no effusion. ROM 5-110 degrees with crepitus. Ligaments stable. Neurovascularly intact.\nRadiographs (standing AP, lateral, sunrise): advanced osteoarthritis of the left knee, medial joint space loss with osteophytes.\n\nImpression: end-stage left knee osteoarthritis.\n\nPlan: she wishes to proceed with left total knee arthroplasty. Tentatively scheduled for 01/08/2026. Medical pre-operative evaluation with her PCP in December. Perioperative anticoagulation plan to follow from our pre-admission team."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "lab_only",
+          "start": "2025-11-12T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-12T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-12T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2025-11-12T13:20",
+              "author": "RN",
+              "body": "INR reviewed. No change. Pre-op visit booked 12/16."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "office_visit",
+          "start": "2025-12-16T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pre-operative evaluation, left total knee arthroplasty",
+          "vitals": {
+            "bp": [
+              134,
+              80
+            ],
+            "hr": 66,
+            "spo2": 98,
+            "weight_kg": 70.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-16T13:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-16T13:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-12-16T13:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-16T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Evaluation",
+              "date": "2025-12-16T14:30",
+              "author": "PCP",
+              "body": "PRE-OP EVAL - L TKA planned 1/8/2026 (outside orthopedics)\n\nHistory notable for HIT with left femoral arterial thrombosis after an enoxaparin bridge for her R THA in July 2025 (PF4 antibody positive). Fully recovered.\n\nNo chest pain, dyspnea, palpitations or edema. Walks 20-30 min on level ground, limited by the knee. Tolerated anesthesia in July.\n\nMeds: warfarin 5 mg, metoprolol succinate 50, lisinopril 20, atorvastatin 20, calcium/D, acetaminophen prn.\nALLERGIES: HEPARIN - HIT (all heparins incl. enoxaparin and flushes). Sulfa - rash.\n\nExam: irregularly irregular, controlled. Lungs clear. No edema. R hip incision healed. L knee crepitus, mild varus.\nECG 6/2025 unchanged rhythm; not repeated.\n\nAssessment: medically acceptable risk for L TKA.\n\nRecommendations to surgical team:\n1. NO HEPARIN PRODUCTS of any kind - prior HIT with thrombosis. No LMWH bridge. If anticoagulant prophylaxis is needed before INR is therapeutic, use a non-heparin agent.\n2. Warfarin hold per surgeon; given the HIT history I would not bridge.\n3. Continue metoprolol; hold lisinopril morning of surgery.\n\nFaxed to orthopedic pre-admission testing with today's labs."
+            },
+            {
+              "type": "Result Note",
+              "title": "Pre-op Labs",
+              "date": "2025-12-17T10:00",
+              "author": "PCP",
+              "body": "BMP, CBC and INR normal/in range. Faxed with pre-op note."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-23a",
+          "kind": "telephone",
+          "start": "2025-12-23T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "peri-operative warfarin instructions",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Peri-op Warfarin Call",
+              "date": "2025-12-23T10:05",
+              "author": "RN",
+              "body": "Ortho pre-admission called with their plan: last warfarin the evening of Fri 1/2, no bridge, resume after surgery. Relayed to pt, she wrote it down. Reminded her to tell everyone at the hospital about the heparin allergy - she says it is on her bracelet now."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-15a",
+          "kind": "ed_visit",
+          "start": "2026-01-15T08:50",
+          "end": "2026-01-15T14:30",
+          "service": "Emergency Medicine",
+          "reason": "left calf pain and swelling after knee replacement",
+          "conditions": [
+            {
+              "label": "Presence of left artificial knee joint",
+              "action": "diagnosed",
+              "onset": "2026-01-08",
+              "icd10": "Z96.652"
+            },
+            {
+              "label": "Acute deep vein thrombosis of lower extremity",
+              "action": "diagnosed",
+              "onset": "2026-01-13",
+              "note": "left leg, after left TKA on heparin prophylaxis"
+            },
+            {
+              "label": "Pulmonary embolism without acute cor pulmonale",
+              "action": "diagnosed",
+              "onset": "2026-01-15",
+              "note": "segmental",
+              "icd10": "I26.99"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "1 ML heparin sodium, porcine 5000 UNT/ML Injection",
+              "action": "historical",
+              "sig": "Inject 5,000 units subcutaneously every 12 hours (post-operative VTE prophylaxis)",
+              "dose": {
+                "value": 5000,
+                "unit": "[iU]"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "VTE prophylaxis after knee replacement (outside orthopedics)"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-01-15T11:40",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 110,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-15T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 55
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-15T09:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-15T09:20",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 35
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Lower extremity venous duplex",
+              "performed": "2026-01-15T10:30",
+              "text": "Left lower extremity venous duplex with compression and color Doppler. Noncompressible deep venous segment with intraluminal echogenic thrombus and absent flow, consistent with acute deep vein thrombosis. Postoperative soft tissue swelling about the knee.",
+              "conclusion": "Acute deep vein thrombosis, left lower extremity."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2026-01-15T12:10",
+              "text": "CT pulmonary angiogram. Adequate opacification of the pulmonary arteries. Filling defect in a segmental pulmonary artery branch consistent with acute pulmonary embolus. Main and lobar pulmonary arteries patent. Heart size normal, no RV dilatation. No pleural effusion or consolidation.",
+              "conclusion": "Acute segmental pulmonary embolism."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Total knee arthroplasty",
+              "performed": "2026-01-08T08:00"
+            },
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-15T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-01-20T08:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nDate of service: 01/15/2026, arrival 08:50\nPatient: Sandra Kendall, 68F\nAllergies: Heparin (HIT); sulfa (rash)\n\nCC: L calf pain and swelling\n\nHPI: 68F POD 7 from L total knee arthroplasty (01/08/2026, this hospital system's orthopaedic service), discharged home 01/11. Two days of progressive pain and swelling of the left calf. Has been giving herself subcutaneous heparin injections twice a day since surgery per discharge orders; warfarin restarted after surgery. History of HIT with arterial thrombosis 07/2025. AF on chronic warfarin.\n\nMeds: warfarin 5 mg, heparin 5,000 units SC q12h, metoprolol succinate 50 mg, lisinopril 20 mg, atorvastatin 20 mg, calcium carbonate/vitamin D, acetaminophen.\n\nTriage vitals stable. Exam: L knee incision intact with expected swelling. Left calf erythematous, warm and tender. Distal pulses present.\n\nLabs: Hgb 13.2 g/dL, WBC 7.8 x10^9/L, platelets 55 x10^9/L (150 before surgery). PT 12 s, aPTT 35 s. D-dimer elevated.\nLE venous duplex: acute DVT, left leg.\n\nED course: heparin stopped; hematology contacted. At 11:40, sudden shortness of breath and chest pain. BP 130/85, HR 110, SpO2 92% on room air; supplemental oxygen given. CT pulmonary angiogram: segmental PE. HIT antibody sent. Argatroban infusion started per hematology.\n\nImpression: 1. Acute left leg DVT. 2. Acute segmental pulmonary embolism. 3. Thrombocytopenia with heparin re-exposure in patient with prior HIT - suspected recurrent HIT.\n\nDisposition: admitted to medical ICU, 14:30.\n\nRecord faxed to PCP 01/20/2026."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 1.1
+            }
+          }
+        },
+        {
+          "id": "2026-01-15b",
+          "kind": "hospital_admission",
+          "start": "2026-01-15T14:30",
+          "end": "2026-01-22T12:00",
+          "service": "Internal Medicine",
+          "reason": "pulmonary embolism, DVT, suspected recurrent HIT",
+          "medications": [
+            {
+              "drug_text": "1 ML heparin sodium, porcine 5000 UNT/ML Injection",
+              "action": "stop",
+              "reason": "heparin-induced thrombocytopenia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-22T06:00",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 162
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-22T06:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital Discharge Instructions (patient copy)",
+              "date": "2026-01-27T10:00",
+              "author": "hospital medicine",
+              "body": "PATIENT DISCHARGE INSTRUCTIONS - scanned from patient's copy at PCP visit 01/27/2026\n\nName: Sandra Kendall\nAdmitted 01/15/2026 (ICU, then medical floor). Discharged 01/22/2026.\nReason for stay: blood clot in left leg and blood clot in the lung. Low platelets from heparin (HIT). HIT antibody test: POSITIVE.\n\nALLERGY: HEPARIN - never receive heparin in any form (shots, IV, line flushes, enoxaparin).\n\nIn the hospital you received argatroban (IV blood thinner) and your warfarin was restarted and overlapped.\nAt discharge: platelets 162, INR 2.3.\n\nYour medicines: warfarin 5 mg every evening; metoprolol succinate 50 mg daily; lisinopril 20 mg daily; atorvastatin 20 mg daily; calcium + vitamin D twice daily; acetaminophen as needed. STOP heparin injections.\n\nFollow up: primary care within 1 week for INR and blood count. Orthopaedics as scheduled.\nReturn to the ER for chest pain, trouble breathing, new leg swelling, or bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "outside_records",
+          "start": "2026-01-20T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside Record Received",
+              "date": "2026-01-20T09:30",
+              "author": "RN",
+              "body": "ED record from 1/15 arrived by fax: DVT L leg and PE after knee replacement, low platelets, admitted to ICU. We had no notice of the admission. Called pt's cell, no answer, left VM. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "portal_message",
+          "start": "2026-01-23T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "home from hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home From Hospital",
+              "date": "2026-01-23T16:20",
+              "author": "patient",
+              "body": "I'm home since yesterday. Sorry I missed your call - I was in the hospital for a week. Clots in my leg and lung after the knee surgery, and my platelets dropped again because of heparin shots they sent me home with. I'm back on warfarin only. They said see you within a week. Sandra"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Home From Hospital - Reply",
+              "date": "2026-01-23T17:45",
+              "author": "PCP",
+              "body": "Sandra, I'm glad you're home. We have you Tuesday 1/27 at 10:00 with blood work. Please bring every paper they gave you. Go to the ER for chest pain, worse breathing or any bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "office_visit",
+          "start": "2026-01-27T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up: DVT, PE, HIT after left knee replacement",
+          "vitals": {
+            "bp": [
+              134,
+              82
+            ],
+            "hr": 63,
+            "spo2": 98,
+            "weight_kg": 70.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-27T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 214
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-27T10:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-01-27T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2026-01-27T11:05",
+              "author": "PCP",
+              "body": "TCM visit. Discharged 1/22. Interactive contact 1/23 via portal.\n\nCourse (ED record + her discharge instruction sheet; no discharge summary or knee surgery records received): L TKA 1/8, discharged 1/11 on warfarin plus SC heparin 5,000 units twice daily. On POD 7 to the ED with 2 days of L calf pain/swelling - DVT on duplex, platelets 55. While in the ED developed dyspnea and chest pain, CTPA segmental PE, ICU admission. HIT antibody positive. Argatroban, warfarin overlapped. Discharged on warfarin 5 mg with platelets 162 and INR 2.3.\n\nToday: breathing back to normal, no chest pain. L calf still a bit swollen and tender but better each day. Knee stiff, doing PT exercises. No bleeding.\n\nExam: comfortable on room air. Irregular rhythm, rate controlled. Lungs clear. L knee incision healing, no drainage. L calf mildly swollen, minimal tenderness, no erythema.\n\nA/P:\n1. Acute L leg DVT and segmental PE, provoked (surgery), on warfarin - she stays on warfarin indefinitely for AF regardless. INR today; weekly for a month.\n2. HIT, recurrent with heparin re-exposure. Platelets today to confirm recovery. Allergy prominent on chart and bracelet.\n3. s/p L TKA - PT, ortho f/u.\n4. Records: front desk to request discharge summary, ICU records and knee surgery op note.\n5. Follow up in 4 weeks."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC and INR",
+              "date": "2026-01-27T16:10",
+              "author": "PCP",
+              "body": "Platelets 214 - recovered. INR in range. Called pt. Weekly INR x3 then spread out."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "lab_only",
+          "start": "2026-02-03T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-02-03T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-03T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2026-02-03T13:35",
+              "author": "RN",
+              "body": "INR in range. Same dose."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "lab_only",
+          "start": "2026-02-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-02-10T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-10T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2026-02-10T13:50",
+              "author": "RN",
+              "body": "INR in range, no change."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2026-02-10T15:00",
+              "author": "front desk",
+              "body": "Faxed records request with signed release to hospital health information management: discharge summary 1/15-1/22/2026, ICU notes, operative note and discharge summary for L TKA 1/8-1/11/2026. Usual turnaround 2-3 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "office_visit",
+          "start": "2026-02-24T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up DVT/PE on warfarin",
+          "vitals": {
+            "bp": [
+              150,
+              88
+            ],
+            "hr": 79,
+            "spo2": 98,
+            "weight_kg": 70.8
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-02-24T11:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-02-24T11:40",
+              "author": "PCP",
+              "body": "4-week follow-up after DVT/PE. Feeling much more herself. No dyspnea walking around the house or the grocery store. Calf swelling gone. Knee bending better with PT, using a cane.\n\nExam: SpO2 normal on RA. Irregular rhythm, controlled. Lungs clear. Calves symmetric, nontender. L knee incision healed.\n\nA/P: DVT/PE resolving clinically on warfarin; INRs in range - back to every 4 weeks. HIT - avoid heparin, documented. Hospital records not yet received. Return 3 months / with AWV in April."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-05a",
+          "kind": "specialist_visit",
+          "start": "2026-03-05T14:20",
+          "service": "Orthopedic Surgery",
+          "reason": "8-week post-operative visit, left knee",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Post-operative Visit",
+              "date": "2026-03-09T09:30",
+              "author": "orthopedic surgery",
+              "body": "Joint Replacement Clinic - s/p L TKA 01/08/2026\nAllergies: Heparin (HIT), Sulfa\nMedications: warfarin, metoprolol succinate, lisinopril, atorvastatin, calcium/vitamin D, acetaminophen, heparin SC\n\nPost-op course complicated by DVT/PE requiring readmission; now on warfarin. Pain improving. Working with outpatient PT.\n\nExam: incision well healed. ROM 0-105 degrees. Stable. Calf soft.\nRadiographs: components well aligned and fixed.\n\nPlan: continue PT for another 4-6 weeks. Return at 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "lab_only",
+          "start": "2026-03-24T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-03-24T08:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-24T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2026-03-24T13:30",
+              "author": "RN",
+              "body": "INR in range. No change. Ortho letter scanned - their med list still shows SC heparin; ours is correct, nothing to do."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "annual_physical",
+          "start": "2026-04-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              127,
+              88
+            ],
+            "hr": 63,
+            "spo2": 98,
+            "weight_kg": 70.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-14T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-14T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-04-14T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 68
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 100
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-04-14T09:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-04-14T09:15",
+              "text": "Atrial fibrillation with controlled ventricular response. Normal QRS duration. No acute ST-T abnormality. No change from 06/2025.",
+              "conclusion": "Atrial fibrillation, rate controlled; unchanged."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-04-14T09:00"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-04-14T09:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2026-04-14T10:35",
+              "author": "PCP",
+              "body": "AWV.\n\nA hard year with two joint replacements and two clotting complications, but she is walking again without the cane indoors. No falls. Lives alone, managing well; neighbors drove her during recovery. PHQ-9 3 - some low days in February, better now. Health care proxy unchanged.\n\nAF: asymptomatic, rate controlled. ECG unchanged.\nDVT/PE: no symptoms.\nHIT: allergy in chart; she carries a card.\nBP and lipids on yearly labs today.\nJoints: R hip and L knee replaced and doing well; the other hip and knee ache now and then.\n\nExam: irregularly irregular, controlled. Lungs clear. Calves soft, no edema. Healed R hip and L knee incisions.\n\nPrevention: mammogram ordered. Colonoscopy 2029. Vaccines current; flu/COVID in the fall.\n\nPlan: labs today, continue current meds, INR every 4-6 weeks, follow-up in summer."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2026-04-15T12:00",
+              "author": "PCP",
+              "body": "Sandra, your labs look good - kidney and liver tests normal, blood count and platelets normal, cholesterol stable on atorvastatin, INR in range."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "telephone",
+          "start": "2026-04-21T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "records request follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request - Second Attempt",
+              "date": "2026-04-21T14:10",
+              "author": "front desk",
+              "body": "Nothing received from 2/10 request. Called hospital HIM - told the request was 'in queue.' Re-faxed request and release. Will check again."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "lab_only",
+          "start": "2026-05-12T08:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-05-12T08:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-12T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2026-05-12T14:15",
+              "author": "RN",
+              "body": "INR in range. Continue 5 mg nightly."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "imaging",
+          "start": "2026-05-19T10:30",
+          "service": "Radiology",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2026-05-19T10:30",
+              "text": "Bilateral screening mammogram with tomosynthesis, compared with 2024 and 2025. Scattered areas of fibroglandular density. No suspicious findings.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "done",
+              "date": "2026-05-19T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram Result",
+              "date": "2026-05-20T09:40",
+              "author": "MA",
+              "body": "Negative mammogram, normal result letter sent per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "lab_only",
+          "start": "2026-06-09T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-06-09T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-09T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "INR Result",
+              "date": "2026-06-09T13:25",
+              "author": "RN",
+              "body": "INR reviewed. No change."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "office_visit",
+          "start": "2026-07-14T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "AF and hypertension follow-up",
+          "vitals": {
+            "bp": [
+              145,
+              81
+            ],
+            "hr": 58,
+            "spo2": 98,
+            "weight_kg": 71.7
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-07-14T15:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-14T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-07-14T15:20",
+              "author": "PCP",
+              "body": "Routine follow-up. Back to walking most mornings, about 30 minutes. No palpitations, chest pain, dyspnea, leg swelling or bleeding. Acetaminophen rarely.\n\nExam: irregular, controlled. Lungs clear. No edema. Both replaced joints with good motion.\n\nA/P: AF on warfarin, HTN, HLD - stable, no changes. Hospital records from January still outstanding despite two requests; front desk to keep after it. INR today, then every 4-6 weeks. Next visit in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "lab_only",
+          "start": "2026-08-11T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-08-11T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-11T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "INR Result",
+              "date": "2026-08-11T14:20",
+              "author": "RN",
+              "body": "Hi Sandra, today's INR is in range - keep taking 5 mg each evening. Next check is with your visit on September 10. Your flu and COVID shots can be given that day too."
+            },
+            {
+              "type": "Patient Message",
+              "title": "INR Result - Reply",
+              "date": "2026-08-11T18:05",
+              "author": "patient",
+              "body": "Thank you! See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "atrial fibrillation and anticoagulation follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Arterial thrombosis of left femoral artery|I74.3": {
+        "code": "I74.3",
+        "display": "Embolism and thrombosis of arteries of the lower extremities",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Atrial fibrillation, non-valvular|I48.91": {
+        "code": "I48.91",
+        "display": "Unspecified atrial fibrillation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Heparin-induced thrombocytopenia|D75.822": {
+        "code": "D75.822",
+        "display": "Immune-mediated heparin-induced thrombocytopenia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Presence of intraocular lens|Z96.1": {
+        "code": "Z96.1",
+        "display": "Presence of intraocular lens",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Presence of left artificial knee joint|Z96.652": {
+        "code": "Z96.652",
+        "display": "Presence of left artificial knee joint",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pulmonary embolism without acute cor pulmonale|I26.99": {
+        "code": "I26.99",
+        "display": "Other pulmonary embolism without acute cor pulmonale",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "1 ML heparin sodium, porcine 5000 UNT/ML Injection": {
+        "code": "1659263",
+        "display": "1 ML heparin sodium, porcine 5000 UNT/ML Injection",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "14979-9",
+        "display": "aPTT in Platelet poor plasma by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\"",
+      "drug \"0.7 ML enoxaparin sodium 100 MG/ML Prefilled Syringe\""
+    ]
+  }
+}

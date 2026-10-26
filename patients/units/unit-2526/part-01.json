@@ -1,0 +1,639 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002526",
+      "given": "Andre",
+      "family": "Jackson",
+      "birth_date": "1984-07-27",
+      "address_line": "37 Woodbridge Terrace, Apt 2",
+      "phone": "+1-774-555-0177",
+      "email": "andre.jackson@example.test",
+      "marital_status": "single",
+      "summary": "Andre is a safety compliance officer who joins in 2018 with treated hepatitis B, hypertension, CKD attributed to heroin nephropathy, myeloma in remission after transplant, substance use disorders and a remote mitral repair. Over eight years he goes through nephrotic FSGS, adrenal Cushing syndrome and adrenalectomy, atrial fibrillation, a myeloma relapse with cast nephropathy, a cocaine-related inferior STEMI, a type A dissection repair and ARDS from pneumonia.",
+      "events": [
+        {
+          "id": "2018-08-28a",
+          "kind": "telephone",
+          "start": "2018-08-28T10:20",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2018-08-28T10:20",
+              "body": "Pt called asking to become a patient. Leaving his current PCP office, says he wants a doctor he can text when something comes up. Has Medicaid, card info entered. Booked new patient appt 9/12 at 8:40 (60 min slot, pt says he has a long history). Release of records sent to his prior primary care office by fax and to his oncology office by mail per pt. Pt asked if he should bring his pill bottles - told yes."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-12a",
+          "kind": "establish_care",
+          "start": "2018-09-12T08:40",
+          "end": "2018-09-12T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Chronic hepatitis B",
+              "action": "history",
+              "note": "on tenofovir from prior care"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history"
+            },
+            {
+              "label": "Chronic kidney disease, stage 3b",
+              "action": "history",
+              "note": "attributed by prior care to heroin-associated nephropathy; never biopsied"
+            },
+            {
+              "label": "Multiple myeloma in remission",
+              "icd10": "C90.01",
+              "action": "history",
+              "onset": "2016-06-01",
+              "note": "kappa light chain; induction and autologous stem cell transplant 2017; followed by outside hematology-oncology"
+            },
+            {
+              "label": "Opioid use disorder",
+              "action": "history",
+              "note": "heroin"
+            },
+            {
+              "label": "Cocaine use disorder",
+              "icd10": "F14.20",
+              "action": "history"
+            },
+            {
+              "label": "History of intravenous drug use",
+              "icd10": "Z87.898",
+              "action": "history"
+            },
+            {
+              "label": "Status post mitral valve repair",
+              "icd10": "Z98.890",
+              "action": "history",
+              "note": "remote, outside hospital"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tenofovir disoproxil fumarate 300 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic hepatitis B"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              86
+            ],
+            "weight_kg": 82.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Creatinine": 2.1,
+              "Blood Urea Nitrogen": 27,
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-09-12T09:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-09-12T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-09-12T09:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2018-09-12T09:55",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "1+"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-09-12T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Safety compliance officer"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2018-09-12T09:45"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2018-09-12T09:47"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2018-09-12T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-09-12T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2018-09-12T10:30",
+              "body": "NEW PATIENT VISIT\n\n34M establishing care, transferring from another primary care office in the area. Records requested, not here yet, so most of this is from him and his bottles.\n\nHe has a lot of history and gave it in a pretty matter-of-fact way:\n- Hepatitis B, found in his twenties. Has been on tenofovir for years, started by a prior doctor. Admits he misses doses, maybe a couple of days a week.\n- High blood pressure on amlodipine 5. Same story with adherence.\n- Kidney disease. Told by his last office it was from heroin, never had a biopsy. Doesn't know his numbers.\n- Multiple myeloma, diagnosed 2016 when he was 32. Had chemo and then a stem cell transplant at a cancer center in 2017. Says he's in remission and sees his oncologist every few months, next visit in November. No treatment now.\n- Mitral valve repair, years ago, at an outside hospital. He isn't sure of the year.\n- Substance use: injected heroin in his twenties, also used cocaine then. States he has not used for years. Opioid and cocaine use disorder carried on his old list.\n\nMeds: tenofovir DF 300 mg daily, amlodipine 5 mg daily.\nAllergies: NKDA.\n\nSocial: works as a safety compliance officer, mostly at a desk, writes up inspections. Single, lives in South Hadley. Smokes about a pack a day, has for a long time. No alcohol at all. Not much exercise.\n\nFamily: father had a substance use problem and coronary disease in his early 50s (he thinks around 50). Mother has high blood pressure. Uncle on mom's side had multiple myeloma.\n\nROS: negative except as above. No chest pain, no swelling, no bone pain, no night sweats.\n\nExam: vitals as charted, BP 136/86. Well appearing. Pupils equal, no scleral icterus. Neck supple, no adenopathy. Heart regular, no murmur heard. Lungs clear. Abdomen soft, no hepatosplenomegaly. No edema. Skin clear.\n\nA/P\n1. CKD - attributed to heroin nephropathy. CMP and UA today, get old values from records.\n2. HTN - a little above goal. Talked about taking the amlodipine every day before anything else.\n3. Hep B on tenofovir - continue, refills sent. Will look for his last viral load in records.\n4. Multiple myeloma in remission - followed by his oncologist, records requested.\n5. Tobacco - smoking 1 ppd. Not ready to set a quit date. Brought it up, will keep at it.\n6. Opioid/cocaine use disorder by history, IVDU - he reports none in years. Screening labs today: HIV, hep C.\n7. Health maintenance: Tdap and flu shot today. Lipids and A1c.\n\nReturn in 3-4 months, sooner by text if needed."
+            },
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "MA",
+              "date": "2018-09-12T09:50",
+              "body": "Tdap 0.5 mL IM right deltoid and influenza quadrivalent 0.5 mL IM left deltoid. VIS given for both. Screening questions negative, no prior vaccine reactions. Pt waited 15 min in lobby, left without issue."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              136,
+              86
+            ]
+          }
+        },
+        {
+          "id": "2018-09-14a",
+          "kind": "portal_message",
+          "start": "2018-09-14T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs from Wednesday",
+              "author": "PCP",
+              "date": "2018-09-14T16:05",
+              "body": "Hi Andre, your labs are in. Kidney function (creatinine 2.1) is reduced, in the range your history would explain. I'll compare it with your old numbers when your records arrive. Some protein in the urine. Blood counts, liver tests, sugar (A1c) and cholesterol are fine. HIV and hepatitis C tests are negative. Keep taking the tenofovir and amlodipine every day. Talk soon."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your labs from Wednesday",
+              "author": "patient",
+              "date": "2018-09-14T19:42",
+              "body": "ok thanks doc. the old office said my creatinine was around 2 last year so sounds about the same"
+            }
+          ]
+        },
+        {
+          "id": "2018-10-03a",
+          "kind": "outside_records",
+          "start": "2018-10-03T11:00",
+          "reason": "Records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "author": "front desk",
+              "date": "2018-10-03T11:00",
+              "body": "Received 38 pages by fax from prior primary care office, scanned to media.\n\nPCP summary of contents: problem list matches what he told us - chronic hepatitis B on tenofovir, hypertension on amlodipine 5, CKD stage 3b attributed to heroin-associated nephropathy without biopsy, multiple myeloma in remission post transplant, opioid use disorder (heroin), cocaine use disorder, history of IVDU, s/p mitral valve repair. Creatinines 1.9-2.1 over the last two years. Several notes say 'adherence variable.' NKDA. No colonoscopy (age-appropriate). Immunizations: no Tdap on file."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Hematology-Oncology Treatment Summary",
+              "author": "hematology-oncology",
+              "date": "2018-10-03T11:05",
+              "body": "TREATMENT SUMMARY - outside hematology-oncology\n\nPatient: Andre Jackson, DOB 07/27/1984\n\nDiagnosis: Kappa light-chain multiple myeloma, diagnosed June 2016.\nTreatment: induction chemotherapy 2016-2017, followed by high-dose chemotherapy with autologous stem cell transplant in 2017.\nCurrent status: in remission, off therapy. Surveillance labs (serum protein electrophoresis, immunofixation, serum free light chains) every 4-6 months.\nOther: chronic hepatitis B, continues tenofovir; please keep him on it.\nAllergies: NKDA.\n\nNext visit: November 2018."
+            }
+          ]
+        },
+        {
+          "id": "2018-11-14a",
+          "kind": "specialist_visit",
+          "start": "2018-11-14T13:30",
+          "service": "Hematology-Oncology",
+          "reason": "Myeloma surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2018-11-14T13:10",
+              "results": [
+                {
+                  "test": "Monoclonal Protein Spike",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology-Oncology Follow-up Letter",
+              "author": "hematology-oncology",
+              "date": "2018-11-21T09:00",
+              "body": "Dear Doctor,\n\nI saw Mr. Jackson today in follow-up for kappa light-chain myeloma, now about 18 months past autologous transplant. He feels well. No bone pain, no infections.\n\nToday's SPEP shows no monoclonal protein and immunofixation is negative. Free light chain ratio is within the normal range. Counts are normal.\n\nHe remains in remission. We will see him again in 6 months with repeat studies. He is on tenofovir for his hepatitis B and I asked him to keep taking it daily.\n\nMeds: tenofovir 300 mg daily, amlodipine 5 mg daily. Allergies: NKDA.\n\nThank you for letting us share his care.\n\nHematology-Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2018-12-10a",
+          "kind": "pharmacy",
+          "start": "2018-12-10T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2018-12-10T09:15",
+              "body": "Pharmacy fax: tenofovir DF 300 mg #30 refill request. Last filled 10/22 per pharmacy, so he is a few weeks late. Refilled x3 per PCP standing ok. Left pt a voicemail as a reminder to take it daily."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-11a",
+          "kind": "annual_physical",
+          "start": "2019-03-11T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              138,
+              88
+            ],
+            "weight_kg": 83.0,
+            "labs": {
+              "Creatinine": 2.2,
+              "Blood Urea Nitrogen": 26
+            }
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-03-11T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-03-11T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-03-11T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2019-03-11T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2019-03-11T12:10",
+              "body": "Annual exam.\n\nDoing fine. Work busy, audits most weeks. Missing tenofovir less now, keeps the bottle next to his coffee maker. Amlodipine most days. Still smoking a pack a day, not interested in a quit plan yet. No alcohol. Says no drug use.\nSaw oncology in November - still in remission.\n\nMeds: tenofovir DF 300 mg daily, amlodipine 5 mg daily. NKDA.\n\nExam: BP 138/88 on recheck. Alert, comfortable. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart regular rate, no murmur appreciated today. Lungs clear. Abdomen soft, nontender. Extremities without edema. Skin clear.\nPHQ-2 negative.\n\nA/P\n- HTN: borderline on amlodipine when he takes it. Keep current dose, BMP today.\n- CKD 3b: repeat creatinine.\n- Hep B: continue tenofovir.\n- Myeloma: per oncology, next visit May.\n- Tobacco: counseled.\n- HM: Tdap and flu done in the fall. HIV/HCV negative 9/2018.\n\nFollow up 6 months."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ]
+          }
+        },
+        {
+          "id": "2019-03-12a",
+          "kind": "portal_message",
+          "start": "2019-03-12T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2019-03-12T12:30",
+              "body": "Andre - labs from yesterday look like last time. Creatinine 2.2, potassium normal, blood count normal, cholesterol ok. No changes. See you in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-20a",
+          "kind": "specialist_visit",
+          "start": "2019-05-20T10:00",
+          "service": "Hematology-Oncology",
+          "reason": "Myeloma surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-05-20T09:40",
+              "results": [
+                {
+                  "test": "Monoclonal Protein Spike",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology-Oncology Follow-up Letter",
+              "author": "hematology-oncology",
+              "date": "2019-05-24T14:00",
+              "body": "Dear Doctor,\n\nMr. Jackson returned for routine myeloma surveillance. He has no complaints. Weight stable.\n\nLabs: no M-spike, immunofixation negative, free light chain ratio normal. CBC unremarkable.\n\nAssessment: kappa light-chain myeloma in continued remission post ASCT. Plan: repeat in 6 months.\n\nHematology-Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2019-07-17a",
+          "kind": "office_visit",
+          "start": "2019-07-17T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2019-07-18a",
+          "kind": "telephone",
+          "start": "2019-07-18T09:05",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "author": "front desk",
+              "date": "2019-07-18T09:05",
+              "body": "Called re: missed appt yesterday. Pt apologized, said he was stuck at a site inspection in Chicopee. Rescheduled for 9/25 at 4:00."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-25a",
+          "kind": "office_visit",
+          "start": "2019-09-25T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension and kidney follow-up",
+          "state": {
+            "bp": [
+              140,
+              88
+            ],
+            "labs": {
+              "Creatinine": 2.3,
+              "Blood Urea Nitrogen": 29
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2019-09-25T16:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-09-25T16:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-09-25T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-25T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2019-09-25T17:20",
+              "body": "F/u HTN, CKD.\nS: No complaints. Admits he ran out of amlodipine for about a week in August. Tenofovir 'mostly.' Smoking unchanged. Denies drug use.\nO: BP 140/88. Heart regular. Lungs clear. No edema.\nA/P:\nHTN - not at goal, adherence the main issue. Pill box. No change in dose.\nCKD 3b - BMP today.\nHep B - continue tenofovir.\nFlu shot today.\nRTC March for physical."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              88
+            ]
+          }
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "portal_message",
+          "start": "2019-09-26T11:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney labs",
+              "author": "PCP",
+              "date": "2019-09-26T11:10",
+              "body": "Creatinine 2.3, a little higher than spring (2.2). Potassium fine. Not a big jump, but it is drifting the wrong way, which is one more reason to keep the blood pressure down. Please use the pill box."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-13a",
+          "kind": "specialist_visit",
+          "start": "2019-11-13T10:30",
+          "service": "Hematology-Oncology",
+          "reason": "Myeloma surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-11-13T10:05",
+              "results": [
+                {
+                  "test": "Monoclonal Protein Spike",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology-Oncology Follow-up Letter",
+              "author": "hematology-oncology",
+              "date": "2019-11-19T08:30",
+              "body": "Dear Doctor,\n\nSurveillance visit for Mr. Jackson. Asymptomatic. SPEP without M-protein; free light chains and ratio normal; counts normal. Creatinine stable at his baseline in the low 2s.\n\nRemains in remission. Next visit in about 6 months.\n\nHematology-Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2019-12-11a",
+          "kind": "pharmacy",
+          "start": "2019-12-11T10:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2019-12-11T10:40",
+              "body": "Amlodipine 5 mg refill request from pharmacy, 90-day supply. Approved per protocol, BP checked 9/25."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

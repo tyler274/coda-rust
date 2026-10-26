@@ -1,0 +1,522 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001685",
+      "events": [
+        {
+          "id": "2024-01-10a",
+          "kind": "lab_only",
+          "start": "2024-01-10T07:45",
+          "reason": "Labs requested by psychiatry",
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.2,
+              "White Blood Cells": 7.0,
+              "Platelets": 250
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-10T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-01-10T07:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-01-10T07:50",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-10T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab Request",
+              "author": "MA",
+              "date": "2024-01-08T11:20",
+              "body": "Outside psychiatry office called asking for a CBC, metabolic panel and UA before pt's appointment on 1/31; she'd rather draw here than at their lab. PCP okayed, orders entered, pt scheduled for a fasting-optional draw Wed AM."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-01-10T15:35",
+              "body": "Leah, this morning's labs are normal: blood count, electrolytes, kidney and liver tests, and the urine test. Hemoglobin is 13.2, which is a good number this far along. I've faxed a copy to your psychiatrist's office for the 31st."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-31a",
+          "kind": "specialist_visit",
+          "start": "2024-01-31T14:00",
+          "service": "Psychiatry",
+          "reason": "Psychiatric follow-up",
+          "conditions": [
+            {
+              "label": "Somatic symptom disorder",
+              "action": "diagnosed",
+              "onset": "2023-08-01"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "author": "psychiatry",
+              "date": "2024-02-06T16:45",
+              "body": "Outpatient Psychiatry\nDate of service: 01/31/2024\n\nRe: Leah Martel, DOB 06/17/1990\n\nDear Doctor,\n\nLeah returned for follow-up of major depressive disorder. She is now 36 weeks pregnant with her first child. Her depression has stayed in a reasonable place on sertraline 50 mg.\n\nThe main topic was abdominal pain she has had for about six months: a steady, dull ache spread across the abdomen that does not radiate and has no link to food or activity. She has been evaluated twice in the emergency department, had a normal abdominal ultrasound and saw gastroenterology, with nothing found. She describes a great deal of worry about her health, checks her body frequently, and has missed several days of work for the pain.\n\nMedical history also includes migraine without aura and restless legs syndrome, followed by you and neurology. Medications: sertraline 50 mg daily, pramipexole 0.125 mg nightly, sumatriptan 50 mg as needed, prenatal vitamin daily. No known drug allergies.\n\nVital signs were normal. On abdominal exam there was no tenderness, mass or organomegaly. Your labs of 01/10/2024 were reviewed: hemoglobin 13.2 g/dL, WBC 7,000, platelets 250,000, normal electrolytes and liver tests, normal urinalysis.\n\nImpression: Somatic symptom disorder, with persistent abdominal pain and disproportionate health anxiety; major depressive disorder, stable.\n\nPlan: continue sertraline 50 mg daily, which is compatible with pregnancy and breastfeeding. We will meet monthly for psychotherapy-focused visits through the postpartum period. I'd suggest one consistent point of contact for the pain, which I think is you, with scheduled visits rather than urgent ones.\n\nThank you for sharing her care.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-07a",
+          "kind": "outside_records",
+          "start": "2024-02-07T07:40",
+          "reason": "Psychiatry letter reviewed",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Letter Reviewed",
+              "author": "PCP",
+              "date": "2024-02-07T07:40",
+              "body": "Psychiatry letter reviewed. New dx somatic symptom disorder. Agree with plan for scheduled PCP visits for the abdominal pain rather than urgent ones; will set her up for a regular check after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "hospital_admission",
+          "start": "2024-02-20T03:10",
+          "end": "2024-02-22T11:30",
+          "service": "Obstetrics",
+          "reason": "Term labor",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "icd10": "Z33.1",
+              "action": "resolved"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-12-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2024-02-27T09:30",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted: 02/20/2024  Discharged: 02/22/2024\n\nPatient: Leah Martel, 33, G1P0 -> G1P1001\nEDD 02/26/2024 by LMP consistent with first-trimester ultrasound. Admitted at 39w1d in spontaneous labor.\n\nPrenatal course: uncomplicated. Normal anatomy survey. Tdap given 12/06/2023. Followed by her PCP and GI for chronic abdominal pain with negative evaluation; by psychiatry for depression and somatic symptom disorder; on pramipexole for restless legs.\n\nLabor and delivery: spontaneous labor progressed normally. Epidural. Spontaneous vaginal delivery 02/20/2024 of a liveborn infant, Apgars 8 and 9, birth weight 3,390 g. Estimated blood loss 300 mL.\n\nPostpartum course: uncomplicated. Afebrile, normal blood pressures, voiding, ambulating, pain controlled. Infant well, discharged with mother.\n\nAllergies: NKDA.\nDischarge medications: sertraline 50 mg daily, pramipexole 0.125 mg nightly, prenatal vitamin daily, sumatriptan 50 mg as needed.\n\nFollow-up: OB postpartum visit at 6 weeks; PCP and psychiatry as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "portal_message",
+          "start": "2024-02-21T18:05",
+          "reason": "Birth announcement",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby is here",
+              "author": "patient",
+              "date": "2024-02-21T18:05",
+              "body": "Baby arrived yesterday morning! Everything went smoothly, we're both doing great. Going home tomorrow. Do I need to see you or just OB?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby is here",
+              "author": "PCP",
+              "date": "2024-02-22T08:10",
+              "body": "Congratulations to all of you! OB will see you at 6 weeks. I'd also like to see you in about a month to check in on mood and sleep. The front desk will call to set it up."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "office_visit",
+          "start": "2024-03-20T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in",
+          "state": {
+            "weight_kg": 68.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-20T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-03-20T13:58",
+              "body": "Here with the baby in the car seat, four weeks out from an uncomplicated vaginal delivery (discharge summary reviewed). On maternity leave until April break.\n\nSleep is broken but she's coping; husband is doing nights on the weekend. Mood 'tired, not sad.' PHQ-9 6, GAD-7 6, no thoughts of harm to self or baby. Seeing psychiatry monthly, staying on sertraline 50.\n\nThe belly ache is still there some days. We agreed on a standing plan: she keeps a short log and we go over it at scheduled visits instead of urgent trips in. She liked that.\n\nMigraines have been quiet. RLS fine on pramipexole.\n\nExam: vitals as charted. Well appearing, tired. Thyroid normal. Heart and lungs normal. Abdomen soft, nontender, uterus not palpable. Calves soft.\n\nA/P\n1. Postpartum, doing well. OB 6-week visit booked.\n2. MDD and somatic symptom disorder: stable on sertraline, monthly psychiatry. Scheduled visits here.\n3. Migraine, RLS stable. Refills current.\nRTC 3 months or as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-24a",
+          "kind": "pharmacy",
+          "start": "2024-04-24T10:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2024-04-24T10:05",
+              "body": "Pharmacy requesting renewal of pramipexole 0.125 mg tab, take 1 nightly, #90. Last office visit 3/20/24. Pended to PCP. -- Approved x 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "portal_message",
+          "start": "2024-06-17T06:48",
+          "reason": "Pregnancy",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "icd10": "Z33.1",
+              "action": "diagnosed",
+              "onset": "2024-05-17",
+              "note": "LMP 2024-05-17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surprise",
+              "author": "patient",
+              "date": "2024-06-17T06:48",
+              "body": "So... I'm pregnant again. LMP was May 17. Not exactly the plan for the timing but we're happy. OB is seeing me in July. Same meds as last time, same plan? I didn't skip the prenatal this whole time so at least that's covered."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surprise",
+              "author": "PCP",
+              "date": "2024-06-17T12:10",
+              "body": "Congratulations! Yes, same plan as last time: sertraline and the prenatal vitamin continue, review the pramipexole with OB at your first visit, and sumatriptan stays your rescue for migraines if Tylenol doesn't do it. Let me know how the first visit goes."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "specialist_visit",
+          "start": "2024-09-20T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Routine prenatal visit, 18 weeks",
+          "conditions": [
+            {
+              "label": "Maternal care for fetal spina bifida with Chiari II malformation",
+              "icd10": "O35.08X0",
+              "action": "diagnosed",
+              "onset": "2024-09-20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mfm-referral-2024",
+              "action": "placed",
+              "order": "Maternal-fetal medicine referral",
+              "category": "referral",
+              "to": "Maternal-Fetal Medicine",
+              "reason": "Fetal spina bifida with Chiari II findings"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit Note",
+              "author": "obstetrics",
+              "date": "2024-09-26T13:10",
+              "body": "Obstetrics & Gynecology Prenatal Visit\nDate of service: 09/20/2024\n\nLeah Martel, 34, G2P1001 at 18w0d by LMP (05/17/2024).\n\nSeen for a routine prenatal visit. She has no complaints and her prenatal care has been regular and uncomplicated to this point. Her prior pregnancy (delivered 02/2024) was uncomplicated with a healthy term infant.\n\nHistory: migraine, depression, restless legs, somatic symptom disorder. Medications: sertraline 50 mg daily, pramipexole 0.125 mg nightly, prenatal vitamin with folic acid daily, sumatriptan as needed. Allergies: none known. Nonsmoker, no alcohol.\n\nExam: normal. Uterine size appropriate for gestational age.\n\nThe maternal serum alpha-fetoprotein from her second-trimester screen returned elevated. Ultrasound was performed today for further evaluation: single fetus; the skull has a lemon-shaped contour and the cerebellum is curved in a banana shape. No other abnormality was identified.\n\nAssessment: Intrauterine pregnancy at 18 weeks with findings of fetal open spina bifida with Chiari II malformation.\n\nPlan: results reviewed with the patient and her husband. Urgent referral to maternal-fetal medicine for detailed ultrasound and counseling, scheduled 10/01. We will follow along closely.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-22a",
+          "kind": "portal_message",
+          "start": "2024-09-22T21:15",
+          "reason": "Patient update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hard news",
+              "author": "patient",
+              "date": "2024-09-22T21:15",
+              "body": "I wanted you to hear it from me. The 18 week ultrasound showed the baby has spina bifida. We see the high-risk team on Oct 1. I'm okay-ish. Mostly I just wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hard news",
+              "author": "PCP",
+              "date": "2024-09-23T07:30",
+              "body": "Leah, I'm so sorry. Thank you for telling me. You don't have to carry this alone; call or text me anytime, including this week, and let your psychiatrist know too. I'll be thinking of you on the 1st."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "specialist_visit",
+          "start": "2024-10-01T10:00",
+          "service": "Maternal-Fetal Medicine",
+          "reason": "Detailed fetal ultrasound and counseling",
+          "conditions": [
+            {
+              "label": "Missed abortion",
+              "icd10": "O02.1",
+              "action": "diagnosed",
+              "onset": "2024-10-01"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mfm-referral-2024",
+              "action": "done",
+              "date": "2024-10-01T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Maternal-Fetal Medicine Consultation",
+              "author": "maternal-fetal medicine",
+              "date": "2024-10-08T08:55",
+              "body": "Maternal-Fetal Medicine Consultation\nDate of service: 10/01/2024\n\nMs. Martel, 34, G2P1001 at 19w4d, was referred for detailed evaluation after an elevated MSAFP and ultrasound findings of fetal spina bifida with Chiari II malformation on 09/20.\n\nDetailed ultrasound today: single fetus with no cardiac activity, confirmed by two examiners. Biometry consistent with the stated dates.\n\nImpression: Intrauterine fetal demise at 19w4d (missed abortion) in a pregnancy with fetal open spina bifida and Chiari II malformation.\n\nWe discussed management options. She and her husband chose dilation and evacuation, scheduled for tomorrow with the gynecology team.\n\nMaternal-Fetal Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "procedure_visit",
+          "start": "2024-10-02T07:30",
+          "end": "2024-10-02T13:15",
+          "service": "Gynecology",
+          "reason": "Dilation and evacuation for missed abortion",
+          "conditions": [
+            {
+              "label": "Maternal care for fetal spina bifida with Chiari II malformation",
+              "icd10": "O35.08X0",
+              "action": "resolved"
+            },
+            {
+              "label": "Pregnant state",
+              "icd10": "Z33.1",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report: Dilation and Evacuation",
+              "author": "gynecology",
+              "date": "2024-10-08T08:56",
+              "body": "OPERATIVE REPORT\nDate of procedure: 10/02/2024\n\nPreoperative diagnosis: missed abortion at 19w5d.\nPostoperative diagnosis: same.\nProcedure: cervical preparation and dilation and evacuation under ultrasound guidance.\nAnesthesia: monitored anesthesia care with paracervical block.\nFindings: products of conception consistent with dates; evacuation complete on ultrasound at the end of the procedure.\nEstimated blood loss: 150 mL.\nComplications: none.\nDisposition: recovered without incident and discharged home the same day with a responsible adult. Bleeding and infection precautions reviewed. Follow-up in gynecology clinic in 2 weeks.\n\nAllergies: NKDA.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "telephone",
+          "start": "2024-10-03T17:30",
+          "reason": "Check-in after pregnancy loss",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Call",
+              "author": "PCP",
+              "date": "2024-10-03T17:50",
+              "body": "Called Leah after her message last night that the MFM ultrasound on 10/1 showed no heartbeat and she had a D&E yesterday. Physically sore, bleeding like a period, no fever. Emotionally 'in pieces' but safe; husband and her mom are with her. No SI. Has a psychiatry appointment moved up to next week. Taking the rest of the week off school; I'll do a note. Booked to see me 10/16. Told her to call any hour."
+            },
+            {
+              "type": "Letters",
+              "title": "Work Note",
+              "author": "PCP",
+              "date": "2024-10-03T17:55",
+              "body": "To whom it may concern: Leah Martel is under my care and is unable to work from 10/01/2024 through 10/07/2024 for medical reasons. She may return 10/08/2024. Please contact the office with any questions."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "office_visit",
+          "start": "2024-10-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after pregnancy loss",
+          "conditions": [
+            {
+              "label": "Missed abortion",
+              "icd10": "O02.1",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "weight_kg": 66.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-16T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-16T16:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-16T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-16T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-10-16T16:40",
+              "body": "Two weeks after D&E for missed abortion at 19 weeks; that pregnancy had a spina bifida/Chiari II diagnosis at 18 weeks. MFM and op notes reviewed.\n\nBleeding tapered off a few days ago. No fever, pelvic pain or discharge. Gyn post-op visit went fine per patient.\n\nMood: grieving, which she names as such. Sleeping poorly some nights, crying, still getting to school and looking after the baby. PHQ-9 9, item 9 zero. Saw psychiatry last week; staying on sertraline 50 for now, more frequent visits there. Husband and her mother around a lot. Abdominal ache unchanged.\n\nExam: vitals as charted. Tearful at times, appropriate. Abdomen soft, nontender.\n\nA/P\n1. Pregnancy loss, recovering physically. Missed abortion resolved.\n2. MDD with grief: PHQ-9 9. Continue sertraline, psychiatry following closely. Discussed warning signs and how to reach me.\n3. Flu and updated COVID vaccines today.\nVideo check in December."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "telehealth_visit",
+          "start": "2024-12-11T19:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mood follow-up",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-12-11T19:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2024-12-11T19:25",
+              "body": "Video visit from home after the baby's bedtime. Two months after the loss. Says the hard days are spaced further apart now. Back to full teaching load. Seeing psychiatry every 2-3 weeks; sertraline 50 unchanged. PHQ-9 6. No SI.\n\nMigraines a couple a month, sumatriptan works. RLS fine. Belly ache still comes and goes, she's logging it as we agreed and it isn't driving visits.\n\nExam limited to video: well appearing, speech normal, affect appropriate.\n\nA/P: MDD with grief, improving. Continue current plan. Annual physical in February."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

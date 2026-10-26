@@ -1,0 +1,2092 @@
+{
+  "unit": "unit-2564",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002564",
+      "given": "Tyler",
+      "family": "Wilder",
+      "birth_date": "1992-07-02",
+      "address_line": "41 Overlook Terrace",
+      "phone": "+1-802-555-0172",
+      "email": "tyler.wilder@example.test",
+      "marital_status": "single",
+      "summary": "Healthy 32-year-old sales representative who joined in September 2024, then had two high-speed car crashes as a restrained driver: January 2025 left hemothorax with shock, rib fractures, trauma DIC and a right femoral shaft fracture nailed in hospital; June 2026 a second left hemothorax with shock treated with a chest tube. Recovered both times; anemia followed to resolution.",
+      "events": [
+        {
+          "id": "2024-09-03a",
+          "kind": "telephone",
+          "start": "2024-09-03T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2024-09-03T10:12",
+              "author": "front desk",
+              "body": "Caller Tyler Wilder, DOB 7/2/1992, wants to set up primary care here. No current doctor nearby; last physical was a couple of years ago at a practice out of state. Membership details and fees reviewed, he signed up online while on the phone. Insurance UHC PPO through employer, card photo uploaded. New patient visit booked 9/10 at 8:00. Asked him to send a records release for his old office; form emailed."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:00",
+          "end": "2024-09-10T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              77
+            ],
+            "hr": 71,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 80.9,
+            "height_cm": 179.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.29
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 117
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 138
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:45",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T08:45",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social drinker, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Regional sales representative"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-09-10T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-09-10T08:50",
+              "author": "PCP",
+              "body": "32M here to get set up with a PCP. Feels well. No complaints today. Works as a regional sales rep, covers a big territory by car.\n\nPMH: none. PSH: none. Meds: none, occasional ibuprofen for a sore back after long drives. Allergies: NKDA.\nFH: dad with HTN since his mid-50s, well controlled. Mom hypothyroid. Nobody with bleeding problems or clots that he knows of.\nSH: lives alone in Florence. Never smoked. One or two beers a week, usually less. No drugs. Plays pickup basketball when he can.\nVaccines: thinks he had a tetanus shot around 2019; records requested.\n\nROS: negative in full.\n\nExam: Pleasant, fit-appearing. Vitals in flowsheet, BP fine. HEENT unremarkable. Neck supple, no thyromegaly. Heart RRR, no murmur. Lungs clear throughout. Abd soft, NT, no HSM. Ext warm, no edema. Skin clear. Neuro grossly intact. Mood bright.\n\nA/P: Healthy adult, new to practice.\n- Baseline CBC, CMP, lipid panel today.\n- One-time HIV and HCV screening, he agrees.\n- PHQ-2 0.\n- Flu and COVID shots when the fall supply lands, RN visit next month.\n- Old records to be scanned when they arrive.\nRTC 1 yr for physical, sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.2,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-09-12T16:40",
+              "author": "PCP",
+              "body": "Hi Tyler, everything from Tuesday came back normal. Blood count is solid (hemoglobin 15.0), kidney and liver tests normal, cholesterol fine, and the HIV and hepatitis C screens were negative. Nothing to change. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "outside_records",
+          "start": "2024-09-24T11:05",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-04-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records received",
+              "date": "2024-09-24T11:05",
+              "author": "MA",
+              "body": "Records from prior PCP office received by fax, 14 pages, scanned to media.\nAbstracted:\n- Physical 6/2022: normal exam, BP 118/74, BMI 24.9. CBC and BMP normal.\n- Tdap given 4/2019.\n- No chronic problems, no prescriptions on file, NKDA.\nVaccine history updated. Routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T17:20",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-17T17:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-17T17:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-17T17:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "date": "2024-10-17T17:40",
+              "author": "RN",
+              "body": "In after work for vaccines. Feels well, no fever. No prior vaccine reactions. Flu 0.5 mL IM L deltoid, COVID 0.3 mL IM R deltoid, lots and VIS documented. Waited 15 min, no problems, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-03a",
+          "kind": "hospital_admission",
+          "start": "2025-01-03T16:48",
+          "end": "2025-01-11T13:30",
+          "service": "Trauma Surgery",
+          "reason": "high-speed motor vehicle collision with chest injury",
+          "conditions": [
+            {
+              "label": "Traumatic hemothorax with hypovolemic shock",
+              "action": "diagnosed",
+              "onset": "2025-01-03",
+              "icd10": "S27.1XXA"
+            },
+            {
+              "label": "Multiple fractures of ribs, left side",
+              "action": "diagnosed",
+              "onset": "2025-01-03",
+              "icd10": "S22.42XA"
+            },
+            {
+              "label": "Disseminated intravascular coagulation",
+              "action": "diagnosed",
+              "onset": "2025-01-03",
+              "icd10": "D65"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "action": "diagnosed",
+              "onset": "2025-01-03",
+              "icd10": "D62"
+            },
+            {
+              "label": "Contusion of chest wall",
+              "action": "diagnosed",
+              "onset": "2025-01-03",
+              "icd10": "S20.20XA"
+            },
+            {
+              "label": "Blunt chest trauma",
+              "action": "diagnosed",
+              "onset": "2025-01-03",
+              "icd10": "S29.9XXA"
+            },
+            {
+              "label": "Fracture of shaft of right femur, closed",
+              "action": "diagnosed",
+              "onset": "2025-01-03",
+              "icd10": "S72.301A"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "rib and femur fracture pain"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "acute blood loss anemia"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-01-03T16:52",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 28,
+              "spo2": 92
+            },
+            {
+              "time": "2025-01-03T21:10",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 37.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-03T16:58",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.71
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-03T21:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 55
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-03T21:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-03T21:05",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 45
+                },
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 150
+                },
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ng/mL{FEU}",
+                  "text": "Elevated"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-05T05:30",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 138
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-05T05:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-05T05:30",
+              "results": [
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 236
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-11T06:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 296
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.09
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-01-03T17:02",
+              "text": "Portable AP chest, supine trauma film. Displaced fractures of several left lateral ribs. Large opacity layering over most of the left hemithorax, consistent with fluid. Right lung clear. Trachea midline. Heart size not well assessed on a supine film. No pneumothorax seen on this view.",
+              "conclusion": "Multiple left rib fractures with a large left-sided fluid collection, likely hemothorax."
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-01-07T07:15",
+              "text": "Portable AP chest after removal of the left chest tube. Left lung expanded. Small blunting of the left costophrenic angle. No pneumothorax. Left rib fractures again seen. Right lung clear.",
+              "conclusion": "No pneumothorax after tube removal; small left costophrenic blunting."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-01-03T16:48"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-01-03T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-01-11T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-01-13T09:20",
+              "author": "emergency medicine",
+              "body": "Regional hospital Emergency Department. Date of service 01/03/2025.\n\nCC: chest pain, short of breath after MVC.\n\nHPI: 32-year-old man brought by EMS from a highway crash at high speed. Driver. Reports severe left-sided chest pain and trouble getting a breath since the impact.\n\nPMH none. Meds none. NKDA. Never smoker, social alcohol. Works in sales.\nFH: father HTN, mother hypothyroid, no bleeding or clotting disorders.\n\nTriage: RR 28, BP 90/60, HR 120, SpO2 92% RA.\n\nExam: Anxious and sweaty. Left chest with diminished breath sounds and dull to percussion. Neck veins flat. Abdomen soft, nontender.\n\nLabs: Hgb 11 (prior 15 per PCP records), Hct 33 (prior 45), WBC 12.0, plt 250.\nImaging: portable CXR with multiple left rib fractures and large left hemithorax opacification consistent with fluid.\n\nCourse: two large-bore IVs, massive transfusion protocol activated, trauma surgery at bedside. Left 28 Fr chest tube placed in the ED with immediate return of blood. Red cells and plasma running. Admitted to the trauma ICU.\n\nImpression: traumatic left hemothorax with hypovolemic shock; multiple left rib fractures.\nAllergies: NKDA."
+            },
+            {
+              "type": "History and Physical",
+              "title": "Trauma ICU Admission Note",
+              "date": "2025-01-13T09:21",
+              "author": "critical care",
+              "body": "Regional hospital Surgical/Trauma ICU. Date of service 01/03/2025, 21:00.\n\nReason for admission: hemorrhagic shock after MVC, worsening coagulation labs.\n\nInterval: came up from the ED this evening after left chest tube placement and initial transfusion. Was the belted driver; airbags went off. Now restless and disoriented, pulling at lines.\n\nVitals: BP 90/60, HR 120, RR 22, T 37.2 C (99.0 F).\n\nExam (secondary survey): bruising across the chest and abdomen. Right thigh visibly deformed, distal pulses present. Persistent oozing at IV sites. Chest tube to suction, bloody output.\n\nLabs: Hgb 10.2, plt 55, PT 18 s, PTT 45 s, fibrinogen 150, D-dimer elevated.\n\nAssessment:\n1. Hemorrhagic (hypovolemic) shock from left traumatic hemothorax, chest tube in place.\n2. Trauma-associated DIC: low platelets and fibrinogen, prolonged PT/PTT, high D-dimer, oozing.\n3. Acute blood loss anemia.\n4. Chest and abdominal wall contusions from blunt trauma; left rib fractures.\n5. Right femur deformity, x-ray ordered.\n6. Agitation/confusion, likely hypoperfusion; reassess as volume restored.\n\nPlan: continue balanced transfusion with red cells, plasma, platelets and cryoprecipitate; repeat coags every 6 h; femur x-ray and traction splint, orthopedics consult; serial chest tube output; pain control.\n\nAddendum 23:40: femur film shows a displaced right femoral shaft fracture, closed. Splinted. Ortho to fix when coagulation allows.\nAllergies: NKDA."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report: Right Femur",
+              "date": "2025-01-13T09:22",
+              "author": "orthopedic surgery",
+              "body": "Regional hospital, Department of Orthopaedics. Date of surgery 01/05/2025.\n\nPreop/postop diagnosis: closed right femoral shaft fracture.\nProcedure: antegrade intramedullary nailing, right femur, with proximal and distal interlocking screws.\nAnesthesia: general.\nIndication: closed shaft fracture in a polytrauma patient, coagulopathy now corrected (plt 138, PT 13.6, fibrinogen 236 this morning).\n\nFindings: transverse midshaft fracture, reduced closed. Good canal fill. Fluoroscopy with restored length, alignment and rotation.\nEBL 300 mL. No complications. Staples to wounds.\n\nPostop: weight bearing as tolerated with walker. Staples out in about 2 weeks at clinic.\nAllergies: NKDA."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-01-13T09:23",
+              "author": "trauma surgery",
+              "body": "Regional hospital Trauma Surgery. Admitted 01/03/2025, discharged 01/11/2025.\n\nDiagnoses:\n- Left traumatic hemothorax with hypovolemic shock\n- Multiple left rib fractures\n- Disseminated intravascular coagulation, trauma-related, resolved\n- Acute posthemorrhagic anemia\n- Chest wall contusion / blunt chest trauma\n- Closed right femoral shaft fracture, s/p IM nail 01/05\n\nCourse: Restrained driver in a high-speed crash. Arrived in shock with a large left hemothorax; left chest tube in the ED and massive transfusion. In the ICU developed DIC with oozing and low platelets and fibrinogen, corrected with red cells, plasma, platelets and cryoprecipitate by hospital day 2. Confusion cleared once perfusion improved. Right femur nailed 01/05. Chest tube output tapered and it was pulled 01/07; film afterward showed an expanded lung, no pneumothorax and slight left costophrenic blunting. Moved to the floor 01/06. Working with PT, walker.\n\nDischarge labs: Hgb 9.1, plt 296, PT normal.\n\nDischarge medications:\n- Oxycodone/acetaminophen 5/325, 1 tab every 6 h as needed for severe pain, #28\n- Ferrous sulfate 325 mg daily\n\nAllergies: NKDA.\n\nFollow-up: Orthopaedics clinic 2 weeks (staples). Trauma clinic 3-4 weeks with chest x-ray. PCP within 1 week, CBC.\nActivity: WBAT right leg with walker. No driving while on opioids."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "telephone",
+          "start": "2025-01-13T14:05",
+          "reason": "post-discharge outreach",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-01-13T14:05",
+              "author": "RN",
+              "body": "Called pt 2 days after discharge from the regional hospital (MVC, chest tube, femur nail). Discharge summary in chart. He is at home and managing. Pain 5/10, uses the oxycodone tab 2-3x/day. Breathing ok, no fever. Leg incisions dry. Walking to the bathroom and kitchen with walker. Taking iron, a little constipated, advised fluids and OTC stool softener. Has both meds in hand. Visit set for Thu 1/16, has a ride."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "office_visit",
+          "start": "2025-01-16T10:30",
+          "end": "2025-01-16T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Disseminated intravascular coagulation",
+              "action": "resolved",
+              "note": "corrected in hospital, coagulation normal at discharge",
+              "icd10": "D65"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              74
+            ],
+            "hr": 68,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 81.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-16T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 235
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.57
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-01-16T11:00",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 38
+                },
+                {
+                  "test": "Iron",
+                  "value": 117
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 332
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 35
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-16T11:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-01-16T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-01-16T11:15",
+              "author": "PCP",
+              "body": "Post-hospital visit. Reviewed regional hospital records in full: high-speed MVC 1/3, L hemothorax with hemorrhagic shock, L rib fxs, chest tube, massive transfusion, trauma DIC (resolved), R femoral shaft fx s/p IM nail 1/5, d/c 1/11 with Hgb 9.1.\n\nS: Sore, especially the left ribs with deep breaths and the right thigh at night. Using oxycodone/APAP about twice a day, down from three. Breathing easier every day. No fever, cough or bloody sputum. No bleeding or new bruising. Bowels moving with senna. Sleeping on the couch.\n\nMeds: oxycodone/APAP 5/325 prn, ferrous sulfate 325 daily. NKDA.\n\nO: Vitals in flowsheet. Uncomfortable moving but in no distress. Left lateral chest tube site healing, dressing clean, no drainage. Left chest tender over lateral ribs; breath sounds slightly decreased at the left base, no crackles. Heart RRR. R thigh incisions with staples, clean, no erythema, mild swelling. Calf soft, nontender both sides. Ambulating with walker.\n\nA/P:\n1. Left traumatic hemothorax, s/p chest tube: improving clinically. Trauma clinic film end of month.\n2. Acute blood loss anemia: CBC and ferritin today. Continue iron.\n3. R femur fx s/p nail: ortho next week for staples, PT referral to come from them.\n4. Pain: taper oxycodone over the next 1-2 weeks; tylenol between doses, max 3 g/day total incl. what's in the combo.\n5. DIC: resolved in hospital, no further testing planned.\nNo driving for now. Out of work, note given. RTC 4 wks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "portal_message",
+          "start": "2025-01-17T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count from yesterday",
+              "date": "2025-01-17T12:20",
+              "author": "PCP",
+              "body": "Tyler - hemoglobin is 10.6, up from 9.1 when you left the hospital. Iron stores (ferritin 38) are on the low side, which is expected after that much blood loss, so keep taking the iron once a day. Kidney labs normal. We'll recheck at your next visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "specialist_visit",
+          "start": "2025-01-22T09:40",
+          "service": "Orthopedic Surgery",
+          "reason": "postoperative check, right femur",
+          "orders": [
+            {
+              "id": "pt-femur",
+              "action": "placed",
+              "order": "Physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "right femur fracture after IM nail"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopaedics Postoperative Letter",
+              "date": "2025-01-24T15:00",
+              "author": "orthopedic surgery",
+              "body": "Outside orthopaedic group. Visit 01/22/2025.\n\nRe: Tyler Wilder, DOB 07/02/1992\n\nSeen 17 days after antegrade IM nailing of a closed right femoral shaft fracture. Pain improving. Walking with a walker.\n\nExam: incisions healed, staples removed. Thigh soft. Knee range 0-95. Neurovascularly intact distally.\n\nX-rays right femur, 2 views: hardware intact, fracture alignment maintained, early callus.\n\nPlan: WBAT, wean to a cane as able. Outpatient PT for gait, quad strength and knee motion. Return 3 months with x-rays.\n\nMedications: oxycodone/acetaminophen prn, ferrous sulfate. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-29a",
+          "kind": "specialist_visit",
+          "start": "2025-01-29T13:15",
+          "service": "Trauma Surgery",
+          "reason": "follow-up after hemothorax",
+          "conditions": [
+            {
+              "label": "Traumatic hemothorax with hypovolemic shock",
+              "action": "resolved",
+              "icd10": "S27.1XXA"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-01-29T12:50",
+              "text": "PA and lateral chest. Lungs are clear and well expanded. No pleural effusion or pneumothorax. Healing fractures of several left lateral ribs with callus. Heart size normal. Mediastinum normal.",
+              "conclusion": "No residual effusion. Healing left rib fractures."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Trauma Clinic Letter",
+              "date": "2025-01-31T10:30",
+              "author": "trauma surgery",
+              "body": "Regional hospital Trauma Surgery Clinic. Visit 01/29/2025.\n\nDear colleague,\n\nYour patient returned for follow-up after his January crash with left hemothorax and rib fractures. He is breathing comfortably at rest and on stairs, using pain medicine less. No fever or cough.\n\nExam: lungs clear both sides. Chest tube site healed. Rib tenderness mild.\n\nCXR today: clear lungs, no effusion, healing left rib fractures.\n\nThe hemothorax has resolved. No further trauma clinic follow-up needed; he can return as needed. Incentive spirometer for another couple of weeks.\n\nMedications: oxycodone/acetaminophen prn, ferrous sulfate 325 mg daily. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "portal_message",
+          "start": "2025-02-03T08:15",
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "tapered off"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1-2 tablets by mouth every 8 hours as needed for pain, max 3,000 mg per day",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "fracture pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pain med refill",
+              "date": "2025-02-03T08:15",
+              "author": "patient",
+              "body": "Hi, I'm down to my last 3 of the oxycodone pills from the hospital. Could you send a refill? The leg is still achy at night especially after PT."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pain med refill",
+              "date": "2025-02-03T12:48",
+              "author": "PCP",
+              "body": "Hi Tyler, glad you're needing them less. Rather than refill, let's finish those last few and switch to plain acetaminophen (Tylenol) 500 mg, 1-2 tabs up to every 8 hours, no more than 3,000 mg a day. I sent a bottle to your pharmacy so you have it. Ice after therapy helps too. If the pain is clearly getting worse instead of better, call ortho or me."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, anemia and recovery",
+          "vitals": {
+            "bp": [
+              124,
+              82
+            ],
+            "hr": 79,
+            "spo2": 96,
+            "weight_kg": 81.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-11T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.37
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-11T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-02-11T16:35",
+              "author": "PCP",
+              "body": "F/u after Jan MVC.\nOff oxycodone since last week, acetaminophen once or twice a day. PT twice weekly started last week. Using a cane outside, nothing at home. Ribs only hurt when he laughs or sneezes. Breathing normal. Taking iron daily, mild constipation managed. Sleep improving. Mood good, bored at home. Wants to get back to work.\nTrauma clinic signed off 1/29, film clear.\n\nExam: vitals ok, weight in flowsheet. Lungs clear bilaterally. Heart RRR. R thigh incisions well healed, no swelling. Gait slightly antalgic with cane.\n\nA/P\n- Hemothorax: resolved per trauma clinic.\n- Blood loss anemia: Hgb today, continue ferrous sulfate until repeat in ~2 mo.\n- R femur fx: PT per ortho, ortho visit April.\n- Work: remains out; disability paperwork when it comes.\nRTC prn, labs April."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "outside_records",
+          "start": "2025-02-21T09:10",
+          "procedures": [
+            {
+              "procedure": "Physical therapy evaluation, moderate complexity",
+              "performed": "2025-02-19T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-femur",
+              "action": "done",
+              "date": "2025-02-21T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical Therapy Initial Evaluation",
+              "date": "2025-02-21T09:10",
+              "author": "physical therapy",
+              "body": "Outpatient physical therapy clinic. Evaluation 02/19/2025.\n\nDx: s/p IM nail right femoral shaft fracture 01/05/2025.\nPatient goal: return to work driving a sales territory, back to basketball.\n\nObjective: R knee AROM 0-110. Quad strength 4-/5 R, 5/5 L. Hip abductors 4/5 R. Gait with single-point cane, decreased stance time R. Timed up and go 11 s.\n\nAssessment: expected deficits after femur fixation, good rehab potential.\nPlan: 2x/week for 8 weeks, progressive strengthening, gait training, wean cane. HEP issued.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-06a",
+          "kind": "telephone",
+          "start": "2025-03-06T11:30",
+          "reason": "disability paperwork",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Short-term disability form",
+              "date": "2025-03-06T11:30",
+              "author": "front desk",
+              "body": "Pt dropped off employer short-term disability claim form (attending physician statement). Placed in PCP box. Pt asks for it to be faxed directly to the carrier, number on the form. Told him 5-7 business days."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Form completed",
+              "date": "2025-03-10T17:05",
+              "author": "PCP",
+              "body": "Disability statement completed: injuries from 1/3/25 MVC, hospitalized 1/3-1/11, R femur fx with IM nail, in PT. Unable to do job duties (prolonged driving, carrying sample cases) at present. Est return mid to late April pending ortho visit. Faxed, copy scanned."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "specialist_visit",
+          "start": "2025-04-16T10:20",
+          "service": "Orthopedic Surgery",
+          "reason": "3-month follow-up, right femur",
+          "conditions": [
+            {
+              "label": "Fracture of shaft of right femur, closed",
+              "action": "resolved",
+              "note": "united after IM nail",
+              "icd10": "S72.301A"
+            },
+            {
+              "label": "Multiple fractures of ribs, left side",
+              "action": "resolved",
+              "icd10": "S22.42XA"
+            },
+            {
+              "label": "Contusion of chest wall",
+              "action": "resolved",
+              "icd10": "S20.20XA"
+            },
+            {
+              "label": "Blunt chest trauma",
+              "action": "resolved",
+              "icd10": "S29.9XXA"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopaedics Follow-up Letter",
+              "date": "2025-04-18T14:20",
+              "author": "orthopedic surgery",
+              "body": "Outside orthopaedic group. Visit 04/16/2025.\n\nRe: Tyler Wilder\n\nNow about 3.5 months after IM nailing of the right femur. Walking without a cane, no pain at rest, mild ache after long days. Finishing PT.\n\nExam: normal gait. Knee 0-130. Quad strength nearly symmetric. No tenderness at the fracture site.\n\nX-rays right femur, 2 views: bridging callus across the fracture on both views, hardware intact.\n\nImpression: united right femoral shaft fracture.\n\nPlan: full activity as tolerated; may return to work including driving, as he is off opioids. Finish remaining PT visits. Hardware stays unless it bothers him. Follow up as needed.\n\nMedications: acetaminophen prn, ferrous sulfate. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "lab_only",
+          "start": "2025-04-22T07:40",
+          "conditions": [
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "action": "resolved",
+              "icd10": "D62"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "anemia resolved, iron stores replete"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-22T07:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 213
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-04-22T07:40",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 64
+                },
+                {
+                  "test": "Iron",
+                  "value": 99
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 28
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 348
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs back to normal",
+              "date": "2025-04-22T15:10",
+              "author": "PCP",
+              "body": "Good news: hemoglobin is 14.7, essentially back to where you were last fall, and iron stores (ferritin 64) are refilled. You can stop the iron tablets. No further blood checks needed until your physical."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "portal_message",
+          "start": "2025-04-24T09:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Return to work",
+              "date": "2025-04-24T09:02",
+              "author": "patient",
+              "body": "Ortho cleared me last week. HR needs a note from my primary doctor saying I can come back full duty on 5/5. Can you do that? Thanks."
+            },
+            {
+              "type": "Letters",
+              "title": "Return to work letter",
+              "date": "2025-04-24T13:30",
+              "author": "PCP",
+              "body": "To whom it may concern:\n\nTyler Wilder (DOB 07/02/1992) is under my care. He may return to work at full duty, including driving, effective May 5, 2025, with no restrictions.\n\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "office_visit",
+          "start": "2025-07-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "summer check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:15",
+          "end": "2025-09-23T08:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              135,
+              81
+            ],
+            "hr": 76,
+            "rr": 14,
+            "temp_c": 37.2,
+            "spo2": 98,
+            "weight_kg": 81.6,
+            "height_cm": 179.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-23T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 219
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.37
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-23T08:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T08:52"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-23T08:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-23T09:05",
+              "author": "PCP",
+              "body": "33M annual exam.\nInterval: back at work full time since May, driving his territory again. Leg is fine, occasional ache after a long day in the car; back to light basketball. No breathing complaints. No meds now except an occasional acetaminophen.\n\nPMH: 1/2025 MVC with L hemothorax/shock, L rib fxs, trauma DIC (resolved), R femoral shaft fx s/p IM nail. All healed.\nMeds: none regular. NKDA.\nSH: unchanged. Never smoker, 1-2 drinks a week.\nFH: unchanged.\n\nROS: negative.\n\nExam: well. Vitals in flowsheet. HEENT nl. Neck supple. Lungs clear, good air entry both bases. Heart RRR, no murmur. Abd soft NT. R thigh scars well healed. Full ROM hips and knees, normal gait. Skin no lesions. Neuro intact.\n\nA/P\n- Health maintenance: CBC to confirm recovery. Lipids done last year, normal; not due. HIV/HCV done.\n- Flu shot today. COVID booster at pharmacy, he prefers.\n- PHQ-2 negative.\n- Old femur hardware: no issues.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T10:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2025-09-25T10:45",
+              "author": "PCP",
+              "body": "Your blood count from the physical is normal. Nothing else needed this year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical labs",
+              "date": "2025-09-25T18:02",
+              "author": "patient",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "pharmacy",
+          "start": "2025-10-21T12:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-21T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine administration",
+              "date": "2025-10-22T08:00",
+              "author": "pharmacy",
+              "body": "Community pharmacy immunization report. 10/21/2025: COVID-19 mRNA vaccine, 2025-2026 formula, 0.3 mL IM L deltoid. Screening negative. No adverse reaction observed. Reported to state registry."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "telephone",
+          "start": "2026-01-27T09:50",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2026-01-27T09:50",
+              "author": "front desk",
+              "body": "Auto insurer's claims office called requesting PCP notes related to the 1/2025 accident. Signed patient authorization received by fax this morning, limited to 1/2025-5/2025 visits. Released 1/16/25, 2/11/25 notes and the 4/24/25 work letter. Logged in release of information."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "hospital_admission",
+          "start": "2026-06-22T19:34",
+          "end": "2026-06-26T11:45",
+          "service": "Trauma Surgery",
+          "reason": "high-speed motor vehicle collision with left chest injury",
+          "conditions": [
+            {
+              "label": "Traumatic hemothorax with hypovolemic shock",
+              "action": "diagnosed",
+              "onset": "2026-06-22",
+              "icd10": "S27.1XXA"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "action": "diagnosed",
+              "onset": "2026-06-22",
+              "icd10": "D62"
+            },
+            {
+              "label": "Contusion of chest wall",
+              "action": "diagnosed",
+              "onset": "2026-06-22",
+              "icd10": "S20.20XA"
+            },
+            {
+              "label": "Blunt chest trauma",
+              "action": "diagnosed",
+              "onset": "2026-06-22",
+              "icd10": "S29.9XXA"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "chest wall pain"
+            },
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 8 hours as needed with food",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "chest wall pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-22T19:38",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 28,
+              "spo2": 89
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-22T19:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.26
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-06-22T19:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-22T19:45",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 30
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-26T06:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 217
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-06-22T19:50",
+              "text": "Portable AP chest. Large left pleural opacity consistent with fluid, with the trachea and mediastinum shifted to the right. No new rib fracture identified. Healed fractures of several left lateral ribs. Right lung clear. No pneumothorax on this view.",
+              "conclusion": "Large left hemothorax with rightward mediastinal shift. Old healed left rib fractures.",
+              "issued": "2026-06-22T20:04"
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-06-25T15:20",
+              "text": "Portable AP chest after left chest tube removal. Left lung expanded. Trace blunting of the left costophrenic angle. No pneumothorax. Mediastinum midline. Old healed left rib fractures.",
+              "conclusion": "No pneumothorax after tube removal.",
+              "issued": "2026-06-25T16:02"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-22T19:34"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-06-22T23:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-06-26T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-06-29T08:40",
+              "author": "emergency medicine",
+              "body": "Regional hospital Emergency Department. Date of service 06/22/2026.\n\nCC: MVC, high speed.\n\nHPI: 33M arriving by EMS after a high-speed crash. Belted driver, airbags deployed. Left chest pain and short of breath. Known to us from January 2025: left hemothorax and ICU stay with coagulopathy after a prior crash.\n\nPMH: as above; R femur IM nail 2025. Meds: none. NKDA.\nSH: never smoker, social alcohol. FH noncontributory, no bleeding disorders.\n\nArrival vitals: BP 90/60, HR 120, RR 28, SpO2 89% RA.\n\nExam: awake and oriented, anxious, diaphoretic. Left chest: bruising over the lateral wall, diminished breath sounds, dull to percussion. Trachea deviated to the right. Abdomen soft and not distended, no seat belt sign. Pelvis stable to compression. Extremities without deformity; no evidence of long bone fracture.\n\nLabs: Hgb 9.8, Hct 29, plt 250, PT 12 s, aPTT 30 s.\nFAST: no free fluid in the abdomen.\nCXR: large left hemothorax with rightward shift.\n\nProcedure: emergent left tube thoracostomy, 28 Fr, 5th intercostal space anterior axillary line, with immediate bloody return and improvement in breathing. 2 units PRBC given with improved pressure and heart rate.\n\nImpression: left traumatic hemothorax with hypovolemic shock and tension physiology; chest wall contusion; acute blood loss anemia. Coags normal.\nDisposition: admitted to Trauma Surgery.\nAllergies: NKDA."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-06-29T08:41",
+              "author": "trauma surgery",
+              "body": "Regional hospital Trauma Surgery. Admitted 06/22/2026, discharged 06/26/2026.\n\nDiagnoses: left traumatic hemothorax with hypovolemic shock; left chest wall contusion; acute posthemorrhagic anemia.\n\nCourse: Second high-speed MVC in 18 months. Left chest tube in the ED with prompt hemodynamic response after 2 units of red cells; no further transfusion. Coagulation normal throughout. Tube output decreased steadily and the tube came out 06/25; film after showed an expanded lung, no pneumothorax and trace left costophrenic blunting. Pain controlled with oral agents. Ambulating independently.\n\nDischarge labs: Hgb 10.3.\n\nDischarge medications:\n- Acetaminophen 500 mg, 2 tabs every 8 h as needed\n- Ibuprofen 600 mg every 8 h as needed with food\n\nAllergies: NKDA.\n\nFollow-up: PCP within 1 week with CBC. Trauma clinic 2 weeks with chest x-ray. Incentive spirometer 10x/hour while awake. No lifting over 10 lb for 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "telephone",
+          "start": "2026-06-29T13:40",
+          "reason": "post-discharge outreach",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-06-29T13:40",
+              "author": "RN",
+              "body": "TCM call. Pt home since Fri after 2nd MVC, L chest tube 6/22-6/25, 2u PRBC. Discharge summary received today. Pain 3/10, using tylenol and ibuprofen alternating. Breathing ok, doing his spirometer. Chest tube site with a small dressing, no drainage, no fever. Meds reviewed, no confusion. PCP visit Wed 7/1 10:00 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "office_visit",
+          "start": "2026-07-01T10:00",
+          "end": "2026-07-01T10:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              136,
+              88
+            ],
+            "hr": 74,
+            "rr": 17,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 80.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-01T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 220
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-07-01T10:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 71
+                },
+                {
+                  "test": "Iron",
+                  "value": 111
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 312
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 36
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-07-01T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2026-07-01T10:45",
+              "author": "PCP",
+              "body": "Post-hospital visit, 9 days after a second high-speed crash. Records reviewed: L hemothorax w/ shock and tracheal deviation, ED chest tube, 2u PRBC, normal coags this time, tube out 6/25, d/c 6/26 Hgb 10.3.\n\nS: L chest sore with coughing and rolling over, better each day. Breathing comfortable walking around. No fever, no hemoptysis. Taking acetaminophen 2-3x/day and ibuprofen once a day. Using the spirometer. Leg fine. Out of work this week.\n\nMeds: acetaminophen prn, ibuprofen prn. NKDA.\n\nO: Vitals in flowsheet, SpO2 normal RA. Alert, comfortable. L lateral chest with fading bruise, chest tube site closed and clean. Breath sounds present throughout, minimally decreased at the L base. Heart RRR. Abd soft NT. No calf tenderness.\n\nA/P:\n1. L traumatic hemothorax s/p chest tube: doing well. Trauma clinic 7/8 with CXR.\n2. Blood loss anemia: CBC and ferritin today. Holding off on iron unless ferritin is low.\n3. Chest wall contusion: current analgesics; ibuprofen with food, stop if stomach upset.\nWork note through 7/10. RTC prn; CBC again in about 6 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-02a",
+          "kind": "portal_message",
+          "start": "2026-07-02T11:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your visit",
+              "date": "2026-07-02T11:15",
+              "author": "PCP",
+              "body": "Tyler, hemoglobin is 11.4, up from 10.3 at discharge, and your iron level (ferritin 71) is fine this time, so no iron pills needed. Your body will rebuild the rest on its own. Let's recheck the blood count in mid-August; I put in the order, any weekday morning works."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "specialist_visit",
+          "start": "2026-07-08T14:00",
+          "service": "Trauma Surgery",
+          "reason": "follow-up after hemothorax",
+          "conditions": [
+            {
+              "label": "Traumatic hemothorax with hypovolemic shock",
+              "action": "resolved",
+              "icd10": "S27.1XXA"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-07-08T13:35",
+              "text": "PA and lateral chest. Lungs clear and well expanded. No pleural effusion or pneumothorax. Old healed left rib fractures. Normal heart size and mediastinal contours.",
+              "conclusion": "Clear chest. No residual effusion."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Trauma Clinic Letter",
+              "date": "2026-07-10T09:45",
+              "author": "trauma surgery",
+              "body": "Regional hospital Trauma Surgery Clinic. Visit 07/08/2026.\n\nDear colleague,\n\nMr. Wilder came back two weeks after discharge for his left hemothorax. He feels well, short of breath only with hard exertion, chest wall soreness easing.\n\nExam: lungs clear bilaterally. Tube site healed. Mild tenderness over the left lateral chest wall where the bruise was.\n\nCXR today: clear, no effusion.\n\nHemothorax resolved. Chest wall contusion settling; expect a few more weeks of soreness. May return to work and normal activity, avoid contact sports another 2 weeks. No routine trauma follow-up needed.\n\nMedications: acetaminophen and ibuprofen as needed. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T07:55",
+          "conditions": [
+            {
+              "label": "Contusion of chest wall",
+              "action": "resolved",
+              "icd10": "S20.20XA"
+            },
+            {
+              "label": "Blunt chest trauma",
+              "action": "resolved",
+              "icd10": "S29.9XXA"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back at work",
+              "date": "2026-07-21T07:55",
+              "author": "patient",
+              "body": "Hi - went back to work last week, all good. Ribs barely bother me anymore, I haven't needed the ibuprofen in days. HR wants my file updated with a clearance note for full duty, same as last time. Could you send one?"
+            },
+            {
+              "type": "Letters",
+              "title": "Return to work letter",
+              "date": "2026-07-21T12:40",
+              "author": "PCP",
+              "body": "To whom it may concern:\n\nTyler Wilder (DOB 07/02/1992) has been under my care and was cleared by his surgical team on July 8, 2026. He may work at full duty without restrictions.\n\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "lab_only",
+          "start": "2026-08-18T07:35",
+          "conditions": [
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "action": "resolved",
+              "icd10": "D62"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-18T07:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.57
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T09:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2026-08-19T09:20",
+              "author": "PCP",
+              "body": "Hemoglobin is 13.9, back in the normal range. Nothing more to do. See you next month for your physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "telephone",
+          "start": "2026-08-24T15:10",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Physical confirmed",
+              "date": "2026-08-24T15:10",
+              "author": "front desk",
+              "body": "Pt called to move his physical from early Sept because of a sales conference. Rebooked Tue 9/22 at 8:30. No labs needed beforehand per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:30",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute posthemorrhagic anemia|D62": {
+        "code": "D62",
+        "display": "Acute posthemorrhagic anemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Blunt chest trauma|S29.9XXA": {
+        "code": "S29.9XXA",
+        "display": "Unspecified injury of thorax, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Contusion of chest wall|S20.20XA": {
+        "code": "S20.20XA",
+        "display": "Contusion of thorax, unspecified, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Disseminated intravascular coagulation|D65": {
+        "code": "D65",
+        "display": "Disseminated intravascular coagulation [defibrination syndrome]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Fracture of shaft of right femur, closed|S72.301A": {
+        "code": "S72.301A",
+        "display": "Unspecified fracture of shaft of right femur, initial encounter for closed fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Multiple fractures of ribs, left side|S22.42XA": {
+        "code": "S22.42XA",
+        "display": "Multiple fractures of ribs, left side, initial encounter for closed fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Traumatic hemothorax with hypovolemic shock|S27.1XXA": {
+        "code": "S27.1XXA",
+        "display": "Traumatic hemothorax, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "3173-2",
+        "display": "aPTT in Blood by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "D-dimer": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "unit": "ng/mL{FEU}",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrinogen": {
+        "code": "3255-7",
+        "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

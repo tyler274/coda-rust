@@ -1,0 +1,1555 @@
+{
+  "unit": "unit-2653",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002653/2020-08-20a: allergen \"Dust mites\" not in catalog (text only)",
+    "MRN00002653/2020-08-20a: allergen \"Seasonal pollen\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002653",
+      "given": "Chad",
+      "family": "Bradley",
+      "birth_date": "1988-12-29",
+      "address_line": "88 Prospect Street",
+      "phone": "+1-347-555-0163",
+      "email": "chad.bradley@example.test",
+      "marital_status": "single",
+      "summary": "Thirty-something high school shop teacher who also stocks part time at a medical-supply warehouse, with childhood-onset mild persistent asthma managed on albuterol alone. Worsening control in 2023 brings a pulmonology visit after a PFT showing reversible obstruction; influenza A in March 2025 and an employer-mandated occupational health session that fall. Otherwise routine primary care.",
+      "events": [
+        {
+          "id": "2020-08-14a",
+          "kind": "telephone",
+          "start": "2020-08-14T10:20",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2020-08-14T10:20",
+              "author": "front desk",
+              "body": "Caller is a 31 y/o male looking to establish care. Moved his care from his previous primary care office (last seen there a while ago, he isn't sure exactly when). Membership agreement and welcome packet emailed. Records release signed electronically and faxed to prior office today. Insurance: BCBS PPO, card photo uploaded. Booked new patient physical 8/20 at 8:40. Asked him to bring his inhaler and any vaccine records he has."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-20a",
+          "kind": "establish_care",
+          "start": "2020-08-20T08:40",
+          "end": "2020-08-20T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, new patient physical",
+          "conditions": [
+            {
+              "label": "Mild persistent asthma",
+              "action": "history",
+              "onset": "1995-06-01",
+              "note": "Childhood onset; albuterol as needed"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4-6 hours as needed for wheezing or shortness of breath",
+              "dose": {
+                "value": 180,
+                "unit": "mcg"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Asthma"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Dust mites",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Seasonal pollen",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              70
+            ],
+            "hr": 79,
+            "rr": 17,
+            "temp_c": 36.2,
+            "spo2": 97,
+            "weight_kg": 77.5,
+            "height_cm": 180.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-08-20T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.79
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-08-20T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-08-20T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 54
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-20T09:40",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school shop teacher; part-time warehouse stocker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2020-08-20T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-08-20T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-08-20T08:40",
+              "author": "PCP",
+              "body": "NEW PATIENT / ESTABLISH CARE\n\n31M here to set up with us. Was at another primary care office for years, drifted away from it. No acute concerns today.\n\nAsthma since he was a kid, probably around age 6 or 7. Only ever used a rescue inhaler. Uses albuterol a few times a week, mostly when he exercises or when it's cold out. No ED visits or steroid bursts he can recall as an adult. No nighttime symptoms currently.\n\nPMH: asthma as above. No surgeries.\nMeds: albuterol HFA 90 mcg, 2 puffs q4-6h prn.\nAllergies: no drug allergies. Environmental: dust mites, seasonal pollen.\nFH: mother has asthma. Father has hay fever and high blood pressure.\nSH: teaches shop at the high school. Also works part time stocking at a medical-supply warehouse on weekends and some evenings. Never smoked. Drinks socially, 1-2 a week. Single, lives in Northampton.\n\nROS: negative except as above.\n\nExam: Well appearing, comfortable. HEENT unremarkable, TMs clear, oropharynx clear. Neck supple, no adenopathy. Lungs clear bilaterally, good air movement, no wheeze. Heart RRR, no murmur. Abdomen soft, nontender. Extremities without edema. Skin no rash.\n\nPHQ-2: 0.\n\nA/P\n1. Mild persistent asthma, childhood onset. Using albuterol a few times a week with exertion/cold. Lungs clear today. Continue albuterol as needed. Reviewed technique with him, he's fine.\n2. Health maintenance: CBC, CMP, lipids. One-time HIV and hep C screening, he agreed. Requested prior records for vaccine history. Flu shot this fall.\n\nRTC 1 year or sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 76.4,
+            "height_cm": 180.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-08-24a",
+          "kind": "portal_message",
+          "start": "2020-08-24T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2020-08-24T16:05",
+              "author": "PCP",
+              "body": "Hi Chad, your blood work from Thursday came back fine. Blood counts, kidney and liver tests, and cholesterol are all fine for now. HIV and hepatitis C screens are negative. Nothing more to do on these. Good to meet you last week."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-27a",
+          "kind": "outside_records",
+          "start": "2020-08-27T11:30",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2014-05-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "date": "2020-08-27T11:30",
+              "author": "MA",
+              "body": "Received by fax, 14 pages, from patient's prior primary care office. Scanned to media.\n\nAbstracted:\n- Problem list: asthma.\n- Medications: albuterol inhaler prn, refilled periodically.\n- Immunizations: Tdap 05/06/2014. No other adult vaccines listed.\n- Last office visit on file 2018, physical, unremarkable.\n\nRouted to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-08a",
+          "kind": "nurse_visit",
+          "start": "2020-10-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-08T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-08T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2020-10-08T15:40",
+              "author": "RN",
+              "body": "In after school for flu vaccine. Screening questions negative, no egg or vaccine reactions. Quadrivalent flu 0.5 mL IM left deltoid. VIS given. Tolerated well, left after brief wait."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-06a",
+          "kind": "portal_message",
+          "start": "2021-04-06T19:12",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-12T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-02T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Covid vaccine card",
+              "date": "2021-04-06T19:12",
+              "author": "patient",
+              "body": "Got both Pfizer shots through the clinic they ran for school staff. 3/12 and 4/2. Picture of the card attached. Second one wiped me out for about a day but I'm fine now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Covid vaccine card",
+              "date": "2021-04-07T09:03",
+              "author": "MA",
+              "body": "Thanks Chad, both doses are entered in your record now."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-12a",
+          "kind": "annual_physical",
+          "start": "2021-08-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              72
+            ],
+            "hr": 74,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 75.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-08-12T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-08-12T09:00",
+              "author": "PCP",
+              "body": "Annual\n\nFeeling good. Summer off from school, picked up extra warehouse shifts. Asthma about the same as last year, albuterol a few times a week with workouts or cold mornings. Needs a refill. No ED/urgent care visits this year.\n\nMeds: albuterol prn. Allergies: NKDA; dust mites, pollen.\nSH unchanged, never smoker.\n\nExam: NAD. HEENT normal. Neck supple. Lungs clear, no wheeze. Heart regular, no murmur. Abd benign. No edema. Skin clear.\nPHQ-2 0.\n\nA/P\n- Asthma: stable on rescue inhaler alone. Refill sent.\n- Covid vaccine series done in spring.\n- Labs last year fine, none needed today.\n- Flu shot in the fall.\n\nSee him next year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-14a",
+          "kind": "nurse_visit",
+          "start": "2021-10-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-14T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-14T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu Vaccine",
+              "date": "2021-10-14T15:30",
+              "author": "MA",
+              "body": "Flu vaccine given, 0.5 mL IM R deltoid, lot recorded. Denies fever or illness today. Pt plans to get Covid booster at pharmacy next month."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-02a",
+          "kind": "portal_message",
+          "start": "2021-12-02T20:41",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-19T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster",
+              "date": "2021-12-02T20:41",
+              "author": "patient",
+              "body": "FYI got the booster at the pharmacy on 11/19. Pfizer again."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booster",
+              "date": "2021-12-03T08:50",
+              "author": "MA",
+              "body": "Added to your immunization record, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-10a",
+          "kind": "pharmacy",
+          "start": "2022-03-10T11:14",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Request",
+              "date": "2022-03-10T11:14",
+              "author": "MA",
+              "body": "Electronic refill request from pharmacy for albuterol HFA 90 mcg inhaler, no refills remaining. Last physical 8/2021. Pended to PCP."
+            },
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Approved",
+              "date": "2022-03-10T13:02",
+              "author": "PCP",
+              "body": "Approved albuterol HFA, 1 inhaler, 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "annual_physical",
+          "start": "2022-09-08T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              111,
+              76
+            ],
+            "hr": 78,
+            "rr": 15,
+            "temp_c": 36.3,
+            "spo2": 96,
+            "weight_kg": 76.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-08T07:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pft-2022",
+              "action": "placed",
+              "order": "Pulmonary function test, spirometry pre and post bronchodilator",
+              "category": "procedure",
+              "to": "Pulmonology",
+              "reason": "Asthma evaluation"
+            },
+            {
+              "id": "pulm-referral-2022",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "Asthma evaluation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-08T07:50",
+              "author": "PCP",
+              "body": "CPE, early before school.\n\nNo new issues. Asthma: still using albuterol a few times a week, with lifting/workouts and in cold air, same pattern as before. He's never had formal breathing tests as an adult and has only ever used a rescue inhaler. Would like to see someone about it but it isn't urgent for him.\n\nMeds: albuterol prn.\nAllergies: NKDA. Env: dust mites, seasonal pollen.\nSH: shop teacher, warehouse part time. Never smoker, 1-2 drinks/wk.\n\nExam: Well. HEENT normal. Neck no nodes. Lungs clear, no wheeze, normal expiration. Heart rrr. Abd soft. Ext no edema. Skin normal.\nPHQ-2 = 0.\n\nAssessment/Plan\n1. Asthma, mild persistent. Ordered spirometry with bronchodilator through the pulmonary group's lab and placed a pulmonology referral for evaluation. Their office will call him to schedule. Albuterol continued.\n2. HM: labs from 2020 normal, nothing due. Flu shot next month at a nurse visit. Updated Covid booster when available.\n\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-06a",
+          "kind": "nurse_visit",
+          "start": "2022-10-06T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-06T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-06T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2022-10-06T15:20",
+              "author": "RN",
+              "body": "Quadrivalent influenza 0.5 mL IM to left deltoid. No contraindications on screening. Pt states he is going to the pharmacy for the bivalent Covid booster later this month. Asked whether pulmonology had called him; he hasn't heard yet, gave him their scheduling number."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "portal_message",
+          "start": "2022-11-03T21:15",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-21T17:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster done",
+              "date": "2022-11-03T21:15",
+              "author": "patient",
+              "body": "Got the new Covid booster 10/21 at the pharmacy. Arm sore for a day, that was it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booster done",
+              "date": "2022-11-04T08:42",
+              "author": "MA",
+              "body": "Recorded. Thanks for letting us know."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-19a",
+          "kind": "portal_message",
+          "start": "2023-01-19T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Breathing test",
+              "date": "2023-01-19T18:30",
+              "author": "patient",
+              "body": "Hi, the lung place called me back finally but the first opening for the breathing test is April. Is that ok or should I push for sooner? Nothing has changed, just want to make sure."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Breathing test",
+              "date": "2023-01-20T07:55",
+              "author": "PCP",
+              "body": "April is fine since nothing has changed. If you start needing the inhaler more, waking up at night, or it isn't helping, let me know and I'll see you sooner."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-14a",
+          "kind": "outside_records",
+          "start": "2023-04-14T10:05",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2023-04-12T08:30",
+              "text": "PULMONARY FUNCTION LABORATORY\nTest date: 04/12/2023\nReferring: primary care\nIndication: asthma evaluation\nPatient: 34-year-old male, never smoker. Height 180.3 cm. Albuterol withheld morning of test.\n\nSpirometry, pre and post bronchodilator (albuterol 4 puffs via spacer):\n- FVC: pre 5.18 L (98% predicted); post 5.30 L\n- FEV1: pre 3.52 L (82% predicted); post 4.02 L, change +500 mL (+14%)\n- FEV1/FVC: pre 0.68; post 0.76\n\nTechnique: good effort, three acceptable and repeatable maneuvers. Flow-volume loops show concave expiratory limb before bronchodilator, improved after.",
+              "conclusion": "Airflow obstruction with a significant response to bronchodilator, consistent with reversible obstruction. FVC normal.",
+              "issued": "2023-04-13T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pft-2022",
+              "action": "done",
+              "date": "2023-04-14T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "PFT Report Received",
+              "date": "2023-04-14T10:05",
+              "author": "MA",
+              "body": "Spirometry report from the pulmonary function lab (test 4/12/2023) received by fax, scanned and routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-17a",
+          "kind": "portal_message",
+          "start": "2023-04-17T12:48",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Breathing Test Result",
+              "date": "2023-04-17T12:48",
+              "author": "PCP",
+              "body": "Hi Chad, your breathing test shows a narrowing of the airways that opens up well with the inhaler. That is what we expect with asthma and fits what you've told me. Keep using the albuterol as needed. The pulmonologist will go over it in more detail when you see them; their office should be in touch about a visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "telephone",
+          "start": "2023-07-25T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Change",
+              "date": "2023-07-25T14:10",
+              "author": "front desk",
+              "body": "Pt called to cancel 8/10 physical, working full days at the warehouse through August. Offered September/October dates, he will call back when he has his school schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-10a",
+          "kind": "annual_physical",
+          "start": "2023-08-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-10-13a",
+          "kind": "specialist_visit",
+          "start": "2023-10-13T10:30",
+          "service": "Pulmonology",
+          "reason": "Follow-up, asthma with worsening control",
+          "conditions": [
+            {
+              "label": "Occupational exposure to hazardous substances",
+              "action": "diagnosed",
+              "onset": "2023-10-13",
+              "note": "Dust and fumes at warehouse job",
+              "icd10": "Z57.5"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              72
+            ],
+            "hr": 84,
+            "rr": 17,
+            "spo2": 98,
+            "weight_kg": 77.8,
+            "height_cm": 180.5
+          },
+          "orders": [
+            {
+              "id": "pulm-referral-2022",
+              "action": "done",
+              "date": "2023-10-17T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up",
+              "date": "2023-10-17T09:20",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONOLOGY GROUP\nDate of service: 10/13/2023\nRe: Chad Bradley, DOB 12/29/1988\n\nDear Doctor,\n\nI saw Mr. Bradley, a 34-year-old man, today to follow up his April spirometry and his asthma. He has had asthma since childhood and has relied only on an albuterol inhaler, which until recently he needed a few times a week, mainly with exercise and in cold air. For roughly the last two months he has been reaching for it nearly every day, and one or two nights a week he wakes up coughing and wheezy. No recent respiratory infections and no hospital stays. He told me he has not seen a clinician in more than a year.\n\nMedications: albuterol HFA 90 mcg, 2 puffs every 4-6 hours as needed.\nAllergies: dust mites, seasonal pollen. No drug allergies.\nFamily history: asthma in his mother; allergic rhinitis and hypertension in his father.\nSocial: teaches high school shop; also works part time stocking at a warehouse, where he is regularly around dust and fumes. Never smoker.\n\nExam: BMI 24. Comfortable, speaking in full sentences. There is mild expiratory wheezing on auscultation. Remainder of the exam, including HEENT, cardiac, and extremities, is normal.\n\nStudies: peak expiratory flow today is 80% of his predicted value. Spirometry in our lab in April showed reversible airflow obstruction.\n\nAssessment: Asthma with recent loss of control. He is not having an acute exacerbation and can be managed as an outpatient, but his current pattern of symptoms tells us the severity of his asthma has changed. Workplace exposure to dust and fumes is noted.\n\nPlan: continue albuterol as needed. Limit exposure to dust and fumes at the warehouse where he can. We are glad to see him again whenever needed.\n\nThank you for allowing us to participate in his care.\n\nPulmonology"
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "telephone",
+          "start": "2023-10-19T12:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pulmonology Letter Reviewed",
+              "date": "2023-10-19T12:35",
+              "author": "PCP",
+              "body": "Reviewed pulmonology note from 10/13. Called pt, left voicemail that I'd received it and to call or message if any questions. Problem list updated with the workplace dust/fume exposure. Reminded him he is due for his physical, front desk to reach out."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-01a",
+          "kind": "portal_message",
+          "start": "2023-11-01T17:02",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-26T16:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-26T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Shots",
+              "date": "2023-11-01T17:02",
+              "author": "patient",
+              "body": "Got my flu and covid shots at the pharmacy last Thursday (10/26) so you can cross those off. Got your voicemail, no questions on the lung doctor stuff."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Shots",
+              "date": "2023-11-02T09:15",
+              "author": "MA",
+              "body": "Both recorded. Would you like to schedule your physical? We have openings in January if that's easier."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Shots",
+              "date": "2023-11-02T19:40",
+              "author": "patient",
+              "body": "Let me get back to you after the holidays."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "portal_message",
+          "start": "2024-01-09T20:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2024-01-09T20:22",
+              "author": "patient",
+              "body": "Hi, following up about scheduling my physical. Spring semester is packed, could we do it in September?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2024-01-10T10:11",
+              "author": "front desk",
+              "body": "Sure thing. You're booked Thursday 9/12 at 3:30. You'll get a reminder the week before."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-22a",
+          "kind": "pharmacy",
+          "start": "2024-02-22T09:47",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Request",
+              "date": "2024-02-22T09:47",
+              "author": "MA",
+              "body": "Pharmacy requesting albuterol inhaler refill. Pended."
+            },
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Approved",
+              "date": "2024-02-22T12:30",
+              "author": "PCP",
+              "body": "Albuterol HFA 90 mcg, 1 inhaler with 3 refills sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "annual_physical",
+          "start": "2024-09-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              107,
+              64
+            ],
+            "hr": 80,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 77.3
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-12T16:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 83
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-12T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-12T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-12T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-12T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-09-12T16:10"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-09-12T16:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-12T15:30",
+              "author": "PCP",
+              "body": "Physical. Two years since his last one here (2023 cancelled).\n\nInterval: PFT 4/2023 showed reversible obstruction; seen by pulmonology 10/2023, letter reviewed, plan was albuterol as needed and cutting down on dust/fumes at the warehouse. He says he still uses the albuterol on and off, more on dusty warehouse shifts. No ED or urgent care visits. No other complaints. School started last week.\n\nMeds: albuterol HFA prn.\nAllergies: NKDA. Dust mites, seasonal pollen.\nSH: shop teacher; part time at the medical-supply warehouse. Never smoker. A couple of drinks a week at most.\nFH: mom asthma, dad hay fever/HTN.\n\nExam: Pleasant, NAD. HEENT: TMs normal, pharynx clear. Neck supple, no LAD. Lungs: clear to auscultation bilaterally. CV: regular rate and rhythm, no murmurs. Abd: soft, NT/ND. Ext: no edema. Skin: no rashes.\nPHQ-2: 1.\n\nA/P\n1. Mild persistent asthma. Lungs clear today. Albuterol as needed.\n2. Workplace dust/fume exposure, on problem list.\n3. HM: Tdap due (last 2014), given today. PCV20 given today given his asthma. Lipids and CMP today. Flu and Covid next month at a nurse visit.\n\nRTC 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "portal_message",
+          "start": "2024-09-16T08:12",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2024-09-16T08:12",
+              "author": "PCP",
+              "body": "Chad, cholesterol and the chemistry panel from last week look good. No changes needed. See you next fall, or sooner if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "nurse_visit",
+          "start": "2024-10-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and Covid vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-10T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-10T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-10T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2024-10-10T15:45",
+              "author": "RN",
+              "body": "Flu (trivalent) 0.5 mL IM L deltoid and 2024-25 Covid 0.3 mL IM R deltoid. Screened, no contraindications. Observed 15 min, no reaction. Arm soreness discussed."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-27a",
+          "kind": "ed_visit",
+          "start": "2025-03-27T13:05",
+          "end": "2025-03-27T16:25",
+          "service": "Emergency Medicine",
+          "reason": "Fever, body aches, headache, dry cough x 2 days",
+          "conditions": [
+            {
+              "label": "Influenza",
+              "action": "diagnosed",
+              "onset": "2025-03-25"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "oseltamivir 75 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 5 days",
+              "dose": {
+                "value": 75,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Influenza A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 88,
+            "rr": 16,
+            "temp_c": 38.3,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-03-27T13:40",
+              "results": [
+                {
+                  "test": "Rapid Influenza A+B Antigen",
+                  "text": "Influenza A antigen DETECTED. Influenza B antigen not detected."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-03-27T13:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-03-28T08:30",
+              "author": "emergency medicine",
+              "body": "COMMUNITY HOSPITAL EMERGENCY DEPARTMENT\nVisit date: 03/27/2025\nPatient: Chad Bradley, 36M\n\nCC: fever, aches, headache, cough\n\nHPI: 36 y/o man with asthma since childhood (seen by pulmonology in Oct 2023 for worsening control) who came on abruptly two days ago with fever, diffuse muscle aches, headache, and a dry cough. Feels \"run down.\" Highest temp at home 38.2 C (100.8 F). He teaches high school and says a number of his students have been out sick with the same thing. Flu is going around and we are still in the thick of the season.\n\nPMH: asthma. PSH: none.\nMeds: albuterol HFA 90 mcg 2 puffs q4-6h prn.\nAllergies: dust mites, seasonal pollen. NKDA.\nFH: mother asthma; father allergic rhinitis, HTN.\nSH: never smoker; 1-2 drinks/week; HS shop teacher and part-time warehouse stocker.\n\nTriage vitals: T 38.3 C (100.9 F), BP 120/78, HR 88, RR 16.\n\nExam: Tired appearing but nontoxic. Pharynx mildly red, no exudate. No cervical adenopathy. Lungs clear, no wheezes, no increased work of breathing. Heart regular. Abdomen soft. Skin without rash. Neuro nonfocal.\n\nED course: rapid influenza A+B antigen positive for influenza A, negative for B.\n\nMDM: Influenza A, within 48 hours of onset, in a patient with asthma. Lungs clear, oxygenating well, no signs of pneumonia or asthma flare. Will treat with oseltamivir. Supportive care.\n\nDisposition: discharged home.\nDx: Influenza A.\nRx: oseltamivir 75 mg PO BID x 5 days.\nInstructions: fluids, rest, acetaminophen or ibuprofen for fever and aches, albuterol as needed. Stay home until fever-free 24 hours without medicine. Return for difficulty breathing, wheezing not relieved by inhaler, chest pain, or confusion. Follow up with PCP."
+            }
+          ],
+          "measure": [
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-03-28a",
+          "kind": "portal_message",
+          "start": "2025-03-28T10:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu",
+              "date": "2025-03-28T10:02",
+              "author": "patient",
+              "body": "Went to the ER yesterday afternoon, I have the flu (A). They gave me Tamiflu. School needs a note for being out through at least Monday. Can you do that or does it have to come from the ER?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flu",
+              "date": "2025-03-28T12:20",
+              "author": "PCP",
+              "body": "Sorry you're sick. I have the ER record. Work note is attached, out through Monday 3/31, back Tuesday if you've been fever free for a day. Finish all 10 doses of the Tamiflu. Use your albuterol if you get wheezy. If your breathing gets worse or the inhaler isn't helping, call us right away, any hour. Our nurse will check on you Monday."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-31a",
+          "kind": "telephone",
+          "start": "2025-03-31T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED Check-in",
+              "date": "2025-03-31T10:40",
+              "author": "RN",
+              "body": "Called pt for f/u after ED visit for influenza A. Fever gone since Saturday. Still has a dry cough and is tired. Used albuterol maybe twice a day over the weekend, a bit more than his usual, now tapering off. No SOB at rest, no chest pain. Last Tamiflu dose tomorrow morning. Plans to return to work tomorrow. Telehealth with PCP set for 4/8. Reviewed return precautions."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "telehealth_visit",
+          "start": "2025-04-08T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for influenza",
+          "conditions": [
+            {
+              "label": "Influenza",
+              "action": "resolved"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-04-08T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Follow-up",
+              "date": "2025-04-08T16:00",
+              "author": "PCP",
+              "body": "Video visit, pt at home, consented.\n\nFollow-up after ED 3/27 for influenza A, treated with oseltamivir. Feels back to normal. Cough gone as of the weekend. Back at school since 4/1. Albuterol back down to his usual occasional use. No fevers, no SOB.\n\nObs on video: well, talking comfortably, no audible wheeze, no cough during visit.\n\nA/P: Influenza A, resolved. Asthma back to baseline, albuterol prn. Call if anything recurs."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "pharmacy",
+          "start": "2025-08-21T14:18",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Request",
+              "date": "2025-08-21T14:18",
+              "author": "MA",
+              "body": "Albuterol HFA refill request received from pharmacy. Last visit 4/2025 telehealth, physical due this fall."
+            },
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Approved",
+              "date": "2025-08-21T16:45",
+              "author": "PCP",
+              "body": "Sent albuterol, 1 inhaler + 2 refills. Please have him book his physical."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "specialist_visit",
+          "start": "2025-10-06T07:30",
+          "service": "Occupational Medicine",
+          "reason": "Employer-required infection prevention education",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Occupational Health Visit",
+              "date": "2025-10-08T11:00",
+              "author": "occupational medicine",
+              "body": "OCCUPATIONAL HEALTH SERVICES\nDate of service: 10/06/2025\nEmployee: Chad Bradley, DOB 12/29/1988, age 36\nEmployer: medical-supply distribution warehouse (part-time stocker)\nVisit type: mandatory education, at employer request\n\nReason: Over a 10-day stretch at the start of this flu season, several warehouse staff came down with influenza. The employer is requiring each employee to complete an infection-prevention session with us.\n\nHealth history (employee report): asthma since childhood, uses albuterol HFA 90 mcg as needed. Had influenza in March of this year. Allergies: dust mites and seasonal pollen. Family history of asthma in his mother, and of allergic rhinitis and high blood pressure in his father. Never smoker; drinks socially 1-2 times a week. Also works full time as a high school shop teacher.\n\nEducation provided: respiratory hygiene during flu season. Cover every cough or sneeze with a tissue and discard it; when no tissue is at hand, cough or sneeze into the upper sleeve or bend of the elbow rather than the hands. Turn away from coworkers and from product, including packaged sterile supplies. Clean hands before going back to handling stock. Do not come to work with fever or flu-like symptoms; report illness to the supervisor. Employee verbalized understanding and completed the session.\n\nNo restrictions. Cleared to continue regular duty.\n\nOccupational Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "nurse_visit",
+          "start": "2025-10-16T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and Covid vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-16T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-16T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-16T15:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2025-10-16T15:35",
+              "author": "MA",
+              "body": "Flu and 2025-26 Covid given, L and R deltoid. No issues. Pt mentioned his warehouse had him do an occupational health session last week, report is in his chart. Physical booked 11/6."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "annual_physical",
+          "start": "2025-11-06T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              109,
+              68
+            ],
+            "hr": 85,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 79.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-06T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-06T16:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-06T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-06T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-11-06T15:20",
+              "author": "PCP",
+              "body": "ANNUAL EXAM\n\n36M. Since last year: influenza A in March, ED visit, oseltamivir, recovered fully (telehealth 4/8). This fall his warehouse had an influenza cluster among staff and required an occupational health education session, report reviewed, no restrictions.\n\nAsthma: rescue inhaler as needed, no change. Dusty days at the warehouse still the main trigger. No nighttime symptoms reported today.\n\nMeds: albuterol HFA prn. Allergies: NKDA; dust mites, seasonal pollen.\nSH: teaching, part time at warehouse. Never smoker, social alcohol.\n\nROS otherwise negative.\n\nExam: Healthy appearing. HEENT wnl. Neck: no adenopathy, thyroid normal. Lungs: clear throughout, no wheeze. Heart: RRR, no m/r/g. Abd: soft, no masses. Ext: warm, no edema. Skin: normal.\nPHQ-2: 0.\n\nPlan:\n- Asthma: continue albuterol as needed.\n- Vaccines current: flu and Covid 10/16, Tdap and PCV20 2024.\n- CBC, CMP today.\n- Next physical in a year."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "portal_message",
+          "start": "2025-11-10T07:48",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2025-11-10T07:48",
+              "author": "PCP",
+              "body": "Blood count and chemistry panel from your physical are normal. Have a good rest of the semester."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "office_visit",
+          "start": "2026-05-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Asthma check, refill",
+          "vitals": {
+            "bp": [
+              126,
+              72
+            ],
+            "hr": 68,
+            "rr": 17,
+            "spo2": 97,
+            "weight_kg": 78.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-05-14T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-05-14T15:40",
+              "author": "PCP",
+              "body": "Asthma check / refill.\n\nPollen is out and he's using the albuterol a bit more outdoors and on dusty warehouse shifts, otherwise his usual pattern. Inhaler still helps. No fevers, no infections this spring.\n\nExam: Well. Pharynx clear. Lungs clear bilaterally, no wheeze, good air entry. Heart regular.\n\nA/P: Mild persistent asthma. Continue albuterol as needed, refill sent (1 inhaler, 3 refills). Physical due in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "date": "2026-08-18T19:55",
+              "author": "patient",
+              "body": "Can I get my physical on the books for early November again? Afternoons after 3 work best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "date": "2026-08-19T09:30",
+              "author": "front desk",
+              "body": "Done, Thursday 11/5 at 3:20. Flu and Covid shots can be done at a nurse visit in October, just reply here when you want to set that up."
+            }
+          ]
+        },
+        {
+          "id": "2026-11-05a",
+          "kind": "annual_physical",
+          "start": "2026-11-05T15:20",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Occupational exposure to hazardous substances|Z57.5": {
+        "code": "Z57.5",
+        "display": "Occupational exposure to toxic agents in other industries",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

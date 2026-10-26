@@ -1,0 +1,3926 @@
+{
+  "unit": "unit-1672",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\"",
+    "left text-only (not verified): report \"Thyroid radioactive iodine uptake\" LOINC 39791-1 not found; closest real codes: 17785-7 Radioactive iodine.thyroid/Radioactive iodine dose [Ratio]"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001672",
+      "given": "Lily",
+      "family": "Dion",
+      "birth_date": "1991-03-08",
+      "address_line": "38 Briar Hill Road",
+      "phone": "+1-413-555-0186",
+      "email": "lily.dion@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with generalized anxiety on sertraline who joins in 2021. Her 2023 delivery is followed by peripartum cardiomyopathy (LVEF 35%, recovered to 55%) and postpartum thyroiditis; a twin pregnancy ends in an emergency cesarean for vasa previa in 2025, then impaired glucose tolerance after diet-controlled gestational diabetes, and a fourth pregnancy ends in a planned repeat cesarean in 2026.",
+      "events": [
+        {
+          "id": "2021-07-26a",
+          "kind": "telephone",
+          "start": "2021-07-26T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2021-07-26T10:12",
+              "author": "front desk",
+              "body": "Caller would like to become a patient here. Teaches 2nd grade, wants to get set up before school starts and liked that she can text the doctor. Current PCP group is closing its office near her. Insurance Blue Cross PPO, card info taken. Booked new pt physical 8/17 8:00 am. Records release emailed to her, she will sign and send back today so we can request records from the prior office. Asked her to bring med bottles."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-09a",
+          "kind": "outside_records",
+          "start": "2021-08-09T14:30",
+          "reason": "Prior practice records received",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2020-02-11T10:00",
+              "text": "Specimen: cervical, liquid-based preparation. Satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-20T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-10T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Practice",
+              "date": "2021-08-09T14:30",
+              "author": "MA",
+              "body": "Records received by secure fax from prior primary care office, 41 pages, scanned to media.\n\nAbstracted for the chart:\n- Generalized anxiety disorder, followed there since 2016, on sertraline 50 mg daily since 2016.\n- Gallstones seen on an abdominal ultrasound in 2018 done for a brief episode of upper abdominal pain; managed expectantly, no surgery, no further episodes documented.\n- D&C 2019 for an early pregnancy loss (first pregnancy).\n- Allergies listed: sulfa drugs, latex. Reactions not documented in their record.\n- Pap with HPV 02/2020 negative.\n- COVID-19 vaccine (Pfizer) 3/20/21 and 4/10/21.\n\nRouted to PCP for review before 8/17 visit."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "establish_care",
+          "start": "2021-08-17T08:00",
+          "end": "2021-08-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, physical",
+          "conditions": [
+            {
+              "label": "Generalized anxiety disorder",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "On sertraline since 2016"
+            },
+            {
+              "label": "Cholelithiasis",
+              "action": "history",
+              "onset": "2018-01-01",
+              "note": "Asymptomatic gallstones on 2018 ultrasound, no surgery"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Generalized anxiety disorder"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Latex",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              77
+            ],
+            "hr": 67,
+            "rr": 13,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 58.3,
+            "height_cm": 160.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-17T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.28
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 307
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-17T08:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-08-17T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 192
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-17T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-08-17T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Physical",
+              "date": "2021-08-17T09:40",
+              "author": "PCP",
+              "body": "30F here to establish. Teaches second grade in the district, married, no kids yet.\n\nHPI: Generalized anxiety since about 2016 — worry that \"runs in the background,\" worse in August before the school year and around evaluations. Has been on sertraline 50 mg daily since, which she feels is the right dose. No panic attacks lately. Sleeping ok most nights. Denies low mood, no SI.\n\nPMH: GAD. Gallstones found on an US in 2018 after one episode of upper abdominal pain that settled on its own; never had surgery, no attacks since.\nPSH: D&C 2019 (early pregnancy loss).\nOB: G1P0, one early loss.\nMeds: sertraline 50 mg daily.\nAllergies: sulfa, latex (she doesn't remember the reactions).\nFH: mother type 2 diabetes. Maternal aunt with an autoimmune thyroid problem. Paternal grandmother had dilated cardiomyopathy.\nSH: never smoker, no alcohol, no drugs. Walks most evenings.\n\nROS: negative in detail except as above.\n\nExam: vitals as charted. Well appearing, pleasant. HEENT normal. Neck supple, thyroid normal size, no nodules. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no RUQ tenderness. Ext no edema. Skin no rashes. Neuro nonfocal. Mood good, affect bright.\n\nGAD-7 6, PHQ-9 3.\n\nA/P\n1. GAD — stable on sertraline 50, continue. Refills sent. Reassess at each visit.\n2. Cholelithiasis, asymptomatic — no action; reviewed what biliary colic feels like.\n3. Health maintenance — Pap/HPV 2020 negative, next 2025. COVID primary series done. Flu shot when available in Oct. Screening labs today incl HIV and hep C once.\n4. Allergies sulfa/latex entered.\n\nRTC 1 yr for physical, sooner prn. She can text with questions."
+            }
+          ],
+          "state": {
+            "weight_kg": 58.5,
+            "height_cm": 160.0,
+            "labs": {
+              "Free Thyroxine": 1.2,
+              "Hemoglobin A1c": 5.3,
+              "Thyroid Stimulating Hormone": 1.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-08-19a",
+          "kind": "portal_message",
+          "start": "2021-08-19T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2021-08-19T16:05",
+              "author": "PCP",
+              "body": "Hi Lily, all of your labs from Tuesday came back normal: blood count, kidney and liver tests, cholesterol, thyroid and A1c (diabetes screen). The HIV and hepatitis C screens were nonreactive. Nothing to do. Nice to meet you!"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-04a",
+          "kind": "nurse_visit",
+          "start": "2021-10-04T15:40",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-04T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-04T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2021-10-04T15:50",
+              "author": "RN",
+              "body": "Came after school for flu vaccine. Screening questions negative, no prior reactions. Latex-free gloves and bandage used. Quadrivalent flu 0.5 mL IM R deltoid. Tolerated, VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-15a",
+          "kind": "portal_message",
+          "start": "2021-11-15T07:22",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID Booster",
+              "date": "2021-11-15T07:22",
+              "author": "patient",
+              "body": "Hi, just letting you know I got my Pfizer booster Saturday 11/13 at the pharmacy by my school. Can you add it to my record? Felt tired Sunday but fine now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID Booster",
+              "date": "2021-11-15T09:10",
+              "author": "MA",
+              "body": "Thanks Lily, added to your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-10a",
+          "kind": "pharmacy",
+          "start": "2022-01-10T11:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline Refill",
+              "date": "2022-01-10T11:30",
+              "author": "MA",
+              "body": "Pharmacy fax: sertraline 50 mg #90 refill request. Last seen 8/17/21. Pended for PCP.\n\nPCP: approved x 3, 90 day supply. Please have her book a check-in for anxiety in the next month or two."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-16a",
+          "kind": "telehealth_visit",
+          "start": "2022-02-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety follow-up",
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2022-02-16T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit — Anxiety",
+              "date": "2022-02-16T16:10",
+              "author": "PCP",
+              "body": "Video visit from her classroom after dismissal.\n\nS: Anxiety doing well. Winter has been busy with staffing shortages at school, but she is coping. Taking sertraline daily, no side effects. Sleep fine. They are thinking about trying for a pregnancy later this year, asked about sertraline in pregnancy.\nO: Well appearing on video, calm, linear. GAD-7 4.\nA/P: GAD, controlled on sertraline 50 mg.\n- Continue.\n- Discussed sertraline in pregnancy: it is one of the better-studied SSRIs and most people stay on it when anxiety has needed treatment; stopping abruptly is the bigger risk. Start a prenatal vitamin with folic acid when trying. Let us know when she starts.\n- F/u at physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-13a",
+          "kind": "telehealth_visit",
+          "start": "2022-06-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety check-in",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-06-13b",
+          "kind": "portal_message",
+          "start": "2022-06-13T16:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed Visit",
+              "date": "2022-06-13T16:30",
+              "author": "front desk",
+              "body": "Hi Lily, we missed you for your 4:00 video visit today. Please reply or call to reschedule if you still want a check-in before your physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed Visit",
+              "date": "2022-06-13T19:48",
+              "author": "patient",
+              "body": "So sorry!! Last week of school and I had bus duty, completely forgot. I'm doing fine, I'll just see her at the physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "annual_physical",
+          "start": "2022-08-23T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Preconception"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              77
+            ],
+            "hr": 68,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 59.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-23T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-08-23T08:55",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-23T08:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 4.8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-08-23T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-08-23T09:30",
+              "author": "PCP",
+              "body": "31 y/o here for yearly physical, back-to-school week.\n\nInterval: no illnesses. Anxiety steady on sertraline 50, GAD-7 4. Trying to conceive since spring, not yet. Not on a prenatal vitamin. No GI symptoms, no biliary pain.\n\nMeds: sertraline 50 mg daily.\nAllergies: sulfa, latex.\nFH: mother T2DM, maternal aunt autoimmune thyroid disease, paternal GM dilated cardiomyopathy. No changes.\nSH: teacher, never smoker, no alcohol.\n\nExam: vitals as charted, weight 59 kg. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abd soft, nontender. No edema. Normal affect.\n\nA/P:\n- GAD — stable, continue sertraline.\n- Preconception — start an OTC prenatal vitamin daily, added to med list. If not pregnant after a year of trying, let us know and we can start a workup or send to GYN.\n- Labs today, will message.\n- Flu + bivalent COVID booster in early October, RN visit.\n- Pap due 2025.\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-25a",
+          "kind": "portal_message",
+          "start": "2022-08-25T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2022-08-25T12:40",
+              "author": "PCP",
+              "body": "Labs look good — blood counts, kidney function, sugars/A1c, thyroid and cholesterol all normal. See you in October for shots."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-03a",
+          "kind": "nurse_visit",
+          "start": "2022-10-03T15:30",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-03T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-03T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-03T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2022-10-03T15:45",
+              "author": "RN",
+              "body": "Flu (quadrivalent) 0.5 mL IM L deltoid and Pfizer bivalent booster IM R deltoid. Latex-free supplies. Not pregnant per pt (LMP last week). Observed 15 min, no reaction. VIS for both."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-30a",
+          "kind": "portal_message",
+          "start": "2023-01-30T06:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive Pregnancy Test",
+              "date": "2023-01-30T06:48",
+              "author": "patient",
+              "body": "Good morning! Positive home test this weekend!! Last period started 12/26. I have my first OB appointment booked for late February. I'm taking the prenatal vitamin every day now. Just want to double check I should keep taking the sertraline? I'm a little nervous about it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive Pregnancy Test",
+              "date": "2023-01-30T12:15",
+              "author": "PCP",
+              "body": "Congratulations, Lily! Yes — keep taking sertraline 50 mg daily, same as we talked about last year. Your anxiety has been well controlled on it and stopping suddenly is the bigger risk. Your OB will go over it too. Keep up the prenatal vitamin. Due date by your LMP is around 10/2. Message me any time."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-05a",
+          "kind": "portal_message",
+          "start": "2023-06-05T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leave Paperwork",
+              "date": "2023-06-05T15:20",
+              "author": "patient",
+              "body": "Hi, my district HR said my doctor needs to fill out part of the leave form for the fall (due date 10/2). Does that go to you or my OB? Uploading it here just in case."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leave Paperwork",
+              "date": "2023-06-06T09:05",
+              "author": "MA",
+              "body": "Hi Lily, for pregnancy-related leave the OB office usually completes the medical portion since they are managing the pregnancy. If they ask us to, we're happy to — just let us know."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21b",
+          "kind": "telephone",
+          "start": "2023-08-17T13:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancel Physical",
+              "date": "2023-08-17T13:40",
+              "author": "front desk",
+              "body": "Pt called to cancel physical 8/21. 34 wks, seeing OB weekly-ish, would rather do the physical after the baby. Will call to rebook."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "annual_physical",
+          "start": "2023-08-21T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "outside_records",
+          "start": "2023-10-10T11:15",
+          "reason": "Hospital delivery records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-07-10T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary (received)",
+              "date": "2023-10-10T11:15",
+              "author": "obstetrics",
+              "body": "Received from the regional hospital labor and delivery unit.\n\nAdmission 10/02/2023, discharge 10/04/2023.\nPatient: 32-year-old G2P0010 at 40w0d, admitted in spontaneous labor.\nDelivery: 10/02/2023 spontaneous vaginal delivery of a liveborn infant, weight 3500 g. Midline episiotomy, repaired. No other lacerations. EBL within normal range.\nPrenatal course: uncomplicated. Tdap given 7/10/2023 in prenatal clinic.\nPostpartum course: routine. Breastfeeding established. Ambulating, voiding, pain controlled.\nAllergies: sulfa, latex — latex-free precautions observed.\nDischarge medications: sertraline 50 mg daily, prenatal vitamin daily, acetaminophen as needed.\nFollow-up: obstetrics postpartum visit in 4-6 weeks; primary care as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "nurse_visit",
+          "start": "2023-10-16T10:30",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-16T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-16T10:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-16T10:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2023-10-16T10:45",
+              "author": "RN",
+              "body": "Two weeks postpartum, here with newborn in carrier. Breastfeeding. Both vaccines fine while nursing. Flu 0.5 mL IM L deltoid, Pfizer 2023-24 formula IM R deltoid, latex-free. Waited 15 min, no issues. VIS given. Delivery records from L&D are in the chart, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-30a",
+          "kind": "specialist_visit",
+          "start": "2023-10-30T09:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum bleeding",
+          "conditions": [
+            {
+              "label": "Exclusive breastfeeding",
+              "action": "diagnosed",
+              "onset": "2023-10-02",
+              "icd10": "Z39.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              72
+            ],
+            "hr": 63,
+            "temp_c": 36.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-30T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postpartum Visit (received)",
+              "date": "2023-11-02T14:00",
+              "author": "obstetrics",
+              "body": "Outside OB/GYN office note, visit 10/30/2023.\n\nReason: still bleeding at four weeks after vaginal delivery.\n\nMs. Dion is 4 weeks out from a term vaginal birth (10/2/23). She has had bleeding every day since delivery — heavy and bright red at first, and now light and brown. She has had no fevers, no pelvic or abdominal pain, and no malodorous discharge. Exclusively breastfeeding, going well.\n\nHistory: GAD on sertraline 50 mg daily. Prior D&C (2019). Prenatal vitamin daily.\nAllergies: sulfa drugs, latex.\n\nExam: vital signs stable, afebrile. Abdomen soft and non-tender, fundus not palpable. Perineum: episiotomy repair well healed. No lacerations or other trauma of the lower genital tract. Small amount of brown lochia.\n\nLabs: CBC today normal.\n\nAssessment: lochia that is tapering normally at 4 weeks; normal blood count.\nPlan: reassurance. Return or call for heavy bleeding, fever or pain. Continue breastfeeding. Routine postpartum visit at 6-8 weeks.\n\ncc: primary care"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "office_visit",
+          "start": "2023-11-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shortness of breath, leg swelling",
+          "vitals": {
+            "bp": [
+              112,
+              71
+            ],
+            "hr": 65,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 64.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-20T11:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.29
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-11-20T11:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-20T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2023",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Postpartum dyspnea, orthopnea and edema; evaluate for peripartum cardiomyopathy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Dyspnea and Edema",
+              "date": "2023-11-20T12:30",
+              "author": "PCP",
+              "body": "Texted Sunday night that she can't catch her breath on the stairs; seen same day today. 7 weeks postpartum (SVD 10/2), breastfeeding.\n\nS: Says she has been short of breath since the last few weeks of the pregnancy, figured it was the baby pushing up, but instead of getting better after delivery it has gotten worse. Now gets winded going up one flight with the baby. Has to prop on two pillows at night, lying flat feels uncomfortable. Ankles puffy by evening. Very tired, though she has a 7-week-old. No chest pain, no palpitations, no fever or cough, no calf pain. No travel.\n\nFH: paternal grandmother had dilated cardiomyopathy.\nMeds: sertraline 50, prenatal vitamin.\nAllergies: sulfa, latex.\n\nO: Vitals as charted. Weight 64 kg, up from her pre-pregnancy ~59. Tired appearing, speaking full sentences. JVP hard to assess with her positioning. Heart regular, no murmur heard. Lungs: fine crackles at both bases. Abdomen soft. 2+ pitting edema both ankles, calves soft and nontender.\n\nGAD-7 7 — mostly worry about this.\n\nA/P:\nPostpartum dyspnea with orthopnea, edema and basilar crackles — I'm worried about peripartum cardiomyopathy until proven otherwise, especially with the family history of DCM.\n- Called cardiology directly; they can see her Friday 11/24. Referral placed.\n- CBC and BMP today.\n- Strict ED precautions reviewed with her and husband on speaker: chest pain, breathlessness at rest, can't lie down at all, fainting — go to the ED, don't wait for Friday.\n- OK to keep breastfeeding."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-21a",
+          "kind": "portal_message",
+          "start": "2023-11-21T08:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2023-11-21T08:30",
+              "author": "PCP",
+              "body": "Lily — blood count normal (no anemia), and kidney function, potassium and sodium are normal. Still want you to keep the cardiology appointment Friday. How are you feeling this morning?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab Results",
+              "date": "2023-11-21T09:52",
+              "author": "patient",
+              "body": "About the same, thanks for checking. Will be there Friday."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-24a",
+          "kind": "specialist_visit",
+          "start": "2023-11-24T09:00",
+          "service": "Cardiology",
+          "reason": "Postpartum dyspnea",
+          "medications": [
+            {
+              "drug": "furosemide 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Volume overload"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              76
+            ],
+            "hr": 92,
+            "rr": 18,
+            "spo2": 97,
+            "weight_kg": 65.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-24T09:20",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2023",
+              "action": "done",
+              "date": "2023-11-24T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation (received)",
+              "date": "2023-11-27T10:20",
+              "author": "cardiology",
+              "body": "Outside cardiology group — new consultation 11/24/2023\n\nDear Doctor,\nThank you for the same-week referral of Ms. Lily Dion, 32, seen today about seven and a half weeks after a term vaginal delivery on 10/2/23. She had a visit with her obstetrician a few weeks ago for prolonged lochia, which settled.\n\nHPI: Her breathing began to bother her late in the third trimester and has steadily worsened rather than improved since the birth. She now has to stop partway up a single flight of stairs, finds lying flat uncomfortable, and notices ankle swelling by the end of each day. She is more fatigued than she expects to be and has had some difficulty sleeping. She denies chest pain, palpitations, fever and recent travel.\n\nPMH: generalized anxiety disorder. Prior D&C. G2P1011.\nMedications: sertraline 50 mg daily; prenatal vitamin.\nAllergies: sulfa drugs, latex.\nFamily history: paternal grandmother with dilated cardiomyopathy; mother with type 2 diabetes; maternal aunt with autoimmune thyroid disease.\nSocial: elementary school teacher; never smoker; no alcohol.\n\nExam: BP 112/76, HR 92, RR 18, BMI 25. Appears tired but comfortable at rest. JVP mildly elevated. Fine crackles at both lung bases; lungs resonant to percussion without wheeze. Regular rhythm, no murmur or gallop. Bilateral 2+ pitting edema of the lower legs.\n\nData: urine hCG negative today.\n\nImpression: new heart failure symptoms beginning in late pregnancy and persisting postpartum, with volume overload on exam. Peripartum cardiomyopathy is the leading concern given the timing and family history.\n\nPlan:\n1. Transthoracic echocardiogram — scheduled 11/28.\n2. Furosemide 20 mg each morning for congestion; daily weights.\n3. Further therapy per echo; she is breastfeeding and we will choose agents compatible with nursing.\n4. ED for rest dyspnea or chest pain.\n\nSincerely,\nCardiology"
+            }
+          ],
+          "measure": [
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "imaging",
+          "start": "2023-11-28T13:00",
+          "service": "Cardiology",
+          "reason": "Echocardiogram",
+          "conditions": [
+            {
+              "label": "Peripartum cardiomyopathy",
+              "action": "diagnosed",
+              "onset": "2023-09-15",
+              "icd10": "O90.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enalapril maleate 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Peripartum cardiomyopathy"
+            },
+            {
+              "drug": "carvedilol 3.125 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food",
+              "dose": {
+                "value": 3.125,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Peripartum cardiomyopathy"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2023-11-28T13:00",
+              "text": "Indication: postpartum dyspnea and edema. Technically adequate study. Left ventricle normal in size with globally reduced systolic function; global hypokinesis without regional predominance. LVEF 35% by biplane Simpson. Right ventricle normal size and function. Atria normal size. Mitral, aortic, tricuspid and pulmonic valves structurally normal without significant stenosis or regurgitation. No pericardial effusion. IVC normal caliber.",
+              "conclusion": "Reduced LV systolic function, LVEF 35%, global hypokinesis. No valvular abnormality."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Echo Result and Plan (received)",
+              "date": "2023-11-29T09:00",
+              "author": "cardiology",
+              "body": "Cardiology telephone follow-up 11/28/2023 — copy to PCP.\n\nEcho today: LVEF 35% with global hypokinesis, valves normal. In the setting of heart failure that began in late pregnancy and the early postpartum period with no other cause identified, this is peripartum cardiomyopathy.\n\nDiscussed with patient by phone. Starting:\n- enalapril 5 mg twice daily\n- carvedilol 3.125 mg twice daily\nBoth are acceptable while breastfeeding. Continue furosemide 20 mg daily. BMP in about 1 week — her PCP's lab will draw it. Follow-up visit early January to titrate. Repeat echo after 3 months of therapy.\n\nCounseled on low-salt diet, daily weights, and symptoms that need the ED."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "portal_message",
+          "start": "2023-11-29T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Heart Medicines and Nursing",
+              "date": "2023-11-29T21:14",
+              "author": "patient",
+              "body": "Hi. Cardiology called with the echo, I have peripartum cardiomyopathy. I'm honestly freaking out a little. They started two new pills plus the water pill. They said they're ok with breastfeeding but I wanted to hear it from you too. Also is it ok with the sertraline?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Heart Medicines and Nursing",
+              "date": "2023-11-30T07:40",
+              "author": "PCP",
+              "body": "Lily, I saw the report and I'm glad you're with that team. Enalapril and carvedilol are both used in nursing mothers and are fine with sertraline. Many women with this condition get a lot of their heart function back over the next several months on these medicines. Please take them as prescribed, weigh yourself every morning, and text me if your weight jumps or breathing gets worse. Want a quick visit next week to talk it through? No charge for that, it's what we're here for."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Heart Medicines and Nursing",
+              "date": "2023-11-30T08:02",
+              "author": "patient",
+              "body": "Thank you. That helps. I'll text if anything changes. I think I'm ok for now."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "lab_only",
+          "start": "2023-12-06T07:40",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-06T07:45",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2023-12-06T16:20",
+              "author": "PCP",
+              "body": "Your kidney function and potassium are normal on the new enalapril. I sent a copy to cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "telephone",
+          "start": "2023-12-18T14:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Leave Extension Form",
+              "date": "2023-12-18T14:05",
+              "author": "MA",
+              "body": "Pt called — district needs a provider form to extend her leave past winter break because of the heart diagnosis. Form uploaded. PCP to complete; cardiology note supports. Pt aware it takes 3-5 business days.\n\nPCP: completed, return to work date to be reassessed after her January cardiology visit. Faxed to HR, copy to pt."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-08a",
+          "kind": "specialist_visit",
+          "start": "2024-01-08T10:00",
+          "service": "Cardiology",
+          "reason": "Cardiomyopathy follow-up",
+          "medications": [
+            {
+              "drug": "furosemide 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Euvolemic"
+            },
+            {
+              "drug_text": "enalapril maleate 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug_text": "enalapril maleate 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Peripartum cardiomyopathy"
+            },
+            {
+              "drug": "carvedilol 3.125 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug": "carvedilol 6.25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food",
+              "dose": {
+                "value": 6.25,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Peripartum cardiomyopathy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              73
+            ],
+            "hr": 63,
+            "weight_kg": 62.4
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up (received)",
+              "date": "2024-01-10T15:30",
+              "author": "cardiology",
+              "body": "Cardiology follow-up, 1/8/2024.\n\nPeripartum cardiomyopathy, LVEF 35% on 11/28. Since starting therapy she is breathing better, sleeping flat, swelling gone. Weight down about 1.5 kg. Tolerating medicines without dizziness. Still breastfeeding.\n\nExam: vitals as recorded. JVP normal. Lungs clear. Regular, no gallop. No edema.\nBMP 12/6 (PCP lab) reviewed — normal.\n\nAssessment: PPCM, euvolemic on current therapy.\nPlan:\n- Stop furosemide.\n- Enalapril to 10 mg twice daily.\n- Carvedilol to 6.25 mg twice daily.\n- Repeat echo in the spring.\n- Return 4-6 weeks; sooner for weight gain over 2 lb in a day or 5 lb in a week, or breathlessness.\nAllergies: sulfa, latex."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-29a",
+          "kind": "ed_visit",
+          "start": "2024-01-29T18:30",
+          "end": "2024-01-30T00:40",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, orthopnea, leg swelling",
+          "medications": [
+            {
+              "drug": "furosemide 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Heart failure"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-01-29T18:35",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 102,
+              "rr": 22,
+              "spo2": 94
+            },
+            {
+              "time": "2024-01-30T00:15",
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-29T18:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-01-29T18:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-29T18:50",
+              "results": [
+                {
+                  "test": "B-type natriuretic peptide",
+                  "loinc": "30934-4",
+                  "unit": "pg/mL",
+                  "value": 900
+                },
+                {
+                  "test": "Troponin I",
+                  "loinc": "10839-9",
+                  "unit": "ng/mL",
+                  "text": "<0.04"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-01-29T19:10",
+              "text": "PA and lateral views. The cardiac silhouette is enlarged. Pulmonary vascular congestion with indistinct vascular markings. No focal consolidation. No pneumothorax. Osseous structures unremarkable.",
+              "conclusion": "Cardiomegaly with pulmonary vascular congestion."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-01-29T18:45",
+              "text": "Sinus tachycardia. Normal axis. Normal intervals. No ST-segment elevation or depression. No pathologic Q waves.",
+              "conclusion": "Sinus tachycardia without ST changes or Q waves."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-01-29T22:00",
+              "text": "Limited study from the emergency department. Left ventricular systolic function globally reduced with diffuse hypokinesis; LVEF estimated 35%. Right ventricular function preserved. Valves without structural abnormality, stenosis or significant regurgitation. No pericardial effusion.",
+              "conclusion": "LVEF 35% with global hypokinesis; no valvular abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-01-29T18:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (received)",
+              "date": "2024-01-30T09:10",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department — physician record, 1/29/2024.\n\nCC: worsening breathlessness and leg swelling.\n\nHPI: 32F, about 4 months after a vaginal delivery (her first child), with peripartum cardiomyopathy diagnosed by her cardiologist two months ago and followed there. Over the last 2 weeks she has become progressively more short of breath, now needs to sleep propped up, and both legs have swollen again. Her furosemide was stopped at a cardiology visit about three weeks ago. No chest pain.\n\nMeds: enalapril 10 mg BID, carvedilol 6.25 mg BID, sertraline 50 mg daily. Took prenatal vitamins through the pregnancy.\nAllergies: sulfa, latex.\nSocial: no tobacco, alcohol or drugs.\n\nExam: BP 110/70, HR 102, RR 22, SpO2 94% RA. Mildly dyspneic. Rales at both bases. S3 present. Pitting edema 2+ bilaterally to mid-shin.\n\nResults: Hgb 12.5, WBC 7.5, plt 250. Na 138, K 4.2, Cr 0.9. BNP 900. Troponin I <0.04.\nCXR: cardiomegaly, pulmonary vascular congestion.\nECG: sinus tachycardia, no ST changes, no Q waves.\nEcho (bedside formal, cardiology read): EF 35%, global hypokinesis, valves normal.\n\nED course: furosemide 40 mg IV with brisk diuresis. Breathing improved, sitting comfortably, SpO2 97% on room air by midnight. Discussed with on-call cardiology: acceptable for discharge with close follow-up given rapid response.\n\nImpression: acute on chronic systolic heart failure, peripartum cardiomyopathy.\nDisposition: home. Restart furosemide 20 mg by mouth every morning. Continue enalapril and carvedilol. Cardiology within 1-2 weeks; PCP within a few days. Return for worse breathing, chest pain, fainting."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-30b",
+          "kind": "telephone",
+          "start": "2024-01-30T13:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED Call",
+              "date": "2024-01-30T13:20",
+              "author": "RN",
+              "body": "Called after ED notification. Got home after midnight, peeing a lot this morning after furosemide, breathing much easier, slept on 2 pillows. Home scale weight down from yesterday. Has all meds, took furosemide 20 at 7 am. Feeding baby ok. Booked with PCP Thu 2/1. Cardiology appt 2/12 confirmed by pt. Reviewed red flags."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-01a",
+          "kind": "office_visit",
+          "start": "2024-02-01T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, heart failure",
+          "vitals": {
+            "bp": [
+              135,
+              67
+            ],
+            "hr": 69,
+            "rr": 14,
+            "spo2": 97,
+            "weight_kg": 62.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-01T14:50",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-01T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Post-ED",
+              "date": "2024-02-01T15:30",
+              "author": "PCP",
+              "body": "Follow-up after ED visit Monday for HF exacerbation (PPCM, EF 35%). Treated with IV furosemide and sent home on furosemide 20 daily.\n\nS: Much better. Sleeping on one pillow again, swelling nearly gone, can do the stairs with the baby slowly. Home weights trending down. Taking everything: enalapril 10 bid, carvedilol 6.25 bid, furosemide 20 qAM, sertraline 50, prenatal vitamin. Mild lightheadedness standing up fast, no falls. Still nursing. Anxious — \"every time I get winded I think it's happening again.\" GAD-7 8.\n\nO: Vitals as charted. Lungs clear today. Regular rhythm, no gallop heard. Trace ankle edema only. Weight 63 kg.\n\nA/P:\n1. PPCM with recent decompensation, now improved on diuretic. Continue regimen. BMP today on ACE-I + loop. Cardiology 2/12. Daily weights, call for gain of 3 lb overnight or 5 lb in a week.\n2. GAD — understandably up. Continue sertraline 50; we talked through a plan for the scary moments (check weight, sit up, text us). She declines a dose change for now.\n3. Return to work — not yet; revisit after cardiology. Updated leave form."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-02a",
+          "kind": "portal_message",
+          "start": "2024-02-02T10:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-02-02T10:15",
+              "author": "PCP",
+              "body": "Your potassium and kidney function are normal on the furosemide and enalapril. Keep going as you are."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "specialist_visit",
+          "start": "2024-02-12T09:30",
+          "service": "Cardiology",
+          "reason": "Post-ED cardiomyopathy follow-up",
+          "vitals": {
+            "bp": [
+              127,
+              66
+            ],
+            "hr": 63,
+            "weight_kg": 61.9
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up (received)",
+              "date": "2024-02-14T11:00",
+              "author": "cardiology",
+              "body": "Cardiology follow-up 2/12/2024 after ED visit for decompensation.\n\nFeels well. No orthopnea. Walking 20 minutes without stopping. Weight stable at home. Euvolemic on exam: JVP flat, lungs clear, no S3 today, no edema. BMP from 2/1 normal.\n\nPPCM, improving clinically.\n- Continue enalapril 10 mg BID, carvedilol 6.25 mg BID, furosemide 20 mg daily for now.\n- Echo in about 3 months (May).\n- Cleared to return to teaching in March if she stays well; letter given.\nAllergies: sulfa, latex."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "telehealth_visit",
+          "start": "2024-03-12T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Palpitations, weight loss",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2024-03-12T16:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "thyroid-labs-2024",
+              "action": "placed",
+              "order": "TSH, free T4, total T3",
+              "category": "lab",
+              "reason": "Palpitations and weight loss postpartum"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit — Palpitations",
+              "date": "2024-03-12T16:40",
+              "author": "PCP",
+              "body": "Video visit, she asked for today after texting this morning.\n\nS: Back at school 2 weeks. Over the past few weeks her heart has been racing at rest, she feels jittery and snappy with the kids and her husband, and she has lost about 10 lb since November despite eating more than usual. She worried it was her heart again, but no orthopnea, no swelling, weights on her scale have gone down, not up. No neck pain or tenderness. Still breastfeeding, about 5 1/2 months postpartum. No new meds or supplements.\nFH: maternal aunt with autoimmune thyroid disease.\n\nO: Video — appears a little restless, speech fast but organized. No visible neck swelling. Her watch has been showing a fast resting heart rate.\n\nA/P:\nPostpartum palpitations, irritability, weight loss with increased appetite — postpartum thyroid dysfunction is high on the list; also want to make sure the cardiomyopathy is not the driver.\n- TSH, free T4, total T3 tomorrow morning at our lab.\n- Continue carvedilol (which will blunt some of this).\n- If chest pain, fainting or breathing worse, ED."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "lab_only",
+          "start": "2024-03-13T07:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-13T07:35",
+              "resulted": "2024-03-13T15:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 2.5
+                },
+                {
+                  "test": "Triiodothyronine (T3), total",
+                  "loinc": "3053-6",
+                  "unit": "ng/dL",
+                  "value": 200
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "thyroid-labs-2024",
+              "action": "done",
+              "date": "2024-03-13T07:35"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "telephone",
+          "start": "2024-03-14T07:50",
+          "orders": [
+            {
+              "id": "endo-referral-2024",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Postpartum hyperthyroidism"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Thyroid Results",
+              "date": "2024-03-14T07:50",
+              "author": "PCP",
+              "body": "Called pt before school with results: TSH suppressed (<0.01), free T4 2.5 and total T3 200, both high. So her thyroid is overactive, which fits her symptoms. Most likely postpartum thyroiditis (temporary inflammation of the thyroid after pregnancy), though Graves disease has to be excluded since the treatment is different. Expedited endocrinology referral placed — I called their office, they will fit her in next week. Keep carvedilol. She asked about nursing — fine for now; endocrinology may want an uptake scan, which would mean a short pause, they will go over it."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-22a",
+          "kind": "specialist_visit",
+          "start": "2024-03-22T13:00",
+          "service": "Endocrinology",
+          "reason": "Postpartum hyperthyroidism",
+          "vitals": {
+            "bp": [
+              119,
+              69
+            ],
+            "hr": 102,
+            "weight_kg": 60.6
+          },
+          "orders": [
+            {
+              "id": "endo-referral-2024",
+              "action": "done",
+              "date": "2024-03-22T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation (received)",
+              "date": "2024-03-26T16:45",
+              "author": "endocrinology",
+              "body": "Outside endocrinology — new patient consultation, 3/22/2024\n\nReferred by her PCP for thyrotoxicosis about five and a half months after delivery.\n\nHPI: 33-year-old woman, delivered 10/2/23, with peripartum cardiomyopathy diagnosed in November and treated by cardiology (seen in the ED in January). She describes several weeks of a racing heart, short temper, and a weight loss of around ten pounds even though she is hungrier than usual. No pain, tenderness or fullness in the neck. No eye symptoms.\n\nMedications: enalapril 10 mg BID, carvedilol 6.25 mg BID, furosemide 20 mg daily, sertraline 50 mg daily, prenatal vitamin.\nAllergies: sulfa drugs, latex.\nFamily history: maternal aunt with autoimmune thyroid disease; mother with type 2 diabetes; paternal grandmother with dilated cardiomyopathy.\nSocial: teacher, never smoker, no alcohol. Breastfeeding.\n\nExam: HR 102. Fine tremor of the hands with arms extended. Thyroid not enlarged, no nodules felt, non-tender. Skin warm and slightly moist. No proptosis or lid lag.\n\nLabs (3/13, PCP): TSH <0.01, free T4 2.5 ng/dL, total T3 200 ng/dL.\n\nAssessment: postpartum thyrotoxicosis. Painless postpartum thyroiditis is most likely; Graves disease needs to be excluded.\nPlan:\n- Radioactive iodine uptake 3/25. We discussed breastfeeding: she will pump ahead, stop nursing for the period nuclear medicine advises, and discard milk expressed during that window.\n- No antithyroid drug pending the uptake; she is already on carvedilol, which helps the adrenergic symptoms.\n- Will call with the result."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.5
+          },
+          "measure": [
+            "bp",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-25a",
+          "kind": "imaging",
+          "start": "2024-03-25T09:00",
+          "service": "Nuclear Medicine",
+          "reason": "Thyroid uptake",
+          "conditions": [
+            {
+              "label": "Postpartum thyroiditis, hyperthyroid phase",
+              "action": "diagnosed",
+              "onset": "2024-02-15",
+              "icd10": "O90.5"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Thyroid radioactive iodine uptake",
+              "loinc": "39791-1",
+              "performed": "2024-03-25T09:00",
+              "text": "Radioiodine (I-123) uptake measured at 4 and 24 hours with imaging of the thyroid bed. Uptake is low at both time points, well below the normal range, with faint, homogeneous thyroid visualization. No focal hot or cold areas.",
+              "conclusion": "Low radioiodine uptake, consistent with thyroiditis rather than Graves disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Addendum (received)",
+              "date": "2024-03-27T10:00",
+              "author": "endocrinology",
+              "body": "Addendum to 3/22 consult. Uptake scan 3/25: low uptake. This confirms postpartum thyroiditis in its hyperthyroid phase; Graves disease is not supported.\n\nPlan: no antithyroid medication (it does not help thyroiditis). Continue carvedilol per cardiology for rate and symptoms. Repeat TSH and free T4 in about 6 weeks — PCP is happy to draw. A hypothyroid phase can follow over the next few months; if TSH rises we will consider levothyroxine. She may resume breastfeeding after the advised interval. Patient informed by phone."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-15a",
+          "kind": "portal_message",
+          "start": "2024-04-15T19:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Feeling Better",
+              "date": "2024-04-15T19:30",
+              "author": "patient",
+              "body": "Just an update — the racing heart is a lot better the last week or so and I'm not as short with everyone lol. Back to nursing after the scan, no problems. When do you want the thyroid labs? Also I need a refill on the carvedilol, pharmacy said no refills left."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Feeling Better",
+              "date": "2024-04-16T07:55",
+              "author": "PCP",
+              "body": "Great news. Labs the first week of May — I put in TSH and free T4 plus a BMP; any morning at our lab. Carvedilol 6.25 mg twice daily sent with refills (cardiology is fine with us refilling)."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-06a",
+          "kind": "lab_only",
+          "start": "2024-05-06T07:20",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-05-06T07:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-05-06T07:25",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.1,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          }
+        },
+        {
+          "id": "2024-05-13a",
+          "kind": "specialist_visit",
+          "start": "2024-05-13T10:30",
+          "service": "Cardiology",
+          "reason": "Repeat echo, cardiomyopathy",
+          "medications": [
+            {
+              "drug": "furosemide 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Recovered LV function, euvolemic"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              71
+            ],
+            "hr": 55,
+            "weight_kg": 59.4
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-05-13T09:30",
+              "text": "Comparison 11/28/2023. Left ventricle normal in size with normal wall motion throughout. LVEF 55% by biplane method. Normal diastolic filling for age. Right ventricle normal. Valves structurally normal without significant regurgitation. No pericardial effusion.",
+              "conclusion": "Normal LV size and systolic function, LVEF 55% (previously 35%). No valvular abnormality."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up (received)",
+              "date": "2024-05-15T14:10",
+              "author": "cardiology",
+              "body": "Cardiology follow-up 5/13/2024 with echo.\n\nShe feels back to normal and is teaching full days. Thyroid symptoms settling.\nEcho today: LVEF 55%, normal wall motion — recovery of LV function from 35% in November.\n\nAssessment: peripartum cardiomyopathy with recovered ejection fraction.\nPlan:\n- Stop furosemide.\n- Continue enalapril 10 mg BID and carvedilol 6.25 mg BID; we will not withdraw therapy within the first year of recovery.\n- Discussed that any future pregnancy carries a risk that the cardiomyopathy recurs, and should be planned together with us and her obstetrician. Enalapril must be stopped as soon as she is pregnant.\n- Return 6 months, echo in a year.\nAllergies: sulfa, latex."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid and heart follow-up",
+          "conditions": [
+            {
+              "label": "Postpartum thyroiditis, hyperthyroid phase",
+              "action": "resolved",
+              "icd10": "O90.5"
+            },
+            {
+              "label": "Exclusive breastfeeding",
+              "action": "resolved",
+              "icd10": "Z39.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              72
+            ],
+            "hr": 59,
+            "spo2": 97,
+            "weight_kg": 60.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-05-21T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Follow-up",
+              "date": "2024-05-21T16:20",
+              "author": "PCP",
+              "body": "Follow-up thyroid and PPCM.\n\nS: Feels like herself. No palpitations, appetite normal, weight back up a little. Weaned the baby over the last few weeks (7 1/2 months), on formula and starting solids. Echo last week EF 55% — cardiology stopped furosemide, continuing enalapril/carvedilol. No orthopnea, no edema. Anxiety \"way better now that everything's calmer.\" Teaching full days.\n\nLabs 5/6: TSH 1.9, free T4 1.1 — normal. BMP normal.\n\nO: Vitals as charted, weight 60 kg. No tremor. Thyroid normal size, nontender. Heart regular, no gallop. Lungs clear. No edema.\n\nA/P:\n1. Postpartum thyroiditis, hyperthyroid phase — resolved, euthyroid now. She remains at risk for a later hypothyroid phase and for recurrence after future pregnancies; recheck TSH if fatigue, weight gain or cold intolerance, and with any future postpartum period.\n2. PPCM, recovered EF on enalapril and carvedilol — per cardiology. Reinforced their advice: if she becomes pregnant, stop enalapril right away and call both offices.\n3. GAD — stable on sertraline.\n4. Breastfeeding completed.\nPhysical due August."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "portal_message",
+          "start": "2024-06-24T06:30",
+          "medications": [
+            {
+              "drug_text": "enalapril maleate 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant",
+              "date": "2024-06-24T06:30",
+              "author": "patient",
+              "body": "Positive pregnancy test this morning. LMP was 5/20. I remember you said stop the enalapril right away — I didn't take it this morning. What else do I do??"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Pregnancy — Medication Plan",
+              "date": "2024-06-24T07:45",
+              "author": "PCP",
+              "body": "Called her back. About 5 weeks by LMP 5/20.\n- Stop enalapril now (done, last dose yesterday evening). Removed from med list.\n- Continue carvedilol 6.25 mg BID — cardiology prefers she stay on a beta-blocker in pregnancy.\n- Continue sertraline 50 and prenatal vitamin.\n- I messaged her cardiologist this morning; they will see her with an echo in the next few weeks and coordinate with high-risk OB.\n- She will call her OB today for an early appointment.\nShe is anxious but has a plan. Text with any breathlessness, swelling or palpitations."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-22a",
+          "kind": "specialist_visit",
+          "start": "2024-07-22T11:00",
+          "service": "Cardiology",
+          "reason": "Pregnancy after peripartum cardiomyopathy",
+          "vitals": {
+            "bp": [
+              128,
+              67
+            ],
+            "hr": 60,
+            "weight_kg": 59.4
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-07-22T10:00",
+              "text": "Comparison 5/13/2024. Normal LV size and wall motion. LVEF 55%. Normal RV size and function. No significant valvular disease. No pericardial effusion.",
+              "conclusion": "LVEF 55%, unchanged from May."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardio-Obstetrics Consultation (received)",
+              "date": "2024-07-24T09:30",
+              "author": "cardiology",
+              "body": "Cardiology — pregnancy consultation 7/22/2024.\n\n33-year-old, about 9 weeks pregnant, with peripartum cardiomyopathy after her 10/2023 delivery (EF 35%), recovered to 55% by 5/2024. Enalapril stopped at a positive test 6/24. Feels well, no HF symptoms.\n\nEcho today: LVEF 55%, unchanged.\n\nAssessment: subsequent pregnancy after PPCM with recovered function — this places her at lower risk than if function had not recovered, though recurrence is still possible.\nPlan:\n- Continue carvedilol 6.25 mg BID through pregnancy.\n- No ACE inhibitor until after delivery.\n- Echo each trimester and postpartum; seen jointly with maternal-fetal medicine.\n- Delivery planning with OB; we will want to see her shortly after delivery and restart enalapril postpartum.\nAllergies: sulfa, latex."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "specialist_visit",
+          "start": "2024-09-23T10:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, twins",
+          "conditions": [
+            {
+              "label": "Dichorionic diamniotic twin pregnancy",
+              "action": "diagnosed",
+              "onset": "2024-06-03",
+              "icd10": "O30.042"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 72,
+            "weight_kg": 60.7
+          },
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, detailed anatomy, twin gestation",
+              "loinc": "11525-3",
+              "performed": "2024-09-23T09:15",
+              "text": "Twin intrauterine gestation, 18 weeks. Two separate placentas and a dividing membrane separating two amniotic sacs (dichorionic diamniotic). Twin A: cardiac activity present, FHR 150 bpm; anatomy survey normal. Twin B: cardiac activity present, FHR 148 bpm; anatomy survey normal. Amniotic fluid normal in both sacs. Biometry concordant and consistent with dates.",
+              "conclusion": "Dichorionic diamniotic twins at 18 weeks with normal anatomy in both."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit (received)",
+              "date": "2024-09-26T13:30",
+              "author": "obstetrics",
+              "body": "Outside OB/GYN — prenatal visit 9/23/2024, copy to PCP.\n\n33-year-old G3P1011 at 18w0d with a twin gestation. History of peripartum cardiomyopathy (recovered, EF 55% in July) and postpartum thyroiditis after her delivery last fall. Routine visit; she feels well and has no concerns.\n\nMeds: carvedilol 6.25 mg BID, sertraline 50 mg daily, prenatal vitamin.\nAllergies: sulfa drugs, latex.\n\nExam: BP 120/78, HR 72. Fundal size appropriate for dates.\n\nUltrasound today: dichorionic diamniotic twins — two placentas, two sacs. FHR 150 and 148. Normal anatomy for both twins.\n\nPlan: serial growth scans every 4 weeks per twin protocol. Glucose screening at 24-28 weeks. Cardiology echo next trimester. Tdap at 27-36 weeks. Return 4 weeks."
+            }
+          ],
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              119,
+              64
+            ],
+            "hr": 66,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 63.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-08T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-08T08:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-08T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T09:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T09:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-08T09:40",
+              "author": "PCP",
+              "body": "33F, annual. 20 weeks pregnant with dichorionic diamniotic twins (LMP 5/20/24), followed by OB/MFM and cardiology. Anatomy scan 9/23 normal for both.\n\nInterval: feels well, nausea long gone. No breathlessness beyond what she expects at this stage, no orthopnea, edema or palpitations. Echo 7/22 EF 55%. On carvedilol 6.25 bid, sertraline 50, prenatal vitamin. Enalapril stopped 6/24.\n\nAllergies: sulfa, latex.\nFH unchanged. SH: teacher, never smoker, no alcohol.\n\nExam: vitals as charted, weight 63 kg. Thyroid normal. Heart regular, no murmur or gallop. Lungs clear. Gravid abdomen. No edema. Mood ok, GAD-7 5, PHQ-9 4.\n\nA/P:\n- Health maintenance: Pap due 2025 — will do after delivery. Flu and COVID vaccines given today (RN), both recommended in pregnancy. Tdap with OB at 27-36 weeks.\n- PPCM, recovered, on carvedilol — cardiology following each trimester.\n- History of postpartum thyroiditis — TSH today; will need checking after this delivery too.\n- GAD stable, continue sertraline.\n- CBC today."
+            },
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2024-10-08T09:20",
+              "author": "RN",
+              "body": "Flu (trivalent) IM L deltoid and 2024-25 COVID (Pfizer) IM R deltoid after physical. Pregnant 20 wks, both indicated. Latex-free supplies. Tolerated. VIS given."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "portal_message",
+          "start": "2024-10-10T12:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-10-10T12:00",
+              "author": "PCP",
+              "body": "Blood count and thyroid are both normal. Hope the arm isn't too sore from the shots."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "outside_records",
+          "start": "2024-12-04T11:20",
+          "reason": "Prenatal records",
+          "conditions": [
+            {
+              "label": "Gestational diabetes mellitus, diet controlled",
+              "action": "diagnosed",
+              "onset": "2024-11-18",
+              "icd10": "O24.410"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-12-02T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal Records Update (received)",
+              "date": "2024-12-04T11:20",
+              "author": "obstetrics",
+              "body": "OB/MFM prenatal summary, received 12/4/2024.\n\nG3P1011, 28w0d, DCDA twins.\n- Glucose tolerance testing at about 26 weeks consistent with gestational diabetes. Seen by diabetes educator; managing with diet alone, home fingersticks within target. Will start medication if targets not met.\n- Growth scans concordant, both twins appropriately grown.\n- No heart failure symptoms; carvedilol continued.\n- Tdap given 12/2/2024.\nCurrent meds: carvedilol 6.25 mg BID, sertraline 50 mg daily, prenatal vitamin.\nAllergies: sulfa, latex."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "outside_records",
+          "start": "2025-01-08T10:40",
+          "reason": "Prenatal records",
+          "immunizations": [
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2025-01-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal Update (received)",
+              "date": "2025-01-08T10:40",
+              "author": "obstetrics",
+              "body": "OB/MFM prenatal note 1/6/2025, faxed for PCP records.\n\n33w0d DCDA twins. Gestational diabetes controlled on diet. Growth concordant. Feels well; no breathlessness at rest, no orthopnea, no swelling beyond mild ankle puffiness of pregnancy. Carvedilol, sertraline, prenatal vitamin.\n\nRSV vaccine (Abrysvo) given today at 33 weeks for infant protection.\nPlan: delivery planning at 37-38 weeks per twin protocol; anesthesia consult given cardiac history; latex-free precautions on L&D.\nAllergies: sulfa, latex."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "portal_message",
+          "start": "2025-01-13T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leave Form",
+              "date": "2025-01-13T20:10",
+              "author": "patient",
+              "body": "Hi! OB filled out the leave paperwork for the twins this time, so you don't need to. Just wanted you to know in case HR calls. Countdown is on!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leave Form",
+              "date": "2025-01-14T08:30",
+              "author": "MA",
+              "body": "Thanks for letting us know, Lily. Wishing you an easy last few weeks!"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-06a",
+          "kind": "ed_visit",
+          "start": "2025-02-06T19:20",
+          "end": "2025-02-06T20:45",
+          "service": "Emergency Medicine",
+          "reason": "Painless vaginal bleeding at term, twin pregnancy",
+          "conditions": [
+            {
+              "label": "Vasa previa",
+              "action": "diagnosed",
+              "onset": "2025-02-06",
+              "icd10": "O69.4XX0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              72
+            ],
+            "hr": 58,
+            "rr": 14,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-06T19:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-02-06T19:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-06T19:35",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-02-06T19:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (received)",
+              "date": "2025-02-10T09:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department, 2/6/2025, with obstetrics at bedside.\n\nCC: vaginal bleeding, 37 weeks with twins.\n\nHPI: 33-year-old G3P1011 at 37w3d with dichorionic diamniotic twins. About an hour before arrival she felt a sudden \"pop\" low in her abdomen and then began bleeding vaginally. The bleeding is not painful, has not stopped, and appears to be increasing. No fall, blow or other trauma. She feels the babies moving. Background: peripartum cardiomyopathy after her 2023 delivery with recovered function; postpartum thyroiditis in 2024. Her first child was born vaginally at term without difficulty. This pregnancy has gone smoothly apart from gestational diabetes controlled with diet, and her ultrasounds have been normal.\n\nMeds: carvedilol 6.25 mg BID, sertraline 50 mg daily, prenatal vitamin.\nAllergies: sulfa drugs, latex.\n\nExam: vital signs stable. Continuous fetal monitoring: both tracings reassuring. Sterile speculum: blood coming through the cervical os; vaginal walls and cervix themselves are not bleeding.\n\nLabs: Hgb 12.2, platelets 250, PT 12 s, aPTT 30 s.\n\nBedside ultrasound by OB: fetal vessels running across the internal os.\n\nImpression: vasa previa with bleeding after rupture of membranes, term twin gestation requiring delivery now.\nDisposition: taken directly to the operating room by obstetrics for emergency cesarean delivery. Latex-free room. Anesthesia and cardiology notified."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-02-06b",
+          "kind": "hospital_admission",
+          "start": "2025-02-06T20:45",
+          "end": "2025-02-09T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Emergency cesarean delivery, vasa previa, twins",
+          "conditions": [
+            {
+              "label": "Dichorionic diamniotic twin pregnancy",
+              "action": "resolved",
+              "icd10": "O30.042"
+            },
+            {
+              "label": "Vasa previa",
+              "action": "resolved",
+              "icd10": "O69.4XX0"
+            },
+            {
+              "label": "Gestational diabetes mellitus, diet controlled",
+              "action": "resolved",
+              "icd10": "O24.410"
+            },
+            {
+              "label": "History of gestational diabetes",
+              "action": "history",
+              "onset": "2024-11-18"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enalapril maleate 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Peripartum cardiomyopathy"
+            },
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain, #12",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-cesarean pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary (received)",
+              "date": "2025-02-11T14:00",
+              "author": "obstetrics",
+              "body": "Regional hospital — obstetric discharge summary.\nAdmitted 2/6/2025, discharged 2/9/2025.\n\nDiagnoses: dichorionic diamniotic twin pregnancy at 37w3d; vasa previa with bleeding; gestational diabetes, diet controlled; history of peripartum cardiomyopathy with recovered LV function.\n\nProcedure 2/6/2025: emergency low transverse cesarean delivery under spinal anesthesia, latex-free. Vasa previa confirmed at delivery. Twin A and Twin B liveborn, both vigorous; both well and roomed in with mother.\n\nCourse: uneventful. No heart failure symptoms; euvolemic on daily exams, cardiology consulted. Postpartum fingerstick checks discontinued per protocol. Breastfeeding both twins with lactation support. Incision clean and dry.\n\nDischarge medications:\n- enalapril 10 mg twice daily — RESTARTED postpartum per cardiology (compatible with breastfeeding)\n- carvedilol 6.25 mg twice daily\n- sertraline 50 mg daily\n- prenatal vitamin daily\n- oxycodone-acetaminophen 5/325, 1 every 6 hours as needed for severe pain, #12\nAllergies: sulfa drugs, latex.\n\nFollow-up: cardiology with echo in about 6 weeks; OB incision check 1-2 weeks and postpartum visit at 8 weeks with 75-g glucose tolerance test (history of GDM); primary care in 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "telephone",
+          "start": "2025-02-11T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional Care Call",
+              "date": "2025-02-11T10:30",
+              "author": "RN",
+              "body": "Discharge 2/9 after emergency c-section for vasa previa, twins both home and well. Called pt. Pain manageable, used 3 of the oxycodone tabs, now only at night. Reminded her the combo pill already has acetaminophen in it. Restarted enalapril 10 bid in hospital, no dizziness. No SOB lying flat, no leg swelling, incision dry. Nursing both, husband and her mother helping. Mood \"tired but ok.\" PCP visit booked 2/20. Cardiology 3/17 booked."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "office_visit",
+          "start": "2025-02-20T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up after cesarean",
+          "vitals": {
+            "bp": [
+              118,
+              76
+            ],
+            "hr": 58,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 70.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-20T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.29
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 300
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-20T14:20",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-02-20T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Post-Discharge",
+              "date": "2025-02-20T14:50",
+              "author": "PCP",
+              "body": "Two weeks after emergency c-section (2/6) for vasa previa at 37+3, DCDA twins both well. Here with both babies in a double stroller.\n\nS: Recovering. Off the oxycodone since day 5. Incision a bit sore. Breathing fine, sleeps flat (when the twins let her), no swelling. Restarted enalapril 10 bid in the hospital, carvedilol 6.25 bid, sertraline 50, prenatal vitamin. Breastfeeding both, supplementing occasionally. Lots of help at home. Anxiety manageable; GAD-7 6, PHQ-9 3.\n\nO: Vitals as charted, weight 70 kg. Heart regular, no gallop. Lungs clear. Incision low transverse, healing well, no erythema or drainage. No calf tenderness, no edema.\n\nA/P:\n1. S/p emergency cesarean — healing well. OB incision check done last week.\n2. PPCM, recovered — back on enalapril; BMP today. Cardiology echo 3/17.\n3. GDM in this pregnancy — OB doing the 75-g GTT at the 8-week visit; I'll see her after.\n4. Postpartum thyroiditis history — TSH at the April visit.\n5. Postpartum mood — screens fine, she knows to reach out early.\nCBC today."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-21a",
+          "kind": "portal_message",
+          "start": "2025-02-21T11:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-02-21T11:10",
+              "author": "PCP",
+              "body": "Your blood count recovered nicely after surgery, and kidney function and potassium are normal on the enalapril."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-17a",
+          "kind": "specialist_visit",
+          "start": "2025-03-17T09:00",
+          "service": "Cardiology",
+          "reason": "Postpartum echo after peripartum cardiomyopathy",
+          "vitals": {
+            "bp": [
+              117,
+              75
+            ],
+            "hr": 66,
+            "weight_kg": 68.6
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-03-17T08:15",
+              "text": "Comparison 7/22/2024. Normal LV size and wall motion. LVEF 55%. Normal RV size and function. Valves structurally normal. No pericardial effusion.",
+              "conclusion": "LVEF 55%, normal wall motion; no change."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up (received)",
+              "date": "2025-03-19T12:00",
+              "author": "cardiology",
+              "body": "Cardiology 3/17/2025, about 6 weeks after cesarean delivery of twins.\n\nNo recurrence: she is without dyspnea, orthopnea or edema. Exam euvolemic.\nEcho: LVEF 55%, normal wall motion.\n\nPPCM with sustained recovery through a subsequent (twin) pregnancy.\nPlan: continue enalapril 10 mg BID and carvedilol 6.25 mg BID. Echo in a year. Any future pregnancy — stop enalapril at the positive test and let us know.\nAllergies: sulfa, latex."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-03a",
+          "kind": "specialist_visit",
+          "start": "2025-04-03T08:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum visit, glucose tolerance test",
+          "conditions": [
+            {
+              "label": "Impaired glucose tolerance",
+              "action": "diagnosed",
+              "onset": "2025-04-03",
+              "icd10": "R73.02"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              68
+            ],
+            "hr": 62,
+            "weight_kg": 68.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-03T08:05",
+              "resulted": "2025-04-03T13:30",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Glucose, 1 hour post 75 g glucose",
+                  "loinc": "20438-8",
+                  "unit": "mg/dL",
+                  "value": 184
+                },
+                {
+                  "test": "Glucose, 2 hours post 75 g glucose",
+                  "loinc": "20436-2",
+                  "unit": "mg/dL",
+                  "value": 158
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postpartum Visit (received)",
+              "date": "2025-04-07T10:15",
+              "author": "obstetrics",
+              "body": "Outside OB/GYN — postpartum visit 4/3/2025, 8 weeks after cesarean delivery of twins (vasa previa).\n\nShe feels well overall. She has noticed she is thirstier than usual and urinating more often. Breastfeeding the twins. Gestational diabetes in this pregnancy was managed with diet alone. History of peripartum cardiomyopathy (recovered) and postpartum thyroiditis. No headaches, visual changes or abdominal pain.\n\nMeds: enalapril 10 mg BID, carvedilol 6.25 mg BID, sertraline 50 mg daily, prenatal vitamin.\nAllergies: sulfa drugs, latex.\n\nExam: vital signs normal. Incision well healed. Abdomen and pelvic exam unremarkable.\n\n75-g oral glucose tolerance test this morning: fasting 88 mg/dL, 1 hour 184 mg/dL, 2 hours 158 mg/dL. By nonpregnant criteria the fasting value is normal and the 2-hour value falls in the impaired glucose tolerance range.\n\nAssessment: postpartum, recovering well; impaired glucose tolerance after gestational diabetes.\nPlan: forwarded to PCP for long-term follow-up and prevention of type 2 diabetes. Annual glucose screening going forward."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-15a",
+          "kind": "office_visit",
+          "start": "2025-04-15T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Impaired glucose tolerance",
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Impaired glucose tolerance"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              70
+            ],
+            "hr": 61,
+            "weight_kg": 66.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-15T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.9
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-04-15T16:10",
+              "results": [
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.02
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-15T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Glucose Tolerance",
+              "date": "2025-04-15T16:45",
+              "author": "PCP",
+              "body": "Here to go over the OB's glucose tolerance test.\n\nS: OGTT 4/3: fasting 88, 1 h 184, 2 h 158 — 2-hour value in the IGT range. She had diet-controlled GDM with the twins and her mother has type 2 diabetes. Still thirsty and peeing more than she used to, though she is nursing twins and drinking a lot of water. No weight loss, no vision change. Breastfeeding most feeds.\n\nMeds: enalapril 10 bid, carvedilol 6.25 bid, sertraline 50, prenatal vitamin.\nAllergies: sulfa, latex.\n\nO: Vitals as charted, weight 67 kg (pre-pregnancy ~60).\n\nA/P:\n1. Impaired glucose tolerance after GDM, family history of T2DM. A1c and UA today.\n   - Discussed lifestyle (she walks the twins daily; working on portions) and metformin — in women with prior GDM it lowers progression to diabetes, and it is fine with breastfeeding. She'd like to start.\n   - Metformin 500 mg twice daily with meals. GI side effects reviewed; take with food.\n   - A1c again in about 6 months, or yearly.\n2. Thirst/urination — UA today; likely nursing-related, but checking.\n3. Postpartum thyroiditis history — TSH today.\n4. PPCM — stable per cardiology."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.0,
+            "labs": {
+              "Hemoglobin A1c": 5.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "portal_message",
+          "start": "2025-04-17T09:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-04-17T09:20",
+              "author": "PCP",
+              "body": "Hi Lily — A1c 5.9%, which is in the prediabetes range and fits the glucose test. No sugar in the urine and the urinalysis is otherwise normal. Thyroid normal. Keep going with the metformin and the walks; we'll recheck in the fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab Results",
+              "date": "2025-04-17T21:03",
+              "author": "patient",
+              "body": "Ok thanks. Stomach was a little off the first two days with metformin but better now."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "pharmacy",
+          "start": "2025-05-12T10:00",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Metformin 90-Day Supply",
+              "date": "2025-05-12T10:00",
+              "author": "MA",
+              "body": "Pharmacy requesting metformin 500 mg #180 (90 days) per insurance preference. Pt tolerating per last message. Pended.\n\nPCP: sent, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "portal_message",
+          "start": "2025-07-14T06:55",
+          "medications": [
+            {
+              "drug_text": "enalapril maleate 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Pregnancy"
+            },
+            {
+              "drug": "metformin hydrochloride 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant Again",
+              "date": "2025-07-14T06:55",
+              "author": "patient",
+              "body": "So... positive test again. LMP 6/9. Stopped the enalapril like last time, didn't take it last night or this morning. What about the metformin?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Pregnancy — Medication Plan",
+              "date": "2025-07-14T08:10",
+              "author": "PCP",
+              "body": "Spoke with pt. About 5 weeks by LMP 6/9/25.\n- Enalapril stopped (last dose 7/13 AM). Off med list.\n- Metformin: discussed with her OB's office this morning — they will do early glucose testing given her GDM history and prefer she stop metformin now and let testing guide treatment. Stopped.\n- Continue carvedilol 6.25 bid, sertraline 50, prenatal vitamin.\n- Messaged cardiology; they will see her with an echo.\nShe sounds steady. She knows the warning symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-11a",
+          "kind": "specialist_visit",
+          "start": "2025-08-11T10:00",
+          "service": "Cardiology",
+          "reason": "Pregnancy after peripartum cardiomyopathy",
+          "vitals": {
+            "bp": [
+              114,
+              70
+            ],
+            "hr": 68,
+            "weight_kg": 66.9
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-08-11T09:10",
+              "text": "Comparison 3/17/2025. Normal LV size, normal wall motion, LVEF 55%. Normal RV. No significant valvular disease. No pericardial effusion.",
+              "conclusion": "LVEF 55%, unchanged."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardio-Obstetrics Consultation (received)",
+              "date": "2025-08-13T15:00",
+              "author": "cardiology",
+              "body": "Cardiology 8/11/2025. 34-year-old, 9 weeks pregnant (fourth pregnancy), PPCM 2023 with recovered EF, uneventful twin pregnancy with cesarean 2/2025.\n\nAsymptomatic. Echo: LVEF 55%, unchanged.\n\nPlan: continue carvedilol through pregnancy; no ACE inhibitor until delivery; echo each trimester and postpartum with MFM; restart enalapril after delivery. Allergies: sulfa, latex."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "annual_physical",
+          "start": "2025-08-26T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              62
+            ],
+            "hr": 75,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 66.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-26T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 336
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-26T08:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-26T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-26T09:30",
+              "author": "PCP",
+              "body": "34F annual. 11 weeks pregnant (LMP 6/9/25), fourth pregnancy; twins are 6 months and her oldest is almost 2. OB, MFM and cardiology involved. Echo 8/11 EF 55%.\n\nInterval: tired, some nausea, otherwise well. No breathlessness, orthopnea, palpitations or swelling. Enalapril and metformin stopped 7/14. On carvedilol 6.25 bid, sertraline 50, prenatal vitamin. Stopped nursing the twins this summer.\n\nAllergies: sulfa, latex. FH/SH unchanged — teacher, back to school next week; never smoker, no alcohol.\n\nExam: vitals as charted, weight 66 kg. Thyroid normal. Heart regular, no gallop. Lungs clear. Abdomen soft, well-healed low transverse incision. No edema. GAD-7 5, PHQ-9 4.\n\nA/P:\n- IGT — off metformin in pregnancy; OB doing early and 24-28 week glucose testing.\n- PPCM recovered — per cardiology, carvedilol continued.\n- Postpartum thyroiditis history — TSH today; recheck after delivery.\n- GAD — stable on sertraline.\n- Flu and COVID in October. Tdap with OB. Pap after delivery.\n- CBC, TSH today."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-28a",
+          "kind": "portal_message",
+          "start": "2025-08-28T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-08-28T12:30",
+              "author": "PCP",
+              "body": "Blood count and thyroid normal. Good luck with the first week of school!"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "nurse_visit",
+          "start": "2025-10-06T15:35",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-06T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-06T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-06T15:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2025-10-06T15:50",
+              "author": "RN",
+              "body": "17 weeks pregnant. Flu (trivalent) IM L deltoid, 2025-26 COVID IM R deltoid, latex-free. Tolerated, VIS given. Sent copy to OB."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "portal_message",
+          "start": "2025-11-10T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sertraline Refill",
+              "date": "2025-11-10T19:40",
+              "author": "patient",
+              "body": "Can you send the sertraline to the pharmacy? They said it needs a new prescription. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sertraline Refill",
+              "date": "2025-11-11T07:30",
+              "author": "PCP",
+              "body": "Sent — sertraline 50 mg, 90 days with refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-24a",
+          "kind": "outside_records",
+          "start": "2025-12-24T09:30",
+          "reason": "Prenatal records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-12-22T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal Records Update (received)",
+              "date": "2025-12-24T09:30",
+              "author": "obstetrics",
+              "body": "OB/MFM prenatal summary, visit 12/22/2025.\n\nG4P2013 at 28w0d, singleton. Early glucose screen normal; 24-28 week glucose tolerance test normal. Blood pressures normal throughout, no gestational hypertension. Growth appropriate. Cardiology echo this trimester planned.\nTdap given today.\nMeds: carvedilol 6.25 mg BID, sertraline 50 mg daily, prenatal vitamin.\nAllergies: sulfa, latex."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-26a",
+          "kind": "specialist_visit",
+          "start": "2026-01-26T15:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, request for planned cesarean",
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 82,
+            "weight_kg": 73.6
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit (received)",
+              "date": "2026-01-29T11:45",
+              "author": "obstetrics",
+              "body": "Outside OB/GYN — prenatal visit 1/26/2026, copy to primary care.\n\n34-year-old G4P2013 at 33w0d, singleton. Background: peripartum cardiomyopathy after her 2023 delivery, recovered; vasa previa with emergency cesarean for twins in 2/2025; generalized anxiety disorder; impaired glucose tolerance; postpartum thyroiditis in 2024.\n\nShe came today mainly to ask that this baby be delivered by planned cesarean. She describes a great deal of fear about going through labor and a vaginal birth this time — much more than with her first, which was an easy term vaginal delivery of a 3500 g baby. No bleeding, no fluid leaking, no contractions. This pregnancy has been unremarkable: glucose testing normal, blood pressures normal with no gestational hypertension.\n\nMeds: carvedilol 6.25 mg BID, sertraline 50 mg daily, prenatal vitamin.\nAllergies: sulfa drugs, latex.\n\nExam: BP 120/78, HR 82. Nonstress test reactive and reassuring, no decelerations.\n\nCounseling: with one prior low transverse cesarean she is a candidate for either a trial of labor after cesarean or a planned repeat cesarean. We went through the benefits and risks of each for this pregnancy and for future ones. She has thought about it carefully and is firm in choosing a repeat cesarean; her anxiety is a legitimate part of that decision.\n\nPlan: planned repeat cesarean at 39 weeks — booked 3/9/2026. Anesthesia and cardiology aware; latex-free. Weekly visits from 36 weeks. Encouraged her to talk with her PCP about anxiety support in the meantime."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.0
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "telehealth_visit",
+          "start": "2026-02-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety in late pregnancy",
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-02-04T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit — Anxiety",
+              "date": "2026-02-04T16:35",
+              "author": "PCP",
+              "body": "Video visit. 34 weeks. OB note from 1/26 reviewed — repeat cesarean booked 3/9.\n\nS: Anxiety higher the last month. Lies awake running through what happened with the twins (the bleeding, the rush to the OR), and fears labor. Feels a lot calmer since the c-section date was set. Sleeping 5-6 h. No panic attacks. Mood otherwise ok, still enjoying the kids and her class. No SI. Taking sertraline 50 daily.\nGAD-7 12.\n\nO: On video, tearful at moments, organized, good insight.\n\nA/P: GAD with a flare in late pregnancy, tied to the prior emergency delivery and fear of labor.\n- Offered a sertraline increase to 100 mg; she prefers to stay at 50 mg for the last weeks and revisit after delivery. Reasonable.\n- Talked through what the planned delivery will look like vs last time; she found that helpful.\n- Check-in by text weekly; postpartum visit with me 2-3 weeks after delivery, with mood screening."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "hospital_admission",
+          "start": "2026-03-09T06:00",
+          "end": "2026-03-11T12:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Planned repeat cesarean delivery",
+          "medications": [
+            {
+              "drug_text": "enalapril maleate 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Peripartum cardiomyopathy"
+            },
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain, #10",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-cesarean pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary (received)",
+              "date": "2026-03-12T13:20",
+              "author": "obstetrics",
+              "body": "Regional hospital — obstetric discharge summary.\nAdmitted 3/9/2026, discharged 3/11/2026.\n\nIndication: planned repeat cesarean at 39w0d, patient choice after counseling, one prior cesarean.\nProcedure 3/9/2026: repeat low transverse cesarean under spinal anesthesia, latex-free. Liveborn infant, vigorous, well, rooming in.\n\nCourse: uncomplicated. No heart failure symptoms; euvolemic; cardiology consulted. Breastfeeding established.\n\nDischarge medications:\n- enalapril 10 mg twice daily — restarted postpartum per cardiology\n- carvedilol 6.25 mg twice daily\n- sertraline 50 mg daily\n- prenatal vitamin daily\n- oxycodone-acetaminophen 5/325 every 6 hours as needed for severe pain, #10\nAllergies: sulfa drugs, latex.\n\nFollow-up: cardiology echo in ~6 weeks; OB at 6 weeks; primary care in 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-13a",
+          "kind": "telephone",
+          "start": "2026-03-13T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional Care Call",
+              "date": "2026-03-13T11:15",
+              "author": "RN",
+              "body": "Home 3/11 after planned repeat c-section. \"So much calmer than last time.\" Baby well, nursing going ok. Pain controlled, oxycodone twice total. Taking enalapril 10 bid, carvedilol, sertraline, PNV. No SOB, no orthopnea, no leg swelling. Incision dry. Booked PCP 3/26."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-26a",
+          "kind": "office_visit",
+          "start": "2026-03-26T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum follow-up",
+          "vitals": {
+            "bp": [
+              131,
+              73
+            ],
+            "hr": 62,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 95,
+            "weight_kg": 71.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-26T14:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-26T14:35",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-03-26T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — Postpartum",
+              "date": "2026-03-26T15:05",
+              "author": "PCP",
+              "body": "2.5 weeks after planned repeat c-section (3/9). Baby well, here in a carrier.\n\nS: Feels good, recovery easier than with the twins. Off oxycodone. Breastfeeding. No dyspnea, orthopnea or edema. Back on enalapril 10 bid since delivery; carvedilol 6.25 bid; sertraline 50; PNV. Anxiety settled a lot after the delivery — GAD-7 7, PHQ-9 3. Doesn't want to change sertraline now.\n\nO: Vitals as charted, weight 71 kg. Heart regular, no gallop. Lungs clear. Incision healing well. No edema, calves soft.\n\nA/P:\n1. Postpartum after repeat cesarean — doing well. CBC.\n2. PPCM recovered — back on enalapril; BMP today. Cardiology echo 4/20.\n3. IGT — restart metformin discussion at the May visit with A1c (A1c too early now after delivery).\n4. Postpartum thyroiditis history — TSH at the May visit, sooner for palpitations, weight loss or fatigue out of proportion.\n5. GAD — improved; recheck in May."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-27a",
+          "kind": "portal_message",
+          "start": "2026-03-27T10:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-03-27T10:40",
+              "author": "PCP",
+              "body": "Labs normal — blood count fine after surgery, kidney function and potassium fine on the enalapril. See you in May."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "specialist_visit",
+          "start": "2026-04-20T09:00",
+          "service": "Cardiology",
+          "reason": "Postpartum echo after peripartum cardiomyopathy",
+          "vitals": {
+            "bp": [
+              108,
+              66
+            ],
+            "hr": 60,
+            "weight_kg": 71.1
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-04-20T08:15",
+              "text": "Comparison 8/11/2025. Normal LV size and wall motion. LVEF 55%. Normal RV size and function. Valves structurally normal. No pericardial effusion.",
+              "conclusion": "LVEF 55%, normal wall motion, unchanged."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up (received)",
+              "date": "2026-04-22T16:10",
+              "author": "cardiology",
+              "body": "Cardiology 4/20/2026, six weeks after repeat cesarean.\n\nWell, no HF symptoms. Euvolemic. Echo LVEF 55%, unchanged.\n\nPPCM, recovered and stable through two further pregnancies.\nPlan: continue enalapril 10 mg BID and carvedilol 6.25 mg BID while breastfeeding and for now; we will discuss a supervised taper next year. Echo in 12 months. Allergies: sulfa, latex."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-23a",
+          "kind": "specialist_visit",
+          "start": "2026-04-23T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum visit",
+          "vitals": {
+            "bp": [
+              130,
+              77
+            ],
+            "weight_kg": 69.6
+          },
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-04-23T10:50",
+              "text": "Specimen: cervical, liquid-based preparation. Satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postpartum Visit (received)",
+              "date": "2026-04-28T09:00",
+              "author": "obstetrics",
+              "body": "Outside OB/GYN — postpartum visit 4/23/2026, 6 weeks after repeat cesarean.\n\nRecovering well. Breastfeeding. Mood good. No bleeding now. Incision healed. Pelvic exam normal. Pap with HPV collected (overdue since 2025) — result: negative.\n\nMeds: enalapril 10 mg BID, carvedilol 6.25 mg BID, sertraline 50 mg daily, prenatal vitamin.\nAllergies: sulfa, latex.\nReturn for annual GYN care; glucose follow-up with PCP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "office_visit",
+          "start": "2026-05-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Glucose and thyroid follow-up",
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Impaired glucose tolerance"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              73
+            ],
+            "hr": 60,
+            "weight_kg": 67.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-19T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-19T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit — IGT, Thyroid, Anxiety",
+              "date": "2026-05-19T16:40",
+              "author": "PCP",
+              "body": "10 weeks postpartum (repeat cesarean 3/9). Breastfeeding.\n\nS: Doing well. Cardiology 4/20: EF 55%, continue enalapril and carvedilol. OB 4/23: Pap/HPV negative. Wants to restart metformin, which she tolerated before. No palpitations, heat intolerance, tremor or unusual fatigue. Anxiety much better since the baby came — GAD-7 6, PHQ-9 4.\n\nMeds: enalapril 10 bid, carvedilol 6.25 bid, sertraline 50, PNV.\nAllergies: sulfa, latex.\n\nO: Vitals as charted, weight 68 kg. Thyroid normal size, no tremor. Heart regular. No edema.\n\nA/P:\n1. IGT — A1c today. Restart metformin 500 mg twice daily (fine while nursing).\n2. Postpartum thyroiditis history — TSH today; last time it showed up about 5 months after delivery, so another TSH in the fall.\n3. PPCM — stable.\n4. GAD — improved, continue sertraline 50.\nPhysical in September."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0,
+            "labs": {
+              "Hemoglobin A1c": 5.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "portal_message",
+          "start": "2026-05-21T08:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-05-21T08:45",
+              "author": "PCP",
+              "body": "A1c 5.8% — still prediabetes range, a touch better than last year. Thyroid normal. Keep up the metformin; I'll recheck the A1c at your physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "pharmacy",
+          "start": "2026-07-20T09:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills — Carvedilol, Enalapril",
+              "date": "2026-07-20T09:30",
+              "author": "MA",
+              "body": "Pharmacy e-request: carvedilol 6.25 mg and enalapril 10 mg, both twice daily, 90-day supplies. Last cardiology visit 4/20, plan to continue. Pended.\n\nPCP: sent both, refills x3."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "portal_message",
+          "start": "2026-08-10T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Schedule Physical",
+              "date": "2026-08-10T20:15",
+              "author": "patient",
+              "body": "Hi! Can I get my physical booked for after school starts? Afternoons after 3:30 are best. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Schedule Physical",
+              "date": "2026-08-11T09:05",
+              "author": "front desk",
+              "body": "You're booked Tuesday 9/15 at 3:45 pm for your annual physical. Please come fasting if you can manage it, or we can draw labs another morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "annual_physical",
+          "start": "2026-09-15T15:45",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Dichorionic diamniotic twin pregnancy|O30.042": {
+        "code": "O30.042",
+        "display": "Twin pregnancy, dichorionic/diamniotic, second trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Exclusive breastfeeding|Z39.1": {
+        "code": "Z39.1",
+        "display": "Encounter for care and examination of lactating mother",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Gestational diabetes mellitus, diet controlled|O24.410": {
+        "code": "O24.410",
+        "display": "Gestational diabetes mellitus in pregnancy, diet controlled",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Impaired glucose tolerance|R73.02": {
+        "code": "R73.02",
+        "display": "Impaired glucose tolerance (oral)",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Peripartum cardiomyopathy|O90.3": {
+        "code": "O90.3",
+        "display": "Peripartum cardiomyopathy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Postpartum thyroiditis, hyperthyroid phase|O90.5": {
+        "code": "O90.5",
+        "display": "Postpartum thyroiditis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Vasa previa|O69.4XX0": {
+        "code": "O69.4XX0",
+        "display": "Labor and delivery complicated by vasa previa, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "enalapril maleate 10 MG Oral Tablet": {
+        "code": "858817",
+        "display": "enalapril maleate 10 MG Oral Tablet",
+        "ingredient": "enalapril",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "enalapril maleate 5 MG Oral Tablet": {
+        "code": "858813",
+        "display": "enalapril maleate 5 MG Oral Tablet",
+        "ingredient": "enalapril",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "3173-2",
+        "display": "aPTT in Blood by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "B-type natriuretic peptide": {
+        "code": "30934-4",
+        "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose, 1 hour post 75 g glucose": {
+        "code": "20438-8",
+        "display": "Glucose [Mass/volume] in Serum or Plasma --1 hour post dose glucose",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose, 2 hours post 75 g glucose": {
+        "code": "20436-2",
+        "display": "Glucose [Mass/volume] in Serum or Plasma --2 hours post dose glucose",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Triiodothyronine (T3), total": {
+        "code": "3053-6",
+        "display": "Triiodothyronine (T3) [Mass/volume] in Serum or Plasma",
+        "unit": "ng/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Troponin I": {
+        "code": "10839-9",
+        "display": "Troponin I.cardiac [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Obstetric ultrasound, detailed anatomy, twin gestation": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin Oral Tablet\"",
+      "report \"Thyroid radioactive iodine uptake\" LOINC 39791-1 not found; closest real codes: 17785-7 Radioactive iodine.thyroid/Radioactive iodine dose [Ratio]"
+    ]
+  }
+}

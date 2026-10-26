@@ -1,0 +1,688 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002867",
+      "given": "Irene",
+      "family": "Whitney",
+      "birth_date": "1953-03-06",
+      "address_line": "18 Dunphy Drive",
+      "phone": "+1-802-555-0160",
+      "email": "irene.whitney@example.test",
+      "marital_status": "widowed",
+      "summary": "Retired postal clerk with severe COPD who joins in 2023 still smoking, quits in March 2025, and is found on screening CT that June to have extensive-stage small cell lung cancer. Chemo-immunotherapy course is complicated by a vomiting-related metabolic alkalosis, a right lower lobe pneumonia, and SIADH that brings her to the ICU with a sodium of 120 in March 2026.",
+      "events": [
+        {
+          "id": "2023-06-20a",
+          "kind": "establish_care",
+          "start": "2023-06-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care; COPD",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "diagnosed",
+              "onset": "2014-01-01",
+              "note": "Severe, GOLD III per prior office; spirometry to be repeated here"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "1980-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule (18 mcg) once daily via HandiHaler",
+              "dose": {
+                "value": 18,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 90,
+                "unit": "mcg"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug_text": "fluticasone propionate 0.25 MG/ACTUAT Dry Powder Inhaler",
+              "action": "historical",
+              "sig": "Inhale 1 puff (250 mcg) twice daily; rinse mouth after use",
+              "dose": {
+                "value": 250,
+                "unit": "mcg"
+              },
+              "frequency": "BID",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              78
+            ],
+            "weight_kg": 61.8,
+            "height_cm": 162.0,
+            "spo2": 94
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Never"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired postal clerk"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-06-20T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung cancer screening, current smoker over 40 pack-years"
+            },
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Request records from prior primary care office",
+              "category": "referral",
+              "to": "Prior primary care office",
+              "reason": "Transfer of care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-06-20T10:35",
+              "body": "NEW PATIENT VISIT\n\n70F transferring care after many years at another primary care office in the valley; wanted a practice where she could reach the doctor directly.\n\nCOPD: told she had \"severe\" COPD about 9-10 yrs ago. Breathing tests at the old office, results not with her. Uses tiotropium HandiHaler every morning, Flovent Diskus 250 BID most days, albuterol a few times a week - more on humid days and walking up the hill to her mailbox. No ED visits or steroid bursts she can recall in the last 2 yrs. No home O2.\n\nTobacco: still smoking, about a pack a day, started late 20s. Over 40 pack-years. Has tried to stop twice, both times on her own. Not ready today - \"I know, I know.\"\n\nPMH: COPD. No surgeries.\nMeds: tiotropium 18 mcg daily, fluticasone propionate 250 mcg BID, albuterol HFA PRN.\nAllergies: NKDA.\nFHx: father - lung cancer. Mother - emphysema. Brother - COPD.\nSHx: retired from the post office (clerk at the counter for most of her career). Widowed. Lives alone in Leeds; daughter nearby. No alcohol. No drug use.\n\nExam: thin, pleasant, no distress at rest. Speaks in full sentences. Chest: diminished breath sounds throughout, prolonged expiration, no wheeze today, no crackles. Heart regular, no murmur. No clubbing. No edema.\n\nA/P\n1. COPD, reported severe - will get spirometry here next visit to document stage. Inhaler technique reviewed with the Diskus, decent. Continue current inhalers.\n2. Tobacco use - advised to quit, plainly. Declines meds or the quitline for now; will keep asking.\n3. Lung cancer screening - eligible by age and pack-years; LDCT ordered.\n4. Records requested from prior office.\n5. Return 3 wks for spirometry, labs.\n"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-30a",
+          "kind": "outside_records",
+          "start": "2023-06-30T14:10",
+          "reason": "Prior primary care records received",
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2023-06-30T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records (fax)",
+              "author": "outside primary care",
+              "date": "2023-06-30T14:10",
+              "body": "Records from prior primary care office, 23 pages, received by fax. Summary abstracted by MA:\n\n- Problem list: COPD (severe); tobacco use.\n- Meds on last visit (03/2023): Spiriva HandiHaler 18 mcg daily, Flovent Diskus 250 mcg 1 puff BID, ProAir HFA PRN.\n- Colonoscopy 2018: normal, no polyps. Repeat not recommended before 10 yrs.\n- Screening mammogram 2022: BI-RADS 1, negative.\n- Immunizations on file: influenza 2021, 2022; COVID-19 mRNA primary series 2021 and a booster 2022. No pneumococcal or Tdap documented.\n- Spirometry: referenced in a 2014 note as \"severe obstruction\"; the actual report is not included.\n- Allergies: NKDA.\n\nScanned to chart. -MA"
+            }
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "office_visit",
+          "start": "2023-07-11T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Spirometry, labs, COPD follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-07-11T08:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-11T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-07-11T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-11T08:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-11T08:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2023-07-11T08:40",
+              "text": "Pre- and post-bronchodilator spirometry (albuterol 4 puffs). Acceptable and repeatable efforts, 3 trials. Post-bronchodilator FEV1 0.94 L (42% predicted). FEV1/FVC 0.52. No significant bronchodilator response. Flow-volume loop with a scooped expiratory limb.",
+              "conclusion": "Severe airflow obstruction, GOLD stage 3 (FEV1 30-49% predicted)."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Spirometry",
+              "performed": "2023-07-11T08:40"
+            },
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-11T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-07-11T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-07-11T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-07-11T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "COPD Follow-up with Spirometry",
+              "author": "PCP",
+              "date": "2023-07-11T09:20",
+              "body": "S: Back for PFTs and labs. Breathing same as last visit. Still smoking a pack/day. Using tiotropium daily, Flovent most days - admits she skips the evening dose sometimes. Albuterol 3-4x/wk.\n\nO: Vitals per flowsheet. Diminished BS, prolonged expiratory phase, no wheeze or crackles. Heart RRR. No edema.\nSpirometry today: post-BD FEV1 0.94 L, 42% pred, ratio 0.52. No meaningful BD response.\n\nA/P:\n- COPD, GOLD 3 by today's numbers. Continue tiotropium, fluticasone, PRN albuterol. Encouraged twice-daily Flovent use and rinsing after.\n- Tobacco: asked again, still declines treatment. Gave quitline card anyway.\n- Labs today (CBC, CMP, lipids, TSH, hep C Ab).\n- Tdap today, not on record.\n- LDCT is scheduled next week.\n- RTC 4-6 mo.\n"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Total Cholesterol": 207,
+              "Low Density Lipoprotein": 119,
+              "High Density Lipoprotein": 63,
+              "Triglycerides": 124,
+              "Thyroid Stimulating Hormone": 2.1
+            }
+          }
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "imaging",
+          "start": "2023-07-19T11:00",
+          "reason": "Lung cancer screening",
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-07-19T11:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-07-19T11:00",
+              "text": "INDICATION: Lung cancer screening, 70-year-old current smoker, over 40 pack-years. Baseline exam.\nTECHNIQUE: Low-dose helical CT of the chest without IV contrast.\nCOMPARISON: None.\nFINDINGS: Lungs: Centrilobular emphysema, upper lobe predominant. No pulmonary nodule. No consolidation. Airways patent. Pleura: No effusion or pneumothorax. Mediastinum and hila: No lymphadenopathy. Heart normal size. Upper abdomen: Unremarkable.\nLUNG-RADS: Category 1, negative.",
+              "conclusion": "Lung-RADS 1. Emphysema. Continue annual screening with LDCT in 12 months."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Diagnostic imaging study",
+              "title": "LDCT Lung Screening Result Note",
+              "author": "PCP",
+              "date": "2023-07-20T07:50",
+              "body": "LDCT baseline: no nodules, Lung-RADS 1. Emphysema as expected with her COPD. Repeat in 1 yr. Message sent to pt."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-20a",
+          "kind": "portal_message",
+          "start": "2023-07-20T08:05",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your CT and blood work",
+              "author": "PCP",
+              "date": "2023-07-20T08:05",
+              "body": "Hi Irene - your lung screening CT showed no spots or nodules. It does show emphysema, which is the CT picture of the COPD we already know about. We'll repeat the scan every summer as long as you're a smoker or recently quit.\n\nYour blood counts, kidney and liver tests, thyroid and cholesterol were all fine, and the hepatitis C screen was negative.\n\nAnd I'll keep saying it: the single best thing for your lungs is stopping cigarettes. Door's open whenever you want help."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your CT and blood work",
+              "author": "patient",
+              "date": "2023-07-20T19:42",
+              "body": "Thank you for letting me know so fast. Relieved. I hear you on the smoking."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "imaging",
+          "start": "2023-08-22T13:30",
+          "reason": "Screening mammogram and bone density",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-08-22T13:30",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison: outside 2022 exam reported negative (images not available). The breasts are almost entirely fatty. No suspicious mass, calcifications or architectural distortion. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine annual screening."
+            },
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2023-08-22T14:00",
+              "text": "Lumbar spine L1-L4 T-score -0.9. Left femoral neck T-score -0.8. Total left hip T-score -0.6. No prior for comparison.",
+              "conclusion": "Normal bone density."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Diagnostic imaging study",
+              "title": "Mammogram and DXA Result Note",
+              "author": "PCP",
+              "date": "2023-08-23T12:10",
+              "body": "Mammo BI-RADS 1. DXA normal. Letters mailed. Next mammogram 2024."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-10T10:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T10:22"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-10T10:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-10-10T10:40",
+              "body": "Pt in for fall vaccines per PCP. Screening questions reviewed, no contraindications, no fever. VIS given for each.\n- High-dose flu, 0.7 mL IM L deltoid\n- 2023-24 COVID (Pfizer), 0.3 mL IM R deltoid\n- PCV20, 0.5 mL IM R deltoid (no prior pneumococcal on record)\nObserved 15 min, tolerated well. Pt asked whether she needs the shingles shot - told her we'll plan that at her wellness visit in January."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "pharmacy",
+          "start": "2023-11-28T11:30",
+          "reason": "Prior authorization, tiotropium",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Prior Authorization - Tiotropium",
+              "author": "MA",
+              "date": "2023-11-28T11:30",
+              "body": "Pharmacy faxed a PA request: her new Part D plan for 2024 wants a PA on Spiriva HandiHaler. Submitted through the plan portal with dx COPD, FEV1 42% pred (7/11/23), on it >9 yrs. Approved 11/29 through 12/31/2024. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "annual_physical",
+          "start": "2024-01-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-01-16T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-01-16T09:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2024-01-16T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-16T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-01-16T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit (Initial)",
+              "author": "PCP",
+              "date": "2024-01-16T10:05",
+              "body": "INITIAL AWV\n\nHealth risk assessment reviewed (completed in waiting room). Independent in ADLs and IADLs - drives, shops, keeps her own house. No falls in the past year; steady on Get Up and Go. Hearing and vision OK by self-report; sees an eye doctor every couple of years for readers. PHQ-2 = 0. No memory concerns from her or her daughter.\n\nCOPD stable since summer. Still smoking, \"a bit less\" - maybe 15/day. Counseled again; she'd like to try cutting down on her own first.\n\nPrevention:\n- Colon: colonoscopy 2018 normal, nothing due.\n- Breast: mammo 8/2023 neg, repeat 2024.\n- Bone: DXA 8/2023 normal.\n- Lung: LDCT 7/2023 Lung-RADS 1, repeat 7/2024.\n- Vaccines: flu, COVID, PCV20, Tdap all done. Shingrix #1 today, #2 in 2-6 mo.\n- Hep C neg 2023.\n\nAdvance directives: none on file. Would want her daughter to speak for her. Gave the health care proxy form to take home.\n\nVitals per flowsheet, BMI about 23-24. Lungs diminished, no wheeze. Heart regular.\n\nPlan: lipid panel today. Shingrix #2 nurse visit in March. COPD visit in spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "nurse_visit",
+          "start": "2024-03-19T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-03-19T14:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-03-19T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix #2",
+              "author": "RN",
+              "date": "2024-03-19T14:20",
+              "body": "Second Shingrix given 0.5 mL IM L deltoid. After dose 1 she had a sore arm and felt tired for a day, nothing else. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "office_visit",
+          "start": "2024-05-14T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-05-14T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "COPD Follow-up",
+              "author": "PCP",
+              "date": "2024-05-14T11:15",
+              "body": "COPD f/u. No flares over the winter. Baseline - winded on stairs and the hill, fine on the flat. Albuterol 2-3x/week. Cigarettes ~12-15/day.\n\nExam: diminished breath sounds, no wheeze, no crackles. RRR. No edema. SpO2 per flowsheet.\n\nA/P: COPD GOLD 3, stable on tiotropium + fluticasone + PRN albuterol. Refills sent x1 yr. Smoking - again offered nicotine patch or varenicline; she says maybe in the fall. LDCT due July, order placed. f/u 6 mo."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung cancer screening"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "imaging",
+          "start": "2024-07-23T10:30",
+          "reason": "Annual lung cancer screening",
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-07-23T10:30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-07-23T10:30",
+              "text": "INDICATION: Annual lung cancer screening, current smoker.\nTECHNIQUE: Low-dose CT chest without contrast.\nCOMPARISON: 07/19/2023.\nFINDINGS: Centrilobular emphysema, upper lobe predominant, unchanged. No pulmonary nodule. No consolidation or effusion. No hilar or mediastinal lymphadenopathy. Heart size normal. Visualized upper abdomen unremarkable.\nLUNG-RADS: Category 1.",
+              "conclusion": "Lung-RADS 1. Stable emphysema. Annual LDCT in 12 months."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Diagnostic imaging study",
+              "title": "LDCT Result Note",
+              "author": "PCP",
+              "date": "2024-07-24T08:15",
+              "body": "LDCT #2 clean, Lung-RADS 1. Portal msg sent. Recall 7/2025."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "office_visit",
+          "start": "2024-08-27T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "No-show",
+              "author": "front desk",
+              "date": "2024-08-27T15:30",
+              "body": "Pt did not arrive for 3:00 appt. Called home, left voicemail to reschedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "imaging",
+          "start": "2024-09-17T09:15",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-09-17T09:15",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison 08/22/2023. Almost entirely fatty breasts. No mass, suspicious calcification or distortion. Stable.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu, COVID, RSV vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T09:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T09:37"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2024-10-08T09:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall Vaccines",
+              "author": "RN",
+              "date": "2024-10-08T09:55",
+              "body": "Missed her August visit (said she mixed up the day). Here today for vaccines; rescheduled COPD f/u to Nov by video.\nGiven: high-dose flu L deltoid; 2024-25 COVID R deltoid; RSV (Arexvy) R deltoid, eligible 60+ with COPD. No contraindications. Tolerated, observed 15 min. Mammogram letter from Sept reviewed with her - negative."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "telehealth_visit",
+          "start": "2024-11-19T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up (video)",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-11-19T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - COPD",
+              "author": "PCP",
+              "date": "2024-11-19T13:45",
+              "body": "Video, pt at home, daughter set up the tablet. Identity confirmed.\nBreathing at baseline. No flares this year. Using inhalers as prescribed. Still smoking, about the same.\nNo exam beyond: speaking full sentences, no audible wheeze, no accessory muscle use on video.\nA/P: COPD stable. Tobacco - discussed again; she wants to pick a quit date after the holidays. Tiotropium PA renewal will come up for 2025, MA aware. AWV in Jan with labs."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

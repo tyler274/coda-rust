@@ -1,0 +1,227 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002735",
+      "given": "Sandra",
+      "family": "Wojcik",
+      "birth_date": "1970-07-20",
+      "address_line": "118 Bridge Road",
+      "phone": "+1-603-555-0128",
+      "email": "sandra.wojcik@example.test",
+      "marital_status": "married",
+      "summary": "56-year-old school district administrative coordinator with type 2 diabetes, hypertension, obesity and symptomatic gallstones who joined in 2024. Cholangitis from a common duct stone in December 2025, interval cholecystectomy in February 2026 complicated by vagal bradycardia on insufflation and post-intubation laryngitis, then a retained duct stone with cholangitis and septic shock in March 2026. Recovered and back to routine care.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:05",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2024-08-27T10:05",
+              "body": "Pt called to join the practice. Previous PCP retired over the summer and her new insurance through the school district is a PPO. Booked new patient visit 9/10 at 8:00 AM (she wants early, works at the district office). Membership paperwork and records release emailed; she will sign and return the release so we can request records from the prior office. Reminded her to bring all pill bottles and to come fasting for labs."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:00",
+          "end": "2024-09-10T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus without complications", "action": "history", "onset": "2018-03-01"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2016-06-01"},
+            {"label": "Obesity, unspecified", "action": "history", "onset": "2012-01-01"},
+            {"label": "Cholelithiasis", "action": "history", "onset": "2023-05-01", "note": "With recurrent biliary colic"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "glipizide 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily before breakfast", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "atorvastatin 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 20, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "Diabetes, cardiovascular risk"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [130, 80], "hr": 72, "weight_kg": 86.6, "height_cm": 162.0, "labs": {"Hemoglobin A1c": 7.2, "Microalbumin/Creatinine Ratio": 9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2024-09-10T08:40", "results": [{"test": "Hemoglobin A1c", "value": 7.2, "unit": "%"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T08:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-10T08:40", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-10T08:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2024-09-10T08:40", "results": [{"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": null, "collected": "2024-09-10T08:40", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "1-2 glasses of wine on weekends"},
+            {"item": "Occupation", "value": "Administrative coordinator, school district"}
+          ],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-10T08:55"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2024-09-10T08:00"},
+            {"procedure": "Venipuncture", "performed": "2024-09-10T08:40"},
+            {"procedure": "Immunization administration", "performed": "2024-09-10T08:55"}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Breast cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-09-10T09:05",
+              "body": "NEW PATIENT VISIT\n\n54F here to establish. Prior PCP retired; records requested. Works as an administrative coordinator for the school district, so the first weeks of September are busy for her.\n\nDiabetes: type 2 since 2018. Metformin 1000 BID and glipizide 5 qAM. Checks sugars a few mornings a week and says they run about where her old doctor wanted. No lows. No numbness or burning in the feet. Eye exam last year with an optometrist, told no diabetic changes.\n\nHTN: on lisinopril 10 for years. Home cuff readings at goal by her report. No cough.\n\nGallstones: found on an ultrasound last year after a few attacks of RUQ/epigastric pain. Gets an episode every few months, usually after a heavy or fried meal: steady ache under the right ribs, sometimes into the back, lasts a couple of hours, then settles. Last one in July. Never had fever, yellow eyes or dark urine with them. Prior PCP talked about seeing a surgeon. She knows her mother and sister both had gallbladder trouble.\n\nPMH: T2DM, HTN, obesity, cholelithiasis.\nPSH: T&A as a child (1978), C-section 1994.\nMeds: metformin 1000 mg BID, glipizide 5 mg daily, lisinopril 10 mg daily, atorvastatin 20 mg qHS.\nAllergies: NKDA.\nFHx: mother T2DM and gallstones (gallbladder out at 52); father HTN and high cholesterol; older sister gallstones.\nSHx: former smoker, roughly 8 pack-years, quit 2015. Wine 1-2 glasses on weekends. No drugs. Walks some evenings.\n\nROS: no chest pain, dyspnea, edema. No change in bowels. No urinary symptoms. Mood good.\n\nEXAM: well appearing, pleasant. See vitals. BMI 33.\nHEENT normal. Neck supple, no thyroid enlargement.\nHeart RRR, no murmur. Lungs clear.\nAbd obese, soft, nontender today, no organomegaly, low transverse scar well healed.\nExt no edema. Feet: skin intact, no calluses or ulcers, monofilament intact bilaterally, DP and PT pulses 2+.\nSkin no rash. Neuro nonfocal.\n\nPHQ-2: 0.\n\nASSESSMENT/PLAN\n1. T2DM - on metformin/glipizide. A1c today. Reviewed hypoglycemia rules with glipizide (don't skip meals, carry glucose tabs). Urine microalbumin today. Eye exam due this fall, she will book with her optometrist.\n2. HTN - at goal in office and at home. Continue lisinopril 10. CMP today.\n3. Obesity - BMI 33. Talked about walking more regularly; she is open to it once the school year settles.\n4. Cholelithiasis with recurrent biliary colic - symptomatic stones, discussed that elective cholecystectomy is the usual answer and offered a general surgery referral. She'd rather not take time off right now and wants to think it over. Reviewed red flags: pain lasting more than a few hours, fever, yellowing, dark urine - go to the ED. Lower-fat meals may cut down on attacks.\n5. Lipids - continue atorvastatin 20. Lipid panel today.\n6. Health maintenance - flu shot today. Hep C and HIV screening today (never done). Mammogram ordered. Colonoscopy, Pap and vaccine history from old records when they arrive. Shingrix and COVID booster discussed for next month.\n\nRTC 3 months for diabetes, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2024-09-12T16:40",
+              "body": "Hi Sandra,\n\nYour labs from Tuesday are back. Your A1c is 7.2%, which is close to our goal of 7 and about where your old office had you. Kidney function, liver tests, blood count and the urine protein test are all normal. Your cholesterol panel is back as well and we'll go over it at your next visit. Your hepatitis C and HIV screens were negative.\n\nNo changes to your medications. We'll recheck the A1c in December.\n\nGood to meet you, and good luck with the start of the year at the district."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "outside_records",
+          "start": "2024-09-23T11:20",
+          "reason": "Prior primary care records received",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-04-09T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-18T09:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-08T09:00"}
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2023-05-16T09:30",
+              "text": "RIGHT UPPER QUADRANT ULTRASOUND\nIndication: Intermittent right upper quadrant pain.\nComparison: None.\nFindings: The liver is normal in size and echotexture without focal lesion. The gallbladder contains multiple mobile echogenic shadowing stones. No gallbladder wall thickening or pericholecystic fluid. Sonographic Murphy sign negative. The common bile duct is normal in caliber. No intrahepatic biliary dilation. The pancreas is partially obscured by bowel gas; visualized portions unremarkable. Right kidney normal without hydronephrosis.",
+              "conclusion": "Cholelithiasis without sonographic evidence of acute cholecystitis. Normal caliber common bile duct."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "MA",
+              "date": "2024-09-23T11:20",
+              "body": "Records received from prior primary care office (faxed, 46 pages), scanned to media. Abstracted for PCP:\n\n- Problem list: type 2 diabetes (2018), hypertension, obesity, gallstones (ultrasound 05/2023).\n- Meds match what pt reported at her 9/10 visit.\n- RUQ ultrasound 05/16/2023: gallstones, normal duct. Report filed.\n- Screening colonoscopy 2021: no polyps, repeat in 10 years.\n- Pap with HPV co-test 2022: NILM, HPV negative.\n- Screening mammogram 10/2023: negative.\n- Diabetic eye exam 2023: no retinopathy.\n- Immunizations: Tdap 04/2019; COVID Pfizer x2 spring 2021. No shingles or pneumococcal vaccine on file.\n\nImmunizations entered into history. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "imaging",
+          "start": "2024-10-22T15:10",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-10-22T15:10",
+              "text": "BILATERAL SCREENING MAMMOGRAM WITH TOMOSYNTHESIS\nComparison: 10/2023 outside study.\nBreast composition: scattered areas of fibroglandular density.\nNo suspicious masses, architectural distortion or suspicious calcifications in either breast. No change from prior.",
+              "conclusion": "BI-RADS 1: Negative. Routine screening mammogram in 1 year."
+            }
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "done", "date": "2024-10-22T15:10"}
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "nurse_visit",
+          "start": "2024-10-29T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-29T16:20"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-10-29T16:22"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-29T16:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2024-10-29T16:35",
+              "body": "Here after work for vaccines per PCP plan. Feeling well, no fever. No prior reactions to vaccines.\nCOVID-19 2024-25 formula 0.3 mL IM L deltoid.\nShingrix #1 0.5 mL IM R deltoid.\nVIS given for both. Discussed that Shingrix can cause a sore arm, fatigue or low-grade fever for a day or two. Observed 15 min, no reaction.\nShingrix #2 due in 2-6 months; she'll book for late winter/early spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "outside_records",
+          "start": "2024-11-19T09:45",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination Report",
+              "author": "optometry",
+              "date": "2024-11-19T09:45",
+              "body": "DIABETIC EYE EXAM - REPORT TO PRIMARY CARE\nDate of exam: 11/12/2024\nPatient: Sandra Wojcik\nReason: annual diabetic eye evaluation. Type 2 diabetes since 2018.\n\nVisual acuity normal with correction. Pupils normal. Intraocular pressures normal.\nDilated fundus exam: optic nerves healthy, maculae flat, no hemorrhages, microaneurysms, exudates or neovascularization OU.\n\nImpression: No diabetic retinopathy either eye.\nPlan: dilated exam again in 12 months.\n\nAllergies: NKDA. Thank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "office_visit",
+          "start": "2024-12-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-12-17T16:25", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-17T16:25", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-12-17T16:00"},
+            {"procedure": "Venipuncture", "performed": "2024-12-17T16:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "author": "PCP",
+              "date": "2024-12-17T16:40",
+              "body": "S: 3 mo DM/HTN f/u. Fasting sugars steady on her meter. No lows. Walking 2-3 evenings a week until it got dark early. Holiday party season, admits to more sweets. No gallbladder attacks since summer. Eye exam done in Nov - no retinopathy (report on file). Meds unchanged, no side effects.\n\nO: vitals as charted. Alert, comfortable. Heart RRR. Lungs clear. Abd soft, nontender. No edema.\n\nA/P:\n- T2DM: A1c and BMP today. Continue metformin 1000 BID, glipizide 5.\n- HTN: controlled, continue lisinopril 10.\n- Gallstones: quiet. She is still not ready to see surgery; will revisit if attacks pick up.\n- HM: Shingrix #2 due by spring.\nRTC 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-18a",
+          "kind": "portal_message",
+          "start": "2024-12-18T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "author": "PCP",
+              "date": "2024-12-18T12:10",
+              "body": "Sandra - A1c from yesterday is in the same range as September, and your kidney function and potassium are normal. Keep doing what you're doing. Happy holidays."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

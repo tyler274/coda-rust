@@ -1,0 +1,5148 @@
+{
+  "unit": "unit-2073",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"multivitamin Oral Tablet\"",
+    "left text-only (not verified): drug \"pyridoxine hydrochloride 50 MG Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002073",
+      "given": "Rohan",
+      "family": "Chowdhury",
+      "birth_date": "1972-04-30",
+      "address_line": "27 Bardwell Street",
+      "phone": "+1-508-555-0144",
+      "email": "rohan.chowdhury@example.test",
+      "marital_status": "single",
+      "summary": "Construction laborer with severe alcohol use disorder who joined in 2021 with alcoholic liver disease, then developed chronic pancreatitis with exocrine insufficiency, alcoholic cerebellar degeneration and thiamine deficiency, was treated for tuberculous spondylitis, and has had alcoholic hepatitis, withdrawal, delirium tremens and withdrawal seizures. Lives with his brother; outside records arrive late or not at all.",
+      "events": [
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2021-09-02T10:20",
+              "author": "front desk",
+              "body": "Caller is looking for a primary doctor; has not had one since moving to the area. Has MassHealth, confirmed we take his plan. Works construction, days vary, prefers early mornings. New patient visit booked 9/14 at 8:00. Asked him to bring any pill bottles and any old records he has. Says he doesn't have any."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T08:00",
+          "end": "2021-09-14T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Alcohol use disorder, severe",
+              "action": "diagnosed",
+              "onset": "2001-06-01",
+              "note": "about 6 beers daily for 20 years; prior withdrawal episodes by report",
+              "icd10": "F10.20"
+            },
+            {
+              "label": "Tobacco use",
+              "action": "diagnosed",
+              "onset": "2002-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "thiamine hydrochloride 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "alcohol use disorder"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "alcohol use disorder"
+            },
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "nutrition"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              105,
+              74
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 61.7,
+            "height_cm": 167.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 68
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 104
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 99
+                },
+                {
+                  "test": "Platelets",
+                  "value": 178
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.02
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:10",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 290
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "About 6 beers daily for 20 years"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ruq-us-2021",
+              "action": "placed",
+              "order": "Right upper quadrant ultrasound",
+              "category": "imaging",
+              "reason": "elevated liver enzymes, heavy alcohol use"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T09:05",
+              "author": "PCP",
+              "body": "49M establishing care. No PCP since moving to the US in 2019; before that, care was sporadic and he has no records to send. Works construction (laborer, mostly framing and demo).\n\nAlcohol: up front about it. Drinks about 6 beers a day, has for roughly 20 years. Has been through withdrawal before, several times, treated in EDs; can't give dates. Longest dry spells 1 to 3 months, then back to it. Not interested in a program today but willing to keep talking.\nTobacco: smokes, about a pack a day on and off since his late 20s. Thinking about quitting.\nNo drugs.\n\nPMH: nothing he knows of. PSH: none. Meds: none. NKDA.\nFH: father had alcohol use disorder and died with cirrhosis. Mother type 2 diabetes. Brother has high blood pressure; he lives with his brother and his brother's family.\n\nROS: appetite fair, no abdominal pain, no jaundice he's noticed, no GI bleeding. No chest pain or dyspnea.\n\nExam: thin man, NAD. Anicteric. Heart RRR, lungs clear. Abdomen soft, nontender, liver edge not palpable, no ascites. No spider angiomata. No tremor today. Gait normal.\n\nAUDIT-C 10. PHQ-9 5.\n\nA/P\n1. Severe alcohol use disorder. Long talk. Not ready to cut back much; agreed to come back in a few months. Gave him the outpatient addiction services list. Start thiamine 100 daily, folic acid 1 mg daily, multivitamin.\n2. Liver: check CMP, CBC, GGT; hep C and hep B serologies; RUQ ultrasound.\n3. Tobacco: advised quitting, he'll think about it.\n4. Health maintenance: flu shot next month with RN. Colorectal screening due, FIT at that visit."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "height_cm": 168.0,
+            "labs": {
+              "Alanine Aminotransferase": 47,
+              "Albumin": 3.9,
+              "Alkaline Phosphatase": 104,
+              "Aspartate Aminotransferase": 68,
+              "Bilirubin, Total": 1.0,
+              "Gamma Glutamyl Transferase": 290,
+              "Hemoglobin": 13.6,
+              "Magnesium": 1.9,
+              "Mean Corpuscular Volume": 99,
+              "Platelets": 178
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-17a",
+          "kind": "portal_message",
+          "start": "2021-09-17T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "date": "2021-09-17T16:40",
+              "author": "PCP",
+              "body": "Rohan, your liver tests are up: AST 68, ALT 47 and GGT 290. That pattern fits alcohol affecting the liver. Liver function itself (bilirubin, albumin) is OK, and your blood counts are fine. Hepatitis C test is negative. Your hepatitis B tests show you have never had it and are not immune, so I'd like to vaccinate you; we can start that at a follow-up. The ultrasound is scheduled for 9/28."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "imaging",
+          "start": "2021-09-28T07:30",
+          "service": "Radiology",
+          "reason": "elevated liver enzymes",
+          "conditions": [
+            {
+              "label": "Alcoholic liver disease",
+              "action": "diagnosed",
+              "onset": "2021-09-14",
+              "icd10": "K70.9"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2021-09-28T07:30",
+              "text": "Indication: elevated transaminases, heavy alcohol use.\nTechnique: grayscale and color Doppler sonography of the right upper quadrant.\nLiver: normal in size. Diffusely increased echogenicity with mild attenuation of the sound beam. No focal lesion. Hepatic contour smooth.\nGallbladder: normal wall, no stones, no pericholecystic fluid. Sonographic Murphy sign negative.\nBile ducts: no intrahepatic ductal dilatation. Common duct 4 mm.\nPortal vein: patent with normal hepatopetal flow.\nPancreas: head and body unremarkable where seen; tail obscured by bowel gas.\nRight kidney: normal size, no hydronephrosis.\nSpleen: normal in size.\nNo ascites.",
+              "conclusion": "Diffusely echogenic liver consistent with hepatic steatosis. No focal liver lesion. No biliary dilatation."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ruq-us-2021",
+              "action": "done",
+              "date": "2021-09-28T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result note",
+              "date": "2021-09-28T15:10",
+              "author": "PCP",
+              "body": "Steatosis on US, nothing focal, spleen normal size. With the enzyme pattern and his intake this is alcoholic liver disease. Added to problem list. RN to call."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-29a",
+          "kind": "telephone",
+          "start": "2021-09-29T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ultrasound result",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result call",
+              "date": "2021-09-29T12:15",
+              "author": "RN",
+              "body": "Reached pt on his lunch break. Reviewed US: fatty liver from alcohol, no masses, no scarring seen on this test. Explained cutting down is what lets the liver recover. He said \"I know.\" Confirmed nurse visit 10/19 for flu shot. Taking the vitamins."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T07:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit",
+              "date": "2021-10-19T08:00",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM L deltoid, tolerated. FIT kit given with instructions, he'll mail it from work. Reminded him of follow-up with PCP in December."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-03a",
+          "kind": "lab_only",
+          "start": "2021-11-03T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-11-01T08:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result note",
+              "date": "2021-11-03T14:30",
+              "author": "PCP",
+              "body": "FIT negative. Repeat in one year."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "office_visit",
+          "start": "2021-12-07T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up alcohol use, liver",
+          "vitals": {
+            "bp": [
+              127,
+              77
+            ],
+            "hr": 69,
+            "spo2": 99,
+            "weight_kg": 60.9
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2021-12-07T08:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 67
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 107
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-12-07T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-12-07T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-12-07T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-12-07T08:30",
+              "author": "PCP",
+              "body": "S: Here for follow-up. Drinking about the same, 5 or 6 a night after work. Says he tried to skip weekends in November and made it one weekend. Still smoking. Taking the vitamins most days. No abdominal pain, no yellowing. Work is slow for winter.\nO: Vitals as charted. Anicteric. Abdomen soft, nontender. No tremor.\nA/P: AUD, severe, precontemplative to contemplative. Talked about what a first step could look like; he'd like to try cutting to weekdays only. Not interested in medication or a program right now, which I respect, and the door stays open. ALD: repeat LFTs today. Tobacco: discussed, would like to quit after the holidays. Tdap today. RTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-01-18a",
+          "kind": "pharmacy",
+          "start": "2022-01-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2022-01-18T09:30",
+              "author": "MA",
+              "body": "Pharmacy fax for thiamine and folic acid, 90-day supply. Last seen 12/7. Pended for PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Refill approved",
+              "date": "2022-01-18T12:05",
+              "author": "PCP",
+              "body": "Approved x90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "office_visit",
+          "start": "2022-03-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "conditions": [
+            {
+              "label": "Tobacco use",
+              "action": "resolved",
+              "note": "quit January 2022"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2022-01-10",
+              "note": "20 pack-years"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              70
+            ],
+            "hr": 67,
+            "spo2": 98,
+            "weight_kg": 61.1
+          },
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 9
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-08T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-08T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-03-08T08:10"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-03-08T08:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-03-08T08:20",
+              "author": "PCP",
+              "body": "Good news first: stopped smoking the second week of January, cold turkey, and has not had one since. About 20 pack-years. Proud of it, as he should be.\nAlcohol: weekdays-only didn't stick. Still most nights, maybe a bit less. AUDIT-C 9.\nNo GI complaints. Weight down a little from fall.\nExam: well appearing, anicteric, abdomen benign.\nPlan: congratulated on quitting, reviewed triggers. Alcohol: same conversation, same answer; continue vitamins. PCV20 given for alcohol use disorder and smoking history. Hep B series dose 1 today, RN for dose 2 in a month and dose 3 in the fall. Labs at next visit. RTC 3 to 4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "nurse_visit",
+          "start": "2022-04-12T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hepatitis B vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-04-12T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-04-12T07:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit",
+              "date": "2022-04-12T07:40",
+              "author": "RN",
+              "body": "Hep B dose 2 IM R deltoid. No reaction to dose 1. Dose 3 due in September or later; will pair with flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "office_visit",
+          "start": "2022-06-14T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "office_visit",
+          "start": "2022-07-19T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after missed visit",
+          "vitals": {
+            "bp": [
+              115,
+              77
+            ],
+            "hr": 72,
+            "spo2": 98,
+            "weight_kg": 58.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-07-19T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 48
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 108
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-07-19T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 103
+                },
+                {
+                  "test": "Platelets",
+                  "value": 183
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 35.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-19T08:00",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 284
+                },
+                {
+                  "test": "Magnesium",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-07-19T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-07-19T08:10",
+              "author": "PCP",
+              "body": "Missed June, says a job ran long. Busy season, out on a site six days a week. Still not smoking.\nDrinking unchanged. Eating less in the heat. Stools have been a bit looser the last month or so, figures it's the beer. No blood, no pain.\nWeight 59, down 2 kg since last fall.\nExam: thin, anicteric, abdomen soft and nontender. No tremor.\nA/P: AUD severe, ALD: labs today. Weight trending down; asked him to eat a real breakfast and lunch and we'll recheck. If stools stay loose, tell us. Hep B #3 and flu shot in October. RTC fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-10-11T07:35"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T07:37"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit",
+              "date": "2022-10-11T07:55",
+              "author": "RN",
+              "body": "Hep B dose 3 (series complete), flu and COVID bivalent booster given, split arms. Waited 15 min, fine. New FIT kit handed over; last year's was negative. Pt asked to reschedule his PCP follow-up to December when work slows."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "weight loss, diarrhea",
+          "vitals": {
+            "bp": [
+              124,
+              76
+            ],
+            "hr": 78,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 55.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-12-13T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 64
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 46
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 102
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-13T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 164
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 101
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 34.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-13T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "weight loss, steatorrhea, epigastric pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-12-13T08:50",
+              "author": "PCP",
+              "body": "CC: weight loss, loose stools.\n\nHPI: About six months now of loose stools that he describes as big, greasy and smelling terrible, hard to flush. Several a day. Over the same stretch he has lost weight without trying; down to 55 kg from 61 at his first visit here. Also gets episodes of pain high in the belly that bores through to his back, worse after a big meal. No vomiting, no black or bloody stools, no fevers.\nAlcohol: stopped drinking at the start of December after a bad weekend, about ten days dry so far. No shakes this time.\nFIT kit from October not returned.\n\nExam: thin, temporal wasting. Anicteric today. Abdomen soft, tender in the epigastrium, no rebound, no guarding, no mass. No edema.\n\nA/P\n1. Weight loss with steatorrhea and epigastric pain radiating to the back in a long-term heavy drinker: concerning for chronic pancreatitis with malabsorption. Referring to GI, asked for the soonest slot. CMP and CBC today.\n2. AUD: newly abstinent. Encouraged; reviewed withdrawal warning signs and to go to the ED for confusion, shaking or seizures if he drinks and stops again.\n3. Continue thiamine, folate, MVI."
+            }
+          ],
+          "state": {
+            "weight_kg": 55.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "telephone",
+          "start": "2022-12-20T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "referral scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral scheduled",
+              "date": "2022-12-20T14:10",
+              "author": "front desk",
+              "body": "GI office has him on 1/5 at 10:30. Called pt, gave date and address. He'll get a ride from his brother."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-05a",
+          "kind": "specialist_visit",
+          "start": "2023-01-05T10:30",
+          "service": "Gastroenterology",
+          "reason": "weight loss, chronic diarrhea",
+          "conditions": [
+            {
+              "label": "Chronic pancreatitis",
+              "action": "diagnosed",
+              "onset": "2022-06-01"
+            },
+            {
+              "label": "Exocrine pancreatic insufficiency",
+              "action": "diagnosed",
+              "onset": "2022-06-01",
+              "icd10": "K86.81"
+            },
+            {
+              "label": "Protein-calorie malnutrition",
+              "action": "diagnosed",
+              "onset": "2022-09-01",
+              "icd10": "E46"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "lipase 36000 UNT / protease 114000 UNT / amylase 180000 UNT Delayed Release Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth with each meal (36,000 lipase units)",
+              "dose": {
+                "value": 1,
+                "unit": "capsule"
+              },
+              "frequency": "TID with meals",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "exocrine pancreatic insufficiency"
+            },
+            {
+              "drug_text": "lipase 6000 UNT / protease 19000 UNT / amylase 30000 UNT Delayed Release Oral Capsule",
+              "action": "start",
+              "sig": "Take 3 capsules by mouth with each snack (18,000 lipase units)",
+              "dose": {
+                "value": 3,
+                "unit": "capsule"
+              },
+              "frequency": "with snacks",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "exocrine pancreatic insufficiency"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-01-05T11:20",
+              "results": [
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 160
+                },
+                {
+                  "test": "Lipase",
+                  "value": 300
+                },
+                {
+                  "test": "Pancreatic elastase, stool",
+                  "loinc": "25907-7",
+                  "unit": "ug/g",
+                  "text": "<100"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-01-05T11:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 145
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 88
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 95
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2023-02-16T09:00",
+              "author": "gastroenterology",
+              "body": "GASTROENTEROLOGY CONSULTATION\nDate of service: 01/05/2023\nReferred by: primary care\n\nReason for referral: weight loss and chronic diarrhea.\n\nMr. Chowdhury is a 50-year-old construction laborer with a long history of heavy alcohol use and known alcoholic liver disease. For roughly half a year he has had bulky, oily, malodorous stools along with recurrent epigastric pain that bands through to the back. He has lost weight steadily. He has been abstinent for about a month.\n\nCurrent medications: thiamine 100 mg daily, folic acid 1 mg daily, multivitamin daily.\nAllergies: NKDA.\nFamily history: father with alcohol use disorder and cirrhosis; mother with type 2 diabetes; brother with hypertension.\nSocial: former smoker, about 20 pack-years, quit 2022. Heavy beer use for two decades, currently abstinent.\n\nExam: cachectic. Mild scleral icterus. Abdomen with epigastric tenderness, no rebound or guarding. Bowel sounds normal. No ascites.\n\nData: amylase 160 U/L (30-110), lipase 300 U/L (0-160), fecal elastase <100 mcg/g (>200), total cholesterol 145, triglycerides 88.\n\nImpression:\n1. Chronic pancreatitis, alcohol related, with exocrine pancreatic insufficiency; markedly low fecal elastase with classic steatorrhea.\n2. Protein-calorie malnutrition.\n3. Alcohol use disorder, currently abstinent.\n\nRecommendations:\n- Pancrelipase 36,000 lipase units with each meal and 18,000 units with snacks; prescription sent. Take at the start of the meal.\n- Continue thiamine, folate and multivitamin.\n- Strict abstinence from alcohol.\n- Return to GI as needed; primary care to follow weight.\n\nThank you for this referral."
+            }
+          ],
+          "state": {
+            "weight_kg": 53.6,
+            "labs": {
+              "Alanine Aminotransferase": 44,
+              "Albumin": 3.4,
+              "Aspartate Aminotransferase": 62
+            }
+          }
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "pharmacy",
+          "start": "2023-01-10T13:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior authorization",
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "done",
+              "date": "2023-01-10T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization request",
+              "date": "2023-01-10T13:45",
+              "author": "MA",
+              "body": "Pharmacy faxed a MassHealth PA request for pancrelipase, two strengths, prescribed by GI on 1/5. We have no GI note yet. Called GI office, they'll fax the visit note \"when it's signed\". Pt confirms GI started him on enzyme capsules with meals and snacks."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Prior authorization",
+              "date": "2023-01-10T16:20",
+              "author": "PCP",
+              "body": "PA completed for pancrelipase: weight loss, steatorrhea, GI-confirmed exocrine insufficiency per patient and pharmacy. Submitted. Will update the problem list when the GI letter arrives."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-13a",
+          "kind": "telephone",
+          "start": "2023-01-13T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior authorization approved",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PA approved",
+              "date": "2023-01-13T10:05",
+              "author": "MA",
+              "body": "MassHealth approved pancrelipase x12 months. Pharmacy notified, pt picking up today."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-16a",
+          "kind": "outside_records",
+          "start": "2023-02-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "GI consult letter received",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside records reviewed",
+              "date": "2023-02-16T12:30",
+              "author": "PCP",
+              "body": "GI letter from 1/5 finally in. Chronic pancreatitis with exocrine insufficiency (fecal elastase <100), malnutrition. Pancrelipase as prescribed. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "office_visit",
+          "start": "2023-03-07T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up pancreatitis, weight",
+          "vitals": {
+            "bp": [
+              124,
+              74
+            ],
+            "hr": 63,
+            "spo2": 98,
+            "weight_kg": 54.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-07T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 58
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-07T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 168
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 95
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-07T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-03-07T08:30",
+              "author": "PCP",
+              "body": "S: Two months on the enzymes. Stools a lot better, two or three a day, formed most of the time, less greasy. Belly pain less often. Still dry since early December, the longest in a while. Eating more; brother's wife cooks for him. Taking the capsules with meals but forgets them with snacks at work.\nO: Weight 54.2, about even with GI. Anicteric today. Abdomen mildly tender epigastrium, no guarding.\nA/P:\n- Chronic pancreatitis with EPI: improving. Keep a few capsules in his lunch box.\n- Malnutrition: weight not up yet. Calorie-dense snacks, with enzymes. Recheck in 2 to 3 months.\n- AUD: 3 months abstinent. Lots of praise. Reviewed what helps, what he'll do on paydays.\n- Labs today."
+            }
+          ],
+          "state": {
+            "weight_kg": 54.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "office_visit",
+          "start": "2023-05-16T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "balance problems",
+          "vitals": {
+            "bp": [
+              115,
+              78
+            ],
+            "hr": 64,
+            "spo2": 98,
+            "weight_kg": 55.1
+          },
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-16T07:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2023",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "progressive gait imbalance"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-05-16T08:25",
+              "author": "PCP",
+              "body": "CC: unsteady on his feet.\n\nHe went back to drinking in March, most days through April, then stopped again about two weeks ago on his own. No withdrawal symptoms he noticed.\nThe main thing today: his balance has been getting worse since around January. At home he steadies himself on furniture and walls. Hasn't fallen yet. Coworkers have kept him off ladders. No numbness or weakness, no vision change.\n\nExam: walks with feet apart and sways, tandem walk poor. Strength full. Gross sensation intact. No tremor at rest.\n\nA/P\n1. Progressive gait imbalance in a long-term heavy drinker; likely alcohol related but needs neurology. Referral placed. Off ladders and scaffolding until seen; he agreed and asked for a work note.\n2. AUD, recently abstinent after relapse. Restarted the conversation about treatment; still declines. Continue thiamine, which he has been taking off and on.\n3. Pancreatitis/EPI: stable, weight up 1 kg."
+            }
+          ],
+          "state": {
+            "weight_kg": 55.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "portal_message",
+          "start": "2023-05-30T19:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "referral question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "neurology appt",
+              "date": "2023-05-30T19:12",
+              "author": "patient",
+              "body": "hi this is rohan. did the brain doctor call yet? nobody called me. thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: neurology appt",
+              "date": "2023-05-31T09:20",
+              "author": "front desk",
+              "body": "Hi Rohan, neurology has you down for July 6 at 1:40 pm. They'll mail you a packet. Let us know if that day doesn't work."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-06a",
+          "kind": "specialist_visit",
+          "start": "2023-07-06T13:40",
+          "service": "Neurology",
+          "reason": "gait difficulty",
+          "conditions": [
+            {
+              "label": "Alcoholic cerebellar degeneration",
+              "action": "diagnosed",
+              "onset": "2023-01-01",
+              "icd10": "G31.2"
+            },
+            {
+              "label": "Thiamine deficiency",
+              "action": "diagnosed",
+              "onset": "2023-07-06",
+              "icd10": "E51.9"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2023-07-20T08:45",
+              "author": "neurology",
+              "body": "OUTPATIENT NEUROLOGY CONSULTATION\nVisit date: 07/06/2023\n\nReason: gait instability.\n\nHistory: 51-year-old man with severe alcohol use disorder and chronic pancreatitis on enzyme replacement, referred for half a year of steadily worsening walking and balance. He now needs to hold onto furniture moving about his house. He denies limb weakness, numbness or pain. He reports about two months of abstinence.\n\nMedications: pancrelipase with meals and snacks, thiamine 100 mg, folic acid 1 mg, multivitamin.\nAllergies: none known.\nSocial: construction laborer. Former smoker, 20 pack-years. Long history of daily beer, 6 a day for about 20 years, with repeated withdrawal episodes and abstinent periods of 1 to 3 months.\nFamily: father alcohol use disorder with cirrhosis, mother type 2 diabetes, brother hypertension.\n\nExamination: alert, fluent, speech without dysarthria. Extraocular movements full, no nystagmus. Strength 5/5 throughout. Sensation intact to light touch, pinprick, vibration and proprioception. Reflexes 2+ and symmetric, toes downgoing. Finger-to-nose accurate even with eyes closed. Gait wide-based and unsteady; unable to tandem walk.\n\nLaboratory (drawn at this visit): CBC normal. AST and ALT mildly elevated. Vitamin B12 normal. TSH normal. Serum thiamine low.\n\nImpression: midline (truncal) cerebellar syndrome with gait ataxia and preserved limb coordination, in the setting of chronic alcohol use and low thiamine: alcoholic cerebellar degeneration. Thiamine deficiency.\n\nRecommendations: abstinence is the key intervention. Thiamine 100 mg daily, taken every day. Return in about six months.\n\nThank you for the opportunity to see him."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records reviewed",
+              "date": "2023-07-20T13:10",
+              "author": "PCP",
+              "body": "Neuro letter from 7/6: alcoholic cerebellar degeneration, low thiamine. Added both. Follow-up there in ~6 mo. Will reinforce daily thiamine at his August visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-20a",
+          "kind": "outside_records",
+          "start": "2023-07-20T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "neurology letter received",
+          "orders": [
+            {
+              "id": "neuro-referral-2023",
+              "action": "done",
+              "date": "2023-07-20T08:45"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "office_visit",
+          "start": "2023-08-22T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "vitals": {
+            "bp": [
+              109,
+              71
+            ],
+            "hr": 55,
+            "spo2": 99,
+            "weight_kg": 58.4
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-08-22T08:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 53
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 43
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 105
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 100
+                },
+                {
+                  "test": "Platelets",
+                  "value": 202
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-22T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-08-22T08:30",
+              "author": "PCP",
+              "body": "Interval: neurology saw him in July: alcoholic cerebellar degeneration and low thiamine. Reviewed the letter with him.\n\nDry since early May, now almost four months. Walking about the same, not worse; still uses the wall at home. Back at work on ground-level tasks only. Using a pill box his sister-in-law set up, so thiamine is every day now. Stools fine on enzymes.\nWeight 57, up 3 kg since spring.\n\nExam: wide-based gait, unchanged from May. Anicteric.\n\nA/P: cerebellar degeneration and thiamine deficiency: daily thiamine, abstinence, which he is doing. EPI and malnutrition: improving. ALD: LFTs today. Physical in October."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.0,
+            "labs": {
+              "Alanine Aminotransferase": 41,
+              "Albumin": 3.7,
+              "Aspartate Aminotransferase": 55
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "annual_physical",
+          "start": "2023-10-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              72
+            ],
+            "hr": 61,
+            "spo2": 98,
+            "weight_kg": 57.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-17T08:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 55
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 40
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 10.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 102
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-17T08:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 7
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-10-17T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T08:07"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-10-17T08:09"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-17T08:40",
+              "author": "PCP",
+              "body": "51M, annual exam.\n\nActive: severe AUD (abstinent since May 2023), alcoholic liver disease, chronic pancreatitis with EPI on pancrelipase, protein-calorie malnutrition, alcoholic cerebellar degeneration, thiamine deficiency. Former smoker, 20 pk-yr, quit Jan 2022.\nMeds: pancrelipase 36,000 units with meals and 18,000 with snacks; thiamine 100 daily; folic acid 1 mg daily; MVI. NKDA.\n\nHe feels well. Five months dry, by far his best stretch. Gait the same. No falls. Eating three meals.\n\nExam: thin, anicteric, no stigmata of chronic liver disease. HEENT unremarkable. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender today. No edema. Neuro: wide-based gait, mild truncal sway, strength normal. Skin without rash.\n\nPHQ-9 4.\n\nPrevention: flu, updated COVID and Shingrix #1 today; Shingrix #2 in 2 to 6 months. FIT kit given (last one negative 2021; 2022 kit never came back). Lung cancer screening: eligible by age and pack-years, explained low-dose CT; he would rather wait, \"enough tests this year.\" Will revisit. Hep B series complete. Tdap 2021. PCV20 2022. Labs today incl lipids."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "lab_only",
+          "start": "2023-11-07T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-03T08:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your stool test",
+              "date": "2023-11-07T15:10",
+              "author": "RN",
+              "body": "Hi Rohan, the stool test you mailed in was negative. Next one in a year. Your October blood work was stable too; the doctor will go over it at your next visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-15a",
+          "kind": "specialist_visit",
+          "start": "2024-01-15T09:20",
+          "service": "Neurology",
+          "reason": "follow-up gait disorder",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-01-15T10:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 55
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 130
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-15T10:05",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 450
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2024-04-03T11:00",
+              "author": "neurology",
+              "body": "NEUROLOGY FOLLOW-UP\nVisit date: 01/15/2024\n\nSeen in follow-up six months after his first visit for gait ataxia attributed to alcoholic cerebellar degeneration. He describes continued decline over the interval, now with frequent falls. No head strike and no loss of consciousness. His brother, who accompanies him, has noticed he is more forgetful and has more trouble with tasks that need coordinated hand use.\n\nMedications: pancrelipase, thiamine 100 mg daily, folic acid, multivitamin. NKDA.\n\nExam: gait wide-based and unsteady. Rapid alternating movements impaired bilaterally. Intention tremor on reaching. Tone reduced in all four limbs. Reflexes normal. Sensation intact.\n\nLabs today: AST 72 U/L, ALT 55 U/L, alkaline phosphatase 130 U/L, GGT 450 U/L.\n\nAssessment: progression of alcoholic cerebellar degeneration, now with appendicular signs. The liver enzymes suggest ongoing alcohol exposure.\n\nPlan: complete abstinence strongly advised; continue thiamine daily. Return in 6 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 55,
+              "Alkaline Phosphatase": 130,
+              "Aspartate Aminotransferase": 72,
+              "Gamma Glutamyl Transferase": 450
+            }
+          }
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              73
+            ],
+            "hr": 62,
+            "spo2": 97,
+            "weight_kg": 58.1
+          },
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-20T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-02-20T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-02-20T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-02-20T08:35",
+              "author": "PCP",
+              "body": "Came with his brother.\n\nSaw neurology in January; we never got a note. Per pt and brother: walking is worse and he has been falling, several times since fall, no head injury. Brother says he forgets things more and fumbles with small tasks. Neurology told him to stay away from alcohol and keep the thiamine.\nHe admits drinking again since around the holidays, \"a few\" most nights. Brother nods: more like 5 or 6.\nWeight 58, the best it has been.\n\nExam: wide-based, unsteady gait; needs a hand on the exam table to turn. Intention tremor finger-to-nose.\n\nA/P\n- Cerebellar degeneration, progressing with renewed drinking. Requesting neuro note.\n- AUD: relapsed. Brother very worried. Gave both of them the outpatient program info again and the walk-in hours; pt says maybe. Did not want to discuss medicine for it today.\n- EPI/malnutrition: weight up, doing well on enzymes.\n- Shingrix #2 today.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 58.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "telephone",
+          "start": "2024-02-21T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2024-02-21T10:30",
+              "author": "MA",
+              "body": "Faxed request to neurology for 1/15/24 visit note and labs. Release on file."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "telephone",
+          "start": "2024-03-19T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "records request follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records follow-up",
+              "date": "2024-03-19T11:40",
+              "author": "MA",
+              "body": "Still no neurology note. Called their records line, note was never signed; they'll send once it is. Re-faxed request."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-03a",
+          "kind": "outside_records",
+          "start": "2024-04-03T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "neurology note received",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside records reviewed",
+              "date": "2024-04-03T16:45",
+              "author": "PCP",
+              "body": "Neuro 1/15 note arrived: progression with appendicular signs. AST 72, ALT 55, ALP 130, GGT 450, consistent with drinking. Plan abstinence and thiamine, f/u 6 mo. Will message pt."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-05a",
+          "kind": "portal_message",
+          "start": "2024-04-05T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "outside records",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neurology note",
+              "date": "2024-04-05T12:10",
+              "author": "PCP",
+              "body": "Rohan, we finally got your January neurology note. It matches what you and your brother told me. Your liver tests from that day were higher than before, which usually means the alcohol is back in the picture. Please keep your May appointment; it's important we keep an eye on things together."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "office_visit",
+          "start": "2024-05-14T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-05-15a",
+          "kind": "telephone",
+          "start": "2024-05-15T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "missed visit",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-05-15T09:15",
+              "author": "front desk",
+              "body": "LVM re: missed visit yesterday, asked him to call to rebook. Second attempt 5/22, mailbox full."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-07a",
+          "kind": "hospital_admission",
+          "start": "2024-09-07T21:30",
+          "end": "2024-09-16T13:00",
+          "service": "Hospital Medicine",
+          "reason": "mid-back pain, night sweats, weight loss",
+          "conditions": [
+            {
+              "label": "Tuberculous spondylitis (Pott disease)",
+              "action": "diagnosed",
+              "onset": "2024-07-01",
+              "icd10": "A18.01"
+            },
+            {
+              "label": "Anemia of chronic disease",
+              "action": "diagnosed",
+              "onset": "2024-09-07",
+              "icd10": "D63.8"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "isoniazid 300 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily (directly observed)",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "tuberculous spondylitis"
+            },
+            {
+              "drug_text": "rifampin 300 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 2 capsules (600 mg) by mouth daily (directly observed)",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "tuberculous spondylitis"
+            },
+            {
+              "drug_text": "pyrazinamide 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (1000 mg) by mouth daily (directly observed)",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "tuberculous spondylitis"
+            },
+            {
+              "drug_text": "ethambutol hydrochloride 400 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (800 mg) by mouth daily (directly observed)",
+              "dose": {
+                "value": 800,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "tuberculous spondylitis"
+            },
+            {
+              "drug_text": "pyridoxine hydrochloride 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "isoniazid neuropathy prevention"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-09-08T08:00",
+              "bp": [
+                124,
+                70
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-07T22:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 192
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 98
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-07T22:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 96
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 81
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-08T06:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-09-07T23:00",
+              "text": "Indication: back pain, night sweats, weight loss.\nPA and lateral views. Apical scarring. No consolidation, effusion or pneumothorax. Heart size normal. Mediastinal contours normal. Thoracic vertebral detail limited on this study.",
+              "conclusion": "Apical scarring. No acute cardiopulmonary process."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Consultation",
+              "date": "2024-09-19T10:00",
+              "author": "infectious disease",
+              "body": "INFECTIOUS DISEASE CONSULTATION\nDate: 09/08/2024\nReason: thoracic vertebral destruction, evaluate for infection.\n\n52-year-old construction worker with severe alcohol use disorder, chronic pancreatitis with exocrine insufficiency and alcoholic cerebellar degeneration, admitted with mid-back pain. The pain is deep and constant, worse at night, and not touched by over-the-counter analgesics. Two months of night sweats and fatigue, with about 6 kg of unintended weight loss. He has not been in to see a doctor for some months. No known HIV. He came to the US in 2019 and works in construction.\n\nMeds: pancrelipase, thiamine, folic acid, multivitamin. NKDA.\n\nVitals: T 37.8 C (100.0 F), BP 124/70, HR 88, RR 16.\nExam: moderate point tenderness over T9-T10. No visible deformity or gibbus. Neurologic exam normal: strength, sensation and reflexes intact in the legs, no sensory level.\n\nData: WBC 7,800/uL, hemoglobin 10.6 g/dL, ESR 96 mm/hr, CRP 8.1 mg/dL.\nChest x-ray: apical scarring.\nMRI thoracic spine: destruction of the anterior vertebral bodies of T9 and T10 with collapse of the intervening disc and a prevertebral fluid collection.\n\nImpression: subacute thoracic spondylodiscitis with paraspinal collection and constitutional symptoms; tuberculous spondylitis (Pott disease) is the leading diagnosis given apical scarring and the anterior-body pattern.\n\nRecommendations: CT-guided aspiration of the prevertebral collection for AFB smear, TB NAAT and mycobacterial culture plus routine cultures. HIV testing. Airborne isolation per protocol. Hold antimicrobials until sampled."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2024-09-19T10:00",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmitted 09/07/2024, discharged 09/16/2024.\n\nPrincipal diagnosis: tuberculous spondylitis (Pott disease), T9-T10, with prevertebral collection.\nSecondary: anemia of chronic disease; severe alcohol use disorder; chronic pancreatitis with exocrine insufficiency; alcoholic cerebellar degeneration; alcoholic liver disease; protein-calorie malnutrition.\n\nCourse: admitted from the ED with back pain and constitutional symptoms. MRI as described by ID. CT-guided aspiration of the prevertebral collection on 9/10: AFB smear positive; TB NAAT positive, rifampin resistance not detected. Culture pending. HIV antigen/antibody nonreactive. Started isoniazid, rifampin, pyrazinamide and ethambutol with pyridoxine on 9/11, weight-based for 52 kg. Neurologically intact throughout; nonoperative management. No alcohol withdrawal during the stay. Hemoglobin 10.6 with normal MCV, attributed to chronic inflammation.\n\nDischarge medications: isoniazid 300 mg daily, rifampin 600 mg daily, pyrazinamide 1000 mg daily, ethambutol 800 mg daily, pyridoxine 50 mg daily (TB drugs by DOT through the health department TB clinic); pancrelipase as before; thiamine 100 mg daily; folic acid 1 mg daily; multivitamin daily. Allergies: NKDA.\n\nFollow-up: TB clinic, directly observed therapy starting 9/17; primary care within 1 to 2 weeks; monthly liver tests through TB clinic. Avoid alcohol entirely while on TB treatment."
+            }
+          ],
+          "state": {
+            "weight_kg": 52.0,
+            "labs": {
+              "Albumin": 3.3,
+              "C Reactive Protein": 81,
+              "Erythrocyte Sedimentation Rate": 96,
+              "Hemoglobin": 10.6,
+              "White Blood Cells": 7.8
+            }
+          }
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "telephone",
+          "start": "2024-09-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "family call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from brother",
+              "date": "2024-09-12T15:30",
+              "author": "RN",
+              "body": "Pt's brother (on HIPAA form) called: Rohan has been in the hospital since Saturday with back pain, they think it is TB in the spine, he's on 4 medicines. Brother asking whether the family needs testing. Advised family to follow health department guidance, they will be contacted for screening. Asked brother to have pt call to book a post-discharge visit. Requested discharge summary."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "office_visit",
+          "start": "2024-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              64
+            ],
+            "hr": 68,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 52.4
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-09-24T08:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 71
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 53
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 133
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-09-24T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2024-09-24T08:55",
+              "author": "PCP",
+              "body": "Hospital follow-up, discharged 9/16. Summary reviewed.\n\nTB of the spine (T9-T10) confirmed by aspirate; on RIPE + B6 by DOT. TB clinic nurse comes to the house every morning; he likes her. Orange urine expected, he was told. Back pain 5/10, better than before admission. Night sweats easing. No leg weakness, no bowel or bladder trouble. Not drinking since admission; says it's easier with someone at the door every day.\nWeight 52.\n\nExam: afebrile. Tender over lower thoracic spine. Strength 5/5 in legs, sensation intact. Gait wide-based as before.\n\nA/P\n- Pott disease: TB clinic directs treatment. Med list updated. LFTs today too since he has alcoholic liver disease and is on INH/RIF/PZA; TB clinic will also check monthly.\n- Anemia of chronic disease: recheck in 2 to 3 months.\n- AUD: abstinent 2.5 weeks. Encouraged. \n- Malnutrition: weight down 6 kg; enzymes with every meal.\nWe missed him in May; he says he \"just didn't come.\" No judgment, glad he's here. RTC December."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "specialist_visit",
+          "start": "2024-10-22T09:00",
+          "service": "Health Department TB Clinic",
+          "reason": "TB treatment follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "TB Clinic Progress Letter",
+              "date": "2024-10-24T14:00",
+              "author": "TB clinic",
+              "body": "TB CLINIC, PROGRESS LETTER\nVisit 10/22/2024\n\nYour patient continues directly observed therapy for tuberculous spondylitis. The aspirate culture from 9/10 has finalized: tuberculosis complex, susceptible to isoniazid, rifampin, pyrazinamide and ethambutol. He has taken every observed dose so far. Monthly liver tests have been acceptable for his baseline. Vision screening unchanged on ethambutol. Back pain improving.\n\nPlan: continue four drugs through the 2-month intensive phase, then isoniazid and rifampin. Household contacts have been evaluated by our program."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "nurse_visit",
+          "start": "2024-10-29T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-29T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-29T07:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-29T07:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit",
+              "date": "2024-10-29T07:50",
+              "author": "RN",
+              "body": "Flu and COVID updated vaccine given. FIT kit offered; took it. TB clinic letter of 10/22 scanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "specialist_visit",
+          "start": "2024-11-12T09:00",
+          "service": "Health Department TB Clinic",
+          "reason": "end of intensive phase",
+          "medications": [
+            {
+              "drug_text": "pyrazinamide 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "intensive phase complete"
+            },
+            {
+              "drug_text": "ethambutol hydrochloride 400 MG Oral Tablet",
+              "action": "stop",
+              "reason": "intensive phase complete"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "TB Clinic Progress Letter",
+              "date": "2024-12-18T10:30",
+              "author": "TB clinic",
+              "body": "TB CLINIC, PROGRESS LETTER\nVisit 11/12/2024\n\nTwo-month intensive phase completed with full adherence by DOT. Pyrazinamide and ethambutol stopped today. Continuing isoniazid 300 mg, rifampin 600 mg and pyridoxine 50 mg daily, observed, for 4 more months to complete 6 months total. Clinically improving, weight gaining. Liver tests acceptable."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "vitals": {
+            "bp": [
+              111,
+              77
+            ],
+            "hr": 57,
+            "spo2": 98,
+            "weight_kg": 54.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-10T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 99
+                },
+                {
+                  "test": "Platelets",
+                  "value": 197
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-10T08:20",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 41
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-12-10T08:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 69
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 53
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 127
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-10T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-12-10T08:40",
+              "author": "PCP",
+              "body": "S: Back pain down to 2/10. No sweats. Eating well, weight 55 (from 52). TB clinic stopped two of his four TB pills in November; now isoniazid, rifampin and B6, through March. No letter from them about that yet, updated the list from his bottles and his DOT card. Says he has had a couple of beers on two occasions since discharge, otherwise none.\nO: Afebrile. Mild tenderness lower T-spine. Legs strong. Wide-based gait.\nLabs today: Hgb 11.6, ESR 41, both improving.\nA/P: Pott disease responding. Anemia improving. Alcohol: much less; reminded him alcohol plus INH and rifampin is hard on his liver. LFTs today. RTC after he finishes TB treatment."
+            }
+          ],
+          "state": {
+            "weight_kg": 55.0,
+            "labs": {
+              "Albumin": 3.6,
+              "Erythrocyte Sedimentation Rate": 41,
+              "Hemoglobin": 11.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "pharmacy",
+          "start": "2025-01-21T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior authorization renewal",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PA renewal",
+              "date": "2025-01-21T11:15",
+              "author": "MA",
+              "body": "Pharmacy: MassHealth PA for pancrelipase expired, pt at counter. Renewal submitted with GI letter and fecal elastase result attached. Pharmacy gave a 5-day supply in the meantime."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PA approved",
+              "date": "2025-01-23T09:40",
+              "author": "MA",
+              "body": "Renewal approved x12 months. Pharmacy and pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "specialist_visit",
+          "start": "2025-03-11T09:00",
+          "service": "Health Department TB Clinic",
+          "reason": "completion of TB treatment",
+          "medications": [
+            {
+              "drug_text": "isoniazid 300 MG Oral Tablet",
+              "action": "stop",
+              "reason": "treatment completed"
+            },
+            {
+              "drug_text": "rifampin 300 MG Oral Capsule",
+              "action": "stop",
+              "reason": "treatment completed"
+            },
+            {
+              "drug_text": "pyridoxine hydrochloride 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "isoniazid completed"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "TB Clinic Completion Letter",
+              "date": "2025-03-20T10:15",
+              "author": "TB clinic",
+              "body": "TB CLINIC, TREATMENT COMPLETION\nVisit 03/11/2025\n\nYour patient has completed 6 months of directly observed therapy for drug-susceptible tuberculous spondylitis of T9-T10: isoniazid, rifampin, pyrazinamide and ethambutol for 2 months, then isoniazid and rifampin for 4 months, with pyridoxine. All medications stopped today.\n\nMRI thoracic spine 03/04/2025: interval healing at T9-T10; the prevertebral collection has resolved; no new bone destruction.\n\nHe is asymptomatic apart from mild residual stiffness. He is discharged from TB clinic. Please contact us for any recurrent back pain, fever or night sweats."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after TB treatment",
+          "conditions": [
+            {
+              "label": "Tuberculous spondylitis (Pott disease)",
+              "action": "resolved",
+              "note": "6 months of therapy completed 2025-03-11",
+              "icd10": "A18.01"
+            },
+            {
+              "label": "Anemia of chronic disease",
+              "action": "resolved",
+              "icd10": "D63.8"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              70
+            ],
+            "hr": 65,
+            "spo2": 97,
+            "weight_kg": 56.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-25T08:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 103
+                },
+                {
+                  "test": "Platelets",
+                  "value": 166
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 35.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-25T08:15",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-25T08:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 55
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 126
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 8
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-25T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-25T08:30",
+              "author": "PCP",
+              "body": "Finished TB treatment 3/11, completion letter and MRI (healing, collection gone) reviewed. Back just a little stiff in the mornings. No sweats, weight 56.\nHgb 12.9 and ESR 18 today: anemia has resolved and inflammation is down. Pott disease and anemia of chronic disease marked resolved.\nAlcohol: now that the DOT nurse isn't coming he's drinking again, most evenings. AUDIT-C 8. We talked about the pattern: he does well with daily structure. Offered the outpatient program and a daily check-in option again; declines for now but took the number.\nEPI stable on enzymes. Cerebellar gait unchanged.\nRTC 3 months, sooner for yellow eyes, belly pain or confusion."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.0,
+            "labs": {
+              "Albumin": 3.8,
+              "Erythrocyte Sedimentation Rate": 18,
+              "Hemoglobin": 12.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-10a",
+          "kind": "hospital_admission",
+          "start": "2025-05-10T14:20",
+          "end": "2025-05-15T12:30",
+          "service": "Emergency Medicine",
+          "reason": "abdominal pain, jaundice",
+          "conditions": [
+            {
+              "label": "Alcoholic hepatitis",
+              "action": "diagnosed",
+              "onset": "2025-04-26",
+              "icd10": "K70.10"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-05-10T14:30",
+              "temp_c": 38.3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-10T14:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 95
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 99
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-05-10T14:50",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 180
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 60
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 6.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 4.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-05-10T14:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 19.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-10T15:05",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-05-10T15:30",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-05-15T05:30",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 4.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 3.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 186
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 117
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-05-15T05:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 16.4
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-05-10T15:40",
+              "text": "Portable AP view. Lungs clear. No effusion. Heart size normal.",
+              "conclusion": "No acute cardiopulmonary process."
+            },
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2025-05-10T18:10",
+              "text": "Indication: jaundice, right upper quadrant pain.\nLiver enlarged and diffusely echogenic. No focal lesion. No intrahepatic or extrahepatic biliary dilatation; common duct 4 mm. Gallbladder without stones or wall thickening. Portal vein patent with hepatopetal flow. Spleen normal in size. No ascites.",
+              "conclusion": "Hepatomegaly with diffusely echogenic liver. No biliary obstruction. No ascites."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2025-05-19T09:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD\nArrival 05/10/2025 14:20\n\nCC: belly pain and yellow eyes.\n\n53-year-old man with chronic pancreatitis with exocrine insufficiency and alcoholic cerebellar degeneration, here with two weeks of worsening abdominal pain, jaundice and a falling appetite. Drinking about six beers daily, a pattern of roughly 20 years.\n\nMeds: pancrelipase, thiamine, folic acid, multivitamin. NKDA.\n\nT 38.3 C (100.9 F). Icteric sclerae. Liver enlarged and tender. Abdomen otherwise soft.\n\nWBC 12.0, Hgb 13.2, platelets 95. AST 180, ALT 60, total bilirubin 6.2, direct 4.1, alkaline phosphatase 120. INR 1.6.\n\nImpression: alcoholic hepatitis. Admit to medicine."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-05-19T09:30",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmitted 05/10/2025, discharged 05/15/2025.\n\nDiagnosis: alcoholic hepatitis.\nOther: severe alcohol use disorder, alcoholic liver disease, chronic pancreatitis with exocrine insufficiency, alcoholic cerebellar degeneration, protein-calorie malnutrition, thiamine deficiency; history of tuberculous spondylitis, treated.\n\nCourse: fever on arrival prompted an infection workup: blood cultures no growth, urinalysis negative, chest x-ray clear. RUQ ultrasound showed an enlarged echogenic liver without biliary obstruction or ascites, portal vein patent. Managed with abstinence, nutrition support with enzyme replacement, IV then oral thiamine and withdrawal monitoring; no withdrawal symptoms developed. Fever resolved. Jaundice improving: bilirubin 4.8 and INR 1.4 on the day of discharge.\n\nDischarge medications: unchanged home medications (pancrelipase with meals and snacks, thiamine 100 mg, folic acid 1 mg, multivitamin). NKDA.\n\nFollow-up: primary care within one week with hepatic panel and INR. No alcohol."
+            }
+          ],
+          "state": {
+            "weight_kg": 54.5,
+            "labs": {
+              "Alanine Aminotransferase": 60,
+              "Albumin": 3.2,
+              "Alkaline Phosphatase": 120,
+              "Aspartate Aminotransferase": 180,
+              "Bilirubin, Direct": 4.1,
+              "Bilirubin, Total": 6.2,
+              "Hemoglobin": 13.2,
+              "Platelets": 95,
+              "Prothrombin Time": 18.6,
+              "Prothrombin Time-International Normalized Ratio": 1.6,
+              "White Blood Cells": 12.0
+            }
+          }
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "telephone",
+          "start": "2025-05-12T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "family call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from brother",
+              "date": "2025-05-12T10:50",
+              "author": "RN",
+              "body": "Brother calling: Rohan admitted Saturday, yellow, told it's alcohol hepatitis. Booked post-discharge visit 5/20 tentatively. Requested records."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, alcoholic hepatitis",
+          "vitals": {
+            "bp": [
+              111,
+              69
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 54.7
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-05-20T08:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 119
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 49
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.9
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 2.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 113
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-05-20T08:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 15.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-20T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 91
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 96
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-05-20T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2025-05-20T08:55",
+              "author": "PCP",
+              "body": "Seen with brother after admission 5/10-5/15 for alcoholic hepatitis. Summary reviewed.\n\nNo alcohol since 5/9. Appetite slowly coming back. Belly much less sore. Eyes still yellow but less. No confusion, no black stool, no swelling.\n\nExam: afebrile. Scleral icterus. Liver edge palpable and mildly tender. No ascites, no asterixis.\n\nLabs today: bilirubin 3.9 (4.8 at discharge), INR 1.3.\n\nA/P\n1. Alcoholic hepatitis, improving. Absolute abstinence. Weekly-ish labs for now, next in 4 weeks unless worse. Small frequent meals with enzymes.\n2. Severe AUD: frank talk with both of them; this is the third serious alcohol complication. He says he's done. Program info again; brother will drive him to an intake if he calls.\n3. Weight 54."
+            }
+          ],
+          "state": {
+            "weight_kg": 54.0,
+            "labs": {
+              "Alanine Aminotransferase": 52,
+              "Aspartate Aminotransferase": 120,
+              "Bilirubin, Direct": 2.4,
+              "Bilirubin, Total": 3.9,
+              "Platelets": 108,
+              "Prothrombin Time": 15.3,
+              "Prothrombin Time-International Normalized Ratio": 1.3,
+              "White Blood Cells": 7.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "lab_only",
+          "start": "2025-06-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "liver tests",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-06-17T07:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 46
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 123
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-06-17T07:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-17T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 128
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 98
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver tests",
+              "date": "2025-06-17T17:05",
+              "author": "PCP",
+              "body": "Rohan, good progress: bilirubin is down to 1.8, clotting test 1.2 and platelets 128, all moving the right way. Keep doing what you're doing. See you in August."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 45,
+              "Aspartate Aminotransferase": 84,
+              "Bilirubin, Direct": 0.9,
+              "Bilirubin, Total": 1.8,
+              "Platelets": 128,
+              "Prothrombin Time": 14.1,
+              "Prothrombin Time-International Normalized Ratio": 1.2
+            }
+          }
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "office_visit",
+          "start": "2025-08-12T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up alcoholic hepatitis",
+          "conditions": [
+            {
+              "label": "Alcoholic hepatitis",
+              "action": "resolved",
+              "icd10": "K70.10"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 58,
+            "spo2": 96,
+            "weight_kg": 56.9
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-08-12T08:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 39
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.6
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 115
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-12T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 141
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-12T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-08-12T08:35",
+              "author": "PCP",
+              "body": "S: Feels like himself. Jaundice gone. Back at work part days, ground level. Stayed dry until the Fourth, then \"a few times\" since; nothing like before, he says.\nO: Anicteric. Liver edge not palpable now. No ascites. Wide-based gait unchanged.\nLabs: bilirubin 1.1, AST 61, ALT 39, platelets 141.\nA/P: alcoholic hepatitis resolved; removed from active list. ALD remains. AUD: slipping; named it plainly, he agreed. PHQ-9 6, no SI; mostly frustration about work. Program number again. Flu/COVID in October. RTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.2,
+            "labs": {
+              "Alanine Aminotransferase": 39,
+              "Albumin": 3.6,
+              "Aspartate Aminotransferase": 61,
+              "Bilirubin, Direct": 0.4,
+              "Bilirubin, Total": 1.1,
+              "Platelets": 141,
+              "Prothrombin Time": 13.0,
+              "Prothrombin Time-International Normalized Ratio": 1.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "portal_message",
+          "start": "2025-09-09T20:44",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "refill",
+              "date": "2025-09-09T20:44",
+              "author": "patient",
+              "body": "need refill vitamin b1 and the folic. same pharmacy. thank you doctor"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: refill",
+              "date": "2025-09-10T08:30",
+              "author": "MA",
+              "body": "Sent both to your pharmacy, 90 days with refills. -MA for your doctor"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T07:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-14T07:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit",
+              "date": "2025-10-14T07:50",
+              "author": "RN",
+              "body": "Flu and COVID vaccines given, both deltoids. FIT kit given; last year's never came back, reminded him it just goes in the mail."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "lab_only",
+          "start": "2025-10-28T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-24T08:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Result note",
+              "date": "2025-10-28T13:20",
+              "author": "PCP",
+              "body": "FIT negative. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-02a",
+          "kind": "ed_visit",
+          "start": "2025-11-02T11:10",
+          "end": "2025-11-04T10:00",
+          "service": "Emergency Medicine",
+          "reason": "confusion, agitation after stopping alcohol",
+          "conditions": [
+            {
+              "label": "Alcohol withdrawal, uncomplicated",
+              "action": "diagnosed",
+              "onset": "2025-11-02",
+              "icd10": "F10.230"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-11-02T11:15",
+              "bp": [
+                160,
+                100
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 38.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-02T11:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-11-02T11:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 122
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-02T11:40",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 300
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-02T11:40",
+              "results": [
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 96
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 154
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-11-02T11:25",
+              "text": "Sinus tachycardia, rate 120. Normal axis. Normal intervals. No ST or T wave changes.",
+              "conclusion": "Sinus tachycardia, otherwise normal ECG."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2025-11-10T08:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT / OBSERVATION RECORD\nArrival 11/02/2025 11:10. Discharged from observation 11/04/2025.\n\nBrought in by family for confusion and agitation. Severe alcohol use disorder, history of alcoholic hepatitis earlier this year. Was drinking heavily until two days ago and has had nothing since.\n\nBP 160/100, HR 120, RR 22, T 38.2 C.\nTremulous, sweaty, anxious. Oriented to self only, not to place or date. Nonfocal neurologic exam.\n\nNa 140, K 4.0, Cl 100, BUN 18, Cr 1.0. AST 72, ALT 50, GGT 300. MCV 96.\nECG: sinus tachycardia, no other abnormality.\n\nAssessment: alcohol withdrawal, uncomplicated (no seizures, no hallucinations).\nTreatment: symptom-triggered lorazepam, IV thiamine, fluids; placed in observation. Mental status cleared by the following morning; CIWA scores low by day 2.\n\nDischarged home with family. Home medications unchanged. Primary care follow-up within the week; outpatient addiction treatment resources provided."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 50,
+              "Aspartate Aminotransferase": 72,
+              "Blood Urea Nitrogen": 18,
+              "Creatinine": 1.0,
+              "Gamma Glutamyl Transferase": 300,
+              "Mean Corpuscular Volume": 96,
+              "Platelets": 160
+            }
+          }
+        },
+        {
+          "id": "2025-11-03a",
+          "kind": "telephone",
+          "start": "2025-11-03T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "family call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from brother",
+              "date": "2025-11-03T09:05",
+              "author": "RN",
+              "body": "Brother: took Rohan to the ED yesterday, confused and shaking after he stopped drinking Friday. Kept overnight, more himself this morning. Booked follow-up 11/13. Records requested."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-13a",
+          "kind": "office_visit",
+          "start": "2025-11-13T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, alcohol withdrawal",
+          "conditions": [
+            {
+              "label": "Alcohol withdrawal, uncomplicated",
+              "action": "resolved",
+              "icd10": "F10.230"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              73
+            ],
+            "hr": 64,
+            "spo2": 98,
+            "weight_kg": 54.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-13T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-13T08:20",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-11-13T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-11-13T08:30",
+              "author": "PCP",
+              "body": "ED/observation record 11/2-11/4 reviewed: withdrawal with confusion, cleared overnight on lorazepam, no seizures.\n\nHe remembers little of the first day. Drinking had crept back up over September and October to every night, then he stopped on his own that Friday. Has not had a drink since the ED. Shaky for a couple of days, now fine.\nBP normal today, HR 80s. No tremor. Oriented, conversational.\n\nA/P: alcohol withdrawal episode, resolved. Severe AUD with a growing list of complications. Long conversation: next time he stops he needs medical help to do it; never alone. He and his brother have the ED plan. Offered referral to an addiction medicine clinic: he'll \"think on it.\" Labs today. Thiamine daily. RTC 6 to 8 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 55.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-11a",
+          "kind": "hospital_admission",
+          "start": "2026-01-11T03:40",
+          "end": "2026-01-17T14:00",
+          "service": "Critical Care",
+          "reason": "alcohol withdrawal, delirium",
+          "conditions": [
+            {
+              "label": "Delirium tremens",
+              "action": "diagnosed",
+              "onset": "2026-01-11",
+              "icd10": "F10.231"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-01-11T03:45",
+              "bp": [
+                160,
+                100
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 37.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-11T04:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-11T04:10",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-11T04:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.7
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-11T04:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 154
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU Discharge Summary",
+              "date": "2026-03-09T13:20",
+              "author": "critical care",
+              "body": "BRIEF DISCHARGE SUMMARY (ICU / MEDICINE)\nAdmitted 01/11/2026 via the ED, discharged 01/17/2026.\n\nDiagnosis: delirium tremens.\nBackground: severe alcohol use disorder; chronic pancreatitis with exocrine insufficiency; alcoholic cerebellar degeneration; alcoholic liver disease. ED visit for withdrawal with confusion about two months earlier.\n\nPresentation: about 12 hours of mounting anxiety, hand tremor and heavy sweating after stopping alcohol abruptly; last drink roughly 36 hours before arrival. He had been drinking about a pint of vodka a day in the preceding months.\nBP 160/100, HR 120, RR 22, T 37.8 C. Agitated, diaphoretic, tremulous, disoriented to time and place. No focal neurologic deficit.\n\nLabs on arrival: Na 140, K 4.0, Cl 100, BUN 18, Cr 1.1, glucose 90, Mg 1.8, Ca 9.2, AST 72, ALT 50, alkaline phosphatase 90. CBC including platelets within normal limits.\n\nCourse: admitted to the ICU. Escalating benzodiazepines with adjunctive phenobarbital, high-dose IV thiamine, electrolyte repletion. Did not require intubation. Delirium cleared by day 4; transferred to the floor and discharged home on day 7.\n\nDischarge medications: home medications unchanged. Follow-up with primary care."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 50,
+              "Alkaline Phosphatase": 90,
+              "Aspartate Aminotransferase": 72,
+              "Calcium": 9.2,
+              "Creatinine": 1.1,
+              "Glucose": 90,
+              "Magnesium": 1.8
+            }
+          }
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "office_visit",
+          "start": "2026-01-27T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospital stay",
+          "vitals": {
+            "bp": [
+              125,
+              65
+            ],
+            "hr": 72,
+            "spo2": 97,
+            "weight_kg": 53.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-27T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 71
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 51
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 20
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-27T08:20",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-27T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 169
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 97
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-01-27T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-01-27T08:40",
+              "author": "PCP",
+              "body": "Here for a routine follow-up and tells me he was in the ICU earlier this month. We heard nothing from the hospital.\n\nHis account, with his brother filling in: had switched from beer to vodka over the fall, about a pint a day. Decided to quit cold on his own around the 9th. Within a day and a half he was shaking, sweating, frightened; brother called 911. Spent most of a week in the hospital, several days in the ICU, \"out of my head\" for the first few. Told it was DTs. No seizure that he knows of. No new medicines at discharge.\n\nToday: calm, oriented, no tremor. HR 84. Weight 54.\nPHQ-9 7; low mood since, no SI.\n\nA/P\n1. Delirium tremens, 1/2026, by patient and family report; records requested. Added to problem list.\n2. Severe AUD: two withdrawal hospitalizations in ten weeks, now DTs. Told him directly that the next unsupervised stop could kill him. If he wants to quit again (he says he does), it has to be through a medically supervised detox; gave the program number and said I would call with him. He said not today. Brother on board.\n3. Labs today.\nRTC 4 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 54.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "telephone",
+          "start": "2026-01-28T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2026-01-28T10:20",
+              "author": "MA",
+              "body": "Faxed request for 1/11-1/17/26 admission records (ED, ICU, discharge summary). Release signed yesterday."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "office_visit",
+          "start": "2026-02-24T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2026-03-02a",
+          "kind": "telephone",
+          "start": "2026-03-02T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "missed visit; records",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit and records",
+              "date": "2026-03-02T09:00",
+              "author": "MA",
+              "body": "Reached brother; pt worked a double the day of his visit and forgot. Rebooked April 14. Hospital records still not here; second request faxed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "outside_records",
+          "start": "2026-03-09T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital records received",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside records reviewed",
+              "date": "2026-03-09T16:00",
+              "author": "PCP",
+              "body": "Brief summary of the January admission arrived: DTs, ICU, benzodiazepines plus phenobarbital, no intubation, 1/11-1/17. Labs that day unremarkable apart from AST 72/ALT 50. Matches his account."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "conditions": [
+            {
+              "label": "Delirium tremens",
+              "action": "resolved",
+              "icd10": "F10.231"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              73
+            ],
+            "hr": 59,
+            "spo2": 98,
+            "weight_kg": 55.2
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-14T08:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 33
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-14T08:20",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 138
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-14T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 95
+                },
+                {
+                  "test": "Platelets",
+                  "value": 142
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-14T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-04-14T08:30",
+              "author": "PCP",
+              "body": "S: Doing OK. Says he is drinking \"just beer, just weekends\" since February. Brother not here today. Mood better (PHQ-9 4). Working again, ground level. Stools fine; taking enzymes. Gait unchanged, no new falls.\nO: Calm, no tremor. Anicteric. Abdomen soft. Wide-based gait.\nA/P: DTs episode in January, resolved; history kept in the narrative. AUD: less than before by report. Reiterated: if he stops, he calls us first. Still declines a program. LFTs, GGT, CBC. Thiamine/folate/MVI refilled. RTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 55.2,
+            "labs": {
+              "Alanine Aminotransferase": 34,
+              "Aspartate Aminotransferase": 48,
+              "Gamma Glutamyl Transferase": 140,
+              "Platelets": 168
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "pharmacy",
+          "start": "2026-06-09T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-06-09T14:30",
+              "author": "MA",
+              "body": "Pharmacy requesting pancrelipase refills, both strengths. PA good through January. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "hospital_admission",
+          "start": "2026-07-14T18:30",
+          "end": "2026-07-20T11:00",
+          "service": "Hospital Medicine",
+          "reason": "pneumonia",
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "diagnosed",
+              "onset": "2026-07-12"
+            },
+            {
+              "label": "Alcohol withdrawal seizures",
+              "action": "diagnosed",
+              "icd10": "F10.239"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-07-15T10:00",
+              "bp": [
+                160,
+                100
+              ],
+              "hr": 110,
+              "rr": 18,
+              "temp_c": 37.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-15T10:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-15T10:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 34
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-15T10:30",
+              "results": [
+                {
+                  "test": "Ethanol",
+                  "loinc": "5643-2",
+                  "unit": "mg/dL",
+                  "text": "Undetectable"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-07-15T13:10",
+              "text": "Indication: new seizure in the setting of alcohol withdrawal.\nNo intracranial hemorrhage. No mass effect or midline shift. No acute territorial infarct. Ventricles and basal cisterns patent. Calvarium intact.",
+              "conclusion": "No acute intracranial abnormality."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-07-23T09:45",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmitted 07/14/2026, discharged 07/20/2026.\n\nDiagnoses: community-acquired pneumonia; alcohol withdrawal seizures.\nBackground: severe alcohol use disorder with prior withdrawal including delirium tremens (01/2026); chronic pancreatitis with exocrine insufficiency; alcoholic cerebellar degeneration; alcoholic liver disease. NKDA.\n\nCourse: admitted with pneumonia on chest x-ray and started on IV ceftriaxone and oral azithromycin. Last alcohol about 24 hours before admission. On hospital day 2 (7/15) he grew agitated and tremulous and said he felt jittery. He denied headache, chest pain or breathlessness. T 37.8 C, BP 160/100, HR 110, RR 18. Diaphoretic, coarse tremor of the outstretched hands, anxious. Electrolytes, renal function and liver enzymes normal; blood alcohol undetectable. Later that day he had two brief generalized seizures, treated with IV lorazepam; symptom-triggered benzodiazepines thereafter. CT head showed no acute abnormality. No further seizures. Antiseizure medication not indicated for withdrawal seizures. Antibiotics completed (5 days) before discharge; afebrile, eating, ambulating at baseline.\n\nDischarge medications: home medications unchanged (pancrelipase, thiamine, folic acid, multivitamin).\n\nFollow-up: primary care in 1 to 2 weeks. Repeat chest x-ray in 6 to 8 weeks to document resolution. Strongly advised abstinence through a supervised program."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 27,
+              "Alkaline Phosphatase": 88,
+              "Aspartate Aminotransferase": 33,
+              "Bilirubin, Total": 0.8
+            }
+          }
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "telephone",
+          "start": "2026-07-16T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "family call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from brother",
+              "date": "2026-07-16T08:50",
+              "author": "RN",
+              "body": "Brother called: Rohan admitted Tuesday with pneumonia, then had seizures yesterday from withdrawal. Stable today per brother. Will book post-discharge visit once he knows the date. Records requested."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "office_visit",
+          "start": "2026-07-28T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Alcohol withdrawal seizures",
+              "action": "resolved",
+              "note": "single episode 7/15/2026, no recurrence",
+              "icd10": "F10.239"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              73
+            ],
+            "hr": 75,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 53.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-28T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 146
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.19
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 98
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-28T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 33
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 95
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-07-28T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-followup-2026",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "document resolution of pneumonia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2026-07-28T08:50",
+              "author": "PCP",
+              "body": "Discharge summary (7/14-7/20) reviewed: pneumonia, then two withdrawal seizures on day 2. CT head negative.\n\nHe feels tired but better. Cough mostly gone, no fever, breathing fine. No further seizures; doesn't remember them. Has not had a drink since admission, about two weeks; brother confirms. Not driving.\n\nExam: afebrile, RR and SpO2 normal. Lungs with good air movement, clear today. Heart regular. Calm, no tremor. Wide-based gait at baseline.\n\nA/P\n1. CAP: clinically resolving. Repeat 2-view CXR in early to mid September per the hospital; ordered.\n2. Alcohol withdrawal seizures: single episode in hospital, no recurrence. No driving per state rules for now; discussed.\n3. Severe AUD: withdrawal seizures now on top of DTs in January. Very direct conversation. He says he's \"really done\" this time. Gave the supervised program number again and offered to call together; he asked for a week to think.\n4. Labs today.\nRTC mid-September after the x-ray."
+            }
+          ],
+          "state": {
+            "weight_kg": 54.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c",
+            "rr"
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T18:22",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chest x-ray question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "x ray",
+              "date": "2026-08-11T18:22",
+              "author": "patient",
+              "body": "when do i do the chest x ray? can i go any time? feeling good. still no drinking"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: x ray",
+              "date": "2026-08-12T09:05",
+              "author": "MA",
+              "body": "Hi Rohan, glad you're feeling well. The x-ray is best done the first or second week of September, walk-in at the imaging center, no appointment needed. Then you'll see the doctor September 15."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "office_visit",
+          "start": "2026-09-15T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up pneumonia, alcohol use",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Alcohol use disorder, severe|F10.20": {
+        "code": "F10.20",
+        "display": "Alcohol dependence, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Alcohol withdrawal seizures|F10.239": {
+        "code": "F10.239",
+        "display": "Alcohol dependence with withdrawal, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Alcohol withdrawal, uncomplicated|F10.230": {
+        "code": "F10.230",
+        "display": "Alcohol dependence with withdrawal, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Alcoholic cerebellar degeneration|G31.2": {
+        "code": "G31.2",
+        "display": "Degeneration of nervous system due to alcohol",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Alcoholic hepatitis|K70.10": {
+        "code": "K70.10",
+        "display": "Alcoholic hepatitis without ascites",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Alcoholic liver disease|K70.9": {
+        "code": "K70.9",
+        "display": "Alcoholic liver disease, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Anemia of chronic disease|D63.8": {
+        "code": "D63.8",
+        "display": "Anemia in other chronic diseases classified elsewhere",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Delirium tremens|F10.231": {
+        "code": "F10.231",
+        "display": "Alcohol dependence with withdrawal delirium",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Exocrine pancreatic insufficiency|K86.81": {
+        "code": "K86.81",
+        "display": "Exocrine pancreatic insufficiency",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Protein-calorie malnutrition|E46": {
+        "code": "E46",
+        "display": "Unspecified protein-calorie malnutrition",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Thiamine deficiency|E51.9": {
+        "code": "E51.9",
+        "display": "Thiamine deficiency, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tuberculous spondylitis (Pott disease)|A18.01": {
+        "code": "A18.01",
+        "display": "Tuberculosis of spine",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ethambutol hydrochloride 400 MG Oral Tablet": {
+        "code": "995607",
+        "display": "ethambutol hydrochloride 400 MG Oral Tablet",
+        "ingredient": "ethambutol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "isoniazid 300 MG Oral Tablet": {
+        "code": "197832",
+        "display": "isoniazid 300 MG Oral Tablet",
+        "ingredient": "isoniazid",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "lipase 36000 UNT / protease 114000 UNT / amylase 180000 UNT Delayed Release Oral Capsule": {
+        "code": "1373325",
+        "display": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
+        "ingredient": "lipase",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "lipase 6000 UNT / protease 19000 UNT / amylase 30000 UNT Delayed Release Oral Capsule": {
+        "code": "855499",
+        "display": "amylase 30000 UNT / lipase 6000 UNT / protease 19000 UNT Delayed Release Oral Capsule",
+        "ingredient": "lipase",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "pyrazinamide 500 MG Oral Tablet": {
+        "code": "198181",
+        "display": "pyrazinamide 500 MG Oral Tablet",
+        "ingredient": "pyrazinamide",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "rifampin 300 MG Oral Capsule": {
+        "code": "198202",
+        "display": "rifampin 300 MG Oral Capsule",
+        "ingredient": "rifampin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "thiamine hydrochloride 100 MG Oral Tablet": {
+        "code": "313323",
+        "display": "thiamine 100 MG Oral Tablet",
+        "ingredient": "thiamine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Amylase": {
+        "code": "1798-8",
+        "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ethanol": {
+        "code": "5643-2",
+        "display": "Ethanol [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Pancreatic elastase, stool": {
+        "code": "25907-7",
+        "display": "Elastase.pancreatic [Mass/mass] in Stool",
+        "unit": "ug/g",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"multivitamin Oral Tablet\"",
+      "drug \"pyridoxine hydrochloride 50 MG Oral Tablet\""
+    ]
+  }
+}

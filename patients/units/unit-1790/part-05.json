@@ -1,0 +1,207 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001790",
+      "events": [
+        {
+          "id": "2026-01-13a",
+          "kind": "specialist_visit",
+          "start": "2026-01-13T13:30",
+          "service": "Infectious Disease",
+          "reason": "HIV and toxoplasmosis follow-up",
+          "medications": [
+            {"drug_text": "pyrimethamine 25 MG Oral Tablet", "action": "stop", "reason": "CD4 above 200 for more than 6 months with suppressed viral load"},
+            {"drug_text": "clindamycin 300 MG Oral Capsule", "action": "stop", "reason": "CD4 above 200 for more than 6 months with suppressed viral load"},
+            {"drug_text": "leucovorin calcium 5 MG Oral Tablet", "action": "stop", "reason": "Pyrimethamine stopped"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-01-13T14:00", "results": [{"test": "CD4 Count", "value": 274}]},
+            {"panel": null, "collected": "2026-01-13T14:00", "results": [{"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up (seen 2026-01-13)", "author": "infectious disease", "date": "2026-01-19T10:50", "body": "ID clinic, 01/13/2026\n\nHIV, suppressed on Biktarvy since late 2024. CD4 274 cells/uL today; above 200 since May 2025. HIV RNA not detected. Treated cerebral toxoplasmosis 2024, on secondary prophylaxis since July 2024; no neurological symptoms.\n\nAllergies: sulfonamides (anaphylaxis); latex.\n\nPlan:\n- STOP pyrimethamine, clindamycin and leucovorin — criteria for discontinuing secondary prophylaxis met.\n- Restart prophylaxis if CD4 falls below 200.\n- Continue Biktarvy. Visit in 6 months.\n\nInfectious Disease attending"}
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T11:20",
+          "reason": "Desmopressin refill",
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Refill Request", "author": "MA", "date": "2026-02-10T11:20", "body": "Pharmacy e-request: desmopressin 0.1 mg tabs, 1 BID, #180. Approved per PCP protocol (sodium normal 6/2025). Pharmacy also asked to remove pyrimethamine, clindamycin and leucovorin from blister packs per ID stop 1/13 — done."}
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "office_visit",
+          "start": "2026-03-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up (rescheduled from December)",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2026-03-18a",
+          "kind": "portal_message",
+          "start": "2026-03-18T09:15",
+          "reason": "Missed appointment",
+          "documents": [
+            {"type": "Patient Message", "title": "We missed you", "author": "front desk", "date": "2026-03-18T09:15", "body": "Hi Gretchen, we missed you at your appointment yesterday. Please call or reply here to reschedule — the doctor would like to see you this spring. Sodium labs are also due."}
+          ]
+        },
+        {
+          "id": "2026-05-25a",
+          "kind": "ed_visit",
+          "start": "2026-05-25T19:50",
+          "end": "2026-05-26T14:00",
+          "service": "Emergency Medicine",
+          "reason": "Suicidal ideation with plan",
+          "conditions": [
+            {"label": "Major depressive disorder, recurrent, severe without psychotic features", "icd10": "F33.2", "action": "resolved", "onset": "2012-01-01", "note": "Re-specified as with psychotic features"},
+            {"label": "Major depressive disorder, recurrent, severe with psychotic symptoms", "icd10": "F33.3", "action": "diagnosed", "onset": "2025-11-25"}
+          ],
+          "medications": [
+            {"drug": "sertraline 100 MG Oral Tablet", "action": "stop", "reason": "Patient stopped about three months ago"}
+          ],
+          "state": {"weight_kg": 53.0, "labs": {"Free Thyroxine": 1.2}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-05-25T20:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-25T20:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2026-05-25T20:30", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2026-05-25T20:30", "results": [{"test": "Free Thyroxine"}]}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record (2026-05-25)", "author": "emergency medicine", "date": "2026-05-27T08:40", "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT — 05/25/2026 19:50\n\nBrought in by her roommate, who found a suicide note in the apartment this afternoon. 36-year-old woman with childhood-onset epilepsy, central DI, advanced HIV (cerebral toxoplasmosis 2024, now suppressed), seizures, and recurrent severe major depression.\n\nShe confirms she wrote the note and says she wants to die; she feels worthless and that things are hopeless. Six months of low mood, no pleasure in anything, marked weight loss, poor sleep, trouble concentrating. She has a specific plan to overdose on her roommate's prescription medicines and has already gathered the pills. She stopped her sertraline about three months ago. Denies alcohol or drug use.\n\nCurrent meds: phenytoin ER 300 mg qHS, desmopressin 0.1 mg BID, Biktarvy daily, folic acid 1 mg, prenatal vitamin.\nAllergies: SULFONAMIDES (anaphylaxis); LATEX.\n\nVitals stable. Weight 53 kg.\nExam: tearful, poor eye contact, quiet monotone speech. Physical examination otherwise unremarkable.\n\nLabs: CBC, CMP, TSH/free T4 within normal limits.\n\nPsychiatry consulted (see below). Roommate states she will remove and dispose of the collected pills and her own medications from the apartment; her daughter is staying with the roommate.\n\nImpression: severe recurrent major depression with suicidal ideation, plan and preparatory behavior.\nDisposition: voluntary admission, inpatient psychiatry, 5/26.\n\nEmergency medicine attending"},
+            {"type": "Consult Note", "title": "Psychiatry ED Consultation (2026-05-25)", "author": "psychiatry", "date": "2026-05-27T08:45", "body": "Psychiatry consult — ED, 05/25/2026 22:30\n\nHPI as per ED. On interview she is slowed, tearful and sparse in speech. She describes, without wavering, a conviction that her illnesses — the HIV, the seizures, the brain infection — are punishment she has earned and that she deserves to suffer; this does not shift with gentle challenge. Denies hearing voices or seeing things. No manic symptoms. Stopped sertraline ~3 months ago because \"it wasn't doing anything and I didn't deserve to feel better.\" Collected pills for an overdose; the roommate interrupted.\n\nMSE: thin, casually dressed, poor eye contact, psychomotor slowing, low monotone voice. Mood \"empty,\" affect depressed and tearful. Thought process linear, slow. Thought content: suicidal ideation with plan and intent; fixed mood-congruent guilt delusion as above. No hallucinations. Insight and judgment poor.\n\nAssessment: major depressive disorder, recurrent, severe, with mood-congruent psychotic features. High acute risk.\nRecommendation: inpatient psychiatric admission (she agrees to voluntary). 1:1 observation in ED. Restart sertraline; add an antipsychotic on the unit.\n\nPsychiatry consult attending"}
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "hospital_admission",
+          "start": "2026-05-26T14:00",
+          "end": "2026-06-12T11:00",
+          "service": "Inpatient Psychiatry",
+          "reason": "Major depression with psychotic features, suicidal ideation",
+          "medications": [
+            {"drug": "sertraline 100 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"},
+            {"drug_text": "olanzapine 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder with psychotic features"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Inpatient Psychiatry Discharge Summary (05/26–06/12/2026)", "author": "psychiatry", "date": "2026-06-15T13:20", "body": "INPATIENT PSYCHIATRIC UNIT, REGIONAL HOSPITAL — DISCHARGE SUMMARY\nAdmitted 05/26/2026 (voluntary) — discharged 06/12/2026.\n\nDiagnosis: major depressive disorder, recurrent, severe, with psychotic features (mood-congruent guilt delusion). Medical: generalized epilepsy, central DI, HIV (suppressed), treated cerebral toxoplasmosis.\n\nCourse: Sertraline restarted at 50 mg and increased to 100 mg daily on day 5. Olanzapine started 5 mg at bedtime, increased to 10 mg on day 4. Over the second week sleep and appetite improved, she began eating full meals, and the belief that her illnesses were deserved punishment loosened and then faded. Suicidal ideation resolved by day 12; she engaged in safety planning and groups. No seizures; phenytoin, desmopressin and Biktarvy continued. Sodium normal on repeat. Roommate confirmed the collected pills were disposed of and her own medications are locked.\n\nAt discharge: denies SI/HI, no psychotic symptoms, future-oriented (her daughter, a work project).\n\nDischarge medications: sertraline 100 mg daily; olanzapine 10 mg at bedtime; phenytoin ER 300 mg qHS; desmopressin 0.1 mg BID; Biktarvy daily; folic acid 1 mg daily; prenatal vitamin daily.\n\nAllergies: sulfonamides (anaphylaxis); latex.\n\nFollow-up: PCP within 1 week; outpatient psychiatry 8/11; weekly therapy. Safety plan given; 988 and crisis team numbers. Metabolic monitoring on olanzapine (weight, A1c, lipids) requested of PCP.\n\nInpatient psychiatrist"}
+          ]
+        },
+        {
+          "id": "2026-06-15a",
+          "kind": "telephone",
+          "start": "2026-06-15T15:10",
+          "reason": "Post-discharge call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-Discharge Call", "author": "RN", "date": "2026-06-15T15:25", "body": "Called within 2 business days of psych discharge. Pt answered; voice soft but engaged. Home with roommate and daughter. Taking sertraline and olanzapine, plus her usual meds — roommate holding the medications. Denies thoughts of hurting herself today; has her safety plan on the fridge and 988 saved. Visit with PCP tomorrow 6/16 at 11. PCP informed."}
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "office_visit",
+          "start": "2026-06-16T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, depression",
+          "state": {"weight_kg": 53.5},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2026-06-16T11:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2026-06-16T11:45", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-16T11:45", "results": [{"test": "Sodium"}, {"test": "Glucose"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 17}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-06-16T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2026-06-16T12:00", "body": "TCM visit after inpatient psychiatry 5/26–6/12.\n\nED 5/25: roommate found a suicide note; detailed overdose plan with collected pills; had stopped sertraline about three months earlier. Diagnosed severe recurrent MDD with psychotic features (guilt delusion). Restarted sertraline 100, olanzapine 10 qHS. Discharge summary reviewed. In hindsight, the December cancellation and March no-show fall in the stretch when she was getting worse.\n\nToday: came with roommate. \"Better than I was, not good yet.\" Sleeping 8–9 h. Eating more. Belief that she deserves her illnesses \"isn't there the way it was.\" PHQ-9 17. Denies suicidal ideation, intent or plan since the second week of admission; no preparatory behavior. Protective: daughter, roommate. Means: roommate holds all meds in a lockbox, pills from May were disposed of. Reviewed safety plan together; she can name her steps and contacts.\n\nMeds: sertraline 100, olanzapine 10 qHS, phenytoin ER 300 qHS, desmopressin 0.1 BID, Biktarvy, folic acid, prenatal vitamin.\n\nExam: vitals as charted, weight 53.5 kg (61.5 kg a year ago). Thin. Poor-to-fair eye contact, soft speech, affect depressed but reactive at times; no evidence of psychosis. Heart RRR. Lungs clear. Neuro nonfocal.\n\nA/P:\n1. MDD, recurrent, severe with psychotic features — early recovery, still moderate-severe symptoms. Continue sertraline 100 and olanzapine 10. Risk reviewed and documented; acute risk not imminent given engagement, safety plan, means restriction and supports; follow closely. Weekly therapy starts 6/19. Psychiatry 8/11. I'll call her in 2 weeks; visit in 5 weeks. 988/crisis numbers re-given.\n2. Olanzapine metabolic monitoring — lipids, A1c, BMP today. Weight should come back up; will follow.\n3. Epilepsy, DI, HIV — stable; ID visit July.\n4. Pap/HPV co-test due this fall; we'll do it when she's ready."}
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "pharmacy",
+          "start": "2026-06-17T10:40",
+          "reason": "Olanzapine prior authorization",
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Prior Authorization — olanzapine", "author": "MA", "date": "2026-06-17T10:40", "body": "Pharmacy reports Medicaid needs PA for olanzapine 10 mg after the discharge supply. Submitted with discharge summary — approved 6/17 for 12 months. Pharmacy notified; pt will pick up today (roommate)."}
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T08:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your labs", "author": "PCP", "date": "2026-06-18T08:40", "body": "Gretchen, your cholesterol, A1c (sugar average) and sodium are all normal. We'll repeat the cholesterol and A1c in a few months because of the olanzapine. Talk soon."}
+          ]
+        },
+        {
+          "id": "2026-06-30a",
+          "kind": "telephone",
+          "start": "2026-06-30T16:20",
+          "reason": "PCP check-in",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Check-in Call", "author": "PCP", "date": "2026-06-30T16:35", "body": "Called as planned. Two therapy sessions done. Sleep good. Eating better. Mood \"up and down but more up.\" No SI. Taking meds (roommate dispensing). Safety plan unchanged. Visit 7/21 confirmed."}
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "specialist_visit",
+          "start": "2026-07-14T10:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2026-07-14T10:30", "results": [{"test": "CD4 Count", "value": 281}]},
+            {"panel": null, "collected": "2026-07-14T10:30", "results": [{"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up (seen 2026-07-14)", "author": "infectious disease", "date": "2026-07-20T11:05", "body": "ID clinic, 07/14/2026\n\nSeen after her psychiatric admission in May–June. Biktarvy taken throughout, roommate dispensing. CD4 281 cells/uL; HIV RNA not detected. Off toxo secondary prophylaxis since January with no neurological symptoms. New: olanzapine and sertraline — no significant interaction with Biktarvy.\n\nAllergies: sulfonamides (anaphylaxis); latex.\n\nPlan: continue Biktarvy. Visit in 6 months."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "office_visit",
+          "start": "2026-07-21T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up depression",
+          "state": {"weight_kg": 55.5},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 11}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-21T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2026-07-21T14:20", "body": "S: Five weeks out of the hospital. Weekly therapy. \"I can see the point of things again.\" Back to small design jobs. Sleep and appetite good. Denies SI, intent, plan. No guilt-punishment thoughts. PHQ-9 11 (from 17). Taking sertraline and olanzapine nightly; roommate still dispensing, by her choice.\n\nID 7/14: CD4 281, VL undetectable.\n\nO: vitals as charted, weight 55.5 kg. Better eye contact, smiles appropriately, speech normal rate. No psychotic features. Heart RRR. Lungs clear.\n\nA/P:\n1. MDD, recurrent, severe with psychotic features — improving. Continue sertraline 100 + olanzapine 10. Psychiatry 8/11 will decide on olanzapine duration. Safety plan reviewed, still in place.\n2. Olanzapine — weight recovering; repeat lipids/A1c in the fall.\n3. Epilepsy, DI, HIV — stable.\n4. Pap/HPV co-test and flu shot in the fall.\nRTC mid-September."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "specialist_visit",
+          "start": "2026-08-11T15:00",
+          "service": "Psychiatry",
+          "reason": "Outpatient psychiatry follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient Psychiatry (seen 2026-08-11)", "author": "psychiatry", "date": "2026-08-17T09:30", "body": "Outpatient psychiatry — 08/11/2026\n\n36-year-old with recurrent severe MDD with psychotic features, admitted May–June after a suicide plan. Discharged on sertraline 100 mg daily and olanzapine 10 mg qHS.\n\nInterval: steady improvement. Mood \"mostly okay,\" sleep and appetite normal, working part-time. The guilt-punishment belief has resolved — she can talk about it as something her illness made her believe. No SI since June. No hallucinations.\n\nMSE: well groomed, good eye contact, euthymic-to-mildly-low mood, full range affect, linear, no delusions, no SI/HI. Insight fair-good.\n\nAllergies: sulfonamides (anaphylaxis); latex.\n\nPlan: continue sertraline 100 mg and olanzapine 10 mg at bedtime unchanged; plan to keep the antipsychotic at least several months before considering a taper. Weekly therapy. Safety plan current. Return 6 weeks.\n\nPsychiatry"}
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T20:05",
+          "reason": "Olanzapine refill",
+          "documents": [
+            {"type": "Patient Message", "title": "refill", "author": "patient", "date": "2026-08-24T20:05", "body": "Hi, can you send the olanzapine refill to my pharmacy? Psych said to ask you until my next appt with them. I have 5 left. Also see you on the 15th."},
+            {"type": "Patient Message", "title": "RE: refill", "author": "PCP", "date": "2026-08-25T08:10", "body": "Sent — 30 days with one refill. Glad you're doing better. See you September 15."}
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "office_visit",
+          "start": "2026-09-15T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression follow-up and medication review",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

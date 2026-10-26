@@ -1,0 +1,1661 @@
+{
+  "unit": "unit-1926",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"ginger 500 MG Oral Capsule\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001926",
+      "given": "Hannah",
+      "family": "Webster",
+      "birth_date": "1999-09-30",
+      "address_line": "27 Brainerd Street",
+      "phone": "+1-508-555-0122",
+      "email": "hannah.webster@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with generalized anxiety disorder on sertraline and as-needed alprazolam, and migraine without aura on as-needed sumatriptan, who joins in 2022. IBS-D is diagnosed in June 2024; in December 2025 she is seen in an outside ED for a benzodiazepine overdose of her own alprazolam after a breakup, which the practice learns of from her and whose record arrives late. Alprazolam is stopped and she starts counseling.",
+      "events": [
+        {
+          "id": "2022-09-14a",
+          "kind": "establish_care",
+          "start": "2022-09-14T10:00",
+          "end": "2022-09-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Generalized anxiety disorder",
+              "action": "history",
+              "onset": "2019-03-01",
+              "note": "Diagnosed at prior primary care office"
+            },
+            {
+              "label": "Migraine without aura",
+              "action": "history",
+              "onset": "2015-01-01",
+              "note": "Since about age 15"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Generalized anxiety disorder"
+            },
+            {
+              "drug_text": "alprazolam 0.25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth as needed for anxiety. Max 2 tablets per day",
+              "dose": {
+                "value": 0.25,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Generalized anxiety disorder"
+            },
+            {
+              "drug": "sumatriptan 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at onset of migraine as needed",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Migraine without aura"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              77
+            ],
+            "hr": 74,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 61.5,
+            "height_cm": 164.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-14T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 226
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-14T11:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-14T11:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-14T11:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2022-09-14T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-14T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-14T11:05",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n22F, starting a graduate program this fall, transferring care from her prior primary care office. Wants one doctor she can reach. Records release signed today.\n\nANXIETY: dx GAD around 2019 at her old office. Sertraline 50 mg daily since then, says it took the edge off within a couple of months and she has not wanted to change it. Alprazolam 0.25 mg tabs as needed, which she says she uses \"a few times a month,\" mostly before presentations or when she can't settle at night. Never more than 2 in a day. Not in counseling currently, did some in college. No SI, no history of self-harm.\n\nHEADACHES: migraines since about 15. Unilateral throbbing, light and noise bother her, sometimes nauseated, no visual aura or weakness. Maybe 1-3 a month, more around deadlines. Sumatriptan 50 mg works within an hour most times; rarely needs a second dose. Has never taken a daily preventive.\n\nPMH: as above. PSH: wisdom teeth out at 18.\nMEDS: sertraline 50 daily; alprazolam 0.25 prn (max 2/day); sumatriptan 50 prn.\nALLERGIES: NKDA.\nFH: mother with GAD. Father with migraines. Maternal grandmother had IBS.\nSH: grad student, lives off campus. Never smoker. 1-2 drinks a week socially. No drugs.\n\nROS: negative except as above. Bowels regular, no GI complaints.\n\nEXAM: vitals per flowsheet. Well appearing, pleasant, a bit fidgety. HEENT unremarkable, fundi sharp. Neck supple, no thyroid enlargement. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Neuro: CN II-XII intact, strength and reflexes symmetric, gait normal. Skin without rash.\n\nGAD-7 6, PHQ-9 3, AUDIT-C 2.\n\nA/P\n1. GAD, stable on sertraline 50. Continue. Discussed that alprazolam is a backup, not a plan; small fills, I will check the state PMP with each refill. She is fine with that.\n2. Migraine without aura, episodic, sumatriptan effective. Reviewed the 2-dose daily max and not more than ~9 days/month. Mentioned serotonin symptoms to watch for with sertraline plus triptan, low risk at these doses.\n3. Health maintenance: CBC, CMP, lipids, TSH, one-time HIV and HCV, GC/CT urine NAAT today. Pap per old records, will confirm when they come. Flu and COVID booster next month.\n\nRTC for a physical in about a year, sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Low Density Lipoprotein": 88,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Total Cholesterol": 172
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T14:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-09-16T14:20",
+              "author": "PCP",
+              "body": "Hi Hannah - all of Wednesday's bloodwork looks fine. Blood counts, kidney and liver tests, thyroid and cholesterol are normal, and the HIV, hepatitis C, chlamydia and gonorrhea tests were all negative. Nothing to follow up on. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-22a",
+          "kind": "outside_records",
+          "start": "2022-09-22T09:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-22T09:40",
+              "author": "front desk",
+              "body": "Prior primary care records received by fax, 23 pages, scanned to chart.\n\nSummary abstracted by MA:\n- Generalized anxiety disorder, diagnosed spring 2019. Sertraline 50 mg daily started at that time. Alprazolam 0.25 mg as needed added later for breakthrough anxiety, small quantities.\n- Migraine without aura since mid-teens, sumatriptan 50 mg as needed.\n- Wisdom teeth extraction 2018.\n- Cervical cytology 2021: negative for intraepithelial lesion or malignancy.\n- Immunizations: HPV series completed in adolescence. Tdap 2021.\n- Allergies: none known.\n\nNo outstanding items."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-20T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-20T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-20T16:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "date": "2022-10-20T16:35",
+              "author": "RN",
+              "body": "Here for flu and COVID bivalent booster. No fever today, no prior vaccine reactions. Flu 0.5 mL IM L deltoid, COVID bivalent IM R deltoid. Observed 15 min without issue. VIS given. Left with an ice pack for the next class."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "pharmacy",
+          "start": "2022-12-07T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - alprazolam",
+              "date": "2022-12-07T11:30",
+              "author": "RN",
+              "body": "Pharmacy fax for alprazolam 0.25 mg. Last fill per PMP was mid-August from prior office, #20. No other controlled fills. Routed to PCP.\n\nPCP: PMP reviewed. OK #20, no refills. Finals stretch, she says she's using it maybe twice a week right now."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-08a",
+          "kind": "telehealth_visit",
+          "start": "2023-02-08T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Migraine follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-02-08T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2023-02-08T12:55",
+              "author": "PCP",
+              "body": "Video, patient in her apartment, ID confirmed.\n\nS: Migraines picked up in January, maybe 4 in the month, back to 1-2 the last few weeks. Same pattern as always, no aura, no new features. Sumatriptan still works. She thinks it was sleep and too much coffee while writing a paper. No neuro symptoms between headaches.\n\nO: Appears well on video, speech fluent, face symmetric.\n\nA/P: Episodic migraine without aura, transient uptick, below the range where I'd push a preventive. Sleep regularity, caffeine before noon, keep a headache log. Sumatriptan 50 refilled #9 x 2. If she is regularly over 4 a month we will talk about prophylaxis."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-24a",
+          "kind": "office_visit",
+          "start": "2023-05-24T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2023-05-24T15:25",
+              "author": "front desk",
+              "body": "No-show for 3:00 follow-up. Called, voicemail. Left message to rebook. Patient texted back she lost track of the day with a lab deadline, rebooked as video 6/7."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "telehealth_visit",
+          "start": "2023-06-07T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-06-07T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2023-06-07T09:40",
+              "author": "PCP",
+              "body": "Video visit, she is home. Apologized for missing last time.\n\nSemester ended OK. Anxiety \"about normal for me.\" Sleeping 7 hours most nights. Takes sertraline every day, no side effects she notices. Alprazolam maybe 3-4 times a month now, one at a time. Headaches back to baseline. No low mood, no SI.\n\nA/P: GAD stable. Continue sertraline 50 mg. Alprazolam as is, last fill in April per PMP, use remains light. Brought up counseling again as the better long-term tool, she will look at the student counseling list this summer. Physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "annual_physical",
+          "start": "2023-09-27T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              79
+            ],
+            "hr": 80,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 60.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-27T09:15",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-27T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-27T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-27T09:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-27T09:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-27T09:30",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nTurning 24 at the end of the month. Second year of her program. No new concerns.\n\nInterval: anxiety steady on sertraline, alprazolam a few times a month. Migraines 1-2/month, sumatriptan effective. Never started counseling, says time. No ED or urgent care visits. Bowels normal.\n\nMeds: sertraline 50 mg daily; alprazolam 0.25 mg prn (max 2/day); sumatriptan 50 mg prn.\nAllergies: NKDA.\nSocial: never smoker, 1-2 drinks/week, no drugs. Exercises by walking to campus.\n\nExam: vitals per flowsheet. Well. HEENT normal, TMs clear. Neck without nodes or thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Extremities without edema. Skin no concerning lesions. Neuro grossly normal. Mood good, affect bright.\n\nGAD-7 5. PHQ-9 2. AUDIT-C 2.\n\nA/P\n- Healthy 23F. GAD and migraine stable on current regimen, no changes.\n- GC/CT urine NAAT today (under 25).\n- Pap next due 2024 (last 2021).\n- Flu and updated COVID vaccine given today.\n- RTC 1 year, sooner prn."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-29a",
+          "kind": "portal_message",
+          "start": "2023-09-29T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Test result",
+              "date": "2023-09-29T13:05",
+              "author": "RN",
+              "body": "Hi Hannah, your urine tests from Wednesday's physical were negative. No action needed. - nursing"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "portal_message",
+          "start": "2023-12-13T20:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill request",
+              "date": "2023-12-13T20:40",
+              "author": "patient",
+              "body": "Hi, could you send more sumatriptan? I'm down to one and I'm flying home next week. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill request",
+              "date": "2023-12-14T08:10",
+              "author": "PCP",
+              "body": "Sent #9 with 2 refills to your usual pharmacy. Safe travels, and enjoy the break."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "pharmacy",
+          "start": "2024-03-20T10:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - alprazolam",
+              "date": "2024-03-20T10:45",
+              "author": "MA",
+              "body": "Electronic refill request alprazolam 0.25 mg #20. Last fill 11/2023 per PMP. Pended to PCP.\n\nPCP: PMP checked, single prescriber, fills spaced out. Approved #20, 0 RF."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "portal_message",
+          "start": "2024-06-10T21:15",
+          "orders": [
+            {
+              "id": "ibs-labs-2024",
+              "action": "placed",
+              "order": "CBC, C-reactive protein, tissue transglutaminase IgA",
+              "category": "lab",
+              "reason": "Abdominal cramping and loose stools"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stomach issues",
+              "date": "2024-06-10T21:15",
+              "author": "patient",
+              "body": "Hi - I've been meaning to ask about this for a while. Since around December I get crampy stomach pain and loose stools a lot, like 3 or 4 times a day on bad days. It's worse when I'm stressed. Going to the bathroom usually makes the cramping better. I've been taking ginger capsules which kind of help with the nausea. No blood or anything. Is this something I should come in for?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stomach issues",
+              "date": "2024-06-11T07:50",
+              "author": "PCP",
+              "body": "Thanks for writing, yes let's look at it. I put in a few blood tests (blood count, an inflammation marker and a celiac screen) you can get done any morning this week, and the front desk will put you on my schedule Monday the 17th so we can go over everything together. If you see blood in your stool, have fevers, or the pain gets severe before then, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "lab_only",
+          "start": "2024-06-12T08:05",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-12T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-12T08:05",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 1.1
+                },
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-12T08:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ibs-labs-2024",
+              "action": "done",
+              "date": "2024-06-12T08:05"
+            }
+          ],
+          "state": {
+            "labs": {
+              "C Reactive Protein": 1.1,
+              "Tissue Transglutaminase IgA": 1.0
+            }
+          }
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "office_visit",
+          "start": "2024-06-17T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Abdominal cramping and loose stools",
+          "conditions": [
+            {
+              "label": "Irritable bowel syndrome with diarrhea",
+              "action": "diagnosed",
+              "onset": "2023-12-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ginger 500 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth as needed for nausea or abdominal cramping",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Over the counter, self-started"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              71
+            ],
+            "hr": 72,
+            "rr": 13,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 61.1
+          },
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-17T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-06-17T14:10",
+              "author": "PCP",
+              "body": "CC: cramping, loose stools\n\nHPI: 24F with GAD and migraine. About six months of on-and-off belly cramps with loose stools. On bad days 3-4 BMs, typically clustered in the morning and around stressful stretches (qualifying exam prep this spring). The cramping is all over rather than in one spot, comes in waves, and eases once she has a bowel movement. No weight loss. No blood or black stools. Doesn't wake her at night. No antibiotics recently, no laxatives or magnesium products. No travel. Started OTC ginger capsules on her own over the winter, helps the queasy feeling a little. No new foods she can pin it on; drinks 2 coffees a day.\n\nMeds: sertraline 50 daily; alprazolam 0.25 prn; sumatriptan 50 prn; ginger extract 500 mg prn (OTC).\nAllergies: NKDA.\nFH notable for maternal grandmother with IBS.\n\nExam: vitals per flowsheet, normal. Comfortable. Abdomen soft, nondistended, normal bowel sounds, no tenderness, no masses or organomegaly. No pallor. Remainder of exam unremarkable.\n\nLabs 6/12: CBC normal. CRP normal. tTG-IgA negative.\n\nGAD-7 9 (up from her usual, she ties it to exams). PHQ-9 4.\n\nA/P\n1. IBS with diarrhea. Fits clinically: stress-linked, relieved by defecation, no alarm features, normal CBC/CRP and negative celiac screen. Went over the gut-brain picture. Plan a 4-6 week low-FODMAP trial with reintroduction (handout given), psyllium a teaspoon a day building up, cut coffee to one. OK to keep ginger. Not starting a prescription now; she would like to try diet first.\n2. GAD, a bit more active this spring. Continue sertraline 50. Encouraged counseling again; stress management will help the gut as well.\n3. Migraine stable.\n\nUpdate by portal in 6 weeks, sooner if alarm symptoms."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "portal_message",
+          "start": "2024-08-06T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "IBS update",
+              "date": "2024-08-06T18:30",
+              "author": "patient",
+              "body": "Following up like you asked. The low FODMAP thing was a lot but I think garlic and onion are big ones for me. Most days are 1-2 BMs now. Still get bad days when things are stressful. The fiber is fine. I'd like to keep going with this for now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: IBS update",
+              "date": "2024-08-07T08:20",
+              "author": "PCP",
+              "body": "That's real progress, and identifying triggers is the point of the reintroduction phase. Keep going and we'll check in at your physical in the fall. If the bad days stay frequent there are medication options we can talk about."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "annual_physical",
+          "start": "2024-10-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              79
+            ],
+            "hr": 74,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 61.4
+          },
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-10-09T08:55",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2024-10-15T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-09T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-09T09:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-09T09:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-09T09:25",
+              "author": "PCP",
+              "body": "Physical. Just turned 25.\n\nSince last year: IBS-D diagnosed in June, doing better with low-FODMAP reintroduction (garlic and onion seem to be her triggers) and daily psyllium, now 1-2 BMs most days with occasional stress flares. Still uses ginger now and then. Anxiety manageable on sertraline, alprazolam a few times a month. Migraines 1-2/month, sumatriptan works.\n\nMeds: sertraline 50 mg daily, alprazolam 0.25 mg prn (max 2/day), sumatriptan 50 mg prn, ginger extract 500 mg prn.\nNKDA. Never smoker. Social alcohol, 1-2/week.\n\nExam: vitals per flowsheet. NAD. HEENT clear. Neck supple, no thyroid enlargement. Heart regular without murmur. Lungs clear. Abdomen soft, nontender. Pelvic: external genitalia normal, cervix without lesions, Pap collected. Extremities no edema. Skin clear. Mood euthymic.\n\nGAD-7 7, PHQ-9 3, AUDIT-C 2.\n\nPlan\n- IBS-D improved with diet; continue.\n- GAD, migraine stable; no changes.\n- Pap today (cytology alone at 25).\n- Flu and updated COVID given.\n- Back in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "portal_message",
+          "start": "2024-10-15T14:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2024-10-15T14:00",
+              "author": "PCP",
+              "body": "Hi Hannah, your Pap smear came back normal. Next one is due in three years, around fall 2027."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "telephone",
+          "start": "2025-03-12T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication refill",
+              "date": "2025-03-12T11:20",
+              "author": "RN",
+              "body": "Pt called for sumatriptan refill, out of refills. Migraines about the same, 1-2 a month, still responds to one tab. No new headache pattern, no neuro sx. Sertraline refills OK through summer. Routed.\n\nPCP: sumatriptan 50 #9 RF 3 sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-04a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety and IBS follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-06-04T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-06-04T16:25",
+              "author": "PCP",
+              "body": "Video, at home.\n\nGut: mostly settled. Avoids onion and garlic, psyllium most days, ginger maybe once a week. Flares are short and line up with stress. No blood, no weight change.\nAnxiety: fine overall. Using alprazolam less, maybe twice a month. Sertraline daily, no side effects.\nMigraine: unchanged.\n\nA/P: IBS-D, GAD, migraine without aura all stable. No changes. Physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "annual_physical",
+          "start": "2025-10-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              80
+            ],
+            "hr": 83,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 60.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-08T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-08T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-08T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-08T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-08T09:30",
+              "author": "PCP",
+              "body": "ANNUAL EXAM\n\n26 as of last week. Fourth year of grad school, writing.\n\nInterval history unremarkable. IBS-D quiet on diet and fiber. Anxiety baseline, alprazolam occasionally, last fill in the summer. Migraines 1-2 a month. No visits elsewhere.\n\nMeds: sertraline 50 mg daily; alprazolam 0.25 mg prn (max 2/day); sumatriptan 50 mg prn; ginger extract 500 mg prn.\nAllergies: none. Never smoker. 1-2 drinks a week.\n\nExam: vitals per flowsheet. Well appearing. HEENT normal. Neck no adenopathy. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Ext no edema. Skin normal. Neuro nonfocal. Calm, good eye contact.\n\nGAD-7 6, PHQ-9 3, AUDIT-C 2.\n\nA/P\n- Stable chronic conditions; continue meds.\n- CBC, CMP today.\n- Flu vaccine today. She'll get a COVID shot at the pharmacy if she wants one this year.\n- Pap due 2027.\n- RTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "portal_message",
+          "start": "2025-10-10T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-10-10T12:15",
+              "author": "PCP",
+              "body": "Hi Hannah, Wednesday's labs are all normal - blood counts, kidney, liver and sugar. See you next fall, or sooner if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "pharmacy",
+          "start": "2025-11-12T09:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - alprazolam",
+              "date": "2025-11-12T09:50",
+              "author": "MA",
+              "body": "Refill request from pharmacy, alprazolam 0.25 mg #20. Last fill 07/2025 per PMP. Pended.\n\nPCP: PMP reviewed, no other controlled prescriptions. Approved #20, no refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "ed_visit",
+          "start": "2025-12-16T22:10",
+          "end": "2025-12-17T09:30",
+          "service": "Emergency Medicine",
+          "reason": "Difficult to arouse",
+          "conditions": [
+            {
+              "label": "Benzodiazepine overdose",
+              "action": "diagnosed",
+              "onset": "2025-12-16",
+              "icd10": "T42.4X4A"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-12-16T22:12",
+              "bp": [
+                106,
+                64
+              ],
+              "hr": 56,
+              "rr": 10,
+              "spo2": 93
+            },
+            {
+              "time": "2025-12-17T02:15",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 68,
+              "rr": 14,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-16T22:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-16T22:30",
+              "results": [
+                {
+                  "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
+                  "loinc": "3298-7",
+                  "unit": "ug/mL",
+                  "text": "<10 (undetectable)"
+                },
+                {
+                  "test": "Salicylates [Mass/volume] in Serum or Plasma",
+                  "loinc": "4024-6",
+                  "unit": "mg/dL",
+                  "text": "<3.0 (undetectable)"
+                },
+                {
+                  "test": "Ethanol [Mass/volume] in Serum or Plasma",
+                  "loinc": "5643-2",
+                  "unit": "mg/dL",
+                  "text": "<10 (undetectable)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-16T22:40",
+              "results": [
+                {
+                  "test": "Benzodiazepines [Presence] in Urine by Screen method",
+                  "loinc": "14316-4",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Opiates [Presence] in Urine by Screen method",
+                  "loinc": "19295-5",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-12-16T22:25",
+              "text": "Sinus bradycardia, rate 56. Normal axis. PR, QRS and QT intervals within normal limits. No ST-segment or T-wave changes.",
+              "conclusion": "Sinus bradycardia at 56 with normal intervals; no acute ST changes."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-12-16T22:10"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-12-16T22:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "date": "2026-01-14T10:20",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nRegional hospital ED. Date of service 12/16/2025, arrival 22:10. Received by fax 1/14/2026.\n\nCHIEF COMPLAINT: Hard to wake up.\n\nHPI: 26-year-old woman with a history of generalized anxiety disorder, migraine and IBS-D, brought in by her roommate. Roommate came home and could not get her to wake up properly in bed; per roommate, patient may have swallowed a handful of pills earlier tonight after a recent breakup. Pill bottle at bedside was her own alprazolam 0.25 mg. History initially limited by mental status.\n\nHome medications (per roommate and pharmacy): sertraline 50 mg daily, alprazolam 0.25 mg as needed (max 2/day), sumatriptan 50 mg as needed, ginger extract 500 mg as needed.\nAllergies: NKDA.\nPMH: GAD, migraine without aura, IBS-D. PSH: wisdom teeth.\nFH: mother GAD, father migraine, maternal grandmother IBS.\nSH: graduate student. Never smoker. Alcohol socially, 1-2 drinks a week.\n\nEXAM ON ARRIVAL\nVitals: BP 106/64, HR 56, RR 10, SpO2 93% on room air.\nGeneral: somnolent, opens eyes and responds to voice.\nNeuro: speech slurred. Ataxic when tested. Pupils 3 mm, equal, reactive. Moves all extremities.\nHEENT: no head trauma. No tongue laceration.\nCV: bradycardic, regular, no murmur.\nResp: shallow respirations, clear bilaterally.\nAbd: soft, nontender.\nSkin: no track marks, no wounds.\n\nED COURSE\nPlaced on monitor and continuous pulse oximetry. Naloxone given IV with no change in mental status. Flumazenil given IV; within minutes she became noticeably more alert. No seizure activity during the stay. Observed overnight on monitor. Repeat vitals at 02:15: BP 112/70, HR 68, RR 14, SpO2 98% on room air. Ambulating steadily by morning.\n\nOnce awake, patient states she took most of what was left in her alprazolam bottle late in the evening, unsure of the count, perhaps 10-15 tablets, after a breakup. Says she wanted to sleep and shut everything off. Denies wanting to die. Denies prior ingestions or self-harm. Denies current suicidal thoughts. No other substances.\n\nRESULTS\nBMP within normal limits. Acetaminophen <10, salicylate <3.0, ethanol <10 (all undetectable). Urine drug screen positive for benzodiazepines; opiates negative. Urine hCG negative.\nECG: sinus bradycardia 56, normal intervals, no ST changes.\n\nBEHAVIORAL HEALTH\nEvaluated in the ED by the behavioral health team in the morning. Judged safe for discharge with a safety plan. No firearms at home. Roommate present, agrees to stay with her and to remove the remaining tablets from the apartment.\n\nIMPRESSION\nBenzodiazepine overdose (own alprazolam), intent undetermined. Resolved CNS and respiratory depression.\n\nDISPOSITION\nDischarged home with roommate 12/17/2025 09:30.\n- Stop alprazolam.\n- Continue sertraline.\n- Follow up with primary care within the week.\n- Outpatient counseling; crisis line and 988 information given.\n- Return for any thoughts of self-harm.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-17a",
+          "kind": "portal_message",
+          "start": "2025-12-17T15:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER last night",
+              "date": "2025-12-17T15:40",
+              "author": "patient",
+              "body": "Hi, I wanted you to hear this from me. I was in the ER last night. I took too many of my Xanax after my boyfriend and I broke up, my roommate found me and drove me in. They kept me overnight and let me go this morning. They said to see you this week. I'm ok, embarrassed mostly. My roommate is staying with me."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER last night",
+              "date": "2025-12-17T16:05",
+              "author": "PCP",
+              "body": "Hannah, thank you for telling me, and I'm glad you're safe and not alone. I've asked the front desk to call you for Friday morning. Until then, please don't take any of the alprazolam, and if things get bad at any point, call me, call 988, or go back to the ER. We'll go through everything Friday."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "office_visit",
+          "start": "2025-12-19T09:00",
+          "end": "2025-12-19T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "medications": [
+            {
+              "drug_text": "alprazolam 0.25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Benzodiazepine overdose"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              66
+            ],
+            "hr": 74,
+            "rr": 13,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 60.2
+          },
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 13
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-19T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bh-referral-2025",
+              "action": "placed",
+              "order": "Behavioral health referral",
+              "category": "referral",
+              "to": "Behavioral Health",
+              "reason": "Generalized anxiety disorder; follow-up after benzodiazepine overdose"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ED follow-up",
+              "date": "2025-12-19T10:05",
+              "author": "PCP",
+              "body": "ED FOLLOW-UP\n\nSeen 3 days after an outside ED visit for an overdose of her own alprazolam. ED records not here yet, requested today. History from Hannah.\n\nTuesday night, after a breakup earlier that week, she took most of the remaining alprazolam from her last fill (thinks 10-15 tabs). Says she wanted to sleep and not feel anything. Did not want to die, and she is clear and consistent about that. Roommate found her and brought her in. She remembers waking in the ED and being told the reversal medicine worked. Kept overnight, seen by their behavioral health team, sent home Wednesday morning with a safety plan. No prior ingestions or self-harm. No alcohol or other pills that night.\n\nSince: sleeping poorly, crying some, anxious, but going to campus. Roommate is staying close. Remaining alprazolam was thrown out. No firearms. Denies current SI, intent or plan. Taking sertraline daily.\n\nExam: vitals per flowsheet. Tired-appearing, cooperative, tearful at times, linear thought, good eye contact. Speech normal. Gait steady. Neuro nonfocal.\n\nGAD-7 13, PHQ-9 7 (item 9 = 0).\n\nA/P\n1. Benzodiazepine overdose, 12/16, medically recovered. Alprazolam stopped and removed from her list; not refilling, discussed why. Reviewed the ED safety plan together, she has it on her phone. Crisis numbers reviewed.\n2. GAD, more active with the stress. Continue sertraline 50 mg daily. Referral to behavioral health for therapy; she is willing and wants someone she can see weekly. \n3. Will call her early January, visit in about 6-8 weeks, sooner if needed. She knows she can text me.\n\nSpent 40 minutes, more than half counseling."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-12-19T10:20",
+              "author": "front desk",
+              "body": "Faxed records request to regional hospital ED for 12/16-12/17/2025 visit, signed release attached. Asked for ED physician record and behavioral health evaluation."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "telephone",
+          "start": "2026-01-05T17:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in call",
+              "date": "2026-01-05T17:30",
+              "author": "PCP",
+              "body": "Called Hannah as planned. Got through the holidays with family, back in her apartment now. Sleeping better. No thoughts of harming herself. Has an intake with a therapist from the referral list on the 13th. Not missing the alprazolam much, uses the breathing exercises instead. Taking sertraline. Will see me in February. ED records still not received, front desk to resend."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "outside_records",
+          "start": "2026-01-14T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside ED record reviewed",
+              "date": "2026-01-14T15:45",
+              "author": "PCP",
+              "body": "ED physician record from 12/16 finally arrived after the second request. Reviewed. Consistent with what she told me: own alprazolam, flumazenil response, tox screen otherwise negative, normal BMP, ECG sinus brady with normal intervals, observed overnight and discharged after their behavioral health eval. Their separate behavioral health note was not included; will not chase further unless needed. Nothing changes in the plan."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "portal_message",
+          "start": "2026-01-21T19:10",
+          "orders": [
+            {
+              "id": "bh-referral-2025",
+              "action": "done",
+              "date": "2026-01-21T19:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Therapy",
+              "date": "2026-01-21T19:10",
+              "author": "patient",
+              "body": "Just an update - I started seeing a therapist, weekly on Tuesdays. Two sessions so far and I like her. Thanks for pushing me on this."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Therapy",
+              "date": "2026-01-21T20:02",
+              "author": "PCP",
+              "body": "That's great news. Glad it's a good fit. See you in February."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "office_visit",
+          "start": "2026-02-11T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up anxiety",
+          "conditions": [
+            {
+              "label": "Benzodiazepine overdose",
+              "action": "resolved",
+              "icd10": "T42.4X4A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              81
+            ],
+            "hr": 69,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 62.1
+          },
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-11T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-02-11T14:35",
+              "author": "PCP",
+              "body": "Follow-up, about 8 weeks after the December ED visit.\n\nFeels steadier. Weekly therapy since January, working on anxiety skills and the breakup. Sleeping 6-7 hours. Back to her writing schedule. No thoughts of self-harm since December, none now. No alcohol binges, still 1-2 drinks a week. Has not wanted the alprazolam back. Sertraline daily.\nIBS-D: a rough week in December, quiet since. Migraine: 2 in January, sumatriptan worked.\n\nExam: vitals per flowsheet. Well groomed, brighter affect, at ease. Normal speech and thought process.\n\nGAD-7 9, PHQ-9 4.\n\nA/P\n1. Overdose in December, resolved; off alprazolam and staying off. Safety plan still in place.\n2. GAD improving with therapy plus sertraline 50 mg. Continue.\n3. IBS-D, migraine stable.\nVideo check-in in 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "pharmacy",
+          "start": "2026-04-08T10:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - sumatriptan",
+              "date": "2026-04-08T10:10",
+              "author": "MA",
+              "body": "Pharmacy request sumatriptan 50 mg #9. Last filled November. Approved per PCP protocol, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "telehealth_visit",
+          "start": "2026-05-20T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anxiety follow-up",
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-05-20T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2026-05-20T12:20",
+              "author": "PCP",
+              "body": "Video from her apartment, identity confirmed.\n\nDoing well. Still in weekly therapy, may go every other week over the summer. Anxiety close to her old baseline. No SI. Gut fine on her usual diet. Migraines 1-2/month.\n\nGAD-7 7, PHQ-9 3.\n\nPlan: continue sertraline 50 mg daily, sumatriptan as needed, therapy. Physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-15a",
+          "kind": "pharmacy",
+          "start": "2026-07-15T09:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - sertraline",
+              "date": "2026-07-15T09:25",
+              "author": "MA",
+              "body": "Pharmacy requesting 90-day supply of sertraline 50 mg. Seen 5/20. Sent #90 with 1 refill per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T11:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "date": "2026-08-12T11:40",
+              "author": "patient",
+              "body": "Can I book my physical for early October? Wednesdays are easiest."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "date": "2026-08-12T13:15",
+              "author": "front desk",
+              "body": "You're booked Wednesday October 7 at 8:30. No need to fast. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-10-07a",
+          "kind": "annual_physical",
+          "start": "2026-10-07T08:30",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Benzodiazepine overdose|T42.4X4A": {
+        "code": "T42.4X4A",
+        "display": "Poisoning by benzodiazepines, undetermined, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "alprazolam 0.25 MG Oral Tablet": {
+        "code": "308047",
+        "display": "alprazolam 0.25 MG Oral Tablet",
+        "ingredient": "alprazolam",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Acetaminophen [Mass/volume] in Serum or Plasma": {
+        "code": "3298-7",
+        "display": "Acetaminophen [Mass/volume] in Serum or Plasma",
+        "unit": "ug/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Benzodiazepines [Presence] in Urine by Screen method": {
+        "code": "14316-4",
+        "display": "Benzodiazepines [Presence] in Urine by Screen method",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ethanol [Mass/volume] in Serum or Plasma": {
+        "code": "5643-2",
+        "display": "Ethanol [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Opiates [Presence] in Urine by Screen method": {
+        "code": "19295-5",
+        "display": "Opiates [Presence] in Urine by Screen method",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Salicylates [Mass/volume] in Serum or Plasma": {
+        "code": "4024-6",
+        "display": "Salicylates [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"ginger 500 MG Oral Capsule\""
+    ]
+  }
+}

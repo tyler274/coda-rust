@@ -1,0 +1,327 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002122",
+      "given": "Viktor",
+      "family": "Michaud",
+      "birth_date": "1975-09-10",
+      "address_line": "212 Laurel Park Rd, Northampton, MA 01060",
+      "phone": "+1-917-555-0101",
+      "email": "viktor.michaud@example.test",
+      "marital_status": "single",
+      "summary": "Senior financial analyst who joins the practice at 48 with unexplained chronic liver disease, severe hypercholesterolemia after atorvastatin myopathy, and joint pain. Diabetes appears in 2025, cardiology names familial hypercholesterolemia and adds colesevelam, and in 2026 gastroenterology finds hereditary hemochromatosis with arthropathy and starts phlebotomy.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-08-29T10:20",
+              "body": "Caller is looking to join the practice. Moving his care from a practice he has used for years, says he wants a doctor he can actually reach. Works long hours in finance, prefers early morning slots. Insurance BCBS PPO, card info taken. Booked new pt visit 9/12 at 7:40 am. Asked him to bring his med bottles and sign a records release at check-in so we can request his old chart. He said his old office has his labs \"for the liver thing and the cholesterol.\""
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T07:40",
+          "end": "2023-09-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Chronic liver disease", "icd10": "K76.9", "action": "diagnosed", "onset": "2020-06-01", "note": "Raised liver enzymes known at prior practice; cause not established"},
+            {"label": "Pure hypercholesterolemia", "action": "diagnosed", "onset": "2015-01-01", "note": "Severe, per prior practice"},
+            {"label": "History of statin-associated myopathy", "icd10": "Z87.39", "action": "history", "onset": "2021-01-01", "note": "Atorvastatin, diffuse myalgia with raised CK, at prior practice"},
+            {"label": "Inflammatory polyarthropathy", "icd10": "M06.4", "action": "diagnosed", "onset": "2021-01-01", "note": "Joint pain and stiffness on prior practice list; acetaminophen as needed"},
+            {"label": "Acquired absence of gallbladder", "action": "history", "onset": "2018-03-01", "note": "Cholecystectomy at age 42"}
+          ],
+          "medications": [
+            {"drug": "ezetimibe 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypercholesterolemia"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for joint pain", "dose": {"value": 500, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "Joint pain"},
+            {"drug": "cholecalciferol 0.05 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule (2000 units) by mouth daily", "dose": {"value": 2000, "unit": "[iU]"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "Atorvastatin", "reaction": "Muscle pain", "severity": "moderate", "criticality": "low", "type": "intolerance"},
+            {"substance": "Sulfonamide antibiotics", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 84.0, "height_cm": 180.0, "labs": {"Aspartate Aminotransferase": 66, "Alanine Aminotransferase": 79, "Low Density Lipoprotein": 190, "Total Cholesterol": 264, "High Density Lipoprotein": 44, "Triglycerides": 140}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Never; lifetime abstinent"},
+            {"item": "Occupation", "value": "Senior financial analyst"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T08:35", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 66},
+              {"test": "Alanine Aminotransferase", "value": 79},
+              {"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}
+            ]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T08:35", "results": [
+              {"test": "Total Cholesterol", "value": 268},
+              {"test": "Low Density Lipoprotein", "value": 192},
+              {"test": "High Density Lipoprotein", "value": 44},
+              {"test": "Triglycerides", "value": 140}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-12T08:35", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-09-12T08:35", "results": [
+              {"test": "Hemoglobin A1c", "value": 5.5},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-09-12T07:40"}],
+          "orders": [
+            {"id": "prior-records-2023", "action": "placed", "order": "Outside records request, prior primary care", "category": "procedure", "reason": "Establishing care"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-12T08:30",
+              "body": "NEW PATIENT VISIT\n\n48 yo man transferring care. Says his prior office was fine but he could never get a call back. Wants one place that keeps track of his liver numbers and his cholesterol.\n\nHPI / history as he tells it:\n- Liver: told several years ago his liver enzymes were \"high and staying high.\" Never drinks, never has. He recalls blood tests and being told nothing specific was found; no records with him. No jaundice, no swelling of the belly or legs that he has noticed.\n- Cholesterol: has known it is very high for a long time. Was put on atorvastatin around 2021 and within weeks had aching in his thighs, shoulders and arms; blood test showed a muscle enzyme elevation and the drug was stopped. Started on ezetimibe after that and has taken it daily since. Not on anything else for lipids.\n- Joints: aching and stiffness in several joints that his old office called inflammatory arthritis. Takes acetaminophen 500 mg when it flares, a few times a week. Never seen rheumatology.\n- Gallbladder out in 2018, uncomplicated.\n\nMeds: ezetimibe 10 mg daily; acetaminophen 500 mg q6h prn joint pain; vitamin D3 2000 units daily.\nAllergies: atorvastatin (myalgias with CK rise) -- intolerance; sulfa antibiotics -- rash.\nFamily: father had an MI at 42 and high cholesterol. Mother has type 2 diabetes. One brother has cirrhosis, cause never explained to the family as far as he knows.\nSocial: senior financial analyst, long weeks especially in close periods. Single, lives alone. Never smoked, no alcohol ever, no drugs. Walks most evenings.\n\nROS: no chest pain, no exertional symptoms, no GI bleeding, no change in bowels. Otherwise negative.\n\nExam: well-appearing, NAD. Vitals per flowsheet. HEENT unremarkable. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, healed laparoscopic scars, no organomegaly appreciated. No edema. Joints without effusion or warmth today, full range in hands, wrists, knees. Skin no rash. Neuro grossly normal. PHQ-2 0.\n\nA/P\n1. Chronic liver disease, cause not established -- CMP today, will get the old workup.\n2. Severe hypercholesterolemia on ezetimibe, statin intolerant -- lipid panel today. Strong family history. Likely needs a lipid specialist; will decide once I see numbers.\n3. Inflammatory arthropathy per prior list -- acetaminophen as needed, quiet today.\n4. Health maintenance: HCV and HIV screen today (he agrees), A1c. Will ask the prior office about colonoscopy and vaccines.\n\nRecords release signed. RTC about 6 months, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T17:05",
+          "orders": [
+            {"id": "cards-referral-2023", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "Severe hypercholesterolemia on ezetimibe, statin intolerant, father MI at 42"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2023-09-14T17:05",
+              "body": "Hi Viktor,\n\nYour results are back. Kidney function, blood counts and sugar (A1c 5.5) are normal. The hepatitis C and HIV screens are negative.\n\nYour liver enzymes are up: AST 66 and ALT 79. That matches what you told me, and I will compare against your old records when they arrive.\n\nYour LDL is 192 on ezetimibe, which is high, and with your father's heart attack at 42 I think it is worth having a cardiologist who focuses on cholesterol weigh in. I have put in the referral. Their office should call you; if you don't hear in two weeks, let us know.\n\nBest,\nYour PCP"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "outside_records",
+          "start": "2023-10-05T11:30",
+          "orders": [
+            {"id": "prior-records-2023", "action": "done", "date": "2023-10-05T11:30"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-06-04T10:00"}
+          ],
+          "procedures": [
+            {"procedure": "Colonoscopy, screening, average risk", "performed": "2021-11-09T08:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records summary",
+              "author": "outside primary care",
+              "date": "2023-10-05T11:30",
+              "body": "Records received by fax, 6 pages: problem list, medication list, immunization record, one procedure report. No lab reports included.\n\nPROBLEM LIST (prior office): elevated liver enzymes / chronic liver disease, etiology undetermined; hypercholesterolemia, severe; statin myopathy (atorvastatin) 2021; joint pain - inflammatory arthropathy; s/p cholecystectomy 2018.\n\nMEDICATIONS: ezetimibe 10 mg daily (started 2021 after atorvastatin discontinued for myalgias and CK elevation); acetaminophen 500 mg PRN; vitamin D3 2000 IU daily.\n\nALLERGIES: atorvastatin - myalgia/CK elevation; sulfa - rash.\n\nIMMUNIZATIONS: Tdap 06/2019.\n\nPROCEDURE: screening colonoscopy 11/2021 to the cecum, good prep, no polyps; repeat in 10 years.\n\nScanned to chart. -- MA"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T07:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T07:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T07:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-10T07:50",
+              "body": "In before work for vaccines. No fever today, no prior vaccine reactions. Flu quadrivalent 0.5 mL IM left deltoid. Pfizer 2023-24 formula 0.3 mL IM right deltoid. VIS reviewed. Waited 15 minutes, no reaction. Asked about the cardiology referral -- he has the number, hasn't called yet, \"quarter end.\""
+            }
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "pharmacy",
+          "start": "2024-01-22T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Ezetimibe refill",
+              "author": "MA",
+              "date": "2024-01-22T09:10",
+              "body": "Pharmacy fax requesting new rx for ezetimibe 10 mg -- prior prescriber's refills exhausted. Last fill 12/2023. Routed to PCP. Approved 90 days x 3 refills, e-sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up liver enzymes and cholesterol",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-03-19T08:10", "results": [
+              {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}
+            ]},
+            {"panel": "Lipid Panel", "collected": "2024-03-19T08:10", "results": [
+              {"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}
+            ]}
+          ],
+          "immunizations": [
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2024-03-19T08:05"},
+            {"vaccine": "Hepatitis A, adult", "date": "2024-03-19T08:06"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-03-19T07:40"},
+            {"procedure": "Immunization administration", "performed": "2024-03-19T08:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-03-19T08:20",
+              "body": "S: Six-month follow-up. Feels fine. Joints about the same, uses acetaminophen a couple of times a week, never more than 2 tablets a day. Taking ezetimibe daily. Has not scheduled with cardiology -- work has been heavy, says he will get to it. Old records came: they confirm the atorvastatin story, colonoscopy 2021 clean, but no lab reports and nothing about how the liver was worked up.\n\nO: Vitals per flowsheet. Alert, comfortable. Heart RRR. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema.\n\nA/P:\n- Chronic liver disease, cause unclear: repeat hepatic panel today. With chronic liver disease he should be protected against hep A and B -- he agrees. Heplisav-B #1 and hep A #1 today.\n- Hypercholesterolemia: lipids today. Encouraged him again to see cardiology.\n- Joints: acetaminophen as needed.\nRTC September for physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "portal_message",
+          "start": "2024-03-21T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-03-21T12:40",
+              "body": "Viktor -- liver enzymes are about where they were in September, not climbing. LDL still about 190. Same plan: ezetimibe, and please make that cardiology appointment when you can. Nurse visit in about a month for the second hepatitis B shot."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "author": "patient",
+              "date": "2024-03-21T19:55",
+              "body": "Thanks. Will book the nurse visit. Cardiology I will look at after tax season."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "nurse_visit",
+          "start": "2024-04-23T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "immunizations": [
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2024-04-23T07:35"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-04-23T07:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2024-04-23T07:45",
+              "body": "Heplisav-B dose 2 of 2, 0.5 mL IM left deltoid. Tolerated dose 1 without problems. Series complete. Hep A dose 2 due in the fall -- reminder set for his flu shot visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "telephone",
+          "start": "2024-05-07T14:15",
+          "orders": [
+            {"id": "cards-referral-2023", "action": "cancelled", "date": "2024-05-07T14:15"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral follow-up",
+              "author": "MA",
+              "date": "2024-05-07T14:15",
+              "body": "Cardiology office notified us the referral expired, never scheduled (3 attempts to reach pt). Called pt: he would rather hold off for now and keep working on diet; will bring it up at his physical. Referral closed. FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Low Density Lipoprotein": 188, "Total Cholesterol": 262}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-17T08:20", "results": [
+              {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}
+            ]},
+            {"panel": "Lipid Panel", "collected": "2024-09-17T08:20", "results": [
+              {"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein", "value": 188}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}
+            ]},
+            {"panel": null, "collected": "2024-09-17T08:20", "results": [{"test": "Hemoglobin A1c", "value": 5.6}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-17T07:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-17T08:35",
+              "body": "ANNUAL PHYSICAL -- 49M\n\nInterval: no new problems. Joints unchanged, acetaminophen as needed. Ezetimibe daily, vitamin D daily. Still walking most evenings. Sleep ok when work allows.\n\nWe talked about cardiology again. He would like to give diet another year before adding appointments; he has cut back on red meat and cheese. I told him I think he is underestimating his risk with his father's history, and he heard that. Revisit at next physical, sooner if anything changes.\n\nROS negative for chest pain, dyspnea, palpitations, GI symptoms, urinary symptoms.\n\nExam: vitals per flowsheet. General well. Eyes, ears, oropharynx normal. Neck no nodes or thyroid enlargement. Heart RRR no murmur. Lungs clear. Abdomen soft nontender, no masses or organomegaly. Extremities no edema. Joints without synovitis. Skin unremarkable. PHQ-2 0.\n\nPrevention: colonoscopy 2021 normal. Tdap 2019. Heplisav-B complete; hep A #2 with flu shot next month. Hep C/HIV done 2023.\n\nPlan: CMP, lipids, A1c today. Return in spring for liver follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T13:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "author": "PCP",
+              "date": "2024-09-19T13:10",
+              "body": "Hi Viktor, A1c 5.6, kidneys fine. Liver enzymes steady compared with last year. LDL 188 -- diet changes haven't moved it much, which is typical when the cause is mostly genetic. The cardiology door is open whenever you want it. Flu shot and hep A #2 next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-08T07:35"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T07:36"},
+            {"vaccine": "Hepatitis A, adult", "date": "2024-10-08T07:38"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T07:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2024-10-08T07:55",
+              "body": "Flu 0.5 mL IM L deltoid; Moderna 2024-25 0.5 mL IM R deltoid; Hep A adult dose 2 of 2, 1 mL IM L deltoid (separate site). Screening questions negative. Observed 15 min, fine. Hep A series complete."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

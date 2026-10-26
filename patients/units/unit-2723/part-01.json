@@ -1,0 +1,698 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002723",
+      "given": "Patricia",
+      "family": "Desrosiers",
+      "birth_date": "1966-10-26",
+      "address_line": "41 Pine Brook Rd, Florence, MA 01062",
+      "phone": "+1-802-555-0124",
+      "email": "patricia.desrosiers@example.test",
+      "marital_status": "single",
+      "summary": "Office administrator with long-standing hypertension, diet-controlled type 2 diabetes, hyperlipidemia and bipolar I disorder on lithium, who joins in 2021. An ACE-inhibitor cough in 2023 is followed by hard-to-control hypertension from right renal artery stenosis, flash pulmonary edema and a renal stent in 2025, and two lithium toxicities (2025, 2026), after which hydrochlorothiazide is stopped.",
+      "events": [
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establishing care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history"
+            },
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "history",
+              "note": "diet-controlled"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history"
+            },
+            {
+              "label": "Bipolar disorder, unspecified",
+              "action": "history",
+              "note": "bipolar I per psychiatry"
+            },
+            {
+              "label": "Major depressive disorder, single episode, unspecified",
+              "icd10": "F32.9",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperlipidemia"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "lithium carbonate 300 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "bipolar I disorder"
+            },
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "depression"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Shellfish",
+              "type": "allergy",
+              "criticality": "low"
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "hr": 66,
+            "weight_kg": 76.4,
+            "height_cm": 162.0,
+            "labs": {
+              "Hemoglobin A1c": 6.6,
+              "Low Density Lipoprotein": 88,
+              "High Density Lipoprotein": 47,
+              "Triglycerides": 158,
+              "Creatinine": 0.92,
+              "Lithium": 0.8,
+              "Thyroid Stimulating Hormone": 2.1,
+              "Microalbumin/Creatinine Ratio": 11
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Office administrator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-14T11:40",
+              "body": "NEW PATIENT VISIT\n\nCC: Here to establish care. Leaving her previous primary care office after it changed hands; records release signed today.\n\nHPI: 54-year-old woman, office administrator, with several long-running issues, all fairly settled.\n- Hypertension: on metoprolol succinate 50, amlodipine 10 and HCTZ 25 for years. Checks at the pharmacy kiosk now and then, usually 130s/80s. No headaches, chest pain or swelling.\n- Type 2 diabetes: told years ago; managed with diet only, never on medication. Tries to keep carbs down at lunch. No polyuria, no foot numbness.\n- Cholesterol: atorvastatin 40, aspirin 81. No muscle aches.\n- Bipolar I disorder and depression: followed by her outside psychiatrist, who prescribes lithium 300 twice daily and sertraline 100. Mood steady for a long while. Psychiatry has been getting lithium levels; she would like us to do her blood work here and copy them.\n\nPMH: as above. No surgeries.\nMeds: metoprolol succinate 50 daily, amlodipine 10 daily, HCTZ 25 qAM, atorvastatin 40 daily, ASA 81 daily, lithium carbonate 300 BID, sertraline 100 daily.\nAllergies: shellfish (cannot remember what happened, avoids it).\nFH: father with hypertension and type 2 diabetes. Mother with high cholesterol, had a stroke at 68. Maternal aunt with bipolar disorder. Brother had an MI at 52.\nSH: lives alone in Florence. Never smoked. A drink or two a month, socially. Works full time in an office.\n\nROS: negative except as in HPI.\n\nExam: vitals in flowsheet. Well appearing, pleasant. HEENT unremarkable, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema; feet with intact skin, good pulses, monofilament intact bilaterally. Neuro grossly nonfocal, no tremor.\n\nA/P:\n1. Hypertension, at goal today on three drugs. Continue.\n2. Type 2 diabetes, diet-controlled. A1c and urine albumin today. Will want yearly eye exam; she has an optometrist.\n3. Hyperlipidemia. Continue atorvastatin 40 and aspirin. Lipids today.\n4. Bipolar I disorder / depression, stable with psychiatry. Lithium level, TSH, calcium and creatinine today; results will be faxed to psychiatry.\n5. Health maintenance: hep C and HIV screens offered and accepted. Prior records requested for colonoscopy, Pap and vaccines. Mammogram ordered. Flu shot when supply arrives next month.\n\nRTC 6 months, sooner as needed."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:10",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2021-09-16T16:10",
+              "body": "Hi Ms. Desrosiers, your labs from Tuesday look good. A1c is in the diabetes range but stable with diet alone, so no medication needed. Cholesterol is well controlled on the atorvastatin. Kidney function, calcium and thyroid are normal, and your lithium level is right in the usual range; I've faxed a copy to your psychiatrist. Hepatitis C and HIV screens were negative. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "outside_records",
+          "start": "2021-10-05T13:30",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2017-05-09T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-20T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-10T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records Received",
+              "author": "MA",
+              "date": "2021-10-05T13:30",
+              "body": "Records received by fax from prior PCP office, 46 pages, scanned to media.\n\nAbstracted:\n- Problem list matches what pt reported: HTN, type 2 DM (diet), hyperlipidemia, bipolar I disorder, depression.\n- Colonoscopy 06/2018: normal, no polyps; repeat in 10 years.\n- Pap with HPV co-test 2019: negative/negative.\n- Tdap 05/2017.\n- COVID vaccine, Pfizer, 2 doses 03/2021 and 04/2021 (copy of card in records).\n- Mammogram 2019 benign; no 2020 study on file.\n- Allergy list: shellfish.\n\nImmunizations entered. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot and COVID booster",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-19T08:48"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2021-10-19T09:05",
+              "body": "In for flu vaccine and COVID booster (last Pfizer dose 04/2021). Screening questions negative, no prior reactions. Flu vaccine L deltoid, Pfizer booster R deltoid, lots and VIS documented. Waited 15 min, felt fine, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "imaging",
+          "start": "2021-11-09T10:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-11-09T10:30",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison: outside study 2019. Breasts are scattered fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1, negative. Routine annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "done",
+              "date": "2021-11-09T10:30"
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "pharmacy",
+          "start": "2022-01-11T15:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2022-01-11T15:20",
+              "body": "Pharmacy fax requesting 90-day supply for metoprolol succinate, amlodipine, HCTZ and atorvastatin, pt switching to mail order through her insurance. Last visit 9/2021, BP at goal. Sent 90 days x 1 refill each per protocol. Lithium and sertraline come from psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "outside_records",
+          "start": "2022-02-08T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination Report",
+              "author": "optometry",
+              "date": "2022-02-08T11:00",
+              "body": "Diabetic eye exam, dilated, performed 02/03/2022.\nVA 20/20 OD, 20/25 OS with correction. IOP 15/16. Anterior segments quiet. Dilated fundus exam: no diabetic retinopathy either eye, no macular edema. Mild presbyopia, glasses updated.\nRecommend repeat dilated exam in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "office_visit",
+          "start": "2022-03-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-24T14:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-24T14:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-03-24T14:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-24T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-24T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-03-24T15:10",
+              "body": "S: 6-month check. Doing well. Busy season at work. Diet so-so over the holidays, better now. Home BPs mostly 128-136/80s. No CP, SOB, edema. Mood good, last saw psychiatry in January. No tremor, no GI upset.\n\nO: see vitals. Lungs clear, RRR, no edema. Feet: skin intact, pulses 2+, sensation normal.\n\nA/P:\n- HTN: at goal, same three meds.\n- T2DM, diet: A1c today.\n- Bipolar I on lithium: level and BMP today, copy to psychiatry.\n- Shingrix #1 today; #2 in 2-6 months.\nRTC for physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-25a",
+          "kind": "portal_message",
+          "start": "2022-03-25T12:15",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2022-03-25T12:15",
+              "body": "Labs are fine. A1c a bit better than September, kidney function normal, lithium level in range. Keep doing what you're doing."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Lab Results",
+              "author": "patient",
+              "date": "2022-03-25T19:02",
+              "body": "Thank you! My arm was sore from the shingles shot for 2 days but its fine now. I'll book the second one."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "outside_records",
+          "start": "2022-05-17T10:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry Progress Letter",
+              "author": "psychiatry",
+              "date": "2022-05-17T10:20",
+              "body": "Re: Patricia Desrosiers, DOB 10/26/1966\n\nSeen for medication management 05/10/2022. Bipolar I disorder with a history of depressive episodes, euthymic for several years. Sleeping well, working full time, no hypomanic symptoms, no suicidal thinking. Fine tremor absent. Continue lithium carbonate 300 mg twice daily and sertraline 100 mg daily. Thank you for drawing her lithium levels; the March level was therapeutic. Please continue every 6 months with TSH, calcium and creatinine yearly. Next visit in 6 months.\n\nOutpatient psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "nurse_visit",
+          "start": "2022-06-21T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-06-21T08:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-06-21T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "MA",
+              "date": "2022-06-21T08:35",
+              "body": "Shingrix #2 given R deltoid, lot and exp recorded. Dose 1 was 3/24/22. Series complete. Pt tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-20T09:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-20T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-09-20T09:00"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-20T09:02"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-09-20T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-20T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-20T10:05",
+              "body": "ANNUAL PREVENTIVE VISIT\n\nInterval: no illnesses or ER visits this year. Feels well. Walking at lunch most days. Mood stable, sees psychiatry twice a year. Home BP in range.\n\nMeds reviewed, no changes: metoprolol succinate 50, amlodipine 10, HCTZ 25, atorvastatin 40, ASA 81, lithium 300 BID, sertraline 100.\nAllergies: shellfish.\n\nROS negative. PHQ-9 = 2.\n\nExam: NAD. HEENT normal, no thyroid enlargement. Heart RRR, no murmur. Lungs clear. Breasts: deferred to imaging per her preference. Abdomen soft, no bruits appreciated, no organomegaly. Ext no edema. Feet intact, pulses 2+, monofilament normal. Neuro nonfocal, no tremor.\n\nA/P:\n- HTN controlled. Continue.\n- T2DM, diet only: A1c, UACR. Eye exam done in February, no retinopathy.\n- HLD: lipids on atorvastatin 40.\n- Bipolar I / depression stable: lithium level, TSH, calcium, creatinine.\n- Prevention: PCV20 today given diabetes. Flu today. Shingrix complete. Colonoscopy 2018 normal, next 2028. Pap/HPV 2019 negative, next 2024. Mammogram ordered.\n\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-22a",
+          "kind": "portal_message",
+          "start": "2022-09-22T11:40",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2022-09-22T11:40",
+              "body": "Physical labs are back and look stable: A1c unchanged, cholesterol well controlled, kidney, thyroid and calcium normal, no protein in the urine, lithium in range. Copy sent to your psychiatrist."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "imaging",
+          "start": "2022-11-17T09:45",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-17T09:45",
+              "text": "Bilateral screening mammogram with tomosynthesis, compared with 11/2021 and 2019. Scattered areas of fibroglandular density. No suspicious mass, calcification or distortion. Stable appearance.",
+              "conclusion": "BI-RADS 1, negative. Annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-11-17T09:45"
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "outside_records",
+          "start": "2022-12-06T09:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry Progress Letter",
+              "author": "psychiatry",
+              "date": "2022-12-06T09:40",
+              "body": "Re: Patricia Desrosiers\n\nSeen 11/29/2022. Stable mood through the fall, no depressive symptoms despite the shorter days. Continue lithium carbonate 300 mg BID and sertraline 100 mg daily. September lithium level from your office therapeutic. Return in 6 months.\n\nOutpatient psychiatry"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

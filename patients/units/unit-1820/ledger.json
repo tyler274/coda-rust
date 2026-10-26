@@ -1,0 +1,3177 @@
+{
+  "unit": "unit-1820",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"Prenatal Vitamins Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001820",
+      "given": "Caitlin",
+      "family": "Maguire",
+      "birth_date": "1991-03-27",
+      "address_line": "27 Chesterfield Road, Westhampton, MA 01027",
+      "phone": "+1-413-555-0151",
+      "email": "caitlin.maguire@example.test",
+      "marital_status": "single",
+      "summary": "35-year-old administrative coordinator with untreated chronic hepatitis C and remote IV drug use in remission, who has had four high-risk pregnancies with outside obstetrics (PPROM 2020, AFLP 2022, abruption with cesarean 2024, Category III tracing with repeat cesarean 2026). Hepatitis C treatment has been repeatedly deferred; she was re-referred to hepatology in August 2026.",
+      "events": [
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T09:20",
+          "end": "2019-09-10T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Chronic hepatitis C",
+              "action": "diagnosed",
+              "onset": "2015-06-01",
+              "note": "Found on routine screening at prior practice 2015; never treated"
+            },
+            {
+              "label": "History of intravenous drug use disorder in sustained remission",
+              "action": "diagnosed",
+              "onset": "2014-01-01",
+              "note": "Stopped 2014; no medication for it",
+              "icd10": "F19.21"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              139,
+              82
+            ],
+            "hr": 62,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 62.8,
+            "height_cm": 165.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-10T10:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 43
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-10T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.92
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T10:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative coordinator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-09-10T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hep-referral-2019",
+              "action": "placed",
+              "order": "Hepatology referral",
+              "category": "referral",
+              "to": "Hepatology",
+              "reason": "chronic hepatitis C, untreated"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-10T11:05",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n28F here to establish care. Previously seen at a primary care office out of the area; she moved to Westhampton and wanted someone local. Records release signed today.\n\nHPI / background\n- Hepatitis C: picked up on routine screening in 2015 at her old practice. Told it was \"chronic\" and she would need a liver doctor, but she never got to the referral and has never been treated. No jaundice, no itching, no abdominal swelling, no GI bleeding that she knows of. Has not had a liver scan that she remembers.\n- Substance use: used IV drugs in her early twenties, stopped in 2014 and has not used since. Never on buprenorphine or methadone. Says she does not feel at risk of returning to use; has a stable job and routine. No current alcohol.\n- Feels well otherwise. No chronic meds.\n\nPMH: chronic hepatitis C; IV drug use, in sustained remission since 2014\nPSH: none\nMeds: none\nAllergies: NKDA\nFHx: mother with type 2 diabetes; paternal grandmother had breast cancer\nSHx: administrative coordinator. Former smoker, quit 2014 along with everything else. No alcohol. Single. Medicaid.\nGYN: periods regular. Last Pap 2018 at prior office, she was told normal.\n\nROS: negative except as above.\n\nExam\nGen: well appearing, NAD\nHEENT: sclerae anicteric, oropharynx clear\nNeck: supple, no thyromegaly, no adenopathy\nCV: RRR, no murmur\nLungs: clear bilaterally\nAbd: soft, nontender, no hepatosplenomegaly, no ascites\nSkin: no jaundice, no spider angiomata, no palmar erythema\nExt: no edema\nPsych: normal mood and affect\n\nAssessment / Plan\n1. Chronic hepatitis C, never treated. CMP and CBC today for baseline. Referral placed to hepatology to discuss staging and treatment; she is interested now. Avoid alcohol.\n2. History of IV drug use in sustained remission. Supportive, nothing needed today.\n3. Health maintenance: HIV screen today. Will get Pap result from prior office; due again 2021 or with cotest later. Flu shot when available next month.\n4. PHQ-9 = 2.\n\nRTC 1 year or sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Alanine Aminotransferase": 52,
+              "Aspartate Aminotransferase": 44,
+              "Hemoglobin": 12.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-11a",
+          "kind": "telephone",
+          "start": "2019-09-11T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2019-09-11T11:30",
+              "author": "front desk",
+              "body": "Records request faxed to prior primary care office with signed release. Asked for last 5 years of notes, labs, immunizations and Pap results."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:40",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab results",
+              "date": "2019-09-12T16:40",
+              "author": "PCP",
+              "body": "Hi Caitlin, your labs from Tuesday are in. Your liver tests (ALT and AST) are mildly above the normal range, which is what we expect with hepatitis C and is not alarming. Bilirubin, albumin, kidney function and platelets are normal, and your blood count is fine. Your HIV test was negative. Hepatology should be calling you to set up the visit; let us know if you haven't heard from them in two weeks."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "outside_records",
+          "start": "2019-09-24T13:10",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2018-05-21T10:00",
+              "text": "Specimen adequate for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2019-09-24T13:10",
+              "author": "front desk",
+              "body": "Records received by fax from prior primary care office (42 pages), scanned to media.\n\nAbstracted by front desk for the PCP:\n- 2015 screening labs: hepatitis C antibody reactive, HCV RNA detected (quantity not on the copy we received). Note from that visit says referral to GI offered.\n- 2018 Pap: negative for intraepithelial lesion or malignancy.\n- No surgeries listed. No active medications.\n- Immunization history in the packet incomplete; no hepatitis A or B doses recorded."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-30a",
+          "kind": "telephone",
+          "start": "2019-09-30T15:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral status",
+              "date": "2019-09-30T15:20",
+              "author": "MA",
+              "body": "Hepatology referral faxed 9/10. Called their scheduling line: received, first new patient opening is 11/19 at 2 pm. Pt notified by phone and accepted. Appointment info sent through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2019-10-08T08:50",
+              "author": "RN",
+              "body": "Here for flu vaccine. Screening questions negative, afebrile. Quadrivalent influenza 0.5 mL IM L deltoid, lot and expiration recorded. VIS given. Tolerated well, left after 15 min observation."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2019-11-19a",
+          "kind": "specialist_visit",
+          "start": "2019-11-19T14:00",
+          "service": "Hepatology",
+          "reason": "Chronic hepatitis C",
+          "orders": [
+            {
+              "id": "hep-referral-2019",
+              "action": "done",
+              "date": "2019-11-19T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology consultation",
+              "date": "2019-11-21T09:30",
+              "author": "hepatology",
+              "body": "HEPATOLOGY CONSULTATION\nDate of visit: 11/19/2019\nReferred by: primary care\n\nDear colleague,\n\nThank you for asking us to see Ms. Maguire, a 28-year-old woman with chronic hepatitis C infection identified on screening in 2015 and never treated. Her presumed exposure is prior injection drug use, which she stopped in 2014. She feels well. She denies jaundice, pruritus, confusion, abdominal distension, melena or hematemesis. No alcohol.\n\nAllergies: no known drug allergies.\nMedications: none.\n\nExam: alert, anicteric. No stigmata of chronic liver disease. Abdomen soft, no palpable liver edge or spleen tip, no ascites.\n\nLiver stiffness by transient elastography today: 5.8 kPa, consistent with no significant fibrosis (F0-F1).\n\nImpression: chronic hepatitis C without significant fibrosis. She is a good candidate for direct-acting antiviral therapy.\n\nPlan:\n- Sofosbuvir-velpatasvir daily for 12 weeks once Medicaid prior authorization is approved; our office will submit.\n- Urine pregnancy test the day she picks up the first fill, as she is of childbearing age.\n- Continue to avoid alcohol.\n- We will see her at week 4 of treatment.\n\nAllergies reviewed: NKDA.\n\nSincerely,\nHepatology"
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "portal_message",
+          "start": "2019-12-10T20:14",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Hep C medicine",
+              "date": "2019-12-10T20:14",
+              "author": "patient",
+              "body": "Hi, the liver office said they sent the insurance paperwork for the hep C pills. Do you need to do anything on your end? I haven't heard anything in 2 weeks.\n\nReply (MA, 12/11): Hi Caitlin, the prior authorization is handled by the hepatology office since they wrote the prescription. I called them this morning and they said it is still with Medicaid and they expect an answer by the end of the month. They will call you directly."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-08a",
+          "kind": "telephone",
+          "start": "2020-01-08T10:15",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2019-12-07",
+              "note": "LMP 2019-12-07",
+              "icd10": "Z33.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "Prenatal Vitamins Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pregnancy"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2020",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "new pregnancy, hepatitis C"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Positive home pregnancy test",
+              "date": "2020-01-08T10:30",
+              "author": "RN",
+              "body": "Pt called. Positive home pregnancy test this morning, first day of LMP was 12/7/19. No bleeding, no cramping. She has not started the hepatitis C medication yet; hepatology's prior auth was approved last week and she was due to pick it up Friday.\n\nAdvised: do NOT start the hep C medication. Start prenatal vitamin daily. Reviewed with PCP, who agrees; PNV sent to her pharmacy. Called hepatology nurse line and left message re: pregnancy and hold on treatment.\n\nShe would like to go to the OB group in town. Referral placed. Pt verbalized understanding.\n\nAddendum 1/9 RN: hepatology nurse called back. Treatment on hold until after delivery. They will reach out to her postpartum."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-14a",
+          "kind": "outside_records",
+          "start": "2020-01-14T10:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hepatology note: treatment on hold",
+              "date": "2020-01-14T10:40",
+              "author": "hepatology",
+              "body": "HEPATOLOGY — TELEPHONE NOTE (copy to PCP)\n\nPatient informed us of a new pregnancy before her first fill. Sofosbuvir-velpatasvir will not be started. The approved authorization will lapse; we will resubmit when she is ready after delivery and breastfeeding. Please have her contact us postpartum. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-18a",
+          "kind": "specialist_visit",
+          "start": "2020-02-18T10:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 10 weeks",
+          "conditions": [
+            {
+              "label": "Susceptibility to hepatitis B virus infection",
+              "action": "diagnosed",
+              "onset": "2020-02-18",
+              "note": "HBsAg, anti-HBc and anti-HBs all negative",
+              "icd10": "Z28.39"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              71
+            ],
+            "hr": 68,
+            "weight_kg": 61.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-02-04T09:00",
+              "resulted": "2020-02-07T14:00",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "unit": "[IU]/mL",
+                  "value": 1500000
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B virus core Ab total",
+                  "loinc": "16933-4",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis A virus IgG Ab",
+                  "loinc": "40724-7",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2020",
+              "action": "done",
+              "date": "2020-02-18T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics prenatal visit",
+              "date": "2020-02-24T11:20",
+              "author": "obstetrics",
+              "body": "OBSTETRICS & GYNECOLOGY — PRENATAL VISIT\nVisit date: 02/18/2020\nEGA: 10w3d by LMP 12/07/2019\n\nS: Here for routine prenatal follow-up. Taking her prenatal vitamin every day. No bleeding or cramping; nausea mild and manageable. This pregnancy has gone smoothly to date.\nHistory: chronic hepatitis C, known about five years, untreated (DAA was about to start when she conceived). No known prior hepatitis A or B; she is not sure which vaccines she has had. Past IV drug use, stopped six years ago. No jaundice, itching or abdominal pain.\n\nMeds: prenatal vitamin daily.\nAllergies: NKDA.\nFHx: mother T2DM; paternal grandmother breast cancer.\nSHx: former smoker, quit 6 years ago. No alcohol. Administrative coordinator.\n\nO: vitals within normal limits. Exam unremarkable.\n\nFirst trimester labs (drawn 02/04/2020):\nHCV RNA, quantitative: 1,500,000 IU/mL\nHBsAg: negative\nAnti-HBc total: negative\nAnti-HBs: negative\nHepatitis A IgG: negative\n\nA/P: IUP at 10 weeks. Chronic HCV with viremia. Non-immune to hepatitis B.\nRoutine prenatal care. Follow up 4 weeks.\n\ncc: primary care"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "portal_message",
+          "start": "2020-03-24T13:02",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Question about appointments",
+              "date": "2020-03-24T13:02",
+              "author": "patient",
+              "body": "Is the office still doing in person visits with everything going on? My OB switched some visits to phone. I don't have anything coming up with you, just wondering.\n\nReply (front desk, 3/24): We are seeing patients in person for urgent needs and doing video or phone visits for routine care for now. Nothing is due with us until after your baby comes. Take care!"
+            }
+          ]
+        },
+        {
+          "id": "2020-05-12a",
+          "kind": "pharmacy",
+          "start": "2020-05-12T09:05",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill request",
+              "date": "2020-05-12T09:05",
+              "author": "MA",
+              "body": "Pharmacy refill request for prenatal vitamin, 90-day supply. Last seen by OB 2/2020 per records; PCP aware. Refill x3 sent per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-18a",
+          "kind": "hospital_admission",
+          "start": "2020-07-18T06:50",
+          "end": "2020-08-03T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Leakage of fluid at 32 weeks",
+          "conditions": [
+            {
+              "label": "Preterm premature rupture of membranes",
+              "action": "diagnosed",
+              "onset": "2020-07-18",
+              "icd10": "O42.113"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2020-07-18T07:05",
+              "bp": [
+                120,
+                75
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 37.0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-07-18T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 12.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "unit": "10*3/uL",
+                  "value": 9.0
+                },
+                {
+                  "test": "Platelets",
+                  "unit": "10*3/uL",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-07-18T07:30",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "text": "Within normal limits"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2020-06-22T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2020-08-05T15:40",
+              "author": "obstetrics",
+              "body": "REGIONAL HOSPITAL — LABOR & DELIVERY\nDISCHARGE SUMMARY\nAdmitted: 07/18/2020   Discharged: 08/03/2020\nAttending service: Obstetrics\n\nAdmission diagnosis: preterm premature rupture of membranes at 32w0d.\nDischarge diagnosis: same; delivered at 34w0d.\n\nHistory: 29-year-old G1 with chronic hepatitis C and remote injection drug use, now in remission, presented with two hours of leaking clear fluid. No contractions, no bleeding, no intercourse recently. Prenatal care has been regular and the pregnancy otherwise uncomplicated.\n\nOn arrival: BP 120/75, pulse 80, respirations 16, temperature 37.0 C (98.6 F). Sterile speculum exam: clear fluid pooled in the posterior fornix; nitrazine positive; ferning on microscopy. Fetal monitoring reassuring — baseline 140, moderate variability, no decelerations; no contractions on toco.\nLabs: hemoglobin 12.5, WBC 9,000, platelets 250,000. CRP normal.\n\nHospital course: admitted for expectant management. Betamethasone 12 mg IM given, two doses 24 hours apart. Latency antibiotics for 7 days: IV ampicillin and erythromycin for 48 hours, then oral amoxicillin and erythromycin. She remained afebrile with reassuring fetal testing throughout. Induction at 34w0d on 08/01/2020, uncomplicated vaginal delivery. Liveborn infant admitted to the special care nursery for prematurity. Postpartum course routine.\n\nTdap given in clinic 06/22/2020.\n\nDischarge medications: prenatal vitamin daily.\nAllergies: NKDA.\nFollow-up: postpartum visit with OB in 6 weeks; primary care in 2 weeks; hepatology after delivery to revisit treatment."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-20a",
+          "kind": "telephone",
+          "start": "2020-07-20T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient admitted",
+              "date": "2020-07-20T09:10",
+              "author": "RN",
+              "body": "Pt called from the hospital to let us know she was admitted Saturday at 32 weeks with her water breaking. Getting steroids and antibiotics, plan is to keep her pregnant to 34 weeks if possible. Asked that we get the records. Will watch for discharge summary; PCP informed."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-07a",
+          "kind": "telephone",
+          "start": "2020-08-07T11:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2020-08-07T11:45",
+              "author": "RN",
+              "body": "Transition call after hospital discharge 8/3. Discharge summary in chart. She is home, feels well, bleeding moderate and decreasing, no fever, pain controlled with nothing stronger than OTC. Baby still in special care nursery, she is pumping and visiting daily. Taking PNV. Scheduled with PCP 8/18 at 2 pm."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-18a",
+          "kind": "office_visit",
+          "start": "2020-08-18T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up after delivery",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Preterm premature rupture of membranes",
+              "action": "resolved",
+              "icd10": "O42.113"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              82
+            ],
+            "hr": 67,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 71.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-08-18T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-discharge follow-up",
+              "date": "2020-08-18T14:50",
+              "author": "PCP",
+              "body": "S: 29F, 2.5 weeks postpartum. Admitted 7/18 at 32 weeks with ruptured membranes; got steroids and antibiotics, induced at 34 weeks, vaginal delivery 8/1. Discharge summary reviewed. Baby was in the special care nursery for about a week and is home now and feeding well. She is breastfeeding.\nBleeding tapering, lochia light. No fever. Mild perineal soreness. Sleeping in pieces but mood is good. Still on prenatal vitamin.\nHep C: hepatology told her they'd revisit treatment after delivery. She wants to breastfeed for a while first and is asking whether she has to start right away.\n\nO: well appearing. Abd soft, fundus not palpable above the pubis. Calves soft, nontender. Mood and affect normal.\n\nA/P:\n1. Postpartum after PPROM and preterm delivery at 34 weeks — recovering as expected. OB postpartum visit already booked for mid-September.\n2. Chronic hepatitis C — explained treatment is usually deferred while breastfeeding; she'll call hepatology to arrange a follow-up visit this winter.\n3. PHQ-9 3. Reviewed warning signs of postpartum depression; she knows to call.\n4. Flu shot this fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-09-16a",
+          "kind": "outside_records",
+          "start": "2020-09-16T09:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics postpartum visit",
+              "date": "2020-09-16T09:30",
+              "author": "obstetrics",
+              "body": "OB/GYN POSTPARTUM VISIT — 09/14/2020\n6 weeks after vaginal delivery at 34 weeks. Recovering well. Breastfeeding. Lochia resolved. Mood good. Exam: abdomen benign, uterus normal size. Plan: routine care; return for annual exam. cc PCP.\nAllergies: NKDA. Meds: prenatal vitamin."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "vitals": {
+            "temp_c": 36.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2020-10-06T16:20",
+              "author": "MA",
+              "body": "Flu vaccine given, 0.5 mL IM R deltoid. Breastfeeding, no contraindication. Masked visit, screened at door. No reaction during wait."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "pharmacy",
+          "start": "2020-11-17T08:55",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill",
+              "date": "2020-11-17T08:55",
+              "author": "MA",
+              "body": "eRx refill request: prenatal vitamin. Still breastfeeding per last visit. Approved, 90 days x 3."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-12a",
+          "kind": "portal_message",
+          "start": "2021-01-12T12:20",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Liver appointment",
+              "date": "2021-01-12T12:20",
+              "author": "patient",
+              "body": "I called the liver office and they can see me in March. Is that ok or should it be sooner? Still nursing.\n\nReply (PCP, 1/12): March is fine. Nothing about your hepatitis C is urgent; the visit is mainly to plan timing of treatment. Bring your questions about breastfeeding."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "specialist_visit",
+          "start": "2021-03-16T10:30",
+          "service": "Hepatology",
+          "reason": "Chronic hepatitis C follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology follow-up",
+              "date": "2021-03-18T16:05",
+              "author": "hepatology",
+              "body": "HEPATOLOGY FOLLOW-UP\nDate of visit: 03/16/2021\n\nMs. Maguire returns about seven months after delivering at 34 weeks. Treatment for her chronic hepatitis C was put on hold in January 2020 when she became pregnant. She is still breastfeeding and would prefer not to take any new medication until she has weaned. She feels well, with no jaundice or itching.\n\nMeds: prenatal vitamin. Allergies: NKDA.\nExam: anicteric, abdomen benign, no stigmata of chronic liver disease.\n\nAssessment: chronic hepatitis C with no significant fibrosis on elastography in 11/2019 (5.8 kPa). Low short-term risk; deferral is reasonable.\n\nPlan: she will call us when she has finished breastfeeding and is not pregnant, and we will resubmit for sofosbuvir-velpatasvir 12 weeks. No alcohol.\n\nThank you for allowing us to participate in her care.\nHepatology"
+            }
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "outside_records",
+          "start": "2021-05-04T14:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-06T15:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-27T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "COVID-19 vaccination record",
+              "date": "2021-05-04T14:00",
+              "author": "front desk",
+              "body": "Patient brought in her CDC vaccination card. Pfizer-BioNTech dose 1 on 4/6/2021 and dose 2 on 4/27/2021, both at a retail pharmacy. Entered in immunization record and scanned."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "annual_physical",
+          "start": "2021-06-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              71
+            ],
+            "hr": 65,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 65.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-08T09:20",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 53
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 44
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-06-08T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-06-08T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-06-08T09:40",
+              "author": "PCP",
+              "body": "ANNUAL PREVENTIVE VISIT\n\n30F. Doing well. Back at work full time since January. Baby is 10 months, thriving; she is down to nursing at bedtime and expects to wean over the summer.\n\nHep C: saw hepatology in March, plan is to treat after weaning. She'd like to start in the fall. No symptoms.\nNo substance use. No tobacco, no alcohol. Sleeping better.\n\nMeds: prenatal vitamin daily (still nursing)\nAllergies: NKDA\n\nExam\nGeneral: well, NAD\nHEENT: sclerae anicteric, TMs clear, oropharynx normal\nNeck: no thyromegaly, no LAD\nCV: RRR, no m/r/g\nLungs: CTA bilaterally\nBreast: deferred, no concerns, done at OB postpartum\nAbd: soft, NT, no HSM\nSkin: no jaundice, no rash\nExt: no edema\nNeuro: grossly normal\nPsych: euthymic\n\nA/P\n1. Health maintenance: PHQ-2 0. Pap 2018 normal — cotest due 2023. COVID series completed in April. Flu vaccine in the fall.\n2. Chronic hep C — CMP and CBC today. Call hepatology once weaned.\n3. IVDU history, sustained remission — doing well.\n\nReturn 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T07:55",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab results",
+              "date": "2021-06-10T07:55",
+              "author": "PCP",
+              "body": "Hi Caitlin — your labs look about the same as two years ago. Liver enzymes still mildly up from hepatitis C, with normal bilirubin, albumin and platelets, which tells us the liver is working well. Kidney function and blood count normal. No changes for now."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "vitals": {
+            "temp_c": 36.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T17:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T17:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2021-10-12T17:10",
+              "author": "MA",
+              "body": "Seasonal flu vaccine 0.5 mL IM L deltoid. Afebrile, screening negative. No immediate reaction. Pt asked about calling hepatology; reminded her their number is on the portal."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-12-23a",
+          "kind": "portal_message",
+          "start": "2021-12-23T08:12",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2021-11-21",
+              "note": "LMP 2021-11-21",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Pregnant again",
+              "date": "2021-12-23T08:12",
+              "author": "patient",
+              "body": "Good morning, just wanted to let you know I'm pregnant again. Positive test this morning, last period started Nov 21. I already called my OB and have an appointment in January. I never ended up starting the hep C meds so nothing to stop. Still taking my prenatal.\n\nReply (PCP, 12/23): Congratulations! Thanks for letting us know. Keep taking the prenatal vitamin and hold off on any hep C treatment; we'll revisit after the baby. Your OB will handle prenatal care, and we're here for anything else."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-01a",
+          "kind": "pharmacy",
+          "start": "2022-02-01T10:25",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill",
+              "date": "2022-02-01T10:25",
+              "author": "MA",
+              "body": "Refill request prenatal vitamin. Currently pregnant, OB following. Refilled 90 days x 3."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "telephone",
+          "start": "2022-04-19T13:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medicaid form",
+              "date": "2022-04-19T13:40",
+              "author": "front desk",
+              "body": "Pt called asking for a copy of her immunization record for a Medicaid renewal packet. Printed and mailed to address on file; also released to portal."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-24a",
+          "kind": "hospital_admission",
+          "start": "2022-07-24T21:30",
+          "end": "2022-07-30T12:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Pruritus at 35 weeks",
+          "conditions": [
+            {
+              "label": "Acute fatty liver of pregnancy",
+              "action": "diagnosed",
+              "onset": "2022-07-24",
+              "icd10": "O26.613"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-07-24T22:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 70
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 68
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 120
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 1.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-24T22:10",
+              "results": [
+                {
+                  "test": "Bile acid",
+                  "loinc": "14628-2",
+                  "unit": "umol/L",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-07-25T04:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "unit": "mg/dL",
+                  "value": 58
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-25T04:30",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "unit": "mg/dL",
+                  "value": 7.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-07-25T04:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "unit": "10*3/uL",
+                  "value": 14.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 12.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-07-25T04:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "unit": "s",
+                  "value": 16.2
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.5
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2022-07-25T07:15",
+              "text": "Liver normal in size with diffusely increased echogenicity. No focal hepatic lesion. Gallbladder without stones or wall thickening. Common bile duct 3 mm. No intrahepatic or extrahepatic biliary dilation. No ascites. Visualized right kidney unremarkable.",
+              "conclusion": "Diffusely increased hepatic echogenicity. No biliary dilation."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-06-06T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2022-08-01T10:20",
+              "author": "obstetrics",
+              "body": "REGIONAL HOSPITAL — OBSTETRICS\nDISCHARGE SUMMARY\nAdmission: 07/24/2022   Discharge: 07/30/2022\nAdmitting diagnosis: pruritus with abnormal liver tests at 35w0d\nPrincipal diagnosis: acute fatty liver of pregnancy\nSecondary: chronic hepatitis C; history of PPROM with preterm delivery (2020); hepatitis B non-immune\n\nHPI: 31-year-old G2P0101 sent in from the OB office after two weeks of intense itching, mostly of the palms and soles and worse overnight. No rash, no yellowing, no nausea or vomiting, no change in stools. She had no prior problems this pregnancy.\nExam on arrival: no excoriations or rash. Fundal height appropriate for dates. Fetal heart tones normal.\n\nInitial labs: total bile acids 45 umol/L; ALT 70, AST 68, alkaline phosphatase 120, total bilirubin 1.2.\n\nCourse: repeat labs early the next morning showed glucose 58, uric acid 7.9, WBC 14.8, PT 16.2 seconds with INR 1.5. RUQ ultrasound showed a diffusely echogenic liver without biliary dilation. With these findings the diagnosis of acute fatty liver of pregnancy was made. She was transferred to the ICU for monitoring, started on a dextrose infusion, and induced. Uncomplicated vaginal delivery 07/25/2022 at 35w1d; liveborn infant to the nursery. Glucose stabilized within 24 hours of delivery, coagulation studies and transaminases improved daily, and she returned to the postpartum floor on day 2. Itching resolved after delivery.\n\nTdap given at the OB office 06/06/2022.\n\nDischarge meds: prenatal vitamin daily.\nAllergies: NKDA.\nFollow-up: PCP within 2 weeks for repeat CMP, CBC and PT/INR; OB postpartum visit at 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-02a",
+          "kind": "telephone",
+          "start": "2022-08-02T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2022-08-02T09:30",
+              "author": "RN",
+              "body": "Transition call. Discharge summary from OB admission received yesterday (acute fatty liver of pregnancy, delivered 7/25). She is home with the baby, feels tired but OK. Itching is gone. Eating normally. No confusion, no yellow eyes, no bleeding beyond expected lochia. Booked with PCP 8/9 with labs same day."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "office_visit",
+          "start": "2022-08-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, acute fatty liver of pregnancy",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Acute fatty liver of pregnancy",
+              "action": "resolved",
+              "icd10": "O26.613"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              74
+            ],
+            "hr": 78,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 71.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-09T11:20",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 53
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 42
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-08-09T11:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 309
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.28
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-08-09T11:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-08-09T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-discharge visit",
+              "date": "2022-08-09T11:35",
+              "author": "PCP",
+              "body": "Subjective\n31 y/o, 2 weeks postpartum. Admitted 7/24 at 35 weeks for itching with abnormal LFTs; next morning low sugar, high uric acid, prolonged PT and an echogenic liver on US, diagnosed with acute fatty liver of pregnancy, monitored in ICU, induced and delivered vaginally 7/25. I reviewed the discharge summary in full.\nToday: itching completely gone since delivery. Appetite good. No RUQ pain, no confusion, no easy bruising. Lochia light. Formula feeding this time. Baby well.\nMeds: prenatal vitamin. NKDA.\n\nObjective\nVitals reviewed. Well appearing, anicteric. Abd soft, nontender, no HSM. No asterixis. Skin without bruising.\n\nAssessment and plan\n1. Acute fatty liver of pregnancy, resolved clinically. Repeat CMP, CBC w/ diff, PT/INR today. Expect enzymes back to her usual mild hep C elevation.\n2. Chronic hep C. Not breastfeeding this time — good window to treat. She says she wants to \"get settled\" first and will think about calling hepatology in the fall. Encouraged her not to let it slide.\n3. Mood: PHQ-9 4, tired more than down. Knows to reach out.\n4. Flu and updated COVID vaccine in October."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-11a",
+          "kind": "portal_message",
+          "start": "2022-08-11T17:30",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab results",
+              "date": "2022-08-11T17:30",
+              "author": "PCP",
+              "body": "Good news — your blood sugar, clotting test (INR) and blood counts are normal again, and your liver enzymes are back to where they usually run with hepatitis C. Nothing else to repeat for the fatty liver of pregnancy."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "outside_records",
+          "start": "2022-09-14T08:45",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics postpartum visit",
+              "date": "2022-09-14T08:45",
+              "author": "obstetrics",
+              "body": "POSTPARTUM VISIT — 09/12/2022\nSeven weeks after vaginal delivery at 35 weeks complicated by acute fatty liver of pregnancy. Feels well. No pruritus. Mood stable. Exam normal, uterus involuted. Liver tests per PCP 8/9 back to baseline. Routine follow-up. NKDA. Meds: PNV."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2022-10-18T16:45",
+              "author": "RN",
+              "body": "Influenza quadrivalent 0.5 mL IM L deltoid; Pfizer bivalent COVID booster 0.3 mL IM R deltoid. Screening questions negative. Observed 15 min, no reaction."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "portal_message",
+          "start": "2022-11-29T21:48",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Hep C",
+              "date": "2022-11-29T21:48",
+              "author": "patient",
+              "body": "I know I said I would call the liver doctor this fall. Honestly with two little ones I can't think about it right now. Can we talk about it at my physical?\n\nReply (PCP, 11/30): Of course. Your liver tests are stable and your scan in 2019 showed no scarring, so waiting a few months is reasonable. We'll talk at your physical in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "pharmacy",
+          "start": "2023-02-07T09:15",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill",
+              "date": "2023-02-07T09:15",
+              "author": "MA",
+              "body": "Refill request prenatal vitamin. Pt continues it daily per last visit. Sent 90 days x 3."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-25a",
+          "kind": "annual_physical",
+          "start": "2023-04-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2023-04-24T16:50",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's physical, childcare fell through. Rescheduled to 5/16 at 9:00."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "annual_physical",
+          "start": "2023-05-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              79
+            ],
+            "hr": 64,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 95,
+            "weight_kg": 66.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-05-16T09:50",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 55
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-05-16T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 230
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-05-16T09:30",
+              "text": "Liquid-based preparation. Satisfactory for evaluation; endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV DNA not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2023-05-22T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-05-16T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-05-16T10:05",
+              "author": "PCP",
+              "body": "Annual exam, rescheduled from April.\n\n32 y/o here for yearly physical. Two children at home (almost 3 and 10 months). Working, busy, no new concerns.\n\nHep C: we talked about it again. She knows treatment is 12 weeks of pills and that nothing has changed on her side. Still not ready — wants to wait until \"things calm down.\" I gave her the hepatology number again and offered to re-send the referral whenever she wants; she will message me.\nRemission from IV drug use continues. No tobacco, no alcohol.\n\nMeds: prenatal vitamin daily. NKDA.\nPMH: chronic HCV; IVDU in sustained remission; PPROM 2020 (delivered 34 wk); AFLP 2022 (delivered 35 wk); HBV non-immune.\n\nExam: well, NAD. Sclerae anicteric. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, liver and spleen not palpable. Pelvic: normal external genitalia, vaginal mucosa and cervix normal; Pap/HPV collected. Skin clear. No edema. Mood and affect appropriate.\n\nPlan\n- Pap with HPV cotest today.\n- CMP, CBC.\n- PHQ-9 2.\n- Flu and updated COVID vaccine in the fall.\n- Hep C: patient deferring; revisit next visit."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "portal_message",
+          "start": "2023-05-23T12:45",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Pap and labs",
+              "date": "2023-05-23T12:45",
+              "author": "PCP",
+              "body": "Your Pap smear was normal and the HPV test was negative, so the next one isn't due for 5 years. Your blood work is unchanged — liver enzymes mildly up as always, everything else normal."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.3
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T16:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T16:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T16:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2023-10-10T17:00",
+              "author": "MA",
+              "body": "Flu 0.5 mL IM L deltoid and 2023-2024 Pfizer COVID 0.3 mL IM R deltoid. Screening negative. Tolerated, left in stable condition."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-12-27a",
+          "kind": "portal_message",
+          "start": "2023-12-27T09:31",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2023-11-25",
+              "note": "LMP 2023-11-25",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Pregnancy",
+              "date": "2023-12-27T09:31",
+              "author": "patient",
+              "body": "Hi! Positive pregnancy test today. LMP was 11/25. I'm calling OB this afternoon. Figured I'd let you know since we keep talking about the hep C thing — guess it's on hold again.\n\nReply (PCP, 12/27): Congratulations, and thanks for the heads up. Yes, hold on treatment during pregnancy. Keep the prenatal vitamin going. Your OB will want to know about the fatty liver last time if they don't already — they have the records."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "pharmacy",
+          "start": "2024-03-05T11:00",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill",
+              "date": "2024-03-05T11:00",
+              "author": "MA",
+              "body": "Pharmacy request prenatal vitamin refill. Pregnant, ~14 weeks, OB following. Refilled."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-20a",
+          "kind": "hospital_admission",
+          "start": "2024-07-20T15:10",
+          "end": "2024-07-24T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Abdominal pain and vaginal bleeding at 34 weeks",
+          "conditions": [
+            {
+              "label": "Polyhydramnios",
+              "action": "diagnosed",
+              "onset": "2024-06-01",
+              "icd10": "O40.3XX0"
+            },
+            {
+              "label": "Placental abruption",
+              "action": "diagnosed",
+              "onset": "2024-07-20",
+              "icd10": "O45.93"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-cesarean pain"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-cesarean pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-07-20T15:20",
+              "bp": [
+                140,
+                90
+              ],
+              "hr": 110
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-20T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "unit": "10*3/uL",
+                  "value": 210
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-07-20T15:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "unit": "s",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-20T15:30",
+              "results": [
+                {
+                  "test": "aPTT",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 30
+                },
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 400
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-06-10T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2024-07-26T14:15",
+              "author": "obstetrics",
+              "body": "REGIONAL HOSPITAL — LABOR AND DELIVERY / OBSTETRIC ICU\nDISCHARGE SUMMARY\nAdmitted 07/20/2024   Discharged 07/24/2024\nPrincipal diagnosis: placental abruption at 34w0d\nOther diagnoses: severe polyhydramnios this pregnancy; chronic hepatitis C; prior PPROM (2020) and acute fatty liver of pregnancy (2022); hepatitis B non-immune\nProcedure: emergency low transverse cesarean delivery 07/20/2024\n\nPresentation: 33-year-old G3P0202 at 34 weeks with abrupt onset of sharp, constant lower abdominal pain, 8/10, and vaginal bleeding. No trauma, no recent intercourse. This pregnancy had been followed for severe polyhydramnios.\nOn arrival BP 140/90, HR 110. Uterus tender with frequent contractions. Fetal monitoring with repetitive late decelerations.\nLabs: Hgb 10.2 (baseline 12.5), platelets 210K, PT 12 s, aPTT 30 s, fibrinogen 400.\n\nCourse: clinical placental abruption with a non-reassuring tracing. Taken for emergency cesarean the same afternoon. Liveborn infant to the NICU. She was observed in the obstetric ICU overnight, then transferred to postpartum. Hemodynamically stable thereafter; incision clean. Ambulating, tolerating diet.\n\nTdap given 06/10/2024 at the OB office.\n\nDischarge medications: prenatal vitamin daily; ibuprofen 600 mg every 6 hours as needed; acetaminophen 1,000 mg every 6 hours as needed. No opioid prescribed at discharge in view of her history; patient agreed.\nAllergies: no known drug allergies.\nFollow-up: incision check with OB in 1-2 weeks; postpartum visit at 6 weeks; PCP in 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "telephone",
+          "start": "2024-07-29T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2024-07-29T10:05",
+              "author": "RN",
+              "body": "Called after hospital discharge (abruption, emergency C-section 7/20). Summary in chart. Pt home; baby still in NICU, expected home this week. Incision sore but no redness or drainage, no fever. Using ibuprofen and Tylenol, managing. Bleeding moderate. Visit with PCP 8/6."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "office_visit",
+          "start": "2024-08-06T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up after cesarean",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Polyhydramnios",
+              "action": "resolved",
+              "icd10": "O40.3XX0"
+            },
+            {
+              "label": "Placental abruption",
+              "action": "resolved",
+              "icd10": "O45.93"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              70
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 73.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-06T14:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 10.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.55
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-08-06T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-discharge visit",
+              "date": "2024-08-06T14:10",
+              "author": "PCP",
+              "body": "33F seen 2.5 weeks after emergency C-section for placental abruption at 34 weeks (7/20). Discharge summary reviewed: presented with sudden pain and bleeding, BP 140/90, HR 110, late decels, Hgb 10.2 with normal coags; cesarean same day; baby in NICU, home now. This pregnancy also had severe polyhydramnios.\n\nShe is sore but improving, off ibuprofen most days. Incision check with OB last week was fine. Bleeding light. No fever, no calf pain, no chest pain or shortness of breath. Tired. Three kids at home now.\n\nExam: BP and pulse normal today. Afebrile. Low transverse incision clean, dry, well approximated, no erythema. Abdomen soft, appropriately tender near incision. Calves soft. Mood a little flat but appropriate, good eye contact.\n\nA/P\n1. s/p emergency cesarean for abruption — healing well. CBC today.\n2. PHQ-9 5 — mild, mostly sleep and fatigue; no SI. Recheck at next contact; OB will also screen at 6 weeks.\n3. Chronic hep C — not raised today; she has enough going on.\n4. Flu/COVID in October; can recheck CBC then."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-08a",
+          "kind": "portal_message",
+          "start": "2024-08-08T08:20",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Blood count",
+              "date": "2024-08-08T08:20",
+              "author": "PCP",
+              "body": "Your hemoglobin is 10.6 — still a bit low after the bleeding and surgery, but higher than in the hospital. Keep taking your prenatal vitamin. We'll recheck it when you come in for your flu shot in October."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "outside_records",
+          "start": "2024-09-04T15:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics postpartum visit",
+              "date": "2024-09-04T15:30",
+              "author": "obstetrics",
+              "body": "OB POSTPARTUM VISIT 09/03/2024\n6 weeks after emergency low transverse cesarean for abruption at 34 weeks. Incision well healed. Lochia resolved. EPDS low. Exam normal. Return for routine care. Allergies NKDA. Meds: PNV."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines and blood count recheck",
+          "vitals": {
+            "bp": [
+              123,
+              76
+            ],
+            "hr": 74,
+            "temp_c": 36.6,
+            "weight_kg": 69.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-08T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-08T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T16:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T16:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines and lab",
+              "date": "2024-10-08T16:45",
+              "author": "RN",
+              "body": "Here for flu and COVID vaccines and CBC recheck per PCP. Feels \"much more like myself.\" PHQ-2 1. Vitals stable. Venipuncture R AC. Influenza 0.5 mL IM L deltoid, 2024-25 Pfizer COVID 0.3 mL IM R deltoid. Screening negative, no reaction."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "portal_message",
+          "start": "2024-10-10T12:05",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Blood count",
+              "date": "2024-10-10T12:05",
+              "author": "PCP",
+              "body": "Your hemoglobin is back to 12.2, which is normal. Nothing else needed. See you for your physical in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "telephone",
+          "start": "2025-01-21T14:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medicaid PCP assignment",
+              "date": "2025-01-21T14:25",
+              "author": "front desk",
+              "body": "Pt called; Medicaid renewal letter listed a different primary care office. Verified with the plan's provider line that she is assigned to our practice; correction effective 2/1. Pt informed."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "annual_physical",
+          "start": "2025-04-22T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              117,
+              81
+            ],
+            "hr": 62,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 66.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-22T09:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 54
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 61
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-04-22T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-04-22T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-04-22T09:45",
+              "author": "PCP",
+              "body": "Preventive visit — 34F\n\nInterval: c-section for abruption 7/2024; recovered well, Hgb normal by October. Kids healthy. Working full time as an administrative coordinator.\n\nHep C — raised again. Still prefers to wait; says she'll \"do it when life slows down.\" Discussed that the scan in 2019 showed no scarring and her labs have been steady, but untreated infection does slowly harm the liver over years and treatment is short and very effective. She heard me; not ready. Will message when she is.\nSustained remission, 11 years. No tobacco since 2014. No alcohol.\n\nMedications: prenatal vitamin daily\nAllergies: NKDA\n\nROS negative.\n\nExam\nWell appearing. Anicteric. Thyroid normal. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender; healed low transverse scar; no hepatosplenomegaly. No edema. Skin: no jaundice or spider angiomata. Affect normal.\n\nAssessment/Plan\n- Adult preventive: PHQ-9 2. Pap/HPV 2023 normal, next 2028. Flu and COVID each fall.\n- Chronic hepatitis C: CMP, CBC today. Patient deferring treatment.\n- IVDU in sustained remission.\nFollow up 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "portal_message",
+          "start": "2025-04-24T18:10",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab results",
+              "date": "2025-04-24T18:10",
+              "author": "PCP",
+              "body": "Labs back: no change from prior years. Liver enzymes mildly elevated as usual with normal liver function and platelets; kidneys and blood count normal."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T17:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.3
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T17:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T17:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T17:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2025-10-07T17:30",
+              "author": "MA",
+              "body": "Flu vaccine 0.5 mL IM L deltoid, 2025-26 COVID vaccine 0.3 mL IM R deltoid. Screening questions negative. No adverse reaction."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-11-29a",
+          "kind": "portal_message",
+          "start": "2025-11-29T10:47",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2025-10-28",
+              "note": "LMP 2025-10-28",
+              "icd10": "Z33.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Pregnant",
+              "date": "2025-11-29T10:47",
+              "author": "patient",
+              "body": "Hi, I'm pregnant again (positive test today, LMP Oct 28). OB appointment is already made for December. Just letting you know for my chart.\n\nReply (RN, 12/1, for PCP): Congratulations! Noted in your chart and the PCP is aware. Keep taking your prenatal vitamin. OB will follow you closely given the last pregnancies; reach out to us for anything outside of pregnancy care."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T08:35",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill",
+              "date": "2026-03-10T08:35",
+              "author": "MA",
+              "body": "Refill request, prenatal vitamin. Pregnant, about 19 weeks, OB following. Sent 90 days with 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "hospital_admission",
+          "start": "2026-07-28T03:40",
+          "end": "2026-08-01T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Abdominal pain, bleeding and decreased fetal movement at 39 weeks",
+          "conditions": [
+            {
+              "label": "Fetal distress (Category III fetal heart rate tracing)",
+              "action": "diagnosed",
+              "onset": "2026-07-28",
+              "icd10": "O36.8330"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-cesarean pain"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-cesarean pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-07-28T03:50",
+              "bp": [
+                120,
+                75
+              ],
+              "hr": 88,
+              "temp_c": 37.0
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-05-12T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2026-08-04T13:30",
+              "author": "obstetrics",
+              "body": "REGIONAL HOSPITAL — LABOR & DELIVERY\nDISCHARGE SUMMARY\nAdmit 07/28/2026   Discharge 08/01/2026\nPrincipal diagnosis: Category III fetal heart rate tracing at 39w0d\nSecondary: clinically suspected recurrent placental abruption, not seen on ultrasound; history of abruption with cesarean (2024), AFLP (2022), PPROM (2020); chronic hepatitis C; hepatitis B non-immune\nProcedure: emergency repeat low transverse cesarean delivery 07/28/2026\n\nHistory: 35-year-old G4P0303 with a prenatal course that had been uneventful, presenting overnight after an hour of sudden, severe abdominal pain with vaginal bleeding and a sense that the baby was moving less than usual.\nInitial assessment: BP 120/75, HR 88, temperature 37.0 C (98.6 F). Uterus tender and hypertonic. Bedside ultrasound did not show an abruption. Continuous fetal monitoring: recurrent late decelerations with minimal variability and no accelerations over a 10-minute observation.\nIntrauterine resuscitation was begun — oxygen by face mask, IV fluid bolus, left lateral positioning — without improvement in the tracing.\n\nCourse: proceeded to emergency repeat cesarean. Liveborn infant admitted to the NICU for observation. Mother's postoperative course uncomplicated; incision clean at discharge, ambulating, tolerating regular diet.\n\nTdap given 05/12/2026 at the OB office.\n\nDischarge medications: prenatal vitamin daily; ibuprofen 600 mg every 6 hours as needed; acetaminophen 1,000 mg every 6 hours as needed. No opioids at discharge, by patient preference given her history.\nAllergies: NKDA.\nFollow-up: OB incision check 1-2 weeks, postpartum visit 6 weeks; primary care within 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "telephone",
+          "start": "2026-08-05T09:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-08-05T09:50",
+              "author": "RN",
+              "body": "Transition call after discharge 8/1 (emergency repeat C-section 7/28 for fetal heart tracing at 39 wks). Summary received yesterday, in chart. Pt home, baby discharged from NICU 7/31. Incision without drainage, no fever, pain controlled with ibuprofen/Tylenol. Light-moderate bleeding. Appointment with PCP 8/11."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "office_visit",
+          "start": "2026-08-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up after cesarean",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Fetal distress (Category III fetal heart rate tracing)",
+              "action": "resolved",
+              "icd10": "O36.8330"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              73
+            ],
+            "hr": 70,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 72.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-11T10:45",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 54
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-11T10:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 286
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-11T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hep-referral-2026",
+              "action": "placed",
+              "order": "Hepatology referral",
+              "category": "referral",
+              "to": "Hepatology",
+              "reason": "chronic hepatitis C, ready for treatment"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-discharge visit",
+              "date": "2026-08-11T10:55",
+              "author": "PCP",
+              "body": "S:\n35 y/o, 2 weeks out from emergency repeat cesarean at 39 weeks (7/28). Came in with sudden abdominal pain, bleeding and decreased fetal movement; uterus hypertonic, US without visible abruption, Category III tracing that did not respond to resuscitation. Summary reviewed. Baby went to NICU briefly, home since 7/31 and doing well.\n\nShe is recovering faster than last time. Incision check with OB was fine. Taking ibuprofen once or twice a day. Bleeding light. No fever, leg swelling, chest pain or dyspnea. Bottle feeding.\n\nHep C: she brought it up herself. \"I want this taken care of now.\" Not breastfeeding. Would like the referral sent again.\n\nMeds: prenatal vitamin; ibuprofen/acetaminophen PRN from discharge. NKDA.\n\nO:\nVitals reviewed. Comfortable. Sclerae anicteric. Heart regular, lungs clear. Abdomen soft, incision healing well without erythema or drainage. Calves nontender. Mood good.\n\nA/P:\n1. s/p emergency repeat cesarean — routine recovery. CMP, CBC today.\n2. Chronic hepatitis C, untreated since 2015 — re-referred to hepatology today for DAA treatment. Last elastography 2019 (5.8 kPa). Will forward their pre-visit lab requests.\n3. PHQ-9 3.\n4. Follow up here in about 6 weeks (booked 9/22)."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "portal_message",
+          "start": "2026-08-13T16:20",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab results",
+              "date": "2026-08-13T16:20",
+              "author": "PCP",
+              "body": "Your labs look good for two weeks after surgery — blood count normal, kidneys normal, and liver enzymes in the same mild range they have always been with hepatitis C. The hepatology referral went out Tuesday."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "telephone",
+          "start": "2026-08-18T11:35",
+          "orders": [
+            {
+              "id": "hcv-rna-2026",
+              "action": "placed",
+              "order": "Hepatitis C Viral Load, PCR",
+              "category": "lab",
+              "reason": "pre-treatment, requested by hepatology"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hepatology pre-visit request",
+              "date": "2026-08-18T11:35",
+              "author": "RN",
+              "body": "Hepatology intake nurse called: referral received. They ask for a quantitative HCV RNA before her new visit so they can submit for treatment approval at the visit. Order placed per PCP. Called pt, she will come to the lab Friday morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-21a",
+          "kind": "lab_only",
+          "start": "2026-08-21T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-hepatology lab",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-08-21T08:15",
+              "pending": true,
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-21T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Lab draw",
+              "date": "2026-08-21T08:20",
+              "author": "MA",
+              "body": "Venipuncture L AC, one attempt. HCV RNA quantitative sent to reference lab. Pt tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T19:02",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Hepatology appointment",
+              "date": "2026-08-24T19:02",
+              "author": "patient",
+              "body": "The liver office called and I'm scheduled for October 6. Do you have the blood test result yet?\n\nReply (MA, 8/25): Hi Caitlin, the hepatitis C test is a send-out and isn't back yet. We'll message you when it is, and hepatology will get a copy. Your follow-up here is still on for 9/22."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after delivery; hepatitis C plan",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute fatty liver of pregnancy|O26.613": {
+        "code": "O26.613",
+        "display": "Liver and biliary tract disorders in pregnancy, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Fetal distress (Category III fetal heart rate tracing)|O36.8330": {
+        "code": "O36.8330",
+        "display": "Maternal care for abnormalities of the fetal heart rate or rhythm, third trimester, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of intravenous drug use disorder in sustained remission|F19.21": {
+        "code": "F19.21",
+        "display": "Other psychoactive substance dependence, in remission",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Placental abruption|O45.93": {
+        "code": "O45.93",
+        "display": "Premature separation of placenta, unspecified, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Polyhydramnios|O40.3XX0": {
+        "code": "O40.3XX0",
+        "display": "Polyhydramnios, third trimester, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Preterm premature rupture of membranes|O42.113": {
+        "code": "O42.113",
+        "display": "Preterm premature rupture of membranes, onset of labor more than 24 hours following rupture, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Susceptibility to hepatitis B virus infection|Z28.39": {
+        "code": "Z28.39",
+        "display": "Other underimmunization status",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Bile acid": {
+        "code": "14628-2",
+        "display": "Bile acid [Moles/volume] in Serum or Plasma",
+        "unit": "umol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrinogen": {
+        "code": "3255-7",
+        "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis A virus IgG Ab": {
+        "code": "40724-7",
+        "display": "Hepatitis A virus IgG Ab [Presence] in Serum by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B virus core Ab total": {
+        "code": "16933-4",
+        "display": "Hepatitis B virus core Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "aPTT": {
+        "code": "3173-2",
+        "display": "aPTT in Blood by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"Prenatal Vitamins Oral Tablet\""
+    ]
+  }
+}

@@ -1,0 +1,1168 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001705",
+   "events": [
+    {
+     "id": "2025-01-14a",
+     "kind": "portal_message",
+     "start": "2025-01-14T21:03",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "home BP",
+       "author": "patient",
+       "date": "2025-01-14T21:03",
+       "body": "Sorry this took a while. I checked my BP at home all week, mostly 130s on top and 80s on the bottom. Taking my pills every morning."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: home BP",
+       "author": "PCP",
+       "date": "2025-01-15T12:10",
+       "body": "Thanks Susan. That's better than the office readings. We'll keep the same medicines and recheck at your March visit."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-21a",
+     "kind": "specialist_visit",
+     "start": "2025-01-21T10:00",
+     "service": "Endocrinology",
+     "reason": "Cushing syndrome on ketoconazole",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-01-21T08:00",
+       "results": [
+        {
+         "test": "Cortisol, free, 24 hour urine",
+         "loinc": "2147-7",
+         "unit": "ug/(24.h)",
+         "value": 39
+        }
+       ],
+       "resulted": "2025-01-22T15:00"
+      },
+      {
+       "panel": null,
+       "collected": "2025-01-21T08:15",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 27
+        }
+       ],
+       "resulted": "2025-01-21T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Follow-up",
+       "author": "endocrinology",
+       "date": "2025-01-24T09:30",
+       "body": "ENDOCRINOLOGY -- 01/21/2025\n\nACTH-dependent Cushing syndrome on ketoconazole 200 mg three times daily.\n\nInterval: Feels well. Bruising has stopped. Left-eye laser in December. No side effects from ketoconazole.\n\nMeds: ketoconazole 200 mg three times daily, metformin 1000 mg BID, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, olanzapine 10 mg nightly. NKDA.\n\nExam: vitals as charted. Face and fat pad continue to soften; striae pale. No new bruising.\n\nLabs today: ALT 27 U/L. 24-hour urine free cortisol 39 mcg/24 h -- at goal.\n\nPlan: continue ketoconazole 200 mg three times daily. Labs and visit in 6 months.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2025-02-25a",
+     "kind": "telephone",
+     "start": "2025-02-25T09:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior authorization - MRI abdomen",
+       "author": "front desk",
+       "date": "2025-02-25T09:45",
+       "body": "MassHealth PA renewal for annual MRI abdomen w/wo (VHL renal surveillance) submitted with urology note. Approved. Pt scheduled 3/11."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-11a",
+     "kind": "imaging",
+     "start": "2025-03-11T18:00",
+     "service": "Radiology",
+     "reports": [
+      {
+       "study": "MRI abdomen with and without contrast",
+       "loinc": "24557-1",
+       "performed": "2025-03-11T18:00",
+       "issued": "2025-03-12T10:30",
+       "text": "EXAM: MRI abdomen without and with IV gadolinium, renal protocol.\nINDICATION: VHL renal surveillance, solitary right kidney.\nCOMPARISON: 03/05/2024, 02/13/2023.\nFINDINGS: Right interpolar solid enhancing lesion measures 2.4 x 2.1 cm (2.2 cm in 2024, 2.0 cm in 2023). No new solid lesion. Simple cysts unchanged. No hydronephrosis. Adrenal glands normal. Pancreas normal. No adenopathy.",
+       "conclusion": "Slow growth of the solid right renal lesion, now 2.4 cm. No new lesions. Adrenals and pancreas unremarkable."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-13a",
+     "kind": "specialist_visit",
+     "start": "2025-03-13T15:30",
+     "service": "Urology",
+     "reason": "VHL renal surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology Follow-up",
+       "author": "urology",
+       "date": "2025-03-18T08:15",
+       "body": "UROLOGY -- 03/13/2025\n\nVHL surveillance. MRI 3/11/25: right renal solid lesion 2.4 cm, slow growth (2.0 -> 2.2 -> 2.4 over two years). Asymptomatic. Renal function stable.\n\nPlan: continue active surveillance, MRI in 12 months. We discussed that at 3 cm we would plan nephron-sparing treatment (partial nephrectomy or ablation) to protect her solitary kidney.\n\nUrology"
+      }
+     ]
+    },
+    {
+     "id": "2025-03-18a",
+     "kind": "office_visit",
+     "start": "2025-03-18T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "appointment": "no-show",
+     "reason": "Diabetes follow-up"
+    },
+    {
+     "id": "2025-03-18b",
+     "kind": "telephone",
+     "start": "2025-03-18T15:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "No-show",
+       "author": "front desk",
+       "date": "2025-03-18T15:22",
+       "body": "Pt no-show for 10:40 f/u. Called, she forgot -- had urology last week. Rebooked 4/1."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-01a",
+     "kind": "office_visit",
+     "start": "2025-04-01T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "weight_kg": 79.8,
+      "bp": [
+       136,
+       86
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.6,
+       "Glucose": 110
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-04-01T08:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2025-04-01T13:30"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-04-01T08:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ],
+       "resulted": "2025-04-01T13:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-04-01T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2025-04-01T08:55",
+       "body": "F/u, rescheduled from 3/18.\n\nUrology 3/13: R renal lesion 2.4 cm, surveillance continues; treatment would be considered at 3 cm.\nEndocrinology 1/21: urine cortisol still normal on ketoconazole.\nHeadaches less frequent. Left eye vision stable since December laser. No hypoglycemia. Mood good.\n\nExam: 145/83. Heart RRR, lungs clear, no edema.\n\nA/P\nT2DM -- A1c, BMP today. Continue metformin 1000 BID.\nHTN -- home readings in 130s. Continue current meds.\nVHL -- MRI brain due May per neurology.\nRTC July for physical."
+      },
+      {
+       "type": "Result Note",
+       "title": "Labs 4/1",
+       "author": "PCP",
+       "date": "2025-04-01T17:20",
+       "body": "A1c 6.9, a little higher than last time -- keep up the meal routine. Kidney function stable, potassium normal."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-20a",
+     "kind": "imaging",
+     "start": "2025-05-20T12:15",
+     "service": "Radiology",
+     "reports": [
+      {
+       "study": "MRI brain with and without contrast",
+       "loinc": "24587-8",
+       "performed": "2025-05-20T12:15",
+       "issued": "2025-05-21T09:00",
+       "text": "EXAM: MRI brain without and with IV gadolinium.\nINDICATION: VHL, follow-up cerebellar hemangioblastoma.\nCOMPARISON: 11/26/2024, 12/14/2022.\nFINDINGS: Left cerebellar hemangioblastoma unchanged at 1.4 cm with nodular enhancement; no cyst, no edema. Vermian nodule unchanged at 0.6 cm. No new enhancing lesions. No hydrocephalus. Supratentorial brain normal.",
+       "conclusion": "Stable left cerebellar hemangioblastoma (1.4 cm) and vermian nodule. No new lesions."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-03a",
+     "kind": "specialist_visit",
+     "start": "2025-06-03T11:00",
+     "service": "Neurology",
+     "reason": "Hemangioblastoma follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Follow-up",
+       "author": "neurology",
+       "date": "2025-06-06T14:30",
+       "body": "Neurology -- 6/3/2025\n\nMRI 5/20/25: left cerebellar hemangioblastoma stable at 1.4 cm, no cyst; vermian lesion stable; nothing new. Headaches improved, dizziness rare. Neuro exam normal.\n\nPlan: continue observation, MRI brain yearly.\n\nNeurology"
+      }
+     ]
+    },
+    {
+     "id": "2025-07-15a",
+     "kind": "specialist_visit",
+     "start": "2025-07-15T10:00",
+     "service": "Endocrinology",
+     "reason": "Cushing syndrome on ketoconazole",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-07-15T08:00",
+       "results": [
+        {
+         "test": "Cortisol, free, 24 hour urine",
+         "loinc": "2147-7",
+         "unit": "ug/(24.h)",
+         "value": 35
+        }
+       ],
+       "resulted": "2025-07-16T15:00"
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-15T08:15",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 31
+        }
+       ],
+       "resulted": "2025-07-15T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Follow-up",
+       "author": "endocrinology",
+       "date": "2025-07-18T09:30",
+       "body": "ENDOCRINOLOGY -- 07/15/2025\n\nACTH-dependent Cushing syndrome on ketoconazole 200 mg three times daily.\n\nInterval: Feels well, energy good. No side effects. No low-sugar spells.\n\nMeds: ketoconazole 200 mg three times daily, metformin 1000 mg BID, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, olanzapine 10 mg nightly. NKDA.\n\nExam: vitals as charted. Cushingoid features largely resolved; striae pale and flat.\n\nLabs today: ALT 31 U/L. 24-hour urine free cortisol 35 mcg/24 h -- at goal.\n\nPlan: continue ketoconazole 200 mg three times daily. Labs and visit in 6 months.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2025-07-22a",
+     "kind": "annual_physical",
+     "start": "2025-07-22T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 80.1,
+      "bp": [
+       136,
+       86
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.5,
+       "Glucose": 106
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-07-22T09:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ],
+       "resulted": "2025-07-22T15:10"
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-07-22T09:35",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ],
+       "resulted": "2025-07-22T13:50"
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-22T09:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2025-07-22T15:10"
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-22T09:35",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ],
+       "resulted": "2025-07-23T10:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2025-07-22T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-07-22T10:10",
+       "body": "Annual exam, 36 y/o.\n\nYear in review: neurology 6/3 -- cerebellar lesion stable, yearly MRI. Urology 3/13 -- R renal lesion 2.4 cm, yearly MRI. Retina lasered L eye 12/2024. No hypoglycemia since 5/2024. Psychiatry stable on olanzapine. Endocrinology 7/15 -- cortisol controlled on ketoconazole, liver tests normal.\n\nMeds: metformin 1000 BID, lisinopril 10, metoprolol succ 50, olanzapine 10 qhs, ketoconazole 200 tid. NKDA.\nNever smoker; alcohol rare; works part time as an admin assistant.\n\nROS negative except occasional mild headache.\n\nExam: vitals as charted. Well. HEENT normal. Neck no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, striae, healed L flank incision. No edema. Diabetic foot exam normal (monofilament, pulses, skin). Neuro nonfocal.\n\nPHQ-9 3.\n\nA/P\n1. Preventive -- Pap due 2028. Flu/COVID in fall.\n2. T2DM -- A1c, CMP, CBC, urine microalbumin. Retina exam due December.\n3. HTN -- 140/89, continue.\n4. VHL -- surveillance per urology/neurology/retina. Cushing -- ketoconazole per endocrinology.\n5. Bipolar I -- stable.\nRTC December."
+      },
+      {
+       "type": "Result Note",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2025-07-23T15:45",
+       "body": "All labs fine. A1c 6.3. Kidney function stable. Urine protein normal."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-09a",
+     "kind": "portal_message",
+     "start": "2025-09-09T12:44",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "glucose strips",
+       "author": "patient",
+       "date": "2025-09-09T12:44",
+       "body": "My insurance says they will only cover a different brand of test strips now. Can you send a prescription for whatever they cover?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: glucose strips",
+       "author": "MA",
+       "date": "2025-09-09T16:05",
+       "body": "Sent a new prescription for the covered meter and strips to your pharmacy. Pick up the new meter with them -- the old strips won't fit it."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-14a",
+     "kind": "nurse_visit",
+     "start": "2025-10-14T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-14T08:25"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-10-04T10:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-14T08:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Flu Vaccine",
+       "author": "RN",
+       "date": "2025-10-14T08:30",
+       "body": "Flu shot L deltoid. COVID vaccine at pharmacy 10/4 recorded per pt. No issues."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-18a",
+     "kind": "specialist_visit",
+     "start": "2025-11-18T13:30",
+     "service": "Psychiatry",
+     "reason": "Bipolar I follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Psychiatry Follow-up",
+       "author": "psychiatry",
+       "date": "2025-11-21T09:40",
+       "body": "Community Behavioral Health -- Medication Follow-up, 11/18/2025\n\nBipolar I disorder in sustained stability on olanzapine. Euthymic, sleeping 7-8 hours, working. No SI/HI.\n\nContinue olanzapine 10 mg qhs. Return in one year or sooner as needed.\n\nPsychiatry"
+      }
+     ]
+    },
+    {
+     "id": "2025-12-09a",
+     "kind": "office_visit",
+     "start": "2025-12-09T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "bp": [
+       134,
+       84
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-12-09T14:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2025-12-09T17:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2025-12-09T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2025-12-09T14:25",
+       "body": "Routine f/u. Feels well. No lows. Headaches rare. L eye unchanged. Mood good per pt and psych letter 11/18.\n\nBP 147/90. Exam unchanged, heart RRR, lungs clear.\n\nA/P\nT2DM -- A1c today.\nHTN -- up today, home readings have been lower; continue.\nRetina recheck due -- she has the number.\nUrology MRI March.\nRTC 3 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c",
+       "author": "PCP",
+       "date": "2025-12-10T09:00",
+       "body": "A1c 6.0, lowest yet."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-13a",
+     "kind": "specialist_visit",
+     "start": "2026-01-13T10:00",
+     "service": "Endocrinology",
+     "reason": "Cushing syndrome on ketoconazole",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-01-13T08:00",
+       "results": [
+        {
+         "test": "Cortisol, free, 24 hour urine",
+         "loinc": "2147-7",
+         "unit": "ug/(24.h)",
+         "value": 40
+        }
+       ],
+       "resulted": "2026-01-14T15:00"
+      },
+      {
+       "panel": null,
+       "collected": "2026-01-13T08:15",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 28
+        }
+       ],
+       "resulted": "2026-01-13T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Follow-up",
+       "author": "endocrinology",
+       "date": "2026-01-16T09:30",
+       "body": "ENDOCRINOLOGY -- 01/13/2026\n\nACTH-dependent Cushing syndrome on ketoconazole 200 mg three times daily.\n\nInterval: Doing well. No side effects. Takes each dose with meals.\n\nMeds: ketoconazole 200 mg three times daily, metformin 1000 mg BID, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, olanzapine 10 mg nightly. NKDA.\n\nExam: vitals as charted. No cushingoid features beyond pale old striae.\n\nLabs today: ALT 28 U/L. 24-hour urine free cortisol 40 mcg/24 h -- at goal.\n\nPlan: continue ketoconazole 200 mg three times daily. Labs and visit in 6 months.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2026-01-20a",
+     "kind": "telephone",
+     "start": "2026-01-20T11:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refills",
+       "author": "MA",
+       "date": "2026-01-20T11:20",
+       "body": "Pharmacy requests 90-day refills: metformin 1000 mg, lisinopril 10 mg, metoprolol succinate ER 50 mg. Sent. Olanzapine is filled by psychiatry and ketoconazole by endocrinology."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-10a",
+     "kind": "imaging",
+     "start": "2026-03-10T17:40",
+     "service": "Radiology",
+     "reports": [
+      {
+       "study": "MRI abdomen with and without contrast",
+       "loinc": "24557-1",
+       "performed": "2026-03-10T17:40",
+       "issued": "2026-03-11T11:20",
+       "text": "EXAM: MRI abdomen without and with IV gadolinium, renal protocol.\nINDICATION: VHL renal surveillance, solitary kidney.\nCOMPARISON: 03/11/2025.\nFINDINGS: Right interpolar solid enhancing lesion 2.5 x 2.2 cm (2.4 cm prior). No new solid renal lesion. Simple cysts unchanged. No hydronephrosis. Adrenal glands normal. Pancreas normal.",
+       "conclusion": "Solid right renal lesion 2.5 cm, minimal growth. No new lesions."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-12a",
+     "kind": "specialist_visit",
+     "start": "2026-03-12T16:00",
+     "service": "Urology",
+     "reason": "VHL renal surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology Follow-up",
+       "author": "urology",
+       "date": "2026-03-16T08:30",
+       "body": "UROLOGY -- 03/12/2026\n\nMRI 3/10/26: right renal lesion 2.5 cm (2.4 cm last year). Still below the 3 cm threshold. Asymptomatic, creatinine stable.\n\nPlan: continue surveillance, MRI abdomen in 12 months.\n\nUrology"
+      }
+     ]
+    },
+    {
+     "id": "2026-03-17a",
+     "kind": "office_visit",
+     "start": "2026-03-17T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "weight_kg": 80.0,
+      "bp": [
+       132,
+       84
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-03-17T09:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2026-03-17T14:10"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-03-17T09:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ],
+       "resulted": "2026-03-17T14:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-03-17T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-03-17T09:10",
+       "body": "F/u DM/HTN.\n\nUrology 3/12: R renal lesion 2.5 cm, continue yearly MRI. Doing well otherwise. No hypoglycemia. Fasting sugars 100-120.\n\nExam: 127/83. Heart RRR, lungs clear, no edema.\n\nA/P\nT2DM -- A1c, BMP. Continue metformin.\nHTN -- continue.\nNeuro MRI due around May.\nRTC July physical."
+      },
+      {
+       "type": "Result Note",
+       "title": "Labs 3/17",
+       "author": "PCP",
+       "date": "2026-03-17T16:00",
+       "body": "A1c 6.7 and kidney function normal for you. Nice work."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-31a",
+     "kind": "hospital_admission",
+     "start": "2026-05-31T14:20",
+     "end": "2026-06-02T11:30",
+     "service": "Internal Medicine",
+     "reason": "Right flank pain, dysuria, fever",
+     "conditions": [
+      {
+       "label": "Acute pyelonephritis",
+       "icd10": "N10",
+       "action": "diagnosed",
+       "onset": "2026-05-29"
+      }
+     ],
+     "state": {
+      "bp": [
+       130,
+       85
+      ],
+      "labs": {
+       "White Blood Cells": 12.0,
+       "Hemoglobin": 13.2,
+       "Blood Urea Nitrogen": 18,
+       "Creatinine": 1.0
+      }
+     },
+     "vitals": [
+      {
+       "time": "2026-05-31T14:30",
+       "temp_c": 38.5,
+       "bp": [
+        130,
+        85
+       ],
+       "hr": 88
+      },
+      {
+       "time": "2026-06-01T08:00",
+       "temp_c": 37.6,
+       "bp": [
+        128,
+        82
+       ],
+       "hr": 80
+      },
+      {
+       "time": "2026-06-02T08:00",
+       "temp_c": 36.9,
+       "bp": [
+        126,
+        80
+       ],
+       "hr": 74
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-05-31T14:45",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 12.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        }
+       ],
+       "resulted": "2026-05-31T15:30"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-05-31T14:45",
+       "results": [
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 18
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        }
+       ],
+       "resulted": "2026-05-31T15:40"
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2026-05-31T14:50",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine White Blood Cells",
+         "text": "Many (pyuria)"
+        },
+        {
+         "test": "Urine Clarity",
+         "text": "Cloudy"
+        }
+       ],
+       "resulted": "2026-05-31T15:20"
+      },
+      {
+       "panel": null,
+       "collected": "2026-05-31T14:50",
+       "results": [
+        {
+         "test": "Urine Bacteria",
+         "loinc": "25145-4",
+         "text": "Many"
+        }
+       ],
+       "resulted": "2026-05-31T15:20"
+      },
+      {
+       "panel": null,
+       "collected": "2026-05-31T14:50",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "Escherichia coli, >100,000 CFU/mL. Susceptible: ceftriaxone, ciprofloxacin, trimethoprim-sulfamethoxazole. Resistant: ampicillin."
+        }
+       ],
+       "resulted": "2026-06-02T09:00"
+      },
+      {
+       "panel": null,
+       "collected": "2026-05-31T15:00",
+       "results": [
+        {
+         "test": "Blood Culture",
+         "text": "No growth at 5 days"
+        }
+       ],
+       "resulted": "2026-06-05T15:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Renal ultrasound",
+       "performed": "2026-05-31T17:30",
+       "issued": "2026-05-31T18:40",
+       "text": "EXAM: Ultrasound kidney.\nINDICATION: Right pyelonephritis, solitary kidney.\nCOMPARISON: MRI 03/10/2026.\nFINDINGS: Left kidney surgically absent. Right kidney 12.0 cm. No hydronephrosis. No stone or perinephric collection. Known interpolar solid lesion about 2.5 cm and simple cysts, unchanged from MRI. Bladder partially distended, unremarkable.",
+       "conclusion": "No hydronephrosis or abscess in the solitary right kidney. Known solid lesion and cysts unchanged."
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ciprofloxacin 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily for 5 days",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Acute pyelonephritis"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2026-05-31T16:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2026-06-02T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "History and Physical",
+       "title": "Admission History and Physical",
+       "author": "hospital medicine",
+       "date": "2026-06-03T08:00",
+       "body": "ADMISSION H&P -- regional hospital, Internal Medicine\nAdmitted 05/31/2026\n\nCC: right flank pain, painful urination, fever.\n\nHPI: 37-year-old woman with Von Hippel-Lindau syndrome, prior clear cell RCC (left radical nephrectomy, solitary right kidney) and type 2 diabetes on metformin, presenting with two days of constant right flank pain radiating toward the groin and burning with urination. Fever and chills since yesterday. Denies nausea, vomiting or diarrhea.\n\nPMH: T2DM (well controlled on metformin), HTN, VHL (cerebellar and spinal hemangioblastomas, retinal angiomas, right renal lesion under surveillance), Cushing syndrome, PCOS, hyperinsulinemia, bipolar I.\nPSH: left radical nephrectomy for clear cell RCC (age 31).\nHome meds: olanzapine 10 mg qhs, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, ketoconazole 200 mg tid, metformin.\nAllergies: NKDA.\nFH: father VHL; mother T2DM, HTN; maternal uncle bipolar.\nSH: never smoker; 1-2 drinks monthly; part-time administrative assistant.\n\nExam: T 38.5 C (101.3 F), BP 130/85, HR 88. Alert and oriented. Right costovertebral angle tenderness. Abdomen soft, no guarding. Heart regular, lungs clear.\n\nLabs: WBC 12.0, Hgb 13.2, BUN 18, creatinine 1.0. UA with pyuria and bacteriuria. Urine and blood cultures sent.\n\nAssessment: Acute right pyelonephritis in a solitary kidney.\nPlan: ceftriaxone 1 g IV daily, IV fluids, acetaminophen for fever, renal ultrasound to exclude obstruction. Continue home medications.\n\nHospital Medicine"
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary",
+       "author": "hospital medicine",
+       "date": "2026-06-03T08:05",
+       "body": "DISCHARGE SUMMARY\nAdmit 05/31/2026 -- Discharge 06/02/2026\n\nDiagnosis: Acute right pyelonephritis, solitary kidney.\n\nCourse: Treated with ceftriaxone 1 g IV daily. Renal ultrasound: no hydronephrosis, stone or abscess; known right renal lesion and cysts unchanged. Defervesced by hospital day 2, flank pain improving, eating well. Urine culture: E. coli >100,000 CFU/mL, susceptible to ceftriaxone, ciprofloxacin and TMP-SMX, resistant to ampicillin. Blood cultures no growth to date.\n\nDischarge medications:\n- NEW ciprofloxacin 500 mg PO twice daily x 5 days (7 days total therapy)\n- continue metformin 1000 mg BID, olanzapine 10 mg qhs, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, ketoconazole 200 mg tid\nAllergies: NKDA.\n\nFollow-up: PCP within one week. Return for recurrent fever, vomiting, or worsening pain.\n\nHospital Medicine"
+      }
+     ]
+    },
+    {
+     "id": "2026-06-03a",
+     "kind": "telephone",
+     "start": "2026-06-03T10:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-discharge call",
+       "author": "RN",
+       "date": "2026-06-03T10:40",
+       "body": "Transitional care call after 5/31-6/2 admission for R pyelonephritis. Pt home, no fever since discharge, flank soreness much better. Picked up ciprofloxacin, taking twice daily, no problems. Knows to avoid taking it at the same time as any antacids. Med list reconciled with discharge summary -- no other changes. Appointment 6/5 confirmed."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-05a",
+     "kind": "office_visit",
+     "start": "2026-06-05T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up, pyelonephritis",
+     "conditions": [
+      {
+       "label": "Acute pyelonephritis",
+       "icd10": "N10",
+       "action": "resolved",
+       "onset": "2026-05-29"
+      }
+     ],
+     "state": {
+      "bp": [
+       130,
+       84
+      ],
+      "labs": {
+       "White Blood Cells": 7.2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-06-05T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Potassium"
+        }
+       ],
+       "resulted": "2026-06-05T14:00"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-06-05T09:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        }
+       ],
+       "resulted": "2026-06-05T13:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2026-06-05T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Hospital Follow-up",
+       "author": "PCP",
+       "date": "2026-06-05T10:05",
+       "body": "Post-hospital visit.\n\nAdmitted 5/31-6/2 to regional hospital for right pyelonephritis (solitary R kidney). T 38.5, WBC 12.0, creatinine 1.0. US: no hydro/abscess, renal lesion unchanged. E. coli, cipro-sensitive. Ceftriaxone then cipro x 5 days -- on day 4 of 5 today.\n\nFeels back to normal. No fever, no dysuria. Flank pain gone. Eating and drinking well.\n\nExam: afebrile, BP 138/88. No CVA tenderness. Abdomen soft.\n\nA/P\nPyelonephritis, resolved -- finish cipro. CBC and BMP today to confirm WBC and creatinine back to baseline. Blood cultures no growth so far per discharge summary.\nSolitary kidney -- creatinine check today.\nT2DM, HTN -- no changes.\nPhysical in July."
+      },
+      {
+       "type": "Result Note",
+       "title": "Labs 6/5",
+       "author": "PCP",
+       "date": "2026-06-05T16:30",
+       "body": "White count back to normal, creatinine at your usual baseline. You're all set -- finish the last antibiotic doses."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-14a",
+     "kind": "specialist_visit",
+     "start": "2026-07-14T10:00",
+     "service": "Endocrinology",
+     "reason": "Cushing syndrome on ketoconazole",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-07-14T08:00",
+       "results": [
+        {
+         "test": "Cortisol, free, 24 hour urine",
+         "loinc": "2147-7",
+         "unit": "ug/(24.h)",
+         "value": 38
+        }
+       ],
+       "resulted": "2026-07-15T15:00"
+      },
+      {
+       "panel": null,
+       "collected": "2026-07-14T08:15",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 30
+        }
+       ],
+       "resulted": "2026-07-14T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Follow-up",
+       "author": "endocrinology",
+       "date": "2026-07-17T09:30",
+       "body": "ENDOCRINOLOGY -- 07/14/2026\n\nACTH-dependent Cushing syndrome on ketoconazole 200 mg three times daily.\n\nInterval: Hospitalized 5/31-6/2 for a right kidney infection, treated and recovered. Otherwise well, no side effects.\n\nMeds: ketoconazole 200 mg three times daily, metformin 1000 mg BID, lisinopril 10 mg daily, metoprolol succinate 50 mg daily, olanzapine 10 mg nightly. NKDA.\n\nExam: vitals as charted. No cushingoid features beyond pale old striae.\n\nLabs today: ALT 30 U/L. 24-hour urine free cortisol 38 mcg/24 h -- at goal.\n\nPlan: continue ketoconazole 200 mg three times daily. Labs and visit in 6 months.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2026-07-21a",
+     "kind": "annual_physical",
+     "start": "2026-07-21T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 79.6,
+      "bp": [
+       132,
+       84
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.6,
+       "Glucose": 108
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-07-21T09:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ],
+       "resulted": "2026-07-21T15:00"
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-07-21T09:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ],
+       "resulted": "2026-07-21T13:40"
+      },
+      {
+       "panel": null,
+       "collected": "2026-07-21T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2026-07-21T15:00"
+      },
+      {
+       "panel": null,
+       "collected": "2026-07-21T09:30",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ],
+       "resulted": "2026-07-22T10:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2026-07-21T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2026-07-21T10:05",
+       "body": "Annual physical, 37 y/o.\n\nInterval: admitted 5/31-6/2 for R pyelonephritis, fully recovered. Urology 3/2026 R renal lesion 2.5 cm, yearly MRI. Neurology yearly MRI -- due, she has not scheduled; reminder given. Psychiatry stable. Endocrinology 7/14 -- cortisol normal on ketoconazole.\n\nMeds: metformin 1000 BID, lisinopril 10, metoprolol succ 50, olanzapine 10 qhs, ketoconazole 200 tid. NKDA.\n\nROS negative. No urinary symptoms since the infection. No hypoglycemia.\n\nExam: vitals as charted. Well. Heart RRR, lungs clear. Abdomen soft, no CVA tenderness. No edema. Feet normal, monofilament intact. Neuro nonfocal.\n\nPHQ-9 2.\n\nA/P\n1. Preventive -- Pap 2028. Flu/COVID fall.\n2. T2DM -- A1c, CMP, CBC, urine microalbumin.\n3. HTN -- 128/82, continue.\n4. VHL -- MRI brain to be scheduled through neurology; retina exam overdue, number given.\n5. Bipolar I -- stable.\nRTC November."
+      },
+      {
+       "type": "Result Note",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2026-07-22T15:30",
+       "body": "A1c 6.6. Kidney, liver and blood counts normal. Urine protein normal."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-18a",
+     "kind": "portal_message",
+     "start": "2026-08-18T08:51",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "appointment in November",
+       "author": "patient",
+       "date": "2026-08-18T08:51",
+       "body": "Is there any way to move my November appointment to a Tuesday? My work schedule changed. Also need metformin refill soon."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: appointment in November",
+       "author": "front desk",
+       "date": "2026-08-18T11:30",
+       "body": "Hi Susan, moved you to Tuesday 11/10 at 9:20. Metformin refill request sent to the doctor."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill",
+       "author": "MA",
+       "date": "2026-08-18T13:00",
+       "body": "Metformin 1000 mg BID, 90 days with 1 refill sent to pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2026-11-10a",
+     "kind": "office_visit",
+     "start": "2026-11-10T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "appointment": "booked",
+     "reason": "Diabetes and blood pressure follow-up"
+    }
+   ]
+  }
+ ]
+}

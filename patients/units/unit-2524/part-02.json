@@ -1,0 +1,235 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002524",
+      "events": [
+        {
+          "id": "2023-01-10a",
+          "kind": "annual_physical",
+          "start": "2023-01-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 71.0, "labs": {"Hemoglobin": 14.2}},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-01-10T08:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-01-10T08:40", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-01-10T08:40", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-01-10T08:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-01-10T08:35"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-01-10T08:00"},
+            {"procedure": "Immunization administration", "performed": "2023-01-10T08:35"},
+            {"procedure": "Venipuncture", "performed": "2023-01-10T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-01-10T09:05", "body": "Annual exam, 36M.\n\nInterval: neurocysticercosis admission Aug/Sept, treated with albendazole + dexamethasone; no headaches or seizures since. Hospital discharge summary still never arrived despite two requests. UC: 1-2 formed stools/day, no blood on mesalamine 4.8 g; saw GI last week, no changes. HIV: on Biktarvy via ID clinic; says adherence is \"70, 80 percent.\" We talked about pill-box plus phone alarm again.\n\nMeds: Biktarvy daily, mesalamine DR 1.2 g x4 daily, multivitamin. NKDA.\nSocial: working, partner well. No tobacco or alcohol.\nROS negative.\n\nExam: well-appearing. Vitals per flowsheet, weight 72 (back to baseline). HEENT normal, no thrush, no nodes. Heart RRR. Lungs clear. Abdomen soft, nontender. Skin intact. Neuro: alert and oriented, strength and gait normal.\n\nA/P\n- HIV/AIDS: per ID clinic; adherence counseling.\n- UC in remission on mesalamine; CMP for creatinine.\n- Neurocysticercosis, treated, asymptomatic.\n- Prevention: Shingrix #1 today (recommended at any adult age with HIV); #2 in 2-6 months. Lipids, A1c (mother with T2DM), CBC. PHQ-9 2.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2023-01-12a",
+          "kind": "portal_message",
+          "start": "2023-01-12T17:40",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2023-01-12T17:40", "body": "Raul, all of your labs from Tuesday look good — blood count, kidneys, liver, cholesterol and A1c are normal. Book Shingrix #2 any time from March on."}
+          ]
+        },
+        {
+          "id": "2023-03-02a",
+          "kind": "hospital_admission",
+          "start": "2023-03-02T02:40",
+          "end": "2023-04-21T12:00",
+          "service": "Surgery — Burn ICU",
+          "reason": "burns from house fire, inhalation injury",
+          "conditions": [
+            {"label": "Sepsis due to burn wound infection", "icd10": "A41.9", "action": "diagnosed", "onset": "2023-03-02", "note": "developed during burn admission"}
+          ],
+          "vitals": [{"time": "2023-03-02T08:00", "bp": [95, 60], "hr": 120, "temp_c": 38.2}],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Burn Center Discharge Summary", "author": "surgery", "date": "2023-05-02T11:20", "body": "Regional burn center\nAdmitted: 03/02/2023  Discharged: 04/21/2023\n\nDiagnoses: second- and third-degree thermal burns, 40% TBSA, sustained in a house fire; inhalation injury; burn wound infection with sepsis (resolved); sinus tachycardia secondary to burns. Background: HIV/AIDS, ulcerative colitis.\n\nCourse: Arrived intubated for inhalation injury and was mechanically ventilated in the burn ICU. On arrival BP 95/60, HR 120, T 38.2 C; abdomen soft and non-distended. Hemodynamically stable with formula-guided fluid resuscitation. Persistent sinus tachycardia attributed to the burn injury. Underwent staged excision and split-thickness skin grafting. Tracheostomy placed for prolonged ventilation; weaned and decannulated before discharge. Course complicated by burn wound infection with sepsis, treated with IV antibiotics, resolved. Home ART resumed once taking enterally. Mesalamine resumed.\n\nDischarge condition: stable, ambulating, grafts healing.\nDischarge meds: home medications (Biktarvy, mesalamine, multivitamin).\nFollow-up: burn clinic in 1 week; outpatient PT/OT; PCP in 1 week; HIV clinic.\nAllergies: NKDA"}
+          ]
+        },
+        {
+          "id": "2023-03-06a",
+          "kind": "telephone",
+          "start": "2023-03-06T10:15",
+          "reason": "partner calling, hospital admission",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from Partner", "author": "RN", "date": "2023-03-06T10:24", "body": "Partner called. There was a fire at their home early Thursday morning (3/2). Raul has serious burns and smoke inhalation, intubated in the burn ICU at the regional burn center. Partner was not badly hurt. Asked that we be aware; no requests right now. Offered support; gave practice number for anything they need. PCP informed."},
+            {"type": "Telephone Encounter", "title": "RE: Call from Partner", "author": "PCP", "date": "2023-03-06T12:30", "body": "Called partner back to check in. Will plan to see him within a week of discharge. Sent a note to the burn center team with his med list and that he's followed by an outside HIV clinic."}
+          ]
+        },
+        {
+          "id": "2023-04-27a",
+          "kind": "office_visit",
+          "start": "2023-04-27T13:30",
+          "end": "2023-04-27T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge visit, burns",
+          "conditions": [
+            {"label": "Personal history of thermal burns, 40% total body surface area", "icd10": "Z87.828", "action": "history", "onset": "2023-03-02"},
+            {"label": "Sepsis due to burn wound infection", "icd10": "A41.9", "action": "resolved", "note": "treated during burn admission"}
+          ],
+          "state": {"weight_kg": 64.0, "labs": {"Hemoglobin": 12.6}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-04-27T14:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-04-27T14:20", "results": [{"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2023-04-27T14:20", "resulted": "2023-04-29T10:00", "results": [{"test": "CD4 Count", "value": 180}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2023-04-27T13:30"},
+            {"procedure": "Venipuncture", "performed": "2023-04-27T14:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Discharge Visit", "author": "PCP", "date": "2023-04-27T15:10", "body": "First visit since the house fire. Burn center stay 3/2-4/21; we don't have the discharge summary yet, history from Raul and partner.\n\nThey describe: intubated for smoke inhalation, burns on about 40% of his body, several trips to the OR for excision and skin grafts, a tracheostomy that was taken out before he left, and a serious wound infection with sepsis partway through that needed IV antibiotics. Home 4/21. Seeing burn clinic weekly, PT/OT twice a week.\n\nNow: sore and tight at the graft sites, sleeping poorly. Eating better. No fever. Biktarvy: honest that he missed a lot since getting home — \"there's been a lot going on.\" Mesalamine every day; stools formed, no blood.\n\nExam: thin, tired, moving carefully. Vitals per flowsheet; weight 64 kg, down 8 from January. Healed tracheostomy site. Graft sites dressed by burn clinic, not taken down. Lungs clear. Heart regular. Abdomen soft.\n\nA/P\n1. Major burns s/p grafting, burn wound sepsis resolved. Burn clinic and therapy managing wounds. Nutrition: protein at every meal, multivitamin.\n2. HIV/AIDS with missed doses. Hasn't been to the HIV clinic since discharge. Drawing CD4 today and sending it to them; asked him to book there this month.\n3. Weight loss after the admission — follow.\n4. Hgb mildly low after a long stay; CBC today, recheck in 2 months.\nRTC 2 months."}
+          ]
+        },
+        {
+          "id": "2023-05-01a",
+          "kind": "portal_message",
+          "start": "2023-05-01T08:50",
+          "reason": "CD4 result",
+          "documents": [
+            {"type": "Result Note", "title": "Your blood tests", "author": "PCP", "date": "2023-05-01T08:50", "body": "Raul, your CD4 count is 180, which is low and means the HIV isn't controlled well right now. It's the daily Biktarvy that brings it back up. I faxed the result to your HIV clinic. Blood count is a little low after the hospital stay and kidney and liver tests are fine. Please let me know once you have the HIV clinic appointment."},
+            {"type": "Patient Message", "title": "RE: Your blood tests", "author": "patient", "date": "2023-05-01T19:30", "body": "Got it. Appointment is the 18th. I'll try to do better with it."}
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "office_visit",
+          "start": "2023-06-27T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after burns; Shingrix 2",
+          "state": {"weight_kg": 66.0, "labs": {"Hemoglobin": 13.6}},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-27T10:05", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-06-27T10:00"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-27T09:30"},
+            {"procedure": "Immunization administration", "performed": "2023-06-27T10:00"},
+            {"procedure": "Venipuncture", "performed": "2023-06-27T10:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-06-27T10:20", "body": "2 months after burn center discharge. Grafts closed per burn clinic, now every 4-6 weeks. Still in OT for hand/shoulder range of motion. Sleeping better.\nSaw HIV clinic in May; says they \"restarted the conversation\" about adherence. Admits still missing some days.\nUC quiet.\nDischarge summary from the burn center did arrive in early May; reviewed, matches what they told me.\n\nWt 66 (up 2). Grafted skin intact, no open areas where visible. Lungs clear. Heart regular.\n\nA/P: recovering well. Shingrix #2 today — series complete. CBC to recheck Hgb. Next physical January; flu/COVID in the fall."}
+          ]
+        },
+        {
+          "id": "2023-06-28a",
+          "kind": "portal_message",
+          "start": "2023-06-28T12:15",
+          "reason": "lab result",
+          "documents": [
+            {"type": "Result Note", "title": "Blood count", "author": "PCP", "date": "2023-06-28T12:15", "body": "Blood count is back to normal. Nothing to do."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "office_visit",
+          "start": "2023-09-12T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed Appointment", "author": "front desk", "date": "2023-09-12T15:10", "body": "No-show for 2:30 follow-up. Left voicemail to reschedule."}
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T17:00",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-03T17:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T17:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T17:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit — Vaccines", "author": "RN", "date": "2023-10-03T17:15", "body": "Flu L deltoid, updated COVID R deltoid. Apologized for missing September; rebooked with PCP for November."}
+          ]
+        },
+        {
+          "id": "2023-10-30a",
+          "kind": "hospital_admission",
+          "start": "2023-10-30T15:10",
+          "end": "2023-11-09T13:00",
+          "service": "Infectious Diseases",
+          "reason": "fever, night sweats, cough, weight loss",
+          "conditions": [
+            {"label": "Miliary tuberculosis", "icd10": "A19.9", "action": "diagnosed", "onset": "2023-10-09"}
+          ],
+          "medications": [
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "stop", "reason": "rifampin interaction; changed by inpatient ID"},
+            {"drug_text": "dolutegravir 50 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily while on rifampin", "dose": {"value": 50, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "HIV infection; prescribed by inpatient ID"},
+            {"drug_text": "emtricitabine 200 MG / tenofovir disoproxil fumarate 300 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV infection; prescribed by inpatient ID"},
+            {"drug_text": "rifampin 300 MG Oral Capsule", "action": "historical", "sig": "Take 2 capsules (600 mg) by mouth daily (DOT)", "dose": {"value": 600, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "miliary tuberculosis"},
+            {"drug_text": "isoniazid 300 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily (DOT)", "dose": {"value": 300, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "miliary tuberculosis"},
+            {"drug_text": "pyrazinamide 500 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (1500 mg) by mouth daily (DOT)", "dose": {"value": 1500, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "miliary tuberculosis"},
+            {"drug_text": "ethambutol hydrochloride 400 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (1200 mg) by mouth daily (DOT)", "dose": {"value": 1200, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "miliary tuberculosis"},
+            {"drug_text": "vitamin B6 50 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily while on isoniazid", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "isoniazid neuropathy prevention"}
+          ],
+          "state": {"weight_kg": 61.0},
+          "vitals": [{"time": "2023-10-30T15:30", "temp_c": 38.9, "hr": 110}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-30T16:00", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "White Blood Cells", "value": 4.5}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-30T16:00", "results": [{"test": "Sodium", "value": 135}, {"test": "Potassium", "value": 4.2}, {"test": "Creatinine", "value": 1.1}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-10-30T16:00", "results": [{"test": "Alanine Aminotransferase", "value": 45}, {"test": "Aspartate Aminotransferase", "value": 50}, {"test": "Alkaline Phosphatase", "value": 120}]},
+            {"panel": null, "collected": "2023-10-30T16:00", "resulted": "2023-11-01T12:00", "results": [{"test": "HIV-1 RNA Viral Load", "value": 120000}, {"test": "CD4 Count", "value": 50}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2023-10-30T15:50", "text": "PA and lateral views. Innumerable 1-2 mm nodules distributed diffusely through both lungs. No consolidation, effusion or pneumothorax. Heart size normal. Mediastinal contours normal.", "conclusion": "Diffuse bilateral micronodular (miliary) pattern."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary — Infectious Diseases", "author": "infectious diseases", "date": "2023-11-14T09:45", "body": "Admitted 10/30/2023, discharged 11/09/2023.\nPrincipal diagnosis: miliary tuberculosis. Other: HIV/AIDS with nonadherence to ART; anemia.\n\n36M with HIV/AIDS (CD4 180 in April) who has taken ART irregularly, admitted with three weeks of fevers, drenching night sweats and a dry cough, and 5 kg weight loss over the past month. T 38.9 C, HR 110, diffuse crackles on auscultation. Hgb 10.2, WBC 4.5, plt 250. Na 135, K 4.2, Cr 1.1. ALT 45, AST 50, alk phos 120. HIV RNA 120,000 copies/mL; CD4 50. CXR with innumerable 1-2 mm nodules through both lung fields. TST 0 mm at 48 h (anergic in this setting).\n\nAirborne isolation. Sputum NAAT positive for M. tuberculosis complex, rifampin resistance not detected; culture grew M. tuberculosis, susceptible to isoniazid, rifampin, pyrazinamide and ethambutol. Started RIPE with pyridoxine 11/01. Because of rifampin, Biktarvy was stopped and ART changed to dolutegravir 50 mg BID plus emtricitabine/tenofovir DF daily; return to Biktarvy 2 weeks after rifampin ends.\n\nDischarge meds: rifampin 600 mg daily, isoniazid 300 mg daily, pyrazinamide 1500 mg daily, ethambutol 1200 mg daily, pyridoxine 50 mg daily (all DOT via local health department); dolutegravir 50 mg BID; emtricitabine/tenofovir DF 200/300 mg daily; mesalamine DR 4.8 g daily; multivitamin.\nFollow-up: health department TB clinic; HIV clinic 2 weeks; PCP 1 week with CBC and LFTs.\nAllergies: NKDA"}
+          ]
+        },
+        {
+          "id": "2023-11-16a",
+          "kind": "office_visit",
+          "start": "2023-11-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge visit, tuberculosis",
+          "conditions": [
+            {"label": "Anemia, unspecified", "action": "diagnosed", "onset": "2023-10-30"}
+          ],
+          "state": {"weight_kg": 61.0, "labs": {"Hemoglobin": 10.4, "White Blood Cells": 4.4}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-11-16T10:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-11-16T10:40", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Bilirubin, Total"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2023-11-16T10:00"},
+            {"procedure": "Venipuncture", "performed": "2023-11-16T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Discharge Visit", "author": "PCP", "date": "2023-11-16T11:15", "body": "Hospital f/u, admitted 10/30-11/9 for miliary TB. Discharge summary received 11/14 and reviewed.\n\nFeeling better. Fevers and sweats gone, cough much less. Health department nurse watches him take the TB pills on weekday video calls. No nausea, no RUQ pain, no tingling, vision unchanged. Taking the new HIV regimen (dolutegravir twice daily + Truvada) — says having the TB nurse check in has helped him with those too.\n\nExam: thin, no distress. Vitals per flowsheet; weight 60. Lungs: a few scattered crackles, much better than described. Heart regular. Abdomen soft, no hepatomegaly. No jaundice.\n\nA/P\n1. Miliary TB on RIPE + pyridoxine via health dept DOT. LFTs today (ALT/AST mildly up on admission) and at each visit while on PZA. Reviewed hepatitis warning symptoms.\n2. HIV/AIDS, CD4 50, VL 120k on admission. ART changed for rifampin interaction. HIV clinic appt 11/22.\n3. Anemia, Hgb 10.2 on admission — adding to list. CBC today; likely inflammation from the infection, follow.\n4. UC quiet on mesalamine.\nRTC 6-8 weeks."}
+          ]
+        },
+        {
+          "id": "2023-11-17a",
+          "kind": "portal_message",
+          "start": "2023-11-17T15:20",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Results", "author": "PCP", "date": "2023-11-17T15:20", "body": "Liver tests are normal on the TB medicines — good. Hemoglobin about 10, where it was in the hospital. We'll keep checking both."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "telephone",
+          "start": "2023-12-05T13:45",
+          "reason": "health department TB nurse",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from Health Department", "author": "RN", "date": "2023-12-05T13:52", "body": "TB program nurse from the local health department called to coordinate. Patient on daily DOT by video, good attendance so far. Asked that we keep checking LFTs; next due at his January visit. Fax number for results given."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,512 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001673",
+      "events": [
+        {
+          "id": "2025-01-22a",
+          "kind": "pharmacy",
+          "start": "2025-01-22T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Medication Refill",
+              "author": "MA",
+              "date": "2025-01-22T09:15",
+              "body": "Refill request from pharmacy: hydrocortisone 20 mg and 10 mg tabs, fludrocortisone 0.1 mg. 90-day. Endo seen 12/9/24, doses unchanged. Insurance changed group number for 2025 - updated in registration."
+            },
+            {
+              "type": "Refill Request",
+              "title": "Refill Approved",
+              "author": "PCP",
+              "date": "2025-01-22T11:40",
+              "body": "Approved, same doses, 90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-17a",
+          "kind": "portal_message",
+          "start": "2025-02-17T06:20",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-01-10",
+              "note": "LMP 2025-01-10, positive home test"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "folic acid 0.4 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily (over the counter)",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "Prenatal care, second pregnancy, primary adrenal insufficiency"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Pregnant again",
+              "author": "patient",
+              "date": "2025-02-17T06:20",
+              "body": "Positive test this morning. LMP was January 10. I didn't get back on the folic acid until a couple weeks ago, is that okay? Should I call endo myself?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Pregnant again",
+              "author": "PCP",
+              "date": "2025-02-17T07:45",
+              "body": "Congratulations! Due date around October 17. A couple of weeks before conception is still helpful, and taking it now through the first trimester is what matters most - keep going daily. I've sent the OB referral to the same group as last time and I'll message endocrinology too, but please also call them so they can schedule you. Let's do a short video visit in a couple of weeks to go over the plan. Same rules as always: vomiting and can't keep pills down = injection and ED."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-05T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Early pregnancy with adrenal insufficiency",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-03-05T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2025-03-05T16:35",
+              "body": "Video visit, pt at home, identity confirmed, consent for telehealth.\n\n33 y/o G2P1 at about 7.5 weeks by LMP. Feels well. Taking hydrocortisone 20 mg on waking and 10 mg early afternoon, fludrocortisone 0.1 mg, folic acid 0.4 mg. Has 2 in-date emergency vials. First OB visit 3/14. Endo has her scheduled in late May.\n\nExam: limited to video; well appearing, conversing comfortably.\n\nA/P\n1. Intrauterine pregnancy, early - OB to confirm dating.\n2. Primary adrenal insufficiency in pregnancy - doses per endo; reviewed that any vomiting illness in pregnancy is a reason to call the same day, and the injection if she can't keep tablets down. Gave her a printed emergency letter to bring to OB and L&D.\n3. I'll forward her med list and endo notes to OB."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-21a",
+          "kind": "outside_records",
+          "start": "2025-03-21T10:30",
+          "reason": "Prenatal care records",
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "done",
+              "date": "2025-03-21T10:30"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-14T11:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-14T11:00",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-14T11:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-14T11:00",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics New Prenatal Visit",
+              "author": "obstetrics",
+              "date": "2025-03-21T10:30",
+              "body": "OB/GYN new prenatal visit - 03/14/2025\n\n33 y.o. G2P1001 at 9w0d by LMP 1/10/2025; dating ultrasound today shows a single live intrauterine pregnancy consistent with dates. EDD 10/17/2025.\n\nOB history: SVD 10/2022, term, second-degree laceration repaired; postpartum course complicated by right lactational breast abscess requiring I&D.\nPMH: primary adrenal insufficiency (autoimmune), diagnosed 12/2022, followed by endocrinology.\nMeds: hydrocortisone 20 mg AM / 10 mg PM, fludrocortisone 0.1 mg daily, folic acid 0.4 mg, hydrocortisone sodium succinate emergency kit. NKDA.\n\nExam normal. Pap not due (co-test 2022 negative).\nPrenatal labs: CBC normal, type and screen sent, rubella immune, HBsAg/HIV/RPR nonreactive.\n\nPlan: routine prenatal care, co-management with endocrinology, intrapartum stress-dose steroid plan to be documented in the third trimester. Thank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-30a",
+          "kind": "specialist_visit",
+          "start": "2025-05-30T09:30",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency in pregnancy, 20 weeks",
+          "state": {
+            "weight_kg": 70.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-30T09:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-30T09:00",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2025-06-02T12:00",
+              "body": "Endocrinology - 05/30/2025\n\nKayla is 20 weeks into her second pregnancy, which is going smoothly per her OB. Feels well; no lightheadedness, no salt craving, no vomiting. No sick days requiring stress doses.\n\nMedications: hydrocortisone 20 mg on waking and 10 mg early afternoon, fludrocortisone 0.1 mg daily, folic acid. NKDA.\nExam: BP normal, no postural change. Weight gain appropriate for gestation per OB charting.\nLabs today: electrolytes normal; renin in range.\n\nAssessment: autoimmune primary adrenal insufficiency, clinically well replaced at 20 weeks' gestation.\nPlan: continue current doses. I will see her again near 32 weeks and send a written intrapartum plan to her OB and L&D at that visit. Emergency kit reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "portal_message",
+          "start": "2025-06-11T14:30",
+          "reason": "Leave paperwork",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Leave forms again",
+              "author": "patient",
+              "date": "2025-06-11T14:30",
+              "body": "Same question as last time - district FMLA forms. OB said they'll do the pregnancy part but HR also wants something about my Addison's in case I need intermittent days during the year. Can you do that part?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Leave forms again",
+              "author": "PCP",
+              "date": "2025-06-11T17:05",
+              "body": "Yes - drop the form at the front desk or upload it and I'll complete the section for the chronic condition (intermittent leave for flares/sick days and appointments). Usually back to you within a week."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "FMLA Form Completed",
+              "author": "front desk",
+              "date": "2025-06-17T10:00",
+              "body": "FMLA certification (chronic condition section) completed by PCP and faxed to district HR; copy to patient portal and scanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-08a",
+          "kind": "outside_records",
+          "start": "2025-08-08T09:50",
+          "reason": "Prenatal care records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-07-25T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal Flow Sheet Update",
+              "author": "obstetrics",
+              "date": "2025-08-08T09:50",
+              "body": "Prenatal update through 07/25/2025 (28w0d).\n\nUncomplicated course. 20-week anatomy survey normal; placenta fundal. 1-hour glucose challenge normal at 27 weeks. Blood pressures normal. Fundal height appropriate. Tdap given 07/25/2025.\nEndocrinology co-managing adrenal insufficiency; stress-dose plan pending from endocrinology.\nPlans vaginal delivery and breastfeeding."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "specialist_visit",
+          "start": "2025-08-27T10:00",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency in pregnancy, delivery planning",
+          "state": {
+            "weight_kg": 75.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-27T09:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up and Intrapartum Plan",
+              "author": "endocrinology",
+              "date": "2025-08-28T15:20",
+              "body": "Endocrinology - 08/27/2025, 33 weeks' gestation\n\nWell, no symptoms of under-replacement. Same doses: hydrocortisone 20/10 mg, fludrocortisone 0.1 mg. NKDA. Electrolytes today normal. BP normal.\n\nINTRAPARTUM STEROID PLAN (sent to OB and Labor & Delivery):\n1. On admission in labor: continue usual oral doses while able to take them.\n2. At onset of active labor (or before cesarean): hydrocortisone 100 mg IV, then 50 mg IV every 6 hours until delivery.\n3. After delivery: resume oral hydrocortisone at double her usual doses (40 mg AM / 20 mg PM) for 24-48 hours, then back to 20 mg / 10 mg if well. Continue fludrocortisone throughout.\n4. Vomiting, hypotension or unexpected fever: IV hydrocortisone and call endocrinology.\n\nShe has a copy. Postpartum visit with me 3-4 months after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-19a",
+          "kind": "outside_records",
+          "start": "2025-09-19T11:15",
+          "reason": "Prenatal immunization record",
+          "immunizations": [
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2025-09-12T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB Immunization Record",
+              "author": "obstetrics",
+              "date": "2025-09-19T11:15",
+              "body": "Immunization administered at OB visit 09/12/2025 (35w0d): RSV prefusion F vaccine (Abrysvo) 0.5 mL IM, for infant protection. No reaction reported."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "nurse_visit",
+          "start": "2025-09-24T15:30",
+          "reason": "Influenza and COVID-19 vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-24T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-24T15:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-24T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2025-09-24T15:45",
+              "body": "36 weeks. Wants flu and COVID before delivery; had RSV vaccine at OB on 9/12. Feels well, no contractions. 2025-26 flu IM R deltoid, 2025-26 COVID IM L deltoid. Tolerated. Reminded: if feverish after the shots, sick-day dosing and call."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "hospital_admission",
+          "start": "2025-10-17T01:15",
+          "end": "2025-10-19T12:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Labor",
+          "vitals": [
+            {
+              "time": "2025-10-18T06:10",
+              "bp": [
+                120,
+                75
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 37.8
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Normal spontaneous vaginal delivery",
+              "icd10": "O80",
+              "action": "diagnosed",
+              "onset": "2025-10-17"
+            },
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved"
+            },
+            {
+              "label": "Exclusive breastfeeding",
+              "icd10": "Z39.1",
+              "action": "diagnosed",
+              "onset": "2025-10-17"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydrocortisone sodium succinate 100 MG Injection",
+              "action": "start",
+              "sig": "100 mg IV at active labor, then 50 mg IV every 6 hours until delivery",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Intrapartum stress dose, primary adrenal insufficiency"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Day 1 Note",
+              "author": "obstetrics",
+              "date": "2025-10-22T09:30",
+              "body": "OB postpartum progress note - 10/18/2025 06:15, PPD#1\n\n33 y.o. G2P2 with autoimmune primary adrenal insufficiency, now one day out from an uncomplicated vaginal birth of a healthy term baby (10/17, 05:52). Her first pregnancy, three years ago, was when the breast abscess and the adrenal diagnosis happened. Intrapartum stress dosing given per the endocrinology plan; now on oral hydrocortisone at double dose with fludrocortisone.\n\nS: some cramping, bleeding lighter than a period. Has had a few episodes of chills with shivering overnight. No chest pain, no shortness of breath, no headache. Nursing exclusively, baby latching well.\n\nO: T 37.8 C (100 F), BP 120/75, HR 80, RR 16.\nFundus firm and nontender, just below the umbilicus. Lochia rubra, small, no clots. Breasts full, tender to palpation, no focal redness. Perineum intact. Calves soft. Remainder of exam unremarkable.\n\nA/P: PPD#1 after NSVD, recovering as expected. Routine postpartum care; vitals per protocol. Continue doubled oral hydrocortisone today, then usual doses per endocrinology plan. Breastfeeding support. Anticipate discharge tomorrow."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2025-10-22T09:30",
+              "body": "Admission 10/17/2025 - Discharge 10/19/2025\n\nDiagnosis: term pregnancy, delivered. Normal spontaneous vaginal delivery 10/17/2025 of a healthy term infant; perineum intact. Primary adrenal insufficiency, managed with intrapartum IV hydrocortisone per endocrinology plan.\n\nCourse: labor uncomplicated. Hydrocortisone 100 mg IV given at active labor, then 50 mg IV every 6 hours until delivery; doubled oral doses postpartum day 1, usual doses (20 mg AM / 10 mg PM) resumed 10/19 before discharge. Fludrocortisone continued. Afebrile at discharge, vitals normal. Exclusively breastfeeding.\n\nDischarge medications: hydrocortisone 20 mg AM / 10 mg early afternoon, fludrocortisone 0.1 mg daily, folic acid/prenatal vitamin, hydrocortisone sodium succinate 100 mg IM emergency kit. NKDA.\nFollow-up: OB postpartum visit in about 6 weeks; endocrinology in 3-4 months; PCP as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "telephone",
+          "start": "2025-10-21T11:15",
+          "reason": "Post-discharge check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Delivery Check-in",
+              "author": "RN",
+              "date": "2025-10-21T11:15",
+              "body": "Called pt after hospital discharge 10/19. Feeling well, sore but managing. Back on hydrocortisone 20/10 and fludrocortisone since Sunday morning, no lightheadedness, no fever since leaving. Nursing well, baby to pediatrician tomorrow. Reviewed: fever, breast redness or vomiting -> call same day and use sick-day dosing. Pt appreciative; will see PCP in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "portal_message",
+          "start": "2025-10-24T20:50",
+          "reason": "Delivery update",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Number two!",
+              "author": "patient",
+              "date": "2025-10-24T20:50",
+              "body": "Baby #2 arrived on the 17th. Easy delivery this time, no tear. The steroid plan went fine and I'm back on my normal doses. Nursing is going much better than the first time around."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Number two!",
+              "author": "PCP",
+              "date": "2025-10-25T08:10",
+              "body": "Wonderful news, congratulations! So glad it went smoothly. Watch for any breast redness or fever and call early this time - you know the drill. Let's see you in January once things settle."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "specialist_visit",
+          "start": "2025-12-03T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum visit",
+          "state": {
+            "weight_kg": 69.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Diastasis recti abdominis",
+              "icd10": "M62.08",
+              "action": "diagnosed",
+              "onset": "2025-10-17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postpartum Visit",
+              "author": "obstetrics",
+              "date": "2025-12-05T08:20",
+              "body": "OB/GYN postpartum visit - 12/03/2025\n\n33 y.o. G2P2, primary adrenal insufficiency, seen for routine postpartum care about seven weeks after an uncomplicated vaginal birth following an uncomplicated pregnancy. Breastfeeding exclusively, going well.\n\nNew concern: a bulge along the middle of her belly that she notices most when sitting up from lying down or when bearing down. It does not hurt.\n\nMeds: hydrocortisone 20/10 mg, fludrocortisone 0.1 mg, folic acid. NKDA.\n\nVitals: within normal limits.\nAbdomen: with head lift from supine, a midline ridge appears above the umbilicus. Nontender. It does not change with cough. No hernia defect or reducible mass. Fundus not palpable. Perineum and pelvic exam normal.\n\nAssessment: diastasis recti abdominis after second pregnancy. No hernia.\nPlan: reassurance; referral to pelvic floor and core physical therapy for a progressive program. Avoid heavy straining and full sit-ups until evaluated. Routine gynecologic care; return as needed."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

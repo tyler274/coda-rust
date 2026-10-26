@@ -1,0 +1,790 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002531",
+      "given": "Jorge",
+      "family": "Reyes",
+      "birth_date": "1989-01-08",
+      "address_line": "41 Bellamy Terrace, Apt 2",
+      "phone": "+1-978-555-0162",
+      "email": "jorge.reyes@example.test",
+      "marital_status": "single",
+      "summary": "Warehouse associate in his thirties with schizophrenia, type 2 diabetes, resistant hypertension and albuminuric CKD stage 1 who joins in 2020. Antipsychotic weight gain and insulin resistance, a left adrenal pheochromocytoma resected in 2022, pseudogynecomastia, tinea pedis and corporis, an oculogyric crisis after a risperidone increase, an ED migraine and phenazopyridine methemoglobinemia follow.",
+      "events": [
+        {
+          "id": "2020-09-09a",
+          "kind": "establish_care",
+          "start": "2020-09-09T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care",
+          "conditions": [
+            {
+              "label": "Schizophrenia",
+              "action": "history"
+            },
+            {
+              "label": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+              "action": "history"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history"
+            },
+            {
+              "label": "Chronic kidney disease, stage 1",
+              "icd10": "N18.1",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "olanzapine 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "NIGHTLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Schizophrenia"
+            },
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atenolol 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              86
+            ],
+            "weight_kg": 83.5,
+            "height_cm": 172.0,
+            "labs": {
+              "Hemoglobin A1c": 6.6,
+              "Glucose": 141,
+              "Microalbumin/Creatinine Ratio": 72,
+              "Creatinine": 0.92,
+              "Potassium": 3.7,
+              "Total Cholesterol": 206,
+              "Low Density Lipoprotein": 128,
+              "High Density Lipoprotein": 37,
+              "Triglycerides": 205
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-09T10:15",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-09T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-09T10:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Total Cholesterol"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-09T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 72
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social drinker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Warehouse associate"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-09T10:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-09T09:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-09T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-09T10:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2020",
+              "action": "placed",
+              "order": "Request records from prior primary care",
+              "category": "procedure",
+              "reason": "Transfer of care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2020-09-09T09:30",
+              "body": "31M, new to us. Was followed at a community health center nearby for years; switching because his shifts make their hours hard and he wants to be able to text when something comes up.\n\nProblems he brings:\n- Schizophrenia. Followed by a community psychiatry clinic, sees his psychiatrist every couple of months. On olanzapine 10 mg at night. Says he has been steady, no admissions in years, working full time.\n- Type 2 diabetes. On metformin 1000 twice a day. Checks sugars a few mornings a week, usually 120s-140s.\n- Hypertension. Three drugs: amlodipine 10, HCTZ 25, atenolol 50. Told by his old office his pressure was 'stubborn.' Takes them every day, uses a pill box.\n- Kidneys: old office told him he has protein in his urine and early kidney disease. Creatinine normal per him. Will confirm with records.\n\nAllergies: none known.\nMeds as above.\nSurgeries: none.\nFamily: father with type 2 diabetes, mother with high blood pressure, an uncle on his mother's side with schizophrenia.\nSocial: warehouse associate, day shift, lot of lifting and walking. Never smoked. Drinks socially, a few beers on a weekend. No drugs.\n\nROS: no chest pain, no dyspnea, no headaches, no vision change, no urinary symptoms. Mood okay.\n\nExam: vitals as charted. Pleasant, a little quiet, good eye contact. HEENT unremarkable, neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities no edema, feet with intact monofilament sensation and good pulses. Skin clear.\n\nA/P\n1. T2DM: continue metformin. A1c, CMP, lipids, urine albumin/creatinine today.\n2. HTN on three agents: BP above goal today. Continue current regimen for now, get records, recheck in 3 months.\n3. CKD stage 1 by albuminuria per history: urine ACR today.\n4. Schizophrenia: stable with outside psychiatry. Will do his metabolic labs here and copy psychiatry.\n5. Health maintenance: flu shot today. Hep C screen today. Records release signed.\n\nRTC 3 months."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 83.5,
+            "height_cm": 172.0
+          }
+        },
+        {
+          "id": "2020-09-11a",
+          "kind": "portal_message",
+          "start": "2020-09-11T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2020-09-11T16:40",
+              "body": "Hi Jorge, your labs from Wednesday are in. A1c 6.6, which is decent control on the metformin. Kidney function (creatinine) is normal. The urine protein test shows a small amount of albumin, matching what your old office told you, and we'll follow it every year. Cholesterol and blood counts as attached. Hep C screen negative. Nothing to change right now. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-21a",
+          "kind": "outside_records",
+          "start": "2020-09-21T11:05",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2011-06-14T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2020",
+              "action": "done",
+              "date": "2020-09-21T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "front desk",
+              "date": "2020-09-21T11:05",
+              "body": "Faxed chart from prior community health center, 38 pages, received and indexed.\n\nSummary for PCP: problem list schizophrenia (psychiatry managing), type 2 diabetes, hypertension, CKD stage 1 with albuminuria. Medications match our list: olanzapine 10 mg qhs, metformin 1000 mg BID, amlodipine 10 mg, HCTZ 25 mg, atenolol 50 mg. No known drug allergies. Immunizations: Tdap 06/2011, yearly flu shots. Labs over the last several years with normal creatinine and urine albumin above normal on repeat testing. Normal CBCs."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-21a",
+          "kind": "portal_message",
+          "start": "2020-10-21T19:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2020-10-21T19:12",
+              "body": "hi can you send my metformin and the 3 blood pressure pills to the pharmacy, 90 days if medicaid lets me. old office prescriptions are almost done"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "author": "RN",
+              "date": "2020-10-22T08:50",
+              "body": "Sent 90-day supplies of metformin, amlodipine, hydrochlorothiazide and atenolol to your pharmacy with 3 refills. Your plan covers the 90-day fills."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-09a",
+          "kind": "office_visit",
+          "start": "2020-12-09T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 84.0,
+            "labs": {
+              "Hemoglobin A1c": 6.7,
+              "Glucose": 136
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-12-09T10:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-12-09T10:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-12-09T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-12-09T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2020-12-09T10:20",
+              "body": "F/u DM, HTN.\nFeels fine. Busy season at the warehouse, working some overtime. Taking all meds. Home sugars 120-150 fasting. No lightheadedness. Psychiatry visit last month, no changes.\n\nBP 134/84, better than September. Wt stable.\nHeart reg, lungs clear, no edema.\n\nA/P\nDM2 - A1c today, continue metformin.\nHTN - closer to goal on amlodipine/HCTZ/atenolol, continue.\nCKD 1 - chemistries today; ACR yearly.\nBack in 4 mo."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              84
+            ]
+          }
+        },
+        {
+          "id": "2021-02-10a",
+          "kind": "telephone",
+          "start": "2021-02-10T13:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization - glucose test strips",
+              "author": "MA",
+              "date": "2021-02-10T13:25",
+              "body": "Pharmacy called, his Medicaid plan wants a PA for his test strips since the brand changed. Submitted PA with dx of type 2 diabetes on oral therapy, testing up to 1x daily. Approved same afternoon for 12 months. Pharmacy notified, patient texted that strips are ready."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-17a",
+          "kind": "portal_message",
+          "start": "2021-03-17T21:03",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid shot",
+              "author": "patient",
+              "date": "2021-03-17T21:03",
+              "body": "Am I allowed to get the covid vaccine yet with the diabetes? My job is saying we should. Is it ok with my psych meds"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid shot",
+              "author": "PCP",
+              "date": "2021-03-18T07:42",
+              "body": "Yes, with diabetes you qualify now under the state rules. No interaction with your olanzapine or any of your other medicines. The pharmacies are booking online. Let us know the dates and we'll put them in your chart."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-02a",
+          "kind": "pharmacy",
+          "start": "2021-04-02T15:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-02T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization: COVID-19 dose 1",
+              "author": "MA",
+              "date": "2021-04-05T09:10",
+              "body": "Patient sent photo of vaccination card. Pfizer-BioNTech COVID-19 vaccine dose 1 given 04/02/2021 at a retail pharmacy. Entered in immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-07a",
+          "kind": "office_visit",
+          "start": "2021-04-07T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {
+            "bp": [
+              132,
+              82
+            ],
+            "weight_kg": 82.4,
+            "labs": {
+              "Hemoglobin A1c": 6.5
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-04-07T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.5
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2021-04-07T14:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-04-07T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-04-07T14:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-04-07T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2021-04-07T14:00",
+              "body": "S: Doing well. Got first covid shot last Friday, sore arm only. Lost a couple of pounds, walking more at work since they changed his zone. No new complaints.\nO: BP 132/82, weight down a little. Normal heart and lung exam. No edema.\nA/P:\n- Type 2 DM: A1c today. Continue metformin 1000 BID.\n- HTN: at goal today, same meds.\n- Hep B vaccine recommended with diabetes under 60; first Heplisav-B dose today, second in a month.\nNext visit with physical in September."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              82
+            ]
+          }
+        },
+        {
+          "id": "2021-04-23a",
+          "kind": "pharmacy",
+          "start": "2021-04-23T16:10",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-23T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization: COVID-19 dose 2",
+              "author": "MA",
+              "date": "2021-04-26T10:02",
+              "body": "Dose 2 Pfizer-BioNTech 04/23/2021, retail pharmacy, per vaccination card photo. Recorded."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-05a",
+          "kind": "nurse_visit",
+          "start": "2021-05-05T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2021-05-05T08:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-05-05T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Heplisav-B #2",
+              "author": "RN",
+              "date": "2021-05-05T08:15",
+              "body": "In before work for 2nd Heplisav-B. No problems after the first one. 0.5 mL IM left deltoid. Waited 15 min, fine. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-14a",
+          "kind": "outside_records",
+          "start": "2021-06-14T12:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry update",
+              "author": "psychiatry",
+              "date": "2021-06-14T12:30",
+              "body": "Community psychiatry clinic - medication management update for primary care.\n\nMr. Reyes continues on olanzapine 10 mg at bedtime. Seen today for routine follow-up. Mental status stable, no psychotic symptoms reported or observed, sleeping well, working full time, no hospitalizations. Adherent. We appreciate primary care monitoring his weight, glucose and lipids on this medication. Next visit in 8-10 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-19a",
+          "kind": "outside_records",
+          "start": "2021-07-19T09:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam",
+              "author": "optometry",
+              "date": "2021-07-19T09:40",
+              "body": "Dilated diabetic eye exam 07/13/2021. Visual acuity 20/20 both eyes with correction. Anterior segments normal. Fundus: no diabetic retinopathy either eye, discs and maculae healthy. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "annual_physical",
+          "start": "2021-09-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              134,
+              86
+            ],
+            "weight_kg": 82.0,
+            "labs": {
+              "Hemoglobin A1c": 6.8,
+              "Glucose": 132,
+              "Microalbumin/Creatinine Ratio": 80,
+              "Total Cholesterol": 211,
+              "Low Density Lipoprotein": 132,
+              "High Density Lipoprotein": 36,
+              "Triglycerides": 214
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-22T08:20",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-22T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-22T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-22T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 80
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-22T08:45"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-09-22T08:46"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2021-09-22T08:47"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-09-22T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-22T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-22T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-09-22T08:00",
+              "body": "Annual exam, fasting.\n\nInterval: fine since April. Both covid shots in the spring. Psychiatry unchanged, still olanzapine 10 at night, feels 'level.' Work steady. No ER visits.\n\nMeds: olanzapine 10 qhs, metformin 1000 BID, amlodipine 10, HCTZ 25, atenolol 50. No drug allergies.\nSocial: never smoker, a few drinks on weekends, no drugs. Lives in Chicopee, works warehouse day shift.\nFamily: unchanged.\n\nROS negative across the board.\nPHQ-9: 2.\n\nExam\nGen: well, NAD.\nHEENT: TMs clear, oropharynx normal, no thyromegaly.\nCV: RRR, no murmur.\nLungs: clear.\nAbd: soft, NT, no masses.\nExt: no edema.\nFeet: skin intact, monofilament normal bilaterally, DP pulses 2+.\nSkin: no rashes.\nPsych: calm, linear, appropriate.\n\nAssessment / plan\n- Type 2 diabetes: fasting labs today (A1c, CMP, ACR). Eye exam done in July, no retinopathy. Foot exam normal.\n- Hypertension: 134/86, continue three-drug regimen.\n- CKD stage 1 with albuminuria: ACR today.\n- Schizophrenia: stable with psychiatry; lipids and A1c today for antipsychotic monitoring.\n- Prevention: flu, PCV20 (diabetes), Tdap (last 2011) today. Hep B series done in May.\n\nRTC ~4 months."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              86
+            ]
+          }
+        },
+        {
+          "id": "2021-09-24a",
+          "kind": "portal_message",
+          "start": "2021-09-24T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2021-09-24T12:15",
+              "body": "Jorge - labs from the physical: A1c 6.8, about where it has been. Kidney numbers normal, urine albumin still mildly up, similar to last year. Liver tests and blood counts normal. Cholesterol panel attached. Same medicines. See you in January."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-20a",
+          "kind": "pharmacy",
+          "start": "2021-11-20T11:20",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-20T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization: COVID-19 booster",
+              "author": "MA",
+              "date": "2021-11-23T14:05",
+              "body": "State immunization registry shows Pfizer-BioNTech booster 11/20/2021 at a pharmacy. Reconciled into chart."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

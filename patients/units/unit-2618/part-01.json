@@ -1,0 +1,215 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002618",
+      "given": "Lucas",
+      "family": "Mercier",
+      "birth_date": "1995-10-05",
+      "address_line": "27 Fruit Street, Apt 2",
+      "phone": "+1-508-555-0133",
+      "email": "lucas.mercier@example.test",
+      "marital_status": "single",
+      "summary": "Electrical engineering doctoral student with bipolar I disorder on lithium and lamotrigine from an outside psychiatry group, later diagnosed with schizotypal personality disorder. Psychotic manic relapses in 2022 and 2025; the 2025 discharge drug haloperidol caused an oculogyric crisis on the first dose, and he is now on olanzapine with metabolic monitoring at the practice. Outside records arrive late or not at all.",
+      "events": [
+        {
+          "id": "2019-09-17a",
+          "kind": "establish_care",
+          "start": "2019-09-17T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Bipolar I disorder", "icd10": "F31.9", "action": "history", "onset": "2016-01-01", "note": "Bipolar I; followed by an outside psychiatry group"},
+            {"label": "Family history of osteoporosis", "icd10": "Z82.62", "action": "history"},
+            {"label": "Family history of stroke", "icd10": "Z82.3", "action": "history"}
+          ],
+          "medications": [
+            {"drug_text": "lithium carbonate 300 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth twice daily", "dose": {"value": 300, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Bipolar I disorder"},
+            {"drug": "lamotrigine 100 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Bipolar I disorder"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 72.5, "height_cm": 178.0, "labs": {"Thyroid Stimulating Hormone": 1.9, "Total Cholesterol": 158, "Low Density Lipoprotein": 92}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-09-17T10:05", "results": [{"test": "Creatinine"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-17T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-17T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2019-09-17T10:05", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.6},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social use, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Graduate student, electrical engineering"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2019-09-17T09:20"},
+            {"procedure": "Venipuncture", "performed": "2019-09-17T10:05"},
+            {"procedure": "Immunization administration", "performed": "2019-09-17T10:00"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-09-17T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-17T09:20", "body": "NEW PATIENT — establish care\n\n23M, just started the EE PhD program, moved up for school. Last primary care was the college health service; asked them for his shot record. Wants a local doctor for physicals and for the blood work his psychiatrist needs.\n\nPsych: bipolar I, diagnosed in college. Followed by an outside psychiatry group. Stable on lithium 300 twice a day and lamotrigine 100 daily, both prescribed by psychiatry. He says he is doing well, sleeping fine, no recent mood episodes he wants to talk about. Psychiatry would like lithium level, kidney and thyroid checks every 6 months and is fine with us drawing them.\n\nPMH otherwise none. PSH none.\nMeds: as above. No OTCs. Told him to avoid ibuprofen/naproxen and to keep hydrated in the heat while on lithium.\nAllergies: NKDA.\nFamily: father has bipolar I. Mother treated for depression. Mom's brother is \"odd\" per pt, never diagnosed with anything, pt says the family calls it schizotypal traits. Two siblings have cystic fibrosis. He says osteoporosis and stroke run in the family but isn't sure on whose side.\nSocial: grad student, lives with a roommate in Northampton. Never smoked. Drinks maybe once or twice a month, 1-2 drinks. No drugs.\n\nROS negative.\n\nExam: well appearing, pleasant, a little quiet. HEENT normal, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abd soft. No tremor at rest or with arms extended. Skin normal. Mood \"fine,\" affect a bit flat but reactive, thought process linear.\n\nPHQ-9 3.\n\nA/P\n1. Bipolar I disorder — stable per pt, managed by psychiatry. Lithium level, BMP, TSH, CBC today. Will fax results to psychiatry. Recheck in ~6 months.\n2. Health maintenance — Tdap today (last one was age 11 per pt, records pending). Lipids, HIV and hep C screening today. Flu shot when the vaccine comes in next month.\n3. FHx CF in two siblings — noted; he has not had carrier testing. Not planning children right now.\n\nRTC 6 mo for labs, 1 yr physical."},
+            {"type": "Progress Notes", "title": "Immunization Administration", "author": "MA", "date": "2019-09-17T10:02", "body": "Tdap 0.5 mL IM left deltoid. VIS reviewed. Tolerated without issue, waited 15 min."}
+          ]
+        },
+        {
+          "id": "2019-09-19a",
+          "kind": "portal_message",
+          "start": "2019-09-19T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-09-19T16:40", "body": "Hi Lucas, all of your labs from Tuesday came back fine. Lithium level 0.6, which is in the range your psychiatrist wants. Kidney function, calcium, thyroid and blood counts are normal. Cholesterol is good. HIV and hepatitis C screens negative. I faxed a copy to your psychiatry office. Next check in March."}
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "outside_records",
+          "start": "2019-09-26T11:15",
+          "reason": "Prior records received",
+          "documents": [
+            {"type": "Outside Records", "title": "Immunization Record — College Health Service", "author": "front desk", "date": "2019-09-26T11:15", "body": "Immunization history received by fax from his college health service and scanned.\n\nRecord shows childhood series complete, MMR x2, varicella x2, hepatitis B x3, HPV 3-dose series complete, MenACWY x2, Tdap at age 11. Last physical there spring 2018, no problems listed besides bipolar disorder followed by psychiatry.\n\nForwarded to PCP for review. PCP: reviewed, nothing further due besides flu this season."}
+          ]
+        },
+        {
+          "id": "2019-10-16a",
+          "kind": "nurse_visit",
+          "start": "2019-10-16T16:10",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-16T16:12"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-16T16:12"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Nurse Visit — Influenza Vaccine", "author": "RN", "date": "2019-10-16T16:10", "body": "Here for flu shot. Denies fever or illness today. No egg or vaccine reactions. Quadrivalent flu 0.5 mL IM R deltoid. Tolerated well."}
+          ]
+        },
+        {
+          "id": "2020-03-11a",
+          "kind": "lab_only",
+          "start": "2020-03-11T08:15",
+          "reason": "Lithium monitoring",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-03-11T08:15", "results": [{"test": "Creatinine"}, {"test": "Calcium"}]},
+            {"panel": null, "collected": "2020-03-11T08:15", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.7}
+            ]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2020-03-11T08:15"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Result Call", "author": "RN", "date": "2020-03-12T10:30", "body": "Called pt with results per PCP: lithium 0.7, kidney function, calcium and TSH normal. Results faxed to his psychiatrist. Pt aware. He asked whether his physical will still happen with the clinic changes going on; told him we will reach out if anything moves."}
+          ]
+        },
+        {
+          "id": "2020-08-25a",
+          "kind": "annual_physical",
+          "start": "2020-08-25T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-08-25T14:40", "results": [{"test": "Creatinine"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-08-25T14:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2020-08-25T14:40", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.5}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "orders": [{"id": "psych-eval-2020", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "Diagnostic evaluation of long-standing social discomfort"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-08-25T14:00"},
+            {"procedure": "Venipuncture", "performed": "2020-08-25T14:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-08-25T14:00", "body": "ANNUAL PHYSICAL\n\n24M. Masked visit. Semester going remote mostly, he's been working in the lab on a reduced schedule.\n\nMood: no highs or lows he has noticed. Sleeping 7 hours. Taking lithium and lamotrigine every day, no missed doses that he can recall. Sees psychiatry by video every couple of months.\n\nToday he brought up something he says has bothered him for years: he is uncomfortable around people, especially anyone who tries to get close, and has always been more comfortable on his own. Describes himself as a loner. He says he notices things in situations other people don't seem to notice. Not distressed in a crisis way, but he wants to understand it better. Not depressed. No SI.\n\nHe asked if this is part of the bipolar. Told him I don't know, and that his psychiatry group is the right place for a real diagnostic evaluation. He'd like a referral — his own psychiatrist mostly does med checks, and they have someone who does fuller evaluations.\n\nMeds: lithium 300 BID, lamotrigine 100 daily. NKDA.\nSocial: unchanged. Never smoker, rare alcohol.\n\nExam: NAD. Avoids eye contact much of the visit. HEENT normal, thyroid not enlarged. Heart RRR no murmur. Lungs clear. Abd soft nontender. No tremor. Skin normal.\nPHQ-9 4.\n\nA/P\n1. Bipolar I — stable. Lithium level, BMP, TSH, CBC today, results to psychiatry.\n2. Long-standing interpersonal discomfort — referral to his psychiatry group for diagnostic evaluation.\n3. HM — flu shot when it arrives, he'll come for a nurse visit. Tdap up to date (2019).\n\nRTC 1 yr, labs in 6 mo."}
+          ]
+        },
+        {
+          "id": "2020-10-02a",
+          "kind": "nurse_visit",
+          "start": "2020-10-02T11:30",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-02T11:32"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-02T11:32"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Nurse Visit — Influenza Vaccine", "author": "MA", "date": "2020-10-02T11:30", "body": "Flu vaccine given, 0.5 mL IM left deltoid. Screening questions negative, no COVID symptoms. Pt waited 15 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2020-10-12a",
+          "kind": "specialist_visit",
+          "start": "2020-10-12T13:00",
+          "service": "Psychiatry",
+          "reason": "Diagnostic evaluation",
+          "conditions": [{"label": "Schizotypal personality disorder", "icd10": "F21", "action": "diagnosed", "onset": "2020-10-12"}],
+          "orders": [{"id": "psych-eval-2020", "action": "done", "date": "2020-10-12T13:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient Psychiatry — Diagnostic Evaluation", "author": "psychiatry", "date": "2020-10-27T09:10", "body": "OUTPATIENT PSYCHIATRY\nDiagnostic evaluation, date of service 10/12/2020\nReferred by: primary care\n\nThank you for sending Mr. Mercier for a fuller evaluation. He is known to our group for bipolar I disorder, managed with lithium and lamotrigine.\n\nReason for referral: lifelong unease in social settings and with closeness.\n\nHistory: He tells me he has always been most comfortable alone and that relationships beyond a few people feel uncomfortable rather than rewarding. He experiences ordinary situations in an idiosyncratic way. He describes being able to feel what he calls the energy of the universe, and he endorses beliefs in clairvoyance and telepathy. He reports that now and then he thinks he hears his name spoken when nobody is nearby; this is brief, he doubts it afterward, and it does not have the quality of a voice talking to him. No sustained voices, no visual phenomena. No current manic or depressive symptoms; sleep regular.\n\nMedications: lithium carbonate 300 mg twice daily, lamotrigine 100 mg daily.\nAllergies: NKDA.\nFamily: father with bipolar I; mother with major depression; a maternal uncle with schizotypal features, never formally diagnosed.\nSocial: EE graduate student, lives with a roommate. Never smoker; alcohol 1-2 drinks a month; no drugs.\n\nMental status: anxious. Speech somewhat odd in its phrasing and over-elaborate. Eye contact poor. Dress unusual and ornate for the setting. Thought process coherent and goal directed. Magical beliefs as above, held with some flexibility; no fixed delusions, no hallucinations in the formal sense. Insight partial. Judgment fair. Denies SI/HI.\n\nStudies: CBC and thyroid function within normal limits; urine toxicology negative.\n\nImpression: Schizotypal personality disorder, in a patient with bipolar I disorder that is currently euthymic. The perceptual experiences and odd beliefs are long-standing and occur outside mood episodes.\n\nPlan:\n- No medication change. Continue lithium 300 mg BID and lamotrigine 100 mg daily.\n- No medication is indicated for the schizotypal features. Offered individual psychotherapy in our group, supportive and skills focused, to work on social comfort and on checking odd interpretations. He accepted; first session being scheduled.\n- Continue med management visits every 2-3 months. Appreciate the semiannual lithium monitoring labs.\n\nOutpatient psychiatry"}
+          ]
+        },
+        {
+          "id": "2021-02-24a",
+          "kind": "lab_only",
+          "start": "2021-02-24T08:40",
+          "reason": "Lithium monitoring",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-02-24T08:40", "results": [{"test": "Creatinine"}, {"test": "Calcium"}]},
+            {"panel": null, "collected": "2021-02-24T08:40", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.6}
+            ]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2021-02-24T08:40"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2021-02-25T12:20", "body": "Lucas — lithium 0.6, kidneys, calcium and thyroid all normal. Sent to your psychiatrist. Nothing to change."},
+            {"type": "Patient Message", "title": "RE: Lab results", "author": "patient", "date": "2021-02-25T19:02", "body": "thanks. also is there a way to get on the list for the covid vaccine through you guys or do I go through the state site"},
+            {"type": "Patient Message", "title": "RE: Lab results", "author": "RN", "date": "2021-02-26T09:15", "body": "Hi Lucas, right now it's through the state sites and pharmacies. Once you're eligible, book through the state website. Please send us your card afterward so we can update your record."}
+          ]
+        },
+        {
+          "id": "2021-05-19a",
+          "kind": "outside_records",
+          "start": "2021-05-19T14:00",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-10T10:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-01T10:45"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Immunization Registry Update", "author": "MA", "date": "2021-05-19T14:00", "body": "Pt uploaded photo of vaccination card through the portal. Verified against state registry: Pfizer COVID-19 dose 1 on 4/10/21 and dose 2 on 5/1/21, community vaccination clinic. Entered into immunization history."}
+          ]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "annual_physical",
+          "start": "2021-09-22T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-09-22T11:20", "results": [{"test": "Creatinine"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-22T11:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2021-09-22T11:20", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.7}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-22T11:15"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-09-22T10:40"},
+            {"procedure": "Venipuncture", "performed": "2021-09-22T11:20"},
+            {"procedure": "Immunization administration", "performed": "2021-09-22T11:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-09-22T10:40", "body": "Physical. Back on campus full time, TA'ing a circuits lab this semester.\n\nPsych: lithium 300 BID, lamotrigine 100 daily from psychiatry. Saw the evaluator last fall — diagnosis was schizotypal personality disorder. He has been doing therapy sessions roughly monthly and thinks they help with \"reading people.\" Mood steady. Sleep ok.\n\nNo new problems. NKDA. Never smoker, alcohol rare. COVID vaccines done in spring.\n\nExam: normal. Thyroid normal size, no tremor. Heart and lungs normal. Abdomen benign.\nPHQ-9 2.\n\nA/P\n- Bipolar I, stable — labs today, results to psychiatry.\n- Schizotypal PD — in therapy with psychiatry group.\n- Flu shot today.\nSee in a year, labs in 6 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

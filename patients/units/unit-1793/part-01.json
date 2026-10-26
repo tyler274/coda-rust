@@ -1,0 +1,1063 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001793",
+      "given": "Sophia",
+      "family": "Labrie",
+      "birth_date": "1999-04-09",
+      "address_line": "214 Northampton Street, Apt 3",
+      "phone": "+1-617-555-0164",
+      "email": "sophia.labrie@example.test",
+      "marital_status": "single",
+      "summary": "Young woman with borderline personality disorder, depression and bulimia nervosa who joins in 2023 with hypokalemic alkalosis from surreptitious vomiting. Over three years she has self-harm ED visits, then sertraline, acetaminophen and two tricyclic overdoses with ICU and inpatient psychiatric stays, while primary care keeps her prevention, labs and safety follow-up going.",
+      "events": [
+        {
+          "id": "2023-09-13a",
+          "kind": "establish_care",
+          "start": "2023-09-13T09:30",
+          "end": "2023-09-13T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; weakness and palpitations for two months",
+          "conditions": [
+            {
+              "label": "Borderline personality disorder",
+              "action": "history",
+              "onset": "2023-06-16",
+              "note": "diagnosed by outside psychiatry June 2023"
+            },
+            {
+              "label": "Major depressive disorder, single episode, unspecified",
+              "icd10": "F32.9",
+              "action": "history"
+            },
+            {
+              "label": "Bulimia nervosa",
+              "icd10": "F50.20",
+              "action": "history",
+              "note": "reported as past; no current eating-disorder treatment"
+            },
+            {
+              "label": "Urinary tract infection",
+              "action": "history",
+              "note": "recurrent"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            },
+            {
+              "drug_text": "ethinyl estradiol 0.035 MG / norethindrone 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Contraception"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 88,
+            "weight_kg": 50.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Potassium": 2.9,
+              "Bicarbonate": 32,
+              "Chloride": 88,
+              "Thyroid Stimulating Hormone": 1.6,
+              "Magnesium": 2.0,
+              "Free Thyroxine": 1.2
+            }
+          },
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 88
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-13T10:20",
+              "resulted": "2023-09-13T16:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 2.9
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 32
+                },
+                {
+                  "test": "Chloride",
+                  "value": 88
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-13T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-13T10:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Magnesium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-13T10:20",
+              "resulted": "2023-09-13T16:30",
+              "results": [
+                {
+                  "test": "Chloride [Moles/volume] in Urine",
+                  "loinc": "2078-4",
+                  "unit": "mmol/L",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 14
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Part-time administrative assistant"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-09-13T10:05",
+              "text": "Normal sinus rhythm at 86 bpm. PR, QRS and QT intervals normal; QTc 438 ms. Normal axis. No ST-segment or T-wave changes.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-13T09:30"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2023-09-13T10:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-13T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-13T11:40",
+              "body": "24F new to the practice. Transferring from her prior PCP; records requested today.\n\nCC: feels weak and has had her heart 'flutter' on and off since around mid-July, so about two months. Fluttering comes at rest, lasts seconds to a minute, no syncope, no chest pain. Weakness is generalized, worse late in the day. No fevers, no weight loss she's noticed.\n\nPMH per patient: depression for years, on sertraline 100 mg from her old PCP. Had an eating disorder (bulimia) as a teen/early 20s, says that is in the past and she is not getting any treatment for it. Recurrent bladder infections, a few a year at her worst. Saw a psychiatrist in June who told her she has borderline personality disorder; she sees a therapist weekly and has for about a year, says it hasn't helped much. History of cutting when overwhelmed.\nMeds: sertraline 100 daily, combined OCP (1/35) daily. Asked directly: no OTC meds, no laxatives, no water pills, no supplements.\nAllergies: NKDA.\nSurgical: none.\nFH: mom with depression. Dad with substance use problems. Maternal uncle died by suicide.\nSH: works part time as an administrative assistant. Never smoked, doesn't drink, denies drugs.\n\nExam: thin young woman, NAD, conversant. BP 120/75, HR 88 regular. Wt 50.0 kg, ht 165 cm, BMI 18.4. Mouth moist, no parotid swelling noted, dentition fine. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema. Skin: several healed linear scars on both forearms, nothing fresh. Neuro grossly nonfocal, strength 5/5.\nPHQ-9 14. Denies SI today; asked about plan or intent, none. Knows how to reach her therapist and the crisis line.\nECG in office: NSR 86, QTc 438, normal.\n\nA/P\n1. Weakness + palpitations in a thin woman with a bulimia history. ECG reassuring. Check BMP, Mg, CBC, TSH, and a spot urine chloride while she's here. Will call with results.\n2. Depression / BPD - continue sertraline 100. Continue weekly therapy. Will get the psychiatry note with the old records.\n3. Recurrent UTIs - none active.\n4. Contraception - continue OCP, BP fine.\nFollow up 2 weeks, sooner depending on labs."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-13b",
+          "kind": "telephone",
+          "start": "2023-09-13T17:10",
+          "reason": "Lab results",
+          "conditions": [
+            {
+              "label": "Vomiting, unspecified",
+              "icd10": "R11.10",
+              "action": "diagnosed",
+              "onset": "2023-09-13",
+              "note": "surreptitious, self-induced; patient denies"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Low potassium"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result Call",
+              "author": "PCP",
+              "date": "2023-09-13T17:25",
+              "body": "Called pt with afternoon labs. K 2.9, bicarb 32, Cl 88. Spot urine chloride 15, which is very low. CBC, TSH, Mg normal.\n\nThis is a hypokalemic metabolic alkalosis with a low urine chloride, and with no diuretic use that pattern points to ongoing vomiting. Explained that to her plainly. She says she is not making herself throw up and isn't sick to her stomach. Did not push it further on the phone.\n\nStarting KCl ER 20 mEq BID with food. ER/ED precautions for worsening palpitations, chest pain, fainting or profound weakness. Repeat BMP at her visit in 2 weeks. Added surreptitious vomiting to the problem list. Rx sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "portal_message",
+          "start": "2023-09-18T21:04",
+          "reason": "Question about potassium pills",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "potassium",
+              "author": "patient",
+              "date": "2023-09-18T21:04",
+              "body": "Hi, the potassium pills are really big. Is it ok to cut them in half? Also do I take them at the same time as my other meds. Thanks, Sophia"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: potassium",
+              "author": "RN",
+              "date": "2023-09-19T08:52",
+              "body": "Hi Sophia, please don't cut or crush them, they're extended release. You can take them with breakfast and dinner with a full glass of water, and it's fine to take them at the same time as your sertraline and birth control. If you can't swallow them let us know and we can switch to a different form. See you on the 27th."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "outside_records",
+          "start": "2023-09-20T14:00",
+          "reason": "Prior primary care and psychiatry records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2011-05-10T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "outside primary care",
+              "date": "2023-09-20T14:00",
+              "body": "Records from prior primary care office, 2017 through 2023 (summary pages).\n\nProblem list: Major depressive disorder. Bulimia nervosa, history of. Recurrent urinary tract infections.\nMedications: Sertraline 100 mg daily. Ethinyl estradiol 0.035 mg / norethindrone 1 mg, 1 tablet daily.\nAllergies: NKDA.\n\nHealth maintenance: HPV vaccine series completed in adolescence. Tdap 05/2011. Cervical cytology 2020: negative for intraepithelial lesion or malignancy.\nUrine cultures 2019-2022: several, each growing E. coli, treated as uncomplicated cystitis.\n\nLast office note (02/2023): mood 'up and down,' continues sertraline, sees therapist. Referred to psychiatry for diagnostic evaluation."
+            },
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Consultation",
+              "author": "psychiatry",
+              "date": "2023-09-20T14:00",
+              "body": "Outpatient Psychiatry - Consultation\nDate of service: 06/16/2023\nReason for referral: diagnostic evaluation, longstanding interpersonal and mood difficulties.\n\nMs. Labrie is a 24-year-old woman whose close relationships swing between seeing a partner or friend as perfect and then as worthless. She lives with a constant dread of being left and describes hurting herself, mostly by cutting, when distress peaks. She feels empty most of the time and has bursts of anger she struggles to rein in. She has been in weekly psychotherapy for roughly a year and feels it has changed little.\n\nPsychiatric/medical history: major depressive disorder; bulimia nervosa; recurrent UTIs.\nMedications: sertraline 100 mg daily; combined oral contraceptive daily.\nAllergies: NKDA.\nFamily history: maternal depression; paternal substance use disorder; maternal uncle completed suicide.\nSubstances: denies.\n\nExamination: physical and mental status examination unremarkable apart from the history above.\n\nImpression: Borderline personality disorder. Major depressive disorder.\n\nRecommendations: continue sertraline 100 mg daily. Continue psychotherapy. Return to this clinic as needed; will see her for follow-up.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "office_visit",
+          "start": "2023-09-27T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up low potassium",
+          "state": {
+            "labs": {
+              "Potassium": 3.6,
+              "Bicarbonate": 29,
+              "Chloride": 97
+            },
+            "bp": [
+              114,
+              72
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-27T15:10",
+              "resulted": "2023-09-27T17:45",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.6
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 29
+                },
+                {
+                  "test": "Chloride",
+                  "value": 97
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-27T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ed-program-referral",
+              "action": "placed",
+              "order": "Eating disorder program referral",
+              "category": "referral",
+              "to": "Outpatient eating disorder program",
+              "reason": "Surreptitious vomiting, bulimia history"
+            },
+            {
+              "id": "ed-program-referral",
+              "action": "cancelled",
+              "date": "2023-09-27T15:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-09-27T15:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-27T15:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-27T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-09-27T16:10",
+              "body": "F/u K. Taking KCl twice a day, no GI upset. Palpitations less often, maybe twice this week. Still tired.\n\nWent over last labs again in person and why the urine chloride matters. I told her I wasn't judging her and that the numbers only make sense one way. She got quiet, said she 'doesn't do that anymore,' and changed the subject. Offered a referral to an outpatient eating disorder program, which she declined; she'd rather bring it up with her therapist. Told her the door stays open.\n\nOld records came in, including the psychiatry consult from June; matches what she told me.\n\nExam: well appearing, thin. Vitals as charted. Heart regular.\nRepeat BMP drawn.\nFlu shot today.\n\nA/P\n- Hypokalemia from purging: continue KCl 20 BID, BMP again in 4 weeks.\n- Depression/BPD: stable for her, continue sertraline and therapy.\n- Eating disorder referral declined (cancelled order)."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP Result",
+              "author": "PCP",
+              "date": "2023-09-28T08:15",
+              "body": "K 3.6, bicarb 29, Cl 97. Better. Stay on KCl and recheck late October."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "portal_message",
+          "start": "2023-10-17T19:30",
+          "reason": "Vaccine update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-14T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid shot",
+              "author": "patient",
+              "date": "2023-10-17T19:30",
+              "body": "FYI I got the new covid vaccine at the pharmacy on Saturday the 14th, pfizer. Not sure if you need that for my chart."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid shot",
+              "author": "MA",
+              "date": "2023-10-18T09:12",
+              "body": "Thanks Sophia, added it to your record."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-25a",
+          "kind": "lab_only",
+          "start": "2023-10-25T08:10",
+          "reason": "Repeat potassium",
+          "state": {
+            "labs": {
+              "Potassium": 4.1,
+              "Bicarbonate": 26,
+              "Chloride": 101
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-25T08:10",
+              "resulted": "2023-10-25T13:20",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-25T08:10"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "portal_message",
+          "start": "2023-10-26T07:55",
+          "reason": "Lab result and potassium plan",
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "Potassium normal"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP Result",
+              "author": "PCP",
+              "date": "2023-10-26T07:55",
+              "body": "Hi Sophia - potassium 4.1 and bicarbonate 26, both normal now. You can stop the potassium tablets. If the weakness or fluttering comes back, let me know and we'll recheck. I'd like to see you in December either way."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BMP Result",
+              "author": "patient",
+              "date": "2023-10-26T12:40",
+              "body": "ok thank you!!"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "pharmacy",
+          "start": "2023-11-20T10:15",
+          "reason": "Refill request sertraline",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline Refill",
+              "author": "MA",
+              "date": "2023-11-20T10:15",
+              "body": "Pharmacy fax: sertraline 100 mg #90 requested, last fill under prior PCP. Pended to PCP.\n\nPCP: approved #90 with 1 refill. Seen 9/27."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-21a",
+          "kind": "ed_visit",
+          "start": "2023-12-21T22:40",
+          "end": "2023-12-22T03:15",
+          "service": "Emergency Medicine",
+          "reason": "Self-inflicted laceration left forearm",
+          "vitals": [
+            {
+              "time": "2023-12-21T22:45",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 96,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-21T23:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-21T23:20",
+              "results": [
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-21T23:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-12-22T00:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2023-12-21T22:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2023-12-22T09:30",
+              "body": "Emergency department, community hospital\nSeen 12/21/2023 at 22:40\n\nHPI: 24 y/o F, seen earlier this year by her PCP for weakness/palpitations and by psychiatry for relationship difficulties, presents with a superficial cut to the L forearm. She says she cut herself during a fight with her boyfriend tonight; it was 'the only thing that made the feeling stop.' Denies wanting to die, denies SI now. Says this has happened before, usually after a conflict with someone close. Describes stretches of intense anger when she has thrown and broken things and yelled at people she loves. Under extreme stress she sometimes hears voices briefly; they go away on their own. Relationships described as intense and up and down.\n\nPMH: borderline personality disorder, MDD, bulimia nervosa, recurrent UTI, surreptitious vomiting (per PCP records).\nMeds: sertraline 100 mg daily; ethinyl estradiol/norethindrone daily.\nAllergies: NKDA.\nFH: mother MDD, father substance use disorder, maternal uncle suicide.\n\nExam: VS as recorded. Anxious, mood shifts during interview, cooperative. L volar forearm: superficial linear laceration, edges well approximated, no tendon involvement, neurovascularly intact. Multiple older healed scars on both forearms.\n\nLabs: CBC, CMP, TSH and free T4 within normal limits. Urine toxicology screen negative.\n\nED course: wound irrigated and closed with tissue adhesive. Last tetanus 2011, Tdap given. Seen by ED behavioral health; no SI, future oriented, has a therapist; safe for discharge with outpatient follow-up.\n\nDx: Superficial laceration of left forearm, self-inflicted. Borderline personality disorder.\nDisposition: home with roommate. Follow up PCP and therapist this week. Return for signs of infection or any thoughts of suicide."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-28a",
+          "kind": "office_visit",
+          "start": "2023-12-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, forearm laceration",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 15
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "author": "PCP",
+              "date": "2023-12-28T12:05",
+              "body": "S: Here after the ED visit on the 21st for a self-inflicted cut to the L forearm after a fight with her boyfriend. Wound glued, tetanus updated there. She is embarrassed about it. Still with the boyfriend, says things are 'fine right now.' Has seen her therapist once since. No SI, no intent or plan; she named two friends and her therapist as people she'd reach out to. Tells me about the voices she sometimes hears under stress, brief, none this week. Eating 'ok.' Denies vomiting.\n\nO: Vitals as charted, weight stable. L forearm laceration healing, glue mostly off, no erythema or drainage. Older scars noted.\nPHQ-9 15.\n\nA/P\n- Self-harm, BPD: wrote out a safety plan together today, copy given. She'll ask her therapist about a more skills-based approach. Crisis line numbers reviewed.\n- MDD: continue sertraline 100.\n- Wound: healing well, nothing to do.\nRTC 2-3 months for physical, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "portal_message",
+          "start": "2024-01-16T13:22",
+          "reason": "Release of information for therapist",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "therapist",
+              "author": "patient",
+              "date": "2024-01-16T13:22",
+              "body": "My therapist asked if she can get a copy of my last visit with you and the ER paperwork. Do I need to sign something?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: therapist",
+              "author": "front desk",
+              "date": "2024-01-16T15:05",
+              "body": "Hi Sophia, yes - I've sent a release form to your portal. Once it's signed we'll fax the records over. Thank you!"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records Released",
+              "author": "front desk",
+              "date": "2024-01-18T10:30",
+              "body": "Signed authorization received. 12/28/23 office note and 12/21/23 ED record faxed to patient's outpatient therapist."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "annual_physical",
+          "start": "2024-03-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-14T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-14T09:15",
+              "results": [
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-14T09:15",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-14T09:05",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 12
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-03-14T09:05",
+              "issued": "2024-03-18T12:00",
+              "text": "Specimen: cervical, liquid-based. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-03-14T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-14T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-03-14T10:20",
+              "body": "Annual exam, 24F.\n\nInterval: no ED visits since December. Still in weekly therapy. Mood 'so-so most days.' No self-harm since December by her report. Denies purging; says she eats three meals 'mostly.' No palpitations since the fall. Periods regular on the pill. Sexually active with one male partner.\nMeds: sertraline 100 daily, OCP daily. NKDA.\n\nExam: well appearing, thin, weight stable. Vitals as charted, BP normal. HEENT unremarkable. Neck supple, no adenopathy. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender. Pelvic: normal external genitalia, vagina and cervix normal, Pap obtained with GC/CT swab. Skin: forearm scars, all healed. Neuro nonfocal. Affect constricted but appropriate.\nPHQ-9 12, item 9 zero. No SI.\n\nA/P\n- Health maintenance: Pap today (last 2020). HIV and hep C screening once - both sent. GC/CT. Tdap done in the ED Dec 2023. Flu and COVID done this season. HPV complete.\n- Purging history: CMP to check K.\n- Depression/BPD: continue sertraline and therapy; safety plan still on her phone.\n- Contraception: continue, BP fine.\nRTC 3 months or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-18a",
+          "kind": "portal_message",
+          "start": "2024-03-18T16:40",
+          "reason": "Physical results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual Labs and Pap",
+              "author": "PCP",
+              "date": "2024-03-18T16:40",
+              "body": "Hi Sophia, all of your results from the physical are normal: blood counts, kidney and liver tests, and potassium. HIV and hepatitis C negative. Gonorrhea/chlamydia negative. Your Pap is normal, so the next one is due in 3 years (2027). Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-22a",
+          "kind": "pharmacy",
+          "start": "2024-04-22T09:40",
+          "reason": "Refill oral contraceptive",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Oral Contraceptive Refill",
+              "author": "MA",
+              "date": "2024-04-22T09:40",
+              "body": "Electronic refill request: ethinyl estradiol 0.035 mg / norethindrone 1 mg, 3 packs. BP 3/14 normal. Sent to PCP.\nPCP: approved, 3 packs x 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-13a",
+          "kind": "ed_visit",
+          "start": "2024-06-13T23:05",
+          "end": "2024-06-14T14:30",
+          "service": "Emergency Medicine",
+          "reason": "Self-inflicted forearm lacerations",
+          "vitals": [
+            {
+              "time": "2024-06-13T23:10",
+              "bp": [
+                120,
+                75
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 99
+            },
+            {
+              "time": "2024-06-14T08:00",
+              "bp": [
+                116,
+                72
+              ],
+              "hr": 74,
+              "rr": 14,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-06-13T23:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-06-17T11:00",
+              "body": "Emergency Department - Physician Record\nArrival 06/13/2024 23:05. Departure 06/14/2024 14:30.\n\nBrought in by her roommate after cutting both forearms tonight. Last seen here about six months ago for a similar cut. She talks about feeling hollow and being terrified people will leave her; her relationships are stormy. She has had several ED visits in the past for self-harm and for suicidal thoughts. She has never made a suicide attempt.\n\nPMH: borderline personality disorder, MDD, bulimia nervosa, recurrent UTI.\nMeds: sertraline 100 mg daily, ethinyl estradiol/norethindrone daily.\nAllergies: NKDA. Never smoker, no alcohol, works part time as an admin assistant.\n\nVS on arrival: T 37.0, BP 120/75, HR 80, RR 16.\nExam: several superficial lacerations across both forearms, none gaping, no deep structure involvement, distal neurovascular exam intact. Otherwise normal.\n\nCourse: wounds irrigated and dressed; none needed closure. Held overnight in the department for psychiatric evaluation. Over the night she told some nurses they were the only people who understood her and accused others of trying to hurt her; staff noted the split and kept consistent messaging. Psychiatry evaluated in the morning: no current suicidal intent, chronic self-harm in setting of BPD, does not meet inpatient criteria.\n\nDisposition: discharged 06/14 to home. Outpatient psychiatry and therapist follow-up; PCP within a week. Wound care instructions given."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "office_visit",
+          "start": "2024-06-19T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 16
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-19T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-06-19T15:30",
+              "body": "Seen after overnight ED stay 6/13-14 for cutting both forearms. Roommate brought her in. She says it followed a blowup with someone close to her. Feels empty, sleeping a lot. No SI today; no intent or plan; agreed to call her therapist or the crisis line if that changes. Psychiatry appt next month.\n\nExam: tired appearing. Forearms with healing superficial cuts, clean, no signs of infection. Weight unchanged.\nPHQ-9 16.\n\nPlan: wound care reviewed. Continue sertraline 100. Reviewed safety plan, updated contacts. I'll send today's note to psychiatry with her OK. Back in 2 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "outside_records",
+          "start": "2024-07-23T11:15",
+          "reason": "Psychiatry follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "author": "psychiatry",
+              "date": "2024-07-23T11:15",
+              "body": "Dear colleague,\n\nI saw Ms. Labrie in follow-up on 07/18/2024, about a month after her ED visit for forearm cutting. She remains in individual psychotherapy. Mood low, sleep long, no current suicidal thoughts. Diagnoses unchanged: borderline personality disorder and major depressive disorder. I have kept sertraline at 100 mg daily and made no other medication changes. Follow-up here in about 3 months.\n\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "office_visit",
+          "start": "2024-08-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up mood",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T09:05",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed you yesterday",
+              "author": "front desk",
+              "date": "2024-08-22T09:05",
+              "body": "Hi Sophia, we missed you at your 10:00 appointment yesterday. Please reply or call to reschedule. If you're having a hard time, you can message the doctor directly here."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed you yesterday",
+              "author": "patient",
+              "date": "2024-08-22T18:47",
+              "body": "sorry I totally forgot, work changed my hours. I'm ok. can I just come in for the flu shot in october and see her then"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed you yesterday",
+              "author": "PCP",
+              "date": "2024-08-23T07:30",
+              "body": "Glad you're ok. Yes - flu shots start the first week of October, the nurse can do it. Let's still do a visit before the end of the year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T16:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu Vaccine",
+              "author": "RN",
+              "date": "2024-10-08T16:45",
+              "body": "Here for seasonal flu vaccine. Afebrile, feeling well, no prior vaccine reactions. VIS given. Influenza trivalent 0.5 mL IM L deltoid, lot recorded. Tolerated, waited 15 min without issue. She plans to get her COVID shot at the pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "portal_message",
+          "start": "2024-10-29T20:10",
+          "reason": "COVID vaccine update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-26T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "vaccine",
+              "author": "patient",
+              "date": "2024-10-29T20:10",
+              "body": "got the 2024 covid vaccine at the pharmacy saturday (moderna). arm hurt for a day"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: vaccine",
+              "author": "MA",
+              "date": "2024-10-30T08:40",
+              "body": "Got it, thanks - it's in your chart now."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "telephone",
+          "start": "2024-11-12T08:45",
+          "reason": "Urinary symptoms",
+          "medications": [
+            {
+              "drug": "nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 5 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Urinary tract infection"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-11-12T11:30",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "11-20"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-12T11:30",
+              "resulted": "2024-11-14T10:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Escherichia coli >100,000 CFU/mL. Susceptible to nitrofurantoin."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse Triage",
+              "author": "RN",
+              "date": "2024-11-12T08:55",
+              "body": "Pt calling with burning with urination and frequency since yesterday. Feels like her usual bladder infections. No fever, no back or flank pain, no vaginal discharge, no blood seen. Not pregnant per pt, on OCP. Will drop off urine this morning. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Note",
+              "author": "PCP",
+              "date": "2024-11-12T12:10",
+              "body": "UA + LE and nitrite. Typical cystitis in a woman with recurrent E. coli UTIs, no red flags. Nitrofurantoin 100 BID x5 days sent. Culture pending. Call if fever, flank pain or not better in 48 h."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "portal_message",
+          "start": "2024-11-14T13:30",
+          "reason": "Urine culture result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Urine Culture",
+              "author": "PCP",
+              "date": "2024-11-14T13:30",
+              "body": "Your urine culture grew E. coli, which the nitrofurantoin covers. Please finish all 5 days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Urine Culture",
+              "author": "patient",
+              "date": "2024-11-14T17:02",
+              "body": "already feeling better, thanks"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

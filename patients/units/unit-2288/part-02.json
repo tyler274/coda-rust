@@ -1,0 +1,247 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002288",
+      "events": [
+        {
+          "id": "2021-02-09a",
+          "kind": "nurse_visit",
+          "start": "2021-02-09T13:30",
+          "reason": "COVID-19 vaccine dose 1",
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-02-09T13:35"}],
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-09T13:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "COVID-19 vaccine #1", "author": "RN", "date": "2021-02-09T13:55", "body": "Dose 1 of Pfizer COVID vaccine, 0.3 mL IM R deltoid. Wife received hers at the same clinic hour. Waited 15 min, no reaction. Card filled out; dose 2 booked 3/2."}
+          ]
+        },
+        {
+          "id": "2021-03-02a",
+          "kind": "nurse_visit",
+          "start": "2021-03-02T13:30",
+          "reason": "COVID-19 vaccine dose 2",
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-03-02T13:35"}],
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-02T13:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "COVID-19 vaccine #2", "author": "RN", "date": "2021-03-02T13:52", "body": "Second Pfizer dose IM L deltoid. Tolerated. Primary series done; card updated."}
+          ]
+        },
+        {
+          "id": "2021-04-13a",
+          "kind": "office_visit",
+          "start": "2021-04-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Trouble swallowing",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-04-13T11:00"}],
+          "orders": [{"id": "gi-referral", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "Dysphagia to solids and liquids"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Dysphagia", "author": "PCP", "date": "2021-04-13T11:35", "body": "Since around February, food and also drinks seem to hang up low behind the breastbone a few seconds after he swallows. Gets worse slowly. Sometimes has to bring a bite back up, and it comes up looking like he just ate it. Takes his pills with a lot of water now. No heartburn, no pain with swallowing, no chest pain. Weight steady by our scale and his.\nWife wondered if it's the Parkinson's; no coughing or choking with drinks, and the hold-up is low in the chest, not in the throat.\nExam: weight as recorded, unchanged. Oropharynx normal. Neck supple, no mass. Abdomen soft, nontender. Tremor unchanged.\nA/P: Esophageal dysphagia to both solids and liquids, progressive. Needs GI evaluation and probably a barium study and scope. Referred to gastroenterology, asked for the next available. Small soft bites, upright after meals in the meantime. Call if he can't get liquids down."}
+          ]
+        },
+        {
+          "id": "2021-06-01a",
+          "kind": "portal_message",
+          "start": "2021-06-01T19:42",
+          "documents": [
+            {"type": "Patient Message", "title": "GI appointment", "author": "patient", "date": "2021-06-01T19:42", "body": "Hello, I saw the GI doctor last Tuesday and they did the barium x-ray the same day. She thinks the valve at the bottom of my esophagus is not opening the way it should. I am having a scope and a pressure test next. Just keeping your office informed. Ron Hickey"},
+            {"type": "Patient Message", "title": "RE: GI appointment", "author": "PCP", "date": "2021-06-02T08:15", "body": "Thanks for the update, Ron. That sounds like a sensible plan; the tests will sort out what's going on. I'll watch for their letter. Let me know if you're having trouble keeping fluids down."}
+          ]
+        },
+        {
+          "id": "2021-06-29a",
+          "kind": "portal_message",
+          "start": "2021-06-29T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Test results", "author": "patient", "date": "2021-06-29T16:05", "body": "Scope and pressure study done on the 22nd. They said nothing is blocking it, it is the muscle not relaxing. They are going to stretch it with a balloon on July 20. Do I stop the aspirin? -Ron"},
+            {"type": "Patient Message", "title": "RE: Test results", "author": "RN", "date": "2021-06-30T09:40", "body": "Hi Ron, the GI office that does the procedure gives the instructions on aspirin. Please call them to confirm. We still haven't received their consult letter; we've requested it again."}
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "outside_records",
+          "start": "2021-07-13T15:20",
+          "reason": "Gastroenterology consult letter received",
+          "conditions": [{"label": "Achalasia", "action": "diagnosed", "onset": "2021-02-01"}],
+          "orders": [{"id": "gi-referral", "action": "done", "date": "2021-07-13T15:20"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Consultation (05/25/2021)", "author": "gastroenterology", "date": "2021-07-13T15:20", "body": "GASTROENTEROLOGY CONSULTATION\nDate of service: 05/25/2021\nReferred by: primary care\n\nReason: dysphagia\n\nHPI: 67-year-old man with Parkinson disease and coronary artery disease, three months of gradually worsening dysphagia. Both solids and liquids feel delayed at the level of the lower sternum shortly after eating. Intermittent regurgitation of undigested food. Denies weight loss, chest pain and heartburn. No prior upper endoscopy, dilation or foregut surgery.\n\nMedications: carbidopa/levodopa 25/100 mg TID; pramipexole 1.5 mg daily; atorvastatin 20 mg daily; aspirin 81 mg daily.\nAllergies: NKDA.\nFamily history: father with MI at 63; mother with Alzheimer disease; brother with hypertension.\nSocial: never smoker, no alcohol.\n\nExam: unremarkable. Abdomen soft, nontender, no masses.\n\nBarium esophagram (performed today): the esophagus is dilated, with smooth symmetric tapering to a narrow \"bird's beak\" at the gastroesophageal junction and slow passage of contrast into the stomach. No mucosal irregularity or mass.\n\nImpression: findings are typical of achalasia.\n\nPlan: upper endoscopy to exclude a lesion at the gastroesophageal junction, then high-resolution esophageal manometry. We will discuss treatment options (pneumatic dilation, myotomy) once those are back.\n\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2021-08-24a",
+          "kind": "office_visit",
+          "start": "2021-08-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after esophageal dilation",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-08-24T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2021-08-24T10:25", "body": "Had the balloon dilation 7/20 at the GI center, went home the same afternoon. Swallowing is much better: eating normal meals, rare sticking with dry bread, no regurgitation since. We never got the scope, manometry or dilation reports; he tells me the scope showed no blockage, the pressure test confirmed achalasia. Will request those.\nWeight stable. Tremor unchanged; neurology visit in the fall.\nExam: no distress, heart regular, lungs clear, abdomen benign.\nA/P: Achalasia s/p pneumatic dilation with good response. GI follows. Otherwise stable. Flu shot next month."}
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "nurse_visit",
+          "start": "2021-09-28T14:00",
+          "reason": "Flu and COVID booster",
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-09-28T14:05"}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-09-28T14:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-09-28T14:08"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2021-09-28T14:25", "body": "High-dose flu R deltoid, Pfizer booster L deltoid. Eligible by age. No reaction during wait. Mentioned he gets winded on the stairs lately and his socks leave marks; advised to book with PCP, appointment made for 10/19."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "office_visit",
+          "start": "2021-10-19T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shortness of breath on exertion, ankle swelling",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "rr"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-10-19T10:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-10-19T10:10", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-10-19T09:30"}],
+          "orders": [{"id": "cards-referral-2021", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "Progressive exertional dyspnea and bilateral leg edema"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Dyspnea and Edema", "author": "PCP", "date": "2021-10-19T10:15", "body": "About 5 months now of getting out of breath sooner, first noticed carrying mulch in May; now one flight of stairs makes him stop. Both ankles swell by evening, better overnight. No chest pain or pressure. Sleeps flat on one pillow. No cough. Swallowing still fine.\nExam: BP, HR, SpO2 as recorded. Neck veins not well seen. Heart regular. Lungs clear. 1+ pitting edema both ankles to lower shin.\nA/P: Progressive exertional dyspnea with bilateral edema in a man with known CAD. Needs cardiology evaluation including echo; referral sent marked soon. BMP and CBC today. Low-salt reminders. Go to the ED for chest pain or breathlessness at rest."}
+          ]
+        },
+        {
+          "id": "2021-10-20a",
+          "kind": "portal_message",
+          "start": "2021-10-20T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2021-10-20T12:10", "body": "Ron, yesterday's blood count and kidney tests are normal. Cardiology has your referral; their office will call you this week to schedule."}
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "outside_records",
+          "start": "2021-11-30T11:45",
+          "reason": "Cardiology consult letter received",
+          "state": {"labs": {"Creatinine": 1.2, "Albumin": 3.2, "Total Cholesterol": 210}},
+          "vitals": [{"time": "2021-11-24T10:00", "bp": [130, 85], "hr": 92}],
+          "medications": [
+            {"drug": "furosemide 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth once daily in the morning", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Leg edema, suspected cardiac amyloidosis"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2021-11-24T11:30", "results": [
+              {"test": "Creatinine", "value": 1.2},
+              {"test": "Albumin", "value": 3.2},
+              {"test": "Total Cholesterol", "value": 210},
+              {"test": "B-type natriuretic peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 900}
+            ]},
+            {"panel": "Urinalysis", "collected": "2021-11-24T11:30", "results": [{"test": "Urine Protein", "text": "3+"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2021-11-24T10:30", "text": "Left ventricle normal in cavity size with increased wall thickness throughout. Myocardium has a speckled, granular appearance. Left ventricular systolic function preserved. Valves structurally unremarkable without significant regurgitation or stenosis. No pericardial effusion.", "conclusion": "Increased LV wall thickness with normal cavity size, preserved ejection fraction and speckled myocardium; pattern raises concern for infiltrative cardiomyopathy such as amyloidosis."},
+            {"study": "12-lead ECG", "performed": "2021-11-24T10:05", "text": "Sinus rhythm at 92. Low-voltage QRS complexes in the limb and precordial leads. Diffuse nonspecific ST-T wave abnormalities.", "conclusion": "Low voltage with diffuse nonspecific ST-T changes."}
+          ],
+          "orders": [{"id": "cards-referral-2021", "action": "done", "date": "2021-11-30T11:45"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Consultation (11/24/2021)", "author": "cardiology", "date": "2021-11-30T11:45", "body": "Cardiology consultation, 11/24/2021\n\nThank you for referring Mr. Hickey, 68, with Parkinson disease, coronary artery disease on medical therapy, and achalasia treated with dilation this summer. He describes six months of steadily worsening breathlessness on exertion and swelling in both legs. Prior bilateral carpal tunnel syndrome, released.\n\nMedications: carbidopa/levodopa 25/100 TID, pramipexole 1.5 mg daily, atorvastatin 20 mg, aspirin 81 mg. NKDA. Never smoker, no alcohol. Father MI at 63.\n\nExam: BP 130/85, HR 92. JVP elevated. S3 present, no murmurs. Lungs clear. Bilateral lower extremity edema.\n\nData: creatinine 1.2, BNP 900 pg/mL, urinalysis 3+ protein without blood or casts, albumin 3.2, total cholesterol 210. Echo and ECG as reported separately: thick walls with a normal-sized cavity, preserved EF, speckled myocardium; low QRS voltage with nonspecific ST-T changes.\n\nAssessment: the mismatch between thick walls on echo and low voltage on ECG, with his carpal tunnel history, strongly suggests cardiac amyloidosis.\n\nPlan:\n1. Furosemide 20 mg each morning for the edema.\n2. Technetium pyrophosphate scan; serum and urine immunofixation and serum free light chains to exclude light-chain disease.\n3. If transthyretin type, TTR gene testing.\n4. Return after testing.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2022-01-25a",
+          "kind": "telephone",
+          "start": "2022-01-25T15:30",
+          "reason": "Patient reports cardiology diagnosis",
+          "conditions": [{"label": "Cardiac amyloidosis, transthyretin wild-type", "icd10": "E85.82", "action": "diagnosed", "onset": "2021-11-24", "note": "Per cardiology; PYP scan positive, no monoclonal protein, no TTR variant"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from patient", "author": "RN", "date": "2022-01-25T15:30", "body": "Pt called to let us know cardiology saw him on the 18th: the heart scan and blood tests show transthyretin amyloid, the age-related (wild-type) form, genetic test negative. They are starting tafamidis once insurance approves; specialty pharmacy will be in touch. Swelling better on the water pill. We have not received the letter; request faxed to cardiology. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "PCP addendum", "author": "PCP", "date": "2022-01-25T17:05", "body": "Added wild-type ATTR cardiac amyloidosis to problem list per patient's report of cardiology's findings. Will reconcile when letter arrives."}
+          ]
+        },
+        {
+          "id": "2022-02-10a",
+          "kind": "pharmacy",
+          "start": "2022-02-10T10:50",
+          "medications": [
+            {"drug_text": "tafamidis 61 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth once daily", "dose": {"value": 61, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Wild-type transthyretin cardiac amyloidosis"}
+          ],
+          "documents": [
+            {"type": "Pharmacy Communication", "title": "Specialty pharmacy notification", "author": "MA", "date": "2022-02-10T10:50", "body": "Specialty pharmacy faxed a therapy-start notice: tafamidis 61 mg capsule once daily, prescribed by cardiology, first shipment delivered 2/8 after prior authorization approved. They requested a current med list for interaction review; faxed back. Added to med list as outside-prescribed."}
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "office_visit",
+          "start": "2022-03-22T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "state": {"labs": {"Albumin": 3.5}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-03-22T11:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-22T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-03-22T11:10", "body": "First visit since the amyloid diagnosis. Six weeks on tafamidis, no side effects. Furosemide each morning; ankles now only puffy late in the day. Still winded on hills but stairs are better. No chest pain. Swallowing fine.\nWife asked a lot about what the diagnosis means; we went over that this type is age-related, not inherited, so no testing needed for family per cardiology.\nExam: weight as recorded, down a little from fall. JVP not elevated sitting. Heart regular. Lungs clear. Trace ankle edema.\nA/P\n1. ATTR-wt cardiac amyloidosis: cardiology managing; on tafamidis and furosemide. CMP today for kidney function and potassium on the diuretic.\n2. Achalasia: doing well after dilation.\n3. PD: stable, neurology follows.\n4. CAD: no angina.\nStill missing the January cardiology letter; second request today."}
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "outside_records",
+          "start": "2022-04-12T09:20",
+          "reason": "Cardiology letter and amyloid testing received",
+          "labs": [
+            {"panel": null, "collected": "2021-12-14T09:00", "results": [{"test": "Monoclonal Protein Spike", "text": "None detected; serum and urine immunofixation negative"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up (01/18/2022)", "author": "cardiology", "date": "2022-04-12T09:20", "body": "Cardiology follow-up, 01/18/2022\n\nTesting since his November visit:\n- Tc-99m pyrophosphate scan (12/14/2021): intense myocardial tracer uptake, heart-to-contralateral lung ratio 1.8.\n- Serum and urine immunofixation: no monoclonal protein. Serum free light chain ratio 1.3, normal.\n- TTR gene sequencing: no pathogenic variant.\n\nDiagnosis: transthyretin cardiac amyloidosis, wild-type.\n\nHe reports less leg swelling on furosemide 20 mg. Exam: JVP lower, trace edema.\n\nPlan: tafamidis 61 mg daily; prior authorization submitted. Continue furosemide 20 mg daily. Labs with primary care. Return in a year, sooner for weight gain or worsening breathlessness.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "annual_physical",
+          "start": "2022-09-27T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-09-27T09:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-27T09:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-27T09:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2022-09-27T09:00"}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-09-27T09:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-09-27T09:38"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2022-09-27T09:55", "body": "AWV. Wife present.\nADLs independent. Gave up night driving. No falls. Timed up and go 13 s.\nMini-Cog 5/5. PHQ-2 1.\nMeds: carbidopa/levodopa TID, pramipexole ER 1.5, tafamidis 61, furosemide 20, atorvastatin 20, aspirin 81.\nExam: hypomimia, soft voice, R rest tremor, bradykinetic finger taps. Heart regular. Lungs clear. Trace ankle edema.\nPrevention: flu high-dose and bivalent COVID booster today. Colonoscopy due 2027. Shingrix complete. Pneumococcal done.\nNeurology says he can come in sooner than his usual spring visit if things get stiffer; he thinks he's slower in the mornings. He'll call them.\nLabs today. Return 6 months."}
+          ]
+        },
+        {
+          "id": "2022-12-01a",
+          "kind": "pharmacy",
+          "start": "2022-12-01T09:35",
+          "medications": [
+            {"drug_text": "entacapone 200 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth with each carbidopa/levodopa dose (three times daily)", "dose": {"value": 200, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "Parkinson disease"}
+          ],
+          "documents": [
+            {"type": "Pharmacy Communication", "title": "New outside prescription noted", "author": "MA", "date": "2022-12-01T09:35", "body": "Mail-order pharmacy faxed an interaction notice for a new prescription from neurology: entacapone 200 mg with each carbidopa/levodopa dose. No neurology note on file yet. Added to med list as outside med; records request sent to neurology."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "outside_records",
+          "start": "2022-12-13T14:00",
+          "reason": "Neurology note received",
+          "conditions": [{"label": "Mood disorder due to known physiological condition", "icd10": "F06.30", "action": "diagnosed", "onset": "2022-11-29", "note": "Per neurology, related to Parkinson disease"}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-11-29T10:30", "results": [{"test": "Sodium"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2022-11-29T10:30", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Follow-up (11/29/2022)", "author": "neurology", "date": "2022-12-13T14:00", "body": "Movement disorders follow-up, 11/29/2022\n\nMr. Hickey, 69, with Parkinson disease since 2016, plus achalasia and ATTR cardiac amyloidosis, returns with his wife. She says he hesitates when starting to move and looks stiff, most in the early morning and again late in the day. He did well on his regimen for years, but the benefit has leveled off and the slowness now limits him. He takes his carbidopa/levodopa faithfully.\n\nROS: appetite good. Sleeps through most nights. No weakness, no memory complaints. Independent in basic self-care.\n\nCurrent: carbidopa/levodopa 25/100 TID, pramipexole 1.5 mg daily, plus his cardiac medications.\n\nExam: vitals normal. Finger tapping slowed bilaterally, R more than L. Hypophonic. Reduced right arm swing on gait. Affect subdued, cooperative throughout.\n\nLabs: TSH and basic metabolic panel normal.\n\nImpression:\n1. Parkinson disease, benefit of current regimen has plateaued.\n2. Mood disorder related to his Parkinson disease; subdued affect noted today, no safety concerns.\n\nPlan: add entacapone 200 mg with each levodopa dose to strengthen the levodopa response. Ask primary care to screen mood at visits. Return in 6 months.\n\nNeurology"}
+          ]
+        }
+      ]
+    }
+  ]
+}

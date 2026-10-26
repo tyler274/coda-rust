@@ -1,0 +1,3221 @@
+{
+  "unit": "unit-1684",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal multivitamin with iron Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001684",
+      "given": "Gladys",
+      "family": "Perez",
+      "birth_date": "1992-01-15",
+      "address_line": "112 Hancock Street, Apt 2",
+      "phone": "+1-860-555-0193",
+      "email": "gladys.perez@example.test",
+      "marital_status": "married",
+      "summary": "34-year-old retail store manager with iron deficiency anemia on oral iron and obesity, two prior cesareans before joining in 2021. Three pregnancies under the practice each ended in uterine rupture at term at an outside hospital (2023, 2024, 2026); the third required cesarean hysterectomy and transfusion. Now recovering with improving hemoglobin.",
+      "events": [
+        {
+          "id": "2021-08-31a",
+          "kind": "telephone",
+          "start": "2021-08-31T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2021-08-31T10:20",
+              "author": "front desk",
+              "body": "Caller is Gladys Perez, 29, wants to join the practice. Moved her care after her last doctor's office stopped taking her Medicaid plan. Had a baby in March by C-section, says she is doing fine, takes iron and vitamins. Asked if we can see her in the evening because she works at the store until 6 most days. Offered Tues 9/14 at 4:30, she took it. Sent new patient packet and records release to her email. Reminded her to bring all pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T16:30",
+          "end": "2021-09-14T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "history",
+              "onset": "2018-12-01",
+              "note": "On oral iron since her first pregnancy"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "history",
+              "onset": "2017-01-01",
+              "note": "BMI 34"
+            },
+            {
+              "label": "History of uterine scar from previous surgery",
+              "action": "history",
+              "onset": "2019-04-01",
+              "note": "Low transverse cesarean section x2, 2019 and 2021",
+              "icd10": "Z98.891"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin with iron Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            },
+            {
+              "drug_text": "calcium carbonate 1500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (600 mg calcium) by mouth twice daily",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              67
+            ],
+            "hr": 75,
+            "rr": 18,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 87.5,
+            "height_cm": 159.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 80
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.25
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "Iron",
+                  "unit": "ug/dL",
+                  "value": 34
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "unit": "ug/dL",
+                  "value": 412
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "unit": "%",
+                  "value": 8
+                },
+                {
+                  "test": "Ferritin",
+                  "unit": "ng/mL",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.64
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "unit": "%",
+                  "value": 5.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 116
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T17:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retail store manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T16:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T12:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-11T12:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-2021",
+              "action": "placed",
+              "order": "Request records from prior primary care practice",
+              "category": "procedure",
+              "reason": "Establish care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T17:45",
+              "author": "PCP",
+              "body": "NEW PATIENT — establish care\n\n29F here to set up primary care. Last PCP was a family practice in town; leaving because of insurance. She is 6 months out from her second C-section (March 2021). Feels well. Main ongoing issue is anemia — told she was low on iron with her first pregnancy in 2019 and has been on iron ever since. Takes ferrous sulfate three times a day, a prenatal vitamin with iron, and calcium twice a day, all of which her OB started and she has kept going. No other complaints today.\n\nPMH: iron deficiency anemia; obesity.\nPSH: low transverse cesarean x2 — 2019 and March 2021. No other surgery.\nOB: two deliveries, both by cesarean, both term per pt.\nMeds: prenatal vitamin with iron 1 tab daily; ferrous sulfate 325 mg TID; calcium carbonate 600 mg BID.\nAllergies: SULFA drugs (reaction not recorded).\nFHx: mother needed a C-section for placenta previa. Maternal aunt had a uterine rupture during labor. No other family history she knows of.\nSHx: manages a retail store, long shifts on her feet. Married, lives in Springfield. Never smoked. No alcohol. No drugs.\nImmunizations: COVID Pfizer x2 this spring (April and May, at the pharmacy). Flu shot usually yearly.\n\nROS: no chest pain, no dyspnea, no palpitations, no abdominal pain. Neg otherwise per intake form.\n\nExam: vitals as recorded. Ht 159.5 cm, wt 87.5 kg, BMI 34.4.\nGen: pleasant, no distress.\nHEENT: conjunctivae slightly pale, oropharynx clear.\nNeck: supple, thyroid not enlarged.\nCV: regular, no murmur.\nLungs: clear.\nAbd: soft, nontender, healed low transverse incision.\nExt: warm, no edema.\nSkin: no rash.\nPsych: normal mood and affect.\n\nPHQ-2: 0.\n\nA/P\n1. Iron deficiency anemia on oral iron — CBC and iron studies today. Continue ferrous sulfate 325 TID for now.\n2. Obesity, BMI 34 — discussed in general terms, she is busy with two small kids and work; will revisit.\n3. Hx cesarean x2 — noted.\n4. Health maintenance — CMP, TSH, A1c, lipids. Offered one-time HIV and hep C screen, she agreed. Pap: says last one was 2019 and normal, will confirm with records. Flu shot next month when stock arrives.\n5. Records request to prior practice signed today.\n\nRTC 6 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.0,
+            "height_cm": 160.0,
+            "labs": {
+              "Hematocrit": 34.0,
+              "Hemoglobin": 11.1,
+              "Mean Corpuscular Volume": 78,
+              "Thyroid Stimulating Hormone": 1.6,
+              "Total Cholesterol": 172
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Results from new patient labs",
+              "date": "2021-09-16T08:40",
+              "author": "PCP",
+              "body": "Hi Gladys, your labs from Tuesday are in. Your blood count is still a little low (hemoglobin 11.3) and your iron stores are low (ferritin 10), which fits with having had a baby in March. Keep taking the iron three times a day with the vitamin. Kidney, liver, sugar, thyroid and cholesterol all look fine, and the HIV and hepatitis C tests are negative. We'll recheck the blood count in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "outside_records",
+          "start": "2021-09-28T13:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior practice records received",
+          "orders": [
+            {
+              "id": "records-2021",
+              "action": "done",
+              "date": "2021-09-28T13:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2021-09-28T13:05",
+              "author": "MA",
+              "body": "38 pages received by fax from prior family practice, scanned to media. Summary for PCP:\n- Problem list: iron deficiency anemia (noted during 2019 pregnancy), obesity.\n- Surgical: cesarean delivery 04/2019; repeat low transverse cesarean 03/2021 (operative notes not included, discharge summary from 2021 included — uncomplicated repeat cesarean).\n- Meds on file: prenatal vitamin with iron, ferrous sulfate 325 mg TID, calcium carbonate 600 mg BID.\n- Allergy: sulfa.\n- Pap smear 08/2019: negative for intraepithelial lesion or malignancy.\n- Last CBC 05/2021: hemoglobin low, on oral iron.\nNothing else of note. Records request closed."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-13a",
+          "kind": "nurse_visit",
+          "start": "2021-10-13T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-13T17:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-13T17:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2021-10-13T17:20",
+              "author": "RN",
+              "body": "Here after work for flu vaccine. Not breastfeeding per pt. No fever today, no prior vaccine reactions. Sulfa allergy noted, not relevant. Quadrivalent flu 0.5 mL IM R deltoid, VIS provided. Tolerated without issue, waited 15 min, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "pharmacy",
+          "start": "2021-12-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Ferrous sulfate refill",
+              "date": "2021-12-07T11:00",
+              "author": "MA",
+              "body": "Pharmacy fax: ferrous sulfate 325 mg tab, 1 TID, #90 x 5 refills requested — prior Rx was from outside prescriber. Pended for PCP.\n\nPCP: approved, sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "office_visit",
+          "start": "2022-03-08T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "date": "2022-03-08T17:05",
+              "author": "front desk",
+              "body": "Pt did not arrive for 4:30 appt. Called cell, left VM to reschedule. Text sent as well."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "office_visit",
+          "start": "2022-03-22T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia follow-up",
+          "vitals": {
+            "bp": [
+              132,
+              81
+            ],
+            "hr": 71,
+            "spo2": 99,
+            "weight_kg": 87.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-22T17:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 80
+                },
+                {
+                  "test": "Platelets",
+                  "value": 220
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-03-22T17:10",
+              "results": [
+                {
+                  "test": "Iron",
+                  "unit": "ug/dL",
+                  "value": 48
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "unit": "ug/dL",
+                  "value": 388
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "unit": "%",
+                  "value": 12
+                },
+                {
+                  "test": "Ferritin",
+                  "unit": "ng/mL",
+                  "value": 18
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-22T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2022-03-22T17:25",
+              "author": "PCP",
+              "body": "S: Back for anemia check, missed the slot two weeks ago because of inventory at work. Taking ferrous sulfate three times a day plus the prenatal and calcium. Energy okay. No bleeding issues she has noticed.\n\nO: Vitals reviewed. Wt 87.4 kg.\nNo pallor today. Heart regular, lungs clear. Abd soft.\n\nA/P: Iron deficiency anemia — repeat CBC and iron panel today, expect slow improvement. Continue current iron. Obesity — weight about the same, we talked about walking on her days off. Physical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.0,
+            "labs": {
+              "Hematocrit": 35.6,
+              "Hemoglobin": 11.7,
+              "Mean Corpuscular Volume": 80
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "portal_message",
+          "start": "2022-03-24T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count and iron",
+              "date": "2022-03-24T12:15",
+              "author": "PCP",
+              "body": "Gladys — hemoglobin is up to 12.4 from 11.3, which is in the normal range, and ferritin is 18, up from 10. Iron stores are still on the low side, so moving in the right direction but not done. Same iron dose, recheck at your physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood count and iron",
+              "date": "2022-03-24T19:48",
+              "author": "patient",
+              "body": "ok thank you!! will keep taking them"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "pharmacy",
+          "start": "2022-06-21T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prenatal vitamin coverage",
+              "date": "2022-06-21T09:30",
+              "author": "MA",
+              "body": "Pharmacy reports Medicaid plan now needs a prescription on file for the prenatal vitamin with iron to cover it (previously filled from old OB Rx, expired). Pended new Rx, 1 tab daily, #30 x 11 for PCP. PCP signed. Pharmacy notified, claim went through."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "annual_physical",
+          "start": "2022-10-18T16:00",
+          "end": "2022-10-18T16:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              74
+            ],
+            "hr": 81,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 89.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-18T16:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.39
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-10-18T16:45",
+              "results": [
+                {
+                  "test": "Iron",
+                  "unit": "ug/dL",
+                  "value": 55
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "unit": "ug/dL",
+                  "value": 372
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "unit": "%",
+                  "value": 15
+                },
+                {
+                  "test": "Ferritin",
+                  "unit": "ng/mL",
+                  "value": 21
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-18T16:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.62
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-18T16:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 112
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-18T16:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "unit": "%",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-10-18T16:30",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-18T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T16:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T16:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-18T17:20",
+              "author": "PCP",
+              "body": "ANNUAL PREVENTIVE VISIT\n\n30 y/o here for physical. Doing well. Still on ferrous sulfate TID, prenatal with iron, calcium BID. No new symptoms. Kids are 3 and 1 now, work is busy with the holiday season starting.\n\nMeds and allergies reviewed (sulfa). Never smoker, no alcohol.\n\nExam: Wt 89.1 kg. Well appearing.\nHEENT normal. Neck supple, no thyroid enlargement.\nHeart: RRR, no murmur. Lungs: clear bilat.\nBreasts: deferred per pt preference, no concerns.\nAbd: soft, nontender, well-healed Pfannenstiel scar.\nPelvic: normal external genitalia, cervix normal appearing, Pap/HPV collected.\nExt: no edema.\n\nPHQ-2: 1.\n\nA/P\n- Preventive: Pap with HPV co-test today (last 2019 normal). CBC, iron, CMP, lipids, A1c.\n- Iron deficiency anemia: recheck today on TID iron.\n- Obesity: wt 89.1, up slightly. Encouraged activity, fewer sugary drinks at work.\n- Flu and bivalent COVID booster given today.\nRTC 1 year or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.6,
+            "labs": {
+              "Hematocrit": 36.4,
+              "Hemoglobin": 12.0,
+              "Mean Corpuscular Volume": 82
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-21a",
+          "kind": "portal_message",
+          "start": "2022-10-21T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical results",
+              "date": "2022-10-21T10:05",
+              "author": "PCP",
+              "body": "Good news on the physical labs. Hemoglobin 12.4, same as March, and ferritin 21, the best it has been since you joined us. Sugar, cholesterol, kidney and liver normal. Your Pap and HPV test are both negative, so the next one isn't due for 5 years. Keep going with the iron."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-06a",
+          "kind": "telephone",
+          "start": "2023-02-06T12:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Positive pregnancy test",
+              "date": "2023-02-06T12:40",
+              "author": "RN",
+              "body": "Pt called on her lunch break. Positive home pregnancy test x2 over the weekend. LMP 12/21/22. No bleeding, no pain. Still taking prenatal vitamin, iron and calcium. Has had 2 prior C-sections and wants to know where to go for OB since her old OB is far. Booked with PCP Thurs 2/9 to confirm and get referral going. Advised to call or go to L&D/ED for any bleeding or abdominal pain."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-09a",
+          "kind": "office_visit",
+          "start": "2023-02-09T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Early pregnancy, referral to obstetrics",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "diagnosed",
+              "onset": "2023-01-04",
+              "note": "LMP 2022-12-21; two prior cesareans",
+              "icd10": "O09.90"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              68
+            ],
+            "hr": 75,
+            "spo2": 98,
+            "weight_kg": 88.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-02-09T16:30",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-09T16:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 81
+                },
+                {
+                  "test": "Platelets",
+                  "value": 258
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.21
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-09T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2023",
+              "action": "placed",
+              "order": "High-risk obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Intrauterine pregnancy after two prior cesarean deliveries"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2023-02-09T16:55",
+              "author": "PCP",
+              "body": "S: 31F, positive home tests, LMP 12/21/22 — about 7 wks. Planned? \"Not exactly, but we're happy.\" No bleeding, no cramping. On PNV with iron, ferrous sulfate TID, calcium BID.\nOB hx: two term cesareans (2019, 2021). Family hx of note: mother with previa/C-section, maternal aunt with uterine rupture in labor.\n\nO: Vitals reviewed, wt 88.0. Comfortable. Abd soft, nontender, healed low transverse scar.\nUrine hCG positive in office.\n\nA/P:\n1. Intrauterine pregnancy, ~7 weeks, high risk given two prior cesareans and obesity — referral placed to high-risk OB at the regional hospital; she prefers to deliver there. Early ultrasound and prenatal labs per OB.\n2. Iron deficiency anemia — CBC today. Continue iron and PNV.\n3. Bleeding or pain: L&D or ED, not here. She understands.\nWill let OB take the lead on prenatal care; she will keep us posted."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.4,
+            "labs": {
+              "Hematocrit": 35.0,
+              "Hemoglobin": 11.6,
+              "Mean Corpuscular Volume": 81
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-10a",
+          "kind": "portal_message",
+          "start": "2023-02-10T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count",
+              "date": "2023-02-10T09:15",
+              "author": "PCP",
+              "body": "Hemoglobin 11.4, a touch lower than October but fine for early pregnancy. Keep the iron going. The OB office should call you within the week; let us know if they don't."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "specialist_visit",
+          "start": "2023-03-14T09:00",
+          "service": "Obstetrics — High-Risk",
+          "reason": "New obstetric intake",
+          "orders": [
+            {
+              "id": "ob-referral-2023",
+              "action": "done",
+              "date": "2023-03-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "High-risk obstetrics intake letter",
+              "date": "2023-03-17T14:10",
+              "author": "obstetrics",
+              "body": "Regional Hospital — Department of Obstetrics, High-Risk Clinic\n\nRe: Gladys Perez, DOB 01/15/1992\nVisit date: 03/14/2023\n\nDear Doctor,\n\nThank you for the referral. Ms. Perez was seen today for her new obstetric visit at 11 weeks 6 days by LMP of 12/21/2022, consistent with today's dating ultrasound, which showed a single live intrauterine pregnancy.\n\nObstetric history: G3P2, two low transverse cesarean deliveries (2019, 2021). Medical history: iron deficiency anemia on oral iron, obesity. Allergies: sulfa drugs. Medications: prenatal vitamin with iron, ferrous sulfate 325 mg three times daily, calcium carbonate 600 mg twice daily.\n\nGiven two prior cesareans she is not a candidate for a trial of labor, and we have recommended a planned repeat cesarean delivery; timing will be scheduled later in the pregnancy. Family history of uterine rupture in a maternal aunt was noted and discussed. Prenatal labs drawn today. She will be followed in our clinic every 4 weeks.\n\nWe will keep you informed.\n\nSincerely,\nAttending Obstetrician, High-Risk Clinic"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "portal_message",
+          "start": "2023-05-23T21:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "iron refill",
+              "date": "2023-05-23T21:10",
+              "author": "patient",
+              "body": "hi, pharmacy says the ferrous sulfate needs a new script. can you send? same pharmacy on Boston Rd. thanks"
+            },
+            {
+              "type": "Refill Request",
+              "title": "Ferrous sulfate renewed",
+              "date": "2023-05-24T08:30",
+              "author": "MA",
+              "body": "Ferrous sulfate 325 mg TID #90 x 5 pended. PCP signed 5/24. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "hospital_admission",
+          "start": "2023-09-20T07:35",
+          "end": "2023-09-24T11:30",
+          "service": "Obstetrics — Labor and Delivery",
+          "reason": "Severe abdominal pain at term",
+          "conditions": [
+            {
+              "label": "Rupture of uterus during labor",
+              "action": "diagnosed",
+              "onset": "2023-09-20",
+              "icd10": "O71.1"
+            },
+            {
+              "label": "Abnormality in fetal heart rate and rhythm complicating labor and delivery",
+              "action": "diagnosed",
+              "onset": "2023-09-20",
+              "icd10": "O76"
+            },
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "resolved",
+              "note": "Delivered by emergency cesarean 2023-09-20",
+              "icd10": "O09.90"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              74
+            ],
+            "hr": 75,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-23T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Emergency Department Note",
+              "title": "ED Provider Note",
+              "date": "2023-09-26T10:15",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 09/20/2023 07:35\n\nCC: abdominal pain, pregnant\n\nHPI: 31 yo G3P2 at 39w0d by LMP with two prior low transverse cesareans, brought in by spouse with abrupt severe abdominal pain beginning about two hours before arrival. Pain is continuous and getting worse. Denies vaginal bleeding or loss of fluid. Followed by the hospital's high-risk OB clinic; repeat cesarean planned.\n\nPMH: iron deficiency anemia, obesity. PSH: cesarean x2.\nMeds: prenatal vitamin with iron, ferrous sulfate 325 mg TID, calcium carbonate 600 mg BID.\nAllergies: sulfa drugs.\nSocial: no tobacco, no alcohol.\n\nExam: VS stable on arrival (see flowsheet). Visibly distressed, guarding. Abdomen: fundal tenderness with voluntary guarding. Pelvic (with OB at bedside): presenting part has moved up — head was engaged at the last prenatal visit and is now higher in the pelvis.\nBedside ultrasound: cephalic (vertex) presentation.\nToco/FHR: recurrent late decelerations with reduced variability; contractions irregular and weakening in strength.\n\nMDM: findings concerning for uterine rupture in a patient with two prior uterine scars. OB emergently consulted and assumed care; patient taken directly to the OR.\n\nDispo: admitted to Obstetrics."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report — emergency cesarean",
+              "date": "2023-09-26T10:15",
+              "author": "obstetrics",
+              "body": "Date of surgery: 09/20/2023\nPreoperative diagnosis: suspected uterine rupture at 39 weeks, nonreassuring fetal heart tracing, two prior cesareans.\nPostoperative diagnosis: uterine rupture.\nProcedure: emergency laparotomy, repeat cesarean delivery, repair of uterine rupture.\nAnesthesia: general endotracheal.\nAllergies: sulfa drugs.\n\nFindings: uterine rupture confirmed at laparotomy. Liveborn infant delivered and handed to the neonatal team; admitted to the NICU.\nThe rupture was repaired in layers with good hemostasis. Tubes and ovaries normal. Abdomen closed in standard fashion.\nNo transfusion. Counts correct. Patient to PACU in stable condition."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetrics Discharge Summary",
+              "date": "2023-09-26T10:15",
+              "author": "obstetrics",
+              "body": "Admitted 09/20/2023, discharged 09/24/2023.\n\nDiagnoses: uterine rupture during labor at 39 weeks; abnormal fetal heart rate tracing complicating labor; status post emergency repeat cesarean with repair of rupture; iron deficiency anemia; obesity.\n\nCourse: presented to the ED with acute abdominal pain at term and taken emergently for cesarean delivery with repair of the uterine rupture. Postoperative course without complication. Tolerating diet, ambulating, pain controlled on oral medication. Hemoglobin 9.1 on postoperative day 3; not transfused. Infant in NICU, followed by the neonatal team.\n\nAllergies: sulfa drugs.\nDischarge medications: prenatal vitamin with iron daily; ferrous sulfate 325 mg three times daily; calcium carbonate 600 mg twice daily; NEW ibuprofen 600 mg every 6 hours as needed for pain.\n\nCounseling: patient counseled that any future pregnancy carries high risk of repeat rupture and should be followed by maternal-fetal medicine with early planned delivery.\n\nFollow-up: OB postoperative check 2 weeks; primary care within 1-2 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "telephone",
+          "start": "2023-09-21T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Family call, patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Spouse call",
+              "date": "2023-09-21T09:05",
+              "author": "front desk",
+              "body": "Pt's husband called (verbal OK on file) to let Dr know Gladys had an emergency C-section yesterday at the regional hospital, \"something about the uterus tearing.\" She is recovering on the maternity floor, baby in NICU. Asked what follow-up she needs here. Told him we will request the hospital records and call her when she's home. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "telephone",
+          "start": "2023-09-26T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional care call",
+              "date": "2023-09-26T11:30",
+              "author": "RN",
+              "body": "Post-discharge call. Pt home since Sunday 9/24. Incision pain controlled with ibuprofen, using it 2-3x/day. No fever, no wound drainage, bleeding is light. Walking around the house. Taking iron TID and PNV. Baby still in NICU, she visits daily. Hospital records received this morning and routed to PCP. Follow-up booked with PCP Tues 10/3."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "office_visit",
+          "start": "2023-10-03T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after uterine rupture",
+          "conditions": [
+            {
+              "label": "Rupture of uterus during labor",
+              "action": "resolved",
+              "note": "Repaired at cesarean 2023-09-20",
+              "icd10": "O71.1"
+            },
+            {
+              "label": "Abnormality in fetal heart rate and rhythm complicating labor and delivery",
+              "action": "resolved",
+              "icd10": "O76"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              74
+            ],
+            "hr": 67,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 91.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-03T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 78
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.71
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-10-03T16:10",
+              "results": [
+                {
+                  "test": "Iron",
+                  "unit": "ug/dL",
+                  "value": 26
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "unit": "ug/dL",
+                  "value": 425
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "unit": "%",
+                  "value": 6
+                },
+                {
+                  "test": "Ferritin",
+                  "unit": "ng/mL",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2023-10-03T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-03T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-03T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "date": "2023-10-03T16:35",
+              "author": "PCP",
+              "body": "TCM visit, 13 days after emergency cesarean for uterine rupture at 39 wks (regional hospital, admitted 9/20-9/24). Discharge summary and op note reviewed.\n\nS: Sore at the incision but improving, ibuprofen once or twice a day now. Lochia light. No fever. Tired — up at night, back and forth to the NICU, baby expected home soon. Mood \"okay, a lot happened fast.\" Taking ferrous sulfate TID, PNV, calcium. OB post-op check is Thursday.\n\nO: Wt 91.4 kg. Vitals reviewed. Tired-appearing but comfortable.\nAbd: low transverse incision clean, dry, intact, no erythema, appropriately tender. Uterus not palpable above expected.\nLungs clear, heart regular. No calf tenderness.\nPHQ-9: 4.\n\nA/P:\n1. S/p emergency laparotomy, cesarean and repair of uterine rupture — healing well. Rupture repaired; marking resolved on our list. Hospital counseled her about the risk in any future pregnancy; she heard it. OB to follow.\n2. Iron deficiency anemia, worse after delivery (Hb 9.1 at discharge) — CBC and iron today. Continue ferrous sulfate TID.\n3. Mood — PHQ-9 low. Lots of support at home. Reviewed warning signs; she knows to reach out.\n4. Flu shot today.\nFollow up after the holidays, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 91.5,
+            "labs": {
+              "Hematocrit": 29.5,
+              "Hemoglobin": 9.6,
+              "Mean Corpuscular Volume": 77
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "portal_message",
+          "start": "2023-10-05T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Post-hospital labs",
+              "date": "2023-10-05T13:20",
+              "author": "PCP",
+              "body": "Hemoglobin is 9.6, a little up from the 9.1 at discharge, and your iron stores are low again (ferritin 8) after the surgery, which is expected. Keep taking the iron three times a day with food if it bothers your stomach. We'll recheck in a few months."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "portal_message",
+          "start": "2023-10-17T20:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccine update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-14T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid shot",
+              "date": "2023-10-17T20:30",
+              "author": "patient",
+              "body": "Got the new covid shot at the pharmacy Saturday 10/14 so you have it. Baby came home last week!"
+            },
+            {
+              "type": "Nurse Note",
+              "title": "Immunization record updated",
+              "date": "2023-10-18T08:45",
+              "author": "MA",
+              "body": "COVID-19 updated formula (Pfizer), 10/14/2023, pharmacy-administered per pt report. Entered in immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "pharmacy",
+          "start": "2023-12-12T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Prenatal vitamin refill",
+              "date": "2023-12-12T10:10",
+              "author": "MA",
+              "body": "Pharmacy request: prenatal vitamin with iron 1 tab daily #30 x 11. Last Rx 6/2022, out of refills. Pended — PCP signed."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "office_visit",
+          "start": "2024-01-09T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2024-01-08T14:00",
+              "author": "front desk",
+              "body": "Pt cancelled tomorrow's anemia follow-up, no childcare. Will call back to rebook."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "telephone",
+          "start": "2024-02-12T12:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Positive pregnancy test",
+              "date": "2024-02-12T12:25",
+              "author": "RN",
+              "body": "Pt called — positive home pregnancy test. LMP 1/1/24. No bleeding or pain. Aware this is soon after the September surgery; sounded anxious. Discussed with PCP, who wants to see her this week and refer to maternal-fetal medicine. Appt Thurs 2/15. ED/L&D precautions for pain or bleeding reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-15a",
+          "kind": "office_visit",
+          "start": "2024-02-15T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Early pregnancy after uterine rupture",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "diagnosed",
+              "onset": "2024-01-15",
+              "note": "LMP 2024-01-01; uterine rupture repaired 2023-09",
+              "icd10": "O09.90"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              69
+            ],
+            "hr": 71,
+            "spo2": 97,
+            "weight_kg": 88.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-15T16:20",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-15T16:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 78
+                },
+                {
+                  "test": "Platelets",
+                  "value": 258
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-02-15T16:40",
+              "results": [
+                {
+                  "test": "Iron",
+                  "unit": "ug/dL",
+                  "value": 41
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "unit": "ug/dL",
+                  "value": 402
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "unit": "%",
+                  "value": 10
+                },
+                {
+                  "test": "Ferritin",
+                  "unit": "ng/mL",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-15T16:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mfm-referral-2024",
+              "action": "placed",
+              "order": "Maternal-fetal medicine referral",
+              "category": "referral",
+              "to": "Maternal-Fetal Medicine",
+              "reason": "Pregnancy after uterine rupture in September 2023, three prior cesareans"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2024-02-15T16:50",
+              "author": "PCP",
+              "body": "S: 32F, LMP 1/1/24, ~6.5 wks. Uterine rupture with emergency cesarean and repair 9/20/23 — less than 5 months ago. She is worried and wants to do everything right this time. No bleeding, no pain. On PNV, ferrous sulfate TID, calcium.\n\nO: Wt 88.5. Vitals reviewed. NAD. Abd soft, nontender, incision well healed.\nUrine hCG positive.\n\nA/P:\n1. Pregnancy after recent uterine rupture repair — high risk. Urgent referral to maternal-fetal medicine at the regional hospital rather than general OB; RN to call their office today. Reinforced: any abdominal pain, bleeding or \"popping\" feeling = call 911/go to L&D.\n2. Iron deficiency anemia — Hb and iron today. Continue iron and PNV.\n3. Will coordinate with MFM; asked her to sign release so we get their notes."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.5,
+            "labs": {
+              "Hematocrit": 32.4,
+              "Hemoglobin": 10.9,
+              "Mean Corpuscular Volume": 79
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-16a",
+          "kind": "portal_message",
+          "start": "2024-02-16T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count and iron",
+              "date": "2024-02-16T11:40",
+              "author": "PCP",
+              "body": "Your hemoglobin is 10.1 and ferritin 12 — still low but better than October. Keep the iron going. Maternal-fetal medicine has the referral and should call you by Tuesday."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "specialist_visit",
+          "start": "2024-03-19T10:00",
+          "service": "Maternal-Fetal Medicine",
+          "reason": "Pregnancy after uterine rupture",
+          "orders": [
+            {
+              "id": "mfm-referral-2024",
+              "action": "done",
+              "date": "2024-03-19T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Maternal-fetal medicine consultation",
+              "date": "2024-03-22T15:45",
+              "author": "maternal-fetal medicine",
+              "body": "Maternal-Fetal Medicine, Regional Hospital\nConsultation — 03/19/2024\nPatient: Gladys Perez, DOB 01/15/1992\nReferring: primary care\n\nReason: pregnancy following uterine rupture.\n\nMs. Perez is a 32 year old G4P3 at 11 weeks 1 day by LMP and first-trimester ultrasound (single live intrauterine pregnancy). Her third delivery, in September 2023 at this hospital, was an emergency cesarean for uterine rupture at term with repair of the uterus. Prior low transverse cesareans 2019 and 2021. Medical: iron deficiency anemia on oral iron; obesity.\nAllergies: sulfa drugs.\nMedications: prenatal vitamin with iron daily; ferrous sulfate 325 mg three times daily; calcium carbonate 600 mg twice daily.\n\nWe discussed the substantially increased risk of recurrent rupture, including before labor, and the warning symptoms. Plan: MFM co-management with high-risk OB, serial growth ultrasounds, and planned cesarean delivery ahead of labor; the date will be set in the third trimester. Strict return precautions given.\n\nThank you for involving us.\nMaternal-Fetal Medicine Attending"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "portal_message",
+          "start": "2024-06-11T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "calcium",
+              "date": "2024-06-11T07:50",
+              "author": "patient",
+              "body": "Can you send the calcium to the pharmacy? Medicaid will pay for it if it's a prescription. 600 twice a day like before"
+            },
+            {
+              "type": "Refill Request",
+              "title": "Calcium carbonate Rx",
+              "date": "2024-06-11T09:20",
+              "author": "MA",
+              "body": "Calcium carbonate 1500 mg (600 mg elemental) 1 tab BID #60 x 11 pended. PCP signed. Pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "hospital_admission",
+          "start": "2024-09-23T06:50",
+          "end": "2024-09-27T12:00",
+          "service": "Obstetrics — Labor and Delivery",
+          "reason": "Abdominal pain and vaginal bleeding at 38 weeks",
+          "conditions": [
+            {
+              "label": "Rupture of uterus during labor",
+              "action": "diagnosed",
+              "onset": "2024-09-23",
+              "icd10": "O71.1"
+            },
+            {
+              "label": "Abnormality in fetal heart rate and rhythm complicating labor and delivery",
+              "action": "diagnosed",
+              "onset": "2024-09-23",
+              "icd10": "O76"
+            },
+            {
+              "label": "Anemia complicating pregnancy, third trimester",
+              "action": "diagnosed",
+              "onset": "2024-09-23",
+              "icd10": "O99.013"
+            },
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "resolved",
+              "note": "Delivered by emergency cesarean 2024-09-23",
+              "icd10": "O09.90"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-09-23T06:55",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 102,
+              "temp_c": 37.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-23T07:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 10.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "unit": "%",
+                  "value": 30.4
+                },
+                {
+                  "test": "Platelets",
+                  "unit": "10*3/uL",
+                  "value": 210
+                },
+                {
+                  "test": "White Blood Cells",
+                  "unit": "10*3/uL",
+                  "value": 12.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-26T05:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Emergency Department Note",
+              "title": "ED Provider Note",
+              "date": "2024-09-30T09:20",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 09/23/2024 06:50\n\nCC: severe abdominal pain, vaginal bleeding, 38 weeks pregnant\n\nHPI: 32 yo G4P3 at 38w0d followed by MFM, history of uterine rupture repaired at emergency cesarean in September 2023 (plus two earlier cesareans). Felt something \"pop\" this morning, then abrupt severe abdominal pain and bleeding from the vagina. \n\nPMH: iron deficiency anemia, obesity, uterine rupture 9/2023. PSH: cesarean x3.\nMeds: PNV with iron, ferrous sulfate 325 mg TID, calcium carbonate 600 mg BID.\nAllergies: sulfa drugs.\nSH: never smoker, no alcohol.\n\nVitals: BP 110/70, HR 102, T 37.2 C (99.0 F).\nExam: uterus tender, abdomen guarded. FHTs irregular, baseline about 110 bpm with minimal variability. No presenting part felt above the pelvis.\n\nLabs: Hgb 10.2, Hct 30.4, plt 210K, WBC 12.0K.\n\nMDM: presumed recurrent uterine rupture with fetal compromise. OB/MFM paged stat, to OR immediately.\nDispo: admit OB."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report — emergency cesarean",
+              "date": "2024-09-30T09:20",
+              "author": "obstetrics",
+              "body": "Date: 09/23/2024\nPre-op dx: suspected recurrent uterine rupture, 38 weeks, abnormal fetal heart tracing.\nPost-op dx: recurrent uterine rupture.\nProcedure: emergency laparotomy, cesarean delivery, repair of uterine rupture.\nAnesthesia: general.\nAllergies: sulfa drugs.\n\nFindings: uterine rupture present on entry. Liveborn infant delivered, to neonatal team and NICU.\nUterine defect repaired in two layers, hemostatic. Adnexa normal. Fascia and skin closed.\nNo blood products given. Counts correct x2. To PACU stable."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetrics Discharge Summary",
+              "date": "2024-09-30T09:20",
+              "author": "obstetrics",
+              "body": "Admission 09/23/2024 — Discharge 09/27/2024\n\nPrincipal diagnosis: recurrent uterine rupture during labor at 38 weeks.\nOther: fetal heart rate abnormality; anemia of pregnancy (admission Hgb 10.2); iron deficiency anemia; obesity; history of three prior cesareans.\n\nHospital course: emergency cesarean delivery with repair of the rupture on the day of arrival. Recovery uncomplicated. Hgb 8.8 on POD 3, asymptomatic, no transfusion. Infant cared for in the NICU.\n\nAllergies: sulfa drugs.\nDischarge meds: continue prenatal vitamin with iron, ferrous sulfate 325 mg TID, calcium carbonate 600 mg BID; ibuprofen 600 mg q6h PRN pain.\n\nPatient again counseled regarding the very high risk with any future pregnancy.\nFollow-up: OB incision check 1-2 weeks; PCP 1 week for anemia."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-30a",
+          "kind": "telephone",
+          "start": "2024-09-30T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional care call",
+              "date": "2024-09-30T14:10",
+              "author": "RN",
+              "body": "Called pt after discharge Friday. Pain okay with ibuprofen. Incision dry. No fever, light bleeding only. PCP will check her blood count Wednesday. Baby in NICU. Records arrived today, routed. Appt Wed 10/2 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "office_visit",
+          "start": "2024-10-02T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after second uterine rupture",
+          "conditions": [
+            {
+              "label": "Rupture of uterus during labor",
+              "action": "resolved",
+              "note": "Repaired at cesarean 2024-09-23",
+              "icd10": "O71.1"
+            },
+            {
+              "label": "Abnormality in fetal heart rate and rhythm complicating labor and delivery",
+              "action": "resolved",
+              "icd10": "O76"
+            },
+            {
+              "label": "Anemia complicating pregnancy, third trimester",
+              "action": "resolved",
+              "note": "Delivered; ongoing iron deficiency anemia",
+              "icd10": "O99.013"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              72
+            ],
+            "hr": 69,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 92.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-02T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 78
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 217
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.65
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-10-02T15:50",
+              "results": [
+                {
+                  "test": "Iron",
+                  "unit": "ug/dL",
+                  "value": 24
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "unit": "ug/dL",
+                  "value": 431
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "unit": "%",
+                  "value": 6
+                },
+                {
+                  "test": "Ferritin",
+                  "unit": "ng/mL",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-10-02T15:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-02T16:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-02T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "date": "2024-10-02T16:30",
+              "author": "PCP",
+              "body": "TCM — second uterine rupture\n\nAdmitted 9/23-9/27 at the regional hospital: at 38 wks felt a pop, then pain and bleeding; emergency cesarean with repair of a recurrent rupture. Hgb 10.2 on arrival, 8.8 POD3, no transfusion. Records reviewed.\n\nS: Sore but improving. No fever, incision fine, bleeding light. Baby still in NICU, doing well per pt. Taking ibuprofen a couple times a day, iron TID, PNV, calcium.\n\nO: Wt 92.3. Vitals reviewed. Pale conjunctivae. Heart regular, no murmur. Lungs clear. Abd: incision healing, no erythema or drainage. No edema.\nPHQ-9: 5.\n\nA/P:\n1. S/p repair of recurrent uterine rupture — recovering. OB follows the incision. Resolve episode on our list.\n2. Iron deficiency anemia, post-operative dip — CBC and iron today; continue ferrous sulfate TID.\n3. Mood — PHQ-9 5, she says she is tired more than down. Will recheck.\n4. Flu shot today.\nRTC in a few months for anemia, then physical."
+            }
+          ],
+          "state": {
+            "weight_kg": 92.0,
+            "labs": {
+              "Hematocrit": 29.0,
+              "Hemoglobin": 9.4,
+              "Mean Corpuscular Volume": 76,
+              "White Blood Cells": 8.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-04a",
+          "kind": "portal_message",
+          "start": "2024-10-04T12:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count",
+              "date": "2024-10-04T12:05",
+              "author": "PCP",
+              "body": "Hemoglobin 9.4 and ferritin 7. Low, as expected after the surgery, and a little better than the hospital's 8.8. Keep up the iron three times a day. Call us with any questions."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "portal_message",
+          "start": "2024-10-22T19:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccine update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-19T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid vaccine",
+              "date": "2024-10-22T19:15",
+              "author": "patient",
+              "body": "fyi got my covid booster at the pharmacy on 10/19. baby is home and everyone is ok"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "pharmacy",
+          "start": "2024-12-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior authorization renewal",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prenatal vitamin PA renewal",
+              "date": "2024-12-10T09:40",
+              "author": "MA",
+              "body": "Medicaid plan annual PA renewal for prenatal vitamin with iron. Form completed with dx iron deficiency anemia, reproductive age. Faxed. Approved 12/12, valid one year."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T21:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "physical",
+              "date": "2025-01-21T21:35",
+              "author": "patient",
+              "body": "I think I'm overdue for a physical, haven't had one since 2022 with the babies. Do you have anything on a Tuesday after 3? I'm off Tuesdays in March."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduled",
+              "date": "2025-01-22T09:10",
+              "author": "front desk",
+              "body": "Booked annual physical Tues 3/11 at 3:30. Replied in portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "annual_physical",
+          "start": "2025-03-11T15:30",
+          "end": "2025-03-11T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              70
+            ],
+            "hr": 71,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 88.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-11T16:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 80
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.33
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.7
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-03-11T16:15",
+              "results": [
+                {
+                  "test": "Iron",
+                  "unit": "ug/dL",
+                  "value": 47
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "unit": "ug/dL",
+                  "value": 384
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "unit": "%",
+                  "value": 12
+                },
+                {
+                  "test": "Ferritin",
+                  "unit": "ng/mL",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-11T16:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-03-11T16:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 89
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 112
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-11T16:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "unit": "%",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-03-11T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-03-11T16:45",
+              "author": "PCP",
+              "body": "Physical — 33F\n\nInterval: two emergency cesareans for uterine rupture (9/2023, 9/2024), both repaired at the regional hospital. Recovered from the last one; back at work full time since January. Four kids at home. No concerns today other than feeling she never has time to exercise.\n\nMeds: ferrous sulfate 325 TID, PNV with iron daily, calcium carbonate 600 BID. Allergy: sulfa.\nNever smoker, no alcohol.\n\nROS negative.\n\nExam: wt 88.9 kg, BMI 34.9. Vitals reviewed.\nGeneral: well, NAD.\nHEENT: normal. Neck: no thyroid enlargement, no nodes.\nHeart: regular rhythm, no murmur. Lungs: clear.\nAbd: soft, nontender, healed transverse scar.\nExt: no edema. Skin: no concerning lesions.\nPHQ-2: 0.\n\nA/P\n- Preventive: CBC, iron, CMP, lipids, A1c. Pap/HPV up to date (negative 10/2022), next 2027. Immunizations current — flu and COVID last fall.\n- Iron deficiency anemia: recheck on TID iron.\n- Obesity: BMI 34.9. Small goals — walking with the stroller on days off.\nRTC 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.8,
+            "labs": {
+              "Hematocrit": 34.6,
+              "Hemoglobin": 11.4,
+              "Mean Corpuscular Volume": 80
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-13a",
+          "kind": "portal_message",
+          "start": "2025-03-13T08:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2025-03-13T08:55",
+              "author": "PCP",
+              "body": "Hi Gladys — hemoglobin 11.5 and ferritin 15, both much better than October. Cholesterol, A1c, kidney and liver numbers are all normal. Same plan: keep the iron going."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "pharmacy",
+          "start": "2025-06-17T10:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Ferrous sulfate and calcium refills",
+              "date": "2025-06-17T10:25",
+              "author": "MA",
+              "body": "eRx renewal requests: ferrous sulfate 325 mg TID #90 x 5; calcium carbonate 1500 mg BID #60 x 11. Pended — PCP approved both."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-02a",
+          "kind": "telephone",
+          "start": "2025-09-02T12:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Positive pregnancy test",
+              "date": "2025-09-02T12:50",
+              "author": "RN",
+              "body": "Pt calling with positive home test, LMP 7/23/25. No bleeding, no pain. Knows she needs MFM again right away, asked us to send the referral the same as last time. Appt with PCP Thurs 9/4. Reviewed: pain, bleeding, or popping sensation at any point = 911/L&D."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-04a",
+          "kind": "office_visit",
+          "start": "2025-09-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Early pregnancy after two uterine ruptures",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "diagnosed",
+              "onset": "2025-08-06",
+              "note": "LMP 2025-07-23; uterine rupture 2023 and 2024",
+              "icd10": "O09.90"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              66
+            ],
+            "hr": 74,
+            "spo2": 98,
+            "weight_kg": 89.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-04T16:10",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-04T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 79
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-09-04T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mfm-referral-2025",
+              "action": "placed",
+              "order": "Maternal-fetal medicine referral",
+              "category": "referral",
+              "to": "Maternal-Fetal Medicine",
+              "reason": "Pregnancy after two uterine ruptures (2023, 2024)"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2025-09-04T16:35",
+              "author": "PCP",
+              "body": "S: 33F, LMP 7/23/25, ~6 wks. Two prior uterine ruptures at term with emergency cesarean and repair (9/2023, 9/2024), plus two earlier cesareans. Asymptomatic. On PNV, iron TID, calcium.\n\nO: Wt 89.6. Vitals reviewed. Well appearing. Abd soft, nontender, scar well healed.\nUrine hCG positive.\n\nA/P:\n1. Pregnancy after two uterine ruptures — very high risk. Referral to MFM today, same group as 2024; RN calling to expedite. Precautions reviewed in detail.\n2. Iron deficiency anemia — CBC today, continue iron and PNV.\n3. We will follow along with MFM."
+            }
+          ],
+          "state": {
+            "weight_kg": 89.0,
+            "labs": {
+              "Hematocrit": 35.5,
+              "Hemoglobin": 11.2,
+              "Mean Corpuscular Volume": 80
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-05a",
+          "kind": "portal_message",
+          "start": "2025-09-05T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count",
+              "date": "2025-09-05T10:30",
+              "author": "PCP",
+              "body": "Hemoglobin 12.1, a little better than March. MFM has the referral and has you down for the end of the month."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "specialist_visit",
+          "start": "2025-09-30T09:30",
+          "service": "Maternal-Fetal Medicine",
+          "reason": "Pregnancy after two uterine ruptures",
+          "orders": [
+            {
+              "id": "mfm-referral-2025",
+              "action": "done",
+              "date": "2025-09-30T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Maternal-fetal medicine consultation",
+              "date": "2025-10-03T11:00",
+              "author": "maternal-fetal medicine",
+              "body": "Maternal-Fetal Medicine, Regional Hospital\nDate of visit: 09/30/2025\nRe: Gladys Perez, DOB 01/15/1992\n\nThank you for referring Ms. Perez, now G5P4 at 9 weeks 6 days by LMP, with a single viable intrauterine pregnancy on today's scan. She is well known to our service: uterine rupture at term in September 2023 and again in September 2024, each managed with emergency cesarean and repair, after two earlier low transverse cesareans.\nOther history: iron deficiency anemia on oral iron, obesity.\nAllergies: sulfa drugs.\nCurrent medications: prenatal vitamin with iron; ferrous sulfate 325 mg TID; calcium carbonate 600 mg BID.\n\nWe reviewed the risks of a third rupture openly with the patient and her husband. She wishes to continue the pregnancy. Plan: visits every 2-4 weeks, serial ultrasound, low threshold for admission, and planned cesarean before labor; we also discussed definitive surgical options at delivery and will revisit these as the pregnancy progresses.\n\nMaternal-Fetal Medicine Attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T16:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2025-10-14T16:55",
+              "author": "RN",
+              "body": "Flu vaccine, ~12 wks pregnant, MFM aware and recommends. Afebrile, feels well. Trivalent inactivated 0.5 mL IM L deltoid. VIS reviewed. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "portal_message",
+          "start": "2025-12-09T20:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill and prior authorization",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "vitamins",
+              "date": "2025-12-09T20:05",
+              "author": "patient",
+              "body": "Pharmacy says the prenatal vitamin needs the insurance form again, can you do it? Also out of refills on the iron."
+            },
+            {
+              "type": "Prior Authorization",
+              "title": "Prenatal vitamin PA and iron renewal",
+              "date": "2025-12-10T09:15",
+              "author": "MA",
+              "body": "Medicaid PA renewal for prenatal vitamin with iron submitted (dx: pregnancy, iron deficiency anemia), approved same day. Ferrous sulfate 325 mg TID #90 x 5 pended, PCP signed. Pt updated."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "nurse_visit",
+          "start": "2026-01-28T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Tdap in pregnancy",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-01-28T16:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-01-28T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Tdap",
+              "date": "2026-01-28T16:50",
+              "author": "RN",
+              "body": "27 wks 1 day. MFM asked that Tdap be given here since her visits there have been at odd hours. No pain or bleeding today, feeling baby move. Tdap 0.5 mL IM R deltoid, VIS given. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "hospital_admission",
+          "start": "2026-04-08T21:15",
+          "end": "2026-04-13T13:00",
+          "service": "Obstetrics — Labor and Delivery",
+          "reason": "Abdominal pain and vaginal bleeding at 37 weeks",
+          "conditions": [
+            {
+              "label": "Rupture of uterus during labor",
+              "action": "diagnosed",
+              "onset": "2026-04-08",
+              "icd10": "O71.1"
+            },
+            {
+              "label": "Abnormality in fetal heart rate and rhythm complicating labor and delivery",
+              "action": "diagnosed",
+              "onset": "2026-04-08",
+              "icd10": "O76"
+            },
+            {
+              "label": "Anemia complicating pregnancy, third trimester",
+              "action": "diagnosed",
+              "onset": "2026-04-08",
+              "icd10": "O99.013"
+            },
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "resolved",
+              "note": "Delivered by emergency cesarean 2026-04-08",
+              "icd10": "O09.90"
+            },
+            {
+              "label": "Acquired absence of uterus and cervix",
+              "action": "diagnosed",
+              "onset": "2026-04-08",
+              "note": "Total abdominal hysterectomy at cesarean, ovaries conserved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-04-08T21:20",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-08T21:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 9.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "unit": "%",
+                  "value": 29.0
+                },
+                {
+                  "test": "Platelets",
+                  "unit": "10*3/uL",
+                  "value": 210
+                },
+                {
+                  "test": "White Blood Cells",
+                  "unit": "10*3/uL",
+                  "value": 12.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-09T05:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-12T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-04-09T00:30",
+              "text": "Specimen: uterus and cervix, hysterectomy. Gross: gravid-sized uterus with attached cervix, opened. Microscopic: full-thickness disruption of the myometrium with associated hemorrhage, consistent with rupture. Endometrium with decidual change. Cervix with no significant pathologic abnormality. No other abnormality identified.",
+              "conclusion": "Uterus with full-thickness myometrial disruption consistent with rupture; benign cervix.",
+              "issued": "2026-04-11T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Emergency Department Note",
+              "title": "ED Provider Note",
+              "date": "2026-04-15T10:40",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 04/08/2026 21:15\n\nCC: abdominal pain, vaginal bleeding, pregnant 37 wks\n\nHPI: 34 yo G5P4 at 37w0d, MFM patient, with uterine rupture at term in September 2023 and again in September 2024. Tonight sudden severe abdominal pain, constant, going through to her back, with vaginal bleeding. Says it feels like the last two times.\n\nPMH: IDA, obesity, uterine rupture x2. PSH: cesarean x4.\nMeds: PNV with iron, ferrous sulfate 325 TID, calcium carbonate 600 BID.\nAllergies: sulfa drugs.\n\nVS: BP 100/60, HR 110.\nExam: in obvious distress. Fundus tender; contour of the abdomen irregular on palpation.\nFHR: late decelerations.\nLabs: Hgb 9.8, Hct 29, plt 210, WBC 12.0.\n\nImp: recurrent uterine rupture. OB/MFM and anesthesia at bedside within minutes; to OR.\nDispo: OR, then surgical ICU."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report — cesarean hysterectomy",
+              "date": "2026-04-15T10:40",
+              "author": "obstetrics",
+              "body": "Date: 04/08/2026\nPre-op: suspected third uterine rupture, 37 weeks, fetal heart rate decelerations.\nPost-op: uterine rupture, third occurrence.\nProcedure: emergency laparotomy, cesarean delivery, total abdominal hysterectomy with conservation of both ovaries.\nAnesthesia: general endotracheal.\nAllergies: sulfa drugs.\n\nFindings: uterine rupture confirmed. Liveborn infant delivered and handed off to neonatology (NICU). Given a third rupture of a previously repaired uterus, hysterectomy was performed as discussed antenatally. Ovaries normal and preserved.\nTransfusion: 2 units packed red blood cells intraoperatively.\nSpecimen: uterus and cervix to pathology.\nExtubated in the OR. Transferred to the surgical ICU in stable condition."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2026-04-15T10:40",
+              "author": "obstetrics",
+              "body": "Admitted 04/08/2026 — Discharged 04/13/2026\nUnits: ED, OR, surgical ICU (04/08-04/10), postpartum floor.\n\nDiagnoses: third uterine rupture during labor at 37 weeks; fetal heart rate abnormality; anemia of pregnancy; status post emergency cesarean delivery and total abdominal hysterectomy with ovarian conservation; iron deficiency anemia; obesity.\n\nCourse: arrived with BP 100/60, HR 110 and Hgb 9.8. Emergency cesarean hysterectomy; 2 units PRBC in the OR. Two nights in the SICU for monitoring, then the postpartum unit. Hgb nadir 8.9 on POD1, 9.3 on POD4. Pathology: uterus with full-thickness myometrial disruption consistent with rupture; benign cervix. Infant cared for in the NICU.\n\nAllergies: sulfa drugs.\nDischarge medications: prenatal vitamin with iron daily; ferrous sulfate 325 mg three times daily; calcium carbonate 600 mg twice daily; ibuprofen 600 mg every 6 hours as needed.\n\nFollow-up: gynecology postoperative visit 6 weeks; primary care 1 week (anemia, transition of care)."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "telephone",
+          "start": "2026-04-14T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional care call",
+              "date": "2026-04-14T10:50",
+              "author": "RN",
+              "body": "TCM call day after discharge. Pt home, husband off work this week. Pain controlled with ibuprofen. Incision intact per pt, no drainage, no fever. Minimal spotting. Tired. Baby in NICU. Taking iron TID. Hospital records requested, expected this week. Seeing PCP Tues 4/21."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after cesarean hysterectomy",
+          "conditions": [
+            {
+              "label": "Rupture of uterus during labor",
+              "action": "resolved",
+              "note": "Hysterectomy 2026-04-08",
+              "icd10": "O71.1"
+            },
+            {
+              "label": "Abnormality in fetal heart rate and rhythm complicating labor and delivery",
+              "action": "resolved",
+              "icd10": "O76"
+            },
+            {
+              "label": "Anemia complicating pregnancy, third trimester",
+              "action": "resolved",
+              "note": "Delivered; ongoing iron deficiency anemia",
+              "icd10": "O99.013"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              70
+            ],
+            "hr": 67,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 91.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-21T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 222
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.08
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.6
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-04-21T15:30",
+              "results": [
+                {
+                  "test": "Iron",
+                  "unit": "ug/dL",
+                  "value": 29
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "unit": "ug/dL",
+                  "value": 418
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "unit": "%",
+                  "value": 7
+                },
+                {
+                  "test": "Ferritin",
+                  "unit": "ng/mL",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-04-21T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "date": "2026-04-21T16:05",
+              "author": "PCP",
+              "body": "TCM — third uterine rupture, cesarean hysterectomy\n\nRegional hospital 4/8-4/13: at 37 wks sudden pain to the back with bleeding; BP 100/60, HR 110, Hgb 9.8. Emergency cesarean with total abdominal hysterectomy, ovaries kept. 2 u PRBC. SICU 2 nights. Hgb 8.9 nadir, 9.3 at discharge. Path: rupture, benign cervix. Records reviewed in full.\n\nS: 13 days out. Pain much better, ibuprofen once a day. No fever, incision fine, minimal spotting. Baby came home Friday. Emotionally: \"relieved it's over and sad there won't be more.\" Sleeping when she can. Taking ferrous sulfate TID, PNV, calcium.\n\nO: Wt 91.3. Vitals reviewed. Tired but comfortable, mildly pale.\nHeart: regular, no murmur. Lungs: clear.\nAbd: transverse incision healing well, no erythema, no drainage; appropriately tender. No calf tenderness or edema.\nPHQ-9: 3.\n\nA/P:\n1. S/p cesarean hysterectomy for recurrent uterine rupture — recovering well. Uterus and cervix removed; problem list updated. No further cervical cancer screening needed (benign indication, cervix removed). Gyn post-op visit late May.\n2. Iron deficiency anemia, post-hemorrhage/transfusion — CBC and iron today. Continue ferrous sulfate TID.\n3. Mood — PHQ-9 3, good support. Will keep asking.\nRTC 3 months for anemia."
+            }
+          ],
+          "state": {
+            "weight_kg": 90.5,
+            "labs": {
+              "Hematocrit": 30.0,
+              "Hemoglobin": 9.9,
+              "Mean Corpuscular Volume": 77,
+              "White Blood Cells": 8.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-23a",
+          "kind": "portal_message",
+          "start": "2026-04-23T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count after surgery",
+              "date": "2026-04-23T09:20",
+              "author": "PCP",
+              "body": "Hemoglobin is 10.0, up from 9.3 when you left the hospital. Ferritin is 9, so your iron stores are low again. Keep taking the iron three times a day. Now that you won't have periods or pregnancies, these numbers should climb steadily. Recheck in July."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood count after surgery",
+              "date": "2026-04-23T12:41",
+              "author": "patient",
+              "body": "Thank you for everything. Will do."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "specialist_visit",
+          "start": "2026-05-20T10:15",
+          "service": "Gynecology",
+          "reason": "Postoperative visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology postoperative letter",
+              "date": "2026-05-22T15:30",
+              "author": "gynecology",
+              "body": "Obstetrics & Gynecology, Regional Hospital\nPostoperative visit 05/20/2026\nRe: Gladys Perez, DOB 01/15/1992\n\nDear Doctor,\n\nMs. Perez was seen six weeks after emergency cesarean delivery and total abdominal hysterectomy (ovaries conserved) on 04/08/2026 for a third uterine rupture. She is recovering well. Incision is fully healed. Vaginal cuff examination normal. Pathology was reviewed with her: rupture of the uterus, benign cervix.\n\nAllergies: sulfa drugs.\n\nShe may resume all usual activity, including work. As the cervix was removed for a benign indication, no further cervical screening is needed. No routine gynecologic follow-up is required; we are happy to see her for any new concern.\n\nKind regards,\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "July appt",
+              "date": "2026-06-09T13:10",
+              "author": "patient",
+              "body": "Back at the store next week. Can I move my July bloodwork visit to a Tuesday? those are my days off now"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Rescheduled",
+              "date": "2026-06-09T15:30",
+              "author": "front desk",
+              "body": "Moved anemia f/u to Tues 7/14 4:00. Pt confirmed in portal."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "office_visit",
+          "start": "2026-07-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              76
+            ],
+            "hr": 77,
+            "spo2": 98,
+            "weight_kg": 88.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-14T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 81
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.5
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-07-14T16:25",
+              "results": [
+                {
+                  "test": "Iron",
+                  "unit": "ug/dL",
+                  "value": 52
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "unit": "ug/dL",
+                  "value": 377
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "unit": "%",
+                  "value": 14
+                },
+                {
+                  "test": "Ferritin",
+                  "unit": "ng/mL",
+                  "value": 19
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "date": "2026-07-14T16:40",
+              "author": "PCP",
+              "body": "S: 3 months after cesarean hysterectomy. Back at work since mid-June, energy improving week by week. Gyn released her in May. Still taking ferrous sulfate TID, PNV, calcium. Baby and the other kids well.\n\nO: Wt 88.7. Vitals reviewed. Looks well, color better than April.\nHeart regular, lungs clear. Abd soft, nontender, scar healed.\nPHQ-2: 0.\n\nA/P:\n1. Iron deficiency anemia — CBC and iron today, expect improvement. Same iron regimen.\n2. Obesity — weight back down near her baseline. Will keep working on it at the physical.\n3. S/p hysterectomy — no further gyn follow-up or Pap needed.\nPhysical in October."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.6,
+            "labs": {
+              "Hematocrit": 34.8,
+              "Hemoglobin": 11.5,
+              "Mean Corpuscular Volume": 81
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "portal_message",
+          "start": "2026-07-16T11:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count",
+              "date": "2026-07-16T11:45",
+              "author": "PCP",
+              "body": "Nice improvement: hemoglobin 12.1, back in the normal range (from 10.0 in April), and ferritin 19. Keep the iron going and we'll recheck at your physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Ferrous sulfate refill",
+              "date": "2026-08-11T09:05",
+              "author": "MA",
+              "body": "Pharmacy refill request ferrous sulfate 325 mg TID #90 x 5. Pended, PCP approved."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "annual_physical",
+          "start": "2026-10-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Abnormality in fetal heart rate and rhythm complicating labor and delivery|O76": {
+        "code": "O76",
+        "display": "Abnormality in fetal heart rate and rhythm complicating labor and delivery",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Anemia complicating pregnancy, third trimester|O99.013": {
+        "code": "O99.013",
+        "display": "Anemia complicating pregnancy, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of uterine scar from previous surgery|Z98.891": {
+        "code": "Z98.891",
+        "display": "History of uterine scar from previous surgery",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Rupture of uterus during labor|O71.1": {
+        "code": "O71.1",
+        "display": "Rupture of uterus during labor",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Supervision of high risk pregnancy, unspecified, unspecified trimester|O09.90": {
+        "code": "O09.90",
+        "display": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "calcium carbonate 1500 MG Oral Tablet": {
+        "code": "237420",
+        "display": "calcium carbonate 1500 MG Oral Tablet",
+        "ingredient": "calcium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin with iron Oral Tablet\""
+    ]
+  }
+}

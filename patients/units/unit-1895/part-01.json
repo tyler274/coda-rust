@@ -1,0 +1,461 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001895",
+      "given": "Sophia",
+      "family": "Roy",
+      "birth_date": "2000-11-20",
+      "address_line": "58 Linden Street, Apt 2",
+      "phone": "+1-603-555-0167",
+      "email": "sophia.roy@example.test",
+      "marital_status": "single",
+      "summary": "Healthy young woman who works at an artisan bakery and is on a university student plan; joined in 2022 with functional constipation managed on psyllium. Two uncomplicated cystitis episodes in 2025, each treated with nitrofurantoin; otherwise routine preventive care.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "telephone",
+          "start": "2022-08-30T10:12",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "author": "front desk",
+              "date": "2022-08-30T10:12",
+              "body": "Caller: patient (Sophia Roy, DOB 11/20/2000).\n\nWants to establish with the practice. Has been seen at her previous primary care office since childhood and would like to move closer to where she lives and works now. Mentioned she has a university student health plan as primary and her parents' PPO as secondary - both cards to be scanned at the visit.\n\nScheduled new patient physical 9/8 at 8:30. Membership agreement and intake forms sent to portal. Records release signed electronically; request faxed to prior office for immunizations and last visit notes.\n\nNo current concerns per pt."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "establish_care",
+          "start": "2022-09-08T08:30",
+          "end": "2022-09-08T09:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, new patient physical",
+          "conditions": [
+            {
+              "label": "Functional constipation",
+              "icd10": "K59.04",
+              "action": "history",
+              "note": "Longstanding per patient; manages with fiber as needed."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "psyllium husk 3.4 GM Oral Powder",
+              "action": "historical",
+              "sig": "1 tablespoon in a glass of water by mouth as needed for constipation",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Functional constipation"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 59.8,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin": 14.0,
+              "Hematocrit": 37.6,
+              "Total Cholesterol": 168,
+              "High Density Lipoprotein": 62,
+              "Triglycerides": 82,
+              "Low Density Lipoprotein": 88,
+              "Thyroid Stimulating Hormone": 1.74
+            },
+            "bp": [
+              110,
+              70
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-08T09:10",
+              "resulted": "2022-09-09T06:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-08T09:10",
+              "resulted": "2022-09-09T06:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-08T09:10",
+              "resulted": "2022-09-09T06:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-08T09:10",
+              "resulted": "2022-09-09T06:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-08T09:10",
+              "resulted": "2022-09-10T11:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks on weekends"
+            },
+            {
+              "item": "Occupation",
+              "value": "Bakery associate at a local artisan bakery"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-08T09:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-08T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-08T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-08T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit - Establish Care",
+              "author": "PCP",
+              "date": "2022-09-08T08:30",
+              "body": "NEW PATIENT - ESTABLISHING CARE\n\n21 y/o woman here to start with us. Grew up in the area, was followed at her previous primary care office until now. Works at an artisan bakery in town (early shifts) and is enrolled at the university, which is where her primary insurance comes from. Feels well. No acute concerns.\n\nPMH: Constipation - functional, has had it for years. Goes a few days at a time without a BM when her schedule gets busy, otherwise fine. No blood, no weight loss, no night symptoms. Uses psyllium powder when she needs it, roughly a tablespoon in water, and that works for her. Never had a workup and never needed a prescription.\nNo other medical problems. No hospitalizations.\nPSH: none.\n\nMeds: psyllium powder PRN. No prescription meds. No supplements.\nAllergies: NKDA.\n\nFH: Mom has had a lot of bladder infections over the years. Dad has high blood pressure. Nobody with kidney disease or kidney stones that she knows of.\n\nSH: Lives in Holyoke. Bakery associate, student. Never smoked. Alcohol socially on weekends, a drink or two. Denies drug use.\n\nROS: Negative except as above. Periods regular.\n\nExam:\nVitals as recorded. BMI normal.\nGen: well-appearing, pleasant.\nHEENT: TMs clear, oropharynx without lesions. Neck supple, thyroid normal size, no lymphadenopathy.\nCV: RRR, no murmur.\nLungs: CTA bilaterally.\nAbd: soft, NT/ND, normal bowel sounds, no masses or HSM.\nExt: warm, no edema.\nSkin: no rashes.\nNeuro/psych: grossly nonfocal; mood and affect normal.\n\nPHQ-2: 0. AUDIT-C: 2.\n\nAssessment/Plan:\n1. Health maintenance, new patient. Baseline CBC, CMP, lipids. HIV and hep C one-time screens offered and accepted. Tdap today - last one at 11 per her recollection, will confirm against outside records. Flu shot once supply is in, nurse visit next month. Cervical screening to start at her next physical.\n2. Functional constipation - longstanding, no alarm features. TSH and calcium with today's labs. Keep using psyllium; talked about fluids and not putting off the bathroom on long shifts.\n\nReturn in 1 year for physical, sooner as needed. She has my cell for anything in between."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "portal_message",
+          "start": "2022-09-12T07:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results - New Patient Labs",
+              "author": "PCP",
+              "date": "2022-09-12T07:48",
+              "body": "Hi Sophia,\n\nAll of your bloodwork from last week came back normal - blood counts, kidney and liver tests, calcium, thyroid and cholesterol. The HIV and hepatitis C screening tests were both negative. Nothing to change.\n\nTalk soon,\nYour primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T14:30",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2012-01-10T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2012-01-10T10:05"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2012-01-10T10:10"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2012-08-14T15:20"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2017-03-02T16:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-12T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-03T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "author": "front desk",
+              "date": "2022-09-20T14:30",
+              "body": "Records received by fax, 9 pages. Scanned to media.\n\nSummary entered by staff:\n- Immunization record: childhood series complete (DTaP/IPV/Hib/HepB/MMR/varicella per the printout). Adolescent: Tdap and MenACWY 01/2012, MenACWY booster 03/2017, HPV quadrivalent x2 (01/2012, 08/2012). COVID-19 Pfizer primary series 04/2021 and 05/2021.\n- Last well visit there 2021: well, constipation noted, fiber suggested.\n- Allergies on their list: NKDA.\n- No screening labs or Pap on file.\n\nImmunizations abstracted to chart. Tdap date matches what pt told us - the 9/8 Tdap is the 10-year booster."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "nurse_visit",
+          "start": "2022-10-19T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-19T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-19T16:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-19T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2022-10-19T16:20",
+              "body": "In after her bakery shift for flu and COVID booster. Screening questions negative; no prior vaccine reactions. VIS/EUA fact sheet given.\n\nInfluenza quadrivalent 0.5 mL IM left deltoid.\nPfizer bivalent booster 0.3 mL IM right deltoid.\n\nObserved 15 min, tolerated well, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "portal_message",
+          "start": "2023-03-07T19:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Constipation question",
+              "author": "patient",
+              "date": "2023-03-07T19:41",
+              "body": "Hi! Quick question, not urgent. We've had a lot of long shifts at the bakery lately and I basically don't get a real break, so I've been going like 3-4 days without going. The psyllium still works when I take it but I keep forgetting until it's already bad. Is it ok to just take it every day? Or should I be doing something else?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Constipation question",
+              "author": "PCP",
+              "date": "2023-03-08T07:15",
+              "body": "Hi Sophia - yes, taking the psyllium every day during the busy stretches is completely fine, and honestly works better that way than waiting until you're backed up. Same dose, lots of water with it. A water bottle at your station helps, and try to give yourself a few minutes in the morning before your shift, since that's when the gut is most active. If you start having pain, blood, or it stops responding to the fiber, let me know and we'll take a closer look."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "annual_physical",
+          "start": "2023-08-24T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-08-24T13:35",
+              "resulted": "2023-08-26T09:20",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-08-24T13:30",
+              "issued": "2023-08-29T15:10",
+              "text": "Specimen: cervical, liquid-based preparation.\nSpecimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present.\nInterpretation: Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-24T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2023-08-24T13:00",
+              "body": "Annual physical.\n\nS: Doing well. Still at the bakery, more hours this summer. Constipation better since she started taking the psyllium daily on heavy weeks - most weeks now regular. No other concerns. Sexually active; reviewed STI screening, agreeable. LMP 2 weeks ago, regular.\nMeds: psyllium PRN/daily on busy weeks. Allergies: NKDA.\nSH: never smoker, a drink or two on weekends.\n\nO: Vitals reviewed, normal.\nGeneral: well.\nNeck: no thyromegaly or nodes.\nHeart RRR without murmur; lungs clear.\nAbdomen soft, nontender.\nPelvic: normal external genitalia; speculum exam with normal-appearing cervix, Pap collected. Tolerated with some nerves - first one, talked her through it.\nSkin: no concerning lesions.\n\nPHQ-2 0. AUDIT-C 2.\n\nA/P:\n- Health maintenance: first Pap today (age 22). Urine GC/CT. Tdap current (2022). Flu and COVID this fall, nurse visit.\n- Functional constipation: stable on fiber.\n\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-30a",
+          "kind": "portal_message",
+          "start": "2023-08-30T08:02",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap and STI screening results",
+              "author": "PCP",
+              "date": "2023-08-30T08:02",
+              "body": "Hi Sophia, your Pap came back normal, and the chlamydia and gonorrhea tests were negative. With a normal Pap at your age the next one is in 3 years (2026). Thanks for getting through the first one!"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T15:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T15:57"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "MA",
+              "date": "2023-10-11T15:50",
+              "body": "Flu + 2023-24 COVID today. Denies fever or illness; no reactions to last year's shots other than a sore arm. VIS reviewed.\nFlu quadrivalent 0.5 mL IM L deltoid, lot recorded.\nCOVID (Pfizer, updated) 0.3 mL IM R deltoid, lot recorded.\nWaited 15 min, no issues."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

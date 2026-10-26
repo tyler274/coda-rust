@@ -1,0 +1,399 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001708",
+      "given": "Wanda",
+      "family": "Ortiz",
+      "birth_date": "1990-06-25",
+      "address_line": "57 Lincoln St, Apt 3",
+      "phone": "+1-413-555-0100",
+      "email": "wanda.ortiz@example.test",
+      "marital_status": "partnered",
+      "summary": "High school teacher in Holyoke with HPV and CIN 3 treated by LEEP, followed by outside gynecology, who joins in 2021. Asherman syndrome after a D&C is treated, then two pregnancies: a cesarean with postdural puncture headache in 2024, and a 2025 pregnancy with GDM and gestational hypertension, a third-degree laceration, and late postpartum preeclampsia with severe features. 2026 brings de Quervain tenosynovitis, melasma and lactational atrophic vaginitis.",
+      "events": [
+        {
+          "id": "2021-07-20a",
+          "kind": "telephone",
+          "start": "2021-07-20T10:12",
+          "reason": "New patient scheduling and records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2021-07-20T10:12",
+              "body": "Caller is a new patient, Wanda Ortiz, DOB 06/25/1990. Moved her care here because her old primary care office closed its Holyoke site. Insurance PPO, card scanned from portal upload. Booked new patient physical 8/10 at 9:00.\n\nRelease signed electronically. Faxed requests today to:\n- prior primary care office (last 5 years)\n- her gynecology practice (colposcopy, LEEP, Paps)\n\nPatient asked that GYN keep doing her Paps since they know her history. Told her that's fine and we will keep copies."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-03a",
+          "kind": "outside_records",
+          "start": "2021-08-03T14:40",
+          "reason": "Records from prior primary care office",
+          "conditions": [
+            {"label": "Acquired absence of gallbladder", "action": "history", "onset": "2016-05-01", "note": "Laparoscopic cholecystectomy 2016"}
+          ],
+          "procedures": [
+            {"procedure": "Laparoscopic cholecystectomy", "performed": "2016-05-01T08:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care summary",
+              "author": "outside primary care",
+              "date": "2021-08-03T14:40",
+              "body": "Continuity of care summary, prior primary care office, printed 07/28/2021.\n\nPatient: Wanda Ortiz, F, DOB 06/25/1990.\n\nProblems: Status post laparoscopic cholecystectomy (2016, uncomplicated). HPV / cervical dysplasia, managed by gynecology.\n\nMedications: none.\nAllergies: no known drug allergies.\n\nLast physical 09/2020: well. Blood pressure and weight normal. CBC and metabolic panel normal. Never smoker, no alcohol. Works as a high school teacher.\n\nImmunizations on file: Tdap 2014, influenza yearly through 10/2020.\n\nNo hospital admissions on file in the period requested apart from the 2016 surgery."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-05a",
+          "kind": "outside_records",
+          "start": "2021-08-05T11:05",
+          "reason": "Records from gynecology",
+          "conditions": [
+            {"label": "Human papillomavirus infection", "icd10": "B97.7", "action": "diagnosed", "onset": "2020-11-01"},
+            {"label": "History of cervical intraepithelial neoplasia grade 3, post-treatment surveillance", "icd10": "Z87.410", "action": "diagnosed", "onset": "2020-12-01", "note": "LEEP 01/07/2021, margins free"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2021-01-07T09:30", "issued": "2021-01-12T15:00", "text": "Specimen: cervix, loop electrosurgical excision.\nDiagnosis: high-grade squamous intraepithelial lesion (CIN 3). Ectocervical, endocervical and deep margins free of dysplasia. No invasive carcinoma identified.", "conclusion": "CIN 3, margins free."},
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2021-06-17T10:00", "issued": "2021-06-23T12:00", "text": "Liquid-based cytology. Specimen adequate, transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.\nHigh-risk HPV: not detected.", "conclusion": "NILM. High-risk HPV not detected."}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecology records: colposcopy, LEEP, follow-up co-test",
+              "author": "gynecology",
+              "date": "2021-08-05T11:05",
+              "body": "Records sent at patient request. Summary from gynecology:\n\nOB history: G1P0. Pregnancy loss with infection in 09/2020 (septic abortion), treated with antibiotics; recovered fully.\n\nCervical history: HPV-related dysplasia. Colposcopy late 2020 with biopsy showing CIN 3. LEEP conization performed 01/07/2021; pathology CIN 3 with all margins free. Six-month co-test 06/17/2021 normal, HPV negative.\n\nPlan on file: co-test again in one year, surveillance per ASCCP. Next GYN visit due June 2022.\n\nAllergies: NKDA. Medications: none. Monogamous relationship with one partner for several years."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-10a",
+          "kind": "establish_care",
+          "start": "2021-08-10T09:00",
+          "end": "2021-08-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 64.2, "height_cm": 163.0, "labs": {"Total Cholesterol": 174, "Thyroid Stimulating Hormone": 1.9, "Hemoglobin A1c": 5.2}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "High school teacher"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "GAD-7 total score", "value": 2}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-06T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-27T10:00"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-08-10T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-08-10T10:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2021-08-10T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2021-08-10T10:05", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Hemoglobin A1c"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2021-08-10T09:00"},
+            {"procedure": "Venipuncture", "performed": "2021-08-10T10:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "author": "PCP",
+              "date": "2021-08-10T10:00",
+              "body": "31 y/o woman establishing care. Previous primary care office closed its local site. Feels well; here mostly to have a doctor.\n\nPMH:\n- HPV, CIN 3 on colposcopic biopsy late 2020 -> LEEP 1/7/21, margins clear (path in chart). 6-mo co-test 6/2021 neg/neg. Followed by her GYN, next visit June 2022.\n- s/p lap chole 2016.\n\nOB: G1P0. Loss in 9/2020 complicated by infection (septic abortion), treated w/ antibiotics, no lasting problems per pt.\nMenses regular, monthly.\n\nMeds: none. NKDA.\n\nFH: mother T2DM. Sister had preeclampsia with her pregnancy. Paternal grandmother HTN. No early heart disease, no cancers she knows of.\n\nSH: teaches high school. Lives with her partner, together about 4 years, monogamous. Never smoked, doesn't drink. Walks most evenings. Got both Pfizer doses in March through the school district clinic.\n\nROS: negative in detail. No pelvic pain, no abnormal bleeding.\n\nExam: vitals per flowsheet, BMI about 24. Pleasant, well. HEENT clear, TMs normal. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, healed lap scars, nontender. Skin clear. No edema. Pelvic deferred to GYN.\n\nPHQ-2 0, GAD-7 2.\n\nA/P\n1. Health maintenance - CBC, CMP, lipids, TSH. A1c given mother's diabetes. One-time HIV and hep C, she agrees. Flu shot in the fall; booster when the school gets guidance. Tdap from 2014, good until 2024 or pregnancy.\n2. CIN 3 s/p LEEP - surveillance with GYN; asked them to copy us on results.\n3. They may try for a pregnancy in the next year or two; she will let us know.\n\nRTC 1 year or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-12a",
+          "kind": "portal_message",
+          "start": "2021-08-12T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your new patient labs",
+              "author": "PCP",
+              "date": "2021-08-12T16:20",
+              "body": "Hi Wanda,\n\nEverything from Tuesday came back fine. Blood counts, kidney and liver tests, thyroid and cholesterol are all normal. Your A1c (3-month sugar average) is normal too, which is good to have on file given your mom's history. HIV and hepatitis C screens are negative, and we don't need to repeat those.\n\nGood to meet you. Enjoy the last couple weeks of summer before the kids are back.\n\nYour primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-07a",
+          "kind": "nurse_visit",
+          "start": "2021-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-07T15:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2021-10-07T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "author": "RN",
+              "date": "2021-10-07T15:40",
+              "body": "Came after school for flu shot. Feels well, no fever. Not pregnant per pt. No prior vaccine reactions.\nQuadrivalent influenza 0.5 mL IM left deltoid. VIS given. Tolerated; waited 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "pharmacy",
+          "start": "2021-11-09T17:45",
+          "reason": "COVID booster given at pharmacy",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-09T17:45"}
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization notice",
+              "author": "pharmacy",
+              "date": "2021-11-10T08:00",
+              "body": "Immunization administered at community pharmacy.\nPatient: Wanda Ortiz, DOB 06/25/1990.\nVaccine: Pfizer-BioNTech COVID-19 vaccine, booster dose, 0.3 mL IM right deltoid, 11/09/2021.\nScreening questions answered no. Reported to state registry."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-29a",
+          "kind": "portal_message",
+          "start": "2021-11-29T19:02",
+          "reason": "Pregnancy loss",
+          "conditions": [
+            {"label": "Missed abortion", "icd10": "O02.1", "action": "diagnosed", "onset": "2021-11-29"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Letting you know",
+              "author": "patient",
+              "date": "2021-11-29T19:02",
+              "body": "Hi, I wanted to tell you since you asked me to keep you posted. I found out I was pregnant at the start of the month and had my first ultrasound with my GYN today. There was no heartbeat and the baby measured small, so it stopped growing. They're doing a D&C on Thursday. I'm OK, just sad. Do I need anything from you before the procedure?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Letting you know",
+              "author": "PCP",
+              "date": "2021-11-30T07:48",
+              "body": "Wanda, I'm so sorry. Thank you for telling me. You don't need anything from us before Thursday; your GYN's team will handle the pre-procedure instructions. Please take a day or two off if you can.\n\nOur nurse will call you in a few weeks to check in. If you're having a hard time before then, message me any time."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "outside_records",
+          "start": "2021-12-13T09:30",
+          "reason": "Procedure note from gynecology",
+          "conditions": [
+            {"label": "Missed abortion", "icd10": "O02.1", "action": "resolved"}
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Dilation and curettage",
+              "author": "gynecology",
+              "date": "2021-12-13T09:30",
+              "body": "Date of procedure: 12/02/2021.\nPreoperative diagnosis: missed abortion, 8 weeks by dates.\nPostoperative diagnosis: same.\nProcedure: suction dilation and curettage.\nAnesthesia: monitored anesthesia care with paracervical block.\nFindings: uterus anteverted, about 8-week size. Products of conception removed, tissue sent to pathology.\nComplications: none.\nDisposition: home the same day. Pelvic rest two weeks. Expect return of menses in 4 to 6 weeks. Follow-up as scheduled in June for cervical surveillance, sooner if heavy bleeding or fever."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "telephone",
+          "start": "2022-01-11T15:50",
+          "reason": "Check-in after pregnancy loss",
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse check-in",
+              "author": "RN",
+              "date": "2022-01-11T15:50",
+              "body": "Called per PCP request after D&C on 12/2. Pt reports she recovered without problems, bleeding stopped within the first week, no fever. Period came back early January, lighter than she is used to. Mood \"up and down over the holidays but better\". PHQ-2 1. Back at work, says the students keep her busy. Has her partner and her sister to talk to. Declines counseling referral for now, knows to reach out. Nothing further needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-27a",
+          "kind": "outside_records",
+          "start": "2022-06-27T13:15",
+          "reason": "Gynecology surveillance letter",
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2022-06-16T10:40", "issued": "2022-06-22T11:00", "text": "Liquid-based cytology. Specimen adequate, transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.\nHigh-risk HPV: not detected.", "conclusion": "NILM. High-risk HPV not detected."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit: cervical surveillance",
+              "author": "gynecology",
+              "date": "2022-06-27T13:15",
+              "body": "Visit date: 06/16/2022\nRe: Wanda Ortiz, DOB 06/25/1990\n\nMs. Ortiz came in for her scheduled surveillance visit, now about a year and a half out from LEEP for CIN 3. Pathology at that time showed clear margins. Since then she has had no bleeding between periods, no unusual discharge and no pelvic pain. Her co-test last June was normal.\n\nHer question today was how often she will need testing from here on.\n\nHistory: HPV, CIN 3 treated as above. Septic abortion 2020 treated with antibiotics. Missed abortion with D&C 12/2021. Lap cholecystectomy 2016. No medications. No known drug allergies. Family history of type 2 diabetes in her mother, preeclampsia in a sister, hypertension in a paternal grandmother. Never smoker, no alcohol, teaches high school. Same partner for five years, no new partners.\n\nExam: external genitalia normal. Speculum: cervix with healed LEEP changes, no lesion, no discharge. Bimanual not tender.\n\nCo-test collected today. Result: NILM, high-risk HPV not detected.\n\nPlan: We reviewed the schedule after treatment of CIN 3: HPV-based co-testing yearly until there are three negative results in a row, then every three years for at least 25 years, even past 65. With today's result she has two consecutive negatives; next co-test June 2023.\n\nAllergies: NKDA. Thank you for sharing her care."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "annual_physical",
+          "start": "2022-08-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-08-09T08:40", "resulted": "2022-08-09T08:55", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-09T09:10", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-08-09T09:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2022-08-09T09:10", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-08-09T08:30"},
+            {"procedure": "Venipuncture", "performed": "2022-08-09T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-08-09T09:25",
+              "body": "Annual. Turned 32 in June.\n\nInterval: D&C in December for missed abortion, recovered. Saw GYN in June, co-test negative again; next one June 2023.\n\nShe brings up her periods: after the D&C they came back but have been much lighter, and she has had none since mid-June. Some crampy lower pelvic pain on and off. Not using contraception, not actively trying right now. Urine hCG today negative. No hot flashes, galactorrhea, headaches or weight change.\n\nMeds none. NKDA. FH and SH unchanged; still teaching, summer off.\n\nExam: vitals per flowsheet. Well appearing. Neck no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Skin normal, no acne or hirsutism. No edema.\n\nPHQ-9 2.\n\nA/P\n1. Lighter periods after D&C, now about 2 months without one; hCG negative. Could be a slow return, but the timing after a curettage matters. She would rather have her GYN look into it since they did the procedure. Will send our note. If no period by the time she sees them, they should evaluate.\n2. Health maintenance - CBC, BMP, TSH today. Flu shot in October. Next COVID booster when the updated one is out.\n\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-11a",
+          "kind": "portal_message",
+          "start": "2022-08-11T12:35",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your physical",
+              "author": "PCP",
+              "date": "2022-08-11T12:35",
+              "body": "Hi Wanda, your blood count, kidney function, sugar and thyroid are all normal. The thyroid being normal is one less thing to think about with your periods. I sent my note over to your GYN; please call them to move up your visit if you can rather than waiting for December."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs from your physical",
+              "author": "patient",
+              "date": "2022-08-11T20:10",
+              "body": "Thank you. I called and they said the soonest non-urgent opening is December 9 but they put me on the cancellation list."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T15:45"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-04T15:45"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "author": "MA",
+              "date": "2022-10-04T15:50",
+              "body": "Flu vaccine, quadrivalent, 0.5 mL IM L deltoid. Afebrile, no allergies, no reaction to past flu shots. VIS reviewed. Pt left in good condition after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-21a",
+          "kind": "pharmacy",
+          "start": "2022-10-21T16:30",
+          "reason": "Bivalent COVID booster at pharmacy",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-21T16:30"}
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy immunization notice",
+              "author": "pharmacy",
+              "date": "2022-10-22T08:00",
+              "body": "Pfizer-BioNTech COVID-19 vaccine, bivalent booster, 0.3 mL IM left deltoid, given 10/21/2022 at community pharmacy. No immediate reaction observed. Registry updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "outside_records",
+          "start": "2022-12-19T10:20",
+          "reason": "Gynecology letter: amenorrhea workup",
+          "conditions": [
+            {"label": "Asherman syndrome", "icd10": "N85.6", "action": "diagnosed", "onset": "2022-06-01"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-12-09T09:20", "resulted": "2022-12-09T15:30", "results": [
+              {"test": "Choriogonadotropin.beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "text": "<5"},
+              {"test": "Follicle Stimulating Hormone", "value": 7.2},
+              {"test": "Luteinizing hormone", "loinc": "10501-5", "unit": "m[IU]/mL", "value": 6.8},
+              {"test": "Prolactin", "value": 14},
+              {"test": "Thyroid Stimulating Hormone", "value": 2.1}
+            ]}
+          ],
+          "reports": [
+            {"study": "Hysterosalpingogram", "loinc": "25022-5", "performed": "2022-12-09T13:00", "issued": "2022-12-09T16:10", "text": "Indication: secondary amenorrhea after uterine curettage.\nTechnique: after sterile preparation, the cervix was cannulated and water-soluble contrast instilled under fluoroscopy. Patient tolerated the procedure.\nFindings: the cervical canal opacifies normally. There is a filling defect within the uterine cavity. Contrast passes only scantly into the proximal portions of both fallopian tubes. No contrast extravasation.", "conclusion": "Filling defect in the uterine cavity with scant opacification of the proximal fallopian tubes, consistent with intrauterine adhesions in this clinical setting."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit: absent periods",
+              "author": "gynecology",
+              "date": "2022-12-19T10:20",
+              "body": "Visit date: 12/09/2022\nRe: Wanda Ortiz, DOB 06/25/1990\n\nMs. Ortiz returns six months after her surveillance visit, this time because she has not had a period since June, with intermittent pelvic pain. Her cycles were regular until the suction D&C for missed abortion a year ago. Since then each period has been lighter, and cramping has been worse, until they stopped altogether. Of note, she also had a septic abortion two years ago, treated with antibiotics.\n\nCIN 3 history is unchanged; co-test in June was negative.\n\nMeds: none. Allergies: no known drug allergies.\n\nExam: abdomen soft, not tender. Pelvic: uterus of normal size, no adnexal masses, no tenderness.\n\nLabs today: beta-hCG <5 mIU/mL. FSH 7.2 mIU/mL, LH 6.8 mIU/mL, prolactin 14 ng/mL, TSH 2.1 mIU/L, all within range.\n\nHysterosalpingogram today shows a filling defect in the cavity and only scant passage of contrast into the proximal tubes.\n\nImpression: Asherman syndrome (intrauterine adhesions) after curettage, with normal pituitary, ovarian and thyroid hormone results.\n\nPlan: operative hysteroscopy with lysis of adhesions, scheduled for January 2023. Discussed that pregnancy is often possible afterward and that she should wait for our clearance before trying. Cervical co-test due June 2023."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "portal_message",
+          "start": "2022-12-20T21:14",
+          "reason": "Question about new diagnosis",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Asherman?",
+              "author": "patient",
+              "date": "2022-12-20T21:14",
+              "body": "Hi doctor, my GYN says I have Asherman syndrome from the D&C and they're doing a hysteroscopy in January to fix the scar tissue. I've been reading online and now I'm scared I can't have kids. Did they send you the report? Is this something you've seen people get through?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Asherman?",
+              "author": "PCP",
+              "date": "2022-12-21T07:30",
+              "body": "Hi Wanda, yes, I have the letter and the X-ray report. Your hormone levels were all normal, which is good news: it means your ovaries and thyroid are doing their job and the problem is the scar tissue inside the uterus. Hysteroscopy to remove those adhesions is the standard treatment, and many women do go on to have healthy pregnancies afterward. Your GYN is the right person for the details on your odds.\n\nPlease try to stay off the forums over break. If you'd like to talk it over in person, I can see you."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

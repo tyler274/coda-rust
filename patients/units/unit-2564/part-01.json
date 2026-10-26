@@ -1,0 +1,371 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002564",
+      "given": "Tyler",
+      "family": "Wilder",
+      "birth_date": "1992-07-02",
+      "address_line": "41 Overlook Terrace",
+      "phone": "+1-802-555-0172",
+      "email": "tyler.wilder@example.test",
+      "marital_status": "single",
+      "summary": "Healthy 32-year-old sales representative who joined in September 2024, then had two high-speed car crashes as a restrained driver: January 2025 left hemothorax with shock, rib fractures, trauma DIC and a right femoral shaft fracture nailed in hospital; June 2026 a second left hemothorax with shock treated with a chest tube. Recovered both times; anemia followed to resolution.",
+      "events": [
+        {
+          "id": "2024-09-03a",
+          "kind": "telephone",
+          "start": "2024-09-03T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2024-09-03T10:12",
+             "body": "Caller Tyler Wilder, DOB 7/2/1992, wants to set up primary care here. No current doctor nearby; last physical was a couple of years ago at a practice out of state. Membership details and fees reviewed, he signed up online while on the phone. Insurance UHC PPO through employer, card photo uploaded. New patient visit booked 9/10 at 8:00. Asked him to send a records release for his old office; form emailed."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:00",
+          "end": "2024-09-10T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 81.2, "height_cm": 180.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "rr", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social drinker, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Regional sales representative"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-10T08:45", "results": [{"test": "Hemoglobin", "value": 15.0}, {"test": "Hematocrit", "value": 45}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T08:45", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-10T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-09-10T08:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-09-10T08:45", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2024-09-10T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2024-09-10T08:50",
+             "body": "32M here to get set up with a PCP. Feels well. No complaints today. Works as a regional sales rep, covers a big territory by car.\n\nPMH: none. PSH: none. Meds: none, occasional ibuprofen for a sore back after long drives. Allergies: NKDA.\nFH: dad with HTN since his mid-50s, well controlled. Mom hypothyroid. Nobody with bleeding problems or clots that he knows of.\nSH: lives alone in Florence. Never smoked. One or two beers a week, usually less. No drugs. Plays pickup basketball when he can.\nVaccines: thinks he had a tetanus shot around 2019; records requested.\n\nROS: negative in full.\n\nExam: Pleasant, fit-appearing. Vitals in flowsheet, BP fine. HEENT unremarkable. Neck supple, no thyromegaly. Heart RRR, no murmur. Lungs clear throughout. Abd soft, NT, no HSM. Ext warm, no edema. Skin clear. Neuro grossly intact. Mood bright.\n\nA/P: Healthy adult, new to practice.\n- Baseline CBC, CMP, lipid panel today.\n- One-time HIV and HCV screening, he agrees.\n- PHQ-2 0.\n- Flu and COVID shots when the fall supply lands, RN visit next month.\n- Old records to be scanned when they arrive.\nRTC 1 yr for physical, sooner prn."}
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2024-09-12T16:40",
+             "body": "Hi Tyler, everything from Tuesday came back normal. Blood count is solid (hemoglobin 15.0), kidney and liver tests normal, cholesterol fine, and the HIV and hepatitis C screens were negative. Nothing to change. Good to meet you."}
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "outside_records",
+          "start": "2024-09-24T11:05",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records received", "author": "MA", "date": "2024-09-24T11:05",
+             "body": "Records from prior PCP office received by fax, 14 pages, scanned to media.\nAbstracted:\n- Physical 6/2022: normal exam, BP 118/74, BMI 24.9. CBC and BMP normal.\n- Tdap given 4/2019.\n- No chronic problems, no prescriptions on file, NKDA.\nVaccine history updated. Routed to PCP for review."}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-04-11T10:00"}]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T17:20",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-17T17:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-17T17:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-17T17:25"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization visit", "author": "RN", "date": "2024-10-17T17:40",
+             "body": "In after work for vaccines. Feels well, no fever. No prior vaccine reactions. Flu 0.5 mL IM L deltoid, COVID 0.3 mL IM R deltoid, lots and VIS documented. Waited 15 min, no problems, left ambulatory."}
+          ]
+        },
+        {
+          "id": "2025-01-03a",
+          "kind": "hospital_admission",
+          "start": "2025-01-03T16:48",
+          "end": "2025-01-11T13:30",
+          "service": "Trauma Surgery",
+          "reason": "high-speed motor vehicle collision with chest injury",
+          "vitals": [
+            {"time": "2025-01-03T16:52", "bp": [90, 60], "hr": 120, "rr": 28, "spo2": 92},
+            {"time": "2025-01-03T21:10", "bp": [90, 60], "hr": 120, "rr": 22, "temp_c": 37.2}
+          ],
+          "conditions": [
+            {"label": "Traumatic hemothorax with hypovolemic shock", "icd10": "S27.1XXA", "action": "diagnosed", "onset": "2025-01-03"},
+            {"label": "Multiple fractures of ribs, left side", "icd10": "S22.42XA", "action": "diagnosed", "onset": "2025-01-03"},
+            {"label": "Disseminated intravascular coagulation", "icd10": "D65", "action": "diagnosed", "onset": "2025-01-03"},
+            {"label": "Acute posthemorrhagic anemia", "icd10": "D62", "action": "diagnosed", "onset": "2025-01-03"},
+            {"label": "Contusion of chest wall", "icd10": "S20.20XA", "action": "diagnosed", "onset": "2025-01-03"},
+            {"label": "Blunt chest trauma", "icd10": "S29.9XXA", "action": "diagnosed", "onset": "2025-01-03"},
+            {"label": "Fracture of shaft of right femur, closed", "icd10": "S72.301A", "action": "diagnosed", "onset": "2025-01-03"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-01-03T16:58", "results": [{"test": "Hemoglobin", "value": 11}, {"test": "Hematocrit", "value": 33}, {"test": "White Blood Cells", "value": 12.0}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-01-03T21:05", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Platelets", "value": 55}]},
+            {"panel": null, "collected": "2025-01-03T21:05", "results": [{"test": "Prothrombin Time", "value": 18}]},
+            {"panel": null, "collected": "2025-01-03T21:05", "results": [
+              {"test": "Activated partial thromboplastin time", "loinc": "3173-2", "unit": "s", "value": 45},
+              {"test": "Fibrinogen", "loinc": "3255-7", "unit": "mg/dL", "value": 150},
+              {"test": "D-dimer", "loinc": "48065-7", "unit": "ng/mL{FEU}", "text": "Elevated"}
+            ]},
+            {"panel": null, "collected": "2025-01-05T05:30", "results": [{"test": "Platelets", "value": 138}]},
+            {"panel": null, "collected": "2025-01-05T05:30", "results": [{"test": "Prothrombin Time", "value": 13.6}]},
+            {"panel": null, "collected": "2025-01-05T05:30", "results": [{"test": "Fibrinogen", "loinc": "3255-7", "unit": "mg/dL", "value": 236}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-01-11T06:10", "results": [{"test": "Hemoglobin", "value": 9.1}, {"test": "Platelets", "value": 296}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2025-01-03T17:02", "text": "Portable AP chest, supine trauma film. Displaced fractures of several left lateral ribs. Large opacity layering over most of the left hemithorax, consistent with fluid. Right lung clear. Trachea midline. Heart size not well assessed on a supine film. No pneumothorax seen on this view.", "conclusion": "Multiple left rib fractures with a large left-sided fluid collection, likely hemothorax."},
+            {"study": "Chest X-ray, 1 view", "performed": "2025-01-07T07:15", "text": "Portable AP chest after removal of the left chest tube. Left lung expanded. Small blunting of the left costophrenic angle. No pneumothorax. Left rib fractures again seen. Right lung clear.", "conclusion": "No pneumothorax after tube removal; small left costophrenic blunting."}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain", "dose": {"value": 1, "unit": "tablet"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "rib and femur fracture pain"},
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "acute blood loss anemia"}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-01-03T16:48"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-01-03T21:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-01-11T12:00"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-01-13T09:20",
+             "body": "Regional hospital Emergency Department. Date of service 01/03/2025.\n\nCC: chest pain, short of breath after MVC.\n\nHPI: 32-year-old man brought by EMS from a highway crash at high speed. Driver. Reports severe left-sided chest pain and trouble getting a breath since the impact.\n\nPMH none. Meds none. NKDA. Never smoker, social alcohol. Works in sales.\nFH: father HTN, mother hypothyroid, no bleeding or clotting disorders.\n\nTriage: RR 28, BP 90/60, HR 120, SpO2 92% RA.\n\nExam: Anxious and sweaty. Left chest with diminished breath sounds and dull to percussion. Neck veins flat. Abdomen soft, nontender.\n\nLabs: Hgb 11 (prior 15 per PCP records), Hct 33 (prior 45), WBC 12.0, plt 250.\nImaging: portable CXR with multiple left rib fractures and large left hemithorax opacification consistent with fluid.\n\nCourse: two large-bore IVs, massive transfusion protocol activated, trauma surgery at bedside. Left 28 Fr chest tube placed in the ED with immediate return of blood. Red cells and plasma running. Admitted to the trauma ICU.\n\nImpression: traumatic left hemothorax with hypovolemic shock; multiple left rib fractures.\nAllergies: NKDA."},
+            {"type": "History and Physical", "title": "Trauma ICU Admission Note", "author": "critical care", "date": "2025-01-13T09:21",
+             "body": "Regional hospital Surgical/Trauma ICU. Date of service 01/03/2025, 21:00.\n\nReason for admission: hemorrhagic shock after MVC, worsening coagulation labs.\n\nInterval: came up from the ED this evening after left chest tube placement and initial transfusion. Was the belted driver; airbags went off. Now restless and disoriented, pulling at lines.\n\nVitals: BP 90/60, HR 120, RR 22, T 37.2 C (99.0 F).\n\nExam (secondary survey): bruising across the chest and abdomen. Right thigh visibly deformed, distal pulses present. Persistent oozing at IV sites. Chest tube to suction, bloody output.\n\nLabs: Hgb 10.2, plt 55, PT 18 s, PTT 45 s, fibrinogen 150, D-dimer elevated.\n\nAssessment:\n1. Hemorrhagic (hypovolemic) shock from left traumatic hemothorax, chest tube in place.\n2. Trauma-associated DIC: low platelets and fibrinogen, prolonged PT/PTT, high D-dimer, oozing.\n3. Acute blood loss anemia.\n4. Chest and abdominal wall contusions from blunt trauma; left rib fractures.\n5. Right femur deformity, x-ray ordered.\n6. Agitation/confusion, likely hypoperfusion; reassess as volume restored.\n\nPlan: continue balanced transfusion with red cells, plasma, platelets and cryoprecipitate; repeat coags every 6 h; femur x-ray and traction splint, orthopedics consult; serial chest tube output; pain control.\n\nAddendum 23:40: femur film shows a displaced right femoral shaft fracture, closed. Splinted. Ortho to fix when coagulation allows.\nAllergies: NKDA."},
+            {"type": "Operative Note", "title": "Operative Report: Right Femur", "author": "orthopedic surgery", "date": "2025-01-13T09:22",
+             "body": "Regional hospital, Department of Orthopaedics. Date of surgery 01/05/2025.\n\nPreop/postop diagnosis: closed right femoral shaft fracture.\nProcedure: antegrade intramedullary nailing, right femur, with proximal and distal interlocking screws.\nAnesthesia: general.\nIndication: closed shaft fracture in a polytrauma patient, coagulopathy now corrected (plt 138, PT 13.6, fibrinogen 236 this morning).\n\nFindings: transverse midshaft fracture, reduced closed. Good canal fill. Fluoroscopy with restored length, alignment and rotation.\nEBL 300 mL. No complications. Staples to wounds.\n\nPostop: weight bearing as tolerated with walker. Staples out in about 2 weeks at clinic.\nAllergies: NKDA."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "trauma surgery", "date": "2025-01-13T09:23",
+             "body": "Regional hospital Trauma Surgery. Admitted 01/03/2025, discharged 01/11/2025.\n\nDiagnoses:\n- Left traumatic hemothorax with hypovolemic shock\n- Multiple left rib fractures\n- Disseminated intravascular coagulation, trauma-related, resolved\n- Acute posthemorrhagic anemia\n- Chest wall contusion / blunt chest trauma\n- Closed right femoral shaft fracture, s/p IM nail 01/05\n\nCourse: Restrained driver in a high-speed crash. Arrived in shock with a large left hemothorax; left chest tube in the ED and massive transfusion. In the ICU developed DIC with oozing and low platelets and fibrinogen, corrected with red cells, plasma, platelets and cryoprecipitate by hospital day 2. Confusion cleared once perfusion improved. Right femur nailed 01/05. Chest tube output tapered and it was pulled 01/07; film afterward showed an expanded lung, no pneumothorax and slight left costophrenic blunting. Moved to the floor 01/06. Working with PT, walker.\n\nDischarge labs: Hgb 9.1, plt 296, PT normal.\n\nDischarge medications:\n- Oxycodone/acetaminophen 5/325, 1 tab every 6 h as needed for severe pain, #28\n- Ferrous sulfate 325 mg daily\n\nAllergies: NKDA.\n\nFollow-up: Orthopaedics clinic 2 weeks (staples). Trauma clinic 3-4 weeks with chest x-ray. PCP within 1 week, CBC.\nActivity: WBAT right leg with walker. No driving while on opioids."}
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "telephone",
+          "start": "2025-01-13T14:05",
+          "reason": "post-discharge outreach",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2025-01-13T14:05",
+             "body": "Called pt 2 days after discharge from the regional hospital (MVC, chest tube, femur nail). Discharge summary in chart. He is at home and managing. Pain 5/10, uses the oxycodone tab 2-3x/day. Breathing ok, no fever. Leg incisions dry. Walking to the bathroom and kitchen with walker. Taking iron, a little constipated, advised fluids and OTC stool softener. Has both meds in hand. Visit set for Thu 1/16, has a ride."}
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "office_visit",
+          "start": "2025-01-16T10:30",
+          "end": "2025-01-16T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "measure": ["bp", "hr", "spo2", "temp_c", "rr", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-01-16T11:00", "results": [{"test": "Hemoglobin", "value": 10.6}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Iron Studies", "collected": "2025-01-16T11:00", "results": [{"test": "Ferritin", "value": 38}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-16T11:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "conditions": [{"label": "Disseminated intravascular coagulation", "icd10": "D65", "action": "resolved", "note": "corrected in hospital, coagulation normal at discharge"}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-01-16T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2025-01-16T11:15",
+             "body": "Post-hospital visit. Reviewed regional hospital records in full: high-speed MVC 1/3, L hemothorax with hemorrhagic shock, L rib fxs, chest tube, massive transfusion, trauma DIC (resolved), R femoral shaft fx s/p IM nail 1/5, d/c 1/11 with Hgb 9.1.\n\nS: Sore, especially the left ribs with deep breaths and the right thigh at night. Using oxycodone/APAP about twice a day, down from three. Breathing easier every day. No fever, cough or bloody sputum. No bleeding or new bruising. Bowels moving with senna. Sleeping on the couch.\n\nMeds: oxycodone/APAP 5/325 prn, ferrous sulfate 325 daily. NKDA.\n\nO: Vitals in flowsheet. Uncomfortable moving but in no distress. Left lateral chest tube site healing, dressing clean, no drainage. Left chest tender over lateral ribs; breath sounds slightly decreased at the left base, no crackles. Heart RRR. R thigh incisions with staples, clean, no erythema, mild swelling. Calf soft, nontender both sides. Ambulating with walker.\n\nA/P:\n1. Left traumatic hemothorax, s/p chest tube: improving clinically. Trauma clinic film end of month.\n2. Acute blood loss anemia: CBC and ferritin today. Continue iron.\n3. R femur fx s/p nail: ortho next week for staples, PT referral to come from them.\n4. Pain: taper oxycodone over the next 1-2 weeks; tylenol between doses, max 3 g/day total incl. what's in the combo.\n5. DIC: resolved in hospital, no further testing planned.\nNo driving for now. Out of work, note given. RTC 4 wks."}
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "portal_message",
+          "start": "2025-01-17T12:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Blood count from yesterday", "author": "PCP", "date": "2025-01-17T12:20",
+             "body": "Tyler - hemoglobin is 10.6, up from 9.1 when you left the hospital. Iron stores (ferritin 38) are on the low side, which is expected after that much blood loss, so keep taking the iron once a day. Kidney labs normal. We'll recheck at your next visit."}
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "specialist_visit",
+          "start": "2025-01-22T09:40",
+          "service": "Orthopedic Surgery",
+          "reason": "postoperative check, right femur",
+          "orders": [{"id": "pt-femur", "action": "placed", "order": "Physical therapy referral", "category": "referral", "to": "Physical Therapy", "reason": "right femur fracture after IM nail"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopaedics Postoperative Letter", "author": "orthopedic surgery", "date": "2025-01-24T15:00",
+             "body": "Outside orthopaedic group. Visit 01/22/2025.\n\nRe: Tyler Wilder, DOB 07/02/1992\n\nSeen 17 days after antegrade IM nailing of a closed right femoral shaft fracture. Pain improving. Walking with a walker.\n\nExam: incisions healed, staples removed. Thigh soft. Knee range 0-95. Neurovascularly intact distally.\n\nX-rays right femur, 2 views: hardware intact, fracture alignment maintained, early callus.\n\nPlan: WBAT, wean to a cane as able. Outpatient PT for gait, quad strength and knee motion. Return 3 months with x-rays.\n\nMedications: oxycodone/acetaminophen prn, ferrous sulfate. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2025-01-29a",
+          "kind": "specialist_visit",
+          "start": "2025-01-29T13:15",
+          "service": "Trauma Surgery",
+          "reason": "follow-up after hemothorax",
+          "conditions": [
+            {"label": "Traumatic hemothorax with hypovolemic shock", "icd10": "S27.1XXA", "action": "resolved"}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2025-01-29T12:50", "text": "PA and lateral chest. Lungs are clear and well expanded. No pleural effusion or pneumothorax. Healing fractures of several left lateral ribs with callus. Heart size normal. Mediastinum normal.", "conclusion": "No residual effusion. Healing left rib fractures."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Trauma Clinic Letter", "author": "trauma surgery", "date": "2025-01-31T10:30",
+             "body": "Regional hospital Trauma Surgery Clinic. Visit 01/29/2025.\n\nDear colleague,\n\nYour patient returned for follow-up after his January crash with left hemothorax and rib fractures. He is breathing comfortably at rest and on stairs, using pain medicine less. No fever or cough.\n\nExam: lungs clear both sides. Chest tube site healed. Rib tenderness mild.\n\nCXR today: clear lungs, no effusion, healing left rib fractures.\n\nThe hemothorax has resolved. No further trauma clinic follow-up needed; he can return as needed. Incentive spirometer for another couple of weeks.\n\nMedications: oxycodone/acetaminophen prn, ferrous sulfate 325 mg daily. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "portal_message",
+          "start": "2025-02-03T08:15",
+          "medications": [
+            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "stop", "reason": "tapered off"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "start", "sig": "Take 1-2 tablets by mouth every 8 hours as needed for pain, max 3,000 mg per day", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "short", "reason": "fracture pain"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Pain med refill", "author": "patient", "date": "2025-02-03T08:15",
+             "body": "Hi, I'm down to my last 3 of the oxycodone pills from the hospital. Could you send a refill? The leg is still achy at night especially after PT."},
+            {"type": "Patient Message", "title": "RE: Pain med refill", "author": "PCP", "date": "2025-02-03T12:48",
+             "body": "Hi Tyler, glad you're needing them less. Rather than refill, let's finish those last few and switch to plain acetaminophen (Tylenol) 500 mg, 1-2 tabs up to every 8 hours, no more than 3,000 mg a day. I sent a bottle to your pharmacy so you have it. Ice after therapy helps too. If the pain is clearly getting worse instead of better, call ortho or me."}
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, anemia and recovery",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "Pain severity (0-10)", "value": 2}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-02-11T16:25", "results": [{"test": "Hemoglobin", "value": 12.8}, {"test": "Hematocrit"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-11T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-02-11T16:35",
+             "body": "F/u after Jan MVC.\nOff oxycodone since last week, acetaminophen once or twice a day. PT twice weekly started last week. Using a cane outside, nothing at home. Ribs only hurt when he laughs or sneezes. Breathing normal. Taking iron daily, mild constipation managed. Sleep improving. Mood good, bored at home. Wants to get back to work.\nTrauma clinic signed off 1/29, film clear.\n\nExam: vitals ok, weight in flowsheet. Lungs clear bilaterally. Heart RRR. R thigh incisions well healed, no swelling. Gait slightly antalgic with cane.\n\nA/P\n- Hemothorax: resolved per trauma clinic.\n- Blood loss anemia: Hgb today, continue ferrous sulfate until repeat in ~2 mo.\n- R femur fx: PT per ortho, ortho visit April.\n- Work: remains out; disability paperwork when it comes.\nRTC prn, labs April."}
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "outside_records",
+          "start": "2025-02-21T09:10",
+          "orders": [{"id": "pt-femur", "action": "done", "date": "2025-02-21T09:10"}],
+          "procedures": [{"procedure": "Physical therapy evaluation, moderate complexity", "performed": "2025-02-19T08:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Physical Therapy Initial Evaluation", "author": "physical therapy", "date": "2025-02-21T09:10",
+             "body": "Outpatient physical therapy clinic. Evaluation 02/19/2025.\n\nDx: s/p IM nail right femoral shaft fracture 01/05/2025.\nPatient goal: return to work driving a sales territory, back to basketball.\n\nObjective: R knee AROM 0-110. Quad strength 4-/5 R, 5/5 L. Hip abductors 4/5 R. Gait with single-point cane, decreased stance time R. Timed up and go 11 s.\n\nAssessment: expected deficits after femur fixation, good rehab potential.\nPlan: 2x/week for 8 weeks, progressive strengthening, gait training, wean cane. HEP issued.\n\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2025-03-06a",
+          "kind": "telephone",
+          "start": "2025-03-06T11:30",
+          "reason": "disability paperwork",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Short-term disability form", "author": "front desk", "date": "2025-03-06T11:30",
+             "body": "Pt dropped off employer short-term disability claim form (attending physician statement). Placed in PCP box. Pt asks for it to be faxed directly to the carrier, number on the form. Told him 5-7 business days."},
+            {"type": "Telephone Encounter", "title": "Form completed", "author": "PCP", "date": "2025-03-10T17:05",
+             "body": "Disability statement completed: injuries from 1/3/25 MVC, hospitalized 1/3-1/11, R femur fx with IM nail, in PT. Unable to do job duties (prolonged driving, carrying sample cases) at present. Est return mid to late April pending ortho visit. Faxed, copy scanned."}
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "specialist_visit",
+          "start": "2025-04-16T10:20",
+          "service": "Orthopedic Surgery",
+          "reason": "3-month follow-up, right femur",
+          "conditions": [
+            {"label": "Fracture of shaft of right femur, closed", "icd10": "S72.301A", "action": "resolved", "note": "united after IM nail"},
+            {"label": "Multiple fractures of ribs, left side", "icd10": "S22.42XA", "action": "resolved"},
+            {"label": "Contusion of chest wall", "icd10": "S20.20XA", "action": "resolved"},
+            {"label": "Blunt chest trauma", "icd10": "S29.9XXA", "action": "resolved"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopaedics Follow-up Letter", "author": "orthopedic surgery", "date": "2025-04-18T14:20",
+             "body": "Outside orthopaedic group. Visit 04/16/2025.\n\nRe: Tyler Wilder\n\nNow about 3.5 months after IM nailing of the right femur. Walking without a cane, no pain at rest, mild ache after long days. Finishing PT.\n\nExam: normal gait. Knee 0-130. Quad strength nearly symmetric. No tenderness at the fracture site.\n\nX-rays right femur, 2 views: bridging callus across the fracture on both views, hardware intact.\n\nImpression: united right femoral shaft fracture.\n\nPlan: full activity as tolerated; may return to work including driving, as he is off opioids. Finish remaining PT visits. Hardware stays unless it bothers him. Follow up as needed.\n\nMedications: acetaminophen prn, ferrous sulfate. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "lab_only",
+          "start": "2025-04-22T07:40",
+          "conditions": [
+            {"label": "Acute posthemorrhagic anemia", "icd10": "D62", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "stop", "reason": "anemia resolved, iron stores replete"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-22T07:40", "results": [{"test": "Hemoglobin", "value": 14.7}, {"test": "Hematocrit"}, {"test": "Platelets"}, {"test": "Mean Corpuscular Volume"}]},
+            {"panel": "Iron Studies", "collected": "2025-04-22T07:40", "results": [{"test": "Ferritin", "value": 64}, {"test": "Iron"}, {"test": "Transferrin Saturation"}]}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Labs back to normal", "author": "PCP", "date": "2025-04-22T15:10",
+             "body": "Good news: hemoglobin is 14.7, essentially back to where you were last fall, and iron stores (ferritin 64) are refilled. You can stop the iron tablets. No further blood checks needed until your physical."}
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "portal_message",
+          "start": "2025-04-24T09:02",
+          "documents": [
+            {"type": "Patient Message", "title": "Return to work", "author": "patient", "date": "2025-04-24T09:02",
+             "body": "Ortho cleared me last week. HR needs a note from my primary doctor saying I can come back full duty on 5/5. Can you do that? Thanks."},
+            {"type": "Letters", "title": "Return to work letter", "author": "PCP", "date": "2025-04-24T13:30",
+             "body": "To whom it may concern:\n\nTyler Wilder (DOB 07/02/1992) is under my care. He may return to work at full duty, including driving, effective May 5, 2025, with no restrictions.\n\nPrimary Care Physician"}
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "office_visit",
+          "start": "2025-07-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "summer check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:15",
+          "end": "2025-09-23T08:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "rr", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [{"item": "Tobacco smoking status", "value": "Never smoker"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-23T08:50", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-23T08:52"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-23T08:15"},
+            {"procedure": "Immunization administration", "performed": "2025-09-23T08:52"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-09-23T09:05",
+             "body": "33M annual exam.\nInterval: back at work full time since May, driving his territory again. Leg is fine, occasional ache after a long day in the car; back to light basketball. No breathing complaints. No meds now except an occasional acetaminophen.\n\nPMH: 1/2025 MVC with L hemothorax/shock, L rib fxs, trauma DIC (resolved), R femoral shaft fx s/p IM nail. All healed.\nMeds: none regular. NKDA.\nSH: unchanged. Never smoker, 1-2 drinks a week.\nFH: unchanged.\n\nROS: negative.\n\nExam: well. Vitals in flowsheet. HEENT nl. Neck supple. Lungs clear, good air entry both bases. Heart RRR, no murmur. Abd soft NT. R thigh scars well healed. Full ROM hips and knees, normal gait. Skin no lesions. Neuro intact.\n\nA/P\n- Health maintenance: CBC to confirm recovery. Lipids done last year, normal; not due. HIV/HCV done.\n- Flu shot today. COVID booster at pharmacy, he prefers.\n- PHQ-2 negative.\n- Old femur hardware: no issues.\nRTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T10:45",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical labs", "author": "PCP", "date": "2025-09-25T10:45",
+             "body": "Your blood count from the physical is normal. Nothing else needed this year."},
+            {"type": "Patient Message", "title": "RE: Physical labs", "author": "patient", "date": "2025-09-25T18:02",
+             "body": "Great, thank you!"}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "pharmacy",
+          "start": "2025-10-21T12:30",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-21T12:30"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Pharmacy vaccine administration", "author": "pharmacy", "date": "2025-10-22T08:00",
+             "body": "Community pharmacy immunization report. 10/21/2025: COVID-19 mRNA vaccine, 2025-2026 formula, 0.3 mL IM L deltoid. Screening negative. No adverse reaction observed. Reported to state registry."}
+          ]
+        }
+      ]
+    }
+  ]
+}

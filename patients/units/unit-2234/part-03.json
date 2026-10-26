@@ -1,0 +1,201 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002234",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "lab_only",
+          "start": "2025-01-21T09:10",
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2025-01-21T09:10", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation check", "author": "RN", "date": "2025-01-21T09:20", "body": "INR checked. No bleeding, no missed doses. Continue 5 mg nightly. Mentions a lump in the right groin for a while; he'll bring it up at his March visit, no pain today."}
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "office_visit",
+          "start": "2025-03-04T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right groin bulge; chronic care follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [{"label": "Inguinal hernia", "action": "diagnosed", "onset": "2024-10-01", "note": "right, reducible"}],
+          "labs": [
+            {"panel": null, "collected": "2025-03-04T09:50", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-04T09:50", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-03-04T09:25", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "orders": [{"id": "gensurg-referral", "action": "placed", "order": "General surgery referral", "category": "referral", "to": "General Surgery", "reason": "symptomatic right inguinal hernia, on warfarin"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-04T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2025-03-04T10:05", "body": "S: Bulge in the right groin since sometime last fall, bigger by the end of the day and with lifting, goes back in when he lies down. Ache after carrying lumber. No nausea, no change in bowels, never stuck out and stayed out. Otherwise usual self.\nO: Vitals per flowsheet. Standing: soft right inguinal bulge with cough impulse, reduces easily, nontender. Left side no hernia. Testes normal. Heart irregular, rate controlled. Lungs clear.\nA/P:\n1. Right inguinal hernia, reducible, symptomatic with work. Refer to general surgery for elective repair. Warned about signs of incarceration - pain, firm bulge that won't go back, vomiting - go to the ED.\n2. AF on warfarin - INR today. If surgery is planned, we'll manage the hold here.\n3. T2DM - A1c today; sugars running a little higher this winter. No change yet.\n4. HTN, CKD 3a - stable, BMP.\n5. Still smoking; advised that quitting helps healing after surgery too."}
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "portal_message",
+          "start": "2025-04-22T18:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Hernia surgery date", "author": "patient", "date": "2025-04-22T18:40", "body": "Saw the surgeon today. They want to fix it on July 8. They said you would tell me what to do with the coumadin before. They did not give me any papers except the date."},
+            {"type": "Patient Message", "title": "RE: Hernia surgery date", "author": "PCP", "date": "2025-04-23T08:10", "body": "Thanks Mr. Dupuis. We'll see you in late June for a pre-op check and set the exact warfarin plan then - usually the last dose is about five days before. Don't change anything until we talk. I've asked our staff to request the surgeon's consult note."},
+            {"type": "Telephone Encounter", "title": "Records request: surgical consult", "author": "front desk", "date": "2025-04-23T10:30", "body": "Called general surgery office to request consult note from 4/22. Told it would be faxed. Pre-op appointment booked 6/24."}
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "lab_only",
+          "start": "2025-05-13T09:00",
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2025-05-13T09:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation check", "author": "RN", "date": "2025-05-13T09:10", "body": "INR in range. No bleeding. Hernia unchanged. Surgical consult note still not received - second request faxed."}
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "office_visit",
+          "start": "2025-06-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pre-operative evaluation, hernia repair",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-24T10:30", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-24T10:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-06-24T10:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 2.5}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-06-24T10:20", "text": "Atrial fibrillation with controlled ventricular response. Normal axis. QRS and QT intervals normal. No acute ST-segment or T-wave changes. No prior tracing in this office for comparison.", "conclusion": "Atrial fibrillation, rate controlled. No acute changes."}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-24T10:00"}, {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-06-24T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Pre-operative Evaluation", "author": "PCP", "date": "2025-06-24T10:50", "body": "Pre-op visit for elective right inguinal hernia repair 7/8/2025 with outside general surgery. Consult note never arrived despite two requests; details from patient.\n\nFunctional capacity good - climbs ladders, carries lumber, no chest pain or dyspnea with it. No syncope. No prior anesthesia problems with gallbladder surgery or the femur repair.\n\nMeds: warfarin 5 mg nightly, metoprolol tartrate 50 BID, amlodipine 5 daily, glargine 20 units qhs. NKDA.\n\nExam: BP and HR per flowsheet. Irregularly irregular, rate controlled, no murmur. Lungs clear. Reducible right inguinal hernia.\n\nData: INR 2.5 today. CBC and BMP drawn. ECG: AF, rate controlled, no acute changes.\n\nAssessment: proceeding to low-risk outpatient surgery; no further cardiac testing needed.\n\nPlan:\n- Warfarin: last dose the evening of 7/2. No bridging. Resume usual 5 mg the evening of surgery if the surgeon is comfortable, otherwise the next day. INR check about a week after.\n- Metoprolol and amlodipine: take the morning of surgery with a sip of water.\n- Glargine: usual dose; check sugar on waking and bring the meter.\n- Smoking: stop at least the day of surgery; ideally longer.\nNote faxed to surgeon's office with today's INR."}
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "procedure_visit",
+          "start": "2025-07-08T07:30",
+          "end": "2025-07-08T14:15",
+          "service": "General Surgery",
+          "reason": "elective right inguinal hernia repair",
+          "conditions": [
+            {"label": "Inguinal hernia", "action": "resolved"},
+            {"label": "Risk of medication error due to look-alike drug confusion (LASA)", "icd10": "Z91.89", "action": "diagnosed", "onset": "2025-07-08"}
+          ],
+          "vitals": {"bp": [145, 90]},
+          "procedures": [{"procedure": "Inguinal hernia repair", "performed": "2025-07-08T08:40"}],
+          "orders": [{"id": "gensurg-referral", "action": "done", "date": "2025-07-08T08:40"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Operative and anesthesia summary, hernia repair", "author": "general surgery", "date": "2025-07-10T11:20", "body": "Outpatient surgery summary - date of service 7/8/2025.\nPatient: 68-year-old man. Procedure: repair of right inguinal hernia under general anesthesia. Allergies: NKDA.\nRelevant history: hypertension, type 2 diabetes on insulin, chronic atrial fibrillation on warfarin (held 5 days per PCP plan; baseline INR 2.5 on 6/24), CKD stage 3.\nAnesthesia: pre-induction BP 145/90. Surgical team asked for an IV antihypertensive bolus before induction. While drawing up, the anesthesiologist stopped on recognizing that the esmolol and ephedrine vials on the cart were near-identical in appearance and stored next to each other. Both vials checked against labels; correct agent confirmed before anything was drawn or given. No medication error reached the patient. Event filed with hospital safety reporting; patient flagged at risk for look-alike/sound-alike medication error for future anesthetics.\nOperative course: uncomplicated repair. EBL minimal. Extubated in OR, uneventful recovery.\nDisposition: discharged home same day with wife. Surgeon agrees with resuming warfarin this evening. Follow-up with surgery clinic as needed; PCP for INR."}
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "telephone",
+          "start": "2025-07-09T11:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-op call", "author": "RN", "date": "2025-07-09T11:30", "body": "Called pt day after hernia repair. Sore at incision, taking acetaminophen only - reminded no ibuprofen or naproxen with warfarin and his kidneys. Took his usual warfarin last night per surgeon. No bleeding through dressing, voiding fine, eating. He mentioned the anesthesia team told him they 'caught two look-alike bottles' before giving him anything; asked him to let us know if any summary comes home with him. INR set for 7/17."}
+          ]
+        },
+        {
+          "id": "2025-07-17a",
+          "kind": "lab_only",
+          "start": "2025-07-17T09:20",
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2025-07-17T09:20", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.7}]}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation check after surgery", "author": "RN", "date": "2025-07-17T09:35", "body": "INR 1.7, expected 9 days after resuming from a 5-day hold. No bleeding, incision healing. Per PCP: continue 5 mg nightly, no extra dose, recheck in 12 days."}
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-operative check",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-07-22T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-operative Visit", "author": "PCP", "date": "2025-07-22T14:00", "body": "Two weeks out from right inguinal hernia repair. Pain gone, no longer needs acetaminophen. No lifting over 10 lb per surgeon until 6 weeks - he's grumbling.\nOperative summary arrived 7/10: uncomplicated repair. Of note the anesthesia team recorded a near miss with look-alike esmolol and ephedrine vials before induction, caught before any drug was given; added LASA medication-error risk to his problem list so it travels with future surgical paperwork.\nExam: incision clean, healing, no hematoma, no recurrence with cough. Heart irregular, rate controlled.\nPlan: INR next week. Resume normal activity at 6 weeks."}
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "lab_only",
+          "start": "2025-07-29T09:05",
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2025-07-29T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 2.3}]}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation check", "author": "RN", "date": "2025-07-29T09:15", "body": "INR 2.3, back in range. Continue 5 mg nightly. Back to 5-week checks."}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-19T14:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye examination report", "author": "optometry", "date": "2025-08-19T14:20", "body": "Annual dilated diabetic exam, 8/14/2025. Allergies: none known. Best corrected VA 20/25 each eye. Normal pressures. Lenses clear. Retinal exam: no microaneurysms, hemorrhages or exudates either eye. No macular thickening. Impression: no diabetic retinopathy. Recheck 1 year."}
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-23T08:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-23T08:35", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-09-23T08:35", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-09-23T08:35", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-09-23T08:10", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2025-09-23T08:50"}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-09-23T08:00"}, {"procedure": "Immunization administration", "performed": "2025-09-23T08:50"}],
+          "orders": [{"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening, current smoker"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-09-23T09:15", "body": "Wellness visit. Turned 69 last week. Recovered fully from the July hernia repair and back to light building work. No falls. PHQ-2 negative. Lives with wife; proxy on file.\n\nProblems: AF on warfarin, INRs steady since the post-op dip; HTN controlled; T2DM on glargine 20, A1c crept up last spring; CKD 3a; LASA medication-error risk noted from surgery. Eye exam August, no retinopathy.\n\nExam: irregularly irregular, controlled rate. Lungs clear. Healed right groin incision, no recurrence. Feet: sensation intact, pulses present. No edema.\n\nPlan: yearly labs; flu shot today; COVID vaccine at next INR visit; lung CT ordered for October. Tobacco: still a pack a day, advised again, he declines medication or counseling."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "imaging",
+          "start": "2025-10-07T14:20",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-10-07T14:20", "text": "Indication: annual lung cancer screening, current smoker. Technique: low-dose CT chest without IV contrast. Comparison: 10/8/2024. Findings: no lung nodules. Lungs clear. No consolidation or effusion. Heart normal in size. No lymphadenopathy. Upper abdomen: cholecystectomy clips.", "conclusion": "Lung-RADS 1, negative. Next annual screen in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2025", "action": "done", "date": "2025-10-07T14:20"}]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "nurse_visit",
+          "start": "2025-10-28T09:50",
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2025-10-28T09:50", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-28T10:00"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-28T10:00"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "INR and COVID vaccine", "author": "RN", "date": "2025-10-28T10:15", "body": "INR checked, reviewed. No bleeding. Same dose. 2025-26 COVID vaccine given R deltoid. Told him his lung CT was negative again."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-12-09T14:50", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-09T14:50", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-12-09T14:25", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-12-09T14:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2025-12-09T14:55", "body": "Routine winter visit. Feels fine. No bleeding, no chest symptoms. Sugars mostly 140s-150s.\nExam: AF, rate controlled. Lungs clear. Feet intact. No edema.\nA/P: T2DM, A1c today, glargine 20 for now. HTN controlled. AF on warfarin, INR today, continue. CKD 3a, BMP. Smoking unchanged. RTC March, nurse INR in 5 weeks."}
+          ]
+        }
+      ]
+    }
+  ]
+}

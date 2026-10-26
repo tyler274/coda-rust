@@ -1,0 +1,1368 @@
+{
+  "unit": "unit-1953",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001953",
+      "given": "Hui",
+      "family": "Huang",
+      "birth_date": "1997-08-11",
+      "address_line": "41 Reservoir Road",
+      "phone": "+1-518-555-0171",
+      "email": "hui.huang@example.test",
+      "marital_status": "single",
+      "summary": "Healthy software developer who joined the practice in 2023 for routine preventive care. In late 2025 a left dorsal wrist ganglion cyst was referred to orthopedics, diagnosed clinically, and aspirated in March 2026 without recurrence by her 2026 physical.",
+      "events": [
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T10:40",
+          "reason": "New patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2023-08-22T10:40",
+              "author": "front desk",
+              "body": "Caller: patient. Wants to transfer primary care to us. Membership paperwork emailed, she will sign online. Insurance employer PPO, card front/back uploaded to portal. No current meds per pt, no known allergies. Signed release faxed to her prior PCP office for last 3 yrs of notes, labs, immunizations. New patient physical booked 9/12 at 8:30. Told her to come fasting so labs can be drawn same week."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "outside_records",
+          "start": "2023-08-29T14:05",
+          "reason": "Prior primary care records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-05-14T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-11T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2023-08-29T14:05",
+              "author": "front desk",
+              "body": "Fax received from prior PCP office, 22 pages, scanned to media.\n\nContents: visit notes 2020-2023 (annual exams only, all normal), immunization record, one Pap report.\n\nAbstracted for the chart:\n- Problem list: none\n- Medications: none\n- Allergies: NKDA\n- Cervical cytology 06/2021: negative for intraepithelial lesion or malignancy\n- Tdap 05/14/2019\n- COVID-19 Pfizer 04/20/2021 and 05/11/2021\n- HPV vaccine series documented as completed in adolescence (dates not listed on their record)\n\nRouted to PCP for review before new patient visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:30",
+          "end": "2023-09-12T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              76
+            ],
+            "hr": 78,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 56.0,
+            "height_cm": 159.3
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Software developer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2023-09-12T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "2023-baseline-labs",
+              "action": "placed",
+              "order": "CBC, CMP, lipid panel, TSH, HIV-1/2 Ag/Ab, hepatitis C antibody",
+              "category": "lab",
+              "reason": "Baseline labs and one-time HIV and hepatitis C screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2023-09-12T09:45",
+              "author": "PCP",
+              "body": "Hui Huang, 26F, new to the practice, transferring from her prior primary care office. Prior records reviewed (annual exams only, nothing abnormal). Here for a physical; no complaints.\n\nPMH: none. PSH: none.\nMeds: none. No supplements.\nAllergies: NKDA.\nFH: nothing significant that she knows of.\nSH: software developer, mostly at a desk. Never smoked, alcohol a drink or two a month, no drug use.\n\nROS: negative on a full review. Menses regular.\nPHQ-2: 0.\n\nExam: well appearing, in no distress. Vitals per flowsheet. HEENT unremarkable, TMs clear. Neck supple, no thyromegaly or lymphadenopathy. Heart regular rate and rhythm, no murmur. Lungs clear throughout. Abdomen soft, nontender, no masses. Extremities without edema. Skin without suspicious lesions. Neuro grossly nonfocal. Mood and affect normal.\n\nHealth maintenance:\n- Pap 06/2021 NILM at prior office. Next due 2024.\n- Tdap 2019. COVID primary series 2021. HPV series complete per old records.\n- Flu shot: will get it at a nurse visit next month once the new season's supply is in.\n- HIV and hep C one-time screening: agreed, adding to labs.\n\nA/P:\n1. Adult wellness exam. Healthy. Baseline fasting CBC, CMP, lipids, TSH plus HIV and HCV screens; she'll come in Thursday morning for the draw.\n2. Return in one year for annual, sooner as needed. Texting the office is fine for small things."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              72
+            ],
+            "weight_kg": 55.8,
+            "height_cm": 160.0,
+            "labs": {
+              "Hemoglobin": 13.4,
+              "Low Density Lipoprotein": 82,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Total Cholesterol": 158,
+              "Triglycerides": 92
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "lab_only",
+          "start": "2023-09-14T07:50",
+          "reason": "Fasting labs",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-14T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-14T07:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-14T07:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 163
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 81
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 102
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-14T07:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-14T07:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-14T07:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-14T07:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "2023-baseline-labs",
+              "action": "done",
+              "date": "2023-09-14T07:50"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "portal_message",
+          "start": "2023-09-18T12:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-09-18T12:20",
+              "author": "PCP",
+              "body": "Hi Hui, your labs from Thursday all came back normal: blood counts, kidney and liver tests, sugar, thyroid and cholesterol are all where they should be. The HIV and hepatitis C screens were negative, and those are one-time tests, so you won't need to repeat them unless something changes. Nice to have you with us. See you at the flu shot visit next month."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2023-10-10T16:30",
+              "author": "RN",
+              "body": "Pt in for seasonal influenza vaccine. Feeling well today, no fever. No prior reactions to vaccines. NKDA, no latex or egg issues. Current VIS given. Influenza quadrivalent 0.5 mL IM, left deltoid. Tolerated without issue, waited 15 min in lobby, left ambulatory. She plans to get the updated COVID shot at her pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-27a",
+          "kind": "pharmacy",
+          "start": "2023-10-27T09:10",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-26T18:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notification",
+              "date": "2023-10-27T09:10",
+              "author": "MA",
+              "body": "Notification from retail pharmacy via state registry: COVID-19 vaccine, Pfizer 2023-2024 formula, given 10/26/2023, right deltoid. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "portal_message",
+          "start": "2024-02-06T13:02",
+          "reason": "Immunization record request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "date": "2024-02-06T13:02",
+              "author": "patient",
+              "body": "Hi, my company's HR is updating employee health records and wants a copy of my vaccines. Is there a way to get a printout? Thanks, Hui"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "date": "2024-02-06T15:40",
+              "author": "MA",
+              "body": "Hi Hui, I put your immunization record in the documents section of the portal, you can download it as a PDF. It includes the old records from your previous office plus the flu and COVID shots from the fall. Let us know if HR needs anything else."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              76
+            ],
+            "hr": 73,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 56.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-09-10T09:20",
+              "text": "Specimen: cervical, liquid-based preparation.\nSpecimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM).",
+              "issued": "2024-09-13T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-10T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T09:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-10T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2024-09-10T10:05",
+              "author": "PCP",
+              "body": "27F, annual. Doing well. No ER/UC visits, no new meds this year. Work busy but manageable.\n\nMeds: none. Allergies: NKDA.\nSH unchanged: never smoker, alcohol 1-2/month.\nROS negative. LMP 2 wks ago, regular.\nPHQ-9 2, GAD-7 1.\n\nExam: vitals reviewed, normal. Well appearing. HEENT clear. Neck no nodes, thyroid normal size. Heart RRR, no murmur. Lungs clear. Abdomen benign. Pelvic: normal external genitalia, vagina and cervix normal appearing, Pap collected; bimanual without tenderness or masses. Skin unremarkable. Extremities normal.\n\nA/P:\n1. Annual exam, healthy adult. CBC and CMP drawn today. Lipids normal last year, not repeating.\n2. Cervical cancer screening: Pap today, last one 2021.\n3. Flu shot given today, she'd rather not come back for it. COVID booster at her pharmacy as last year.\n4. RTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-13a",
+          "kind": "portal_message",
+          "start": "2024-09-13T16:30",
+          "reason": "Pap and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and blood work",
+              "date": "2024-09-13T16:30",
+              "author": "PCP",
+              "body": "Hi Hui - good news all around. Pap smear is normal. With a normal result at your age, the next one is due in three years (2027). Blood count and chemistry panel from Tuesday are normal as well. Nothing to do until next year's physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap and blood work",
+              "date": "2024-09-13T19:12",
+              "author": "patient",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "pharmacy",
+          "start": "2024-10-23T08:55",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T17:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notification",
+              "date": "2024-10-23T08:55",
+              "author": "MA",
+              "body": "Registry update: COVID-19 vaccine 2024-2025 formula (Pfizer) administered at retail pharmacy 10/22/2024, left deltoid. Immunization history updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "portal_message",
+          "start": "2025-07-22T11:14",
+          "reason": "Scheduling annual",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2025-07-22T11:14",
+              "author": "patient",
+              "body": "Hi, I think I'm due for my yearly physical. Anything early August works, mornings are best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2025-07-22T14:02",
+              "author": "front desk",
+              "body": "You're booked for Tuesday 8/5 at 8:00. Please come fasting in case the doctor wants labs."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "annual_physical",
+          "start": "2025-08-05T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "date": "2025-08-05T08:25",
+              "author": "front desk",
+              "body": "Pt did not arrive for 8:00 physical. Called cell, left voicemail to reschedule. Later text back from pt: forgot, deploy at work. Rebooked 8/19 8:00."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              76
+            ],
+            "hr": 89,
+            "rr": 18,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 55.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-19T08:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.78
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-19T08:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-19T08:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 156
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 76
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 96
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-19T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2025-08-19T08:50",
+              "author": "PCP",
+              "body": "Annual exam, 28 y/o F. Rescheduled from the 5th. Feels fine, nothing new to report. No meds, NKDA. Never smoker, rare alcohol.\nROS: negative.\nPHQ-9: 1.\n\nVitals: normal, wt stable.\nGen: NAD.\nHEENT: normal. Neck: supple, no adenopathy.\nCV: RRR, no murmurs. Pulm: CTAB.\nAbd: soft, NT/ND.\nExt: warm, no edema.\nSkin: no rashes.\nPsych: normal.\n\nA/P\n- Wellness: CBC, CMP, lipids today (lipids last done 2023).\n- Pap 2024 normal, next 2027.\n- Flu shot in October at nurse visit. COVID per pharmacy.\n- Tdap 2019, good until 2029.\n- F/u 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T17:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your physical",
+              "date": "2025-08-21T17:05",
+              "author": "PCP",
+              "body": "Hi Hui, everything from Tuesday is normal, including cholesterol. No changes. I'll see you for the flu shot this fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "date": "2025-10-14T12:20",
+              "author": "MA",
+              "body": "Flu vaccine 2025-26 trivalent, 0.5 mL IM to R deltoid. Pre-screen: well today, no fever, no history of vaccine reaction or Guillain-Barre, NKDA. VIS provided. No reaction observed."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "portal_message",
+          "start": "2025-11-12T21:48",
+          "reason": "Wrist lump",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lump on wrist",
+              "date": "2025-11-12T21:48",
+              "author": "patient",
+              "body": "Hi, I have a bump on the back of my left wrist that showed up maybe 2 months ago. It doesn't hurt at all. Some days it's bigger and some days I can barely see it. Is this something I should come in for or just watch? I can send a picture if that helps."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lump on wrist",
+              "date": "2025-11-13T07:32",
+              "author": "PCP",
+              "body": "Thanks for writing. Most bumps like that on the back of the wrist are harmless, but I'd like to feel it rather than go by a photo. Can you come in early next week? I'll have the front desk reach out with times."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Left wrist swelling",
+          "vitals": {
+            "bp": [
+              108,
+              78
+            ],
+            "hr": 69,
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-11-18T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "placed",
+              "order": "Orthopedics referral",
+              "category": "referral",
+              "to": "Orthopedics & Sports Medicine",
+              "reason": "Dorsal left wrist swelling, suspected ganglion"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-11-18T16:35",
+              "author": "PCP",
+              "body": "S: Swelling on the back of the L wrist, first noticed about two months ago. Painless. Size waxes and wanes. No injury she can recall. No numbness, tingling or weakness in the hand. Types all day for work. Otherwise well. No meds. NKDA.\n\nO: Vitals normal. L wrist: roughly 2 cm smooth, mobile swelling over the dorsum of the wrist, nontender, not warm. Overlying skin normal. Full flexion and extension, grip strength 5/5 and symmetric. Sensation intact in median, ulnar and radial distributions. Cap refill brisk. R wrist normal for comparison.\n\nA/P: Dorsal L wrist swelling, exam most suggestive of a ganglion. Discussed that these are benign and often left alone. She would like a hand specialist to look at it since the appearance bothers her and she wants to know her options. Referral to orthopedics & sports medicine placed. Return or message if it becomes painful or she develops numbness."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "telephone",
+          "start": "2025-11-20T10:25",
+          "reason": "Referral scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral coordination",
+              "date": "2025-11-20T10:25",
+              "author": "front desk",
+              "body": "Ortho referral sent with last office note. PPO, no auth required per payer line. Orthopedics & sports medicine office scheduled pt for Tue 12/9. Pt notified by text, confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "specialist_visit",
+          "start": "2025-12-09T13:30",
+          "service": "Orthopedics & Sports Medicine",
+          "reason": "Left wrist mass",
+          "conditions": [
+            {
+              "label": "Ganglion cyst of wrist",
+              "action": "diagnosed",
+              "onset": "2025-09-01",
+              "note": "Dorsal left wrist, clinical diagnosis",
+              "icd10": "M67.432"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "done",
+              "date": "2025-12-09T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics & Sports Medicine Consultation",
+              "date": "2025-12-11T09:15",
+              "author": "orthopedics",
+              "body": "Orthopedics & Sports Medicine\nNew patient consultation, date of visit 12/09/2025\n\nRe: Hui Huang, DOB 08/11/1997\n\nDear Doctor,\n\nWe saw Ms. Huang at your request for a swelling of the left wrist.\n\nShe noticed a soft bump on the dorsum of the left wrist roughly three months ago. It has never hurt. She finds it gets bigger and easier to see when she bends the wrist forward, and it varies in size from week to week. There was no injury. She has had no weakness or numbness in the hand.\n\nPast history: none. Surgeries: none. Medications: none. Allergies: no known drug allergies. Family history: noncontributory. Social: software developer, never smoker, alcohol socially, one or two drinks a month.\n\nExamination of the left wrist: a 2 cm, round, firm, mobile mass sits on the dorsal surface. It transilluminates with a penlight. The skin over it is unremarkable. Wrist motion is full. Motor, sensory and vascular examination of the hand is normal.\n\nImpression: dorsal ganglion cyst, left wrist.\n\nPlan: We reviewed what a ganglion is and that it is benign. Many shrink or settle on their own, so we agreed on a period of observation. She will come back in about three months, or sooner if it becomes painful or she has numbness. Treatment options can be revisited then.\n\nThank you for allowing us to participate in her care.\n\nOrthopedics & Sports Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "portal_message",
+          "start": "2025-12-12T12:35",
+          "reason": "Orthopedics visit follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ortho visit",
+              "date": "2025-12-12T12:35",
+              "author": "patient",
+              "body": "Saw the orthopedist Tuesday. They think it's a ganglion like you said and want to just keep an eye on it for now, I go back in March. Did they send you anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Ortho visit",
+              "date": "2025-12-12T16:10",
+              "author": "PCP",
+              "body": "Yes, their letter came in yesterday and I read it. Watching it for a few months is very reasonable. If it starts to hurt or your fingers go numb before March, let me know."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "telephone",
+          "start": "2026-01-06T09:30",
+          "reason": "Membership renewal",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Membership renewal and insurance update",
+              "date": "2026-01-06T09:30",
+              "author": "front desk",
+              "body": "Annual membership renewal processed for 2026. Pt confirmed same employer PPO, new member ID for the plan year; updated card scanned from portal upload. Address, phone, preferred pharmacy unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "specialist_visit",
+          "start": "2026-03-09T10:45",
+          "service": "Orthopedics & Sports Medicine",
+          "reason": "Left wrist ganglion follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedics & Sports Medicine Follow-up and Procedure",
+              "date": "2026-03-11T14:40",
+              "author": "orthopedics",
+              "body": "Orthopedics & Sports Medicine\nFollow-up visit and procedure note, date of visit 03/09/2026\n\nRe: Hui Huang, DOB 08/11/1997\n\nDear Doctor,\n\nMs. Huang returned three months after her first visit with us for the left wrist ganglion. Over the six months she has had it, the lump has slowly enlarged. It stands out more after long stretches of typing. Any discomfort is minimal; what bothers her is how it looks. No injury in the interval. Medications: none. Allergies: no known drug allergies.\n\nExam: on the dorsal left wrist there is a 2 cm, round, rubbery nodule. It moves freely and is not tethered to deeper structures. The skin is intact without redness. It transilluminates. Wrist motion is unrestricted and strength is preserved.\n\nAssessment: dorsal ganglion cyst, left wrist, unchanged in size, cosmetically bothersome.\n\nWe talked through continued observation, needle aspiration and surgical excision. She preferred to try aspiration today.\n\nProcedure: aspiration of left dorsal wrist ganglion. Verbal and written consent obtained. Skin prepped sterilely; local anesthetic with lidocaine. Using a large-bore needle, approximately 1 mL of thick, clear, gelatinous fluid was withdrawn. The mass was no longer palpable afterward. Compressive dressing applied. No complications. Fluid not sent.\n\nPlan: keep the dressing on for a couple of days. We explained that ganglia commonly come back after aspiration; if it recurs and still bothers her, excision is the next option. Follow up with us as needed.\n\nThank you for sending her to us.\n\nOrthopedics & Sports Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "portal_message",
+          "start": "2026-03-24T08:12",
+          "reason": "Update after wrist procedure",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wrist update",
+              "date": "2026-03-24T08:12",
+              "author": "patient",
+              "body": "Quick update - the ortho drained the cyst on my wrist a couple weeks ago. It went fine and it's flat now. Just letting you know, no questions."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wrist update",
+              "date": "2026-03-24T12:50",
+              "author": "PCP",
+              "body": "Thanks Hui, glad it went smoothly. I got their letter too. If it fills back up, message me or call their office directly."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T10:05",
+          "reason": "Pre-visit reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your physical on 8/18",
+              "date": "2026-08-11T10:05",
+              "author": "MA",
+              "body": "Hi Hui, reminder of your annual physical Tuesday 8/18 at 8:30. Please come fasting and fill out the health questionnaire in the portal beforehand. Reply here if you need to change the time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your physical on 8/18",
+              "date": "2026-08-11T20:44",
+              "author": "patient",
+              "body": "Will do, questionnaire done. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "annual_physical",
+          "start": "2026-08-18T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Ganglion cyst of wrist",
+              "action": "resolved",
+              "note": "No recurrence after aspiration 03/2026",
+              "icd10": "M67.432"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              105,
+              74
+            ],
+            "hr": 87,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 55.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-18T09:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.88
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-18T09:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-08-18T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-18T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2026-08-18T09:20",
+              "author": "PCP",
+              "body": "29F here for her annual. Since last year: left dorsal wrist ganglion, seen by ortho in Dec, aspirated in March. Says it has stayed flat since and doesn't bother her at the keyboard. No other interval issues.\n\nMeds none. NKDA. Never smoker, alcohol 1-2 drinks/month.\nROS otherwise negative.\nPHQ-9 1.\n\nExam\nVS reviewed, unremarkable; weight about where it has been.\nWell-appearing.\nHEENT, neck: normal, no thyromegaly.\nHeart: regular, no murmur. Lungs: clear.\nAbdomen: soft, nontender.\nL wrist: no palpable mass over the dorsum, skin normal, full ROM, grip symmetric.\nSkin, extremities: normal.\n\nAssessment / plan\n1. Health maintenance. CBC/CMP today. Lipids normal 2025, no need to repeat.\n2. L wrist ganglion s/p aspiration 03/2026, no recurrence. Taking it off the active problem list. If it comes back, ortho discussed excision.\n3. Pap due 2027.\n4. Flu shot: nurse visit booked for October. Tdap current.\n5. RTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T18:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2026-08-20T18:40",
+              "author": "PCP",
+              "body": "Hi Hui, your blood count and metabolic panel are normal. Enjoy the rest of the summer, and we'll see you in October for the flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-13a",
+          "kind": "nurse_visit",
+          "start": "2026-10-13T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Ganglion cyst of wrist|M67.432": {
+        "code": "M67.432",
+        "display": "Ganglion, left wrist",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

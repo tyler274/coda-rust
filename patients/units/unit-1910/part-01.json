@@ -1,0 +1,222 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001910",
+      "given": "Megan",
+      "family": "Foster",
+      "birth_date": "2001-05-13",
+      "address_line": "214 Montgomery St, Apt 3",
+      "phone": "+1-413-555-0192",
+      "email": "megan.foster@example.test",
+      "marital_status": "single",
+      "summary": "Healthy graduate student and distance runner who joined the practice at 21. In 2025 she had a right second metatarsal stress fracture, then a right distal tibial stress fracture, then mild accidental hypothermia at a December marathon finish; all resolved.",
+      "events": [
+        {
+          "id": "2022-09-07a",
+          "kind": "establish_care",
+          "start": "2022-09-07T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish primary care",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 57.5, "height_cm": 165.0, "labs": {"Total Cholesterol": 166, "Thyroid Stimulating Hormone": 1.7}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Graduate student"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "GAD-7 total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-09-07T10:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-07T10:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-07T10:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-09-07T10:20", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2022-09-07T10:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-09-07T10:20", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-09-07T09:30"},
+            {"procedure": "Venipuncture", "performed": "2022-09-07T10:20"}
+          ],
+          "orders": [
+            {"id": "records-prior-pcp", "action": "placed", "order": "Records request, prior primary care", "category": "procedure", "reason": "establishing care"}
+          ],
+          "documents": [
+            {"type": "History and physical note", "title": "New Patient Visit", "author": "PCP", "date": "2022-09-07T10:15", "body": "21 yo woman here as a new patient. Grad student, just started her program this fall. Last primary care was her pediatric/adolescent practice; she has not had a physical in about two years. No complaints today.\n\nPMH: none. No hospitalizations, no surgeries.\nMeds: none. No supplements.\nAllergies: NKDA.\nFH: nothing significant that she knows of.\nSH: never smoker, does not drink, no drug use. Runs most days, mostly 3-6 miles, has done a few local road races. Lives in an apartment in Chicopee.\nGyn: menses regular.\n\nROS: negative except as above.\n\nExam: vitals as charted, BMI normal. Well appearing, pleasant. HEENT clear, TMs normal. Neck supple, thyroid not enlarged, no adenopathy. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Ext: no edema, full ROM. Skin: no rashes, no concerning lesions. Neuro grossly nonfocal. Mood good, affect bright.\n\nPHQ-9 2, GAD-7 3.\n\nA/P: Healthy young adult, establishing care.\n- Baseline CBC, CMP, lipids, TSH today.\n- One-time HIV and hepatitis C screening today, she agrees.\n- Records request to prior office for immunizations. She thinks she finished HPV.\n- Pap due now that she is 21, she would rather do it at a separate visit; plan at next physical.\n- Flu shot when available, nurse visit.\n- Return yearly, sooner as needed."},
+            {"type": "Administrative note", "title": "Records Request", "author": "front desk", "date": "2022-09-07T11:05", "body": "Signed release obtained. Records request faxed to prior pediatric/adolescent primary care office for immunization history and last two years of visit notes."}
+          ]
+        },
+        {
+          "id": "2022-09-09a",
+          "kind": "portal_message",
+          "start": "2022-09-09T16:40",
+          "documents": [
+            {"type": "Patient message", "title": "Lab Results", "author": "PCP", "date": "2022-09-09T16:40", "body": "Hi Megan, your blood work from Wednesday is all normal: blood counts, kidney and liver tests, thyroid and cholesterol. HIV and hepatitis C screens were negative. Nothing to follow up on. We'll set up the flu shot once it comes in."}
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "outside_records",
+          "start": "2022-09-28T13:10",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2013-06-20T10:00"},
+            {"vaccine": "HPV, 9-valent", "date": "2013-06-20T10:00"},
+            {"vaccine": "HPV, 9-valent", "date": "2014-01-09T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-17T11:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-08T11:00"}
+          ],
+          "orders": [
+            {"id": "records-prior-pcp", "action": "done", "date": "2022-09-28T13:10"}
+          ],
+          "documents": [
+            {"type": "Outside records", "title": "Prior Primary Care Records", "author": "outside primary care", "date": "2022-09-28T13:10", "body": "Records received from the patient's prior pediatric and adolescent primary care office, 11 pages.\n\nImmunization record: routine childhood and adolescent series complete. Entered here: Tdap 06/20/2013; HPV 9-valent 06/20/2013 and 01/09/2014 (two-dose series complete). COVID-19 Pfizer-BioNTech 04/17/2021 and 05/08/2021.\n\nVisit notes: well visits through age 19, normal growth and development, no chronic problems, no medications, no known drug allergies. Sports physicals for cross-country.\n\nReviewed by PCP; immunizations entered."}
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-12T08:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-12T08:20"}],
+          "documents": [
+            {"type": "Nursing note", "title": "Nurse Visit — Influenza Vaccine", "author": "RN", "date": "2022-10-12T08:30", "body": "In for flu shot before class. Feeling well, no fever. No prior vaccine reactions. NKDA. Quadrivalent influenza 0.5 mL IM left deltoid. VIS reviewed. Waited 15 min, no issues."}
+          ]
+        },
+        {
+          "id": "2022-10-26a",
+          "kind": "portal_message",
+          "start": "2022-10-26T20:02",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-22T12:30"}],
+          "documents": [
+            {"type": "Patient message", "title": "COVID Booster", "author": "patient", "date": "2022-10-26T20:02", "body": "FYI I got the new bivalent covid booster at the pharmacy on Saturday 10/22 (Pfizer). Can you add it to my record? Thanks!"},
+            {"type": "Patient message", "title": "RE: COVID Booster", "author": "MA", "date": "2022-10-27T09:14", "body": "Added to your immunization record. Thanks for letting us know!"}
+          ]
+        },
+        {
+          "id": "2023-02-08a",
+          "kind": "portal_message",
+          "start": "2023-02-08T11:47",
+          "documents": [
+            {"type": "Patient message", "title": "Immunization Form", "author": "patient", "date": "2023-02-08T11:47", "body": "Hi, my department needs a signed immunization form before I can start a lab placement. I uploaded the blank form. Is it possible to get it signed this week?"},
+            {"type": "Patient message", "title": "RE: Immunization Form", "author": "front desk", "date": "2023-02-09T14:20", "body": "Form completed from your records and signed. It is in your documents section to download, and the original is at the front desk if you need it."}
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "annual_physical",
+          "start": "2023-09-20T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": null, "collected": "2023-09-20T14:35", "results": [{"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}]},
+            {"panel": null, "collected": "2023-09-20T14:35", "results": [{"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2023-09-20T14:30", "issued": "2023-09-25T15:00", "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-09-20T14:40"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-20T14:40"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-20T14:00"},
+            {"procedure": "Immunization administration", "performed": "2023-09-20T14:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-20T14:50", "body": "Annual exam. Megan is doing well, second year of her program, busy. Still running, about 25 miles a week, no injuries this year. No meds. NKDA. Never smoker, no alcohol.\nMenses regular, LMP 2 wks ago.\n\nROS negative.\n\nExam: vitals as charted, weight stable. Well appearing. HEENT normal. Thyroid normal size. Heart regular, no murmur. Lungs clear. Abd soft, NT. Pelvic: normal external genitalia, vagina and cervix normal, Pap obtained. Ext no edema. Skin clear.\n\nPHQ-2 0.\n\nA/P: Well adult.\n- Pap today, first one (age 22). Cytology alone at this age.\n- Urine GC/CT, routine under 25.\n- Tdap today, last 2013. Flu shot today.\n- Updated covid shot at the pharmacy when it's out, she plans to.\n- RTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "portal_message",
+          "start": "2023-09-26T08:55",
+          "documents": [
+            {"type": "Patient message", "title": "Pap and Urine Results", "author": "PCP", "date": "2023-09-26T08:55", "body": "Megan, your Pap came back normal and the urine tests were negative. Next Pap in 3 years, so 2026. See you next September."}
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "portal_message",
+          "start": "2023-10-18T19:31",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-14T13:00"}],
+          "documents": [
+            {"type": "Patient message", "title": "Covid Shot", "author": "patient", "date": "2023-10-18T19:31", "body": "Got this year's covid shot at the pharmacy on 10/14, Pfizer. Arm was sore for a day and that was it."},
+            {"type": "Patient message", "title": "RE: Covid Shot", "author": "MA", "date": "2023-10-19T08:40", "body": "Thanks, entered in your chart."}
+          ]
+        },
+        {
+          "id": "2024-09-11a",
+          "kind": "annual_physical",
+          "start": "2024-09-11T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Administrative note", "title": "Appointment Cancelled", "author": "front desk", "date": "2024-09-10T17:22", "body": "Pt texted to cancel tomorrow's physical, has a TA conflict. Rebooked for 9/18 at 8:30."}
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "annual_physical",
+          "start": "2024-09-18T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-18T08:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-09-18T08:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-09-18T08:55", "results": [{"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}]},
+            {"panel": null, "collected": "2024-09-18T08:55", "results": [{"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-18T08:30"},
+            {"procedure": "Venipuncture", "performed": "2024-09-18T08:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-09-18T09:05", "body": "Annual. Feeling well. Third year, teaching a section this fall on top of research, sleep is ok most nights. Running 4-5 days a week. No injuries, no pain. No meds, NKDA. Never smoker, no alcohol. Menses regular.\n\nROS: no fatigue, no palpitations, no GI or urinary symptoms.\n\nExam: vitals as charted. Weight within a pound or two of last year. Alert, well. HEENT normal. Neck no nodes, thyroid not enlarged. CV regular, no murmur. Lungs clear. Abd benign. Ext normal, no edema. Skin no lesions of concern.\n\nPHQ-2 1.\n\nA/P: Healthy 23 yo.\n- CBC, BMP, urine GC/CT.\n- Pap not due until 2026 (normal 2023).\n- Flu shot: we're out of stock today, nurse visit in October.\n- Covid vaccine at pharmacy this fall.\n- Back in a year."}
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "portal_message",
+          "start": "2024-09-20T12:10",
+          "documents": [
+            {"type": "Patient message", "title": "Lab Results", "author": "PCP", "date": "2024-09-20T12:10", "body": "Your labs from Wednesday look good. Blood count and kidney tests normal, urine tests negative. Don't forget the flu shot visit next month."}
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Administrative note", "title": "No Show", "author": "front desk", "date": "2024-10-09T08:40", "body": "No-show for 8:00 nurse visit (flu shot). Left voicemail and sent a text to reschedule."}
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "portal_message",
+          "start": "2024-10-21T21:15",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-19T11:00"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-19T11:00"}
+          ],
+          "documents": [
+            {"type": "Patient message", "title": "Flu Shot", "author": "patient", "date": "2024-10-21T21:15", "body": "Sorry I missed the nurse appointment, I completely forgot. I ended up getting the flu shot and the covid one together at the pharmacy on Saturday (10/19). Covid was Moderna this time."},
+            {"type": "Patient message", "title": "RE: Flu Shot", "author": "MA", "date": "2024-10-22T08:32", "body": "No problem! Both are added to your record now, so you're all set for the season."}
+          ]
+        }
+      ]
+    }
+  ]
+}

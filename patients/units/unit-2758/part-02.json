@@ -1,0 +1,779 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002758",
+      "events": [
+        {
+          "id": "2021-02-09a",
+          "kind": "office_visit",
+          "start": "2021-02-09T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Short of breath on exertion, more nosebleeds",
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.7,
+              "Hematocrit": 30.4,
+              "Mean Corpuscular Volume": 74,
+              "Ferritin": 7,
+              "Transferrin Saturation": 5,
+              "Iron": 22,
+              "Total Iron-Binding Capacity": 440
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-02-09T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2021-02-09T16:30",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 19
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 448
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 4
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-02-09T15:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "Exertional dyspnea, recurrent epistaxis, father with pulmonary AVMs"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2021-02-09T16:55",
+              "body": "41F. Says the stairs to her classroom (third floor) have her winded this winter in a way they didn't last year, has to stop on the landing. No chest pain, no cough, no wheeze, no orthopnea or leg swelling, no palpitations or near-syncope. Nosebleeds more often since the heat came on, 2-3 a week, usually 10 min, one last week closer to 30. No blood in stool. Periods still heavy.\n\nReminds me her father was told he had AVMs in the lungs. She doesn't know details.\n\nMeds unchanged. Iron at bedtime.\n\nExam: pale. No respiratory distress at rest. Nares: dried blood L anterior septum, nothing active. Heart RRR, no murmur. Lungs clear throughout. No clubbing. No edema. Calves soft.\n\nA/P:\n1. Exertional dyspnea - anemia the obvious candidate, but with her father's lung AVMs and her nosebleeds I want pulmonary to look at her for an AVM/shunt. Referral placed.\n2. Iron deficiency anemia - CBC, iron studies today.\n3. Recurrent epistaxis - humidifier, saline gel to the septum nightly; pressure technique reviewed.\nCall/ED for chest pain, fainting, a nosebleed that won't stop with 20 minutes of pressure."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-11a",
+          "kind": "portal_message",
+          "start": "2021-02-11T11:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results and referral",
+              "author": "PCP",
+              "date": "2021-02-11T11:40",
+              "body": "Paula - your hemoglobin dropped to 9.7, lower than last year, and your iron is very low. That likely explains a good part of the breathlessness on the stairs. Keep the iron going every day. The pulmonology referral is in; their office will call you. Please bring a list of what you know about your father's diagnosis if you can get it from him."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results and referral",
+              "author": "patient",
+              "date": "2021-02-11T19:02",
+              "body": "Thank you. I called my dad, he says they called it a hereditary thing with blood vessels and he had something done to the lung ones years ago. My aunt has the nosebleeds too. Pulm called, I'm in March 17."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-17a",
+          "kind": "specialist_visit",
+          "start": "2021-03-17T09:00",
+          "service": "Pulmonology",
+          "reason": "Dyspnea on exertion and recurrent epistaxis",
+          "conditions": [
+            {
+              "label": "Hereditary hemorrhagic telangiectasia",
+              "action": "diagnosed",
+              "onset": "1993-01-01",
+              "note": "Curacao criteria: epistaxis, mucocutaneous telangiectasias, affected first-degree relative"
+            }
+          ],
+          "vitals": {
+            "spo2": 98
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-03-17T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2021-03-17T10:30",
+              "text": "Indication: exertional dyspnea, suspected hereditary hemorrhagic telangiectasia; evaluate for intrapulmonary shunt. Technically adequate study. Normal left ventricular size and wall thickness. Left ventricular ejection fraction 72% by biplane method, high normal, with no regional wall motion abnormality. Normal right ventricular size and function. Atria normal in size. Aortic, mitral, tricuspid and pulmonic valves structurally normal without stenosis or regurgitation. Estimated right ventricular systolic pressure normal. No pericardial effusion. Agitated saline injected via left antecubital vein at rest and with Valsalva release: no bubbles seen in the left heart at any cycle.",
+              "conclusion": "High-normal LV systolic function (EF 72%). No valvular abnormality. Agitated saline contrast study negative for intracardiac or intrapulmonary shunt."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2021-03-17T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Consultation",
+              "author": "pulmonology",
+              "date": "2021-03-22T14:10",
+              "body": "Re: Paula Wisniewski, DOB 3/9/1979. Seen 3/17/2021 at your request.\n\nReason: worsening exertional dyspnea and nosebleeds.\n\nHistory: 42-year-old teacher, never smoker, with nosebleeds dating back to her early teens, cauterized once in her twenties, now more frequent. Over the winter she has become breathless climbing stairs. No cough, hemoptysis, chest pain, migraine-type headaches or neurologic events. Her father carries a diagnosis of hereditary hemorrhagic telangiectasia with treated pulmonary AVMs, and a paternal aunt has the same nosebleed history. Her husband's side has nothing similar. She and her husband are concerned about her son, now 13, and whether he could have inherited this.\n\nMedications: carbidopa-levodopa 25/100 TID (neurology), ferrous sulfate 325 mg daily with vitamin C, loratadine as needed.\nAllergies: no drug allergies; shellfish (hives); environmental.\n\nExamination: comfortable at rest, SpO2 98% on room air. Several small red telangiectasias on the lower lip and tongue tip and on the pads of two fingers on the right hand, blanching. Nasal septum with crusting. Lungs clear; no bruit over the chest. Heart regular, no murmur. No clubbing or cyanosis.\n\nData: labs from your office and ours show iron deficiency anemia, hemoglobin in the 9s with microcytosis. Transthoracic echo with bubble study today: EF 72%, valves normal, no shunt.\n\nAssessment: she meets three of the four Curacao criteria (spontaneous recurrent epistaxis, mucocutaneous telangiectasias at characteristic sites, a first-degree relative with HHT), which makes the diagnosis of hereditary hemorrhagic telangiectasia definite. I explained that HHT is autosomal dominant and arises from defects in the TGF-beta signaling pathway in blood vessel walls, so each of her children has a 50% chance of inheriting it. The negative bubble study makes a clinically significant pulmonary AVM unlikely, and I attribute her exertional dyspnea to the iron deficiency anemia, which in turn is fed by both her heavy menses and the nosebleeds.\n\nRecommendations: continue iron replacement through your office; nasal humidification as you started. Return to us for new respiratory symptoms.\n\nThank you for the referral.\nPulmonology"
+            }
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "office_visit",
+          "start": "2021-03-24T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after pulmonology",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-03-24T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2021-03-24T16:20",
+              "body": "F/u after pulm. Letter reviewed: definite HHT by Curacao criteria (epistaxis, lip/tongue/finger telangiectasias, father affected). Bubble echo negative, EF 72%, no valve disease; dyspnea attributed to anemia.\n\nShe is relieved there's no lung AVM and a little shaken by the name. Lots of questions about her son. We talked about what the diagnosis means day to day for her (nosebleeds, iron) and that the pediatrician is the right person to start with for him.\n\nStill winded on stairs. Nosebleeds a bit better with the humidifier.\n\nA/P:\n- HHT - added to problem list.\n- Iron deficiency anemia - on daily oral iron, fed by menses + epistaxis. Continue. CBC at the physical.\n- PD - per neuro.\nRTC fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-06a",
+          "kind": "pharmacy",
+          "start": "2021-04-06T16:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-06T16:30"
+            }
+          ]
+        },
+        {
+          "id": "2021-04-27a",
+          "kind": "pharmacy",
+          "start": "2021-04-27T16:15",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-27T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry update",
+              "author": "MA",
+              "date": "2021-05-03T09:20",
+              "body": "State registry reconciliation: COVID-19 Pfizer-BioNTech dose 1 04/06/2021 and dose 2 04/27/2021 given at a community pharmacy. Added to immunization history. Primary series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "portal_message",
+          "start": "2021-06-08T21:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Saline gel",
+              "author": "patient",
+              "date": "2021-06-08T21:15",
+              "body": "Is it ok to keep using the saline gel all summer even though the air isn't dry? The nosebleeds are down to maybe one a week. School's out in 2 weeks, yay."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Saline gel",
+              "author": "RN",
+              "date": "2021-06-09T08:05",
+              "body": "Yes, keep it up year round, it helps protect the fragile vessels in the nose. Glad they're less frequent. Enjoy the break!"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "annual_physical",
+          "start": "2021-09-21T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.4,
+              "Hematocrit": 32.4,
+              "Mean Corpuscular Volume": 76,
+              "Ferritin": 10,
+              "Transferrin Saturation": 7,
+              "Iron": 30,
+              "Total Iron-Binding Capacity": 420
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-21T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2021-09-21T16:20",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 10
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 7
+                },
+                {
+                  "test": "Iron",
+                  "value": 31
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 441
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-21T16:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-09-21T15:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-09-21T16:40",
+              "body": "42F annual. Full in-person classes again. Feels a bit better than last winter on the stairs, not back to normal. Nosebleeds roughly weekly, short. Periods heavy as ever. Son started 8th grade.\n\nMeds: carbidopa-levodopa 25-100 TID, ferrous sulfate 325 daily, loratadine prn. Allergies unchanged.\nPHQ-2 0. Never smoker, wine 1-2/wk.\n\nExam: NAD. Telangiectasias lower lip, tongue tip. Thyroid nl. RRR. Lungs clear. Abd soft. No edema. Neuro nonfocal, no tremor.\n\nA/P:\n- HHT / IDA: CBC, ferritin today. Continue oral iron, saline gel, humidifier.\n- PD: neuro follow-up due; she'll call them.\n- HM: mammogram ordered. Flu shot at nurse visit in Oct. COVID primary series done in April.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-23a",
+          "kind": "portal_message",
+          "start": "2021-09-23T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2021-09-23T12:30",
+              "body": "Hemoglobin 10.4, a little better than February, iron stores still low. Kidney and liver tests normal. Stay with the daily iron; we'll keep watching."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-05T15:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-05T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "MA",
+              "date": "2021-10-05T15:25",
+              "body": "Influenza quadrivalent 0.5 mL IM L deltoid. Afebrile, no prior reactions. VIS given. Observed 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "imaging",
+          "start": "2021-10-19T07:40",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-10-19T07:40",
+              "text": "Bilateral CC and MLO views with tomosynthesis. Comparison 10/2020 and 10/2019. Heterogeneously dense. No suspicious mass, calcification or distortion. No change.",
+              "conclusion": "BI-RADS 1, negative. Annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "done",
+              "date": "2021-10-19T07:40"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-14a",
+          "kind": "specialist_visit",
+          "start": "2022-03-14T13:30",
+          "service": "Neurology",
+          "reason": "Sleep disturbance, nighttime leg discomfort",
+          "conditions": [
+            {
+              "label": "Restless legs syndrome",
+              "action": "diagnosed",
+              "onset": "2021-03-01"
+            },
+            {
+              "label": "Insomnia",
+              "action": "diagnosed",
+              "onset": "2021-03-01",
+              "note": "Sleep-onset insomnia driven by restless legs"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "author": "neurology",
+              "date": "2022-03-18T10:15",
+              "body": "Re: Paula Wisniewski, DOB 03/09/1979. Seen 03/14/2022.\n\nPaula, 43, whom we follow for Parkinson disease and who was diagnosed with HHT by pulmonology last year, came back to clinic, a little overdue for her annual visit, mainly because of poor sleep.\n\nFor roughly the past year, once she lies down at night she gets a deep, unpleasant ache in both calves with an overwhelming need to move her legs. Getting up and walking eases it, and she often paces her bedroom several times before she can fall asleep. It happens only in the evening and at night when she is still; standing, sitting through the school day and daytime are free of it. She is tired every day from the lost sleep. She has no history of anxiety, depression or any other psychiatric problem. Parkinson symptoms remain well controlled on carbidopa-levodopa 25/100 three times daily.\n\nShe eats a vegetarian diet. Menses are regular but heavy. She remains on oral iron for long-standing iron deficiency.\n\nExamination on medication: neurologic examination normal, including mental status, cranial nerves, strength, tone, reflexes, sensation, coordination and gait. No tremor or bradykinesia.\n\nImpression:\n1. Restless legs syndrome, meeting all essential criteria, with chronic insomnia as its consequence. Iron deficiency is the most likely driver here.\n2. Parkinson disease, stable.\n\nWe discussed management. The first step is iron: her ferritin should be checked, and the goal in RLS is a ferritin above 75, well above the usual lower limit. Please check iron studies and consider whether she can reach that orally. Regular sleep and wake times, moderate exercise earlier in the day, cutting back on evening wine and caffeine, and avoiding sedating antihistamines such as diphenhydramine at night (her loratadine is fine). We also talked about what this means long term: RLS is usually chronic and can slowly become more frequent, and dopaminergic medicines used for it can over time worsen it (augmentation), which is one reason we are not adding anything today. No change to her carbidopa-levodopa.\n\nFollow-up in 12 months.\nOutside neurology"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-23a",
+          "kind": "office_visit",
+          "start": "2022-03-23T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up neurology letter, iron studies",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-03-23T16:15",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 30
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 431
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 7
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-23T16:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-03-23T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-03-23T16:30",
+              "body": "Here to go over neuro's letter. Dx restless legs, with insomnia from it. Neuro wants ferritin >75.\n\nShe says nights are the worst part of her life right now: legs start up around 10, pacing, asleep maybe by midnight-1, up at 5:45 for school. Not napping. No snoring per husband. Mood ok, frustrated.\n\nTaking ferrous sulfate daily at bedtime with vit C, 2 h from levodopa, misses maybe one dose a week. Some constipation.\n\nExam: pale, otherwise unremarkable. Legs normal.\n\nA/P:\n- RLS / insomnia: iron studies + CBC today. Sleep measures per neuro reviewed; she's cutting the evening glass of wine.\n- IDA: if ferritin still very low, she would prefer to keep trying oral before anything IV. Try alternate-day dosing if constipation is limiting.\n- HHT, PD stable."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-25a",
+          "kind": "portal_message",
+          "start": "2022-03-25T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron results",
+              "author": "PCP",
+              "date": "2022-03-25T09:10",
+              "body": "Ferritin came back at about 10, so a long way from the target of 75 neurology mentioned, and hemoglobin is about where it was in the fall. Let's give the oral iron a fair shot with very consistent daily dosing for the next few months and recheck at your physical. If it isn't moving we can talk about other options."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "office_visit",
+          "start": "2022-06-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up RLS and iron",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-06-15a",
+          "kind": "telephone",
+          "start": "2022-06-15T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2022-06-15T10:20",
+              "body": "LM for pt re: missed 6/14 follow-up. Pt called back: last week of school, graduation duties, forgot. Doing about the same. Prefers to wait for her fall physical. Offered sooner; declined. Physical booked 9/20."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T16:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-09-20T16:15",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 12
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 6
+                },
+                {
+                  "test": "Iron",
+                  "value": 27
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 422
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-20T16:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T16:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-09-20T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-20T16:50",
+              "body": "43F annual. RLS: some nights better, still paces 2-3 nights a week. Sleep 5-6 h on school nights. Cut evening wine to weekends. Nosebleeds weekly, short. Heavy periods. Took iron most days over the summer.\n\nMeds: carbidopa-levodopa 25-100 TID; ferrous sulfate 325 daily; loratadine prn.\nAllergies: NKDA; shellfish; tree pollen/dust mites.\nFHx: father HHT; mother hypothyroid + GAD; son ADHD.\nPHQ-2 1.\n\nExam: NAD. Lip and tongue telangiectasias. Thyroid normal. RRR, lungs clear. Abd soft. Skin ok. Neuro nonfocal.\n\nA/P:\n- IDA/HHT: CBC, ferritin. Continue oral iron.\n- RLS/insomnia: sleep habits; neuro f/u in spring.\n- HM: lipids, TSH (mother hypothyroid) today. Mammogram ordered. Flu and bivalent COVID booster at nurse visit 10/4. Pap due next year.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-22a",
+          "kind": "portal_message",
+          "start": "2022-09-22T13:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2022-09-22T13:00",
+              "body": "Hi Paula, cholesterol and thyroid are normal. Hemoglobin and ferritin are essentially unchanged from the spring, still low. Keep going with the iron and we'll recheck in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T15:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2022-10-04T15:35",
+              "body": "Flu (L deltoid) and bivalent Pfizer COVID booster (R deltoid) given IM. Screening negative. VIS/EUA fact sheet given. Observed 15 min. No reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "imaging",
+          "start": "2022-10-18T07:45",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-10-18T07:45",
+              "text": "Bilateral digital mammogram with tomosynthesis compared to 2019-2021. Heterogeneously dense tissue. No suspicious findings.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-10-18T07:45"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

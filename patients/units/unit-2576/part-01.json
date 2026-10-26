@@ -1,0 +1,252 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002576",
+      "given": "Rowan",
+      "family": "Morrow",
+      "birth_date": "1999-05-10",
+      "address_line": "41 Gilbert Lane",
+      "phone": "+1-413-555-0195",
+      "email": "rowan.morrow@example.test",
+      "marital_status": "single",
+      "summary": "Young construction laborer with ADHD on mixed amphetamine salts, half-pack smoking and heavy episodic drinking, who joins in 2020 and then has a serious car crash nearly every year from 2021 to 2026: hip dislocation with later femoral head AVN, C6 fracture, pelvic fracture with bladder rupture, diffuse axonal injury, and a femur fracture complicated by fat embolism. Sparse outside records.",
+      "events": [
+        {
+          "id": "2020-08-24a",
+          "kind": "establish_care",
+          "start": "2020-08-24T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, wants a local doctor for his ADHD prescription",
+          "conditions": [
+            {"label": "Attention-deficit hyperactivity disorder, combined type", "action": "history", "onset": "2009-03-01", "note": "diagnosed in childhood per patient; on stimulant since"},
+            {"label": "Nicotine dependence, cigarettes", "action": "history", "onset": "2017-06-01", "note": "tobacco use disorder, moderate"},
+            {"label": "Alcohol use disorder, mild", "action": "history", "onset": "2018-01-01"},
+            {"label": "Allergic rhinitis due to pollen", "action": "history", "onset": "2012-04-01", "note": "seasonal"}
+          ],
+          "medications": [
+            {"drug": "amphetamine aspartate 5 MG / amphetamine sulfate 5 MG / dextroamphetamine saccharate 5 MG / dextroamphetamine sulfate 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet (20 mg) by mouth twice daily, morning and early afternoon", "dose": {"value": 20, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "ADHD, combined type; continued from prior PCP"},
+            {"drug": "cetirizine hydrochloride 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily as needed for allergy symptoms", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY PRN", "route": "Oral", "course": "chronic", "reason": "seasonal allergic rhinitis"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "start", "sig": "Inhale 2 puffs every 4 to 6 hours as needed", "dose": {"value": 2, "unit": "puff"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "Penicillin", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "Sulfonamide antibiotics", "reaction": "Hives", "severity": "moderate", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 78.2, "height_cm": 180.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-08-24T10:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-08-24T10:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2020-08-24T10:25", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2020-08-24T10:25", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "Gamma Glutamyl Transferase", "value": 27}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}, {"survey": "AUDIT-C total score", "value": 6}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "Heavy episodic drinking, weekends"},
+            {"item": "Occupation", "value": "Construction laborer"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-08-24T09:40"}],
+          "orders": [{"id": "records-prior-pcp", "action": "placed", "order": "Request records from prior primary care practice", "category": "procedure", "reason": "establishing care"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-08-24T10:30", "body": "21M here to set up primary care. Moved into an apartment in Amherst this summer and his old pediatric/family doctor is two hours away; mostly he needs someone to keep writing his ADHD med.\n\nADHD, combined type: diagnosed around age 10, on Adderall IR 20 mg twice a day for years. Takes the second dose around 1 pm, says if he takes it later he doesn't sleep. Works construction (framing crew), says the med keeps him from making mistakes on the job. No palpitations, no chest pain, appetite fine, sleeping 6-7 hrs.\n\nAllergies: seasonal hay fever in spring, uses cetirizine 10 mg when it's bad. Has an albuterol inhaler from his old doctor, uses it 'once in a while' when he has a cold, can't say why it was first given. No ED visits for breathing.\n\nPMH: as above. PSH: T&A at age 8. Broke left forearm at 16 skateboarding, had plates put in (ORIF), no problems since.\nMeds: Adderall 20 mg BID, cetirizine 10 mg prn, albuterol HFA prn.\nAllergies: PCN (rash as a kid), sulfa (hives).\nFH: dad - drinking problem, high BP. Mom - anxiety, thyroid (on replacement). Paternal grandfather had a heart attack at 54. No bleeding problems in the family, nobody with early osteoporosis that he knows of.\nSH: single, lives with a roommate. Framing/construction laborer. Smokes about half a pack a day, started at 18. Drinks mostly on weekends, often 6-8 beers or more in a night; denies morning drinking, has never tried to cut down. No other drugs. On his mother's insurance through her job.\n\nExam: well-appearing, fidgety but pleasant. HEENT: TMs clear, mild boggy nasal mucosa. Neck supple. Heart regular rate, no murmur. Lungs clear, no wheeze. Abd benign. Ext: healed scar volar L forearm. Skin no rash. Neuro grossly normal. Mood good, affect bright.\n\nA/P\n1. ADHD, combined - stable on current dose. Reviewed MA PMP, fills monthly from one pharmacy, consistent. Controlled substance agreement signed today. Will continue Adderall 20 mg BID, 30-day supply, visits q3-4 mo.\n2. Tobacco use disorder - advised quitting, he's not interested right now. Will keep asking.\n3. Alcohol use disorder, mild - AUDIT-C 6. Talked about binge pattern and the combination with stimulant. Not ready to change. Revisit.\n4. Seasonal allergic rhinitis - cetirizine prn.\n5. Albuterol prn - rarely used, will refill as needed.\n6. Health maintenance: CMP, CBC, lipids, GGT, HIV and hep C once today. Flu shot in October. Records requested from prior practice.\n\nRTC 3 months or sooner."}
+          ]
+        },
+        {
+          "id": "2020-08-26a",
+          "kind": "portal_message",
+          "start": "2020-08-26T16:12",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Communication", "title": "Your recent labs", "author": "PCP", "date": "2020-08-26T16:12", "body": "Hi Rowan - your bloodwork from Monday came back fine. Liver tests and GGT are normal, blood counts normal, kidney function normal, cholesterol fine for now. HIV and hepatitis C screens negative. Nothing to change. Talk soon."}
+          ]
+        },
+        {
+          "id": "2020-09-08a",
+          "kind": "outside_records",
+          "start": "2020-09-08T11:05",
+          "reason": "Records from prior primary care practice",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2010-07-12T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2010-07-12T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2010-07-12T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2010-09-20T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2011-01-24T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2015-06-01T10:00"}
+          ],
+          "orders": [{"id": "records-prior-pcp", "action": "done", "date": "2020-09-08T11:05"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Practice Records (summary)", "author": "MA", "date": "2020-09-08T11:05", "body": "38 pages received by fax from the prior family practice, covering 2008-2019. Abstracted:\n- ADHD, combined type, diagnosed age 10 with teacher and parent rating scales; stimulant since. Last dose on record Adderall 20 mg BID.\n- Allergic rhinitis, seasonal.\n- 2007 tonsillectomy and adenoidectomy.\n- 2015 left distal radius fracture, ORIF at a regional hospital, healed.\n- Well visits through 2019, normal growth, normal exams.\n- Immunizations: childhood series complete; Tdap, MenACWY and HPV #1 7/2010, HPV #2 9/2010, HPV #3 1/2011; MenACWY booster 6/2015.\n- Allergies: penicillin (rash, age 4), sulfa (hives).\nEntered into chart. Original filed to media."}
+          ]
+        },
+        {
+          "id": "2020-09-21a",
+          "kind": "portal_message",
+          "start": "2020-09-21T07:48",
+          "reason": "Medication refill",
+          "documents": [
+            {"type": "Patient Communication", "title": "Refill request", "author": "patient", "date": "2020-09-21T07:48", "body": "hey can I get my adderall sent in, I have like 3 days left. same pharmacy. thanks"},
+            {"type": "Patient Communication", "title": "RE: Refill request", "author": "PCP", "date": "2020-09-21T12:30", "body": "Sent. PMP checked. You should be able to pick it up this afternoon."}
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T16:20",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-13T16:25"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-13T16:25"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization", "author": "RN", "date": "2020-10-13T16:35", "body": "Came after work for flu vaccine. No fever, no egg or vaccine reactions. Quadrivalent flu 0.5 mL IM right deltoid. Tolerated well, waited 15 minutes, left feeling fine."}
+          ]
+        },
+        {
+          "id": "2020-11-23a",
+          "kind": "telehealth_visit",
+          "start": "2020-11-23T17:10",
+          "reason": "ADHD medication follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-11-23T17:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit - ADHD", "author": "PCP", "date": "2020-11-23T17:30", "body": "Video, pt in his truck after work, identity verified, consents to video.\n\nADHD: doing well on Adderall 20 BID. Work slowing down for winter but still full-time. No palpitations, sleeping ok, eating ok. Weight at home 'about the same.'\nStill smoking ~10/day. Drinking: 'weekends, same as always.' Doesn't want to talk about cutting back today.\n\nPMP reviewed, appropriate.\nA/P: ADHD stable - continue, 30-day Rx monthly. Encouraged smoking cessation, declined. In-person visit in Feb for vitals."}
+          ]
+        },
+        {
+          "id": "2020-12-21a",
+          "kind": "pharmacy",
+          "start": "2020-12-21T09:15",
+          "reason": "Refill request from pharmacy",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy refill request", "author": "MA", "date": "2020-12-21T09:15", "body": "Pharmacy faxed refill request for amphetamine-dextroamphetamine 20 mg #60. Last fill 11/22. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "Refill sent", "author": "PCP", "date": "2020-12-21T13:02", "body": "E-prescribed, 30 days. PMP ok."}
+          ]
+        },
+        {
+          "id": "2021-02-22a",
+          "kind": "office_visit",
+          "start": "2021-02-22T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-02-22T16:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - ADHD", "author": "PCP", "date": "2021-02-22T17:05", "body": "S: ADHD f/u. Doing fine. Laid off two weeks in January for weather, back now. Takes Adderall 20 in the morning and around noon. Denies chest pain, palpitations, insomnia. Smoking same, no interest in quitting. Says he's 'trying to drink less on weeknights.'\nO: Vitals reviewed, BP and HR fine on stimulant. Weight stable. Alert, calm. Heart RRR. Lungs clear.\nA/P: ADHD, stable, continue current dose. PMP reviewed. Smoking - counseled 3 min, not ready. Alcohol - he did not want to go into it today. COVID vaccine: eligible for his age group in April; he'll get it at a pharmacy.\nf/u 3 mo, video ok."}
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "portal_message",
+          "start": "2021-04-20T20:41",
+          "reason": "COVID vaccine record",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-17T11:00"}],
+          "documents": [
+            {"type": "Patient Communication", "title": "Covid shot", "author": "patient", "date": "2021-04-20T20:41", "body": "got the first pfizer shot saturday at the pharmacy. arm sore that's it. second one is may 8"},
+            {"type": "Patient Communication", "title": "RE: Covid shot", "author": "MA", "date": "2021-04-21T08:50", "body": "Thanks Rowan, dose 1 is added to your record. Send us a photo of the card after dose 2."}
+          ]
+        },
+        {
+          "id": "2021-05-25a",
+          "kind": "telehealth_visit",
+          "start": "2021-05-25T12:20",
+          "reason": "ADHD follow-up; allergies",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2021-05-25T12:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth - ADHD, allergies", "author": "PCP", "date": "2021-05-25T12:40", "body": "Video on his lunch break, at a job site, identity confirmed.\nADHD - stable on Adderall 20 BID, no side effects. PMP fine.\nAllergies - pollen bad this month, sneezing, itchy eyes, working outside all day. Cetirizine daily is helping. Hasn't needed the albuterol.\nTobacco/alcohol - unchanged; again declined help.\nPlan: continue Adderall; cetirizine daily through the season then back to prn. Physical in late summer, fasting not needed."}
+          ]
+        },
+        {
+          "id": "2021-06-14a",
+          "kind": "portal_message",
+          "start": "2021-06-14T19:03",
+          "reason": "COVID vaccine dose 2",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-08T10:30"}],
+          "documents": [
+            {"type": "Patient Communication", "title": "vaccine card", "author": "patient", "date": "2021-06-14T19:03", "body": "photo of card attached, 2nd dose was 5/8"},
+            {"type": "Patient Communication", "title": "RE: vaccine card", "author": "MA", "date": "2021-06-15T09:12", "body": "Got it, dose 2 on 5/8 is in your chart now. You're all set."}
+          ]
+        },
+        {
+          "id": "2021-08-30a",
+          "kind": "annual_physical",
+          "start": "2021-08-30T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-08-30T08:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "CBC with Differential", "collected": "2021-08-30T08:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "AUDIT-C total score", "value": 7}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-08-30T07:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Preventive Visit", "author": "PCP", "date": "2021-08-30T08:40", "body": "22yo M, annual exam.\nInterval: no illnesses or injuries this year. Vaccinated for COVID in spring. ADHD controlled.\nMeds: Adderall 20 mg BID, cetirizine prn, albuterol prn (hasn't used this year). Allergies PCN, sulfa.\nHabits: ~half pack a day, 4 yrs now. Alcohol: AUDIT-C 7, up from last year - says summer cookouts, often 8+ drinks on a Saturday. Denies driving after drinking when asked directly. No drugs. Wears seatbelt 'usually.' Uses ear protection on site 'when the boss is around.'\nROS negative.\nExam: Gen well. HEENT normal, dentition fine. Neck no LAD, thyroid normal. Heart RRR, no murmur. Lungs clear. Abd soft, no HSM. GU deferred. MSK full ROM, healed L forearm scar. Skin no concerning lesions. Neuro normal. Psych normal mood.\n\nA/P:\n- Health maintenance: CMP and CBC today. Tdap from 2010 - due in 2020, he'll get it next visit (declined two shots today with flu coming up). Flu in October. HPV done. HIV/HCV done 2020.\n- Alcohol: brief intervention - talked about binge risk, injuries, mixing with stimulant, and the seatbelt. Offered counseling referral; he declined. Goal he set: no more than 4 on any night. Will follow.\n- Tobacco: advised to quit; not ready.\n- ADHD: continue."}
+          ]
+        },
+        {
+          "id": "2021-10-18a",
+          "kind": "nurse_visit",
+          "start": "2021-10-18T16:05",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-18T16:10"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-18T16:10"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu vaccine", "author": "RN", "date": "2021-10-18T16:20", "body": "Flu shot only today; asked about Tdap, pt wants to wait. Screening negative. 0.5 mL IM L deltoid, no reaction during observation."}
+          ]
+        },
+        {
+          "id": "2021-11-29a",
+          "kind": "telehealth_visit",
+          "start": "2021-11-29T17:30",
+          "reason": "ADHD follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2021-11-29T17:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video - ADHD", "author": "PCP", "date": "2021-11-29T17:45", "body": "Video from home. ADHD stable, no changes wanted. Denies cardiac sx. PMP reviewed, monthly fills on time. Still at 'about four' drinks most Saturdays by his account, sometimes more. Smoking unchanged.\nContinue Adderall 20 BID. Next in-person in Feb."}
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "ed_visit",
+          "start": "2021-12-20T01:55",
+          "end": "2021-12-21T10:30",
+          "service": "Emergency Medicine",
+          "reason": "Right hip injury in motor vehicle collision",
+          "conditions": [
+            {"label": "Posterior dislocation of right hip", "icd10": "S73.014A", "action": "diagnosed", "onset": "2021-12-20"}
+          ],
+          "medications": [
+            {"drug": "ibuprofen 600 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every 8 hours with food as needed for pain", "dose": {"value": 600, "unit": "mg"}, "frequency": "TID PRN", "route": "Oral", "course": "short", "reason": "hip pain after reduction"}
+          ],
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c"],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2021-12-20T01:55"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Note (outside)", "author": "emergency medicine", "date": "2021-12-22T14:10", "body": "Outside ED record, date of service 12/20/2021, received by fax.\n\n22M, restrained driver, head-on collision. Knees struck dash. Severe R hip pain, unable to move R leg. Per EMS report, intoxicated. Hx ADHD, tobacco and alcohol use. Allergies PCN, sulfa.\nVS stable. R leg shortened, internally rotated. Unable to dorsiflex R foot. Pelvis XR: posterior dislocation R hip.\nClosed reduction under procedural sedation, successful. Post-reduction CT pelvis: concentric reduction, no acetabular or femoral head fracture. R foot dorsiflexion weakness persists post-reduction. Kept overnight for observation and pain control.\nDx: posterior dislocation R hip, reduced. R foot dorsiflexion weakness.\nDispo 12/21: home, crutches, toe-touch weight bearing R, ibuprofen 600 q8h prn. Ortho clinic 1 week. Return for worsening weakness or pain."}
+          ]
+        },
+        {
+          "id": "2021-12-21b",
+          "kind": "telephone",
+          "start": "2021-12-21T15:20",
+          "reason": "Patient calling after ED visit",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Phone note", "author": "RN", "date": "2021-12-21T15:30", "body": "Pt called. Was in a car accident early Monday, hip popped out, they put it back at the ED and kept him overnight. Home now on crutches, says he can't pull the right foot up. Pain 6/10 with ibuprofen. Ortho appt 12/29. Asked if he can still take Adderall with what they gave him - yes, nothing new besides ibuprofen. Booked with PCP 12/28. Asked ED to fax notes."}
+          ]
+        },
+        {
+          "id": "2021-12-28a",
+          "kind": "office_visit",
+          "start": "2021-12-28T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for hip dislocation",
+          "measure": ["bp", "hr", "spo2"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-12-28T10:20"}],
+          "orders": [{"id": "ortho-referral-2021", "action": "placed", "order": "Orthopedic surgery referral", "category": "referral", "to": "Orthopedic Surgery", "reason": "posterior hip dislocation after reduction, foot dorsiflexion weakness"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED Visit", "author": "PCP", "date": "2021-12-28T10:55", "body": "Here after ED stay 12/20-21. Head-on crash, he was driving, belted. R hip dislocated, reduced in ED, CT afterward showed no fracture. Was told he'd been drinking that night; he doesn't dispute it. ED note received and reviewed.\nNow: hip pain 4/10, better. On crutches, toe-touch. Can't lift the front of his R foot. No back pain, no bladder or bowel change.\nExam: on crutches, uncomfortable getting onto table. R hip - not ranged today given recent reduction. R ankle dorsiflexion weak, plantarflexion 5/5. Pulses DP/PT 2+. L leg normal.\nA/P: R posterior hip dislocation, s/p closed reduction, with R foot dorsiflexion weakness. Referral to ortho placed so it's in the system (appt tomorrow). PT per ortho. Ibuprofen as needed with food.\nAlcohol: we talked about this one directly. He says it was a 'one-off.' Offered referral for counseling again - he'll think about it.\nOut of work note through ortho visit. Continue Adderall."}
+          ]
+        }
+      ]
+    }
+  ]
+}

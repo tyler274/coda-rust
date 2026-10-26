@@ -1,0 +1,459 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002758",
+      "events": [
+        {
+          "id": "2026-01-12a",
+          "kind": "specialist_visit",
+          "start": "2026-01-12T16:00",
+          "service": "Psychiatry",
+          "reason": "Follow-up, benzodiazepine taper",
+          "medications": [
+            {
+              "drug_text": "alprazolam 0.5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Taper step"
+            },
+            {
+              "drug_text": "alprazolam 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (1 mg) by mouth at bedtime",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Insomnia, taper (prescribed by psychiatry)"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "author": "psychiatry",
+              "date": "2026-01-14T11:00",
+              "body": "Re: Paula Wisniewski, DOB 03/09/1979. Seen 01/12/2026.\n\nThree months at alprazolam 1.5 mg at bedtime. Sleep a little lighter in the first two weeks after the reduction, then settled. Using CBT-I techniques (fixed wake time, getting out of bed when not sleeping). No rebound anxiety, no tremor or palpitations. GAD-7 6. A stressful fall with nosebleeds and a transfusion, handled well.\n\nPlan: reduce to 1 mg at bedtime (1 mg tablet) starting tonight. Continue therapy, now every two weeks. Next step in about three months.\nOutpatient psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "procedure_visit",
+          "start": "2026-01-13T13:30",
+          "service": "Otolaryngology",
+          "reason": "Laser coagulation of nasal telangiectasias",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Nasal Laser Coagulation",
+              "author": "ENT",
+              "date": "2026-01-13T14:40",
+              "body": "Procedure: laser coagulation of anterior septal telangiectasias, bilateral, in office.\nIndication: HHT epistaxis.\nAnesthesia: topical lidocaine with oxymetazoline pledgets.\nFindings: multiple small telangiectasias of the anterior septum bilaterally, right more than left, as at consultation.\nTechnique: under endoscopic guidance, lesions treated with low-power laser in a circumferential pattern from the periphery inward, avoiding the central vessel. Minimal bleeding, controlled with a pledget. No packing.\nPatient tolerated well. Instructions: saline gel three times daily for two weeks, humidifier, no nose blowing for a week, expect crusting. Follow-up 6 weeks.\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-15a",
+          "kind": "portal_message",
+          "start": "2026-01-15T19:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "After ENT procedure",
+              "author": "patient",
+              "date": "2026-01-15T19:10",
+              "body": "FYI ENT did the laser Tuesday. Lots of crusting and a tiny bit of pink on the tissue, nothing like a real nosebleed. They said that's expected. Just keeping you in the loop."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: After ENT procedure",
+              "author": "RN",
+              "date": "2026-01-16T08:20",
+              "body": "Thanks for the update, Paula. That sounds like normal healing. Keep up the gel. Call ENT or us if you get a bleed that doesn't stop with 20 minutes of pressure."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "specialist_visit",
+          "start": "2026-02-17T09:30",
+          "service": "Hematology",
+          "reason": "Iron deficiency anemia follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.1,
+              "Hematocrit": 36.8,
+              "Mean Corpuscular Volume": 83,
+              "Ferritin": 74,
+              "Transferrin Saturation": 25,
+              "Iron": 84,
+              "Total Iron-Binding Capacity": 336
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-17T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-02-17T09:05",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 94
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 27
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 74
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 348
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up Letter",
+              "author": "hematology",
+              "date": "2026-02-19T13:20",
+              "body": "Re: Paula Wisniewski, DOB 03/09/1979. Seen 02/17/2026.\n\nAfter ferric carboxymaltose in November and ENT laser treatment in January, she reports one or two short nosebleeds a week. Energy good.\n\nLabs today: hemoglobin 12.1, ferritin 74.\n\nAssessment: iron deficiency anemia from HHT bleeding, currently corrected.\nPlan: continue oral iron. CBC and ferritin every 3 months at her PCP's lab (next in May); repeat IV iron if ferritin falls below 50 or hemoglobin drops. Antihistamine premedication for any future transfusion. Return in 6 months or sooner if counts fall.\n\nHematology"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "specialist_visit",
+          "start": "2026-02-24T14:00",
+          "service": "Otolaryngology",
+          "reason": "Follow-up after laser",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Follow-up Letter",
+              "author": "ENT",
+              "date": "2026-02-26T09:10",
+              "body": "Re: Paula Wisniewski. Seen 02/24/2026, six weeks after laser coagulation of anterior septal telangiectasias.\n\nNosebleeds have dropped to one or two brief episodes a week. Endoscopy: treated areas healed with mild crusting, no active bleeding, no perforation.\nPlan: continue saline gel and humidification. Repeat laser treatment as needed if frequency increases; return in 6 months or sooner.\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-10T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-03-10T16:30",
+              "body": "47F, 6-month follow-up. Doing well. Nosebleeds 1-2/week, short, since ENT laser in January. Energy good. Hematology letter 2/19 reviewed: Hgb 12.1, ferritin 74; next labs May here.\n\nAlprazolam now 1 mg qhs (psychiatry taper, next step April). Sleep ok most nights with CBT-I. RLS rare. PD unchanged, neurology in April. Periods minimal.\n\nMeds: carbidopa-levodopa 25-100 TID; alprazolam 1 mg qhs; ferrous sulfate 325 daily; loratadine prn; LNG-IUD (5/2024).\nAllergies: NKDA; shellfish (hives); packed red blood cells (hives - premedicate); tree pollen, dust mites.\nPHQ-9 3, GAD-7 5.\n\nExam: well, good color. Lip/tongue telangiectasias. RRR. Lungs clear. Abd soft. No edema. Neuro nonfocal, no tremor.\n\nA/P:\n- HHT/IDA: stable after IV iron + ENT laser. CBC/ferritin in May (standing order).\n- GAD, insomnia: improving, taper per psychiatry.\n- PD, RLS: stable.\n- HM: up to date. Flu/COVID done in Sept.\nRTC physical in fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "telephone",
+          "start": "2026-03-24T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2026-03-24T11:30",
+              "body": "Pharmacy faxed refill request for alprazolam 1 mg addressed to PCP. Per PCP, psychiatry is managing the taper and prescribes it. Called pharmacy to redirect to psychiatry; called pt, she has 10 days left and will message psychiatry today. She confirmed she knows not to run out."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "specialist_visit",
+          "start": "2026-04-13T16:00",
+          "service": "Psychiatry",
+          "reason": "Follow-up, benzodiazepine taper",
+          "medications": [
+            {
+              "drug_text": "alprazolam 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Taper step"
+            },
+            {
+              "drug_text": "alprazolam 0.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (0.5 mg) by mouth at bedtime",
+              "dose": {
+                "value": 0.5,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Insomnia, taper (prescribed by psychiatry)"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up Letter",
+              "author": "psychiatry",
+              "date": "2026-04-15T10:40",
+              "body": "Re: Paula Wisniewski, DOB 03/09/1979. Seen 04/13/2026.\n\nTolerated the step to 1 mg without withdrawal symptoms; sleep holding with CBT-I. GAD-7 5. Mood good.\n\nPlan: reduce to 0.5 mg at bedtime starting tonight, hold through the summer, then stop in the fall if sleep allows, possibly via a brief alternate-night phase. Therapy every two weeks. Follow-up in 3 months.\nOutpatient psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "specialist_visit",
+          "start": "2026-04-21T13:30",
+          "service": "Neurology",
+          "reason": "Parkinson disease follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "author": "neurology",
+              "date": "2026-04-27T08:30",
+              "body": "Re: Paula Wisniewski, DOB 03/09/1979. Seen 04/21/2026.\n\nParkinson disease remains stable on carbidopa-levodopa 25/100 three times daily, nine years from diagnosis, without fluctuations, dyskinesia, falls or hallucinations. Restless legs are much quieter now that her iron is replete; she rarely has symptoms. Alprazolam being tapered by psychiatry, now 0.5 mg at bedtime.\n\nExam on medication: normal speech, expression and tone; no tremor; finger and foot taps normal; gait normal with good arm swing; pull test negative.\n\nPlan: no changes. Prescription renewed. Return in 12 months.\nOutside neurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "lab_only",
+          "start": "2026-05-19T07:35",
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.4,
+              "Hematocrit": 37.6,
+              "Mean Corpuscular Volume": 84,
+              "Ferritin": 61,
+              "Transferrin Saturation": 23,
+              "Iron": 78,
+              "Total Iron-Binding Capacity": 340
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-19T07:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-05-19T07:35",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 88
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 26
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 61
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 335
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab result note",
+              "author": "PCP",
+              "date": "2026-05-19T15:20",
+              "body": "Hgb 12.4, ferritin 61 - stable, above hematology's threshold of 50. Copy to hematology. Next draw August. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T20:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Summer check-in",
+              "author": "patient",
+              "date": "2026-06-09T20:30",
+              "body": "School's out in two weeks. Nosebleeds still about once a week and short. Do I need anything before the summer? And can my August blood draw be done anytime that month?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Summer check-in",
+              "author": "RN",
+              "date": "2026-06-10T08:15",
+              "body": "Hi Paula, nothing needed before summer. The standing order for your CBC and iron is good any time in mid to late August; no fasting needed. Enjoy the break."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "portal_message",
+          "start": "2026-07-14T10:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "author": "patient",
+              "date": "2026-07-14T10:05",
+              "body": "Could I book my physical for after school starts, a Tuesday afternoon in late September?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "author": "front desk",
+              "date": "2026-07-14T13:40",
+              "body": "You're booked for your annual physical Tuesday 9/22 at 3:30. Flu and COVID vaccines can be given that day."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-26a",
+          "kind": "lab_only",
+          "start": "2026-08-26T07:40",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-26T07:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-08-26T07:40",
+              "pending": true,
+              "results": [
+                {
+                  "test": "Iron"
+                },
+                {
+                  "test": "Transferrin Saturation"
+                },
+                {
+                  "test": "Ferritin"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Lab draw",
+              "author": "MA",
+              "date": "2026-08-26T07:50",
+              "body": "Venipuncture L antecubital, one attempt, for standing CBC and iron studies (hematology surveillance, HHT). Tolerated well. Results to PCP and hematology."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T15:30",
+          "appointment": "booked",
+          "reason": "Annual physical"
+        }
+      ]
+    }
+  ]
+}

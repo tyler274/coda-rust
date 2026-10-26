@@ -1,0 +1,1247 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001689",
+      "events": [
+        {
+          "id": "2025-01-28a",
+          "kind": "portal_message",
+          "start": "2025-01-28T07:12",
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Pregnancy; prior classical cesarean, Rh negative, chronic hypertension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "author": "patient",
+              "date": "2025-01-28T07:12",
+              "body": "Hi - I took a test this morning and it's positive! Last period started 12/24 but my cycles are all over the place so I'm not sure how far along. Is the HCTZ ok to keep taking? And who should I see for OB? I want someone who knows about my c-section history."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test",
+              "author": "PCP",
+              "date": "2025-01-28T12:30",
+              "body": "Congratulations! Keep taking the HCTZ for now - the OB will decide whether to continue it or switch, and stopping on your own could let your pressure climb. Please start a prenatal vitamin with folic acid if you haven't. I've put in a referral to the high-risk OB group at the regional hospital so they have your classical c-section, Rh negative blood type, blood pressure and liver history from the start. Their office will call you. If you get pain, bleeding, or feel faint, go to the ED - don't wait for the appointment."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "hospital_admission",
+          "start": "2025-02-04T07:40",
+          "end": "2025-02-06T14:00",
+          "service": "Emergency Medicine; Obstetrics & Gynecology",
+          "reason": "Early pregnancy with left-sided pain and spotting",
+          "vitals": [
+            {
+              "time": "2025-02-04T07:45",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy",
+              "icd10": "O09.891",
+              "action": "diagnosed",
+              "onset": "2024-12-24"
+            },
+            {
+              "label": "Susceptibility to Rh(D) alloimmunization",
+              "icd10": "O26.891",
+              "action": "diagnosed",
+              "onset": "2025-02-04"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-04T07:55",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ],
+              "resulted": "2025-02-04T08:50"
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-04T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.4
+                }
+              ],
+              "resulted": "2025-02-04T08:50"
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-04T08:05",
+              "results": [
+                {
+                  "test": "ABO and Rh group",
+                  "loinc": "882-1",
+                  "text": "O Rh(D) negative"
+                },
+                {
+                  "test": "Blood group antibody screen",
+                  "loinc": "890-4",
+                  "text": "Negative"
+                },
+                {
+                  "test": "hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 1850
+                }
+              ],
+              "resulted": "2025-02-04T08:50"
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-05T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-06T08:05",
+              "results": [
+                {
+                  "test": "hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 3420
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-02-04T08:40",
+              "text": "Transvaginal ultrasound for positive pregnancy test with pain and spotting. The uterine cavity is empty; no intrauterine gestational sac identified. Endometrium unremarkable. Left adnexal mass with surrounding free fluid. Right ovary normal.",
+              "conclusion": "Empty uterine cavity. Left adnexal mass with surrounding free fluid. Correlate with serial hCG.",
+              "issued": "2025-02-04T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-02-07T11:20",
+              "body": "Outside ED record, 02/04/2025.\n\n33F G3P2, about 6 weeks by an LMP of 12/24/2024 with a history of irregular cycles. Sexually active with one partner, no contraception. Sudden sharp L-sided pelvic pain starting about 6 hours ago, light-headed, spotting since yesterday. Prior ED presentations: ruptured hepatocellular adenoma (2022), ruptured corpus luteum cyst with hemoperitoneum (2023), hypovolemic shock after MVC with transfusion about a year ago. HTN on HCTZ. O negative.\nAllergy: penicillin (hives).\n\nVS: BP 100/60, P 110.\nExam: pale. Pelvic: L adnexal tenderness.\nLabs: UPT positive. Hgb 9.8, Hct 29.4. Type O negative, antibody screen negative. Quant hCG 1,850.\nTVUS: empty uterus, L adnexal mass with free fluid around it.\n\nOB/GYN consulted. hCG under the discriminatory zone with an uncertain LMP: pregnancy of unknown location. Hemodynamics improved with IV fluids. Admitted to GYN for serial Hgb and hCG."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "author": "obstetrics",
+              "date": "2025-02-07T11:20",
+              "body": "Admitted 02/04/2025, discharged 02/06/2025.\nDiagnosis: pregnancy of unknown location with first-trimester bleeding; Rh(D) negative, unsensitized.\n\nObserved on the GYN floor. Pain settled by the first evening, spotting minimal. Hgb 9.6 the next morning and unchanged clinically. Quantitative hCG rose from 1,850 to 3,420 over 48 hours, an appropriate rise. Antibody screen negative; Rh immune globulin 300 mcg IM given 02/04 for bleeding in an Rh-negative pregnancy.\n\nPlan: repeat transvaginal ultrasound in 1 week through the OB office. Strict return precautions for worsening pain, heavy bleeding or fainting. Continue HCTZ 25 mg daily. Prenatal vitamin daily.\nAllergies: penicillin."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-07a",
+          "kind": "telephone",
+          "start": "2025-02-07T15:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2025-02-07T15:40",
+              "body": "Called pt after hospital discharge. Pain mild, spotting nearly stopped. Repeat ultrasound with OB 2/11. Knows to go to ED for heavy bleeding, severe pain, or fainting. Booked PCP 2/18 to review BP and blood count."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "outside_records",
+          "start": "2025-02-12T10:00",
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-02-11T09:30",
+              "text": "Transvaginal ultrasound, follow-up. Intrauterine gestational sac with a yolk sac, mean sac diameter consistent with 5 weeks 4 days. No embryo yet, expected at this size. The left adnexal finding is the left ovarian corpus luteum, with less surrounding free fluid than on the prior study. Right ovary normal.",
+              "conclusion": "Intrauterine pregnancy, 5 weeks 4 days by sac size. Left corpus luteum. Assigned EDD 10/10/2025."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB ultrasound received",
+              "author": "front desk",
+              "date": "2025-02-12T10:00",
+              "body": "Ultrasound report from the OB group, study date 02/11/2025, received by fax and scanned. Routed to PCP.\n\nPCP note: intrauterine pregnancy confirmed; the left adnexal finding was the corpus luteum. Redated by ultrasound to EDD 10/10/2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "office_visit",
+          "start": "2025-02-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hospital stay, early pregnancy",
+          "state": {
+            "bp": [
+              116,
+              72
+            ],
+            "weight_kg": 66.8,
+            "labs": {
+              "Hemoglobin": 10.5,
+              "Hematocrit": 31.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Anemia in pregnancy after bleeding"
+            },
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-18T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.5
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-18T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-02-18T09:30",
+              "body": "Follow-up after admission 2/4-2/6 for L pelvic pain and spotting at ~6 wks by LMP: Hgb 9.8, TVUS empty uterus with a L adnexal mass and free fluid, hCG 1850 -> 3420. Got Rh immune globulin. Repeat TVUS 2/11 at OB showed an intrauterine sac with yolk sac (5w4d); the L adnexal finding was the corpus luteum. EDD 10/10/25.\n\nToday: no pain, no bleeding. Mild nausea, eating ok. Tired.\nMeds: HCTZ 25 daily - OB reviewed and wants her to stay on it for now. Prenatal vitamin daily.\n\nExam: well. BP fine. Abd soft, NT.\n\nA/P\n1. Early IUP after PUL admission, high-risk OB following (classical scar, HTN, Rh neg). Viability scan with OB 2/25.\n2. Anemia, Hgb 10.5 today after the bleed. Start ferrous sulfate 325 daily with the prenatal; OB to follow CBC.\n3. Chronic HTN on HCTZ, managed jointly with OB. She'll send home readings monthly.\n4. Rh negative, unsensitized; RhIG given 2/4. OB will repeat at 28 wks."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "outside_records",
+          "start": "2025-03-04T13:00",
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "done",
+              "date": "2025-03-04T13:00"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-25T09:00",
+              "results": [
+                {
+                  "test": "ABO and Rh group",
+                  "loinc": "882-1",
+                  "text": "O Rh(D) negative"
+                },
+                {
+                  "test": "Blood group antibody screen",
+                  "loinc": "890-4",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-02-25T08:30",
+              "text": "Transvaginal first-trimester ultrasound. Single intrauterine pregnancy. Embryo with cardiac activity; crown-rump length consistent with 7 weeks 4 days. Yolk sac normal. Adnexa unremarkable, no free fluid.",
+              "conclusion": "Single live intrauterine pregnancy, 7 weeks 4 days, concordant with EDD 10/10/2025."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Initial OB visit records",
+              "author": "obstetrics",
+              "date": "2025-03-04T13:00",
+              "body": "Maternal-Fetal Medicine / OB new obstetric visit 02/25/2025.\n\n33 y/o G3P2002 at 7w4d by ultrasound, EDD 10/10/2025. History: two cesareans, the last a classical incision for transverse lie - trial of labor contraindicated; plan repeat cesarean at 36-37 weeks. Chronic hypertension on hydrochlorothiazide 25 mg daily, BP well controlled - continue. Rh negative, unsensitized, RhIG 02/04/2025. Resected hepatocellular adenoma 2022 - no estrogen. Penicillin allergy (hives).\n\nViability ultrasound today: live IUP, CRL 7w4d.\nPrenatal labs: O negative, antibody screen negative, HBsAg nonreactive, RPR nonreactive, HIV nonreactive.\nMeds: HCTZ 25 mg daily, prenatal vitamin, ferrous sulfate 325 mg daily.\nPlan: routine prenatal visits; RhIG at 28 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "pharmacy",
+          "start": "2025-04-08T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "author": "MA",
+              "date": "2025-04-08T08:50",
+              "body": "Pharmacy request HCTZ 25 mg 90 days. Pt pregnant, OB note 2/25 says continue HCTZ. Approved by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "telehealth_visit",
+          "start": "2025-05-13T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure check in pregnancy",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-05-13T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2025-05-13T12:15",
+              "body": "Video check-in, ~19 wks. Home BPs over the past month 108-122 / 66-78. Taking HCTZ daily. Nausea gone. No headaches, no vision change, no swelling. OB visits on schedule. Taking iron and prenatal.\nWell-appearing on video.\nA/P: chronic HTN in pregnancy, well controlled on HCTZ per OB. Keep sending readings. Reviewed warning signs (severe headache, vision change, RUQ pain, BP >= 160/110) - call OB / go to L&D."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "outside_records",
+          "start": "2025-07-24T10:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-07-21T09:15",
+              "results": [
+                {
+                  "test": "Blood group antibody screen",
+                  "loinc": "890-4",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-07-21T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "OB visit 28 weeks",
+              "author": "obstetrics",
+              "date": "2025-07-24T10:30",
+              "body": "Prenatal visit 07/21/2025, 28w3d. Feeling well, active fetus, no contractions, leaking or bleeding. BP controlled on HCTZ. Antibody screen negative; Rh immune globulin 300 mcg IM given. Tdap given. Continue prenatal vitamin and iron. Repeat cesarean to be scheduled at 36-37 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-04a",
+          "kind": "hospital_admission",
+          "start": "2025-08-04T19:20",
+          "end": "2025-08-06T12:00",
+          "service": "Obstetrics — Labor and Delivery",
+          "reason": "Preterm contractions at 30 weeks",
+          "vitals": [
+            {
+              "time": "2025-08-04T19:25",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 88,
+              "temp_c": 36.8
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Threatened preterm labor",
+              "icd10": "O47.03",
+              "action": "diagnosed",
+              "onset": "2025-08-04"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-04T19:50",
+              "results": [
+                {
+                  "test": "Fetal fibronectin",
+                  "loinc": "20404-0",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, third trimester",
+              "loinc": "11525-3",
+              "performed": "2025-08-04T20:30",
+              "text": "Transabdominal obstetric ultrasound. Single live intrauterine fetus. Fetal heart rate 140. Amniotic fluid volume normal. Placenta posterior. No fetal anomalies seen on this survey.",
+              "conclusion": "Normal amniotic fluid. No fetal anomalies.",
+              "issued": "2025-08-04T20:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "L&D Discharge Summary",
+              "author": "obstetrics",
+              "date": "2025-08-08T09:00",
+              "body": "Admitted 08/04/2025, discharged 08/06/2025.\n34 y/o G3P2002 at 30w3d (EDD 10/10/2025), Rh negative (RhIG 7/21), chronic HTN on HCTZ, two prior cesareans with the last classical, history of resected hepatic adenoma and ruptured corpus luteum cyst, first-trimester bleeding this pregnancy.\n\nPresented with regular contractions every 5 minutes for 2 hours. No leaking of fluid, no bleeding. Her last pregnancy was uncomplicated with a healthy term baby; this one uneventful until today.\nVS: BP 120/78, HR 88, T 36.8.\nFHT 140. Sterile speculum exam: cervical os closed. Fetal fibronectin negative. Ultrasound: normal fluid, no anomalies.\n\nDiagnosis: threatened preterm labor.\nTreatment: nifedipine tocolysis x 48 hours; betamethasone 12 mg IM x 2 doses 24 h apart. Contractions spaced and stopped within the first day. Monitoring reassuring throughout.\n\nDischarge: home 08/06. Continue HCTZ, prenatal vitamin, iron. Modified duty / work from home. Return for contractions, leaking fluid, bleeding or decreased movement. OB visit in 1 week.\nAllergies: penicillin (hives)."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-08a",
+          "kind": "portal_message",
+          "start": "2025-08-08T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "author": "patient",
+              "date": "2025-08-08T13:05",
+              "body": "FYI I was in L&D Monday-Wednesday with contractions at 30 weeks - they stopped them and gave me the steroid shots. Home now and working from home. OB is doing my work paperwork so nothing needed from you, just wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "author": "PCP",
+              "date": "2025-08-08T16:40",
+              "body": "Thanks for letting me know, Taylor - we got the summary from the hospital. Glad things settled. Rest up and keep sending BPs."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-01a",
+          "kind": "hospital_admission",
+          "start": "2025-09-01T15:10",
+          "end": "2025-09-16T08:00",
+          "service": "Emergency Medicine; Obstetrics — Antepartum",
+          "reason": "Leakage of fluid at 34 weeks",
+          "conditions": [
+            {
+              "label": "Preterm premature rupture of membranes",
+              "icd10": "O42.113",
+              "action": "diagnosed",
+              "onset": "2025-09-01"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-01T16:00",
+              "resulted": "2025-09-03T10:00",
+              "results": [
+                {
+                  "test": "Group B Streptococcus culture, rectovaginal",
+                  "text": "Positive: Streptococcus agalactiae (group B)",
+                  "loinc": "6463-4"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-09-23T09:30",
+              "body": "Outside ED record, 09/01/2025.\n\n34F G3P2002 at 34w3d (EDD 10/10/2025), Rh negative, threatened preterm labor at 30 weeks (tocolysis, betamethasone). Reports a sudden gush of clear fluid while doing chores at home this afternoon. No contractions, no bleeding, no abdominal pain.\nAllergy: penicillin (hives).\n\nVitals stable. FHR 140.\nSterile speculum: clear fluid pooling in the posterior vault. Nitrazine positive. Ferning seen on microscopy.\n\nImpression: preterm premature rupture of membranes.\nL&D notified; rectovaginal GBS culture sent; admitted to the antepartum service."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "hospital_admission",
+          "start": "2025-09-16T08:00",
+          "end": "2025-09-21T11:30",
+          "service": "Obstetrics — Labor and Delivery",
+          "reason": "Labor at 36 weeks with prior classical cesarean",
+          "vitals": [
+            {
+              "time": "2025-09-16T08:10",
+              "temp_c": 37.2,
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 88,
+              "rr": 16
+            },
+            {
+              "time": "2025-09-16T10:05",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 37.0
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Group B Streptococcus Colonization in Pregnancy with Non-Severe Penicillin Allergy",
+              "icd10": "O99.824",
+              "action": "diagnosed",
+              "onset": "2025-09-01"
+            },
+            {
+              "label": "Uterine rupture",
+              "icd10": "O71.1",
+              "action": "diagnosed",
+              "onset": "2025-09-16"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "icd10": "D62",
+              "action": "diagnosed",
+              "onset": "2025-09-16"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-cesarean pain"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-cesarean pain"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-16T18:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-21T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "Labor and Delivery Admission Note",
+              "author": "obstetrics",
+              "date": "2025-09-23T09:30",
+              "body": "L&D note 09/16/2025.\n\n34 y/o G3P2002 at 36w4d, inpatient since PPROM at 34w3d (09/01) on expectant management, repeat cesarean planned for 36-37 weeks because of her classical scar. GBS culture from admission positive. Threatened preterm labor at 30 weeks earlier this pregnancy.\n\nThis morning: regular contractions every 5 minutes, beginning after a new gush of fluid about 30 minutes before.\n\nAllergy review: penicillin as a child caused hives over her whole body. No breathing trouble, no facial swelling, never anaphylaxis. Non-severe - cefazolin appropriate for GBS prophylaxis.\n\nT 37.2, BP 120/78, P 88, RR 16.\nFHR tracing category I, reassuring. Cervix 4 cm.\n\nPlan: IV cefazolin for GBS prophylaxis. In labor with a classical uterine scar - urgent repeat cesarean; OR and anesthesia notified."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report - Emergency Repeat Cesarean",
+              "author": "obstetrics",
+              "date": "2025-09-23T09:30",
+              "body": "Date: 09/16/2025\nIndication: while awaiting the OR, sudden severe sharp constant abdominal pain with vaginal bleeding. BP 100/60, HR 110, RR 22, T 37.0. Abdomen tender with an irregular mass palpable on the right. Bedside ultrasound without abruption, placenta posterior. CTG with irregular fetal heart tones and variable decelerations. Suspected uterine rupture.\nProcedure: emergency repeat cesarean delivery via laparotomy under general anesthesia; repair of uterine rupture.\nFindings: uterine rupture along the prior classical (vertical) scar with fetal parts and hemoperitoneum. Liveborn infant delivered and handed to the NICU team. Placenta posterior, delivered intact. The rupture was confined to the old scar and was repaired in layers; hemostasis achieved and the uterus preserved. Bladder intact. Tubes and ovaries normal.\nEBL 1,900 mL. 2 units O-negative PRBC given intraoperatively.\nComplications: uterine rupture as above. Mother to recovery stable."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Delivery Discharge Summary",
+              "author": "obstetrics",
+              "date": "2025-09-23T09:30",
+              "body": "Admitted 09/01/2025 (PPROM at 34w3d). Delivered 09/16/2025 at 36w4d by emergency repeat cesarean for uterine rupture in labor. Discharged 09/21/2025.\n\nDiagnoses: preterm premature rupture of membranes; GBS colonization with non-severe penicillin allergy (cefazolin intrapartum); uterine rupture at classical scar, repaired; acute blood loss anemia (EBL 1,900 mL, 2 u PRBC); chronic hypertension; Rh negative.\n\nCourse: expectant inpatient management 9/1-9/16 with daily monitoring, no signs of infection. On 9/16 labor began, then uterine rupture before the planned cesarean. Postop Hgb 8.4. Recovery uncomplicated; ambulating, tolerating diet, incision clean. Hgb 8.9 on the day of discharge. BP controlled on HCTZ.\nInfant: liveborn, cared for in the NICU.\nRh: cord blood Rh(D) positive; fetal-maternal hemorrhage screen negative; Rh immune globulin 300 mcg IM given 09/17.\n\nCounseling: a future pregnancy after uterine rupture carries a high risk of recurrence; reliable contraception strongly recommended, no estrogen (hepatic adenoma history). Options to finalize at the postpartum visit.\n\nDischarge meds: hydrochlorothiazide 25 mg daily; ferrous sulfate 325 mg daily; ibuprofen 600 mg q6h PRN; acetaminophen 1,000 mg q8h PRN; prenatal vitamin.\nFollow-up: OB incision check in 1-2 weeks, postpartum visit at 6 weeks; PCP within 2 weeks for BP and CBC.\nAllergies: penicillin (hives)."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "telephone",
+          "start": "2025-09-23T14:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional care call",
+              "author": "RN",
+              "date": "2025-09-23T14:20",
+              "body": "TCM call 2 days after discharge. Delivered 9/16 by emergency c-section after uterine rupture, got 2 units of blood. Baby still in NICU, she is going in daily. Incision ok, no fever, bleeding like a period and decreasing. Taking iron, ibuprofen, acetaminophen. Home BP 124/80. Med list reconciled with discharge summary. PCP visit 9/30."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "office_visit",
+          "start": "2025-09-30T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge visit after cesarean",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy",
+              "icd10": "O09.891",
+              "action": "resolved"
+            },
+            {
+              "label": "Threatened preterm labor",
+              "icd10": "O47.03",
+              "action": "resolved"
+            },
+            {
+              "label": "Preterm premature rupture of membranes",
+              "icd10": "O42.113",
+              "action": "resolved"
+            },
+            {
+              "label": "Group B Streptococcus Colonization in Pregnancy with Non-Severe Penicillin Allergy",
+              "icd10": "O99.824",
+              "action": "resolved"
+            },
+            {
+              "label": "Uterine rupture",
+              "icd10": "O71.1",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              82
+            ],
+            "weight_kg": 71.6,
+            "labs": {
+              "Hemoglobin": 10.2,
+              "Hematocrit": 30.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-30T10:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-09-30T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Discharge Visit",
+              "author": "PCP",
+              "date": "2025-09-30T10:00",
+              "body": "Two weeks after delivery. Summary: PPROM at 34w3d (9/1), inpatient expectant mgmt, GBS+ (cefazolin given in labor). Labor 9/16 at 36w4d, then uterine rupture at the old classical scar before the planned c-section - emergency cesarean, rupture repaired, uterus kept. EBL 1.9 L, 2 u PRBC. Hgb 8.9 at d/c. RhIG given postpartum.\n\nToday: sore but walking more each day. Incision healing, OB checked it last week. Lochia light. No fever, calf pain, CP, SOB, headache or vision change.\nMood: tired, a lot happened fast, but sleeping when she can, good support at home. PHQ-9 4, no thoughts of self-harm.\nMeds: HCTZ 25 daily, ferrous sulfate 325 daily, prenatal vitamin, ibuprofen/acetaminophen PRN.\n\nExam: tired-appearing but comfortable. BP as recorded. Heart RRR, lungs clear. Abd soft, vertical incision c/d/i, appropriately tender, no erythema. Calves soft, no edema.\n\nA/P\n1. S/p emergency cesarean for uterine rupture, recovering. OB postpartum visit 10/28 - contraception to be settled there (no estrogen).\n2. Acute blood loss anemia, Hgb 10.2 today, up from 8.9. Continue iron. CBC + ferritin in ~7 wks.\n3. Chronic HTN postpartum, BP ok on HCTZ. Home readings weekly.\n4. Mood - PHQ-9 low; reviewed postpartum depression signs, she will reach out.\n5. Pregnancy-related problems (pregnancy, PPROM, threatened PTL, GBS, uterine rupture) closed on the problem list; history in surgical/OB hx.\nFlu shot at nurse visit in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "telephone",
+          "start": "2025-10-02T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Disability form",
+              "author": "front desk",
+              "date": "2025-10-02T11:30",
+              "body": "Pt called re short-term disability form from her employer's carrier for maternity/surgical leave. Delivery and surgery were with OB - advised that OB office completes this. She will send it there. No action for PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot and BP check",
+          "state": {
+            "bp": [
+              124,
+              80
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T11:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit",
+              "author": "RN",
+              "date": "2025-10-14T11:05",
+              "body": "Flu vaccine (trivalent) 0.5 mL IM R deltoid, VIS given, no prior reactions. BP checked while here and routed to PCP. Pt says incision healing well and she is walking daily with the stroller."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "specialist_visit",
+          "start": "2025-10-28T09:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum visit",
+          "medications": [
+            {
+              "drug": "levonorgestrel 0.000833 MG/HR Intrauterine System",
+              "action": "historical",
+              "sig": "Intrauterine system placed 10/28/2025",
+              "dose": {
+                "value": 1,
+                "unit": "device"
+              },
+              "frequency": "CONTINUOUS",
+              "route": "Intrauterine",
+              "course": "chronic",
+              "reason": "Contraception after uterine rupture; estrogen contraindicated"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Postpartum Visit Letter",
+              "author": "obstetrics",
+              "date": "2025-10-30T14:00",
+              "body": "Dear Doctor,\n\nMs. Poirier was seen 10/28/2025, six weeks after emergency repeat cesarean for uterine rupture at her classical scar (repaired, uterus preserved). Recovering well: incision healed, bleeding stopped, exam with a normally involuting uterus.\n\nWe again discussed that a future pregnancy would carry a high risk of repeat rupture. Estrogen remains contraindicated after her hepatic adenoma. She chose a levonorgestrel intrauterine system, placed today without difficulty; strings visible, string check in 4-6 weeks or by self-check.\n\nHer blood pressure remains controlled on hydrochlorothiazide, which she will continue with you. She is taking iron.\n\nMedications: hydrochlorothiazide 25 mg daily, ferrous sulfate 325 mg daily, prenatal vitamin, levonorgestrel IUS. (Combined OCP on our historical list is inactive.)\nAllergies: penicillin (hives).\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "lab_only",
+          "start": "2025-11-18T07:45",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.6,
+              "Hematocrit": 35.1,
+              "Ferritin": 24
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-18T07:45",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-18T07:45",
+              "results": [
+                {
+                  "test": "Ferritin"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "portal_message",
+          "start": "2025-11-19T12:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2025-11-19T12:50",
+              "body": "Hi Taylor, your hemoglobin keeps climbing and is close to normal now. Iron stores are on the low side of normal, so please keep the iron going and we'll check again at your January visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T09:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "author": "MA",
+              "date": "2025-12-09T09:00",
+              "body": "Pharmacy request HCTZ 25 mg 90 days. Seen 9/30, BP rechecked at nurse visit 10/14. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and anemia follow-up",
+          "conditions": [
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "icd10": "D62",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Hemoglobin recovered"
+            },
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "stop",
+              "reason": "No longer needed"
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              80
+            ],
+            "weight_kg": 69.2,
+            "labs": {
+              "Hemoglobin": 12.4,
+              "Hematocrit": 37.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-13T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-13T09:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-01-13T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-01-13T08:30",
+              "body": "4 months postpartum. Incision fully healed. IUD in, no problems, string check done at OB. Energy much better.\nMeds: HCTZ 25 daily, iron daily (constipating), levonorgestrel IUD. Stopped the prenatal.\nBP at goal. Heart RRR, lungs clear, abd soft, vertical scar healed, no edema.\nCBC in clinic today: Hgb 12.4.\nA/P: blood loss anemia resolved - stop iron. HTN controlled, continue HCTZ, BMP today. Annual physical in May; co-test due then."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T21:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Exercise question",
+              "author": "patient",
+              "date": "2026-03-10T21:30",
+              "body": "Quick question - OB cleared me for normal activity in the fall but I haven't really pushed it. Is it ok to start running again and go back to my strength class? No pain at the scar."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Exercise question",
+              "author": "PCP",
+              "date": "2026-03-11T08:15",
+              "body": "Yes - at six months out with a healed incision and no pain, you can go back to running and strength work. Build up gradually over a few weeks and back off if anything hurts at the scar. Exercise will help your blood pressure too."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "annual_physical",
+          "start": "2026-05-12T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "bp": [
+              122,
+              78
+            ],
+            "weight_kg": 67.9
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-12T08:45",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-12T08:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T08:20",
+              "results": [
+                {
+                  "test": "High-risk HPV DNA",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-05-12T08:20",
+              "issued": "2026-05-14T15:00",
+              "text": "Liquid-based cervical cytology. Specimen adequate, transformation zone component present. High-risk HPV not detected.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM). HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-05-12T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-05-12T08:00",
+              "body": "34F annual.\n\nInterval since last physical (10/2024): pregnancy 2025 - PUL admission at 6 wks with RhIG, threatened PTL at 30 wks, PPROM at 34 wks, GBS+, uterine rupture in labor at 36w4d with emergency cesarean, repair, 2 u PRBC. Blood loss anemia resolved by January. LNG-IUD 10/2025.\nNow: feels well. Running 2-3x/wk again. Back at work full time. Sleeping better now that the baby sleeps longer.\nHTN: home BPs 118-128/74-80.\nGyn: LNG-IUD, light irregular spotting only. Last co-test 11/2020 normal - due.\n\nMeds: HCTZ 25 mg daily; LNG-IUD.\nAllergy: penicillin (hives).\nSH: HR specialist, partnered, never smoker, alcohol 1-2 drinks/month. PHQ-2 0.\nFH: mother HTN, father DM2.\n\nExam: well-appearing. HEENT nl. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Breasts without masses. Abd soft, healed R subcostal, lower transverse and vertical midline scars, NT, no masses. Pelvic: normal external genitalia, cervix normal, IUD strings visible; Pap/HPV collected. No edema. Skin nl.\n\nA/P\n- HTN controlled on HCTZ. CMP.\n- Cervical screening: co-test today.\n- A1c (FH DM), CBC.\n- Hx hepatic adenoma: no estrogen; IUD appropriate.\n- Hx uterine rupture: future pregnancy high risk per OB; she is happy with the IUD.\n- Vaccines: flu and covid in the fall.\nRTC ~4 months BP check."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-15a",
+          "kind": "portal_message",
+          "start": "2026-05-15T11:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "author": "PCP",
+              "date": "2026-05-15T11:20",
+              "body": "Hi Taylor - your Pap and HPV test are both normal, so the next one is in 5 years. Blood count is normal, kidney/potassium/liver tests normal, and A1c normal. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "pharmacy",
+          "start": "2026-06-23T08:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "author": "MA",
+              "date": "2026-06-23T08:40",
+              "body": "Electronic request HCTZ 25 mg #90. CMP 5/12 normal, BP at goal. Approved, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "portal_message",
+          "start": "2026-07-14T12:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wellness form",
+              "author": "patient",
+              "date": "2026-07-14T12:25",
+              "body": "Our benefits wellness program wants a form with my BP, cholesterol and A1c from the last 2 years signed by my doctor. Uploading it here - can you fill it in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wellness form",
+              "author": "MA",
+              "date": "2026-07-15T09:40",
+              "body": "Done - PCP signed it with your 5/12 BP and A1c and your 10/2024 cholesterol. The completed form is attached here for you to download."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "author": "patient",
+              "date": "2026-08-18T19:05",
+              "body": "Hi, I think I'm due for a BP check in September. Is there anything mid-month in the morning? Could I get my flu shot then too if it's in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "author": "front desk",
+              "date": "2026-08-19T09:10",
+              "body": "You're set for Tuesday 9/15 at 8:30. Flu vaccine usually arrives early September, we'll plan on it."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "office_visit",
+          "start": "2026-09-15T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

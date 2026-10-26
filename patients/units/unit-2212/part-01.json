@@ -1,0 +1,307 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002212",
+      "given": "Stanley",
+      "family": "Kaminski",
+      "birth_date": "1957-01-15",
+      "address_line": "27 Petticoat Hill Road, Williamsburg, MA 01096",
+      "phone": "+1-603-555-0139",
+      "email": "stanley.kaminski@example.test",
+      "summary": "Retired postal worker who joined the practice in late 2023 with long-standing hypertension, type 2 diabetes and hyperlipidemia, newly off cigarettes. Atrial fibrillation appears in August 2025; he declines anticoagulation repeatedly, has an ED cardioversion that fall, and has a right internal capsule lacunar stroke in July 2026, after which he starts apixaban.",
+      "events": [
+        {
+          "id": "2023-10-24a",
+          "kind": "telephone",
+          "start": "2023-10-24T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2023-10-24T10:12",
+              "body": "Caller wants to transfer his primary care here. Says his old doctor retired over the summer and the practice that took over \"never answers the phone.\" Explained the membership model and fees; he had already read the website and wants to go ahead. Booked new patient visit 11/7 at 9:00. Mailed records release for his prior PCP; he will drop it off in person since he drives past us on his way to the post office anyway. Asked him to bring all pill bottles to the visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "establish_care",
+          "start": "2023-11-07T09:00",
+          "end": "2023-11-07T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2011-06-01", "note": "long-standing, on lisinopril"},
+            {"label": "Type 2 diabetes mellitus without complications", "action": "diagnosed", "onset": "2016-03-01", "note": "on metformin"},
+            {"label": "Hyperlipidemia", "action": "diagnosed", "onset": "2013-01-01", "note": "on atorvastatin"},
+            {"label": "Nicotine dependence, cigarettes, in remission", "icd10": "F17.211", "action": "diagnosed", "onset": "2023-08-01", "note": "30 pack-years, quit August 2023"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [142, 88], "weight_kg": 92.0, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 7.4, "Low Density Lipoprotein": 158, "High Density Lipoprotein": 35, "Triglycerides": 245, "Creatinine": 1.05, "Microalbumin/Creatinine Ratio": 12, "Thyroid Stimulating Hormone": 1.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm", "temp_c", "rr"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-11-07T10:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-11-07T10:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-11-07T10:20", "results": [{"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-11-07T10:20", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "1-2 drinks per week"},
+            {"item": "Occupation", "value": "Retired postal worker"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-11-07T09:00"},
+            {"procedure": "Laparoscopic cholecystectomy", "performed": "2005-05-10T08:00"},
+            {"procedure": "Inguinal hernia repair", "performed": "2012-09-18T08:00"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-11-07T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-11-07T10:02"}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "30 pack-year former smoker, quit 2023"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-11-07T10:05",
+              "body": "NEW PATIENT VISIT\n\n66M retired letter carrier transferring care; prior PCP retired this summer. Brought his bottles in a grocery bag. Feels fine, here mostly to get set up and get refills somewhere reliable.\n\nPMH\n- HTN, roughly 12 yrs. On lisinopril 20. Says readings at the pharmacy kiosk are usually \"in the 140s.\"\n- T2DM since about 2016, metformin only. Last A1c he remembers was \"around 7 and a half.\"\n- Hyperlipidemia, atorvastatin 40 for about 10 yrs.\n- Former smoker: 30 pack-yrs, quit in August, cold turkey. No patches or gum. Proud of it, says the cravings are mostly gone after meals now.\n\nPSH: lap chole 2005; L inguinal hernia repair 2012.\n\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily. Reconciled against bottles.\nAllergies: NKDA.\n\nFHx: father MI at 61. Mother T2DM. Brother had an ischemic stroke at 65.\n\nSHx: retired after 30-some years delivering mail. Lives in Williamsburg. Beer or two a week, sometimes none. No drugs. Drives.\n\nROS negative for chest pain, palpitations, dyspnea, claudication, polyuria, vision change, numbness in feet.\n\nExam: vitals as charted, BP above goal. Well appearing. HEENT unremarkable. Neck supple, no bruits. Heart RRR, no murmur. Lungs clear. Abd soft, well-healed lap chole port scars, L groin scar. No edema. Feet: intact monofilament bilaterally, pulses 2+, skin intact.\nPHQ-2: 0.\n\nA/P\n1. HTN, above goal on lisinopril 20. Continue for now; recheck at next visit with kiosk log.\n2. T2DM. A1c, CMP, urine microalbumin today. Continue metformin. Eye exam due; he'll call his optometrist.\n3. Hyperlipidemia. Lipids today, continue atorvastatin 40.\n4. Tobacco: nicotine dependence, in remission since August. Encouraged. Eligible for annual low-dose CT; discussed what it is and false-positive rate, he wants it. Ordered.\n5. Health maintenance: flu high-dose and updated COVID given today. Hep C and HIV screen with labs. Records requested from prior PCP for colonoscopy and vaccine history.\n\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "portal_message",
+          "start": "2023-11-09T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2023-11-09T16:40",
+              "body": "Hi Mr. Kaminski, your labs from Tuesday are back. Kidney and liver tests and blood counts are normal, and the urine protein test is normal. Your A1c is a bit above 7, which is close to where we'd like it, so no changes for now. Cholesterol is higher than ideal; we'll keep working on it. Hepatitis C and HIV screens were negative. We'll go over everything in February."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "outside_records",
+          "start": "2023-11-28T13:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "outside primary care",
+              "date": "2023-11-28T13:15",
+              "body": "RECORDS RECEIVED (34 pages, mailed). Covers 2014-2023.\n\nSummary abstracted by MA:\n- Problem list on prior chart: hypertension, type 2 diabetes, hyperlipidemia, tobacco use (most recent note, June 2023, documents ongoing smoking with counseling).\n- Medications: metformin 1000 mg twice daily, lisinopril 20 mg daily, atorvastatin 40 mg daily. Consistent across the last several years.\n- Allergies: none recorded.\n- Screening colonoscopy 05/2019: normal to cecum, no polyps; repeat in 10 years.\n- Vaccines: pneumococcal not documented. Tdap not documented. Flu shots most years at a pharmacy.\n- Surgical: cholecystectomy 2005, left inguinal hernia repair 2012.\n\nScanned to chart. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "imaging",
+          "start": "2024-01-16T08:30",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-01-16T08:30",
+              "text": "INDICATION: Annual lung cancer screening. 30 pack-year history, former smoker.\nCOMPARISON: None.\nTECHNIQUE: Low-dose helical CT of the chest without IV contrast.\nFINDINGS: No pulmonary nodules. Lungs are clear without consolidation or effusion. Airways are patent. Heart size is normal. No mediastinal or hilar adenopathy. Status post cholecystectomy. Visualized upper abdomen otherwise unremarkable. No suspicious osseous lesion.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [{"id": "ldct-2024", "action": "done", "date": "2024-01-16T08:30"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lung screening CT result",
+              "author": "PCP",
+              "date": "2024-01-17T12:05",
+              "body": "Baseline LDCT negative, Lung-RADS 1. Repeat in one year. Letter sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-20T14:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-02-20T14:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-20T14:20"}],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-02-20T14:45"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: diabetes, hypertension",
+              "author": "PCP",
+              "date": "2024-02-20T15:00",
+              "body": "F/u DM, HTN.\n\nStill not smoking, about 6 months now. Kiosk BPs written on an envelope: 138-148 / 84-90. Taking all three meds; misses the evening metformin maybe once a week.\n\nReviewed outside records; colonoscopy 2019 normal, next due 2029.\n\nExam: BP as charted. Heart regular. Lungs clear. No edema.\n\nA/P\nHTN - similar to the envelope readings. Continue lisinopril 20.\nDM - A1c today. Continue metformin.\nHLD - continue atorvastatin.\nLDCT negative in January.\nShingrix #1 today; #2 in 2-6 months.\n\nRTC 3 mo."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "pharmacy",
+          "start": "2024-03-19T09:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request: metformin, lisinopril, atorvastatin",
+              "author": "MA",
+              "date": "2024-03-19T09:05",
+              "body": "Pharmacy fax requesting 90-day supplies x3 refills for metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily. Prior PCP's scripts ran out. Pended for PCP; approved and sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "office_visit",
+          "start": "2024-05-14T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show follow-up call",
+              "author": "front desk",
+              "date": "2024-05-14T11:20",
+              "body": "Did not arrive for 10:40. Reached him at home; he had it on his calendar for next week. Rebooked 5/28."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "office_visit",
+          "start": "2024-05-28T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-05-28T11:05", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-05-28T10:40"}],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-05-28T11:00"}],
+          "orders": [
+            {"id": "aaa-us", "action": "placed", "order": "Abdominal aortic ultrasound, AAA screening", "category": "imaging", "reason": "Male former smoker age 65-75"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-05-28T11:10",
+              "body": "Sorry about the mix-up on the 14th. Doing well. Walking most mornings with a neighbor. Arm was sore after the first shingles shot for a couple of days, nothing more.\n\nNo chest pain, palpitations, SOB, foot numbness.\n\nBP as charted; regular rhythm, lungs clear, no edema.\n\nA/P: DM - A1c today, continue metformin. HTN - continue lisinopril. Shingrix #2 given, series complete. One-time AAA ultrasound ordered given smoking history.\n\nRTC fall for wellness visit and flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "outside_records",
+          "start": "2024-06-20T15:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination report",
+              "author": "optometry",
+              "date": "2024-06-20T15:30",
+              "body": "Diabetic Eye Exam - Optometry\nExam date: 06/12/2024\nPatient: Stanley Kaminski\n\nVA cc: OD 20/25, OS 20/25.\nIOP: 15/16.\nDilated fundus exam: clear media; optic nerves healthy, C/D 0.3 OU. Macula flat and dry OU. Vessels normal caliber. No hemorrhages, exudates or neovascularization.\n\nImpression: Type 2 diabetes, no diabetic retinopathy either eye. Mild presbyopia, glasses rx updated.\nRecall: 1 year.\n\nAllergies: NKDA. Meds per patient: metformin, lisinopril, atorvastatin."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "imaging",
+          "start": "2024-08-13T09:15",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2024-08-13T09:15",
+              "text": "INDICATION: AAA screening, male former smoker.\nTECHNIQUE: Grayscale and color imaging of the abdominal aorta.\nFINDINGS: The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximum diameter 2.1 cm in the infrarenal segment, measured outer wall to outer wall. No aneurysm. Common iliac arteries normal in caliber. No free fluid.",
+              "conclusion": "Normal caliber abdominal aorta. No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [{"id": "aaa-us", "action": "done", "date": "2024-08-13T09:15"}]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T08:40",
+          "end": "2024-10-08T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm", "temp_c", "rr"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-08T09:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-10-08T09:50", "results": [{"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-08T09:50", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2024-10-08T09:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2024-10-08T08:40"},
+            {"procedure": "Immunization administration", "performed": "2024-10-08T09:40"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T09:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T09:32"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-10-08T09:34"},
+            {"vaccine": "RSV, bivalent (Abrysvo)", "date": "2024-10-08T09:36"},
+            {"vaccine": "Tdap", "date": "2024-10-08T09:38"}
+          ],
+          "orders": [
+            {"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-10-08T09:45",
+              "body": "MEDICARE ANNUAL WELLNESS VISIT (initial)\n\nHealth risk assessment reviewed with patient. Manages his own meds with a weekly pill box. Independent with all daily activities, still mows and does the yard. No falls this year. Hearing ok in person, some trouble on the phone. Vision: saw optometry in June, no retinopathy.\nCognition: 3-word recall 3/3, clock drawing normal.\nMood: PHQ-2 0.\nTobacco: still quit, a year and two months. Alcohol 1-2 beers/wk.\n\nProblems: HTN, T2DM, hyperlipidemia, nicotine dependence in remission.\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40. NKDA.\n\nExam: BP as charted. Heart RRR. Lungs clear. Abd benign. Feet: monofilament intact, pulses palpable, no lesions.\n\nScreening/prevention:\n- Colon: colonoscopy 2019 normal, next 2029.\n- Lung: LDCT Jan 2024 Lung-RADS 1; next due January, ordered.\n- AAA: ultrasound August, normal.\n- Vaccines today: high-dose flu, updated COVID, PCV20, RSV, Tdap (none documented previously). Shingrix complete.\n- Hep C/HIV done 2023.\n\nAdvance directive: thinking about naming his brother; given the form.\n\nLabs today: CMP, lipids, CBC, A1c, urine microalbumin.\n\nPlan: written personalized prevention schedule given. RTC 4 months for DM/HTN."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "portal_message",
+          "start": "2024-10-10T11:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your wellness visit",
+              "author": "PCP",
+              "date": "2024-10-10T11:25",
+              "body": "Labs from your wellness visit: kidney and liver function normal, blood counts normal, urine protein normal. A1c is in the same range as before. LDL cholesterol is still on the high side. Keep taking the atorvastatin every day. See you in February."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results from your wellness visit",
+              "author": "patient",
+              "date": "2024-10-10T19:02",
+              "body": "Thanks Doc. Arm is sore from all those shots but I'll live. Stanley Kaminski"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

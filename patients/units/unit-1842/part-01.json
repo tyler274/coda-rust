@@ -1,0 +1,201 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001842",
+      "given": "Delaney",
+      "family": "Kelleher",
+      "birth_date": "1995-10-16",
+      "address_line": "112 Pleasant Street, Apt 2",
+      "phone": "+1-603-555-0121",
+      "email": "delaney.kelleher@example.test",
+      "marital_status": "single",
+      "summary": "Public health graduate student with genital HSV-2 on daily valacyclovir who joined in 2021. Giardiasis after travel in 2023, acute hepatitis E with coagulopathy needing admission in 2024, a term pregnancy ending in emergent cesarean for active lesions in 2025, and carbon monoxide poisoning treated with hyperbaric oxygen in 2026.",
+      "events": [
+        {
+          "id": "2021-08-24a",
+          "kind": "establish_care",
+          "start": "2021-08-24T09:20",
+          "end": "2021-08-24T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Recurrent genital herpes", "action": "diagnosed", "onset": "2018-06-01", "note": "HSV-2, on daily suppression since diagnosis"}
+          ],
+          "medications": [
+            {"drug_text": "valacyclovir 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 500, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "genital HSV-2 suppression"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 61.2, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-08-24T10:20", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-08-24T10:20", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2021-08-24T10:20", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2021-08-24T10:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2021-08-24T10:20", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2021-08-24T10:15", "results": [{"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}]},
+            {"panel": null, "collected": "2021-08-24T10:15", "results": [{"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Graduate student in public health"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2021-08-24T09:20"},
+            {"procedure": "Venipuncture", "performed": "2021-08-24T10:20"}
+          ],
+          "orders": [
+            {"id": "prior-records-2021", "action": "placed", "order": "Request for prior primary care records", "category": "procedure", "reason": "new patient"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-08-24T10:10", "body": "NEW PATIENT VISIT\n\n25 y/o woman starting a doctoral program in public health this fall; moved to Easthampton over the summer and wants a primary care home here. No complaints today.\n\nPMH: genital HSV-2, diagnosed about three years ago by her previous PCP. Takes valacyclovir 500 mg every day for suppression and says it works; can't remember the last outbreak. Nothing else.\nPSH: none.\nMeds: valacyclovir 500 mg daily.\nAllergies: NKDA.\nFHx: mother with hypothyroidism. Father with high blood pressure.\nSocial: never smoked, no alcohol, no drugs. Lives in an apartment in town. Single. Grad school full time with a research assistantship. Insurance through the university student plan.\nGyn: periods regular. Last Pap 2019 at her old office, she thinks normal. Thinks she had the HPV shots as a kid.\n\nROS: negative across the board.\n\nExam: vitals per flowsheet. Well-appearing. HEENT normal, neck without nodes or thyromegaly. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin clear. No genital exam today, no active lesions per patient.\n\nA/P\n1. Genital HSV-2, on suppression. Continue valacyclovir 500 mg daily. We'll take over refills once her current supply runs out.\n2. Health maintenance. CBC, CMP, TSH (given mom's thyroid history), one-time HIV and hep C, urine chlamydia/GC. PHQ-2 is 0. Requesting old records for Pap and immunization history. Flu shot when it arrives in October.\n\nReturn for a physical next year, sooner as needed."},
+            {"type": "Administrative", "title": "Records Request", "author": "front desk", "date": "2021-08-24T10:30", "body": "Records release signed by patient. Request faxed to her previous primary care office for office notes, labs, Pap results and immunization record, 2016 to present."}
+          ]
+        },
+        {
+          "id": "2021-08-26a",
+          "kind": "portal_message",
+          "start": "2021-08-26T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab Results", "author": "PCP", "date": "2021-08-26T16:40", "body": "Hi Delaney, your bloodwork from Tuesday is all normal: blood counts, kidney and liver tests, thyroid. HIV and hepatitis C screens were negative, and so were the urine chlamydia and gonorrhea tests. Nothing to do. Nice to have you with us."}
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "outside_records",
+          "start": "2021-09-08T11:15",
+          "reason": "Prior primary care records received",
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2019-07-23T10:00", "text": "Specimen: ThinPrep cervical cytology. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2007-11-06T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2008-03-11T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2008-05-13T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2008-09-16T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-06T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-27T13:00"}
+          ],
+          "orders": [
+            {"id": "prior-records-2021", "action": "done", "date": "2021-09-08T11:15"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "MA", "date": "2021-09-08T11:15", "body": "Records received by fax from prior primary care office, 41 pages, scanned to chart. Abstracted:\n- 2018: clinic visit for painful genital sores; lesion swab PCR positive for HSV-2. Started valacyclovir, then switched to daily valacyclovir 500 mg for suppression; continued since.\n- Pap July 2019: NILM.\n- Immunizations: childhood series complete per state registry printout; Tdap 2007; HPV (quadrivalent) x3, 2008; COVID Pfizer 4/6/21 and 4/27/21 (card copy on file).\n- No other diagnoses, no surgeries, NKDA.\nForwarded to PCP for review."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-12T15:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2021-10-12T15:35"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2021-10-12T15:45", "body": "Here for flu vaccine. No fever today, no prior reactions to vaccines, not pregnant. Quadrivalent influenza 0.5 mL IM left deltoid, VIS given. Waited 15 minutes, no reaction."}
+          ]
+        },
+        {
+          "id": "2021-12-06a",
+          "kind": "pharmacy",
+          "start": "2021-12-06T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Medication Refill", "title": "Refill: valacyclovir", "author": "RN", "date": "2021-12-06T09:05", "body": "Pharmacy refill request for valacyclovir 500 mg, 1 tab daily. First fill from this office; prior prescriber was her old PCP. On med list, seen 8/24. Sent 90 days with 3 refills per PCP protocol."}
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T20:12",
+          "reason": "Vaccine record update",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2022-01-08T11:00"}
+          ],
+          "documents": [
+            {"type": "Patient Communication", "title": "COVID Booster", "author": "patient", "date": "2022-01-11T20:12", "body": "Hi, I got my COVID booster (Pfizer) at the pharmacy on Saturday the 8th. Can you add it to my record? The university is asking for proof. Thanks!"},
+            {"type": "Patient Communication", "title": "Re: COVID Booster", "author": "MA", "date": "2022-01-12T09:30", "body": "Added to your immunization record. You can print the updated list from the portal under Health Summary."}
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "portal_message",
+          "start": "2022-05-17T13:48",
+          "reason": "Form request",
+          "documents": [
+            {"type": "Patient Communication", "title": "Immunization Form", "author": "patient", "date": "2022-05-17T13:48", "body": "My program needs an immunization form signed for a summer research position at a community health center. I uploaded the form. Is that something the office can fill out?"},
+            {"type": "Administrative", "title": "Form Completed", "author": "front desk", "date": "2022-05-19T11:20", "body": "Immunization form completed from chart and signed by PCP. Uploaded to portal and copy mailed to patient."}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "annual_physical",
+          "start": "2022-09-13T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2022-09-13T09:25", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-13T09:20", "results": [{"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}]},
+            {"panel": null, "collected": "2022-09-13T09:20", "results": [{"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2022-09-13T09:15", "text": "Specimen: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-09-13T08:40"},
+            {"procedure": "Venipuncture", "performed": "2022-09-13T09:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-09-13T09:30", "body": "ANNUAL PHYSICAL\n\nDoing well. Second year of the program, teaching a section this fall. Valacyclovir daily, no breakthrough outbreaks this year. Sexually active with one male partner; condoms some of the time. Periods regular. Sleep okay.\n\nMeds: valacyclovir 500 mg daily. NKDA.\nSocial: no tobacco, no alcohol.\n\nExam: vitals per flowsheet. Well. HEENT normal. Neck no nodes or thyroid enlargement. Heart regular. Lungs clear. Breasts deferred (age). Abdomen benign. Pelvic: normal external genitalia, no lesions; speculum exam normal cervix, Pap obtained. Skin clear. Mood bright, PHQ-2 1.\n\nA/P\n- Genital HSV-2: well controlled on suppression. Continue.\n- Cervical screening: Pap today (last 2019).\n- STI screen: urine CT/GC.\n- Fasting lipid panel, first one.\n- Flu and COVID bivalent next month when available.\nRTC 1 year."}
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T12:05",
+          "reason": "Results",
+          "documents": [
+            {"type": "Patient Communication", "title": "Pap and Lab Results", "author": "PCP", "date": "2022-09-16T12:05", "body": "Your Pap came back normal, so the next one is due in three years. Cholesterol numbers look good, and the chlamydia and gonorrhea tests were negative. See you next fall, or sooner if anything comes up."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-18T16:17"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-18T16:15"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2022-10-18T16:30", "body": "Flu (quadrivalent) 0.5 mL IM right deltoid and Pfizer bivalent COVID booster 0.3 mL IM left deltoid. Screening negative, not pregnant. Tolerated both; observed 15 minutes. Expect a sore arm."}
+          ]
+        },
+        {
+          "id": "2022-12-05a",
+          "kind": "pharmacy",
+          "start": "2022-12-05T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Medication Refill", "title": "Refill: valacyclovir", "author": "RN", "date": "2022-12-05T08:50", "body": "Valacyclovir 500 mg daily, out of refills. Physical 9/13, stable. Renewed 90-day supply x3 refills."}
+          ]
+        }
+      ]
+    }
+  ]
+}

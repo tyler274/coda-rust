@@ -1,0 +1,461 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002546",
+   "given": "Tyler",
+   "family": "Boucher",
+   "birth_date": "1991-07-29",
+   "address_line": "14 Prospect Ct, Hatfield, MA 01038",
+   "phone": "+1-347-555-0132",
+   "email": "tyler.boucher@example.test",
+   "marital_status": "single",
+   "summary": "Thin never-smoking man who joins in 2018 with lifelong seasonal allergic rhinitis and exercise intolerance; allergen immunotherapy from 2020, mitochondrial myopathy diagnosed by neurology in 2021, PiZZ alpha-1 antitrypsin deficiency with lower-lobe emphysema and mildly raised transaminases diagnosed by pulmonology in 2023. Schizophrenia diagnosed at a June 2026 psychiatric admission, followed a week after discharge by an ED observation stay for benztropine anticholinergic toxicity; benztropine stopped, risperidone continues.",
+   "events": [
+    {
+     "id": "2018-08-28a",
+     "kind": "telephone",
+     "start": "2018-08-28T11:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "new patient scheduling",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New Patient Call",
+       "author": "front desk",
+       "date": "2018-08-28T11:22",
+       "body": "Caller: patient.\nCalling to establish primary care. Has Medicaid, card info taken and eligibility checked, active. Has not had a regular doctor in a few years, last care was at a pediatric/family practice he aged out of.\nBooked new patient visit Tue 9/11 9:20 with PCP.\nRecords release signed electronically for prior practice, request faxed today.\nReminded to bring any medications/sprays he uses. Membership agreement and welcome packet emailed to tyler.boucher@example.test."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-11a",
+     "kind": "establish_care",
+     "start": "2018-09-11T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "new patient visit",
+     "conditions": [
+      {
+       "label": "Allergic rhinitis due to pollen",
+       "action": "history",
+       "onset": "1997-04-01",
+       "note": "Seasonal, spring and early fall, since childhood"
+      },
+      {
+       "label": "Exercise intolerance",
+       "icd10": "R53.83",
+       "action": "history",
+       "onset": "1999-01-01",
+       "note": "Tires sooner than peers since childhood"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth once daily as needed for allergy symptoms",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Seasonal allergic rhinitis"
+      },
+      {
+       "drug": "fluticasone propionate 0.05 MG/ACTUAT Metered Dose Nasal Spray",
+       "action": "historical",
+       "sig": "Use 2 sprays in each nostril once daily",
+       "dose": {
+        "value": 2,
+        "unit": "spray"
+       },
+       "frequency": "DAILY",
+       "route": "Nasal",
+       "course": "chronic",
+       "reason": "Seasonal allergic rhinitis"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Tree pollen",
+       "reaction": "Rhinoconjunctivitis",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "allergy"
+      },
+      {
+       "substance": "Grass pollen",
+       "reaction": "Rhinoconjunctivitis",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "allergy"
+      }
+     ],
+     "state": {
+      "bp": [
+       110,
+       68
+      ],
+      "weight_kg": 65.5,
+      "height_cm": 180.0,
+      "spo2": 97.5
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2018-09-11T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-09-11T10:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-09-11T10:10",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 2
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "Occupation",
+       "value": "Construction laborer"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Social, 1-2 drinks per week"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2018-09-11T10:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2018-09-11T09:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-09-11T10:05"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2018-09-11T10:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "MA Intake",
+       "author": "MA",
+       "date": "2018-09-11T09:32",
+       "body": "New pt rooming. Vitals per flowsheet: BP 116/75, HR 68, RR 15, T 36.8, SpO2 98% RA, wt 65.2 kg, ht 179.2 cm, BMI 20.3.\nMeds reviewed: cetirizine 10 mg as needed, fluticasone nasal spray daily.\nAllergies: tree and grass pollen (seasonal). No known drug allergies.\nPHQ-2: 0. AUDIT-C: 2.\nPt states last tetanus shot was 'in high school', prior records requested."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2018-09-11T10:40",
+       "body": "NEW PATIENT VISIT\n\n27M here to establish care. No PCP for a few years since aging out of his childhood practice. Main thing he wants is to keep his allergy meds going.\n\nAllergies (nose/eyes): every spring and again in early fall since he was a kid. Sneezing fits, stuffy nose, itchy watery eyes, drip down the back of the throat. Uses cetirizine 10 mg on bad days and fluticasone 2 sprays each side daily through the season. Says these take the edge off but don't fully control it. Never seen an allergist, never skin tested.\n\nStamina: says he has always run out of gas before other people. Played sports as a kid and kept up for the most part, but was the first one winded and done. Works construction and gets through the day. Not something he came in about, mentions it when asked about exercise. No chest pain, no palpitations, no fainting.\n\nPMH: seasonal allergic rhinitis. Otherwise none.\nPSH: tonsillectomy at age 12.\nMeds: cetirizine 10 mg PO once daily PRN; fluticasone nasal 2 sprays/nostril daily.\nAllergies: tree pollen, grass pollen. NKDA.\n\nFamily hx:\n- Mother: mitochondrial myopathy; her symptoms started in her 30s.\n- Father: died in his mid-40s of cirrhosis, which the family put down to drinking. Pt recalls he had breathing problems for years.\n- Paternal grandmother: cirrhosis, cause never known.\n- Maternal uncle: schizophrenia.\n- Maternal side: several relatives with hearing loss starting young.\n- Identical twin brother, healthy.\n\nSocial: construction laborer. Never smoked, no vaping. Alcohol 1-2 drinks a week, social. No drugs. No pets.\n\nROS: negative except as above. No weight change, no fevers, no cough, no GI or urinary complaints.\n\nExam:\nBP 116/75, HR 68, RR 15, T 36.8, SpO2 98% RA. Wt 65.2 kg, Ht 179.2 cm, BMI 20.3.\nGen: thin, well appearing, NAD.\nHEENT: nasal mucosa pale and mildly boggy, no polyps. TMs clear. Oropharynx clear, tonsils surgically absent. Conjunctivae mildly injected.\nNeck: supple, no LAD, thyroid not enlarged.\nCV: RRR, no murmur.\nLungs: clear bilaterally, good air movement.\nAbd: soft, nontender, no organomegaly.\nExt: no edema.\nSkin: no rashes.\nNeuro: alert, CN grossly intact, strength and gait normal.\n\nA/P:\n1. Seasonal allergic rhinitis, pollen. Partial control on current regimen. Continue cetirizine PRN and daily fluticasone during the season. Can send Rx to pharmacy so Medicaid covers them. Discussed technique with the spray (aim away from septum).\n2. Exercise intolerance, lifelong by his description. Exam unremarkable today. Will keep an eye on it.\n3. Health maintenance: Tdap given today (last tetanus >10 yr by his report). One-time HIV and hep C screening offered and accepted, drawn with CBC and BMP. Flu shot when supply arrives next month. Never smoker.\n\nRTC 1 year for physical, sooner prn. He has the practice cell for texts."
+      },
+      {
+       "type": "Patient Instructions",
+       "title": "After Visit Summary",
+       "author": "PCP",
+       "date": "2018-09-11T10:45",
+       "body": "Thanks for coming in today, Tyler.\n\nWhat we did: tetanus/whooping cough booster (Tdap). Blood work: blood count, chemistry panel, HIV and hepatitis C screening. Results will come through the portal in a few days.\n\nYour medicines: keep using cetirizine 10 mg once a day when your allergies act up, and fluticasone nasal spray 2 sprays each side once a day during allergy season. Point the spray toward the outside of each nostril.\n\nNext steps: flu shot in October (nurse visit is fine). Yearly physical next September.\n\nYou can call or text the practice line any time."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-13a",
+     "kind": "portal_message",
+     "start": "2018-09-13T16:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab Results Released",
+       "author": "PCP",
+       "date": "2018-09-13T16:05",
+       "body": "Hi Tyler, your labs from Tuesday are all normal: blood counts normal (hemoglobin 14.8), kidney function and electrolytes normal (creatinine 0.97, sodium 141, potassium 4.1), glucose 89. HIV and hepatitis C screens are negative. Nothing to do here. Watch for a message from us about flu shots in October."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-18a",
+     "kind": "outside_records",
+     "start": "2018-09-18T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "prior practice records",
+     "procedures": [
+      {
+       "procedure": "Tonsillectomy",
+       "performed": "2004-02-10T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records From Prior Practice",
+       "author": "front desk",
+       "date": "2018-09-18T14:30",
+       "body": "Records received by fax from patient's former pediatric/family practice, 38 pages, scanned to media.\n\nAbstracted by front desk for PCP review:\n- Routine well-child and adolescent visits through age 18. Growth along the lower percentiles for weight, normal development documented.\n- Childhood immunization series recorded complete. Td at age 16 (2007).\n- Tonsillectomy at age 12 (2004), no complications.\n- Seasonal allergy complaints noted at several spring visits, treated with OTC antihistamine and later a nasal steroid spray.\n- Sports physicals cleared every year.\n- No hospitalizations. No labs of note.\n\nPCP reviewed 9/19: nothing new. Tdap given 9/11 appropriately."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-16a",
+     "kind": "nurse_visit",
+     "start": "2018-10-16T16:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "flu shot",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2018-10-16T16:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-10-16T16:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Influenza Vaccine",
+       "author": "RN",
+       "date": "2018-10-16T16:52",
+       "body": "Came in after work for flu vaccine. Screening questions negative: no fever today, no egg allergy, no prior vaccine reactions. Quadrivalent inactivated influenza 0.5 mL IM L deltoid. VIS given. Tolerated well, left ambulatory after 15 min."
+      }
+     ]
+    },
+    {
+     "id": "2019-03-26a",
+     "kind": "pharmacy",
+     "start": "2019-03-26T09:12",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "refill request",
+     "documents": [
+      {
+       "type": "Pharmacy Communication",
+       "title": "Refill Request: Fluticasone Nasal",
+       "author": "MA",
+       "date": "2019-03-26T09:12",
+       "body": "Electronic refill request from pharmacy for fluticasone propionate 50 mcg/actuation nasal spray, 1 bottle. Pt has been buying it OTC, pharmacy says Medicaid will cover with an Rx on file.\nRouted to PCP.\n\nPCP 3/26 11:40: approved, 16 g bottle, 2 sprays each nostril daily, refills x5."
+      }
+     ]
+    },
+    {
+     "id": "2019-04-09a",
+     "kind": "portal_message",
+     "start": "2019-04-09T20:47",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "refill",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Allergy pill",
+       "author": "patient",
+       "date": "2019-04-09T20:47",
+       "body": "Hi, pollen is starting up again. Could you send in the cetirizine too like you did with the spray? The pharmacy said insurance pays if the doctor sends it. Thanks, Tyler"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Allergy pill",
+       "author": "PCP",
+       "date": "2019-04-10T07:58",
+       "body": "Sent: cetirizine 10 mg, one daily as needed, 90 tablets with refills. Let me know if this season is worse than usual."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-17a",
+     "kind": "annual_physical",
+     "start": "2019-09-17T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "yearly physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2019-09-17T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-09-17T09:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-09-17T09:15",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 158
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 84
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 58
+        },
+        {
+         "test": "Triglycerides",
+         "value": 78
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-09-17T09:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2019-09-17T08:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-09-17T09:10"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2019-09-17T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2019-09-17T09:45",
+       "body": "ANNUAL PREVENTIVE VISIT\n\nTyler is 28, here for his yearly. Feels fine. Spring was a rough allergy season, used the spray every day and the cetirizine most days April through June, and the fall stretch is starting now. Still working construction. Same as last year with stamina, no change he can point to.\n\nMeds: cetirizine 10 mg PRN, fluticasone nasal daily in season.\nAllergies: tree/grass pollen. NKDA.\nSocial: never smoker, 1-2 drinks/wk, no drugs.\nPHQ-2: 0.\n\nVitals: BP 114/69, HR 78, RR 16, T 36.8, SpO2 97% RA, Wt 66.1 kg, BMI 20.6.\n\nExam:\nGen: thin, NAD.\nHEENT: turbinates pale and swollen, clear rhinorrhea. Oropharynx clear.\nNeck: no LAD.\nCV: regular, no murmur.\nResp: clear, no wheeze.\nAbd: soft, NT, no HSM.\nSkin: no lesions of concern.\nNeuro: nonfocal.\n\nAssessment/plan:\n- Well adult exam. Fasting lipids (first one), CBC, BMP drawn.\n- Allergic rhinitis, seasonal: same regimen, refills on file.\n- Exercise intolerance: stable by history.\n- Flu vaccine today.\n- Tdap done 2018.\n\nRTC 1 yr."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-19a",
+     "kind": "portal_message",
+     "start": "2019-09-19T12:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Physical Labs",
+       "author": "PCP",
+       "date": "2019-09-19T12:20",
+       "body": "Tyler, everything from your physical looks good. Cholesterol panel: total 158, LDL 84, HDL 58, triglycerides 78, all in a healthy range, no need to repeat for several years. Blood count, kidney numbers and sugar are normal too."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

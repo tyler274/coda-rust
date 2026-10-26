@@ -1,0 +1,917 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002541",
+   "events": [
+    {
+     "id": "2026-01-05a",
+     "kind": "ed_visit",
+     "start": "2026-01-05T13:15",
+     "end": "2026-01-05T21:00",
+     "service": "Emergency Medicine",
+     "reason": "Headache, fever, neck stiffness, confusion",
+     "vitals": [
+      {
+       "time": "2026-01-05T13:25",
+       "bp": [
+        126,
+        80
+       ],
+       "hr": 98,
+       "rr": 18,
+       "temp_c": 38.5,
+       "spo2": 98
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-01-05T13:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-01-05T13:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose",
+         "value": 90
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT head without contrast",
+       "performed": "2026-01-05T14:30",
+       "issued": "2026-01-05T15:10",
+       "text": "Noncontrast CT of the head. No intracranial hemorrhage, mass or mass effect. Ventricles and sulci are normal in size for age; no hydrocephalus. Gray-white differentiation preserved. Basal cisterns are patent. Visualized paranasal sinuses and mastoid air cells are clear.",
+       "conclusion": "No mass, hemorrhage or hydrocephalus. No contraindication to lumbar puncture from an imaging standpoint."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2026-01-05T13:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Provider Notes",
+       "title": "Emergency department record (outside)",
+       "author": "emergency medicine",
+       "date": "2026-01-06T10:30",
+       "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE - regional hospital\nDate of service: 01/05/2026\n\nCC: headache, fever, stiff neck, confusion\n\nHPI: 31-year-old man with paranoid schizophrenia and latent TB infection, which has gone essentially untreated because he took his isoniazid so irregularly. Brought by his parents. For two weeks he has had a severe headache, fevers and a stiff neck. Over the last few days he has become muddled and increasingly sleepy, per his parents.\n\nPMH: paranoid schizophrenia with nonadherence; latent TB (positive IGRA 2022); prior antipsychotic dystonic reactions; falciparum malaria 5/2025, treated.\nMeds: risperidone 4 mg BID, aripiprazole 10 mg daily, isoniazid 300 mg daily (adherence poor).\nAllergies: NKDA.\n\nExam: T 38.5 C, BP 126/80, HR 98, RR 18, SpO2 98% RA.\nDrowsy but rousable, confused to date and place. Nuchal rigidity. Brudzinski sign positive. Right abducens nerve palsy: right eye does not abduct past midline. Pupils equal and reactive. Other cranial nerves intact. Moves all limbs symmetrically. Lungs clear. Heart regular. No rash.\n\nStudies:\n- CT head without contrast before lumbar puncture: no mass, bleeding or hydrocephalus.\n- Lumbar puncture. CSF: WBC 150/uL (lymphocytes 80%), RBC 10/uL, protein 100 mg/dL, glucose 30 mg/dL against a serum glucose of 90; ADA 12 U/L, elevated. CSF sent for AFB culture.\n- CBC and BMP normal.\n\nImpression: subacute lymphocytic meningitis with low CSF glucose, high protein and elevated ADA, in a patient with untreated latent TB and a right sixth nerve palsy: tuberculous meningitis.\nPlan: infectious disease consulted from the ED. Admit to medicine for four-drug TB therapy with adjunctive dexamethasone and further imaging."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-05b",
+     "kind": "hospital_admission",
+     "start": "2026-01-05T21:10",
+     "end": "2026-01-23T13:00",
+     "service": "Hospital Medicine",
+     "reason": "Tuberculous meningitis",
+     "conditions": [
+      {
+       "label": "Tuberculous meningitis",
+       "icd10": "A17.0",
+       "action": "diagnosed",
+       "onset": "2025-12-22"
+      },
+      {
+       "label": "Sixth nerve palsy, right eye",
+       "icd10": "H49.21",
+       "action": "diagnosed",
+       "onset": "2026-01-03"
+      },
+      {
+       "label": "Latent tuberculosis",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "isoniazid 300 MG Oral Tablet",
+       "action": "stop"
+      },
+      {
+       "drug_text": "isoniazid 300 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily (directly observed)",
+       "dose": {
+        "value": 300,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Tuberculous meningitis"
+      },
+      {
+       "drug_text": "rifampin 300 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 2 capsules (600 mg) by mouth daily (directly observed)",
+       "dose": {
+        "value": 600,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Tuberculous meningitis"
+      },
+      {
+       "drug_text": "pyrazinamide 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 3 tablets (1500 mg) by mouth daily (directly observed)",
+       "dose": {
+        "value": 1500,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Tuberculous meningitis"
+      },
+      {
+       "drug_text": "ethambutol hydrochloride 400 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 3 tablets (1200 mg) by mouth daily (directly observed)",
+       "dose": {
+        "value": 1200,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Tuberculous meningitis"
+      },
+      {
+       "drug_text": "vitamin B6 50 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Prevention of isoniazid neuropathy"
+      },
+      {
+       "drug_text": "dexamethasone sodium phosphate 4 MG/ML Injectable Solution",
+       "action": "start",
+       "sig": "IV per inpatient protocol",
+       "frequency": "DAILY",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "Tuberculous meningitis"
+      },
+      {
+       "drug_text": "dexamethasone 4 MG Oral Tablet",
+       "action": "start",
+       "sig": "Oral taper per infectious disease schedule; complete by early March",
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Tuberculous meningitis"
+      }
+     ],
+     "state": {
+      "weight_kg": 70.0
+     },
+     "labs": [
+      {
+       "collected": "2026-01-06T06:00",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "collected": "2026-01-06T06:00",
+       "results": [
+        {
+         "test": "Hepatitis B Surface Antigen",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "collected": "2026-01-06T06:00",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-01-06T06:00",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2026-01-06T07:30",
+       "issued": "2026-01-06T09:20",
+       "text": "Portable AP view. Lungs are clear. No consolidation, cavitation, miliary nodules or pleural effusion. No hilar adenopathy. Cardiomediastinal silhouette is normal.",
+       "conclusion": "No acute cardiopulmonary abnormality. No radiographic evidence of pulmonary tuberculosis."
+      }
+     ],
+     "orders": [
+      {
+       "id": "csf-afb-2026",
+       "action": "placed",
+       "order": "CSF AFB culture",
+       "category": "lab",
+       "reason": "Suspected tuberculous meningitis"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2026-01-05T22:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2026-01-23T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary (outside)",
+       "author": "hospital medicine",
+       "date": "2026-01-23T17:45",
+       "body": "HOSPITAL MEDICINE - DISCHARGE SUMMARY\nAdmitted: 01/05/2026. Discharged: 01/23/2026.\nInfectious disease consulting.\n\nPrincipal diagnosis: tuberculous meningitis, in the setting of untreated latent TB infection.\nSecondary: right abducens (sixth nerve) palsy; paranoid schizophrenia.\n\nWorkup:\n- CT head (pre-LP): no mass or hydrocephalus.\n- CSF as per ED record: lymphocytic pleocytosis, protein 100, glucose 30 (serum 90), ADA 12. CSF AFB culture sent 01/05 and still pending at discharge.\n- MRI brain with and without contrast: enhancement of the basal meninges; no hydrocephalus; no infarct.\n- Chest x-ray: clear.\n- HIV antigen/antibody, hepatitis B surface antigen and hepatitis C antibody: all negative.\n- Hepatic panel 01/06 normal (AST 24, ALT 16).\n- Weight 70 kg.\n\nCourse: started isoniazid 300 mg, rifampin 600 mg, pyrazinamide 1500 mg and ethambutol 1200 mg daily with pyridoxine 50 mg daily, and dexamethasone IV, changed to an oral taper as he improved. Fever resolved over the first week. Headache eased and his confusion cleared gradually. The right sixth nerve palsy is improving but still present at discharge. Psychiatric medications continued; he was calm on the ward.\n\nTreatment plan (per ID):\n- Intensive phase: isoniazid, rifampin, pyrazinamide, ethambutol and pyridoxine daily for two months, to early March 2026.\n- Dexamethasone oral taper per the schedule given, to stop at eight weeks (early March 2026).\n- Continuation phase: isoniazid, rifampin and pyridoxine for ten further months, planned end early January 2027.\n- Case reported to the local public health department. Medications to be given by directly observed therapy (DOT) through public health, starting the day after discharge.\n- Outpatient infectious disease clinic monthly.\n- Monthly LFTs and monthly visual acuity and color vision checks while on ethambutol; PCP office has agreed to do these.\n\nDrug interaction: rifampin lowers blood levels of risperidone and aripiprazole. Psychiatry is asked to watch for relapse. No antipsychotic dose change made.\n\nAllergies: NKDA.\nDischarge medications:\n- isoniazid 300 mg daily (DOT)\n- rifampin 600 mg daily (DOT)\n- pyrazinamide 1500 mg daily (DOT)\n- ethambutol 1200 mg daily (DOT)\n- pyridoxine 50 mg daily\n- dexamethasone oral taper, per schedule\n- risperidone 4 mg twice daily\n- aripiprazole 10 mg daily\n\nDisposition: home with parents. PCP visit within one week; ID clinic in about a month."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-07a",
+     "kind": "telephone",
+     "start": "2026-01-07T09:20",
+     "reason": "Family call, hospitalization",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Family call - hospitalization",
+       "author": "RN",
+       "date": "2026-01-07T09:30",
+       "body": "Mother called. Noah was admitted 1/5 at the regional hospital with meningitis; doctors told the family they think it is TB. He is more awake today. She will call when discharge date is known. Will see Noah within a week of discharge. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-26a",
+     "kind": "outside_records",
+     "start": "2026-01-26T15:30",
+     "reason": "Infectious disease clinic letter",
+     "orders": [
+      {
+       "id": "csf-afb-2026",
+       "action": "done",
+       "date": "2026-01-26T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Infectious disease clinic letter (outside)",
+       "author": "infectious disease",
+       "date": "2026-01-26T15:30",
+       "body": "INFECTIOUS DISEASE CLINIC\nDate: 01/26/2026\nRe: Noah Nadeau, DOB 08/03/1994\n\nThe CSF AFB culture from his lumbar puncture on 01/05/2026 has grown Mycobacterium tuberculosis complex, reported today, three weeks after collection. This confirms the diagnosis of tuberculous meningitis. Drug susceptibility testing is in progress and will be sent when available.\n\nHe remains on isoniazid 300 mg, rifampin 600 mg, pyrazinamide 1500 mg and ethambutol 1200 mg daily with pyridoxine 50 mg daily, and the dexamethasone taper, all via public health DOT. No change to the regimen.\nAllergies: NKDA.\nWe will see him monthly. Please continue monthly LFTs and vision checks."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-27a",
+     "kind": "portal_message",
+     "start": "2026-01-27T20:10",
+     "reason": "Records question",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "DOT and appointment question",
+       "author": "patient",
+       "date": "2026-01-27T20:10",
+       "body": "This is Noah's mother. The public health nurse comes every morning now for the TB pills. Should we bring all his pill bottles Thursday, and does the nurse need anything from your office?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: DOT and appointment question",
+       "author": "RN",
+       "date": "2026-01-28T08:40",
+       "body": "Yes, please bring all of his medicines Thursday, including the steroid taper schedule from the hospital. We will send the public health nurse a copy of his monthly liver tests going forward."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-29a",
+     "kind": "office_visit",
+     "start": "2026-01-29T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up, tuberculous meningitis",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-01-29T10:40",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-01-29T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-discharge visit",
+       "author": "PCP",
+       "date": "2026-01-29T11:10",
+       "body": "Transitional care visit after admission 1/5-1/23 for tuberculous meningitis. Here with both parents. Discharge summary and 1/26 ID letter reviewed.\n\nHospital course in brief: two weeks of headache, fever and neck stiffness, then confusion and drowsiness. LP: lymphocytic CSF, low glucose, high protein, elevated ADA. MRI with basal meningeal enhancement, no hydrocephalus. Chest x-ray clear. HIV, hepatitis B and C negative. Started four-drug TB therapy with pyridoxine and dexamethasone. Reported to public health; DOT started after discharge. CSF AFB culture reported 1/26: M. tuberculosis complex, susceptibilities pending.\n\nToday: headache gone. Confusion gone per parents; he is back to his usual self. No fever. Eating. Takes DOT doses each morning with the public health nurse.\nPsych: on risperidone 4 mg BID and aripiprazole 10 mg daily, unchanged. No change in voices or behavior noted by family so far.\n\nMeds reconciled: isoniazid 300 mg, rifampin 600 mg, pyrazinamide 1500 mg, ethambutol 1200 mg daily (DOT); pyridoxine 50 mg daily; dexamethasone oral taper per hospital schedule; risperidone 4 mg BID; aripiprazole 10 mg daily.\nAllergies: NKDA.\n\nBP 118/73, HR 71, RR 17, T 36.7, SpO2 98%, Wt 69.2 kg, BMI 22.5.\nAlert, oriented x3, answers appropriately in his usual brief way. Neck supple. Right eye: abduction limited but better than described at discharge; other eye movements full. Pupils equal and reactive. Remaining cranial nerves intact. Strength and gait normal. Lungs clear. Heart regular. Abdomen soft, no hepatomegaly. Sclerae anicteric.\nVision (ethambutol monitoring): Snellen 20/20 right, 20/20 left. Ishihara plates all read correctly each eye.\n\nA/P:\n1. Tuberculous meningitis, culture-confirmed, on intensive phase via DOT. Clinically much improved. Hepatic panel today and monthly. Monthly vision checks while on ethambutol. Problem list updated: latent TB replaced by tuberculous meningitis.\n2. Right sixth nerve palsy, improving.\n3. Paranoid schizophrenia: called psychiatry office re the rifampin interaction flagged in the discharge summary. They have the summary and will see him in February; no dose change for now.\nRTC 4 weeks."
+      },
+      {
+       "type": "Result Note",
+       "title": "Hepatic panel",
+       "author": "PCP",
+       "date": "2026-01-29T17:20",
+       "body": "AST 21, ALT 23, alk phos 94, bili 0.5. Normal on four-drug therapy. Copy faxed to ID clinic and public health DOT nurse."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-09a",
+     "kind": "outside_records",
+     "start": "2026-02-09T14:10",
+     "reason": "Infectious disease clinic letter",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Infectious disease clinic letter (outside)",
+       "author": "infectious disease",
+       "date": "2026-02-09T14:10",
+       "body": "INFECTIOUS DISEASE CLINIC\nDate: 02/09/2026\nRe: Noah Nadeau, DOB 08/03/1994\n\nSusceptibility results on the M. tuberculosis isolate from his 01/05/2026 CSF: susceptible to isoniazid, rifampin, pyrazinamide and ethambutol.\nNo change in therapy. Plan remains two months of four drugs, then isoniazid and rifampin with pyridoxine to complete twelve months total. DOT going well per public health; no missed doses reported.\nSeen in clinic today: no headache or fever. Right abducens palsy continues to improve."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-24a",
+     "kind": "office_visit",
+     "start": "2026-02-24T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up, TB treatment monitoring",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-02-24T11:00",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-02-24T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2026-02-24T11:15",
+       "body": "Follow-up, TB meningitis treatment monitoring.\n\nS: Feels well. No headache, fever, nausea, abdominal pain, dark urine, rash or joint pain. DOT every morning; nurse reports no missed doses. Dexamethasone taper close to finished. ID letter 2/9: isolate pan-susceptible, regimen unchanged. Psychiatry saw him in February, no changes; parents say he is at his baseline.\n\nO: BP 121/59, HR 78, RR 15, T 36.6, SpO2 95%, Wt 70.0 kg, BMI 22.8.\nAlert, oriented. Neck supple. Right eye abduction nearly full now. Other cranial nerves intact. Lungs clear. Heart regular. Abdomen soft. Anicteric.\nVision: Snellen 20/20 each eye. Ishihara plates normal.\n\nA/P:\n1. TBM on intensive phase. Hepatic panel today. Vision normal on ethambutol. Per ID, pyrazinamide and ethambutol stop early March.\n2. Right CN VI palsy, improving.\n3. Schizophrenia stable on same doses.\nRTC 4 weeks."
+      },
+      {
+       "type": "Result Note",
+       "title": "Hepatic panel",
+       "author": "PCP",
+       "date": "2026-02-24T16:55",
+       "body": "AST 24, ALT 22, bili 0.4. Normal. Faxed to ID and DOT nurse."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-06a",
+     "kind": "outside_records",
+     "start": "2026-03-06T13:00",
+     "reason": "Infectious disease clinic letter",
+     "medications": [
+      {
+       "drug_text": "pyrazinamide 500 MG Oral Tablet",
+       "action": "stop"
+      },
+      {
+       "drug_text": "ethambutol hydrochloride 400 MG Oral Tablet",
+       "action": "stop"
+      },
+      {
+       "drug_text": "dexamethasone 4 MG Oral Tablet",
+       "action": "stop"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Infectious disease clinic letter (outside)",
+       "author": "infectious disease",
+       "date": "2026-03-06T13:00",
+       "body": "INFECTIOUS DISEASE CLINIC\nDate: 03/06/2026\nRe: Noah Nadeau, DOB 08/03/1994\n\nHe has completed the two-month intensive phase. Pyrazinamide and ethambutol stopped as of 03/05/2026. The dexamethasone taper finished on 03/02/2026.\nContinuation phase: isoniazid 300 mg daily and rifampin 600 mg daily by DOT, with pyridoxine 50 mg daily, for ten more months; planned completion early January 2027.\nClinically well; no headache or fever. Residual limitation of right eye abduction, still improving.\nPlease continue monthly LFTs. One more vision check this month is reasonable; no further ethambutol monitoring needed after that."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-24a",
+     "kind": "office_visit",
+     "start": "2026-03-24T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up, TB treatment monitoring",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-03-24T14:30",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-03-24T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2026-03-24T14:50",
+       "body": "Follow-up, TB meningitis, now continuation phase.\n\nS: Pyrazinamide and ethambutol stopped 3/5, dexamethasone finished 3/2, per ID letter 3/6. Now isoniazid, rifampin and pyridoxine by DOT. Feels fine. No headache, fever, nausea, dark urine or numbness. Mother says he is sleeping and eating normally. Psych: unchanged, no relapse signs per family.\n\nO: BP 114/68, HR 61, RR 15, T 37.0, SpO2 98%, Wt 71.2 kg, BMI 23.1.\nAlert, conversant in short answers. Eye movements: right abduction now close to full, slight lag only at extreme right gaze. Rest of neuro exam normal. Lungs clear. Heart regular. Abdomen soft, nontender. Anicteric.\nVision (final ethambutol check): Snellen 20/20 each eye, color plates normal.\n\nA/P:\n1. TBM, continuation phase, planned end early January 2027. Hepatic panel today; monthly.\n2. Ethambutol vision monitoring complete, normal throughout.\n3. CN VI palsy nearly resolved.\nRTC 4 weeks."
+      },
+      {
+       "type": "Result Note",
+       "title": "Hepatic panel",
+       "author": "PCP",
+       "date": "2026-03-24T18:00",
+       "body": "AST 24, ALT 15, bili 0.6. Normal. Faxed to ID clinic and DOT nurse."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-21a",
+     "kind": "office_visit",
+     "start": "2026-04-21T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up, TB treatment monitoring",
+     "conditions": [
+      {
+       "label": "Sixth nerve palsy, right eye",
+       "icd10": "H49.21",
+       "action": "resolved"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-04-21T10:30",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-04-21T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2026-04-21T10:45",
+       "body": "Follow-up.\n\nS: Doing well on isoniazid, rifampin and pyridoxine by DOT. No symptoms. ID clinic 4/9 letter reviewed. Psychiatry following, same doses of risperidone and aripiprazole; family reports he is stable.\n\nO: BP 117/72, HR 69, RR 17, T 36.7, SpO2 97%, Wt 70.5 kg, BMI 22.9.\nEye movements full in all directions, including right abduction. No nystagmus. Cranial nerves otherwise intact. Strength, sensation and gait normal. Lungs clear. Heart regular.\n\nA/P:\n1. Right sixth nerve palsy: resolved. Removed from active problem list.\n2. TBM continuation phase. Hepatic panel today.\n3. Schizophrenia: stable.\nNext: monthly LFT lab draws; visit in June."
+      },
+      {
+       "type": "Result Note",
+       "title": "Hepatic panel",
+       "author": "PCP",
+       "date": "2026-04-21T16:30",
+       "body": "AST 26, ALT 17, alk phos 96, bili 0.5. Normal. Faxed to ID and DOT nurse."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-10a",
+     "kind": "outside_records",
+     "start": "2026-04-10T12:30",
+     "reason": "Infectious disease clinic letter",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Infectious disease clinic letter (outside)",
+       "author": "infectious disease",
+       "date": "2026-04-10T12:30",
+       "body": "INFECTIOUS DISEASE CLINIC\nDate: 04/09/2026\nRe: Noah Nadeau, DOB 08/03/1994\n\nMonthly visit. Continuation phase with isoniazid, rifampin and pyridoxine by DOT; public health reports full adherence. No headache, fever or new symptoms. Neuro exam today nonfocal apart from a trace lag of right eye abduction at far gaze. LFTs from your office reviewed, normal.\nContinue current regimen. Next visit in one month."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-19a",
+     "kind": "lab_only",
+     "start": "2026-05-19T08:30",
+     "reason": "Monthly LFTs",
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-05-19T08:30",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Lab Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2026-05-19T08:35",
+       "body": "Monthly hepatic panel drawn, L antecubital, one attempt. Pt came with father. Tolerated well."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-20a",
+     "kind": "portal_message",
+     "start": "2026-05-20T12:40",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "May liver tests",
+       "author": "PCP",
+       "date": "2026-05-20T12:40",
+       "body": "Hi Noah,\nYour liver tests this month are normal (AST 22, ALT 14). Keep going with the TB medicines with the nurse each morning. We'll see you in June."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-08a",
+     "kind": "outside_records",
+     "start": "2026-06-08T15:00",
+     "reason": "Infectious disease clinic letter",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Infectious disease clinic letter (outside)",
+       "author": "infectious disease",
+       "date": "2026-06-08T15:00",
+       "body": "INFECTIOUS DISEASE CLINIC\nDate: 06/04/2026\nRe: Noah Nadeau, DOB 08/03/1994\n\nFive months into treatment for tuberculous meningitis, now in continuation phase. Excellent DOT adherence. Asymptomatic. Exam normal, eye movements full. Continue isoniazid 300 mg, rifampin 600 mg and pyridoxine 50 mg daily, planned through early January 2027. Monthly LFTs at your office please. Next ID visit in one month."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "office_visit",
+     "start": "2026-06-16T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up, TB treatment and metabolic monitoring",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-06-16T10:00",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "collected": "2026-06-16T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-06-16T10:00",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-06-16T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2026-06-16T10:20",
+       "body": "Follow-up: TB treatment and yearly antipsychotic metabolic check.\n\nS: Continuation phase, isoniazid, rifampin and pyridoxine by DOT, no missed doses per public health. No headache, fever, nausea, abdominal pain or jaundice. No tingling. ID letter 6/4 reviewed.\nPsych: seen by psychiatry this spring; risperidone 4 mg BID and aripiprazole 10 mg daily unchanged. Parents say he has been steady all year, no relapse on rifampin. He agrees, \"it's okay.\"\n\nO: BP 109/70, HR 62, RR 14, T 36.6, SpO2 96%, Wt 71.0 kg, BMI 23.1.\nCalm, cooperative, sparse speech. Eye movements full. Lungs clear. Heart regular, no murmur. Abdomen soft, no hepatomegaly. No tremor or abnormal movements.\n\nA/P:\n1. TBM, continuation phase. Hepatic panel today.\n2. Antipsychotic metabolic monitoring: weight stable (about 70-71 kg since 2023), BP normal. A1c and lipid panel today.\n3. Paranoid schizophrenia: stable on current regimen.\nMonthly LFT draws in July and August; follow-up visit late September."
+      },
+      {
+       "type": "Result Note",
+       "title": "Labs",
+       "author": "PCP",
+       "date": "2026-06-16T17:40",
+       "body": "A1c 5.4. Lipids: total 147, LDL 87, HDL 53, TG 106. LFTs: AST 23, ALT 20. All normal. Faxed LFTs to ID and DOT nurse. Results released to portal."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-14a",
+     "kind": "lab_only",
+     "start": "2026-07-14T08:15",
+     "reason": "Monthly LFTs",
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-07-14T08:15",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Lab Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2026-07-14T08:20",
+       "body": "Monthly hepatic panel drawn, R antecubital. Pt with mother."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-15a",
+     "kind": "portal_message",
+     "start": "2026-07-15T09:10",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "July liver tests",
+       "author": "PCP",
+       "date": "2026-07-15T09:10",
+       "body": "Noah, your July liver tests are normal: AST 22, ALT 24. Next draw in late August."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-28a",
+     "kind": "telephone",
+     "start": "2026-07-28T14:20",
+     "reason": "Public health DOT coordination",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Public health DOT nurse call",
+       "author": "RN",
+       "date": "2026-07-28T14:30",
+       "body": "Call from public health DOT nurse. Asked for the June and July LFT results for her file and the date of his next PCP visit. Faxed both hepatic panels. Told her next visit is in September and the August LFT draw is due late August. She reports DOT continuing daily without problems."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-10a",
+     "kind": "outside_records",
+     "start": "2026-08-10T11:45",
+     "reason": "Infectious disease clinic letter",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Infectious disease clinic letter (outside)",
+       "author": "infectious disease",
+       "date": "2026-08-10T11:45",
+       "body": "INFECTIOUS DISEASE CLINIC\nDate: 08/06/2026\nRe: Noah Nadeau, DOB 08/03/1994\n\nSeven months into therapy. Well, no symptoms, full DOT adherence. Normal neurological exam. Continue isoniazid, rifampin and pyridoxine; planned stop date early January 2027. Monthly LFTs to continue."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-25a",
+     "kind": "lab_only",
+     "start": "2026-08-25T08:40",
+     "reason": "Monthly LFTs",
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-08-25T08:40",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ],
+       "pending": true
+      }
+     ],
+     "documents": [
+      {
+       "type": "Lab Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2026-08-25T08:45",
+       "body": "Monthly hepatic panel drawn and sent. Pt with father. Results to PCP when back."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-22a",
+     "kind": "office_visit",
+     "start": "2026-09-22T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "appointment": "booked",
+     "reason": "Routine follow-up"
+    }
+   ]
+  }
+ ]
+}

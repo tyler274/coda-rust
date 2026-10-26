@@ -1,0 +1,836 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001976",
+   "given": "Lamar",
+   "family": "Bryant",
+   "birth_date": "1964-02-26",
+   "address_line": "57 Fernhill Avenue",
+   "phone": "+1-978-555-0156",
+   "email": "lamar.bryant@example.test",
+   "marital_status": "married",
+   "summary": "Long-haul truck driver with type 2 diabetes since 2004, hypertension, hyperlipidemia and obesity who joined in 2018 on a fixed five-drug regimen. Over eight years outside letters add moderate obstructive sleep apnea, achalasia and cervical spondylotic myelopathy, none treated, while A1c drifts from the low 7s to 9.2. Chart ends shortly after an ED visit for a right vitreous hemorrhage, with ophthalmology records outstanding.",
+   "events": [
+    {
+     "id": "2018-09-05a",
+     "kind": "telephone",
+     "start": "2018-09-05T16:10",
+     "reason": "New patient call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient intake call",
+       "author": "front desk",
+       "date": "2018-09-05T16:25",
+       "body": "Caller: patient, calling from his truck (on a run through Ohio, back home this weekend).\nWants to establish primary care. Previous PCP retired this summer.\nSays he has \"sugar, pressure and cholesterol\" and sees endocrinology and cardiology at outside groups already. Wants a doctor who will answer a text while he is on the road.\nMembership agreement and fee schedule emailed to lamar.bryant@example.test. Records release form emailed for his prior primary care office; he will sign and send back.\nNew patient visit booked for 09/18, 8:40, first slot so he can leave by 10. Asked to bring all pill bottles and any lab printouts. Fasting not needed but he prefers to come fasting so labs can be drawn same day; ok per protocol."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-18a",
+     "kind": "establish_care",
+     "start": "2018-09-18T08:40",
+     "end": "2018-09-18T09:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient visit: diabetes, hypertension, cholesterol",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "history",
+       "onset": "2004-06-01"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2005-01-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "history",
+       "onset": "2005-01-01"
+      },
+      {
+       "label": "Obesity, unspecified",
+       "action": "history",
+       "onset": "2014-01-01"
+      },
+      {
+       "label": "History of tobacco dependence",
+       "action": "history",
+       "onset": "2011-03-01",
+       "note": "Quit March 2011, 20 pack-years"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hyperlipidemia"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       144,
+       90
+      ],
+      "weight_kg": 101.2,
+      "height_cm": 178.0,
+      "labs": {
+       "Hemoglobin A1c": 7.1,
+       "Glucose": 134,
+       "Low Density Lipoprotein": 128,
+       "High Density Lipoprotein": 38,
+       "Triglycerides": 185,
+       "Creatinine": 1.0,
+       "Hemoglobin": 14.6,
+       "Microalbumin/Creatinine Ratio": 11
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2018-09-18T09:50",
+       "results": [
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ],
+       "resulted": "2018-09-19T07:40"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-09-18T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ],
+       "resulted": "2018-09-19T07:40"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2018-09-18T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2018-09-18T15:10"
+      },
+      {
+       "panel": null,
+       "collected": "2018-09-18T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ],
+       "resulted": "2018-09-19T07:40"
+      },
+      {
+       "panel": null,
+       "collected": "2018-09-18T09:50",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ],
+       "resulted": "2018-09-20T11:05"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "1-2 drinks per month"
+      },
+      {
+       "item": "Occupation",
+       "value": "Long-haul truck driver"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2018-09-18T08:40"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2018-09-18T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2018-09-18T10:20",
+       "body": "NEW PATIENT VISIT\n\n54-year-old man establishing care. Long-haul truck driver, usually out 10-12 days at a stretch, home 3-4 days. Married, lives in Chicopee. Came fasting.\n\nBrings: type 2 diabetes since 2004 (diagnosed at about age 40), high blood pressure and high cholesterol, both treated for about as long as the diabetes. Follows with an outside endocrinology group for the diabetes and an outside cardiology group for blood pressure; plans to keep both. Wants us as home base, labs here when possible since our draw station opens early.\n\nCurrent medications (bottles reviewed, all filled within the last 2 months):\n- metformin 1000 mg twice daily with meals\n- lisinopril 20 mg daily\n- amlodipine 5 mg daily\n- hydrochlorothiazide 25 mg every morning\n- atorvastatin 40 mg daily\nSays he rarely misses a dose; keeps the pill organizer in the cab. Some days the evening metformin slips when he eats late.\n\nAllergies: NKDA.\nSurgical history: none.\nFamily history: father with type 2 diabetes, high blood pressure and sleep apnea. Mother with high blood pressure and high cholesterol. Paternal uncle with coronary artery disease.\nSocial: former smoker, about 20 pack-years, quit 03/2011. Alcohol 1-2 drinks a month. No other substances. Eats most meals at truck stops; tries to pick the grilled options \"when they have them.\" No regular exercise.\n\nROS: no chest pain, no shortness of breath, no foot numbness or sores, no vision change, no urinary symptoms. Otherwise negative as asked.\n\nExam\nBP 147/94, HR 69, RR 12, T 36.4, SpO2 97% RA. Wt 101.5 kg, Ht 178.2 cm, BMI 32.0.\nWell appearing, pleasant. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart: regular rate and rhythm, S1 S2 normal, no murmur. Lungs clear bilaterally. Abdomen soft, nontender, central adiposity. Extremities without edema.\nFeet: skin intact, no calluses or ulcers, DP and PT pulses 2+ bilaterally, 10 g monofilament felt at all sites tested both feet.\nPHQ-2: 0.\n\nAssessment / Plan\n1. Type 2 diabetes, on metformin. A1c, BMP, CBC, urine albumin/creatinine today. Foot exam normal. Asked him to send us his last outside eye exam if he has one.\n2. Essential hypertension on lisinopril, amlodipine and HCTZ. 147/94 today, above goal. First visit, rushed in from the parking lot; nurse BP recheck in about 4 weeks before deciding anything. He has a home cuff, will log a few morning readings.\n3. Hyperlipidemia on atorvastatin 40. Lipid panel today.\n4. Obesity, BMI 32. Talked about truck-stop food choices and walking laps at fuel stops. He is skeptical but willing.\n5. Former smoker, quit 2011, 20 pack-years. Not yet in a lung screening group by current criteria; revisit as guidelines change.\n6. Health maintenance: flu shot today. One-time hepatitis C and HIV screening ordered, he agreed. Prior records requested for colonoscopy and immunization history. Shingles vaccine to discuss next visit.\n\nReturn: nurse BP check ~4 weeks; diabetes follow-up in January."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab results reviewed",
+       "author": "PCP",
+       "date": "2018-09-19T12:10",
+       "body": "Results 09/18 reviewed.\nA1c 7.1. Glucose 133 fasting. Creatinine 1.04, eGFR 85, potassium 4.2. Urine albumin/creatinine 11, normal.\nLipids: TC 201, HDL 40, TG 182, LDL 125.\nCBC unremarkable (Hgb 14.5, WBC 7.9, plt 317).\nHCV and HIV pending.\nPortal message sent to patient. Continue current regimen; recheck A1c in January."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-20a",
+     "kind": "portal_message",
+     "start": "2018-09-20T13:15",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2018-09-20T13:15",
+       "body": "Hi Mr. Bryant,\n\nAll of your results from Tuesday are back. Your hepatitis C and HIV screens are negative. Your A1c is 7.1, close to where we want it, and your kidney numbers and blood counts are normal. Your LDL (\"bad\") cholesterol is 125 on atorvastatin.\n\nNo changes for now. Keep sending me your home blood pressures when you have a few."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your lab results",
+       "author": "patient",
+       "date": "2018-09-20T21:02",
+       "body": "thanks doc. got it. will send BP numbers when Im back from this run. parked in Joliet tonight"
+      }
+     ]
+    },
+    {
+     "id": "2018-10-02a",
+     "kind": "outside_records",
+     "start": "2018-10-02T11:00",
+     "reason": "Prior primary care records received",
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2015-05-12T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records received",
+       "author": "MA",
+       "date": "2018-10-02T11:20",
+       "body": "Records received by fax from prior primary care office (42 pages), scanned to media.\nSummary for PCP:\n- Problem list there: type 2 diabetes, hypertension, hyperlipidemia, obesity (BMI 31-33 at their visits back to 2014). Same five medications and doses as our list.\n- Screening colonoscopy 2014: normal, no polyps. Repeat interval 10 years noted.\n- Tdap 05/12/2015. Added to immunization history.\n- No pneumococcal, shingles or hepatitis B vaccines documented.\n- No prior chest imaging on file.\nRouted to PCP."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Records review",
+       "author": "PCP",
+       "date": "2018-10-02T17:40",
+       "body": "Prior records reviewed. Colonoscopy 2014 normal; next colorectal screening due 2024. Tdap current through 2025. Health maintenance updated."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-16a",
+     "kind": "nurse_visit",
+     "start": "2018-10-16T07:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure recheck",
+     "state": {
+      "bp": [
+       145,
+       91
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, straightforward MDM",
+       "performed": "2018-10-16T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Blood pressure check",
+       "author": "RN",
+       "date": "2018-10-16T08:05",
+       "body": "Nurse visit for BP recheck per PCP.\nSeated 5 minutes, large adult cuff, left arm: 148/94, HR 65. Repeat after 3 minutes about the same.\nTook all morning meds at 5 am including HCTZ, amlodipine and lisinopril.\nBrought home log (his own cuff, mornings over the past two weeks): readings mostly mid-140s over about 90.\nDenies headache, chest pain, vision change.\nRouted to PCP."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "BP recheck review",
+       "author": "PCP",
+       "date": "2018-10-16T12:30",
+       "body": "Reviewed nurse BP and his home log: running 140s/90s on lisinopril 20, amlodipine 5, HCTZ 25. He is also followed by outside cardiology for BP, about once a year, and would rather any medication change come from them. Will hold off adjusting here for now and recheck at our January visit. Reinforced lower-salt choices on the road. Message sent."
+      }
+     ]
+    },
+    {
+     "id": "2018-12-11a",
+     "kind": "pharmacy",
+     "start": "2018-12-11T10:20",
+     "reason": "Refill request, 90-day supply",
+     "documents": [
+      {
+       "type": "Pharmacy",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2018-12-11T10:35",
+       "body": "Electronic refill request from retail pharmacy for metformin 1000 mg, lisinopril 20 mg, amlodipine 5 mg, HCTZ 25 mg and atorvastatin 40 mg. Patient asked for 90-day supplies because of his road schedule.\nLast visit 09/18, next visit 01/22 booked. Sent per refill protocol, 90 days with 1 refill each."
+      }
+     ]
+    },
+    {
+     "id": "2019-01-22a",
+     "kind": "office_visit",
+     "start": "2019-01-22T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "bp": [
+       150,
+       91
+      ],
+      "weight_kg": 101.8,
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Fasting Glucose": 136
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-01-22T08:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Fasting Glucose"
+        }
+       ],
+       "resulted": "2019-01-22T16:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-01-22T08:20"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-01-22T08:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes and Blood Pressure Follow-up",
+       "author": "PCP",
+       "date": "2019-01-22T09:30",
+       "body": "S: Back from a run to Georgia last week. No complaints. Taking all five medicines; evening metformin still gets missed maybe once a week on long driving days. Home BP readings since October mostly 140-146 over 88-92, a few in the 130s. No chest pain, dyspnea, foot problems or vision change. Eating \"a little better,\" fewer fried meals.\n\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, amlodipine 5 mg daily, HCTZ 25 mg daily, atorvastatin 40 mg daily.\n\nO: BP 143/90, HR 60, RR 15, T 36.5, SpO2 98%. Wt 101.1 kg, BMI 31.8.\nAlert, comfortable. Heart RRR without murmur. Lungs clear. No ankle edema. Feet: intact skin, pulses palpable, monofilament normal.\n\nA/P:\n1. Type 2 diabetes: A1c drawn today. Keep metformin 1000 BID. Suggested setting a phone alarm for the evening dose.\n2. Hypertension: still running low 140s/90 on three agents. Again prefers to leave medication changes to his cardiologist. Will keep sending our readings. Salt and fast food talk again.\n3. Hyperlipidemia: atorvastatin 40, lipids in July.\n4. Obesity: weight stable.\n5. Shingrix dose 1 today, dose 2 in 2-6 months (July visit works).\n\nFollow-up July, fasting labs that morning."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c result",
+       "author": "PCP",
+       "date": "2019-01-22T17:05",
+       "body": "A1c 7.4, fasting glucose 140. A bit above last fall. Portal note to patient: same plan, more consistent evening metformin and fewer sugary drinks on the road; recheck in July."
+      }
+     ]
+    },
+    {
+     "id": "2019-03-12a",
+     "kind": "portal_message",
+     "start": "2019-03-12T21:40",
+     "reason": "DOT medical card letter",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Letter for DOT physical",
+       "author": "patient",
+       "date": "2019-03-12T21:40",
+       "body": "Hi, my DOT medical card is up in April. The examiner at the clinic by the depot wants a note from my regular doctor saying my diabetes and blood pressure are under control and what meds Im on. Can you do that? I can pick it up Saturday or you can email it. Thanks Lamar"
+      },
+      {
+       "type": "Letter",
+       "title": "Letter for commercial driver medical examiner",
+       "author": "PCP",
+       "date": "2019-03-13T12:15",
+       "body": "To the certified medical examiner:\n\nMr. Lamar Bryant (DOB 02/26/1964) is under my care for type 2 diabetes, hypertension and hyperlipidemia.\n\nHis diabetes is treated with metformin 1000 mg twice daily. He does not use insulin. Most recent A1c 7.4% (01/2019). He has had no episodes of hypoglycemia.\n\nHis hypertension is treated with lisinopril 20 mg daily, amlodipine 5 mg daily and hydrochlorothiazide 25 mg daily. Office readings over the past six months have been in the 140s systolic and around 90 diastolic. He is also followed by cardiology.\n\nOther medication: atorvastatin 40 mg daily.\n\nPlease contact the office with any questions."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Letter for DOT physical",
+       "author": "front desk",
+       "date": "2019-03-13T12:40",
+       "body": "Hi Mr. Bryant, your letter is ready. A copy is attached here and the original will be at the front desk on Saturday morning."
+      }
+     ]
+    },
+    {
+     "id": "2019-04-30a",
+     "kind": "portal_message",
+     "start": "2019-04-30T05:55",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refill",
+       "author": "patient",
+       "date": "2019-04-30T05:55",
+       "body": "morning. I'm in Pennsylvania till Thursday and the pharmacy says my atorvastatin and HCTZ need a new script. can you send to the same one in Chicopee? I'll grab them when I'm back."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Refill",
+       "author": "RN",
+       "date": "2019-04-30T09:10",
+       "body": "Sent both to your pharmacy in Chicopee this morning, 90-day supply. Safe driving."
+      }
+     ]
+    },
+    {
+     "id": "2019-07-16a",
+     "kind": "office_visit",
+     "start": "2019-07-16T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "bp": [
+       141,
+       93
+      ],
+      "weight_kg": 101.0,
+      "labs": {
+       "Hemoglobin A1c": 7.1,
+       "Glucose": 132,
+       "Fasting Glucose": 132,
+       "Low Density Lipoprotein": 120,
+       "High Density Lipoprotein": 40,
+       "Triglycerides": 150
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-07-16T08:30",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 190
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 40
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 120
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        }
+       ],
+       "resulted": "2019-07-17T07:15"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-07-16T08:30",
+       "results": [
+        {
+         "test": "Glucose",
+         "value": 132
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Potassium"
+        }
+       ],
+       "resulted": "2019-07-17T07:15"
+      },
+      {
+       "panel": null,
+       "collected": "2019-07-16T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ],
+       "resulted": "2019-07-17T07:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-07-16T08:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-07-16T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes and Blood Pressure Follow-up",
+       "author": "PCP",
+       "date": "2019-07-16T09:15",
+       "body": "Here fasting for six-month check. Busy summer on the road, mostly the Midwest loop. Taking his medicines. Home BP \"about the same,\" log forgotten in the truck. No chest pain, no shortness of breath, no foot complaints. His DOT card was renewed this spring.\n\nMedications: metformin 1000 mg BID, lisinopril 20 mg, amlodipine 5 mg, hydrochlorothiazide 25 mg, atorvastatin 40 mg.\nNKDA.\n\nExam: BP 148/89, HR 55, RR 14, T 36.5, SpO2 97%. Weight 101.9 kg, BMI 32.1.\nNo distress. Cardiac exam regular, no murmur. Lungs clear. Abdomen benign. No edema. Feet unchanged, sensation intact.\n\nAssessment and plan\n- T2DM: fasting labs drawn (A1c, BMP). Continue metformin.\n- HTN: 148/89 here, still above goal on three drugs. He sees endocrinology later this month and cardiology this winter. Continue current doses; bring the log next time.\n- Hyperlipidemia: lipid panel today, on atorvastatin 40.\n- Shingrix #2 given today; series complete.\n- Annual physical in the fall."
+      },
+      {
+       "type": "Result Note",
+       "title": "Fasting labs reviewed",
+       "author": "PCP",
+       "date": "2019-07-17T11:50",
+       "body": "Labs 07/16: fasting glucose 132, A1c 7.3, creatinine 1.0 (eGFR 89), K 4.0. TC 190, HDL 40, LDL 120, TG 150.\nStable. Will send to his endocrinologist ahead of his visit, per his request. No changes."
+      }
+     ]
+    },
+    {
+     "id": "2019-07-18a",
+     "kind": "portal_message",
+     "start": "2019-07-18T12:30",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results from 7/16",
+       "author": "PCP",
+       "date": "2019-07-18T12:30",
+       "body": "Mr. Bryant, your labs look stable: A1c 7.3, kidney function normal, LDL 120. I faxed a copy to your endocrinology office so they have it for your visit on the 29th. Nothing to change before then."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Lab results from 7/16",
+       "author": "patient",
+       "date": "2019-07-18T18:44",
+       "body": "ok good. thank you"
+      }
+     ]
+    },
+    {
+     "id": "2019-07-29a",
+     "kind": "specialist_visit",
+     "start": "2019-07-29T10:30",
+     "service": "Endocrinology",
+     "reason": "Routine diabetes visit",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Endocrinology office note",
+       "author": "endocrinology",
+       "date": "2019-08-02T10:00",
+       "body": "ENDOCRINOLOGY — OUTPATIENT NOTE\nVisit date: 07/29/2019\nPatient: Lamar Bryant, 55-year-old man\nCopy to: primary care\n\nReason for visit: scheduled diabetes review.\n\nHistory: Type 2 diabetes for about 15 years, also on treatment for hypertension and hyperlipidemia. He has no acute concerns today. He does say that for the last few months he has felt more worn out than usual. He has not had chest pain or palpitations, and he denies increased thirst, increased urination or weight loss he was not trying for.\n\nMedications as reported: metformin 1000 mg twice daily; amlodipine 5 mg daily; hydrochlorothiazide 25 mg daily; atorvastatin 40 mg daily; also takes lisinopril for blood pressure.\nAllergies: NKDA.\nFamily history: father with type 2 diabetes, hypertension and sleep apnea; mother with hypertension and hyperlipidemia; paternal uncle with coronary disease.\nSocial: drives long-haul. Former smoker, 20 pack-years, stopped about 8 years ago. Alcohol 1-2 drinks per month.\n\nExam: BP 138/86. BMI 32. General exam otherwise without abnormal findings.\n\nData (drawn by his primary care office 07/16/2019): fasting glucose 132 mg/dL; total cholesterol 190, HDL 40, LDL 120, triglycerides 150 mg/dL; creatinine 1.0 mg/dL.\n\nImpression: Type 2 diabetes on metformin monotherapy, metabolic labs as above.\nPlan: No changes to his regimen today. Continue current medications."
+      }
+     ]
+    },
+    {
+     "id": "2019-08-20a",
+     "kind": "outside_records",
+     "start": "2019-08-20T09:30",
+     "reason": "Diabetic eye exam report, optometry",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination report",
+       "author": "optometry",
+       "date": "2019-08-20T09:30",
+       "body": "DIABETIC EYE EXAMINATION — REPORT TO PRIMARY CARE\nExam date: 08/14/2019\nPatient: Lamar Bryant\n\nDilated fundus examination, both eyes.\nVisual acuity with correction: 20/20 right, 20/20 left.\nIntraocular pressures normal both eyes.\nLens: clear.\nOptic nerves: healthy rim, cup-to-disc 0.3 both eyes.\nMacula: flat, normal foveal reflex both eyes.\nVessels and periphery: no hemorrhages, no microaneurysms, no exudates, no neovascularization.\n\nImpression: No diabetic retinopathy either eye.\nRecommendation: repeat dilated exam in 1-2 years."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-22a",
+     "kind": "annual_physical",
+     "start": "2019-10-22T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "bp": [
+       138,
+       94
+      ],
+      "weight_kg": 101.4,
+      "labs": {
+       "Prostate Specific Antigen": 0.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-10-22T08:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ],
+       "resulted": "2019-10-23T07:20"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-10-22T08:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2019-10-22T14:00"
+      },
+      {
+       "panel": null,
+       "collected": "2019-10-22T08:45",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Prostate Specific Antigen"
+        }
+       ],
+       "resulted": "2019-10-23T10:00"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2019-10-22T08:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-22T08:50"
+      },
+      {
+       "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+       "date": "2019-10-22T08:52"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2019-10-22T09:25",
+       "body": "ANNUAL PHYSICAL\n\nLamar is 55, here fasting. Doing ok. Says the endocrinology visit in July was routine, no changes. Some long weeks on the road this fall. No new symptoms today.\n\nPMH: type 2 diabetes (2004), hypertension, hyperlipidemia, obesity.\nMeds: metformin 1000 mg twice daily; lisinopril 20 mg daily; amlodipine 5 mg daily; HCTZ 25 mg daily; atorvastatin 40 mg daily.\nAllergies: none.\nFH: father T2DM, HTN, OSA; mother HTN, HLD; paternal uncle CAD.\nSH: married, Chicopee. Long-haul driver. Former smoker, quit 03/2011, 20 pack-years. 1-2 drinks/month.\n\nROS negative except as above.\n\nVitals: BP 145/89, HR 80, RR 14, T 36.6, SpO2 96%. Wt 101.7 kg, Ht 178.6 cm, BMI 31.9.\nGeneral: well, no distress.\nEyes: conjunctivae clear. Ears: canals clear, TMs normal. Mouth: moist, dentition fair.\nNeck: no adenopathy or thyromegaly.\nCV: regular, no murmurs. Lungs: clear.\nAbd: soft, nontender, no masses.\nGU: deferred, patient preference.\nSkin: no rashes. Ext: no edema.\nFeet: skin intact, nails trimmed, pedal pulses 2+, monofilament intact bilaterally.\nNeuro: grossly normal, gait normal.\nPHQ-2: 0.\n\nAssessment / Plan\n- Health maintenance: flu vaccine today. Hepatitis B series recommended for adults with diabetes under 60; Heplisav-B dose 1 today, dose 2 in one month. Shingrix complete. Tdap 2015. Colonoscopy 2014 normal, due 2024. Eye exam 08/2019 without retinopathy.\n- PSA: discussed benefits and harms of screening, including higher baseline risk for Black men. He wants it checked. PSA drawn.\n- T2DM: A1c 7.3 in July. BMP and urine albumin/creatinine today. Diabetic foot exam normal.\n- HTN: 145/89. Remains above goal on three agents. Cardiology visit is coming in January; he will ask them. Continue for now.\n- Hyperlipidemia: LDL 120 in July; continue atorvastatin 40.\n- Obesity: BMI ~32, stable.\nCBC with today's labs. RTC January for diabetes follow-up; RN visit in 4 weeks for hep B #2."
+      },
+      {
+       "type": "Result Note",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2019-10-23T13:10",
+       "body": "Creatinine 1.0, eGFR 89, K 4.1. Glucose 122, flagged high; fasting value, expected with his diabetes, A1c follows at the January visit. Urine albumin/creatinine 11 (normal). CBC normal. PSA 0.9.\nKidney function, potassium, urine albumin, CBC and PSA normal. Released to portal with a short note."
+      }
+     ]
+    },
+    {
+     "id": "2019-11-19a",
+     "kind": "nurse_visit",
+     "start": "2019-11-19T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hepatitis B vaccine, dose 2",
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, straightforward MDM",
+       "performed": "2019-11-19T07:30"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+       "date": "2019-11-19T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization visit",
+       "author": "RN",
+       "date": "2019-11-19T07:45",
+       "body": "Here for hepatitis B vaccine dose 2 (Heplisav-B). Dose 1 given 10/22/2019, tolerated with a sore arm for a day.\nScreening questions negative. Heplisav-B 0.5 mL IM right deltoid. Observed 15 minutes, no reaction.\nSeries complete. Immunization record updated."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-17a",
+     "kind": "pharmacy",
+     "start": "2019-12-17T11:25",
+     "reason": "Refill request, 90-day supply",
+     "documents": [
+      {
+       "type": "Pharmacy",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2019-12-17T11:40",
+       "body": "Pharmacy refill request: metformin 1000 mg #180, lisinopril 20 mg #90, amlodipine 5 mg #90, HCTZ 25 mg #90, atorvastatin 40 mg #90.\nSeen 10/22, follow-up 01/14 scheduled. Approved per protocol, 90-day supply, 1 refill."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

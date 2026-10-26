@@ -1,0 +1,234 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002122",
+      "events": [
+        {
+          "id": "2025-02-11a",
+          "kind": "portal_message",
+          "start": "2025-02-11T06:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "author": "patient",
+              "date": "2025-02-11T06:48",
+              "body": "Morning - pharmacy says ezetimibe is out of refills again. Same pharmacy as before. Thank you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "author": "MA",
+              "date": "2025-02-11T09:30",
+              "body": "Sent ezetimibe 10 mg, 90-day supply with 3 refills, approved by your doctor. You are due for your spring follow-up -- front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up liver enzymes",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2025-03-17T16:40",
+              "body": "Pt called to cancel tomorrow 7:40 -- traveling for work all week. Rebooked 4/8 7:40 am."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up liver enzymes and joint pain",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-04-08T08:05", "results": [
+              {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-04-08T07:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-04-08T08:15",
+              "body": "Brief follow-up, rescheduled from March.\n\nFeels well. Joints: same pattern of aching and morning stiffness on and off, worse after long days at the desk; acetaminophen helps, still under 2 g/day. Taking ezetimibe and D3. No abdominal symptoms, no jaundice.\n\nVitals per flowsheet. Comfortable. Heart and lungs normal. Abdomen soft, nontender. Hands and knees without swelling.\n\nA/P\n- Chronic liver disease, cause unclear: hepatic panel today.\n- Joints: continue acetaminophen as needed.\n- Lipids: due at physical in September; will reopen the cardiology question then.\nRTC Sept."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "portal_message",
+          "start": "2025-04-10T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver tests",
+              "author": "PCP",
+              "date": "2025-04-10T12:15",
+              "body": "Liver enzymes are about where they have been for the past year and a half -- mildly up, stable, normal bilirubin and albumin. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, fasting labs",
+          "state": {"labs": {"Hemoglobin A1c": 7.0, "Glucose": 138, "Low Density Lipoprotein": 185, "Total Cholesterol": 260, "High Density Lipoprotein": 42, "Triglycerides": 135}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-16T08:20", "results": [
+              {"test": "Glucose", "value": 138},
+              {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}
+            ]},
+            {"panel": "Lipid Panel", "collected": "2025-09-16T08:20", "results": [
+              {"test": "Total Cholesterol", "value": 260},
+              {"test": "Low Density Lipoprotein", "value": 185},
+              {"test": "High Density Lipoprotein", "value": 42},
+              {"test": "Triglycerides", "value": 135}
+            ]},
+            {"panel": null, "collected": "2025-09-16T08:20", "results": [{"test": "Hemoglobin A1c", "value": 7.0}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2025-09-16T08:15"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-09-16T07:40"},
+            {"procedure": "Immunization administration", "performed": "2025-09-16T08:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-16T08:40",
+              "body": "ANNUAL PHYSICAL\n\n50 yo M, birthday last week. Fasting this morning.\n\nInterval history: no illnesses this year. Joints the same, acetaminophen as needed. Ezetimibe daily. Diet: has kept the changes he made last year. Work as busy as ever.\n\nCholesterol: he raised it himself today -- turned 50, thinking about his father. Agrees to cardiology this time.\n\nROS: no chest pain, dyspnea, palpitations, syncope. No abdominal pain, no change in bowel habits. No polyuria or polydipsia noted.\n\nExam: vitals per flowsheet. Well appearing. HEENT normal. Neck supple. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Extremities no edema, pulses 2+. Joints no synovitis. Skin no rash. PHQ-2 0.\n\nPrevention: colonoscopy 2021 normal. Tdap 2019. Hep A and B series done. PCV20 today given chronic liver disease. Shingles vaccine now that he is 50 -- will start with flu shot next month.\n\nPlan: CMP, lipids, A1c. Cardiology referral once lipids result so they have the numbers. Follow up by phone on results."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-18a",
+          "kind": "telephone",
+          "start": "2025-09-18T12:30",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus without complications", "action": "diagnosed", "onset": "2025-09-16"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 500 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"}
+          ],
+          "orders": [
+            {"id": "cards-referral-2025", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "Severe hypercholesterolemia, LDL 185 on ezetimibe, atorvastatin myopathy, father MI at 42, new diabetes"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "author": "PCP",
+              "date": "2025-09-18T12:45",
+              "body": "Called pt with physical labs.\n\nA1c 7.0 and fasting glucose 138 on the same draw -- that meets criteria for type 2 diabetes. A1c was 5.6 a year ago, so this is new. Discussed what it means; he took it calmly, mentioned his mother has diabetes. Starting metformin 500 mg twice daily with meals. Reviewed GI side effects, take with food. Recheck A1c in about 4 months.\n\nLipids: TC 260, LDL 185, HDL 42, TG 135 on ezetimibe. Cardiology referral placed today -- statin intolerance, LDL still high, father with early MI, and now diabetes. He will schedule this time.\n\nLiver enzymes unchanged from spring.\n\nMetformin e-sent. Diabetes education handout sent to portal."
+            },
+            {
+              "type": "Referral",
+              "title": "Referral to Cardiology",
+              "author": "PCP",
+              "date": "2025-09-18T13:00",
+              "body": "Reason for referral: lipid management in a statin-intolerant patient.\n\n50 yo man with longstanding severe hypercholesterolemia. Atorvastatin stopped in 2021 for diffuse myalgias with CK elevation. On ezetimibe 10 mg daily since. Fasting lipids 9/16/2025: TC 260, LDL 185, HDL 42, TG 135. Father MI at 42. New type 2 diabetes this week (A1c 7.0), metformin started. Also chronic liver disease of unclear cause with mildly raised transaminases.\n\nAllergies: atorvastatin (myalgia, CK rise); sulfa (rash).\n\nPlease advise on further LDL lowering. Thank you."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines and shingles vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T07:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T07:36"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-10-07T07:38"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-07T07:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2025-10-07T07:55",
+              "body": "Flu 0.5 mL IM L deltoid. Pfizer 2025-26 0.3 mL IM R deltoid. Shingrix dose 1, 0.5 mL IM L deltoid, separate site, warned about a sore arm and feeling tired for a day or two. Dose 2 due in 2 to 6 months, will line up with his January diabetes visit. Says metformin is going down fine. Cardiology appt is 10/16."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "portal_message",
+          "start": "2025-10-17T07:02",
+          "conditions": [
+            {"label": "Heterozygous familial hypercholesterolemia", "action": "diagnosed", "onset": "2025-10-16", "note": "Clinical diagnosis by cardiology"},
+            {"label": "Pure hypercholesterolemia", "action": "resolved", "note": "Replaced by familial hypercholesterolemia"}
+          ],
+          "medications": [
+            {"drug_text": "colesevelam hydrochloride 625 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets by mouth twice daily with meals", "dose": {"value": 1875, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Familial hypercholesterolemia; prescribed by cardiology"}
+          ],
+          "orders": [
+            {"id": "cards-referral-2025", "action": "done", "date": "2025-10-17T07:02"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Saw cardiology",
+              "author": "patient",
+              "date": "2025-10-17T07:02",
+              "body": "Saw the cardiologist yesterday. She went through my numbers from September and my dad's history and said this is familial hypercholesterolemia, the genetic kind. She didn't want to try another statin right now after what happened with atorvastatin. Started me on colesevelam, 3 pills twice a day with meals, stays on ezetimibe. Said it can help blood sugar a little too. She said she would send you a letter. Should I separate it from my other pills?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Saw cardiology",
+              "author": "PCP",
+              "date": "2025-10-17T12:20",
+              "body": "Thanks for the update -- I've added colesevelam to your list and updated the diagnosis. Yes: colesevelam can bind other medicines in the gut. Take your vitamin D at least 4 hours before it; metformin and ezetimibe are fine to keep with meals as you do now, but I'll ask the pharmacist to double-check the timing. We'll recheck lipids with your January diabetes visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "pharmacy",
+          "start": "2025-10-20T10:05",
+          "documents": [
+            {
+              "type": "Medication Reconciliation",
+              "title": "Fill history reviewed",
+              "author": "MA",
+              "date": "2025-10-20T10:05",
+              "body": "External fill history: colesevelam 625 mg #180, filled 10/16/2025, prescriber outside cardiology. Matches pt report. Also active: ezetimibe 10 mg, metformin 500 mg. Med list reconciled. Pharmacist note via fax: take vitamin D 4 hours before colesevelam; no change needed for metformin or ezetimibe timing as currently taken."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "outside_records",
+          "start": "2025-12-09T14:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation letter",
+              "author": "cardiology",
+              "date": "2025-12-09T14:20",
+              "body": "Outside cardiology -- preventive / lipid clinic. Date of service 10/16/2025. Received 12/9/2025.\n\nDear colleague,\n\nI saw Mr. Michaud for lipid management after statin intolerance. Atorvastatin was previously stopped for diffuse myalgias with a CK rise. He has been on ezetimibe 10 mg daily. He also carries diagnoses of chronic liver disease of unclear cause, recently diagnosed type 2 diabetes on metformin 500 mg twice daily, and an inflammatory arthropathy treated with acetaminophen. Never smoker, no alcohol. Father with myocardial infarction at 42.\n\nI reviewed your fasting panel from 9/16/2025 (TC 260, LDL 185, HDL 42, TG 135). The LDL level on therapy and the premature coronary disease in his father support a clinical diagnosis of heterozygous familial hypercholesterolemia.\n\nAllergies: atorvastatin (myopathy, CK elevation); sulfonamides (rash).\n\nPlan: start colesevelam 1875 mg twice daily with meals in addition to ezetimibe. Lipid panel in about 3 months through your office. Return to our clinic as needed.\n\nSincerely,\nCardiology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

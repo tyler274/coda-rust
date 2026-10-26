@@ -1,0 +1,340 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001871",
+      "events": [
+        {
+          "id": "2023-01-09a",
+          "kind": "portal_message",
+          "start": "2023-01-09T09:15",
+          "reason": "Inhaler refill",
+          "documents": [
+            {"type": "Patient message", "title": "Albuterol", "author": "patient", "date": "2023-01-09T09:15", "body": "Hello, can I get another albuterol inhaler? Mine expired and I've had a cough on and off, I think from a cold going around the lab."},
+            {"type": "Patient message", "title": "RE: Albuterol", "author": "MA", "date": "2023-01-09T13:40", "body": "Refill sent to your pharmacy per Dr. If the cough doesn't settle in a week or two, please book a visit."}
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "specialist_visit",
+          "start": "2023-02-07T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum follow-up; cough, night sweats, weight loss",
+          "vitals": {"temp_c": 38.2, "rr": 22, "spo2": 97},
+          "state": {"weight_kg": 53.5},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-02-07T14:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Lymphocytes %"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-02-07T14:40", "results": [{"test": "Creatinine"}, {"test": "Sodium"}]}
+          ],
+          "documents": [
+            {"type": "Consult note", "title": "Obstetrics & Gynecology — Postpartum Follow-up", "author": "obstetrics", "date": "2023-02-09T15:30", "body": "OBSTETRICS & GYNECOLOGY — clinic note, date of service 2023-02-07, addendum 2023-02-09\nFaxed to primary care; PCP called directly 2/9.\n\n29 y/o P1, about 4.5 months postpartum after SVD 9/26/22, here for a follow-up visit. She reports a cough for the past 3 weeks that will not go away, drenching sweats at night, and she has lost 5 kg over the same 3 weeks without trying. Has mild persistent asthma; albuterol has not changed the cough. She came to the US from a country where TB is common, about 5 years ago.\n\nT 38.2 C. RR 22. SpO2 97% on room air.\nThin, tired-appearing. Crackles heard at both lung fields. Breasts and abdomen unremarkable. Uterus involuted.\n\nCBC and BMP drawn today: within normal limits.\nTuberculin skin test placed today.\n\nADDENDUM 2/9: TST read at 48 hours, 15 mm induration. Called PCP, who is seeing her today for chest imaging and sputum. Advised a mask around others in the meantime."}
+          ]
+        },
+        {
+          "id": "2023-02-09a",
+          "kind": "office_visit",
+          "start": "2023-02-09T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive TST with cough, fever, night sweats",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-02-09T16:40", "resulted": "2023-02-10T11:00", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-02-09T16:40", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2023-02-09T17:10", "text": "PA and lateral chest. Patchy airspace opacities in both upper lobes. No cavitation. No pleural effusion. No hilar or mediastinal widening. Heart size normal. Bones intact.", "conclusion": "Patchy bilateral upper-lobe opacities without cavitation or effusion. In the setting of a positive TST, findings are suspicious for pulmonary tuberculosis; correlate with sputum."}
+          ],
+          "orders": [
+            {"id": "sputum-afb", "action": "placed", "order": "Sputum AFB smear, M. tuberculosis NAAT and mycobacterial culture x3", "category": "lab", "reason": "Suspected pulmonary tuberculosis"},
+            {"id": "tb-clinic", "action": "placed", "order": "Tuberculosis clinic referral", "category": "referral", "to": "Public health TB clinic", "reason": "Suspected pulmonary tuberculosis"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2023-02-09T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2023-02-09T18:05", "body": "Seen at end of day in the separate room, pt and staff in N95s.\n\nOB called earlier: TST 15 mm today at 48h. Pt has had ~3 wks of cough, mostly dry, some mornings productive of a little whitish sputum, no blood. Night sweats soaking her shirt most nights. Down 5 kg. Fevers in the evenings. No chest pain. Asthma inhaler doesn't touch it. Came to the US 2018; no known TB contact she's aware of; no prior TST or IGRA she can remember. Nobody at home sick that she knows of.\n\nRecent OB vitals 2/7 and today's reviewed. Thin, tired. No lymphadenopathy. Lungs: crackles heard on both sides, no wheeze. Heart RRR. No hepatosplenomegaly.\n\nCXR today (read back same day): patchy opacities both upper lobes, no cavity, no effusion.\n\nA/P\nSuspected active pulmonary TB: positive TST, symptoms, fever, weight loss and upper-lobe opacities.\n- Sputum x3 for AFB smear, NAAT and culture: first tonight/tomorrow AM at home with kit, then 2 more mornings. Instructions given.\n- HIV test today; baseline LFTs.\n- Home isolation until cleared: no lab, no campus, masks with anyone in the home, open windows, no visitors. Letter for her department.\n- Reported to the local board of health today as suspected TB; referral to the public health TB clinic for treatment and contact evaluation.\n- Asthma: albuterol prn.\nI'll call her with results. Long talk, she is scared, mostly about the baby; told her the health department team will walk the household through screening."}
+          ]
+        },
+        {
+          "id": "2023-02-10a",
+          "kind": "telephone",
+          "start": "2023-02-10T10:30",
+          "reason": "Coordination with public health",
+          "documents": [
+            {"type": "Telephone encounter", "title": "Call — Board of Health", "author": "RN", "date": "2023-02-10T10:45", "body": "Public health nurse from the board of health returned our report. They have the case and will contact pt today to arrange the TB clinic intake. Sputum kits: pt dropped off specimen #1 this morning, #2 and #3 tomorrow and Monday. CXR report and visit note faxed to the TB clinic per their request."},
+            {"type": "Patient message", "title": "HIV test result", "author": "PCP", "date": "2023-02-10T16:20", "body": "Your HIV test from yesterday is negative. Liver tests are normal, which is a useful baseline for TB medicines. Still waiting on the sputum results; I'll call you as soon as they're in."}
+          ]
+        },
+        {
+          "id": "2023-02-13a",
+          "kind": "telephone",
+          "start": "2023-02-13T15:10",
+          "reason": "Sputum results",
+          "conditions": [
+            {"label": "Pulmonary tuberculosis", "icd10": "A15.0", "action": "diagnosed", "onset": "2023-01-17"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-02-10T07:30", "resulted": "2023-02-11T12:00", "results": [
+              {"test": "Acid-fast bacilli smear, sputum", "loinc": "11545-1", "text": "Specimen 1: acid-fast bacilli seen (1+)"},
+              {"test": "Mycobacterium tuberculosis complex DNA, sputum (NAAT)", "loinc": "38379-4", "text": "Detected. Rifampin resistance (rpoB) not detected."}
+            ]},
+            {"panel": null, "collected": "2023-02-11T07:20", "resulted": "2023-02-12T12:00", "results": [
+              {"test": "Acid-fast bacilli smear, sputum", "loinc": "11545-1", "text": "Specimen 2: no acid-fast bacilli seen"}
+            ]},
+            {"panel": null, "collected": "2023-02-13T07:15", "resulted": "2023-02-13T14:30", "results": [
+              {"test": "Acid-fast bacilli smear, sputum", "loinc": "11545-1", "text": "Specimen 3: no acid-fast bacilli seen"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Telephone encounter", "title": "Phone Call — Results", "author": "PCP", "date": "2023-02-13T15:30", "body": "Called pt with sputum results. Specimen 1 AFB smear positive 1+, NAAT positive for M. tuberculosis complex with no rifampin resistance mutation. Specimens 2 and 3 smear negative. Cultures pending (weeks). This confirms pulmonary TB. Discussed that it is curable with a 6-month course of pills and that the TB clinic will run treatment with daily observed doses. Intake already set for Thu 2/16. Continue home isolation until the clinic clears her. Board of health updated by phone. She asked about the baby; the TB clinic and pediatrics are already in touch with each other. Will check in by video in a couple of weeks."}
+          ]
+        },
+        {
+          "id": "2023-02-16a",
+          "kind": "specialist_visit",
+          "start": "2023-02-16T09:30",
+          "service": "Public health TB clinic",
+          "reason": "Pulmonary tuberculosis, treatment start",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "orders": [{"id": "tb-clinic", "action": "done", "date": "2023-02-16T09:30"}],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-02-16T10:00", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Bilirubin, Total"}]}
+          ],
+          "medications": [
+            {"drug_text": "isoniazid 300 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (300 mg) by mouth daily, directly observed", "dose": {"value": 300, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pulmonary tuberculosis"},
+            {"drug_text": "rifampin 300 MG Oral Capsule", "action": "historical", "sig": "Take 2 capsules (600 mg) by mouth daily on an empty stomach, directly observed", "dose": {"value": 600, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pulmonary tuberculosis"},
+            {"drug_text": "pyrazinamide 500 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (1,000 mg) by mouth daily, directly observed", "dose": {"value": 1000, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pulmonary tuberculosis"},
+            {"drug_text": "ethambutol hydrochloride 400 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (800 mg) by mouth daily, directly observed", "dose": {"value": 800, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pulmonary tuberculosis"},
+            {"drug_text": "pyridoxine hydrochloride 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (25 mg) by mouth daily with isoniazid", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Prevention of isoniazid neuropathy"}
+          ],
+          "documents": [
+            {"type": "Consult note", "title": "TB Clinic — Initial Evaluation", "author": "public health TB clinic", "date": "2023-02-16T13:00", "body": "PUBLIC HEALTH TUBERCULOSIS CLINIC — INTAKE\nDate: 2023-02-16\nTo: referring primary care physician\n\nThank you for the referral. 29-year-old woman, 4.5 months postpartum, foreign-born (arrived 2018), with 4 weeks of cough, fevers, night sweats and 5 kg weight loss. TST 15 mm (2/9). CXR 2/9 bilateral upper-lobe patchy opacities without cavitation. Sputum AFB smear 1+ on specimen 1, negative x2; Xpert MTB detected, rifampin resistance not detected. HIV negative 2/9. Asthma, kidney stones. NKDA.\n\nExam: afebrile here today, thin; scattered crackles bilaterally. Visual acuity and color vision normal. Baseline hepatic panel normal.\n\nAssessment: pulmonary tuberculosis, smear positive, presumed drug susceptible.\n\nPlan (weight-based dosing):\n- Isoniazid 300 mg daily\n- Rifampin 600 mg daily\n- Pyrazinamide 1,000 mg daily\n- Ethambutol 800 mg daily\n- Pyridoxine 25 mg daily\nDirectly observed therapy by our nurses (video DOT on weekdays once established). Monthly visit with symptom review, weight, hepatic panel; monthly vision checks while on ethambutol.\nCounseled: orange discoloration of urine and tears from rifampin, no alcohol, report nausea, jaundice, abdominal pain, rash, numbness or vision changes. Rifampin interacts with many drugs; check with us before any new prescription.\nHome isolation continues; we will release her once she has 3 negative smears and clinical improvement on treatment.\nContact investigation of the household and lab coworkers is under way by our team.\n\nCultures and susceptibility pending."}
+          ]
+        },
+        {
+          "id": "2023-03-01a",
+          "kind": "telehealth_visit",
+          "start": "2023-03-01T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in on TB treatment",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2023-03-01T12:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2023-03-01T12:35", "body": "Video, pt at home.\n\nTwo weeks into 4-drug TB therapy via the TB clinic, DOT by video. No fevers for about a week. Sweats much less. Cough still there but softer. Appetite starting to come back. Some queasiness if she takes the pills without food; the clinic told her to take them at bedtime with a snack, which helps. Urine orange as expected. No yellow eyes, rash, numbness or vision change. Not drinking alcohol. Asthma fine.\n\nA/P: Pulmonary TB on RIPE + B6, tolerating. TB clinic managing monitoring; I'm getting their notes. Reminded her that rifampin interacts with many medicines, so anything new goes past the clinic. Will see in person once out of isolation."}
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "specialist_visit",
+          "start": "2023-03-22T10:00",
+          "service": "Public health TB clinic",
+          "reason": "TB follow-up, culture result",
+          "measure": ["weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-02-10T07:30", "resulted": "2023-03-14T10:00", "results": [
+              {"test": "Mycobacterial culture and susceptibility, sputum", "loinc": "543-9", "text": "Mycobacterium tuberculosis complex isolated. Susceptible to isoniazid, rifampin, pyrazinamide and ethambutol."}
+            ]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-03-22T10:15", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "medications": [
+            {"drug_text": "ethambutol hydrochloride 400 MG Oral Tablet", "action": "stop", "reason": "Isolate pan-susceptible"}
+          ],
+          "documents": [
+            {"type": "Consult note", "title": "TB Clinic — Monthly Visit", "author": "public health TB clinic", "date": "2023-03-22T14:00", "body": "TB CLINIC — month 1 visit, 2023-03-22\n\nCulture from 2/10 grew M. tuberculosis complex, pansusceptible (INH, RIF, PZA, EMB). Ethambutol discontinued today.\n\nSymptoms: afebrile since late February; cough occasional; sweats resolved; appetite good. Weight up modestly from intake. DOT adherence 100%.\n\nSputum smears negative x3 since early March. Released from home isolation as of today; may return to campus and lab.\n\nHepatic panel normal. Vision unchanged.\n\nContinue isoniazid 300, rifampin 600, pyrazinamide 1,000, pyridoxine 25 daily. Next visit one month, with 2-month sputum culture."}
+          ]
+        },
+        {
+          "id": "2023-04-19a",
+          "kind": "specialist_visit",
+          "start": "2023-04-19T10:00",
+          "service": "Public health TB clinic",
+          "reason": "TB follow-up, end of intensive phase",
+          "measure": ["weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-04-19T10:20", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "medications": [
+            {"drug_text": "pyrazinamide 500 MG Oral Tablet", "action": "stop", "reason": "Intensive phase complete"}
+          ],
+          "documents": [
+            {"type": "Consult note", "title": "TB Clinic — Monthly Visit", "author": "public health TB clinic", "date": "2023-04-19T13:20", "body": "TB CLINIC — month 2 visit, 2023-04-19\n\nTwo months of intensive-phase therapy completed. Asymptomatic apart from a rare cough. Hepatic panel normal.\n\nSputum culture collected at 2 months (3/29): no growth at final read.\n\nPlan: stop pyrazinamide. Continuation phase isoniazid 300 mg + rifampin 600 mg daily with pyridoxine 25 mg for 4 more months, anticipated completion mid-August. Monthly visits continue."}
+          ]
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "office_visit",
+          "start": "2023-05-17T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, TB treatment, asthma",
+          "state": {"weight_kg": 55.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-05-17T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2023-05-17T09:15", "body": "First in-person since February. Continuation phase INH/RIF/B6, TB clinic notes through April reviewed (pansusceptible, 2-mo culture negative, PZA stopped). Feels 'like herself again.' Weight coming back. No cough most days. Back in the lab full time, writing up a chapter. Spring pollen bothering her eyes and nose; using albuterol about once a week on runs, which she's restarted at 2-3 miles.\n\nExam: well. Lungs clear. No icterus. Heart RRR.\n\nA/P\n1. Pulmonary TB, continuation phase. Doing well. TB clinic monitoring LFTs.\n2. Mild persistent asthma: albuterol prn.\n3. Allergic rhinitis: symptomatic, saline rinses; she'd like to avoid adding pills right now with the TB meds.\nPhysical in the fall."}
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "outside_records",
+          "start": "2023-06-21T15:00",
+          "reason": "TB clinic monthly labs",
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-06-19T10:10", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "documents": [
+            {"type": "Outside records", "title": "TB Clinic Visit Summary", "author": "public health TB clinic", "date": "2023-06-21T15:00", "body": "TB clinic month 4 summary (visit 2023-06-19): on isoniazid/rifampin/pyridoxine, DOT adherence complete, no symptoms or side effects. Hepatic panel normal. Weight stable. Next visit 7/17."}
+          ]
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "outside_records",
+          "start": "2023-07-19T14:30",
+          "reason": "TB clinic monthly labs",
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-07-17T10:05", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "documents": [
+            {"type": "Outside records", "title": "TB Clinic Visit Summary", "author": "public health TB clinic", "date": "2023-07-19T14:30", "body": "TB clinic month 5 summary (visit 2023-07-17): continuation phase isoniazid/rifampin/pyridoxine, all doses observed. Feels well, no cough. Hepatic panel normal. Planned completion 8/17 with end-of-treatment chest film."}
+          ]
+        },
+        {
+          "id": "2023-08-17a",
+          "kind": "specialist_visit",
+          "start": "2023-08-17T10:00",
+          "service": "Public health TB clinic",
+          "reason": "Completion of TB treatment",
+          "state": {"weight_kg": 56.0},
+          "measure": ["weight_kg"],
+          "conditions": [
+            {"label": "Pulmonary tuberculosis", "icd10": "A15.0", "action": "resolved"},
+            {"label": "Personal history of tuberculosis", "action": "diagnosed", "onset": "2023-08-17", "note": "pulmonary, drug-susceptible; 6 months of therapy completed 2023-08-17"}
+          ],
+          "medications": [
+            {"drug_text": "isoniazid 300 MG Oral Tablet", "action": "stop", "reason": "Treatment complete"},
+            {"drug_text": "rifampin 300 MG Oral Capsule", "action": "stop", "reason": "Treatment complete"},
+            {"drug_text": "pyridoxine hydrochloride 25 MG Oral Tablet", "action": "stop", "reason": "Treatment complete"}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2023-08-17T10:40", "text": "PA and lateral chest. Lungs are clear. The previously seen upper-lobe opacities have resolved. No effusion. Cardiomediastinal silhouette normal.", "conclusion": "Clear lungs; interval resolution of prior bilateral upper-lobe opacities."}
+          ],
+          "documents": [
+            {"type": "Consult note", "title": "TB Clinic — Completion of Therapy", "author": "public health TB clinic", "date": "2023-08-18T09:00", "body": "PUBLIC HEALTH TB CLINIC — COMPLETION OF THERAPY\nTo: primary care physician\n\nYour patient completed treatment for drug-susceptible pulmonary tuberculosis today, 2023-08-17: 2 months of isoniazid, rifampin and pyrazinamide (ethambutol for the first 5 weeks, until susceptibilities returned) followed by 4 months of isoniazid and rifampin, all with pyridoxine. 26 weeks, every dose observed.\n\nCourse: afebrile and smear-negative by early March; 2-month culture no growth. Hepatic panels normal throughout. No adverse effects.\n\nEnd-of-treatment chest x-ray today: clear, with resolution of the upper-lobe opacities.\n\nWeight back up since intake.\n\nAll TB medications stopped. She is considered cured. No routine follow-up imaging needed. Please re-evaluate for TB if she develops cough lasting more than 3 weeks, fevers, night sweats or weight loss. She has a copy of her treatment record. Household contact evaluations are complete.\n\nCase closed with the health department."}
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "annual_physical",
+          "start": "2023-09-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-20T09:40", "results": [{"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-20T09:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None since pregnancy"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-20T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Preventive Visit", "author": "PCP", "date": "2023-09-20T10:05", "body": "ANNUAL PHYSICAL\n\n30F. What a year. Finished TB treatment 8/17, completion letter in chart: cured, CXR clear. Feels well, no cough, no sweats, weight back. Running 3-4 miles a few times a week. Fifth year of the PhD, deep in experiments. Child's care continues with pediatrics. Sleep better.\n\nAsthma: albuterol maybe 2-3 times a month, mostly with runs in cold or high pollen. No nights. No ED visits this year.\nStones: none since joining. Drinks a big bottle of water at the lab.\nRhinitis: spring/late summer, tolerable.\nNo alcohol since the pregnancy; plans to keep it that way for now.\n\nMeds: albuterol prn. Allergies: dust mites, pollen; NKDA.\n\nPHQ-2: 1.\n\nExam: Well. BMI normal. HEENT normal, mild nasal mucosal pallor. Neck no LAD. Lungs clear. Heart RRR no murmur. Abd soft, NT. Skin normal. Ext no edema.\n\nA/P\n- Personal history of treated pulmonary TB: no further testing needed; future TSTs/IGRAs will stay positive and aren't useful; CXR + symptoms if ever needed.\n- Mild persistent asthma: albuterol prn.\n- Recurrent nephrolithiasis: quiet. Hydration.\n- Allergic rhinitis due to pollen.\n- HM: Pap due next year (age 30, co-test). Flu and COVID next month at nurse visit. HIV/HCV done in prenatal labs and HIV again in Feb, negative. CMP/CBC today.\nRTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2023-09-22a",
+          "kind": "portal_message",
+          "start": "2023-09-22T11:05",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient message", "title": "Lab results", "author": "PCP", "date": "2023-09-22T11:05", "body": "Your labs from the physical are all normal, including liver and kidney tests and blood counts. Nice to see everything back to baseline after the TB treatment."}
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T16:30",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-11T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-11T16:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-11T16:35"}],
+          "documents": [
+            {"type": "Nursing note", "title": "Nurse Visit — Vaccines", "author": "RN", "date": "2023-10-11T16:55", "body": "Flu (quadrivalent) in R deltoid and 2023-24 COVID (Pfizer) in L deltoid. No contraindications, feels well. Observed 15 minutes, fine. Records updated."}
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "portal_message",
+          "start": "2024-01-22T19:48",
+          "reason": "Inhaler refill",
+          "documents": [
+            {"type": "Patient message", "title": "Refill", "author": "patient", "date": "2024-01-22T19:48", "body": "Hi! Could you renew my albuterol? Pharmacy says no refills left. Using it about the same, a few times a month."},
+            {"type": "Patient message", "title": "RE: Refill", "author": "PCP", "date": "2024-01-23T07:30", "body": "Done, a year of refills sent. Glad it's staying quiet."}
+          ]
+        },
+        {
+          "id": "2024-04-10a",
+          "kind": "office_visit",
+          "start": "2024-04-10T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Asthma and allergy check",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-04-11a",
+          "kind": "portal_message",
+          "start": "2024-04-11T08:20",
+          "reason": "Missed appointment",
+          "documents": [
+            {"type": "Patient message", "title": "Missed appointment", "author": "front desk", "date": "2024-04-11T08:20", "body": "Hi Malee, we missed you at your appointment yesterday at 2:00. Would you like to reschedule? Reply here or call the office."},
+            {"type": "Patient message", "title": "RE: Missed appointment", "author": "patient", "date": "2024-04-11T12:12", "body": "So sorry!! I was stuck in the lab with a time-sensitive experiment and completely forgot. I'm doing fine, just the usual spring sneezing and itchy eyes, inhaler maybe once a week. Honestly ok to just see the doctor at my physical in September unless she wants me in sooner?"},
+            {"type": "Patient message", "title": "RE: Missed appointment", "author": "PCP", "date": "2024-04-11T17:40", "body": "No problem at all, that sounds fine. September physical it is. If you start needing the albuterol more than twice a week or it wakes you at night, come in sooner."}
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "annual_physical",
+          "start": "2024-09-18T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap",
+          "state": {"weight_kg": 56.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-09-18T09:55", "resulted": "2024-09-23T10:00", "results": [{"test": "High-risk HPV DNA", "text": "Negative"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2024-09-18T09:55", "issued": "2024-09-23T10:00", "text": "Liquid-based cervical cytology. Specimen adequate, transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM; HPV negative."}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-18T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Preventive Visit", "author": "PCP", "date": "2024-09-18T10:20", "body": "ANNUAL\n\n31F, sixth year of the PhD, starting to write. Feeling well. Sorry again about April.\nAsthma: a few puffs a month, a bit more in spring. No nights, no urgent visits.\nNo stones, no urinary sx. No cough, sweats or weight loss.\nRunning 3-4x/week. No alcohol. Never smoker.\nPHQ-2 0.\n\nExam: Well. Lungs clear. Heart RRR. Abd benign, no CVA tenderness. Pelvic: normal external genitalia, cervix normal-appearing, Pap/HPV co-test obtained. Skin normal.\n\nA/P\n- Health maintenance: Pap + HPV today. Flu/COVID at nurse visit next month.\n- Mild persistent asthma: albuterol prn, has refills.\n- Recurrent nephrolithiasis: quiet.\n- History of TB: asymptomatic.\nRTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "portal_message",
+          "start": "2024-09-24T13:15",
+          "reason": "Pap result",
+          "documents": [
+            {"type": "Patient message", "title": "Pap result", "author": "PCP", "date": "2024-09-24T13:15", "body": "Your Pap and HPV test are both normal. With a normal co-test, the next one is due in 5 years (2029)."}
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T16:20",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-09T16:25"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-09T16:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-09T16:25"}],
+          "documents": [
+            {"type": "Nursing note", "title": "Nurse Visit — Vaccines", "author": "MA", "date": "2024-10-09T16:45", "body": "Pt in for 2024-25 flu (trivalent) and COVID (Moderna) vaccines. Screening neg. Flu L deltoid, COVID R deltoid. Tolerated without issue, left after observation."}
+          ]
+        }
+      ]
+    }
+  ]
+}

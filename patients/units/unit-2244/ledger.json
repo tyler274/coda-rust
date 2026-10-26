@@ -1,0 +1,2415 @@
+{
+  "unit": "unit-2244",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002244",
+      "given": "Dennis",
+      "family": "Rousseau",
+      "birth_date": "1957-03-02",
+      "address_line": "212 Pontoosic Road",
+      "phone": "+1-646-555-0116",
+      "email": "dennis.rousseau@example.test",
+      "marital_status": "married",
+      "summary": "Retired accountant with treated hypertension and hyperlipidemia who joined in 2022. A right frontal ischemic stroke in May 2025 was followed by a diagnosis of vascular dementia that November and a small right cerebellar stroke in June 2026.",
+      "events": [
+        {
+          "id": "2022-08-29a",
+          "kind": "telephone",
+          "start": "2022-08-29T11:05",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "date": "2022-08-29T11:05",
+              "author": "front desk",
+              "body": "Mr. Rousseau called about becoming a patient. 65, on Medicare, lives here in Westfield and wants a doctor closer to home. Reviewed membership and how the practice works; he'd like to go ahead. New patient appt booked Mon 9/12 at 9:00. Records release sent through the portal, he signed it same afternoon. Request faxed to his prior primary care office for last 5 yrs incl. colonoscopy and vaccines. Asked him to bring all pill bottles to the first visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "establish_care",
+          "start": "2022-09-12T09:00",
+          "end": "2022-09-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "note": "35 pack-years, quit 2017"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              82
+            ],
+            "hr": 77,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 84.6,
+            "height_cm": 177.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-12T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-12T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-12T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 147
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 81
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 101
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-12T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "unit": "%",
+                  "value": 5.4
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired accountant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-12T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-12T09:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-09-12T09:55"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-09-12T09:56"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "35 pack-year former smoker, quit 2017"
+            },
+            {
+              "id": "aaa-us-2022",
+              "action": "placed",
+              "order": "Abdominal aortic ultrasound, screening",
+              "category": "imaging",
+              "reason": "Male former smoker age 65"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-12T10:00",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n65M, retired accountant, here to set up primary care. Comes alone, brought his bottles.\n\nBlood pressure has been treated for years on lisinopril 20 mg; he checks it at the pharmacy kiosk now and then and says it's usually in the 130s. On atorvastatin 40 mg for cholesterol, no muscle aches. Takes both in the morning and rarely misses. No chest pain, no breathlessness on the stairs, no leg swelling. No headaches, no vision change. Never had a stroke or a TIA that he knows of.\n\nPMH: hypertension, hyperlipidemia.\nPSH: cataract surgery 2021, done at an eye practice; vision fine since.\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily.\nAllergies: none to medications.\nFH: father had an ischemic stroke at 74. Mother with high blood pressure. Brother has coronary disease.\nSH: married, lives with his wife. Retired from accounting. Smoked about 35 pack-years and stopped in 2017, no relapse. A drink once or twice a month. Walks the neighborhood most mornings.\n\nExam: Well-appearing, organized historian. BP 134/82. Clear lungs, regular rhythm without murmur. No carotid bruits. Abdomen benign, no pulsatile mass. Legs without swelling, pedal pulses present. Gait normal.\n\nA/P\n1. Essential hypertension: close to goal on lisinopril 20. Continue. BMP today.\n2. Hyperlipidemia: atorvastatin 40, fasting lipid panel today.\n3. Former heavy smoker: meets criteria for yearly low-dose CT; ordered. One-time aortic ultrasound ordered as well.\n4. Health maintenance: hep C screen today. Colonoscopy per his account about 4 yrs ago and normal, will confirm from records. High-dose flu and PCV20 given today. PHQ-2 0.\n\nFollow up in 6 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              82
+            ],
+            "weight_kg": 84.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Low Density Lipoprotein": 84
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T08:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs from Monday",
+              "date": "2022-09-14T08:40",
+              "author": "PCP",
+              "body": "Hi Dennis, good to meet you on Monday. Your bloodwork came back fine. Kidney function, potassium, liver tests and blood counts are normal. The LDL cholesterol is where we want it on the atorvastatin, and your A1c shows no sign of diabetes. The hepatitis C screen was negative. No changes. The CT and the aorta ultrasound orders are in, and scheduling will call you."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "outside_records",
+          "start": "2022-09-26T14:20",
+          "reason": "Prior practice records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Practice",
+              "date": "2022-09-26T14:20",
+              "author": "MA",
+              "body": "Records received by fax from prior PCP office, 41 pages, scanned to media. Summary for the chart:\n- Problem list: hypertension, hyperlipidemia.\n- Meds: lisinopril 20 mg daily, atorvastatin 40 mg daily. No drug allergies listed.\n- Colonoscopy 2018, screening, normal; repeat in 10 years.\n- Cataract surgery 2021 by an outside ophthalmologist, op note not included.\n- COVID-19 primary series 2021 per their immunization record; flu shots yearly.\n- Smoking history documented, quit 2017.\nRouted to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "imaging",
+          "start": "2022-10-18T08:30",
+          "reason": "Lung cancer screening and aortic screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-10-18T08:30",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Baseline exam. Indication: 65-year-old former smoker, 35 pack-years, quit 2017. Technique: helical low-dose acquisition without contrast. Findings: No pulmonary nodules. Airways patent. No consolidation, effusion or pneumothorax. Heart size normal, no pericardial effusion. No enlarged mediastinal or hilar nodes. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            },
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2022-10-18T09:15",
+              "text": "ULTRASOUND, ABDOMINAL AORTA, SCREENING. Indication: male former smoker, age 65. The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximum outer-to-outer diameter 2.1 cm in the infrarenal segment. No focal dilation or aneurysm. Common iliac arteries normal in caliber.",
+              "conclusion": "Normal caliber abdominal aorta, 2.1 cm. No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "done",
+              "date": "2022-10-18T08:30"
+            },
+            {
+              "id": "aaa-us-2022",
+              "action": "done",
+              "date": "2022-10-18T09:15"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "portal_message",
+          "start": "2022-10-20T12:10",
+          "reason": "Imaging results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT and ultrasound results",
+              "date": "2022-10-20T12:10",
+              "author": "PCP",
+              "body": "Dennis, both studies were normal. The lung screening CT showed no nodules, so we repeat it once a year. The aorta measured normal size with no aneurysm, and that one does not need repeating. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "office_visit",
+          "start": "2023-03-14T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and cholesterol follow-up",
+          "vitals": {
+            "bp": [
+              135,
+              83
+            ],
+            "hr": 86,
+            "spo2": 97,
+            "weight_kg": 84.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-14T10:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-14T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: Hypertension, Hyperlipidemia",
+              "date": "2023-03-14T10:55",
+              "author": "PCP",
+              "body": "6-month check. Feels well. Has been doing the indoor track at the Y over the winter. Taking lisinopril and atorvastatin every morning, no cough, no dizziness standing, no muscle pain. No chest discomfort or palpitations.\n\nBP as recorded, at goal. Weight steady.\nHeart regular, lungs clear, ankles without swelling.\n\nHTN: controlled on lisinopril 20 mg. BMP for K and creatinine.\nHLD: continue atorvastatin 40 mg; lipids at the wellness visit in the fall.\nShingrix discussed, he'd like to start, nurse visit next month.\nRTC September for wellness visit."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP result",
+              "date": "2023-03-15T08:20",
+              "author": "PCP",
+              "body": "Potassium and creatinine normal on lisinopril. Portal note sent: no changes."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "nurse_visit",
+          "start": "2023-04-11T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 1",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-04-11T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-04-11T13:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization: Shingrix #1",
+              "date": "2023-04-11T13:45",
+              "author": "RN",
+              "body": "Shingrix dose 1 of 2, 0.5 mL IM left deltoid. No allergies, feeling well today. Told him to expect a sore arm and maybe a day of feeling run down. Dose 2 due in 2 to 6 months; booked for mid-June. Tolerated without problem."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "nurse_visit",
+          "start": "2023-06-13T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-06-13T13:34"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-06-13T13:34"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization: Shingrix #2",
+              "date": "2023-06-13T13:42",
+              "author": "RN",
+              "body": "Second Shingrix, 0.5 mL IM right deltoid. Says the first one made his arm ache for two days, nothing more. Series now complete, updated in the immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "pharmacy",
+          "start": "2023-07-18T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "90-day Refills",
+              "date": "2023-07-18T09:15",
+              "author": "MA",
+              "body": "Pharmacy fax requesting 90-day supplies of lisinopril 20 mg and atorvastatin 40 mg, 3 refills each. Last BMP March normal. Pended to PCP. Approved and sent 7/18 by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              130,
+              82
+            ],
+            "hr": 77,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 83.9
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 153
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 87
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 109
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-19T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "unit": "%",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2023-09-19T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-19T09:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-09-19T09:25"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2023-09-19T09:26"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-19T09:27"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual screening, former smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-09-19T09:40",
+              "author": "PCP",
+              "body": "MEDICARE AWV (initial)\n\nDennis is 66 and doing well. Still walking most days, did a fair amount of yard work this summer. No falls in the past year. Independent with all daily tasks and his own finances; still does the household taxes. Hearing and vision fine since the cataract operation. Sleeps 7 hours.\n\nMeds reviewed: lisinopril 20 mg, atorvastatin 40 mg. No allergies.\nPHQ-9 1. No concerns about memory raised by him or noted today.\nTobacco: none since 2017. Alcohol: a drink a month or so.\n\nExam: BP at goal. Clear lungs, regular heart, no bruits. Normal gait, gets up from the chair without using his hands.\n\nPlan\n- HTN, HLD: unchanged regimen. Lipids, CMP, A1c drawn.\n- Lung screening: annual LDCT reordered.\n- Vaccines today: high-dose flu, Tdap (no record of one in the last 10 yrs), updated COVID.\n- Colonoscopy 2018 normal, next 2028.\n- Advance directive: has a health care proxy naming his wife; asked him to bring a copy.\n- Next: 6-month BP visit in March."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your wellness visit labs",
+              "date": "2023-09-20T12:45",
+              "author": "PCP",
+              "body": "Dennis, cholesterol, kidney and liver tests and A1c all look good. LDL is in range on atorvastatin 40. Keep doing what you're doing."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "imaging",
+          "start": "2023-10-10T08:15",
+          "reason": "Annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-10T08:15",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Comparison 10/2022. Technique: low-dose helical CT without contrast. Findings: No pulmonary nodules. No airspace disease. No pleural effusion. Normal heart size. No mediastinal adenopathy. Osseous structures unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-10-10T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2023-10-11T07:50",
+              "author": "PCP",
+              "body": "Screening CT again clear, Lung-RADS 1. Released to portal with a note to the patient. Repeat next fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              84
+            ],
+            "hr": 84,
+            "spo2": 99,
+            "weight_kg": 83.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-12T14:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.07
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-12T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-03-12T14:35",
+              "author": "PCP",
+              "body": "Routine BP/lipid visit. Nothing new. He and his wife spent part of February visiting their daughter and he kept up with his meds while away. Denies chest pain, dyspnea, edema, lightheadedness.\n\nVitals reviewed, BP in range. Weight unchanged.\nCV RRR. Lungs CTA. No LE edema.\n\nHTN controlled on lisinopril 20. Lytes and creatinine today.\nHyperlipidemia on atorvastatin 40, LDL at goal in September.\nAWV in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-09-11a",
+          "kind": "telephone",
+          "start": "2024-09-11T10:30",
+          "reason": "Reschedule missed visit",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed AWV",
+              "date": "2024-09-11T10:30",
+              "author": "front desk",
+              "body": "Called re: yesterday's missed wellness visit. Pt apologized, his car was in the shop and he couldn't get a ride in time, didn't think to call. Rebooked Tues 9/24 8:40. Lab slip still active, he'll come fasting."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              136,
+              84
+            ],
+            "hr": 92,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 83.9
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-24T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 150
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 83
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 106
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T09:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 49.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-24T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "unit": "%",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-09-24T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-09-24T09:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-24T09:21"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual screening, former smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-09-24T09:35",
+              "author": "PCP",
+              "body": "AWV, subsequent. 67 y/o. Rescheduled from 9/10.\n\nInterval: well. Walking 2 to 3 miles most mornings. No falls. Drives, manages his own pills and bills. Health care proxy copy now scanned in.\nMeds: lisinopril 20, atorvastatin 40. NKDA.\nPHQ-2 0.\n\nExam: BP at goal. Heart and lungs normal. No carotid bruit. Normal gait and balance.\n\nPlan: same meds. Fasting labs drawn. Flu (high-dose) and COVID today. LDCT due next month, ordered. Colonoscopy not due until 2028. See in March."
+            },
+            {
+              "type": "Result Note",
+              "title": "AWV labs",
+              "date": "2024-09-25T07:55",
+              "author": "PCP",
+              "body": "Lipids at goal, CMP, CBC and A1c normal. Released with comment."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "imaging",
+          "start": "2024-10-22T09:00",
+          "reason": "Annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-10-22T09:00",
+              "text": "LOW-DOSE CT CHEST FOR LUNG CANCER SCREENING. Comparison 10/2023 and 10/2022. Technique: low-dose noncontrast helical CT. Findings: Lungs clear without nodules. Central airways patent. No effusion. Heart and great vessels normal in size. No adenopathy.",
+              "conclusion": "Lung-RADS 1. Negative screen; return in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-10-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung screening CT",
+              "date": "2024-10-23T12:30",
+              "author": "PCP",
+              "body": "Dennis, your screening CT is clear again this year. Nothing to follow up; we'll repeat it next October."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "pharmacy",
+          "start": "2025-02-11T08:55",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Medication Refills",
+              "date": "2025-02-11T08:55",
+              "author": "MA",
+              "body": "eRx renewal request for lisinopril 20 mg #90 and atorvastatin 40 mg #90. BMP and lipids current from 9/24. Sent per PCP standing approval, 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              135,
+              76
+            ],
+            "hr": 82,
+            "spo2": 96,
+            "weight_kg": 83.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-18T11:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-18T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: HTN / HLD",
+              "date": "2025-03-18T11:15",
+              "author": "PCP",
+              "body": "Doing fine through the winter. No chest symptoms, no swelling, no near-fainting. Meds every morning.\n\nBP fine today. Heart regular. Lungs clear.\n\n1. HTN: lisinopril 20 mg, continue. BMP.\n2. HLD: atorvastatin 40 mg, continue.\nNext visit: wellness visit in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-25a",
+          "kind": "ed_visit",
+          "start": "2025-05-25T14:10",
+          "end": "2025-05-25T19:20",
+          "service": "Emergency Medicine",
+          "reason": "Dragging left foot",
+          "conditions": [
+            {
+              "label": "Acute ischemic stroke, right frontal lobe",
+              "action": "diagnosed",
+              "onset": "2025-05-25",
+              "icd10": "I63.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              141,
+              84
+            ],
+            "hr": 77,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-25T14:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-25T14:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-05-25T14:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-05-25T14:40",
+              "text": "CT HEAD WITHOUT CONTRAST. Indication: new left leg weakness. Technique: axial noncontrast images of the head. Findings: Small area of hypodensity in the right frontal lobe. No intracranial hemorrhage. No mass effect or midline shift. Ventricles and sulci normal for age. Basal cisterns patent. Calvarium intact.",
+              "conclusion": "Small right frontal hypodensity, compatible with acute ischemic infarct in this clinical setting. No hemorrhage."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-25T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-05-28T09:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD (received from a regional hospital; date of service 5/25/2025)\n\nCC: left foot dragging\n\nHPI: 68-year-old man brought in by his wife, who saw him catching the toes of his left foot as he walked this afternoon. He has no pain anywhere. Describes the left leg as hard to pick up. No headache, no speech trouble, no arm symptoms. No previous stroke or TIA.\n\nPMH: hypertension, hyperlipidemia. PSH: cataract surgery (2021).\nHome meds: lisinopril, atorvastatin.\nAllergies: NKDA.\nFamily: father with ischemic stroke at 74; mother hypertensive; brother with CAD.\nSocial: retired accountant. Ex-smoker, 35 pack-years, quit 2017. Alcohol once or twice monthly.\n\nExam: Awake, alert, oriented x3. CN II-XII intact. Strength 5/5 bilateral upper extremities and right lower extremity; left lower extremity 3/5 with mildly increased tone. Sensation intact throughout. Normal finger-to-nose bilaterally; upper-extremity reflexes normal.\n\nCT head noncontrast: small right frontal hypodensity, no hemorrhage.\nLabs: CBC, BMP and INR unremarkable.\n\nImpression: acute ischemic stroke, right frontal lobe, with left leg weakness.\nDisposition: admitted to the hospital for stroke care."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr"
+          ]
+        },
+        {
+          "id": "2025-05-25b",
+          "kind": "hospital_admission",
+          "start": "2025-05-25T19:20",
+          "end": "2025-05-27T13:00",
+          "service": "Hospital Medicine",
+          "reason": "Acute ischemic stroke",
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-05-26T05:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 145
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 81
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 101
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-26T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "unit": "%",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-05-25T19:20"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-05-27T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-05-28T09:05",
+              "author": "hospitalist",
+              "body": "DISCHARGE SUMMARY (regional hospital)\nAdmitted 5/25/2025, discharged 5/27/2025.\n\nPrincipal diagnosis: acute ischemic stroke, right frontal lobe.\nOther: hypertension, hyperlipidemia.\n\nCourse: Presented with left leg weakness noticed by his wife. Noncontrast CT head showed a small right frontal hypodensity without hemorrhage. Monitored on the medical floor with neuro checks. The left leg weakness improved steadily over two days; by discharge he was walking the hallway with physical therapy, still catching the left foot occasionally. Fasting lipids and A1c were in range on his current regimen.\n\nDischarge medications (unchanged):\n- lisinopril 20 mg daily\n- atorvastatin 40 mg daily\nAllergies: NKDA.\n\nDisposition: home with his wife. Outpatient physical therapy for the left leg. Follow up with his PCP within 1 to 2 weeks and with neurology clinic in about 6 months. Return for any new weakness, numbness, speech or vision change."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-28a",
+          "kind": "telephone",
+          "start": "2025-05-28T11:20",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional Care Call",
+              "date": "2025-05-28T11:20",
+              "author": "RN",
+              "body": "Spoke with pt and wife, home since yesterday afternoon after a 2-day stay for a right frontal stroke. ED and discharge records in the chart. He says the leg is \"better every day\" but he still scuffs the left toe when tired. No new symptoms. Has both meds at home, no changes made by the hospital. Using a railing on the stairs. Reviewed stroke warning signs and calling 911. Post-discharge visit booked Mon 6/2 with PCP. Wife will drive."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-02a",
+          "kind": "office_visit",
+          "start": "2025-06-02T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, stroke",
+          "vitals": {
+            "bp": [
+              136,
+              83
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 84.0
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-06-02T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-2025",
+              "action": "placed",
+              "order": "Physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "Left leg weakness after right frontal stroke"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-06-02T10:00",
+              "author": "PCP",
+              "body": "Seen with his wife one week after a right frontal ischemic stroke (admitted 5/25 to 5/27 at a regional hospital; ED record and discharge summary reviewed).\n\nHe feels the left leg is close to normal on short walks but tires and drags on longer ones. No new weakness, numbness, slurred speech or visual symptoms since discharge. No falls. Thinking feels clear to him and to his wife. Taking lisinopril and atorvastatin as before.\n\nExam: BP as recorded. Alert, conversant, speech normal. Left hip flexion and ankle dorsiflexion a little weaker than the right; otherwise strength full. Gait: slight left foot slap at speed, no assistive device. Heart regular, no carotid bruits.\n\nA/P\n- Acute ischemic stroke, right frontal, with residual left leg weakness: outpatient PT referral placed as the hospital advised. Neurology clinic follow-up around November.\n- HTN: continue lisinopril 20.\n- HLD: continue atorvastatin 40.\n- Not to drive until cleared after therapy; wife driving for now.\nRecheck at the fall wellness visit, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "outside_records",
+          "start": "2025-06-09T15:30",
+          "reason": "Physical therapy evaluation",
+          "procedures": [
+            {
+              "procedure": "Physical therapy evaluation, moderate complexity",
+              "performed": "2025-06-09T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical Therapy Initial Evaluation",
+              "date": "2025-06-09T15:30",
+              "author": "physical therapy",
+              "body": "OUTPATIENT PHYSICAL THERAPY, INITIAL EVALUATION (date of service 6/9/2025)\nReferral: PCP, left lower extremity weakness after right frontal ischemic stroke 5/25/2025.\n\nSubjective: wants to get back to his morning walks without his foot catching. No falls.\nObjective: Left hip flexion and ankle dorsiflexion weak compared with the right. Gait with intermittent left foot drag, more with fatigue and on turns. Independent indoors without a device. Transfers independent.\nAssessment: gait deviation from left leg weakness, good potential.\nPlan: twice weekly for 8 weeks; strengthening, gait training, balance; home exercise program.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "outside_records",
+          "start": "2025-08-12T16:00",
+          "reason": "Physical therapy discharge",
+          "orders": [
+            {
+              "id": "pt-2025",
+              "action": "done",
+              "date": "2025-08-12T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical Therapy Discharge Summary",
+              "date": "2025-08-12T16:00",
+              "author": "physical therapy",
+              "body": "PT DISCHARGE SUMMARY. 15 visits from 6/9 to 8/12/2025. Gait improved; walks community distances without a device and without foot drag on level ground. Balance improved. Discharged to a home exercise program, which he does daily per report. No device recommended. Thank you."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              134,
+              89
+            ],
+            "hr": 77,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 84.4
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 143
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 78
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 97
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "unit": "%",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-09-23T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-09-23T09:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-23T09:16"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual screening, former smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-09-23T09:40",
+              "author": "PCP",
+              "body": "Medicare AWV. 68M, four months out from a right frontal ischemic stroke.\n\nFinished PT in August and does the exercises most days. Walking his usual loop again, a little slower. No falls. No new neurologic symptoms. Still not driving; his wife takes him where he needs to go, and he is fine with that for now. Handles his own medications with a weekly pill box.\nMeds: lisinopril 20 mg, atorvastatin 40 mg. NKDA.\nPHQ-9 2.\n\nExam: BP at goal. Speech normal. Strength nearly symmetric, gait steady without device. Heart regular, lungs clear.\n\nPlan\n- Stroke, right frontal: recovering well; neurology follow-up in November already booked.\n- HTN / HLD: no changes. Labs drawn.\n- Flu and updated COVID given.\n- LDCT due, ordered.\nNext visit after neurology."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "date": "2025-09-24T12:05",
+              "author": "PCP",
+              "body": "Dennis, your labs from the wellness visit are all in a good place, including the LDL cholesterol. No changes to your medicines."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "imaging",
+          "start": "2025-10-21T08:45",
+          "reason": "Annual lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-10-21T08:45",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Comparison 10/2024. Technique: low-dose CT of the chest without IV contrast. Findings: No pulmonary nodules or masses. No consolidation. No pleural or pericardial effusion. Normal mediastinal contours. No lymphadenopathy.",
+              "conclusion": "Lung-RADS 1, negative. Annual follow-up."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-10-21T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2025-10-22T08:05",
+              "author": "PCP",
+              "body": "Lung-RADS 1 for the fourth year. Patient notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "telephone",
+          "start": "2025-11-14T15:40",
+          "reason": "Daughter calling with concerns about memory",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call From Daughter",
+              "date": "2025-11-14T16:05",
+              "author": "PCP",
+              "body": "Daughter called (pt gave verbal OK on the line). She has been staying with her parents this week and says over the last several days her dad has been forgetting things, losing track of what he's doing and can't seem to organize his day, which is not like him at all. He tells me he feels a bit weaker on the left again. Per daughter no facial droop, no slurred speech, no new trouble walking, no fall. He has his 6-month neurology appointment Monday 11/17. Advised keeping that appointment and having her go with him. Any new weakness, speech change, facial asymmetry or worsening confusion before then: call 911. Will see him here after neurology."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "specialist_visit",
+          "start": "2025-11-17T13:00",
+          "service": "Neurology",
+          "reason": "Post-stroke follow-up; change in behavior and thinking",
+          "conditions": [
+            {
+              "label": "Vascular dementia",
+              "action": "diagnosed",
+              "onset": "2025-11-10",
+              "icd10": "F01.50"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-11-17T14:20",
+              "text": "CT HEAD WITHOUT CONTRAST. Indication: change in cognition and behavior, prior right frontal stroke. Comparison 5/25/2025. Findings: Small, well-circumscribed hypodensity in the right frontal lobe at the site of the prior infarct. No new hypodensity. No hemorrhage, mass or hydrocephalus. Gray-white differentiation otherwise preserved.",
+              "conclusion": "Small well-circumscribed right frontal hypodensity, the known infarct. No acute intracranial abnormality."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Clinic Letter",
+              "date": "2025-11-20T10:30",
+              "author": "neurology",
+              "body": "NEUROLOGY CLINIC (regional hospital stroke clinic), visit 11/17/2025\n\nDear colleague,\n\nI saw Mr. Rousseau, 68, for his planned follow-up six months after his right frontal ischemic stroke. His daughter came with him and supplied most of the history. Across the past week she has seen an abrupt change in him: he forgets recent conversations, drifts off task, and cannot lay out his day the way he always has; she stresses he has been a meticulous planner his whole life. He himself mentions only that the left side feels mildly weak.\n\nBackground: hypertension, hyperlipidemia, the May stroke. Cataract surgery 2021. Medications lisinopril and atorvastatin. NKDA. Father had an ischemic stroke at 74, mother hypertension, brother coronary disease. Former smoker (35 pack-years, stopped 2017), rare alcohol, retired accountant.\n\nExamination: alert, though flat and apathetic in manner. Language fluent without aphasia. Cranial nerves normal. Mild drift of the left arm and leg. Sensation normal.\n\nNoncontrast head CT today: small, well-circumscribed right frontal hypodensity at the site of the known infarct, no new lesion.\n\nImpression: vascular dementia following the right frontal infarct, with predominantly executive and attention problems and apathy.\n\nRecommendations: continue blood pressure and cholesterol treatment as you are. Please check vitamin B12 and TSH if not recent. A baseline cognitive screen in your office would be useful. I advised that he not drive. Family to help with finances and medications. I will see him again in about six months.\n\nSincerely,\nStroke neurology"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "office_visit",
+          "start": "2025-12-08T10:00",
+          "end": "2025-12-08T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after neurology, cognitive change",
+          "vitals": {
+            "bp": [
+              142,
+              89
+            ],
+            "hr": 80,
+            "spo2": 97,
+            "weight_kg": 83.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-08T10:45",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "unit": "pg/mL",
+                  "value": 486
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "unit": "mIU/L",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-12-08T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Cognition Follow-up",
+              "date": "2025-12-08T11:00",
+              "author": "PCP",
+              "body": "Here with wife and daughter after his 11/17 neurology visit (letter reviewed). Neurology's impression is vascular dementia after the May right frontal stroke.\n\nFamily: since mid-November he has been less himself. Misplaces things, loses the thread of what he started, needs prompting to get going in the morning. No hallucinations, no wandering, no getting lost in familiar places. Sleep and appetite fine. Mood: he says \"fine\" and doesn't seem sad, more indifferent. He is not driving. Daughter has taken over the bills and checkbook with his agreement. Wife fills his pill box on Sundays.\n\nMoCA 22/30. Lost points on trails, clock, delayed recall and serial 7s; oriented fully.\nExam: BP as recorded. Flat affect, cooperative, speech fluent. Mild left drift. Gait steady.\n\nA/P\n1. Vascular dementia: MoCA 22 today as baseline. B12 and TSH drawn per neurology. Reviewed what to expect, home safety, keeping a daily routine and his walks. No medication for this now. Family to call with any sudden change.\n2. Ischemic stroke, right frontal: on lisinopril and atorvastatin as before.\n3. HTN: a little high today, usually at goal; recheck in March before any change. 4. HLD: continue atorvastatin 40.\nNo driving, agreed by all. RTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "portal_message",
+          "start": "2025-12-10T13:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "B12 and thyroid results",
+              "date": "2025-12-10T13:15",
+              "author": "PCP",
+              "body": "Dennis (and family), the vitamin B12 came back at 486 and the thyroid test at 2.1. Both normal, so neither is contributing to the memory changes. No new treatment needed. See you in March."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Medication Refills",
+              "date": "2026-02-10T09:10",
+              "author": "MA",
+              "body": "Renewal request from his pharmacy, lisinopril 20 mg and atorvastatin 40 mg, 90-day supplies. Daughter listed as alternate contact for pickup. Labs current. Approved by PCP, sent with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: dementia, blood pressure",
+          "vitals": {
+            "bp": [
+              134,
+              83
+            ],
+            "hr": 81,
+            "spo2": 96,
+            "weight_kg": 83.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-10T10:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-10T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-03-10T11:00",
+              "author": "PCP",
+              "body": "3-month follow-up, wife with him.\n\nWife reports things have been steady since December: same forgetfulness and slowness getting started, no further sudden change. He walks with her most afternoons. Takes his pills from the box she sets up. Eating and sleeping fine. No falls, no new weakness or speech trouble.\n\nBP at goal. Weight unchanged. Pleasant, a bit flat. Mild left drift unchanged. Gait steady.\n\n1. Vascular dementia: stable by family report. Continue routine and supervision.\n2. Right frontal ischemic stroke: lisinopril and atorvastatin.\n3. HTN: continue lisinopril 20; BMP today.\n4. HLD: atorvastatin 40.\nNeurology recheck around May/June. RTC 3 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP result",
+              "date": "2026-03-11T08:10",
+              "author": "PCP",
+              "body": "Normal electrolytes and kidney function. No change."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-01a",
+          "kind": "ed_visit",
+          "start": "2026-06-01T07:50",
+          "end": "2026-06-01T13:10",
+          "service": "Emergency Medicine",
+          "reason": "Sudden dizziness, nausea, unsteadiness",
+          "vitals": {
+            "bp": [
+              160,
+              90
+            ],
+            "hr": 78,
+            "rr": 13,
+            "temp_c": 36.8,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-01T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-01T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-06-01T08:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-06-01T08:25",
+              "text": "CT HEAD WITHOUT CONTRAST. Indication: acute vertigo, ataxia. Comparison 11/17/2025. Findings: Small well-circumscribed hypodensity in the right frontal lobe, unchanged, consistent with old infarct. No intracranial hemorrhage. No mass effect. Posterior fossa without hemorrhage or hydrocephalus; fourth ventricle midline. No extra-axial collection.",
+              "conclusion": "No hemorrhage. Old right frontal infarct, unchanged."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-01T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-06-04T09:10",
+              "author": "emergency medicine",
+              "body": "ED PHYSICIAN RECORD, regional hospital (date of service 6/1/2026)\n\nCC: dizziness and nausea\n\nHPI: 69M with HTN, HLD, right frontal ischemic stroke 5/2025 and vascular dementia, brought by wife. Abrupt onset this morning of spinning dizziness with nausea and difficulty staying upright. The spinning persists whether he lies still or fixes on something. Mild headache started at about the same time. No fall, no head injury, did not pass out. History partly from wife given his cognitive impairment.\n\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily. NKDA.\nPSH: cataract surgery 2021.\nFH: father ischemic stroke at 74, mother HTN, brother CAD.\nSH: retired accountant; quit smoking 2017 after 35 pack-years; alcohol rarely.\n\nVitals: BP 160/90, HR 78, T 36.8 C.\nExam: Horizontal nystagmus that persists with visual fixation. Speech mildly slurred, language intact. Dysmetria on right finger-to-nose. No facial asymmetry, no pronator drift.\n\nCT head noncontrast: no hemorrhage; old right frontal infarct unchanged.\nLabs: CBC, BMP, INR unremarkable.\n\nAssessment: acute vertigo with nystagmus not suppressed by fixation, dysarthria and right-sided dysmetria; concern for central (posterior circulation) cause.\nPlan: admit for MRI and stroke care."
+            }
+          ],
+          "measure": [
+            "spo2",
+            "rr"
+          ]
+        },
+        {
+          "id": "2026-06-01b",
+          "kind": "hospital_admission",
+          "start": "2026-06-01T13:10",
+          "end": "2026-06-03T12:30",
+          "service": "Hospital Medicine",
+          "reason": "Acute ischemic stroke, right cerebellum",
+          "conditions": [
+            {
+              "label": "Acute ischemic stroke, right cerebellum",
+              "action": "diagnosed",
+              "onset": "2026-06-01",
+              "icd10": "I63.541"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Ischemic stroke"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-02T05:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 144
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 78
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-02T05:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "unit": "%",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2026-06-01T16:30",
+              "text": "MRI BRAIN WITHOUT CONTRAST. Indication: acute vertigo, dysmetria. Comparison CT 6/1/2026. Technique: multiplanar multisequence imaging including diffusion-weighted images. Findings: Small focus of restricted diffusion in the right cerebellar hemisphere with corresponding ADC hypointensity, compatible with acute infarct. Chronic infarct in the right frontal lobe. No hemorrhage on susceptibility images. No mass effect. Ventricles normal in size. Normal flow voids.",
+              "conclusion": "Small acute infarct, right cerebellar hemisphere. Chronic right frontal infarct."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-06-01T13:10"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-06-03T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-06-04T09:15",
+              "author": "hospitalist",
+              "body": "DISCHARGE SUMMARY, regional hospital\nAdmission 6/1/2026, discharge 6/3/2026.\n\nPrincipal diagnosis: acute ischemic stroke, right cerebellar hemisphere.\nSecondary: prior right frontal ischemic stroke (5/2025), vascular dementia, hypertension, hyperlipidemia.\n\nHospital course: Admitted from the ED with acute vertigo, nausea, gait instability, mild dysarthria and right-sided dysmetria; head CT without hemorrhage. MRI showed a small acute right cerebellar infarct and the old right frontal infarct. Vertigo and nausea settled over the first 36 hours. Walking with PT and his wife at the bedside by day 2; steady enough for home with supervision. Lipids and A1c in range.\n\nDischarge medications:\n- NEW: aspirin 81 mg daily\n- lisinopril 20 mg daily (unchanged)\n- atorvastatin 40 mg daily (unchanged)\nAllergies: NKDA.\n\nDisposition: home with wife. PCP visit within 1 week. Stroke neurology clinic in about 6 to 8 weeks. Return for recurrent dizziness, new weakness, speech or swallowing trouble."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "telephone",
+          "start": "2026-06-04T10:45",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transitional Care Call",
+              "date": "2026-06-04T10:45",
+              "author": "RN",
+              "body": "Called home after 6/1 to 6/3 admission for a small right cerebellar stroke. Spoke with wife. Dizziness much better, no vomiting, he is walking around the house with her nearby. New med: aspirin 81 mg daily, bought OTC and added to his pill box; lisinopril and atorvastatin unchanged. Reviewed when to call 911. TCM visit Tues 6/9 with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "office_visit",
+          "start": "2026-06-09T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, cerebellar stroke",
+          "vitals": {
+            "bp": [
+              136,
+              82
+            ],
+            "hr": 84,
+            "spo2": 99,
+            "weight_kg": 84.5
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-06-09T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-06-09T10:25",
+              "author": "PCP",
+              "body": "TCM visit, with wife. Admitted 6/1 to 6/3 for a small acute right cerebellar infarct (records reviewed): sudden vertigo, nausea, slurred speech and right-hand clumsiness at onset, MRI-confirmed.\n\nSince home: no more spinning. A little unsure on his feet the first two days, steadier now. Speech back to his baseline per wife. No headache. Taking aspirin 81 mg plus his usual two meds. No bleeding or bruising. Cognition per wife unchanged from before the admission.\n\nExam: BP 136/82. Alert, flat affect as before. Speech clear. No nystagmus on primary gaze. Finger-to-nose accurate on both sides. Gait narrow-based and steady.\n\nA/P\n1. Acute ischemic stroke, right cerebellum: on aspirin 81 mg daily now. Neurology follow-up in July.\n2. Prior right frontal stroke, vascular dementia: wife supervising, no driving.\n3. HTN: 136/82 today on lisinopril 20, continue.\n4. HLD: atorvastatin 40, continue.\nRTC for wellness visit in September or sooner."
+            }
+          ],
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "specialist_visit",
+          "start": "2026-07-20T14:00",
+          "service": "Neurology",
+          "reason": "Stroke follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Clinic Letter",
+              "date": "2026-07-23T11:00",
+              "author": "neurology",
+              "body": "STROKE NEUROLOGY CLINIC, visit 7/20/2026\n\nDear colleague,\n\nMr. Rousseau returned with his wife seven weeks after his right cerebellar infarct. The dizziness is fully gone and he is back to walking with her daily. Family describe his memory and initiative as unchanged from the winter.\n\nMedications: aspirin 81 mg, lisinopril 20 mg, atorvastatin 40 mg. NKDA.\n\nExam: alert, apathetic but engaged. No nystagmus. Finger-to-nose accurate on both sides. Gait steady, able to tandem a few steps.\n\nImpression: recovered from a small right cerebellar infarct; prior right frontal infarct with vascular dementia.\n\nPlan: continue aspirin, atorvastatin and lisinopril. Return in 6 months.\n\nWith best regards,\nStroke neurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T19:20",
+          "reason": "Aspirin question from daughter",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Aspirin question",
+              "date": "2026-08-11T19:20",
+              "author": "patient",
+              "body": "Hi, this is Dennis's daughter writing from his account. Quick question. Does Dad need a prescription for the baby aspirin or is the store brand ok? Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Aspirin question",
+              "date": "2026-08-12T08:30",
+              "author": "PCP",
+              "body": "Hi, no prescription needed. Store-brand 81 mg aspirin is fine, the coated kind, once a day. We'll see him for his wellness visit on September 22."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:40",
+          "reason": "Medicare annual wellness visit",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute ischemic stroke, right cerebellum|I63.541": {
+        "code": "I63.541",
+        "display": "Cerebral infarction due to unspecified occlusion or stenosis of right cerebellar artery",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute ischemic stroke, right frontal lobe|I63.9": {
+        "code": "I63.9",
+        "display": "Cerebral infarction, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Vascular dementia|F01.50": {
+        "code": "F01.50",
+        "display": "Vascular dementia, unspecified severity, without behavioral disturbance, psychotic disturbance, mood disturbance, and anxiety",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

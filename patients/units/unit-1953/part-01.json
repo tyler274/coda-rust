@@ -1,0 +1,265 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001953",
+      "given": "Hui",
+      "family": "Huang",
+      "birth_date": "1997-08-11",
+      "address_line": "41 Reservoir Road",
+      "phone": "+1-518-555-0171",
+      "email": "hui.huang@example.test",
+      "marital_status": "single",
+      "summary": "Healthy software developer who joined the practice in 2023 for routine preventive care. In late 2025 a left dorsal wrist ganglion cyst was referred to orthopedics, diagnosed clinically, and aspirated in March 2026 without recurrence by her 2026 physical.",
+      "events": [
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T10:40",
+          "reason": "New patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2023-08-22T10:40",
+              "body": "Caller: patient. Wants to transfer primary care to us. Membership paperwork emailed, she will sign online. Insurance employer PPO, card front/back uploaded to portal. No current meds per pt, no known allergies. Signed release faxed to her prior PCP office for last 3 yrs of notes, labs, immunizations. New patient physical booked 9/12 at 8:30. Told her to come fasting so labs can be drawn same week."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "outside_records",
+          "start": "2023-08-29T14:05",
+          "reason": "Prior primary care records",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-05-14T09:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-20T11:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-11T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2023-08-29T14:05",
+              "body": "Fax received from prior PCP office, 22 pages, scanned to media.\n\nContents: visit notes 2020-2023 (annual exams only, all normal), immunization record, one Pap report.\n\nAbstracted for the chart:\n- Problem list: none\n- Medications: none\n- Allergies: NKDA\n- Cervical cytology 06/2021: negative for intraepithelial lesion or malignancy\n- Tdap 05/14/2019\n- COVID-19 Pfizer 04/20/2021 and 05/11/2021\n- HPV vaccine series documented as completed in adolescence (dates not listed on their record)\n\nRouted to PCP for review before new patient visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:30",
+          "end": "2023-09-12T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [112, 72], "weight_kg": 55.8, "height_cm": 160.0, "labs": {"Total Cholesterol": 158, "Low Density Lipoprotein": 82, "Triglycerides": 92, "Hemoglobin": 13.4, "Thyroid Stimulating Hormone": 1.8}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Software developer"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2023-09-12T08:30"}
+          ],
+          "orders": [
+            {"id": "2023-baseline-labs", "action": "placed", "order": "CBC, CMP, lipid panel, TSH, HIV-1/2 Ag/Ab, hepatitis C antibody", "category": "lab", "reason": "Baseline labs and one-time HIV and hepatitis C screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2023-09-12T09:45",
+              "body": "Hui Huang, 26F, new to the practice, transferring from her prior primary care office. Prior records reviewed (annual exams only, nothing abnormal). Here for a physical; no complaints.\n\nPMH: none. PSH: none.\nMeds: none. No supplements.\nAllergies: NKDA.\nFH: nothing significant that she knows of.\nSH: software developer, mostly at a desk. Never smoked, alcohol a drink or two a month, no drug use.\n\nROS: negative on a full review. Menses regular.\nPHQ-2: 0.\n\nExam: well appearing, in no distress. Vitals per flowsheet. HEENT unremarkable, TMs clear. Neck supple, no thyromegaly or lymphadenopathy. Heart regular rate and rhythm, no murmur. Lungs clear throughout. Abdomen soft, nontender, no masses. Extremities without edema. Skin without suspicious lesions. Neuro grossly nonfocal. Mood and affect normal.\n\nHealth maintenance:\n- Pap 06/2021 NILM at prior office. Next due 2024.\n- Tdap 2019. COVID primary series 2021. HPV series complete per old records.\n- Flu shot: will get it at a nurse visit next month once the new season's supply is in.\n- HIV and hep C one-time screening: agreed, adding to labs.\n\nA/P:\n1. Adult wellness exam. Healthy. Baseline fasting CBC, CMP, lipids, TSH plus HIV and HCV screens; she'll come in Thursday morning for the draw.\n2. Return in one year for annual, sooner as needed. Texting the office is fine for small things."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "lab_only",
+          "start": "2023-09-14T07:50",
+          "reason": "Fasting labs",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-14T07:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-14T07:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-14T07:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-14T07:50", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2023-09-14T07:50", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-09-14T07:50", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Venipuncture", "performed": "2023-09-14T07:50"}
+          ],
+          "orders": [
+            {"id": "2023-baseline-labs", "action": "done", "date": "2023-09-14T07:50"}
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "portal_message",
+          "start": "2023-09-18T12:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2023-09-18T12:20",
+              "body": "Hi Hui, your labs from Thursday all came back normal: blood counts, kidney and liver tests, sugar, thyroid and cholesterol are all where they should be. The HIV and hepatitis C screens were negative, and those are one-time tests, so you won't need to repeat them unless something changes. Nice to have you with us. See you at the flu shot visit next month."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T16:20"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-10T16:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2023-10-10T16:30",
+              "body": "Pt in for seasonal influenza vaccine. Feeling well today, no fever. No prior reactions to vaccines. NKDA, no latex or egg issues. Current VIS given. Influenza quadrivalent 0.5 mL IM, left deltoid. Tolerated without issue, waited 15 min in lobby, left ambulatory. She plans to get the updated COVID shot at her pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-27a",
+          "kind": "pharmacy",
+          "start": "2023-10-27T09:10",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-26T18:30"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notification",
+              "author": "MA",
+              "date": "2023-10-27T09:10",
+              "body": "Notification from retail pharmacy via state registry: COVID-19 vaccine, Pfizer 2023-2024 formula, given 10/26/2023, right deltoid. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "portal_message",
+          "start": "2024-02-06T13:02",
+          "reason": "Immunization record request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "author": "patient",
+              "date": "2024-02-06T13:02",
+              "body": "Hi, my company's HR is updating employee health records and wants a copy of my vaccines. Is there a way to get a printout? Thanks, Hui"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "author": "MA",
+              "date": "2024-02-06T15:40",
+              "body": "Hi Hui, I put your immunization record in the documents section of the portal, you can download it as a PDF. It includes the old records from your previous office plus the flu and COVID shots from the fall. Let us know if HR needs anything else."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "GAD-7 total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-10T09:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T09:40", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-09-10T09:20",
+              "issued": "2024-09-13T11:00",
+              "text": "Specimen: cervical, liquid-based preparation.\nSpecimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."
+            }
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-10T09:45"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-10T09:00"},
+            {"procedure": "Immunization administration", "performed": "2024-09-10T09:45"},
+            {"procedure": "Venipuncture", "performed": "2024-09-10T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2024-09-10T10:05",
+              "body": "27F, annual. Doing well. No ER/UC visits, no new meds this year. Work busy but manageable.\n\nMeds: none. Allergies: NKDA.\nSH unchanged: never smoker, alcohol 1-2/month.\nROS negative. LMP 2 wks ago, regular.\nPHQ-9 2, GAD-7 1.\n\nExam: vitals reviewed, normal. Well appearing. HEENT clear. Neck no nodes, thyroid normal size. Heart RRR, no murmur. Lungs clear. Abdomen benign. Pelvic: normal external genitalia, vagina and cervix normal appearing, Pap collected; bimanual without tenderness or masses. Skin unremarkable. Extremities normal.\n\nA/P:\n1. Annual exam, healthy adult. CBC and CMP drawn today. Lipids normal last year, not repeating.\n2. Cervical cancer screening: Pap today, last one 2021.\n3. Flu shot given today, she'd rather not come back for it. COVID booster at her pharmacy as last year.\n4. RTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-13a",
+          "kind": "portal_message",
+          "start": "2024-09-13T16:30",
+          "reason": "Pap and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and blood work",
+              "author": "PCP",
+              "date": "2024-09-13T16:30",
+              "body": "Hi Hui - good news all around. Pap smear is normal. With a normal result at your age, the next one is due in three years (2027). Blood count and chemistry panel from Tuesday are normal as well. Nothing to do until next year's physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap and blood work",
+              "author": "patient",
+              "date": "2024-09-13T19:12",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "pharmacy",
+          "start": "2024-10-23T08:55",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-22T17:45"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notification",
+              "author": "MA",
+              "date": "2024-10-23T08:55",
+              "body": "Registry update: COVID-19 vaccine 2024-2025 formula (Pfizer) administered at retail pharmacy 10/22/2024, left deltoid. Immunization history updated."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

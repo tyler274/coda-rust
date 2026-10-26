@@ -1,0 +1,525 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002782",
+      "events": [
+        {
+          "id": "2023-07-26a",
+          "kind": "office_visit",
+          "start": "2023-07-26T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lump in front of neck",
+          "conditions": [
+            {
+              "label": "Thyroid nodule",
+              "action": "diagnosed",
+              "onset": "2023-07-12",
+              "note": "Right lobe, about 2 cm by palpation"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-07-26T11:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-26T11:00",
+              "results": [
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "thyroid-us-2023",
+              "action": "placed",
+              "order": "Thyroid ultrasound",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Palpable right thyroid nodule"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-26T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-07-26T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-07-26T10:55",
+              "body": "S: Texted yesterday about a bump on her neck. About two weeks ago she caught it in the bathroom mirror - a lump low on the front of the neck, right of midline. Hasn't changed since. Not tender. Swallowing fine, voice normal. Otherwise feels like herself: weight steady, energy fine, mood fine. Periods regular. Never had radiation to the head or neck. Maternal aunt had papillary thyroid cancer.\n\nMeds: loratadine PRN. NKDA.\n\nO: Vitals normal, see flowsheet.\nNeck: gland not diffusely enlarged. Discrete firm nodule in the R lobe, roughly 2 cm, non-tender, moves with swallow. L lobe unremarkable. No cervical or supraclavicular adenopathy. Trachea midline.\nHeart/lungs normal.\n\nA/P: Right thyroid nodule, 2 cm, new to her. Clinically euthyroid.\n- TSH and free T4 today\n- Thyroid US ordered; scheduling will call with a slot this week or next\n- Depending on US, likely FNA. Explained most nodules are benign. She'll message with questions."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9,
+              "Free Thyroxine": 1.1
+            }
+          }
+        },
+        {
+          "id": "2023-07-27a",
+          "kind": "portal_message",
+          "start": "2023-07-27T13:30",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Thyroid labs",
+              "author": "PCP",
+              "date": "2023-07-27T13:30",
+              "body": "Your TSH and free T4 are both normal, so the nodule isn't making extra hormone. Ultrasound is booked for Monday the 31st - I'll be in touch as soon as I see it."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-31a",
+          "kind": "imaging",
+          "start": "2023-07-31T08:45",
+          "service": "Radiology",
+          "orders": [
+            {
+              "id": "thyroid-us-2023",
+              "action": "done",
+              "date": "2023-07-31T08:45"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Thyroid ultrasound",
+              "performed": "2023-07-31T08:45",
+              "issued": "2023-07-31T13:10",
+              "text": "Indication: Palpable right thyroid nodule.\nTechnique: Grayscale and color Doppler sonography of the thyroid and central and lateral neck.\nFindings: The thyroid gland is normal in overall size. Right lobe: solid hypoechoic nodule in the mid to lower pole measuring 1.9 x 1.5 x 1.4 cm, with irregular margins. Wider than tall. No echogenic foci. Remainder of the right lobe normal in echotexture. Left lobe: homogeneous, no nodules. Isthmus normal. No abnormal cervical lymph nodes in levels II through VI bilaterally.\nACR TI-RADS: composition solid (2), echogenicity hypoechoic (2), shape wider-than-tall (0), margin irregular (2), echogenic foci none (0); total 6 points, TR4.",
+              "conclusion": "1.9 cm solid hypoechoic right thyroid nodule with irregular margins, ACR TI-RADS TR4. Meets criteria for FNA. No abnormal cervical lymph nodes."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-01a",
+          "kind": "telephone",
+          "start": "2023-08-01T16:10",
+          "orders": [
+            {
+              "id": "thyroid-fna-2023",
+              "action": "placed",
+              "order": "Ultrasound-guided fine needle aspiration, right thyroid nodule",
+              "category": "procedure",
+              "to": "Interventional Radiology",
+              "reason": "TI-RADS 4 nodule 1.9 cm"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Ultrasound result",
+              "author": "PCP",
+              "date": "2023-08-01T16:25",
+              "body": "Called pt with US: 1.9 cm solid nodule R lobe, TR4, irregular margins, nodes normal. Recommends biopsy at this size. Reviewed what FNA involves - small needle, ultrasound guided, done in radiology, back to work same day. She'd like to get it done before school starts. FNA ordered, marked for next available."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "procedure_visit",
+          "start": "2023-08-08T09:30",
+          "service": "Interventional Radiology",
+          "reason": "US-guided FNA right thyroid nodule",
+          "orders": [
+            {
+              "id": "thyroid-fna-2023",
+              "action": "done",
+              "date": "2023-08-08T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure note",
+              "title": "Ultrasound-guided thyroid FNA (outside radiology)",
+              "author": "radiology",
+              "date": "2023-08-08T10:20",
+              "body": "Procedure: Ultrasound-guided fine needle aspiration, right thyroid nodule.\nDate of service: 08/08/2023.\nAllergies: no known drug allergies; seasonal pollen, dust mites.\nConsent obtained after discussion of risks including bleeding and infection. Time-out performed.\nThe previously described 1.9 cm solid hypoechoic right lobe nodule was localized. After local anesthesia with 1% lidocaine, four passes were made with a 25-gauge needle under real-time guidance. Samples sent for cytology; on-site adequacy assessment satisfactory.\nNo immediate complications. Hemostasis with manual pressure. Patient tolerated well and left in stable condition.\nResults to the ordering provider."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-11a",
+          "kind": "outside_records",
+          "start": "2023-08-11T11:40",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of thyroid gland",
+              "icd10": "C73",
+              "action": "diagnosed",
+              "onset": "2023-08-08",
+              "note": "Papillary thyroid carcinoma, right lobe, by FNA (Bethesda VI)"
+            },
+            {
+              "label": "Thyroid nodule",
+              "action": "resolved",
+              "onset": "2023-07-12",
+              "note": "Characterized as papillary thyroid carcinoma"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-08-08T09:30",
+              "issued": "2023-08-11T10:05",
+              "text": "Specimen: Thyroid, right lobe nodule, ultrasound-guided fine needle aspiration (4 passes).\nPreparation: direct smears (Diff-Quik and Papanicolaou) and liquid-based preparation.\nAdequacy: satisfactory for evaluation.\nMicroscopic: Cellular aspirate with branching papillary fragments containing fibrovascular cores. Follicular cells show enlarged, overlapping oval nuclei with fine powdery chromatin, longitudinal grooves and intranuclear pseudoinclusions. Scant colloid.",
+              "conclusion": "MALIGNANT (Bethesda category VI). Papillary thyroid carcinoma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Biopsy result call",
+              "author": "PCP",
+              "date": "2023-08-11T12:30",
+              "body": "Cytology back: papillary thyroid carcinoma, Bethesda VI. Called Maureen and gave her the result by phone rather than leave it in the portal. She was quiet, then had good questions. Explained papillary is the most common type and usually very treatable, next step is a head and neck surgeon. She'd like to come in to talk it through in person - booked for 8/18. Told her she can call or text me before then."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-18a",
+          "kind": "office_visit",
+          "start": "2023-08-18T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up thyroid nodule biopsy",
+          "vitals": {
+            "bp": [
+              118,
+              76
+            ],
+            "hr": 74,
+            "temp_c": 36.7
+          },
+          "measure": [
+            "spo2",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "ent-referral-2023",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology - Head and Neck Surgery",
+              "reason": "Papillary thyroid carcinoma, right lobe, 1.9 cm on US"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-18T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-08-18T13:50",
+              "body": "Here to go over the thyroid biopsy and plan next steps. Swelling first noticed about a month ago. Since then no pain, no voice change, no trouble breathing, swallows solids and liquids fine. Feels well. Weight stable, eating normally, no recent illness. Allergies quiet this summer, using OTC loratadine as needed.\n\nPMH: seasonal allergic rhinitis. Meds: loratadine PRN. NKDA.\nSH: teacher, never smoker, social drinker. No recent travel, no toxic or environmental exposures she knows of.\n\nExam: T 36.7, P 74, BP 118/76, BMI 24.\nAnterior neck: firm, non-tender, mobile R thyroid nodule, about 1.8 cm on my exam. No cervical lymphadenopathy. Rest of exam normal.\n\nData: TSH and FT4 7/26 normal. US 7/31 TR4 nodule 1.9 cm, nodes normal. FNA 8/8 papillary carcinoma, Bethesda VI.\n\nA/P: Papillary thyroid carcinoma, right lobe, no clinically or sonographically abnormal nodes.\n- Referral to head and neck surgery (ENT). Sent with images and cytology. Asked for an early appointment.\n- She asked about treatment - explained surgery is the main step, the surgeon will talk about how much thyroid to remove, possible radioactive iodine after, and thyroid hormone replacement if the whole gland comes out.\n- Gave her a written summary to take home.\n- Will stay in touch through the process."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-06a",
+          "kind": "specialist_visit",
+          "start": "2023-09-06T14:15",
+          "service": "Otolaryngology",
+          "reason": "Papillary thyroid carcinoma",
+          "orders": [
+            {
+              "id": "ent-referral-2023",
+              "action": "done",
+              "date": "2023-09-06T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology - Head and Neck Surgery consultation",
+              "author": "otolaryngology",
+              "date": "2023-09-11T09:00",
+              "body": "Dear Doctor,\n\nThank you for referring Ms. Maureen Dunn, a 40-year-old elementary school teacher, whom I saw on 09/06/2023 for a right thyroid papillary carcinoma.\n\nShe found a right-sided neck lump in July. Thyroid function normal. Ultrasound 07/31/2023: 1.9 cm solid hypoechoic right lobe nodule, irregular margins, TR4, no abnormal nodes. FNA 08/08/2023: papillary thyroid carcinoma, Bethesda VI. She is asymptomatic - normal voice, no dysphagia or airway symptoms. No radiation exposure. Maternal aunt with papillary thyroid cancer; mother hypothyroid.\n\nPMH: seasonal allergic rhinitis. Medications: loratadine 10 mg as needed. Allergies: no known drug allergies; seasonal pollen, dust mites.\n\nExam: Well appearing. Voice normal. Firm, mobile right thyroid nodule, about 2 cm. No palpable cervical adenopathy. Flexible fiberoptic laryngoscopy: normal larynx, both vocal folds fully mobile and symmetric.\n\nImpression: Papillary thyroid carcinoma, right lobe, about 2 cm, clinically node negative.\n\nPlan: We discussed lobectomy versus total thyroidectomy at length. After considering the options she prefers total thyroidectomy, which also allows radioactive iodine and thyroglobulin follow-up if indicated. Risks discussed including recurrent laryngeal nerve injury, hypocalcemia, bleeding and lifelong thyroid hormone replacement. Surgery is planned for October with an overnight stay. Her pre-operative labs will be done at our hospital.\n\nI will keep you updated.\n\nOtolaryngology - Head and Neck Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "portal_message",
+          "start": "2023-09-12T21:05",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Surgery date + work form",
+              "author": "patient",
+              "date": "2023-09-12T21:05",
+              "body": "Surgery is set for October 11. The surgeon's office is doing the medical leave paperwork for school, but HR also wants a form from my regular doctor saying I'm under care. Can I drop it off? Also thank you for getting me in so fast."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Surgery date + work form",
+              "author": "PCP",
+              "date": "2023-09-13T07:20",
+              "body": "Of course - drop it at the front desk or upload it here and I'll fill it out this week. Glad the timing worked out. Thinking of you."
+            },
+            {
+              "type": "Administrative note",
+              "title": "Form completed",
+              "author": "front desk",
+              "date": "2023-09-15T14:00",
+              "body": "Employer leave certification form completed and signed by PCP, faxed to district HR per patient request. Copy scanned."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "hospital_admission",
+          "start": "2023-10-11T07:30",
+          "end": "2023-10-12T11:15",
+          "service": "Otolaryngology",
+          "reason": "Total thyroidectomy for papillary thyroid carcinoma",
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily on an empty stomach",
+              "dose": {
+                "value": 125,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Thyroid hormone replacement after total thyroidectomy"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-11T15:00",
+              "results": [
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-11T15:00",
+              "results": [
+                {
+                  "test": "Parathyroid Hormone, Intact"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-12T05:30",
+              "results": [
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary (outside hospital)",
+              "author": "otolaryngology",
+              "date": "2023-10-16T10:30",
+              "body": "Admission: 10/11/2023. Discharge: 10/12/2023.\nService: Otolaryngology - Head and Neck Surgery.\nAllergies: No known drug allergies. Environmental: seasonal pollen, dust mites.\n\nDiagnosis: Papillary thyroid carcinoma, right lobe.\nProcedure 10/11/2023: Total thyroidectomy. Both recurrent laryngeal nerves identified and preserved with nerve monitoring; four parathyroid glands identified and preserved in situ. Two small central compartment lymph nodes adjacent to the right lobe were removed with the specimen. Estimated blood loss minimal. No drain.\n\nHospital course: Uneventful. Voice normal post-op. Calcium checked post-op evening and the next morning, both normal; intact PTH post-op normal. No tingling or cramping. Tolerating diet, pain well controlled. Incision clean and dry.\n\nDischarge medications:\n- NEW: levothyroxine 125 mcg by mouth daily, on an empty stomach\n- loratadine 10 mg daily as needed (home)\n\nFollow-up: ENT clinic in about 2 weeks; final pathology will be reviewed there. Call for neck swelling, trouble breathing, numbness or tingling around the mouth or in the fingers."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Parathyroid Hormone, Intact": 31,
+              "Thyroid Stimulating Hormone": 1.2,
+              "Free Thyroxine": 1.4
+            }
+          }
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "outside_records",
+          "start": "2023-10-19T09:15",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-10-11T08:15",
+              "issued": "2023-10-17T15:40",
+              "text": "Specimen: Thyroid, total thyroidectomy, with right central compartment lymph nodes.\nGross: Total thyroidectomy specimen, oriented. Right lobe contains a 1.8 cm firm tan-white lesion. Left lobe and isthmus unremarkable. Two lymph nodes identified.\nMicroscopic summary:\n- Histologic type: papillary thyroid carcinoma, classic type\n- Focality: unifocal\n- Tumor site: right lobe\n- Tumor size: 1.8 cm\n- Margins: negative\n- Extrathyroidal extension: not identified\n- Lymphovascular invasion: not identified\n- Lymph nodes: 0 of 2 involved\n- Left lobe and isthmus: benign thyroid tissue\n- Pathologic stage (AJCC 8th): pT1b pN0",
+              "conclusion": "Papillary thyroid carcinoma, classic type, right lobe, 1.8 cm, unifocal, margins negative, no extrathyroidal extension, no lymphovascular invasion; 0/2 lymph nodes. pT1b pN0."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside pathology review",
+              "author": "PCP",
+              "date": "2023-10-19T12:10",
+              "body": "Final path from thyroidectomy reviewed: classic PTC, 1.8 cm R lobe, unifocal, clear margins, no ETE, no LVI, nodes 0/2. pT1b N0. Encouraging. Surgeon seeing her next week to discuss RAI. Sent her a short note."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-25a",
+          "kind": "specialist_visit",
+          "start": "2023-10-25T10:40",
+          "service": "Otolaryngology",
+          "reason": "Post-operative visit",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-25T11:10",
+              "results": [
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "rai-referral-2023",
+              "action": "placed",
+              "order": "Nuclear medicine referral, radioactive iodine ablation",
+              "category": "referral",
+              "to": "Nuclear Medicine",
+              "reason": "Papillary thyroid carcinoma s/p total thyroidectomy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology post-operative visit",
+              "author": "otolaryngology",
+              "date": "2023-10-27T08:30",
+              "body": "Dear Doctor,\n\nMs. Dunn returned on 10/25/2023, two weeks after total thyroidectomy. She is recovering well. Voice is normal; no dysphagia; no perioral or fingertip paresthesias. Taking levothyroxine 125 mcg daily.\n\nAllergies: NKDA; seasonal pollen, dust mites.\n\nExam: Incision healing well without erythema, seroma or hematoma. Voice strong.\n\nCalcium today normal.\n\nPathology reviewed with her: classic papillary carcinoma, 1.8 cm, unifocal, margins negative, no extrathyroidal extension or lymphovascular invasion, 0/2 nodes (pT1b N0).\n\nPlan: After discussion she wishes to proceed with remnant ablation with radioactive iodine. Referral placed to nuclear medicine; preparation will be with recombinant TSH so she can stay on levothyroxine. Continue levothyroxine 125 mcg daily. I will see her in surveillance after the ablation with thyroglobulin and neck ultrasound.\n\nOtolaryngology - Head and Neck Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "nurse_visit",
+          "start": "2023-11-07T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-11-07T15:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-07T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2023-11-07T15:58",
+              "body": "Flu vaccine, quadrivalent, R deltoid IM. Pt back at work since last week, neck incision healed. Feels well, afebrile. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "annual_physical",
+          "start": "2023-11-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Administrative note",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2023-11-09T10:15",
+              "body": "Pt called to cancel annual on 11/14 - between surgery and the iodine treatment next month she has too many appointments. Will rebook in the new year."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-21a",
+          "kind": "portal_message",
+          "start": "2023-11-21T18:40",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-11-18T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Covid vaccine",
+              "author": "patient",
+              "date": "2023-11-21T18:40",
+              "body": "Got this year's covid vaccine on Saturday. Just for my records."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Covid vaccine",
+              "author": "MA",
+              "date": "2023-11-22T08:15",
+              "body": "Recorded, thanks Maureen."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "procedure_visit",
+          "start": "2023-12-06T09:00",
+          "service": "Nuclear Medicine",
+          "reason": "Radioactive iodine remnant ablation",
+          "orders": [
+            {
+              "id": "rai-referral-2023",
+              "action": "done",
+              "date": "2023-12-06T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nuclear medicine treatment summary",
+              "author": "nuclear medicine",
+              "date": "2023-12-19T11:00",
+              "body": "Patient: Maureen Dunn. DOB 06/12/1983.\nDiagnosis: Papillary thyroid carcinoma, s/p total thyroidectomy 10/11/2023, pT1b N0.\nAllergies: no known drug allergies; seasonal pollen, dust mites.\n\nPreparation: Low-iodine diet beforehand. Recombinant human TSH IM on 12/04/2023 and 12/05/2023. Remained on levothyroxine 125 mcg daily.\n\nTreatment 12/06/2023: I-131 sodium iodide 30 mCi orally for remnant ablation. Radiation safety precautions reviewed in writing, including time away from close contact with children; she will return to the classroom after the precaution period.\n\nPost-therapy whole-body scan 12/13/2023: Focal uptake in the thyroid bed consistent with a small remnant. No uptake in the neck nodes, chest or elsewhere outside physiologic distribution.\n\nImpression: Uncomplicated remnant ablation. Post-therapy scan shows thyroid bed uptake only.\nFollow-up with her otolaryngologist for thyroglobulin and ultrasound surveillance."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
