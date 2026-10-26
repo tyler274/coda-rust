@@ -45,6 +45,11 @@ Linear wins.
   a pending command ends at sign-out. Sending a message keeps its own outgoing
   states; composing and signing out of this device are local and have none.
   Sign out everywhere says done only once every session has ended.
+- **Live where you work; history as it was (Dev 2026-10-26).** What you're
+  looking at and working on is live everywhere: updates land at once, and
+  nothing stale stays around. What was already said or sent keeps the version
+  it used, marked when a newer one exists: a reply's citations, published
+  insights, and what you sent to your practice.
 - **Behavior, not presentation.** Layout, motion, the companion's face and copy
   belong to the surface map and the app, not the graph. The graph keeps what a
   person can do, what Duet does, and what is guaranteed.
