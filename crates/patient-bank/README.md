@@ -12,10 +12,9 @@ here is real patient data, and nothing is physician reviewed.
 ```text
 patients/units/<unit>/source.md   the synthetic_hospital patient the unit is made from
 patients/seeds.json            who each patient is in the practice
-  -> data/author-workflow.js   per unit: build-req.md (what the chart may hold, traced
-                               to the source), checked against the source; then the
-                               author's story.md and ledger parts, `check` until
-                               ACCEPTED, `preview`; then an independent trace and fix
+  -> data/author-workflow.js   one agent per unit: build-req.md (what the chart may
+                               hold, traced to the source), then story.md and ledger
+                               parts, `check` until ACCEPTED, `preview` and a reread
   -> patients/ledgers/<unit>.json   the clinical source of truth, written only by `check`
   -> build                     bank/patients/<MRN>/<Family>.ndjson, bank/calendar/
                                Appointment.ndjson (visits from today on), manifest.json
@@ -31,8 +30,8 @@ cargo run -q -p patient-bank -- catalog [--offline]
 ```
 
 Authoring runs `data/author-workflow.js` through Claude Code's Workflow tool with
-`{repo, units}` as args; build-req writers follow `data/build-req-guide.md` and
-authors `data/authoring-guide.md`. The patients live apart from the tool in the
+`{repo, units}` as args; each agent follows `data/authoring-guide.md`, which sends
+it to `data/build-req-guide.md` first. The patients live apart from the tool in the
 workspace's `patients/`. Previews (chart.txt, taken.md), the bank and the schema live
 under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA`,
 `PATIENT_BANK_PATIENTS` and `PATIENT_BANK_ROOT` move the three.
@@ -50,9 +49,9 @@ under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA`,
   practice calendar. What happens after today is decided later, when the patients
   are run.
 - **Codes.** `data/catalog.json` holds verified ICD-10-CM, LOINC, RxNorm, SNOMED,
-  CVX and CPT codes. `check` verifies any extra condition code or drug text an
-  author proposes and stores the answer in the ledger, so build and validate need
-  no network.
+  CVX and CPT codes. `check` verifies any extra condition code, drug text, or lab or
+  study LOINC an author proposes and stores the answer in the ledger, so build and
+  validate need no network.
 - **Repeats.** Authors write alone, so they fall back on the same defaults.
   `repeats.rs` finds the names and phrases a few charts share (the practice's own
   templates are shared by many and do not count) and lab values far more common

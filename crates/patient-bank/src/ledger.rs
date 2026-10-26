@@ -526,6 +526,12 @@ pub struct Lab {
 #[serde(deny_unknown_fields)]
 pub struct LabResult {
     pub test: String,
+    /// The LOINC code of a test the catalog lacks, verified at check.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub loinc: Option<String>,
+    /// The UCUM unit of a test the catalog lacks.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub unit: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub value: Option<Number>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -555,6 +561,9 @@ pub struct Social {
 #[serde(deny_unknown_fields)]
 pub struct Report {
     pub study: String,
+    /// The LOINC code of a study the catalog lacks, verified at check.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub loinc: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub performed: Option<Stamp>,
     pub text: String,
@@ -662,6 +671,12 @@ pub struct Terms {
     /// `drug_text` to the RxNorm drug with an equivalent ingredient and strength.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub medications: BTreeMap<String, VerifiedCode>,
+    /// A lab test's label to its confirmed LOINC code, official display and unit.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub labs: BTreeMap<String, VerifiedCode>,
+    /// A report study's label to its confirmed LOINC code and official display.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub reports: BTreeMap<String, VerifiedCode>,
     /// What could not be verified and stays text-only.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub rejected: Vec<String>,
@@ -674,6 +689,8 @@ pub struct VerifiedCode {
     pub display: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ingredient: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub unit: Option<String>,
     pub receipt: String,
 }
 

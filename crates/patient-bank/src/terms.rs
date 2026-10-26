@@ -169,6 +169,7 @@ pub fn resolve_drug(look: &mut Lookup, text: &str) -> Result<Option<VerifiedCode
                 code: rxcui,
                 display: name,
                 ingredient: Some(first),
+                unit: None,
                 receipt: "NLM RxNav approximateTerm + properties".into(),
             }));
         }
@@ -201,6 +202,7 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
                             code,
                             display,
                             ingredient: None,
+                            unit: None,
                             receipt: "NLM Clinical Tables ICD-10-CM".into(),
                         };
                         terms.conditions.insert(key, v);
@@ -233,6 +235,56 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
                         .push(format!("drug lookup failed ({e}): {text:?}")),
                 }
             }
+        }
+    }
+    // Labs and studies the catalog lacks, by their LOINC code.
+    let mut extra: Vec<(bool, &str, &str, Option<&String>)> = Vec::new();
+    for ev in patients.iter().flat_map(|p| &p.events) {
+        for r in ev.labs.iter().flat_map(|l| &l.results) {
+            if let (false, Some(code)) = (catalog.labs.contains_key(&r.test), &r.loinc) {
+                extra.push((true, &r.test, code, r.unit.as_ref()));
+            }
+        }
+        for r in &ev.reports {
+            if let (false, Some(code)) = (catalog.reports.contains_key(&r.study), &r.loinc) {
+                extra.push((false, &r.study, code, None));
+            }
+        }
+    }
+    for (lab, label, code, unit) in extra {
+        let known = if lab { &terms.labs } else { &terms.reports };
+        if known.contains_key(label)
+            || terms
+                .rejected
+                .iter()
+                .any(|r| r.contains(&format!("{label:?}")))
+        {
+            continue;
+        }
+        let kind = if lab { "lab" } else { "report" };
+        let code = code.trim().to_string();
+        match look.loinc(&code) {
+            Ok(Some(display)) => {
+                let v = VerifiedCode {
+                    code,
+                    display,
+                    ingredient: None,
+                    unit: unit.cloned(),
+                    receipt: "NLM Clinical Tables LOINC".into(),
+                };
+                let map = if lab {
+                    &mut terms.labs
+                } else {
+                    &mut terms.reports
+                };
+                map.insert(label.to_string(), v);
+            }
+            Ok(None) => terms
+                .rejected
+                .push(format!("{kind} {label:?} LOINC {code} not found")),
+            Err(e) => terms
+                .rejected
+                .push(format!("{kind} {label:?} LOINC lookup failed: {e}")),
         }
     }
     look.save()?;

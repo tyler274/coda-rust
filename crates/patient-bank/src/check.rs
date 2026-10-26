@@ -372,8 +372,10 @@ fn check_event<'a>(
             if !seen.insert(test) {
                 errors.push(format!("{eid}: {test:?} is stated twice in one draw"));
             }
-            if !catalog.labs.contains_key(test) {
-                errors.push(format!("{eid}: unknown lab test {test:?}"));
+            if !catalog.labs.contains_key(test) && r.loinc.is_none() {
+                errors.push(format!(
+                    "{eid}: unknown lab test {test:?}: use a label from the vocabulary, or give \"loinc\" (and \"unit\") for a test it lacks"
+                ));
             } else if lab.pending && (r.value.is_some() || r.text.is_some()) {
                 errors.push(format!(
                     "{eid}: lab {test:?} is pending; it has no value until it comes back"
@@ -458,8 +460,11 @@ fn check_event<'a>(
         }
     }
     for r in &ev.reports {
-        if !catalog.reports.contains_key(&r.study) {
-            errors.push(format!("{eid}: unknown report study {:?}", r.study));
+        if !catalog.reports.contains_key(&r.study) && r.loinc.is_none() {
+            errors.push(format!(
+                "{eid}: unknown report study {:?}: use a study from the vocabulary, or give \"loinc\" for one it lacks",
+                r.study
+            ));
         }
         if r.text.trim().is_empty() {
             errors.push(format!("{eid}: report {:?} has no text", r.study));

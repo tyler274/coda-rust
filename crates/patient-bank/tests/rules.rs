@@ -680,3 +680,46 @@ fn a_patients_own_normal_stays_in_range() {
         }
     }
 }
+
+#[test]
+fn a_test_the_catalog_lacks_is_coded_by_its_verified_loinc() {
+    let draw = |loinc: serde_json::Value| {
+        patient(json!([visit(
+            "e1",
+            "2024-01-01T09:00",
+            json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [
+                {"test": "Calcitonin", "loinc": loinc, "unit": "pg/mL", "value": 500}
+            ]}], "documents": [{"type": "Progress Notes", "author": "PCP", "body": "Calcitonin sent."}]})
+        )]))
+    };
+    let unknown = |e: &Vec<String>| e.iter().any(|x| x.contains("unknown lab test"));
+    assert!(unknown(&errors_for(seed(), draw(json!(null)))));
+    let p = draw(json!("1992-7"));
+    assert!(!unknown(&errors_for(seed(), p.clone())));
+
+    let catalog = Catalog::load(&paths::catalog()).expect("catalog");
+    let mut terms = Terms::default();
+    terms.labs.insert(
+        "Calcitonin".into(),
+        patient_bank::ledger::VerifiedCode {
+            code: "1992-7".into(),
+            display: "Calcitonin [Mass/volume] in Serum or Plasma".into(),
+            ingredient: None,
+            unit: Some("pg/mL".into()),
+            receipt: "test".into(),
+        },
+    );
+    let chart = Renderer {
+        catalog: &catalog.with_terms(&terms),
+        terms: &terms,
+    }
+    .render(&seed(), &p, at("2024-02-01T00:00"))
+    .0;
+    assert!(
+        chart
+            .observations
+            .iter()
+            .any(|o| o.code.coding.iter().any(|c| c.code == "1992-7")),
+        "the verified test renders with its LOINC code"
+    );
+}

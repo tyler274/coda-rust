@@ -150,6 +150,7 @@ pub fn run(seeds_path: &Path, ledgers: &Path, out: &Path) -> Result<()> {
     let mut charts: Vec<(String, Lines)> = Vec::new();
     let mut appointments = Vec::new();
     for (unit, _, ledger) in &accepted {
+        let catalog = catalog.with_terms(&ledger.terms);
         let r = Renderer {
             catalog: &catalog,
             terms: &ledger.terms,

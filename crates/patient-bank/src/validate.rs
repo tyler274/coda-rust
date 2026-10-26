@@ -313,11 +313,17 @@ fn verified(
 ) -> bool {
     let icd = catalog.systems.get("icd10cm").map(String::as_str);
     let rx = catalog.systems.get("rxnorm").map(String::as_str);
-    (Some(system) == icd
-        && terms
-            .conditions
-            .values()
-            .any(|v| v.code == code && Some(v.display.as_str()) == display))
+    let loinc = catalog.systems.get("loinc").map(String::as_str);
+    let ours = |m: &std::collections::BTreeMap<String, crate::ledger::VerifiedCode>| {
+        m.values()
+            .any(|v| v.code == code && Some(v.display.as_str()) == display)
+    };
+    (Some(system) == loinc && (ours(&terms.labs) || ours(&terms.reports)))
+        || (Some(system) == icd
+            && terms
+                .conditions
+                .values()
+                .any(|v| v.code == code && Some(v.display.as_str()) == display))
         || (Some(system) == rx
             && terms
                 .medications

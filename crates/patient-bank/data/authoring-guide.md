@@ -23,19 +23,19 @@ contradictions are resolved, the few things added, and the primary-care layer th
 may surround them. **build-req.md is the authority for every clinical fact.** Run
 every command from the repository root. `<unit>` is the one you were given.
 
-1. Read build-req.md, then source.md, end to end.
-2. `cargo run -q -p patient-bank -- brief <unit>` prints the seed and the paths. Read
-   this guide, the vocabulary file and `taken.md` (names, phrases and lab values
-   other charts already use: give this patient their own).
-3. Write `story.md`: one line per contact in date order, each tagged with the
+1. Read source.md end to end, then `data/build-req-guide.md`, and write
+   build-req.md as it says. `cargo run -q -p patient-bank -- brief <unit>` prints the
+   seed and the paths.
+2. Write `story.md`: one line per contact in date order, each tagged with the
    build-req letter it rests on (S, R1, A2, P).
-4. Write the part files (`part-01.json`, `part-02.json`, ...), a few years each:
-   the structure first (conditions, medications, orders, `state`, `measure`, tests
-   named in each draw), then `preview` to see the measured numbers, then the
-   documents, using the numbers as measured.
-5. `check` until it prints `ACCEPTED`, then `preview` and read `chart.txt` start to
-   end as the physician who will inherit this patient. Fix what that physician
-   would not believe and anything not traceable to build-req.md, and check again.
+3. Write the part files (`part-01.json`, `part-02.json`, ...), a few years each, with
+   the documents in them. Look labels up in the vocabulary file when you need one
+   (search it; don't read it end to end), and glance at `taken.md` for names,
+   phrases and values other charts already use.
+4. `check` until it prints `ACCEPTED`; its errors say what to change. Then
+   `preview` and read `chart.txt` once, start to end, as the physician who will
+   inherit this patient. Fix what that physician would not believe and anything not
+   traceable to build-req.md, and check again. Reread only what you changed.
 
 ## What may be in the chart
 
@@ -128,10 +128,11 @@ adds the header. Refer to clinicians by role, never by name.
 Notes and structured data agree. A new diagnosis in a note is a condition action,
 a prescription is a medication action, and a resulted lab is a lab result.
 
-- **Codes.** Use the catalog labels in the vocabulary file exactly. For a
-  condition the catalog lacks, give your `label` and an `icd10` code. For a drug
-  the catalog lacks, give `drug_text` (generic name, strength and form). Both are
-  verified at check.
+- **Codes.** Use the catalog labels in the vocabulary file exactly. For anything
+  it lacks, give the standard code and check verifies it: a condition's `icd10`, a
+  drug's `drug_text` (generic name, strength and form), a lab result's `loinc` and
+  `unit`, a report's `loinc`. An allergen it lacks stays text. "No known drug
+  allergies" is an allergen.
 - **Numbers come from code.** You record where the patient's body is, and code
   measures it. Give an event a `state` when a level is first known or changes:
   weight and height at the first visit, a blood pressure level when it is not
@@ -146,8 +147,10 @@ a prescription is a medication action, and a resulted lab is a lab result.
   derives eGFR, CBC indices and the differential's remainder. Give `"resulted"` (on
   the draw or one result) or `"issued"` (on a report) when the story needs a
   specific release time.
-- **Vitals.** `measure` the vitals the contact would take. An ED visit or
-  admission may give `vitals` as a list of timed sets with values you write.
+- **Vitals.** `measure` the vitals the contact would take. When build-req gives a
+  reading, write it in `vitals` and `measure` the rest: code fills only what you left
+  out. An ED visit or admission may give `vitals` as a list of timed sets with values
+  you write.
 - **Procedures.** Every primary-care visit gets a visit code from the catalog.
 
 ## Ledger format

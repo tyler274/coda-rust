@@ -15,8 +15,8 @@ every clinical fact it gives and make the whole thing true at once.
 
 ## What you write
 
-Use this shape (the three accepted pilots, `unit-2013`, `unit-2188` and
-`unit-2797`, are worked examples):
+Use this shape (`patients/units/unit-2013/build-req.md` is a worked example, if
+you want one):
 
 1. **Header.** The rules, as the pilots state them: every clinical fact traces to
    S (the source as carried here), R (a resolution), A (an addition) or P (the
@@ -116,8 +116,8 @@ Write it for this patient, following the pilots:
 
 ## Rules
 
-- Read only `source.md`, the seed (`brief` prints it), this guide and the pilots'
-  build-reqs. Write only `build-req.md`.
+- Write build-req.md before any part file, and keep the chart to it. If writing the
+  chart shows build-req.md was wrong, fix build-req.md first.
 - Refer to clinicians by role. Never name a real practice, hospital, lab or
   pharmacy ("a regional hospital", "an outside cardiology group").
 - If the source cannot be an adult primary-care patient at all, write only

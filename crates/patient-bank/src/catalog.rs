@@ -63,6 +63,27 @@ pub struct Catalog {
 }
 
 impl Catalog {
+    /// This catalog plus the labs and studies a ledger's verified terms add.
+    pub fn with_terms(&self, terms: &crate::ledger::Terms) -> Catalog {
+        let mut c = self.clone();
+        let loinc = c.systems.get("loinc").cloned().unwrap_or_default();
+        let entry = |v: &crate::ledger::VerifiedCode| Entry {
+            system: loinc.clone(),
+            code: v.code.clone(),
+            display: Some(v.display.clone()),
+            receipt: Some(v.receipt.clone()),
+            unit: v.unit.clone(),
+            ..Entry::default()
+        };
+        for (label, v) in &terms.labs {
+            c.labs.entry(label.clone()).or_insert_with(|| entry(v));
+        }
+        for (label, v) in &terms.reports {
+            c.reports.entry(label.clone()).or_insert_with(|| entry(v));
+        }
+        c
+    }
+
     pub fn load(path: &Path) -> Result<Catalog> {
         let text = fs::read_to_string(path)?;
         Ok(serde_json::from_str(&text).map_err(|e| format!("{}: {e}", path.display()))?)

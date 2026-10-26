@@ -166,7 +166,11 @@ fn render(
     terms: &Terms,
     at: Stamp,
 ) -> Vec<(String, Chart)> {
-    let r = Renderer { catalog, terms };
+    let catalog = catalog.with_terms(terms);
+    let r = Renderer {
+        catalog: &catalog,
+        terms,
+    };
     unit.members
         .iter()
         .filter_map(|m| {

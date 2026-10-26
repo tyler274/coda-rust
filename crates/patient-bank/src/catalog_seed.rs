@@ -1442,6 +1442,7 @@ pub const ALLERGENS: &[(&str, &str, &str)] = &[
     ("Bee venom", "288328004", "environment"),
     ("Cat dander", "260152009", "environment"),
     ("Adhesive tape", "84756000", "environment"),
+    ("No known drug allergies", "409137002", "medication"),
 ];
 pub const REACTIONS: &[(&str, &str)] = &[
     ("Hives", "64305001"),
