@@ -9,19 +9,16 @@ mod shell;
 mod tabs;
 
 use std::sync::atomic::{AtomicU64, Ordering};
-use std::time::{SystemTime, UNIX_EPOCH};
 
 use dioxus::prelude::*;
 use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
 use physician_wire::{
-    PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation, SignInResponse,
-    SimulationStatus, WhoamiResponse, WorkspaceReply,
+    ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
+    SignInResponse, SimulationStatus, WhoamiResponse, WorkResumeTarget, WorkspaceReply,
 };
 
 use panels::Panel;
-#[cfg(target_arch = "wasm32")]
-use shell::workspace_event_rereads;
 use shell::{
     CONVERSATION_EMPTY, ChatView, Inline, KeyInput, MessageBlock, NavCommand, PAST_WORK_EMPTY,
     REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_TELL_CODA, ReadView,
@@ -34,6 +31,8 @@ use shell::{
     reply_urgency_words, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
     today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
+#[cfg(target_arch = "wasm32")]
+use shell::{EventRefetch, event_refetch};
 use ui::{CommandNotice, CommandStage, EmptyState, ErrorState, ReadNotice, TextButton};
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -58,6 +57,8 @@ const NEEDS_YOU_NOW: &str = "Needs you now";
 const RECENT_NONE: &str = "Conversations with Coda will appear here.";
 const RECENT_UNAVAILABLE: &str = "Coda couldn’t load recent conversations.";
 const NO_CONVERSATIONS: &str = "No conversations yet.";
+/// The React shell's `new_conversation` command label.
+const NEW_CONVERSATION: &str = "New conversation";
 const NOT_SAVED: &str = "Not saved";
 const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation.";
 const DICTATION_UNAVAILABLE: &str =
@@ -343,6 +344,7 @@ fn follow_workspace_events(
                 apply_event_frames(
                     &mut buffer,
                     &selected,
+                    &mut today_attempt,
                     &mut workspace_attempt,
                     &mut snapshot_attempt,
                 );
@@ -357,6 +359,7 @@ fn follow_workspace_events(
 fn apply_event_frames(
     buffer: &mut String,
     selected: &Signal<Option<String>>,
+    today_attempt: &mut Signal<u32>,
     workspace_attempt: &mut Signal<u32>,
     snapshot_attempt: &mut Signal<u32>,
 ) {
@@ -375,9 +378,18 @@ fn apply_event_frames(
             }
         }
         let open = selected.read().clone();
-        if workspace_event_rereads(&name, &data, open.as_deref()) {
-            workspace_attempt.set(workspace_attempt() + 1);
-            snapshot_attempt.set(snapshot_attempt() + 1);
+        match event_refetch(&name, &data, open.as_deref()) {
+            EventRefetch::Nothing => {}
+            EventRefetch::OpenPatient => {
+                workspace_attempt.set(workspace_attempt() + 1);
+                snapshot_attempt.set(snapshot_attempt() + 1);
+            }
+            // The server missed events; reread every projection once.
+            EventRefetch::Everything => {
+                today_attempt.set(today_attempt() + 1);
+                workspace_attempt.set(workspace_attempt() + 1);
+                snapshot_attempt.set(snapshot_attempt() + 1);
+            }
         }
     }
 }
@@ -528,6 +540,9 @@ fn sign_out_everywhere(client: PhysicianClient, session: SessionState) {
 pub fn PhysicianRoot(
     base_url: String,
     open_patient: String,
+    /// A conversation of `open_patient` to open first; empty opens the first listed.
+    #[props(default)]
+    open_chat: String,
     sign_in: Option<SignInLink>,
 ) -> Element {
     // A mailed link is redeemed even when this browser already has a session.
@@ -607,6 +622,7 @@ pub fn PhysicianRoot(
                     key: "{shell}",
                     base_url: base_url.clone(),
                     open_patient: if shell == 0 { open_patient.clone() } else { String::new() },
+                    open_chat: if shell == 0 { open_chat.clone() } else { String::new() },
                     client,
                     session,
                 }
@@ -619,9 +635,13 @@ pub fn PhysicianRoot(
 fn PhysicianShell(
     base_url: String,
     open_patient: String,
+    open_chat: String,
     client: Signal<PhysicianClient>,
     session: SessionState,
 ) -> Element {
+    // The address's conversation belongs to the address's patient only.
+    let requested_chat = (!open_patient.is_empty() && !open_chat.is_empty())
+        .then(|| (open_patient.clone(), open_chat));
     let mut whoami_name = session.whoami_name;
     let mut whoami = session.whoami;
     let expired = session.expired;
@@ -688,6 +708,7 @@ fn PhysicianShell(
     let reply_slot = use_command_slot();
     let send_slot = use_command_slot();
     let resume_slot = use_command_slot();
+    let chat_resume_slot = use_command_slot();
     let work_slot = use_command_slot();
     use_effect(move || {
         let open = workspace_cache.read().clone();
@@ -865,9 +886,14 @@ fn PhysicianShell(
             }
             return;
         }
+        let requested = requested_chat
+            .as_ref()
+            .filter(|(patient, _)| Some(patient.as_str()) == current.as_deref())
+            .map(|(_, chat)| chat.clone());
         if open_chat.read().is_none()
-            && let Some(chat_id) =
+            && let Some(chat_id) = requested.or_else(|| {
                 cached.and_then(|open| open.chats.first().map(|chat| chat.chat_id.clone()))
+            })
         {
             open_chat.set(Some(chat_id));
         }
@@ -934,6 +960,7 @@ fn PhysicianShell(
             Ok(open) => Ok(*open),
             Err(_) => Err(()),
         }),
+        open_chat.read().as_deref(),
     );
     let patient_list = patients
         .read()
@@ -986,13 +1013,7 @@ fn PhysicianShell(
                 (Some(workspace_id), Some(chat_id)) => client
                     .chat_snapshot(workspace_id, chat_id)
                     .await
-                    .map(|page| {
-                        page.snapshot
-                            .conversation
-                            .iter()
-                            .filter_map(|turn| turn.body().map(str::to_owned))
-                            .collect::<Vec<_>>()
-                    })
+                    .map(|page| conversation_lines(&page.snapshot))
                     .map_err(|_| ()),
                 _ => Ok(Vec::new()),
             };
@@ -1004,6 +1025,15 @@ fn PhysicianShell(
         None,
         answer_to(&(selected(), open_chat()), snapshot.read().as_ref()).cloned(),
     );
+    // New conversation: a fresh id the server keeps once a message is sent.
+    // The address names it, so a reload before the reply still reopens it.
+    let mut start_chat = move || {
+        let Some(patient) = selected() else { return };
+        let chat = new_chat_id();
+        write_address_chat(&patient, &chat);
+        draft.set(String::new());
+        open_chat.set(Some(chat));
+    };
     let shell_class = format!(
         "glass-app{}{}",
         if app_collapsed() { " is-collapsed" } else { "" },
@@ -1208,6 +1238,15 @@ fn PhysicianShell(
                                 div { class: "sidebar-section-heading", h2 { "Clinic record" } }
                                 p { class: "sidebar-empty", "Not on your panel" }
                             } else {
+                                if !matches!(chats, ChatView::Closed | ChatView::Pending | ChatView::Unavailable) {
+                                    button {
+                                        class: "control-secondary sidebar-new-conversation",
+                                        r#type: "button",
+                                        onclick: move |_| start_chat(),
+                                        Icon { name: IconName::Plus }
+                                        "{NEW_CONVERSATION}"
+                                    }
+                                }
                                 div { class: "sidebar-section-heading", h2 { "Conversations" } }
                                 match chats.clone() {
                                     ChatView::Empty | ChatView::Closed => rsx! { p { class: "sidebar-empty", "{NO_CONVERSATIONS}" } },
@@ -1509,7 +1548,19 @@ fn PhysicianShell(
                             on_draft: move |value: String| draft.set(value),
                             conversation: conversation.clone(),
                             on_conversation_retry: move |_| *snapshot_attempt.write() += 1,
+                            conversation_resume_busy: chat_resume_slot.sending(),
+                            conversation_resume_notice: chat_resume_slot.notice(client),
+                            on_conversation_resume: move |target: WorkResumeTarget| {
+                                if let Some(command) =
+                                    chat_resume_command(selected(), open_chat(), &target)
+                                {
+                                    chat_resume_slot.run(client.read().clone(), command, move || {
+                                        *snapshot_attempt.write() += 1;
+                                    });
+                                }
+                            },
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
+                            on_new_chat: move |_| start_chat(),
                             on_save: move |_| {
                                 let Some(id) = selected() else { return };
                                 let client = client.read().clone();
@@ -2615,9 +2666,13 @@ fn PatientSurface(
     on_send: EventHandler,
     on_dictate: EventHandler,
     on_editing: EventHandler<bool>,
-    conversation: ReadView<Vec<String>>,
+    conversation: ReadView<Vec<ConversationLine>>,
     on_conversation_retry: EventHandler,
+    conversation_resume_busy: bool,
+    conversation_resume_notice: Element,
+    on_conversation_resume: EventHandler<WorkResumeTarget>,
     on_open_chat: EventHandler<String>,
+    on_new_chat: EventHandler,
     conversation_open: bool,
     past_work: bool,
     reply_notice: String,
@@ -3015,8 +3070,8 @@ fn PatientSurface(
                 }
             }
             if !shared_records.is_empty() {
-                section { class: "patient-section", aria_label: "Patient-shared records",
-                    h2 { "Patient-shared records" }
+                section { class: "patient-section", aria_label: "Preview records",
+                    h2 { "Preview records" }
                     for record in shared_records {
                         article { class: "today-row",
                             strong { "{record.title}" }
@@ -3058,7 +3113,16 @@ fn PatientSurface(
                     ChatView::Pending => rsx! {},
                     // The page's own read line says the patient couldn't open.
                     ChatView::Unavailable => rsx! {},
-                    ChatView::Empty => rsx! { p { class: "sidebar-empty", "{WORKSPACE_EMPTY}" } },
+                    ChatView::Empty => rsx! {
+                        p { class: "sidebar-empty", "{WORKSPACE_EMPTY}" }
+                        button {
+                            class: "control-secondary",
+                            r#type: "button",
+                            onclick: move |_| on_new_chat.call(()),
+                            Icon { name: IconName::Plus }
+                            "{NEW_CONVERSATION}"
+                        }
+                    },
                     ChatView::Chats(lines) => rsx! {
                         for line in lines {
                             button {
@@ -3085,9 +3149,23 @@ fn PatientSurface(
                         if conversation_open && conversation.content().is_some_and(Vec::is_empty) {
                             h3 { class: "conversation-empty", "{CONVERSATION_EMPTY}" }
                         }
-                        for message in conversation.content().cloned().unwrap_or_default() {
-                            FormattedMessage { text: message }
+                        for line in conversation.content().cloned().unwrap_or_default() {
+                            if let Some(target) = line.resume {
+                                div { class: "conversation-mechanical", role: "status",
+                                    p { "{line.text}" }
+                                    button {
+                                        class: "control-secondary",
+                                        r#type: "button",
+                                        disabled: conversation_resume_busy,
+                                        onclick: move |_| on_conversation_resume.call(target.clone()),
+                                        "{TRY_AGAIN}"
+                                    }
+                                }
+                            } else {
+                                FormattedMessage { text: line.text }
+                            }
                         }
+                        {conversation_resume_notice}
                         textarea {
                             class: "composer",
                             placeholder: "Write a message",
@@ -3668,6 +3746,51 @@ fn message_command(
     ))
 }
 
+/// One line of the open conversation. A turn Coda couldn't finish carries the
+/// work and run its Try again resumes.
+#[derive(Debug, Clone, PartialEq)]
+struct ConversationLine {
+    text: String,
+    resume: Option<WorkResumeTarget>,
+}
+
+/// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
+/// resume target; turns with no text are skipped.
+fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
+    snapshot
+        .conversation
+        .iter()
+        .filter_map(|turn| {
+            let text = turn.body()?.to_owned();
+            let resume = turn
+                .resume_target
+                .clone()
+                .filter(|_| turn.kind.as_deref() == Some("mechanical"));
+            Some(ConversationLine { text, resume })
+        })
+        .collect()
+}
+
+/// Try again on a chat turn Coda couldn't finish. Like the Today row, its key
+/// names the run, so pressing again for the same run is the same request.
+fn chat_resume_command(
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    target: &WorkResumeTarget,
+) -> Option<Command> {
+    let (workspace_id, chat_id) = (workspace_id?, chat_id?);
+    Some(Command::keyed(
+        "work.resume",
+        format!("resume-{}-{}", target.work_item_id, target.expected_run_id),
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "work_item_id": target.work_item_id,
+            "expected_run_id": target.expected_run_id,
+        }),
+    ))
+}
+
 /// Try again on one piece of work. Its key names the run it resumes, so
 /// pressing again for the same run is the same request.
 fn resume_command(line: &TodayLine, time_zone: &str) -> Option<Command> {
@@ -3690,9 +3813,138 @@ fn resume_command(line: &TodayLine, time_zone: &str) -> Option<Command> {
 fn idempotency_key() -> String {
     static NEXT: AtomicU64 = AtomicU64::new(1);
     let n = NEXT.fetch_add(1, Ordering::Relaxed);
-    let millis = SystemTime::now()
+    format!("submit-{}-{n}", now_millis())
+}
+
+/// A conversation id the page picks itself, built like [`idempotency_key`].
+/// The server keeps a chat once its first message is accepted.
+fn new_chat_id() -> String {
+    static NEXT: AtomicU64 = AtomicU64::new(1);
+    let n = NEXT.fetch_add(1, Ordering::Relaxed);
+    format!("chat-{}-{n}", now_millis())
+}
+
+/// Puts the open patient and conversation in the address, without a history
+/// entry, so a reload reopens the same chat.
+#[cfg(target_arch = "wasm32")]
+fn write_address_chat(patient: &str, chat: &str) {
+    if let Some(window) = web_sys::window()
+        && let Ok(href) = window.location().href()
+        && let Ok(url) = web_sys::Url::new(&href)
+    {
+        url.search_params().set("patient", patient);
+        url.search_params().set("chat", chat);
+        if let Ok(history) = window.history() {
+            let _ =
+                history.replace_state_with_url(&wasm_bindgen::JsValue::NULL, "", Some(&url.href()));
+        }
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn write_address_chat(_patient: &str, _chat: &str) {}
+
+/// Milliseconds since the epoch. `std::time::SystemTime::now` panics on
+/// wasm32-unknown-unknown, so the browser build asks the page's clock.
+#[cfg(target_arch = "wasm32")]
+fn now_millis() -> u128 {
+    js_sys::Date::now() as u128
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn now_millis() -> u128 {
+    use std::time::{SystemTime, UNIX_EPOCH};
+    SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map(|duration| duration.as_millis())
-        .unwrap_or(0);
-    format!("submit-{millis}-{n}")
+        .unwrap_or(0)
+}
+
+#[cfg(test)]
+mod conversation_line_tests {
+    use super::{ConversationLine, chat_resume_command, conversation_lines, new_chat_id};
+    use physician_wire::{ChatSnapshotResponse, WorkResumeTarget};
+
+    #[test]
+    fn new_conversation_ids_are_distinct_chat_ids() {
+        let (first, second) = (new_chat_id(), new_chat_id());
+        assert!(first.starts_with("chat-") && second.starts_with("chat-"));
+        assert_ne!(first, second);
+    }
+
+    fn target() -> WorkResumeTarget {
+        WorkResumeTarget {
+            work_item_id: "work-1".into(),
+            expected_run_id: "run-1".into(),
+        }
+    }
+
+    #[test]
+    fn a_couldnt_finish_line_keeps_the_run_its_try_again_resumes() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": {
+                "conversation": [
+                    { "kind": "physician", "text": "Hello" },
+                    { "kind": "model", "text": "",
+                      "resume_target": { "work_item_id": "x", "expected_run_id": "y" } },
+                    { "kind": "mechanical",
+                      "text": "Coda couldn’t finish this response. Your message is saved.",
+                      "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
+                ],
+                "runs": [{ "run_id": "run-1", "state": "failed" }],
+            }
+        }))
+        .unwrap();
+        assert_eq!(
+            conversation_lines(&page.snapshot),
+            vec![
+                ConversationLine {
+                    text: "Hello".into(),
+                    resume: None,
+                },
+                ConversationLine {
+                    text: "Coda couldn’t finish this response. Your message is saved.".into(),
+                    resume: Some(target()),
+                },
+            ]
+        );
+    }
+
+    #[test]
+    fn only_a_mechanical_line_offers_try_again() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "conversation": [
+                { "kind": "model", "text": "Done",
+                  "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
+                { "text": "Older server line" },
+            ] }
+        }))
+        .unwrap();
+        assert!(
+            conversation_lines(&page.snapshot)
+                .iter()
+                .all(|line| line.resume.is_none())
+        );
+    }
+
+    #[test]
+    fn try_again_is_one_keyed_resume_of_the_named_run() {
+        let command =
+            chat_resume_command(Some("pw-1".into()), Some("chat-1".into()), &target()).unwrap();
+        assert_eq!(
+            command.0,
+            serde_json::json!({
+                "type": "work.resume",
+                "idempotency_key": "resume-work-1-run-1",
+                "payload": {
+                    "patient_workspace_id": "pw-1",
+                    "chat_id": "chat-1",
+                    "work_item_id": "work-1",
+                    "expected_run_id": "run-1",
+                },
+            })
+        );
+        assert!(chat_resume_command(None, Some("chat-1".into()), &target()).is_none());
+        assert!(chat_resume_command(Some("pw-1".into()), None, &target()).is_none());
+    }
 }

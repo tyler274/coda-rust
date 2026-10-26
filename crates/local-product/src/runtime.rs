@@ -12,14 +12,16 @@ pub use harness::engine;
 /// Existing API adapter; no second physician provider transport.
 pub use harness::responses::Responses;
 use sea_orm::{
-    ActiveModelTrait, Condition, ConnectionTrait, Database, DatabaseConnection, DbErr, EntityTrait,
-    QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
+    ActiveModelTrait, ColumnTrait, Condition, ConnectionTrait, Database, DatabaseConnection, DbErr,
+    EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
     sea_query::{Alias, Expr, ExprTrait, OnConflict, Query, extension::postgres::PgExpr},
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
 
+/// Queue delivery recovery uses the conversation owner, not a parallel ledger.
+pub mod delivery;
 mod entities;
 /// Explicit bounded restart activation, separate from construction.
 pub mod recovery;
@@ -95,7 +97,46 @@ pub struct Conversation {
     /// Accepted session reference, never the bearer secret; absent legacy work is blocked.
     #[serde(default)]
     pub session_hash: Option<Vec<u8>>,
+    /// Latest accepted command identity; saved atomically with authored input.
+    #[serde(default)]
+    pub input_id: Option<String>,
+    /// Database-clock time before which recovery need not republish a wakeup.
+    /// This is a delivery hint, never proof of execution or completion.
+    #[serde(default)]
+    pub dispatch_after: i64,
+    /// Unsuccessful attempts on the current input, including expired leases.
+    /// New input and Resume reset it; at [`MAX_FAILED_ATTEMPTS`] the work fails.
+    #[serde(default)]
+    pub failures: u32,
+    /// Database-clock seconds when the first physician message was accepted.
+    /// Zero on rows saved before the chat list existed.
+    #[serde(default)]
+    pub opened_at: i64,
+    /// Database-clock seconds of the latest accepted message or published reply.
+    #[serde(default)]
+    pub last_activity_at: i64,
 }
+
+/// One chat in a physician's workspace, for the workspace's chat list.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ChatSummary {
+    /// Conversation identity.
+    pub chat: String,
+    /// The first physician message, which names the chat until titles exist.
+    pub first_message: String,
+    /// Database-clock seconds the chat was opened (0 when unknown).
+    pub opened_at: i64,
+    /// Database-clock seconds of the latest visible activity (0 when unknown).
+    pub last_activity_at: i64,
+}
+
+/// The chat list reads at most this many conversations of one workspace.
+pub const MAX_LISTED_CHATS: u64 = 200;
+
+/// Recovery gives up after this many unsuccessful attempts on one input, so a
+/// turn that always fails ends as failed instead of calling the model forever.
+/// It matches the chat-turn subscription's `max_delivery_attempts`.
+pub const MAX_FAILED_ATTEMPTS: u32 = 5;
 
 impl Default for Conversation {
     fn default() -> Self {
@@ -106,6 +147,11 @@ impl Default for Conversation {
             work: String::new(),
             attempts: vec![],
             session_hash: None,
+            input_id: None,
+            dispatch_after: 0,
+            failures: 0,
+            opened_at: 0,
+            last_activity_at: 0,
         }
     }
 }
@@ -128,6 +174,20 @@ pub enum Accepted {
     New,
     /// Exact original command already saved; do not dispatch it again.
     Duplicate,
+}
+
+/// Outcome of a physician's Try again on failed or held work.
+#[derive(Debug, PartialEq, Eq)]
+pub enum Resumed {
+    /// The work is pending again; publish a wakeup for this input identity.
+    Pending {
+        /// Latest accepted input, the queue delivery's fence.
+        input_id: String,
+    },
+    /// The exact same Try again was already taken; do not publish again.
+    Duplicate,
+    /// The named work or run is not the current failed or held work.
+    Refused,
 }
 
 /// Postgres physician runtime owner. Cloning shares connections, not state.
@@ -327,6 +387,14 @@ impl Store {
         }
         state.revision += 1;
         state.session_hash = session_hash;
+        state.input_id = Some(input.key.clone());
+        state.dispatch_after = 0;
+        state.failures = 0;
+        let now = now(&tx).await?;
+        if state.messages.is_empty() {
+            state.opened_at = now;
+        }
+        state.last_activity_at = now;
         state.messages.push(Message {
             role: "user".into(),
             text: input.text.clone(),
@@ -349,13 +417,34 @@ impl Store {
     /// Claims pending work or recovers an expired active attempt as its successor.
     /// Lease must cover the bounded engine deadline; no two live claims coexist.
     pub async fn claim(&self, scope: &Scope, lease_seconds: i64) -> Result<Option<Claim>, DbErr> {
+        self.claim_inner(scope, lease_seconds, None).await
+    }
+
+    async fn claim_inner(
+        &self,
+        scope: &Scope,
+        lease_seconds: i64,
+        input_id: Option<&str>,
+    ) -> Result<Option<Claim>, DbErr> {
         if !(1..=600).contains(&lease_seconds) {
             return Err(error("invalid lease duration"));
         }
         let (tx, mut state, now) = self.locked(scope).await?;
+        if input_id.is_some_and(|id| state.input_id.as_deref() != Some(id)) {
+            tx.commit().await?;
+            return Ok(None);
+        }
         if state.status == "active" && state.attempts.last().is_some_and(|a| a.expires <= now) {
             state.attempts.last_mut().unwrap().status = "interrupted".into();
             state.status = "pending".into();
+            // A lease that ran out is an unsuccessful attempt too: a turn that
+            // keeps crashing its worker must reach the same end as one that fails.
+            state.failures += 1;
+            if state.failures >= MAX_FAILED_ATTEMPTS {
+                state.status = "failed".into();
+                Self::save(tx, scope, &state).await?;
+                return Ok(None);
+            }
         }
         if state.status != "pending" {
             tx.commit().await?;
@@ -496,6 +585,7 @@ impl Store {
         }
         attempt.status = "completed".into();
         state.status = "completed".into();
+        state.last_activity_at = now;
         state.messages.push(Message {
             role: "assistant".into(),
             text: candidate.text.clone(),
@@ -535,8 +625,160 @@ impl Store {
         let (tx, mut state, _) = self.locked(scope).await?;
         if state.status == "held" || state.status == "failed" {
             state.status = "pending".into();
+            state.failures = 0;
         }
         Self::save(tx, scope, &state).await
+    }
+
+    /// Hosted Try again. Resumes only the named work while it is failed or held
+    /// and its latest attempt is `expected_run_id`, so a stale page never
+    /// restarts newer work and completed work is never reopened. The receipt is
+    /// saved with the change: the same `key` and target answers `Duplicate`.
+    /// The accepted session moves to the physician's current session, because
+    /// the original one may have ended while the work sat failed.
+    pub async fn resume_authorized(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        work_item_id: &str,
+        expected_run_id: &str,
+    ) -> Result<Resumed, DbErr> {
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference"));
+        }
+        if [
+            key,
+            work_item_id,
+            expected_run_id,
+            &scope.practice,
+            &scope.physician,
+            &scope.workspace,
+            &scope.chat,
+        ]
+        .iter()
+        .any(|s| s.trim().is_empty())
+        {
+            return Err(error("empty command field"));
+        }
+        let tx = self.db.begin().await?;
+        let command = serde_json::json!({
+            "scope": scope,
+            "resume": {"work_item_id": work_item_id, "expected_run_id": expected_run_id},
+        });
+        let inserted = command::Entity::insert(command::ActiveModel {
+            practice: Set(scope.practice.clone()),
+            physician: Set(scope.physician.clone()),
+            key: Set(key.to_owned()),
+            command: Set(command.clone()),
+        })
+        .on_conflict(OnConflict::new().do_nothing().to_owned())
+        .exec_without_returning(&tx)
+        .await?;
+        if inserted == 0 {
+            let previous = command::Entity::find_by_id((
+                scope.practice.clone(),
+                scope.physician.clone(),
+                key.to_owned(),
+            ))
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("missing command receipt"))?
+            .command;
+            tx.commit().await?;
+            return Ok(if previous == command {
+                Resumed::Duplicate
+            } else {
+                Resumed::Refused
+            });
+        }
+        let Some(row) = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+        else {
+            // Dropping the transaction rolls the receipt back.
+            return Ok(Resumed::Refused);
+        };
+        let mut state: Conversation =
+            serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+        let resumable = matches!(state.status.as_str(), "failed" | "held")
+            && state.work == work_item_id
+            && state
+                .attempts
+                .last()
+                .is_some_and(|attempt| attempt.id == expected_run_id);
+        let Some(input_id) = state.input_id.clone().filter(|_| resumable) else {
+            return Ok(Resumed::Refused);
+        };
+        state.status = "pending".into();
+        state.failures = 0;
+        state.dispatch_after = 0;
+        state.session_hash = Some(session_hash);
+        Self::save(tx, scope, &state).await?;
+        Ok(Resumed::Pending { input_id })
+    }
+
+    /// The physician's chats in one workspace, latest activity first, then
+    /// chat id descending. Another physician's chats are never listed.
+    pub async fn chats(
+        &self,
+        practice: &str,
+        physician: &str,
+        workspace: &str,
+    ) -> Result<Vec<ChatSummary>, DbErr> {
+        use conversation::Column as C;
+        if [practice, physician, workspace]
+            .iter()
+            .any(|s| s.trim().is_empty())
+        {
+            return Err(error("empty physician scope"));
+        }
+        // Newest activity first, ordered in Postgres before the limit: a chat
+        // that just got a message must make the list however many older chats
+        // the workspace has. Rows saved before the activity fields existed
+        // count as 0. Chat id breaks ties, as in `chats.sort_by` below.
+        let seconds = |field: &str| {
+            sea_orm::sea_query::Func::coalesce([
+                Expr::col(C::State)
+                    .cast_json_field(field)
+                    .cast_as(Alias::new("bigint")),
+                Expr::val(0_i64),
+            ])
+        };
+        let activity = sea_orm::sea_query::Func::greatest([
+            Expr::from(seconds("last_activity_at")),
+            Expr::from(seconds("opened_at")),
+        ]);
+        let rows = conversation::Entity::find()
+            .filter(C::Practice.eq(practice))
+            .filter(C::Physician.eq(physician))
+            .filter(C::Workspace.eq(workspace))
+            .order_by_desc(Expr::from(activity))
+            .order_by_desc(C::Chat)
+            .limit(MAX_LISTED_CHATS)
+            .all(&self.db)
+            .await?;
+        let mut chats = Vec::with_capacity(rows.len());
+        for row in rows {
+            let state: Conversation =
+                serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+            let Some(first) = state.messages.iter().find(|m| m.role == "user") else {
+                continue;
+            };
+            chats.push(ChatSummary {
+                chat: row.chat,
+                first_message: first.text.clone(),
+                opened_at: state.opened_at,
+                last_activity_at: Ord::max(state.last_activity_at, state.opened_at),
+            });
+        }
+        chats.sort_by(|a, b| {
+            b.last_activity_at
+                .cmp(&a.last_activity_at)
+                .then_with(|| b.chat.cmp(&a.chat))
+        });
+        Ok(chats)
     }
 
     /// Enumerates durable pending/expired work for explicit server activation.

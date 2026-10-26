@@ -82,6 +82,67 @@ async fn the_recorded_practice_is_visible() {
             && !workspace.contains("Visit preparation failed. No new briefing was completed."),
         "the workspace did not match the React patient page:\n{workspace}"
     );
+    // Exercise the legacy preview ingress through the running server, then
+    // verify what the physician sees in the compiled client. Submitted source
+    // and approval claims must not become patient-origin attribution.
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let http = reqwest::Client::new();
+    let workspace_url = format!("http://{address}/patient-workspaces/{patient}");
+    let invitation: serde_json::Value = http
+        .post(format!("{workspace_url}/invite"))
+        .send()
+        .await
+        .unwrap()
+        .error_for_status()
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    http.post(format!("http://{address}/patient-invitations/accept"))
+        .json(&serde_json::json!({"token": invitation["token"], "duet_account_id": "synthetic-preview-account"}))
+        .send().await.unwrap().error_for_status().unwrap();
+    http.put(format!("{workspace_url}/consent"))
+        .json(&serde_json::json!({"duet_account_id": "synthetic-preview-account", "consent_version": "v1"}))
+        .send().await.unwrap().error_for_status().unwrap();
+    http.post(format!("{workspace_url}/duet-sync"))
+        .json(&serde_json::json!({"items": [{
+            "record_id": "synthetic-preview", "revision_cursor": "revision-1",
+            "content_hash": "synthetic-content", "source_identity": "synthetic-source",
+            "origin_label": "via the patient's Duet", "patient_approved_note": true,
+            "category": "clinical_note", "title": "Preview source attribution",
+            "summary": "Synthetic content entered through the physician preview.",
+            "recorded_at": "2026-10-25"
+        }]}))
+        .send()
+        .await
+        .unwrap()
+        .error_for_status()
+        .unwrap();
+    let preview = dump_dom(&chrome, &format!("http://{address}/?patient={patient}")).await;
+    assert!(
+        preview.contains("Preview records") && preview.contains("Physician-entered preview"),
+        "{preview}"
+    );
+    assert!(
+        !preview.contains("Patient-shared records") && !preview.contains("via the patient's Duet"),
+        "{preview}"
+    );
+
+    // `?chat=` opens a conversation the recorded workspace does not list.
+    let chat = dump_dom(
+        &chrome,
+        &format!(
+            "http://{address}/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e&chat=chat-from-address"
+        ),
+    )
+    .await;
+    assert!(
+        chat.contains("Patient summary")
+            && chat.contains("What would you like Coda to review?")
+            && chat.contains("Write a message")
+            && !chat.contains("This workspace has no chats."),
+        "?chat= did not open the conversation:\n{chat}"
+    );
     let logo = tokio::task::spawn_blocking(move || read_logo(address))
         .await
         .expect("logo read");
@@ -89,6 +150,130 @@ async fn the_recorded_practice_is_visible() {
     assert!(
         head.contains("200") && logo.windows(8).any(|window| window == b"\x89PNG\r\n\x1a\n"),
         "the reference logo was not a PNG:\n{head}"
+    );
+}
+
+/// New conversation, send, then a reload without `?chat=`: the workspace
+/// lists the chat the physician started, titled by its first message.
+#[tokio::test]
+async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = common::serve_isolated(|| {
+        // SAFETY: tests in this binary hold `test_lock()` before mutating
+        // process env, and `serve_isolated` holds its start lock here.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::remove_var("PHYSICIAN_AUTH");
+            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await;
+    let address = server.address;
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let workspace_url = format!("http://{address}/?patient={patient}");
+    let chrome = chromium();
+    let mut browser = CdpBrowser::launch(&chrome, &workspace_url).await;
+    browser
+        .wait_for_text("This workspace has no chats.", Duration::from_secs(20))
+        .await;
+
+    // The empty state and the sidebar both offer it; use the sidebar's.
+    let clicked = browser
+        .eval("(() => { const b = document.querySelector('button.sidebar-new-conversation'); if (!b) return false; b.click(); return true; })()")
+        .await;
+    assert_eq!(
+        clicked.pointer("/result/result/value"),
+        Some(&serde_json::json!(true)),
+        "no New conversation button in the sidebar: {}",
+        browser.dom().await
+    );
+    browser
+        .wait_for_text(
+            "What would you like Coda to review?",
+            Duration::from_secs(10),
+        )
+        .await;
+    let address_chat = browser
+        .eval("new URL(location.href).searchParams.get('chat')")
+        .await;
+    let chat = address_chat
+        .pointer("/result/result/value")
+        .and_then(|value| value.as_str())
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        chat.starts_with("chat-"),
+        "the address names no chat: {address_chat}"
+    );
+
+    let message = "Review the discharge summary before the follow-up visit";
+    browser
+        .eval(&format!(
+            r#"new Promise(resolve => {{
+            const box = document.querySelector('textarea.composer');
+            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
+            box.dispatchEvent(new Event('input', {{bubbles: true}}));
+            setTimeout(() => {{
+                const send = [...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Send');
+                send.click();
+                resolve(true);
+            }}, 100);
+        }})"#,
+            serde_json::to_string(message).unwrap()
+        ))
+        .await;
+    // The inline session saves the turn before calling the (empty) replay.
+    browser
+        .wait_for_text(message, Duration::from_secs(15))
+        .await;
+
+    browser.navigate(&workspace_url).await;
+    let html = browser
+        .wait_for_text(message, Duration::from_secs(20))
+        .await;
+    assert!(
+        !html.contains("This workspace has no chats.")
+            && html.contains("sidebar-conversation-link"),
+        "the reloaded workspace did not list the new chat:\n{html}"
+    );
+    let reopened = browser
+        .eval("new URL(location.href).searchParams.get('chat')")
+        .await;
+    assert_eq!(
+        reopened.pointer("/result/result/value"),
+        Some(&serde_json::Value::Null),
+        "the reload must not carry ?chat=: {reopened}"
+    );
+
+    // A second new conversation never shows the listed chat's lines, not even
+    // for the frame before its own (empty) read answers. Every render after the
+    // click is checked until the empty state; the click itself changes no DOM,
+    // so the page before it (still showing the old chat) is not counted.
+    let stale = browser
+        .eval(&format!(
+            r#"new Promise(resolve => {{
+            const old = {};
+            const region = () => document.querySelector('[aria-label="Conversation"]');
+            const lines = () => [...(region()?.querySelectorAll('.formatted-message') ?? [])].map(m => m.textContent);
+            let seen = false;
+            const check = () => {{
+                if (lines().some(t => t.includes(old))) seen = true;
+                if (region()?.querySelector('.conversation-empty')) {{ observer.disconnect(); resolve({{seen, done: true}}); }}
+            }};
+            const observer = new MutationObserver(check);
+            observer.observe(document.body, {{subtree: true, childList: true, characterData: true}});
+            document.querySelector('button.sidebar-new-conversation').click();
+            setTimeout(() => {{ observer.disconnect(); resolve({{seen, done: false}}); }}, 10000);
+        }})"#,
+            serde_json::to_string(message).unwrap()
+        ))
+        .await;
+    assert_eq!(
+        stale.pointer("/result/result/value"),
+        Some(&serde_json::json!({"seen": false, "done": true})),
+        "a new conversation showed the previous chat's lines: {stale}"
     );
 }
 

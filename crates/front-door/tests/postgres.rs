@@ -8,9 +8,72 @@ use front_door::{
     INVITATION_TTL_SECONDS, InviteError, LinkError, MemoryFrontDoorStore, PostgresFrontDoorStore,
     Premium, RosterPatient, SESSION_TTL_SECONDS, SessionError, SignInError,
 };
-use sea_orm::ConnectionTrait;
+use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
 
 const NOW: u64 = 1_760_000_000;
+
+#[tokio::test]
+async fn concurrent_sign_in_consumes_one_token_and_mints_one_session() {
+    let Some(url) = database("concurrent_sign_in").await else {
+        return;
+    };
+    let store = PostgresFrontDoorStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let (_, id, _) = invited_account(&store, "pg-proof").await;
+    let email = store.account(id).await.unwrap().email;
+    let token = store.begin_sign_in(&email, NOW).await.unwrap();
+    let db = sea_orm::Database::connect(&url).await.unwrap();
+    let held = db.begin().await.unwrap();
+    front_door::migration::sign_in_token::Entity::find()
+        .lock_exclusive()
+        .one(&held)
+        .await
+        .unwrap()
+        .unwrap();
+    let redeem = || {
+        let (store, email, token) = (store.clone(), email.clone(), token.clone());
+        tokio::spawn(async move { store.complete_sign_in(&email, &token, NOW).await })
+    };
+    let first = redeem();
+    let second = redeem();
+    // Postgres-specific catalog read synchronizes two real store calls, with
+    // no query-text matching, probabilistic retries, or production test hooks.
+    tokio::time::timeout(std::time::Duration::from_secs(10), async {
+        loop {
+            let row = db.query_one_raw(sea_orm::Statement::from_string(
+                sea_orm::DbBackend::Postgres,
+                "SELECT count(*) AS waiting FROM pg_stat_activity WHERE datname = current_database() AND wait_event_type = 'Lock'",
+            )).await.unwrap().unwrap();
+            if row.try_get::<i64>("", "waiting").unwrap() == 2 { break; }
+            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+        }
+    }).await.expect("both redemptions must contend for the held row");
+    held.commit().await.unwrap();
+    let outcomes = [first.await.unwrap(), second.await.unwrap()];
+    assert_eq!(
+        outcomes.iter().filter(|result| result.is_ok()).count(),
+        1,
+        "{outcomes:?}"
+    );
+    assert_eq!(
+        outcomes
+            .iter()
+            .filter(|result| **result == Err(SignInError::Invalid))
+            .count(),
+        1
+    );
+    let (who, session) = outcomes.into_iter().find_map(Result::ok).unwrap();
+    assert_eq!(who, id);
+    assert_eq!(store.session(&session, NOW).await.unwrap(), id);
+    assert_eq!(
+        front_door::migration::session::Entity::find()
+            .count(&db)
+            .await
+            .unwrap(),
+        2
+    );
+}
 
 /// Connects when the gate is set; `None` skips the suite quietly.
 ///

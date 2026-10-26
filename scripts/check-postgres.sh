@@ -38,3 +38,18 @@ cargo test --locked -p local-product --lib runtime::tests -- --ignored --test-th
 cargo test --locked -p local-product --test runtime_postgres -- --ignored --skip database_crash_restart --test-threads=1
 cargo test --locked -p local-product --test runtime_publication -- --ignored --test-threads=1
 cargo test --locked -p local-product --test runtime_recovery -- --ignored --test-threads=1
+# Physician scale proofs. Valkey and the Pub/Sub emulator come from the nix
+# dev shell; each test creates its own database on PHYSICIAN_DATABASE_URL.
+# The bus suite needs Valkey only. The workspace CI job has no Nix shell, so
+# it skips; this job fail-closes when valkey-server is missing.
+cargo test --locked -p physician-bus --test redis -- --test-threads=1
+cargo test --locked -p physician-sample --test fanout -- --test-threads=1
+cargo test --locked -p physician-sample --test worker -- --test-threads=1
+# A failed publish is republished by the recovery sweep; a dead-lettered turn
+# shows "couldn't finish" and Try again (work.resume) gets the reply.
+cargo test --locked -p physician-sample --test recovery -- --test-threads=1
+cargo test --locked -p physician-sample --test try_again -- --test-threads=1
+# A site instance that dies before its publish lands: another instance's sweep
+# finishes the turn. Exhausted worker leases fail the turn, announce it and
+# dead-letter its wakeup.
+cargo test --locked -p physician-sample --test instance_loss -- --test-threads=1

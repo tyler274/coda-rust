@@ -21,10 +21,10 @@ use harness::execution::{
 use local_product::ModelBinding;
 use local_product::codex::CodexTransport;
 use local_product::execution::{PhysicianSession, Status, Work};
+use physician_bus::{Bus, Event, LocalBus};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use telemetry::genai;
-use tokio::sync::broadcast;
 use tracing::Instrument;
 
 use crate::auth::{AuthContext, allows_workspace, now};
@@ -61,9 +61,12 @@ pub(crate) struct Live {
     model: ChatModel,
     pub(crate) binding: ModelBinding,
     pub(crate) session: Mutex<PhysicianSession>,
-    events: broadcast::Sender<String>,
+    pub(crate) bus: Arc<dyn Bus>,
     pub(crate) sources: Vec<local_product::physician_sources::SourceRevision>,
     turns: AtomicU64,
+    /// Set only when both the physician database and chat topic are configured.
+    /// The site accepts and snapshots; the worker runs the model.
+    durable: Option<Arc<crate::durable::DurableChat>>,
 }
 
 impl Live {
@@ -87,18 +90,23 @@ impl Live {
             | ChatModel::Codex { binding, .. }
             | ChatModel::StructuredReplay { binding, .. } => binding.clone(),
         };
-        let (events, _) = broadcast::channel(64);
         Ok(Arc::new(Self {
             model,
             binding,
             session: Mutex::new(session),
-            events,
+            bus: Arc::new(LocalBus::new(64)),
             sources,
             turns: AtomicU64::new(0),
+            durable: None,
         }))
     }
     /// Starts an empty chat session for the model's role.
     pub(crate) fn new(model: ChatModel) -> Arc<Self> {
+        Self::with_bus(model, Arc::new(LocalBus::new(64)))
+    }
+
+    /// Same session as [`Self::new`], on a caller-owned bus.
+    pub(crate) fn with_bus(model: ChatModel, bus: Arc<dyn Bus>) -> Arc<Self> {
         let binding = match &model {
             #[cfg(test)]
             ChatModel::Fixed(_) => ModelBinding {
@@ -110,7 +118,6 @@ impl Live {
             | ChatModel::Codex { binding, .. }
             | ChatModel::StructuredReplay { binding, .. } => binding.clone(),
         };
-        let (events, _) = broadcast::channel(64);
         Arc::new(Self {
             model,
             binding,
@@ -123,8 +130,9 @@ impl Live {
                 None => PhysicianSession::open(&default_session_path())
                     .expect("open default persistent physician session"),
             }),
-            events,
+            bus,
             turns: AtomicU64::new(0),
+            durable: None,
             sources: match std::env::var_os("CODA_PHYSICIAN_SOURCE_SNAPSHOT") {
                 Some(path) => {
                     let sources: Vec<local_product::physician_sources::SourceRevision> =
@@ -140,6 +148,89 @@ impl Live {
                 None => Vec::new(),
             },
         })
+    }
+
+    /// Accepts and reads Postgres chat without opening a local session or calling a model.
+    pub(crate) fn durable(
+        bus: Arc<dyn Bus>,
+        chat: Arc<crate::durable::DurableChat>,
+    ) -> Result<Arc<Self>, String> {
+        // The transport is never invoked. Hosted turns run in the worker.
+        let binding = ModelBinding {
+            model: "durable".into(),
+            effort: "none".into(),
+            adapter: "durable".into(),
+        };
+        let transport = local_product::codex::open_codex(
+            local_product::ModelExecution::Live,
+            local_product::codex::CodexSettings {
+                cassette_authorization: None,
+                cassette_output: None,
+                cassette_path: None,
+            },
+        )?;
+        Ok(Arc::new(Self {
+            model: ChatModel::Codex {
+                binding: binding.clone(),
+                transport: Arc::new(Mutex::new(transport)),
+            },
+            binding,
+            session: Mutex::new(PhysicianSession::memory()),
+            bus,
+            sources: Vec::new(),
+            turns: AtomicU64::new(0),
+            durable: Some(chat),
+        }))
+    }
+
+    /// The signed-in physician's chats in this workspace as wire
+    /// `WorkspaceChat`s, latest activity first. Hosted chats come from Postgres,
+    /// scoped to this physician; local chats come from the one-process session,
+    /// which, like its snapshots, is not split by physician.
+    pub(crate) async fn chats(
+        &self,
+        ctx: Option<&AuthContext>,
+        workspace: &str,
+    ) -> Result<Vec<Value>, ()> {
+        let chats: Vec<(String, String, i64)> = match (&self.durable, ctx) {
+            // Hosted routes always carry a session; without one there is no physician.
+            (Some(_), None) => vec![],
+            (Some(durable), Some(ctx)) => durable
+                .store
+                .chats(
+                    &ctx.identity.practice_id,
+                    &ctx.identity.physician_id,
+                    workspace,
+                )
+                .await
+                .map_err(|_| ())?
+                .into_iter()
+                .map(|chat| (chat.chat, chat.first_message, chat.opened_at))
+                .collect(),
+            (None, _) => self
+                .session
+                .lock()
+                .expect("chat session")
+                .chats(workspace)
+                .into_iter()
+                .map(|(chat, first, opened_at)| {
+                    (chat, first, i64::try_from(opened_at).unwrap_or_default())
+                })
+                .collect(),
+        };
+        Ok(chats
+            .into_iter()
+            .map(|(chat_id, first, opened_at)| {
+                let created_at = local_product::codex::format_rfc3339(
+                    std::time::UNIX_EPOCH + std::time::Duration::from_secs(opened_at.max(0) as u64),
+                );
+                json!({
+                    "chat_id": chat_id,
+                    "title": chat_title(&first),
+                    "created_at": created_at,
+                })
+            })
+            .collect())
     }
 
     /// The `gen_ai.generation` span for one chat turn. Its parent is the
@@ -175,6 +266,23 @@ impl Live {
     }
 }
 
+/// Chat titles until the model names chats: the first physician message on
+/// one line, cut at a word boundary near [`CHAT_TITLE_CHARS`].
+pub(crate) const CHAT_TITLE_CHARS: usize = 60;
+
+pub(crate) fn chat_title(first: &str) -> String {
+    let line = first.split_whitespace().collect::<Vec<_>>().join(" ");
+    if line.chars().count() <= CHAT_TITLE_CHARS {
+        return line;
+    }
+    let cut: String = line.chars().take(CHAT_TITLE_CHARS).collect();
+    let cut = match cut.rfind(' ') {
+        Some(space) if space > CHAT_TITLE_CHARS / 2 => &cut[..space],
+        _ => cut.as_str(),
+    };
+    format!("{}…", cut.trim_end())
+}
+
 #[cfg(not(test))]
 fn default_session_path() -> std::path::PathBuf {
     let state = std::env::var_os("XDG_STATE_HOME")
@@ -198,6 +306,20 @@ struct CommandBody {
     payload: Option<Value>,
 }
 
+/// `work.resume` on a failed chat turn. The workspace is checked by the auth
+/// middleware; the runtime checks that the work and run are the failed ones.
+#[derive(Deserialize)]
+struct ResumePayload {
+    patient_workspace_id: String,
+    chat_id: String,
+    work_item_id: String,
+    expected_run_id: String,
+}
+
+/// The mechanical line a failed turn shows, as the reference product words it.
+pub(crate) const COULDNT_FINISH: &str =
+    "Coda couldn’t finish this response. Your message is saved.";
+
 #[derive(Deserialize)]
 struct SubmitPayload {
     patient_workspace_id: String,
@@ -217,6 +339,9 @@ pub(crate) async fn submit(
     };
     if body.kind == "reply.revise" {
         return revise(live, auth_ctx.map(|Extension(ctx)| ctx), body).await;
+    }
+    if body.kind == "work.resume" && live.durable.is_some() {
+        return resume_durable(live, auth_ctx, body).await;
     }
     if body.kind != "message.submit" {
         return Json(json!({
@@ -240,6 +365,9 @@ pub(crate) async fn submit(
     let Some(idempotency_key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
         return rejected_submit();
     };
+    if live.durable.is_some() {
+        return accept_durable(live, auth_ctx, payload, idempotency_key).await;
+    }
     let request = {
         let mut session = live.session.lock().expect("chat session");
         match session.submit(
@@ -281,7 +409,17 @@ pub(crate) async fn submit(
                 match result {
                     Ok(response) => {
                         genai::record_output(&turn, &response.text);
-                        let _ = live.events.send(workspace);
+                        // Lossy invalidation; subscribers refetch on resync.
+                        if live
+                            .bus
+                            .publish(Event::WorkspaceChanged {
+                                workspace_id: workspace,
+                            })
+                            .await
+                            .is_err()
+                        {
+                            tracing::warn!("physician workspace invalidation not published");
+                        }
                     }
                     Err(_) => {
                         // Detailed provider output remains in the protected owner,
@@ -312,6 +450,16 @@ pub(crate) async fn submit(
 }
 
 async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -> Response {
+    if live.durable.is_some() {
+        return (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({
+                "outcome": "rejected",
+                "message": "Hosted reply revision is unavailable.",
+            })),
+        )
+            .into_response();
+    }
     let Some(ctx) = ctx else {
         return StatusCode::UNAUTHORIZED.into_response();
     };
@@ -354,7 +502,16 @@ async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) ->
                 .expect("physician session")
                 .settle(&work, Status::Failed);
         }
-        let _ = live.events.send(work.workspace);
+        if live
+            .bus
+            .publish(Event::WorkspaceChanged {
+                workspace_id: work.workspace,
+            })
+            .await
+            .is_err()
+        {
+            tracing::warn!("physician workspace invalidation not published");
+        }
     });
     Json(json!({"outcome":"accepted", "patient_workspace_id":workspace,"run_id":id}))
         .into_response()
@@ -363,8 +520,18 @@ async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) ->
 /// The turns recorded for this chat.
 pub(crate) async fn snapshot(
     State(live): State<Arc<Live>>,
+    auth_ctx: Option<Extension<AuthContext>>,
     Path((workspace, chat)): Path<(String, String)>,
-) -> Json<Value> {
+) -> Response {
+    if let Some(durable) = live.durable.clone() {
+        return durable_snapshot(
+            &durable,
+            auth_ctx.map(|Extension(ctx)| ctx),
+            workspace,
+            chat,
+        )
+        .await;
+    }
     let conversation = live
         .session
         .lock()
@@ -378,15 +545,203 @@ pub(crate) async fn snapshot(
                 .collect::<Vec<_>>()
         }
     }))
+    .into_response()
 }
 
-/// `workspace_changed` frames. The body stays open.
+async fn accept_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    payload: SubmitPayload,
+    idempotency_key: String,
+) -> Response {
+    let Some(chat) = live.durable.clone() else {
+        return rejected_submit();
+    };
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let input = local_product::runtime::Input {
+        key: idempotency_key,
+        text: payload.text,
+        timezone: payload.physician_time_zone,
+    };
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    match chat.accept(&scope, &input, session_hash).await {
+        Ok(_) => Json(json!({
+            "outcome": "accepted",
+            "patient_workspace_id": payload.patient_workspace_id,
+            "chat_id": payload.chat_id,
+        }))
+        .into_response(),
+        Err(error) => {
+            let collision = error.contains("idempotency collision");
+            tracing::warn!(collision, "physician chat accept failed");
+            let status = if collision {
+                StatusCode::OK
+            } else {
+                StatusCode::SERVICE_UNAVAILABLE
+            };
+            (
+                status,
+                Json(json!({
+                    "outcome": "rejected",
+                    "message": rejection_message("message.submit"),
+                })),
+            )
+                .into_response()
+        }
+    }
+}
+
+async fn durable_snapshot(
+    chat: &crate::durable::DurableChat,
+    ctx: Option<AuthContext>,
+    workspace: String,
+    chat_id: String,
+) -> Response {
+    let Some(ctx) = ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id,
+        physician: ctx.identity.physician_id,
+        workspace,
+        chat: chat_id,
+    };
+    // Unlocked display read. None, before the first accept, is an empty conversation.
+    let conversation = match chat.store.read(&scope).await {
+        Ok(conversation) => conversation,
+        Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+    };
+    Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref()) })).into_response()
+}
+
+/// The reference `SnapshotResponse` subset this site owns. A failed turn adds
+/// its run and a mechanical "couldn't finish" line whose `resume_target` names
+/// the exact work and run Try again resumes; the physician's text stays saved.
+fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversation>) -> Value {
+    let Some(conversation) = conversation else {
+        return json!({ "conversation": [], "runs": [] });
+    };
+    let mut items: Vec<Value> = conversation
+        .messages
+        .iter()
+        .map(|message| {
+            let kind = if message.role == "assistant" {
+                "model"
+            } else {
+                "physician"
+            };
+            json!({ "kind": kind, "text": message.text })
+        })
+        .collect();
+    let mut runs = Vec::new();
+    if conversation.status == "failed"
+        && let Some(attempt) = conversation.attempts.last()
+    {
+        runs.push(json!({ "run_id": attempt.id, "state": "failed" }));
+        items.push(json!({
+            "kind": "mechanical",
+            "text": COULDNT_FINISH,
+            "resume_target": {
+                "work_item_id": conversation.work,
+                "expected_run_id": attempt.id,
+            },
+        }));
+    }
+    json!({ "conversation": items, "runs": runs })
+}
+
+async fn resume_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: CommandBody,
+) -> Response {
+    let Some(chat) = live.durable.clone() else {
+        return rejected("work.resume");
+    };
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|p| serde_json::from_value::<ResumePayload>(p).ok())
+    else {
+        return rejected("work.resume");
+    };
+    let Some(key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
+        return rejected("work.resume");
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    match chat
+        .resume(
+            &scope,
+            &key,
+            session_hash,
+            &payload.work_item_id,
+            &payload.expected_run_id,
+        )
+        .await
+    {
+        Ok(local_product::runtime::Resumed::Refused) => rejected("work.resume"),
+        Ok(_) => Json(json!({
+            "outcome": "accepted",
+            "patient_workspace_id": payload.patient_workspace_id,
+            "chat_id": payload.chat_id,
+            "run_id": payload.expected_run_id,
+        }))
+        .into_response(),
+        Err(error) => {
+            // Empty fields are the caller's; anything else is the database.
+            let invalid = error.contains("empty command field");
+            tracing::warn!(invalid, "physician work resume failed");
+            if invalid {
+                return rejected("work.resume");
+            }
+            (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "outcome": "rejected",
+                    "message": rejection_message("work.resume"),
+                })),
+            )
+                .into_response()
+        }
+    }
+}
+
+fn rejected(kind: &str) -> Response {
+    Json(json!({
+        "outcome": "rejected",
+        "message": rejection_message(kind),
+    }))
+    .into_response()
+}
+
+/// `workspace_changed` and `resync` frames. The body stays open. A client
+/// refetches what it shows on `resync` (bus lag or a Redis reconnect).
 pub(crate) async fn events(State(live): State<Arc<Live>>) -> Response {
-    let rx = live.events.subscribe();
+    let rx = live.bus.subscribe();
     let stream = stream::unfold(rx, |mut rx| async move {
-        let workspace = rx.recv().await.ok()?;
-        let data = json!({ "patient_workspace_id": workspace }).to_string();
-        let frame = format!("event: workspace_changed\ndata: {data}\n\n");
+        let frame = match rx.recv().await.ok()? {
+            Event::WorkspaceChanged { workspace_id } | Event::WorkspaceSettled { workspace_id } => {
+                let data = json!({ "patient_workspace_id": workspace_id }).to_string();
+                format!("event: workspace_changed\ndata: {data}\n\n")
+            }
+            Event::Resync => "event: resync\ndata: {}\n\n".to_owned(),
+        };
         Some((Ok::<String, Infallible>(frame), rx))
     });
     (
@@ -575,5 +930,61 @@ async fn complete(
                 Err(_) => Err("Codex exec task stopped".to_owned()),
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod durable_snapshot_tests {
+    use super::{COULDNT_FINISH, durable_snapshot_body};
+    use local_product::runtime::{Attempt, Conversation, Message};
+
+    fn conversation(status: &str) -> Conversation {
+        Conversation {
+            messages: vec![Message {
+                role: "user".into(),
+                text: "Hello".into(),
+            }],
+            status: status.into(),
+            work: "work-1".into(),
+            attempts: vec![Attempt {
+                id: "run-1".into(),
+                predecessor: None,
+                work: "work-1".into(),
+                revision: 1,
+                status: "interrupted".into(),
+                expires: 0,
+                events: vec![],
+            }],
+            ..Default::default()
+        }
+    }
+
+    #[test]
+    fn a_failed_turn_keeps_the_message_and_names_the_run_to_resume() {
+        let body = durable_snapshot_body(Some(&conversation("failed")));
+        let items = body["conversation"].as_array().unwrap();
+        assert_eq!(items[0]["kind"], "physician");
+        assert_eq!(items[0]["text"], "Hello");
+        assert_eq!(items[1]["kind"], "mechanical");
+        assert_eq!(items[1]["text"], COULDNT_FINISH);
+        assert_eq!(items[1]["resume_target"]["work_item_id"], "work-1");
+        assert_eq!(items[1]["resume_target"]["expected_run_id"], "run-1");
+        assert_eq!(body["runs"][0]["run_id"], "run-1");
+        assert_eq!(body["runs"][0]["state"], "failed");
+    }
+
+    #[test]
+    fn pending_and_absent_turns_offer_no_try_again() {
+        for status in ["pending", "active", "held", "completed"] {
+            let body = durable_snapshot_body(Some(&conversation(status)));
+            assert_eq!(
+                body["conversation"].as_array().unwrap().len(),
+                1,
+                "{status}"
+            );
+            assert!(body["runs"].as_array().unwrap().is_empty(), "{status}");
+        }
+        let empty = durable_snapshot_body(None);
+        assert!(empty["conversation"].as_array().unwrap().is_empty());
     }
 }

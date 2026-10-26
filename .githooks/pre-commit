@@ -8,9 +8,7 @@
 # hook re-executes itself under `nix develop` instead of using host cargo.
 # The flake shellHook exports CODA_DEV_SHELL=1 as its last step.
 #
-# Note on strictness: clippy checks errors at CI severity; warnings are not
-# denied yet. Once the tree is clean, tighten this to `-D warnings` and add
-# the same to the CI lint step.
+# Clippy denies warnings, matching the CI lint step.
 set -euo pipefail
 
 root=$(git rev-parse --show-toplevel)
@@ -30,4 +28,4 @@ fi
 
 cd "$root"
 cargo fmt --all --check
-cargo clippy --workspace --all-targets --quiet
+cargo clippy --workspace --all-targets --quiet -- -D warnings
