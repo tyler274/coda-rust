@@ -28,8 +28,8 @@ stateDiagram-v2
 %% event open all updates | by you | needs SIn | reason: commands need an active session | Coda opens on Updates, the record of everything Coda did.
 %% event open find patient | by you | needs SIn | reason: commands need an active session | You open the roster search.
 %% event close find patient | by you | needs SIn | reason: commands need an active session | You close the search.
-%% event type in find patient | by you | needs SIn | reason: commands need an active session | Each change searches the whole roster on the server, 50 at a time.
-%% event more results load | by the practice system | The next 50 results append.
+%% event type in find patient | by you | needs SIn | reason: commands need an active session | Each change searches the whole roster on the server.
+%% event more results load | by the practice system | More results append.
 %% event more results fail to load | by the practice system | What loaded stays, with a quiet line and Retry.
 %%
 %% Coda's work: one lifecycle for every kind (rewrite-worklist "Ideal behavior: Coda's work").
@@ -47,8 +47,6 @@ stateDiagram-v2
 %% event ask Coda to reply | by you | command on the reply: Ask Coda to reply, clicked while SIn | needs AClin, MLLinked, ChAccount, MRRest | reason: only a linked conversation on a connected channel with no reply open can ask for one (X4, px.md:167) | You ask Coda to draft a reply; it waits behind a patient review already running, and a reply that review proposes first answers the ask (px.md:167; Dev 2026-10-24).
 %% event Coda decides to take something on | by Coda | Coda judges something worth doing for the patient and takes it on (charter: Coda may).
 %% event Coda starts the {work} | by Coda | needs WOwed@{key} | reason: only the work's own state makes its events possible | Coda begins the {work} from the latest evidence it may read.
-%% event a tool call starts in the {work} | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} shows its current step, only from a real tool call (ENG-160).
-%% event the next model call starts in the {work} | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | The step line clears while Coda thinks.
 %% event the {work} fails | by Coda's runtime | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} couldn't finish after whatever recovery the runtime does on its own; it shows Couldn't finish with Try again, and machinery never alerts you (CT:95).
 %% event Coda finishes the {work} | by Coda | needs WRun@{key}, {normal}@{key}, MLFree | reason: only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (PM:552-559) | The {work} ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
 %% event Coda waits on the {work} for missing information | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | Coda keeps the {work} for information that will arrive anyway; the patient page shows Waiting with the reason and Try again, never Today.
@@ -577,7 +575,7 @@ stateDiagram-v2
           RdFailed --> RdLoading : midnight passes
         }
         --
-        %% PX "Find patient": one server-side roster search, 50 at a time; every roster patient stays
+        %% PX "Find patient": one server-side roster search; every roster patient stays
         %% reachable; a failed page keeps what loaded (PX-89, Dev 2026-10-23).
         state "Find patient" as Search {
           [*] --> FClosed
@@ -879,13 +877,7 @@ stateDiagram-v2
           state "{work} active" as WActive {
             [*] --> WOwed
             state "{work} owed, waiting to start" as WOwed
-            state "Coda is working on the {work}" as WRun {
-              [*] --> WQuiet
-              state "Working, no step shown" as WQuiet
-              state "Showing the current step" as WStep
-              WQuiet --> WStep : a tool call starts in the {work}
-              WStep --> WQuiet : the next model call starts in the {work}
-            }
+            state "Coda is working on the {work}" as WRun
           }
           state "{work} stalled" as WStalled {
             [*] --> WWait

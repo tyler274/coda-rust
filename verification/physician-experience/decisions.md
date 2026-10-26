@@ -30,6 +30,11 @@ Linear, then the settled docs, then mockups.
     citation. Opening and closing them is presentation.
   - Sidebar and schedule collapse are remembered per physician (M8); they are
     preferences of the surface, not graph state.
+  - Running work may show its current step, only from a real tool call
+    (ENG-160); the step line is the surface's. The graph keeps that the work
+    is running.
+  - Find patient searches the whole roster on the server, and every roster
+    patient stays reachable; page size is the surface's.
 - **Ideal state, not infrastructure (2026-10-24).** The graph is the ideal
   behavior of the full product for any user: what they see and how things act and
   work for them. It leaves out runtime capacity, retries, timeouts, interruptions,

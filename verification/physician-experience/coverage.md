@@ -20,7 +20,8 @@ Presentation is the app's, not the graph's (decisions.md, Behavior, not
 presentation), so it has no rows here. Its known gaps: the orb has no hover or
 pinned preview and updates carry no content to preview; the patient page has no
 Basis, since PatientWorkspaceResponse has no basis or limitations field; and it
-has no Sources list, since ConnectedSource carries no source names. Sidebar and
+has no Sources list, since ConnectedSource carries no source names; and running
+work has no step line, since AutomationRun carries no current step. Sidebar and
 schedule collapse are built and remembered per physician (M8, panels.rs).
 
 Sign-in's page states are in [sign-in.mmd](sign-in.mmd), which is connected to
@@ -538,8 +539,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | initial understanding not in hand.No initial understanding owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | initial understanding in hand.initial understanding active.initial understanding owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| initial understanding in hand.initial understanding active.Coda is working on the initial understanding.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| initial understanding in hand.initial understanding active.Coda is working on the initial understanding.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| initial understanding in hand.initial understanding active.Coda is working on the initial understanding | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | initial understanding in hand.initial understanding stalled.initial understanding waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | initial understanding in hand.initial understanding stalled.initial understanding couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own; Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -556,8 +556,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | patient review not in hand.No patient review owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | patient review in hand.patient review active.patient review owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| patient review in hand.patient review active.Coda is working on the patient review.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| patient review in hand.patient review active.Coda is working on the patient review.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| patient review in hand.patient review active.Coda is working on the patient review | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | patient review in hand.patient review stalled.patient review waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | patient review in hand.patient review stalled.patient review couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own; Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -589,8 +588,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | follow-up review not in hand.No follow-up review owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | follow-up review in hand.follow-up review active.follow-up review owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| follow-up review in hand.follow-up review active.Coda is working on the follow-up review.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| follow-up review in hand.follow-up review active.Coda is working on the follow-up review.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| follow-up review in hand.follow-up review active.Coda is working on the follow-up review | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | follow-up review in hand.follow-up review stalled.follow-up review waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | follow-up review in hand.follow-up review stalled.follow-up review couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own (subject reads the generic "Work"); Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -608,8 +606,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | weekly review not in hand.No weekly review owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | weekly review in hand.weekly review active.weekly review owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| weekly review in hand.weekly review active.Coda is working on the weekly review.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| weekly review in hand.weekly review active.Coda is working on the weekly review.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| weekly review in hand.weekly review active.Coda is working on the weekly review | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | weekly review in hand.weekly review stalled.weekly review waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | weekly review in hand.weekly review stalled.weekly review couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own (subject reads the generic "Work"); Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -626,8 +623,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | visit preparation not in hand.No visit preparation owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | visit preparation in hand.visit preparation active.visit preparation owed, waiting to start | partial | PatientSurface Upcoming visits rail and reader, preparation_sentence; Current work, work_heading (physician-app lib.rs, shell.rs) | yes | Only the reader sentence "This visit has not been prepared." says so; the rail shows no cue and Current work looks the same as running. |
-| visit preparation in hand.visit preparation active.Coda is working on the visit preparation.Working, no step shown | built | PatientSurface Upcoming visits rail (ScheduleRail cue), preparation_cue; Current work, work_heading (physician-app lib.rs, shell.rs) | yes | "Preparing visit" shows on the patient-page rail and the run headline under Current work; the Today rail hides cues. |
-| visit preparation in hand.visit preparation active.Coda is working on the visit preparation.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| visit preparation in hand.visit preparation active.Coda is working on the visit preparation | built | PatientSurface Upcoming visits rail (ScheduleRail cue), preparation_cue; Current work, work_heading (physician-app lib.rs, shell.rs) | yes | "Preparing visit" shows on the patient-page rail and the run headline under Current work; the Today rail hides cues. |
 | visit preparation in hand.visit preparation stalled.visit preparation waiting for the next opportunity, with Try again | partial | PatientSurface Upcoming visits rail, preparation_cue, preparation_sentence (physician-app lib.rs, shell.rs) | no | Closest is "Preparation interrupted"; no waiting reason and no Try again on the visit or the patient page. |
 | visit preparation in hand.visit preparation stalled.visit preparation couldn't finish, with Try again | partial | PatientSurface Upcoming visits rail cue (preparation_cue), PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Preparation failed" and "Visit preparation couldn’t finish" show; Try again comes only from a failed_review Today row, never Current work or the visit. |
 
@@ -660,8 +656,7 @@ check prints the current counts.
 | asked reply not in hand.No asked reply owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | asked reply not in hand.asked reply finished on older records, with Update | missing |  | no | No Update control and no wire field saying the finished work read older records. |
 | asked reply in hand.asked reply active.asked reply owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| asked reply in hand.asked reply active.Coda is working on the asked reply.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| asked reply in hand.asked reply active.Coda is working on the asked reply.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| asked reply in hand.asked reply active.Coda is working on the asked reply | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | asked reply in hand.asked reply stalled.asked reply waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | asked reply in hand.asked reply stalled.asked reply couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own (subject reads the generic "Work"); Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -693,8 +688,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | proactive work not in hand.No proactive work owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | proactive work in hand.proactive work active.proactive work owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| proactive work in hand.proactive work active.Coda is working on the proactive work.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| proactive work in hand.proactive work active.Coda is working on the proactive work.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| proactive work in hand.proactive work active.Coda is working on the proactive work | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | proactive work in hand.proactive work stalled.proactive work waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | proactive work in hand.proactive work stalled.proactive work couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own (subject reads the generic "Work"); Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -712,8 +706,7 @@ check prints the current counts.
 | answer not in hand.No answer owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | answer not in hand.answer finished on older records, with Update | missing |  | no | No Update control and no wire field saying the finished work read older records. |
 | answer in hand.answer active.answer owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| answer in hand.answer active.Coda is working on the answer.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| answer in hand.answer active.Coda is working on the answer.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| answer in hand.answer active.Coda is working on the answer | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | answer in hand.answer stalled.answer waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | answer in hand.answer stalled.answer couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own; Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
@@ -737,8 +730,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | reply revision not in hand.No reply revision owed | built | PatientSurface (physician-app lib.rs) | yes | Current work is left out when the workspace has no automation_run. |
 | reply revision in hand.reply revision active.reply revision owed, waiting to start | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | The run headline shows the same as running; the app tells only "failed" apart, so owed is not distinguishable. |
-| reply revision in hand.reply revision active.Coda is working on the reply revision.Working, no step shown | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
-| reply revision in hand.reply revision active.Coda is working on the reply revision.Showing the current step | missing |  | no | No step line; AutomationRun on the wire has no current-step field. |
+| reply revision in hand.reply revision active.Coda is working on the reply revision | partial | PatientSurface Current work section, work_heading (physician-app lib.rs, shell.rs) | yes | Shows the run headline with no "Coda is working" wording and no difference from owed. |
 | reply revision in hand.reply revision stalled.reply revision waiting for the next opportunity, with Try again | missing |  | no | No waiting copy, reason or Try again; a waiting run reads as the plain headline. |
 | reply revision in hand.reply revision stalled.reply revision couldn't finish, with Try again | partial | PatientSurface Current work, work_heading, work_end_reason (physician-app lib.rs, shell.rs); TodayRows Try again via resume_command (physician-app lib.rs) | no | "Couldn’t finish" shows under Current work with no Try again of its own (subject reads the generic "Work"); Try again comes only from a failed_review Today row, and the sample server rejects work.resume. |
 
