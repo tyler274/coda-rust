@@ -236,7 +236,6 @@ fn follow_workspace_events(
         };
         let mut retry = StreamRetryBudget::default();
         let mut next_delay = Some(0);
-        let mut reconnecting = false;
         while let Some(delay) = next_delay {
             if delay > 0 {
                 let wait = js_sys::Promise::new(&mut |resolve, reject| {
@@ -264,7 +263,6 @@ fn follow_workspace_events(
                     .await
             else {
                 next_delay = retry.next_delay_ms(None);
-                reconnecting = true;
                 continue;
             };
             let Ok(response) = value.dyn_into::<web_sys::Response>() else {
@@ -277,7 +275,6 @@ fn follow_workspace_events(
                 workspace_attempt.set(workspace_attempt() + 1);
                 if response.status() == 429 || response.status() >= 500 {
                     next_delay = retry.next_delay_ms(None);
-                    reconnecting = true;
                     continue;
                 }
                 return;
@@ -294,14 +291,12 @@ fn follow_workspace_events(
             let Some(body) = response.body() else {
                 return;
             };
-            if reconnecting {
-                // These events invalidate projections; they are not a second
-                // ledger. Reconcile the gap via authoritative reads, never by
-                // replaying commands or assuming every server supports cursors.
-                today_attempt.set(today_attempt() + 1);
-                workspace_attempt.set(workspace_attempt() + 1);
-                snapshot_attempt.set(snapshot_attempt() + 1);
-            }
+            // Subscribe before rereading: even the first connection can miss
+            // changes made after the page's initial snapshot. Events invalidate
+            // projections; authoritative reads reconcile every connection gap.
+            today_attempt.set(today_attempt() + 1);
+            workspace_attempt.set(workspace_attempt() + 1);
+            snapshot_attempt.set(snapshot_attempt() + 1);
             let started_at = clock.now();
             let reader = body.get_reader();
             let mut buffer = String::new();
@@ -350,7 +345,6 @@ fn follow_workspace_events(
                 );
             }
             next_delay = retry.next_delay_ms(Some(clock.now() - started_at));
-            reconnecting = true;
         }
     });
 }
