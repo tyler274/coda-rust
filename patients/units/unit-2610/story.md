@@ -31,3 +31,8 @@
 - 2026-08-17 outside PM&R letter dated 2026-08-13 received (A5)
 - 2026-08-24 portal: PT progress, return-to-work question (P)
 - 2026-09-15 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002610 on 2026-07-22. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

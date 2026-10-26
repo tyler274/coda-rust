@@ -61,3 +61,8 @@
 - 2026-08-25 outside_records: transplant center intake letter (A7)
 - 2026-08-26 portal: patient asks about transplant steps; PCP replies (A7)
 - 2026-09-15 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00001970 on 2026-05-12. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

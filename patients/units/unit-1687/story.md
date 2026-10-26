@@ -31,3 +31,8 @@
 - 2026-05-22 portal_message: CBC normal. [P]
 - 2026-07-09 portal_message: albuterol refill before school year, physical scheduled. [P]
 - 2026-09-17 annual_physical: booked. [P]
+
+
+## Last seen
+
+The practice last saw MRN00001687 on 2026-05-21. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -60,3 +60,8 @@
 - 2026-05-12 portal: PNV refill (A1, P)
 - 2026-08-11 portal: physical scheduling (P)
 - 2026-09-22 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00001678 on 2026-02-24. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

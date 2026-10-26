@@ -141,3 +141,8 @@ febrile 145/90 reading.
   about diarrhea on 2025-11-14 (told to go to the ED given recent antibiotics).
 - **Open today.** Nothing clinical. The 2026-09-16 wellness visit is booked.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002194 on 2025-11-24. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

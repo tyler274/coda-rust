@@ -103,3 +103,8 @@
 2026-08-18 medical oncology: surveillance visit (A7)
 2026-08-21 portal: patient asks about CT, PCP replies (P)
 2026-09-10 booked: annual wellness and diabetes visit (P)
+
+
+## Last seen
+
+The practice last saw MRN00002285 on 2024-11-22. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

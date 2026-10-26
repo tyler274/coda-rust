@@ -88,3 +88,8 @@ One line per contact, in date order, with the build-req letter it rests on.
 - 2026-08-11 office visit: weight 57, HbA1c, labs (A13)
 - 2026-08-12 portal: results (P)
 - 2026-09-22 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002283 on 2026-08-11. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

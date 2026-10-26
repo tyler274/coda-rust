@@ -146,3 +146,8 @@ these.
 - Vitals at practice visits normal (BP, HR, SpO2, temperature) apart from the weights
   above; weights between the listed ones are near the last level.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002153 on 2026-03-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

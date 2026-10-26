@@ -25,3 +25,8 @@
 - 2026-07-13 CF center follow-up (letter received 7/22): weight 62.0, retinol 36; LFTs normal, modulator continued (A5, A6)
 - 2026-08-18 portal: books physical (P)
 - 2026-09-22 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002153 on 2026-03-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

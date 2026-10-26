@@ -40,3 +40,8 @@
 - 2026-07-20 specialist_visit: neurology follow-up, dizziness resolved (A6)
 - 2026-08-11 portal: daughter asks about aspirin refill (P)
 - 2026-09-22 annual_physical: booked AWV (P)
+
+
+## Last seen
+
+The practice last saw MRN00002244 on 2025-03-18. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

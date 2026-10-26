@@ -25,3 +25,8 @@
 - 2026-04-09 portal_message: retest result (A8, P)
 - 2026-08-18 portal_message: schedules fall physical (P)
 - 2026-09-22 annual_physical: booked, preventive visit with Pap due (P)
+
+
+## Last seen
+
+The practice last saw MRN00001747 on 2026-01-07. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

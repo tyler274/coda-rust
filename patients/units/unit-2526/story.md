@@ -98,3 +98,8 @@
 - 2026-08-19 office visit: follow-up, labs (P)
 - 2026-08-20 portal: results (P)
 - 2026-09-21 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002526 on 2025-10-01. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

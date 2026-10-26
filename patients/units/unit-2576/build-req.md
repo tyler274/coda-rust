@@ -146,3 +146,8 @@ summaries or the patient's account, with few numbers; no outside lab values exce
 2026 gas.
 
 No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002576 on 2026-03-12. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

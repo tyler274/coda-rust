@@ -37,3 +37,8 @@
 - 2026-08-11 annual_physical: well (P)
 - 2026-08-12 portal: form completed (P)
 - 2026-10-06 nurse_visit booked: influenza vaccine (P)
+
+
+## Last seen
+
+The practice last saw MRN00002630 on 2026-08-11. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

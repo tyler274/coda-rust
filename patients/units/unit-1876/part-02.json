@@ -4,87 +4,6 @@
       "mrn": "MRN00001876",
       "events": [
         {
-          "id": "2026-01-12a",
-          "kind": "annual_physical",
-          "start": "2026-01-12T07:50",
-          "end": "2026-01-12T08:35",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Annual physical, fasting labs",
-          "state": {"labs": {"Vitamin B12": 455, "Folate": 12.4, "25-hydroxy Vitamin D": 33, "Parathyroid Hormone, Intact": 52, "Hemoglobin A1c": 5.2, "Thyroid Stimulating Hormone": 1.9, "Hemoglobin": 12.9, "Mean Corpuscular Volume": 86, "Low Density Lipoprotein": 94}},
-          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
-          "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-12T08:40", "resulted": "2026-01-12T15:10", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-01-12T08:40", "resulted": "2026-01-12T15:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
-            {"panel": "Iron Studies", "collected": "2026-01-12T08:40", "resulted": "2026-01-13T11:00", "results": [{"test": "Iron"}, {"test": "Ferritin"}]},
-            {"panel": "Lipid Panel", "collected": "2026-01-12T08:40", "resulted": "2026-01-12T15:10", "results": [{"test": "Low Density Lipoprotein"}]},
-            {"panel": null, "collected": "2026-01-12T08:40", "resulted": "2026-01-13T11:00", "results": [{"test": "Vitamin B12"}, {"test": "Folate"}, {"test": "25-hydroxy Vitamin D"}, {"test": "Parathyroid Hormone, Intact"}, {"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}]},
-            {"panel": null, "collected": "2026-01-12T08:40", "resulted": "2026-01-13T11:00", "results": [
-              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
-              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}
-            ]},
-            {"panel": null, "collected": "2026-01-12T08:40", "resulted": "2026-01-16T10:30", "results": [
-              {"test": "Riboflavin [Moles/volume] in Serum or Plasma", "loinc": "49038-3", "unit": "nmol/L", "value": 13.6}
-            ]}
-          ],
-          "procedures": [
-            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-01-12T08:30"},
-            {"procedure": "Venipuncture", "performed": "2026-01-12T08:40"}
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Annual Physical",
-              "author": "PCP",
-              "date": "2026-01-12T08:35",
-              "body": "ANNUAL PREVENTIVE VISIT\n33F, fasting.\n\nInterval: mouth and skin have stayed clear. Still taking the riboflavin, holding off stopping until the recheck. Nausea comes and goes, no worse. Busy stretch at school, otherwise feeling well.\n\nPlanning: hopes to try for a pregnancy this year. She is now well past 18 months from the bypass. Already on a prenatal vitamin. Asked her to message us as soon as she has a positive test - with the severe preeclampsia last time she should be seen by OB early.\n\nMeds: riboflavin 100 mg daily, prenatal vitamin daily, vitamin B complex daily, ferrous sulfate 325 mg daily, calcium citrate/vit D 600 mg/400 IU BID. NKDA.\nSH unchanged: teacher, never smoker, no alcohol.\nPHQ-9 2.\n\nExam: vitals as charted. Well appearing. Oral mucosa moist, commissures and tongue normal. Neck without thyroid enlargement or adenopathy. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, healed port scars. Skin clear. No edema.\n\nHealth maintenance:\n- Cervical: co-test 2023 negative per outside records; next 2028.\n- Tdap 2021. Flu and COVID done October.\n- One-time hepatitis C and HIV screening today.\n\nA/P\n1. Preventive care as above.\n2. s/p RYGB with malabsorption - yearly bariatric labs today: CBC, CMP, iron studies, B12, folate, vit D, PTH.\n3. Riboflavin deficiency - repeat plasma B2 with today's draw; stop riboflavin if normal.\n4. Father with T2DM - A1c. Lipids, TSH.\n5. Hx severe preeclampsia - as above, early OB once pregnant.\n\nResults by portal."
-            }
-          ]
-        },
-        {
-          "id": "2026-01-16a",
-          "kind": "portal_message",
-          "start": "2026-01-16T16:20",
-          "reason": "Lab results",
-          "conditions": [
-            {"label": "Riboflavin deficiency", "icd10": "E53.0", "action": "resolved"}
-          ],
-          "medications": [
-            {"drug_text": "riboflavin 100 MG Oral Tablet", "action": "stop", "reason": "Course complete; level normal"}
-          ],
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Your physical labs",
-              "author": "PCP",
-              "date": "2026-01-16T16:20",
-              "body": "Nicole, everything from Monday is back and it all looks good. Blood count, kidney and liver tests, iron, B12, folate, vitamin D and PTH are normal, so the bypass supplements are doing their job. Sugar, cholesterol and thyroid normal. Hepatitis C and HIV screens negative.\n\nThe riboflavin level that came back today is 13.6, now in the normal range (it was 2.4 in September). You can stop the riboflavin tablets. Keep the prenatal vitamin, B complex, iron and calcium with D going every day."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Your physical labs",
-              "author": "patient",
-              "date": "2026-01-16T19:04",
-              "body": "Great news, thank you! One less pill."
-            }
-          ]
-        },
-        {
-          "id": "2026-03-04a",
-          "kind": "pharmacy",
-          "start": "2026-03-04T10:15",
-          "reason": "Refill request, prenatal vitamin",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Refill Request",
-              "author": "RN",
-              "date": "2026-03-04T10:15",
-              "body": "Pharmacy request: prenatal vitamin, 1 tab daily, #90 with 3 refills. Covered by her plan with a prescription. Last visit 1/12. Sent per PCP."
-            }
-          ]
-        },
-        {
           "id": "2026-03-23a",
           "kind": "office_visit",
           "start": "2026-03-23T15:45",
@@ -93,64 +12,27 @@
           "appointment": "cancelled"
         },
         {
-          "id": "2026-05-27a",
-          "kind": "portal_message",
-          "start": "2026-05-27T06:58",
-          "reason": "Positive home pregnancy test",
-          "orders": [
-            {"id": "ob-referral", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "Early pregnancy; history of severe preeclampsia with delivery at 34 weeks; status post Roux-en-Y gastric bypass"}
-          ],
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Pregnant!",
-              "author": "patient",
-              "date": "2026-05-27T06:58",
-              "body": "Good morning! Two home tests both came out positive. First day of my last period was April 20. You said to let you know right away - what's the next step?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Pregnant!",
-              "author": "PCP",
-              "date": "2026-05-27T08:12",
-              "body": "Congratulations! By your dates you're a little over 5 weeks. Because of the preeclampsia last time and your bypass, I've put in a referral to a high-risk obstetrics practice so you're seen early - the front desk will call you once they have a date. Keep taking the prenatal vitamin and all your bypass supplements. Call us or OB if you have bleeding or bad pain."
-            }
-          ]
-        },
-        {
-          "id": "2026-05-28a",
-          "kind": "telephone",
-          "start": "2026-05-28T13:30",
-          "reason": "OB appointment scheduling",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Referral Scheduling",
-              "author": "front desk",
-              "date": "2026-05-28T13:30",
-              "body": "OB office called back on the referral. New prenatal visit Monday 6/29 at 9:30. Called pt, she has the date and address. Records sent ahead."
-            }
-          ]
-        },
-        {
           "id": "2026-06-29a",
           "kind": "specialist_visit",
           "start": "2026-06-29T09:30",
           "end": "2026-06-29T10:30",
           "service": "Obstetrics & Gynecology",
           "reason": "New prenatal visit",
-          "conditions": [
-            {"label": "Supervision of pregnancy with other poor reproductive or obstetric history, first trimester", "icd10": "O09.291", "action": "diagnosed", "onset": "2026-06-29"}
+          "conditions": [],
+          "medications": [],
+          "state": {
+            "weight_kg": 95.4
+          },
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ]
+          },
+          "measure": [
+            "weight_kg"
           ],
-          "medications": [
-            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily, starting at 12 weeks", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Reduce risk of recurrent preeclampsia"}
-          ],
-          "state": {"weight_kg": 95.4},
-          "vitals": {"bp": [128, 82]},
-          "measure": ["weight_kg"],
-          "orders": [
-            {"id": "ob-referral", "action": "done", "date": "2026-06-29T09:30"}
-          ],
+          "orders": [],
           "documents": [
             {
               "type": "Consult Note",
@@ -160,58 +42,6 @@
               "body": "OBSTETRICS - NEW PRENATAL VISIT\nVisit date: 06/29/2026\nReferred by: primary care\n\nMs. Cronin is a 33-year-old seen for her first prenatal visit, 10 weeks 0 days by LMP 04/20/2026, EDD 01/25/2027.\n\nShe comes to us with a prior pregnancy complicated by severe preeclampsia that required delivery at 34 weeks. She also had a Roux-en-Y gastric bypass in 2024 and was treated last fall for riboflavin deficiency, which has since resolved. This pregnancy has gone smoothly so far. She is taking her prenatal vitamin daily and describes a balanced diet. Her main question today was what else she can do to lower her chance of preeclampsia this time.\n\nMedications: prenatal vitamin daily; vitamin B complex daily; ferrous sulfate 325 mg daily; calcium citrate/vitamin D 600 mg/400 IU twice daily.\nAllergies: no known drug allergies.\nFamily history: mother - severe preeclampsia; maternal grandmother - chronic hypertension; father - type 2 diabetes.\nSocial: elementary school teacher; never smoker; no alcohol.\n\nVitals: BP 128/82 mmHg. BMI 35 kg/m2.\n\nAssessment: Pregnancy at 10 weeks, high risk on the basis of prior severe preeclampsia with preterm delivery and prior bariatric surgery.\n\nPlan:\n- Low-dose aspirin 81 mg by mouth daily, beginning at 12 weeks and continuing through the pregnancy, to reduce the risk of recurrent preeclampsia. Reviewed the rationale with her.\n- Continue prenatal vitamin and her bariatric supplements unchanged.\n- Return visit in 4 weeks.\n\nThank you for involving us in her care; we will keep you informed."
             }
           ]
-        },
-        {
-          "id": "2026-07-08a",
-          "kind": "portal_message",
-          "start": "2026-07-08T20:41",
-          "reason": "Question about aspirin",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Baby aspirin question",
-              "author": "patient",
-              "date": "2026-07-08T20:41",
-              "body": "Hi - OB wants me to start a baby aspirin on Monday when I hit 12 weeks. I remember being told after the bypass to stay away from aspirin and ibuprofen. Is it OK to take?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Baby aspirin question",
-              "author": "PCP",
-              "date": "2026-07-09T07:30",
-              "body": "Good question, and you remembered right about the usual rule. This is a special case: the 81 mg dose during pregnancy is to lower the chance of preeclampsia coming back, and given what happened last time I agree with OB. Take it with food. If you get stomach pain, black stools or vomit blood, stop and call us or OB right away. I've added it to your list here as an OB prescription."
-            }
-          ]
-        },
-        {
-          "id": "2026-08-17a",
-          "kind": "portal_message",
-          "start": "2026-08-17T09:05",
-          "reason": "Immunization record request",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Immunization record",
-              "author": "patient",
-              "date": "2026-08-17T09:05",
-              "body": "Could I get a printout of my vaccine record? The district wants one on file before teachers go back."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Immunization record",
-              "author": "front desk",
-              "date": "2026-08-17T11:20",
-              "body": "Hi Nicole, your immunization record is attached to this message as a PDF. Let us know if the district needs a signed form as well."
-            }
-          ]
-        },
-        {
-          "id": "2026-09-21a",
-          "kind": "office_visit",
-          "start": "2026-09-21T15:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Follow-up: bariatric supplements in pregnancy",
-          "appointment": "booked"
         }
       ]
     }

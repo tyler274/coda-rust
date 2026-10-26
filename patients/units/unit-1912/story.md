@@ -28,3 +28,8 @@
 - 2026-06-09 portal: ear-care advice for summer swimming (P)
 - 2026-08-24 portal: autoinjector expiring; new 2-pack sent 08-25 (P)
 - 2026-10-20 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00001912 on 2025-10-21. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

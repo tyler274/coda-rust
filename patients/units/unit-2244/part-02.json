@@ -303,14 +303,7 @@
           "end": "2025-05-25T19:20",
           "service": "Emergency Medicine",
           "reason": "Dragging left foot",
-          "conditions": [
-            {
-              "label": "Acute ischemic stroke, right frontal lobe",
-              "icd10": "I63.9",
-              "action": "diagnosed",
-              "onset": "2025-05-25"
-            }
-          ],
+          "conditions": [],
           "measure": [
             "bp",
             "hr",
@@ -445,59 +438,6 @@
           ]
         },
         {
-          "id": "2025-05-28a",
-          "kind": "telephone",
-          "start": "2025-05-28T11:20",
-          "reason": "Post-discharge call",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Transitional Care Call",
-              "author": "RN",
-              "date": "2025-05-28T11:20",
-              "body": "Spoke with pt and wife, home since yesterday afternoon after a 2-day stay for a right frontal stroke. ED and discharge records in the chart. He says the leg is \"better every day\" but he still scuffs the left toe when tired. No new symptoms. Has both meds at home, no changes made by the hospital. Using a railing on the stairs. Reviewed stroke warning signs and calling 911. Post-discharge visit booked Mon 6/2 with PCP. Wife will drive."
-            }
-          ]
-        },
-        {
-          "id": "2025-06-02a",
-          "kind": "office_visit",
-          "start": "2025-06-02T09:20",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Hospital follow-up, stroke",
-          "measure": [
-            "bp",
-            "hr",
-            "spo2",
-            "weight_kg"
-          ],
-          "procedures": [
-            {
-              "procedure": "Transitional care management, moderate complexity",
-              "performed": "2025-06-02T09:20"
-            }
-          ],
-          "orders": [
-            {
-              "id": "pt-2025",
-              "action": "placed",
-              "order": "Physical therapy referral",
-              "category": "referral",
-              "to": "Physical Therapy",
-              "reason": "Left leg weakness after right frontal stroke"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Post-Hospital Visit",
-              "author": "PCP",
-              "date": "2025-06-02T10:00",
-              "body": "Seen with his wife one week after a right frontal ischemic stroke (admitted 5/25 to 5/27 at a regional hospital; ED record and discharge summary reviewed).\n\nHe feels the left leg is close to normal on short walks but tires and drags on longer ones. No new weakness, numbness, slurred speech or visual symptoms since discharge. No falls. Thinking feels clear to him and to his wife. Taking lisinopril and atorvastatin as before.\n\nExam: BP as recorded. Alert, conversant, speech normal. Left hip flexion and ankle dorsiflexion a little weaker than the right; otherwise strength full. Gait: slight left foot slap at speed, no assistive device. Heart regular, no carotid bruits.\n\nA/P\n- Acute ischemic stroke, right frontal, with residual left leg weakness: outpatient PT referral placed as the hospital advised. Neurology clinic follow-up around November.\n- HTN: continue lisinopril 20.\n- HLD: continue atorvastatin 40.\n- Not to drive until cleared after therapy; wife driving for now.\nRecheck at the fall wellness visit, sooner if needed."
-            }
-          ]
-        },
-        {
           "id": "2025-06-09a",
           "kind": "outside_records",
           "start": "2025-06-09T15:30",
@@ -514,7 +454,7 @@
               "title": "Physical Therapy Initial Evaluation",
               "author": "physical therapy",
               "date": "2025-06-09T15:30",
-              "body": "OUTPATIENT PHYSICAL THERAPY, INITIAL EVALUATION (date of service 6/9/2025)\nReferral: PCP, left lower extremity weakness after right frontal ischemic stroke 5/25/2025.\n\nSubjective: wants to get back to his morning walks without his foot catching. No falls.\nObjective: Left hip flexion and ankle dorsiflexion weak compared with the right. Gait with intermittent left foot drag, more with fatigue and on turns. Independent indoors without a device. Transfers independent.\nAssessment: gait deviation from left leg weakness, good potential.\nPlan: twice weekly for 8 weeks; strengthening, gait training, balance; home exercise program.\n\nThank you for the referral."
+              "body": "OUTPATIENT PHYSICAL THERAPY, INITIAL EVALUATION (date of service 6/9/2025)\nReferral: inpatient stroke team, left lower extremity weakness after right frontal ischemic stroke 5/25/2025.\n\nSubjective: wants to get back to his morning walks without his foot catching. No falls.\nObjective: Left hip flexion and ankle dorsiflexion weak compared with the right. Gait with intermittent left foot drag, more with fatigue and on turns. Independent indoors without a device. Transfers independent.\nAssessment: gait deviation from left leg weakness, good potential.\nPlan: twice weekly for 8 weeks; strengthening, gait training, balance; home exercise program.\n\nThank you for the referral."
             }
           ]
         },
@@ -523,13 +463,7 @@
           "kind": "outside_records",
           "start": "2025-08-12T16:00",
           "reason": "Physical therapy discharge",
-          "orders": [
-            {
-              "id": "pt-2025",
-              "action": "done",
-              "date": "2025-08-12T16:00"
-            }
-          ],
+          "orders": [],
           "documents": [
             {
               "type": "Outside Records",
@@ -541,181 +475,12 @@
           ]
         },
         {
-          "id": "2025-09-23a",
-          "kind": "annual_physical",
-          "start": "2025-09-23T08:40",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Medicare annual wellness visit",
-          "measure": [
-            "bp",
-            "hr",
-            "spo2",
-            "temp_c",
-            "weight_kg"
-          ],
-          "labs": [
-            {
-              "panel": "Lipid Panel",
-              "collected": "2025-09-23T09:10",
-              "results": [
-                {
-                  "test": "Total Cholesterol"
-                },
-                {
-                  "test": "High Density Lipoprotein"
-                },
-                {
-                  "test": "Triglycerides"
-                },
-                {
-                  "test": "Low Density Lipoprotein"
-                }
-              ]
-            },
-            {
-              "panel": "Comprehensive Metabolic Panel (CMP)",
-              "collected": "2025-09-23T09:10",
-              "results": [
-                {
-                  "test": "Sodium"
-                },
-                {
-                  "test": "Potassium"
-                },
-                {
-                  "test": "Creatinine"
-                },
-                {
-                  "test": "Glucose"
-                },
-                {
-                  "test": "Alanine Aminotransferase"
-                }
-              ]
-            },
-            {
-              "panel": null,
-              "collected": "2025-09-23T09:10",
-              "results": [
-                {
-                  "test": "Hemoglobin A1c",
-                  "value": 5.5,
-                  "unit": "%"
-                }
-              ]
-            }
-          ],
-          "surveys": [
-            {
-              "survey": "PHQ-9 total score",
-              "value": 2
-            }
-          ],
-          "immunizations": [
-            {
-              "vaccine": "Influenza, high-dose, trivalent",
-              "date": "2025-09-23T09:15"
-            },
-            {
-              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
-              "date": "2025-09-23T09:16"
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Annual wellness visit, subsequent",
-              "performed": "2025-09-23T08:40"
-            },
-            {
-              "procedure": "Immunization administration",
-              "performed": "2025-09-23T09:15"
-            }
-          ],
-          "orders": [
-            {
-              "id": "ldct-2025",
-              "action": "placed",
-              "order": "Low-dose CT chest for lung cancer screening",
-              "category": "imaging",
-              "reason": "Annual screening, former smoker"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Annual Wellness Visit",
-              "author": "PCP",
-              "date": "2025-09-23T09:40",
-              "body": "Medicare AWV. 68M, four months out from a right frontal ischemic stroke.\n\nFinished PT in August and does the exercises most days. Walking his usual loop again, a little slower. No falls. No new neurologic symptoms. Still not driving; his wife takes him where he needs to go, and he is fine with that for now. Handles his own medications with a weekly pill box.\nMeds: lisinopril 20 mg, atorvastatin 40 mg. NKDA.\nPHQ-9 2.\n\nExam: BP at goal. Speech normal. Strength nearly symmetric, gait steady without device. Heart regular, lungs clear.\n\nPlan\n- Stroke, right frontal: recovering well; neurology follow-up in November already booked.\n- HTN / HLD: no changes. Labs drawn.\n- Flu and updated COVID given.\n- LDCT due, ordered.\nNext visit after neurology."
-            },
-            {
-              "type": "Patient Message",
-              "title": "Your labs",
-              "author": "PCP",
-              "date": "2025-09-24T12:05",
-              "body": "Dennis, your labs from the wellness visit are all in a good place, including the LDL cholesterol. No changes to your medicines."
-            }
-          ]
-        },
-        {
-          "id": "2025-10-21a",
-          "kind": "imaging",
-          "start": "2025-10-21T08:45",
-          "reason": "Annual lung cancer screening",
-          "reports": [
-            {
-              "study": "Low-dose CT chest for lung cancer screening",
-              "performed": "2025-10-21T08:45",
-              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Comparison 10/2024. Technique: low-dose CT of the chest without IV contrast. Findings: No pulmonary nodules or masses. No consolidation. No pleural or pericardial effusion. Normal mediastinal contours. No lymphadenopathy.",
-              "conclusion": "Lung-RADS 1, negative. Annual follow-up."
-            }
-          ],
-          "orders": [
-            {
-              "id": "ldct-2025",
-              "action": "done",
-              "date": "2025-10-21T08:45"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Result Note",
-              "title": "LDCT result",
-              "author": "PCP",
-              "date": "2025-10-22T08:05",
-              "body": "Lung-RADS 1 for the fourth year. Patient notified via portal."
-            }
-          ]
-        },
-        {
-          "id": "2025-11-14a",
-          "kind": "telephone",
-          "start": "2025-11-14T15:40",
-          "reason": "Daughter calling with concerns about memory",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Call From Daughter",
-              "author": "PCP",
-              "date": "2025-11-14T16:05",
-              "body": "Daughter called (pt gave verbal OK on the line). She has been staying with her parents this week and says over the last several days her dad has been forgetting things, losing track of what he's doing and can't seem to organize his day, which is not like him at all. He tells me he feels a bit weaker on the left again. Per daughter no facial droop, no slurred speech, no new trouble walking, no fall. He has his 6-month neurology appointment Monday 11/17. Advised keeping that appointment and having her go with him. Any new weakness, speech change, facial asymmetry or worsening confusion before then: call 911. Will see him here after neurology."
-            }
-          ]
-        },
-        {
           "id": "2025-11-17a",
           "kind": "specialist_visit",
           "start": "2025-11-17T13:00",
           "service": "Neurology",
           "reason": "Post-stroke follow-up; change in behavior and thinking",
-          "conditions": [
-            {
-              "label": "Vascular dementia",
-              "icd10": "F01.50",
-              "action": "diagnosed",
-              "onset": "2025-11-10"
-            }
-          ],
+          "conditions": [],
           "reports": [
             {
               "study": "CT head without contrast",
@@ -731,68 +496,6 @@
               "author": "neurology",
               "date": "2025-11-20T10:30",
               "body": "NEUROLOGY CLINIC (regional hospital stroke clinic), visit 11/17/2025\n\nDear colleague,\n\nI saw Mr. Rousseau, 68, for his planned follow-up six months after his right frontal ischemic stroke. His daughter came with him and supplied most of the history. Across the past week she has seen an abrupt change in him: he forgets recent conversations, drifts off task, and cannot lay out his day the way he always has; she stresses he has been a meticulous planner his whole life. He himself mentions only that the left side feels mildly weak.\n\nBackground: hypertension, hyperlipidemia, the May stroke. Cataract surgery 2021. Medications lisinopril and atorvastatin. NKDA. Father had an ischemic stroke at 74, mother hypertension, brother coronary disease. Former smoker (35 pack-years, stopped 2017), rare alcohol, retired accountant.\n\nExamination: alert, though flat and apathetic in manner. Language fluent without aphasia. Cranial nerves normal. Mild drift of the left arm and leg. Sensation normal.\n\nNoncontrast head CT today: small, well-circumscribed right frontal hypodensity at the site of the known infarct, no new lesion.\n\nImpression: vascular dementia following the right frontal infarct, with predominantly executive and attention problems and apathy.\n\nRecommendations: continue blood pressure and cholesterol treatment as you are. Please check vitamin B12 and TSH if not recent. A baseline cognitive screen in your office would be useful. I advised that he not drive. Family to help with finances and medications. I will see him again in about six months.\n\nSincerely,\nStroke neurology"
-            }
-          ]
-        },
-        {
-          "id": "2025-12-08a",
-          "kind": "office_visit",
-          "start": "2025-12-08T10:00",
-          "end": "2025-12-08T10:50",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Follow-up after neurology, cognitive change",
-          "measure": [
-            "bp",
-            "hr",
-            "spo2",
-            "weight_kg"
-          ],
-          "labs": [
-            {
-              "panel": null,
-              "collected": "2025-12-08T10:45",
-              "results": [
-                {
-                  "test": "Vitamin B12",
-                  "value": 486,
-                  "unit": "pg/mL"
-                },
-                {
-                  "test": "Thyroid Stimulating Hormone",
-                  "value": 2.1,
-                  "unit": "mIU/L"
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Office visit, established patient, high MDM",
-              "performed": "2025-12-08T10:00"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Cognition Follow-up",
-              "author": "PCP",
-              "date": "2025-12-08T11:00",
-              "body": "Here with wife and daughter after his 11/17 neurology visit (letter reviewed). Neurology's impression is vascular dementia after the May right frontal stroke.\n\nFamily: since mid-November he has been less himself. Misplaces things, loses the thread of what he started, needs prompting to get going in the morning. No hallucinations, no wandering, no getting lost in familiar places. Sleep and appetite fine. Mood: he says \"fine\" and doesn't seem sad, more indifferent. He is not driving. Daughter has taken over the bills and checkbook with his agreement. Wife fills his pill box on Sundays.\n\nMoCA 22/30. Lost points on trails, clock, delayed recall and serial 7s; oriented fully.\nExam: BP as recorded. Flat affect, cooperative, speech fluent. Mild left drift. Gait steady.\n\nA/P\n1. Vascular dementia: MoCA 22 today as baseline. B12 and TSH drawn per neurology. Reviewed what to expect, home safety, keeping a daily routine and his walks. No medication for this now. Family to call with any sudden change.\n2. Ischemic stroke, right frontal: on lisinopril and atorvastatin as before.\n3. HTN: a little high today, usually at goal; recheck in March before any change. 4. HLD: continue atorvastatin 40.\nNo driving, agreed by all. RTC 3 months."
-            }
-          ]
-        },
-        {
-          "id": "2025-12-10a",
-          "kind": "portal_message",
-          "start": "2025-12-10T13:15",
-          "reason": "Lab results",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "B12 and thyroid results",
-              "author": "PCP",
-              "date": "2025-12-10T13:15",
-              "body": "Dennis (and family), the vitamin B12 came back at 486 and the thyroid test at 2.1. Both normal, so neither is contributing to the memory changes. No new treatment needed. See you in March."
             }
           ]
         }

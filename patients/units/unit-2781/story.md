@@ -57,3 +57,8 @@ One line per contact, date order, tagged with the build-req letter it rests on.
 - 2026-08-19 portal result note (P)
 - 2026-10-22 outside endocrinology visit booked (calcitonin, CEA, first yearly plasma metanephrines); carried in the endocrinology and physical notes, since only practice visits can be booked events (P, A5, A6)
 - 2026-11-12 practice follow-up booked to review endocrinology labs (P, A5, A6)
+
+
+## Last seen
+
+The practice last saw MRN00002781 on 2026-02-03. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

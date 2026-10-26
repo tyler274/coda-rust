@@ -87,3 +87,8 @@ One line per contact, date order; tag = build-req letter it rests on.
 - 2026-07-27 lab_only — FIT drop-off [P]
 - 2026-08-17 telephone — Appointment confirmation [P]
 - 2026-09-14 office_visit — Follow-up: lithium, nephrogenic diabetes insipidus, labs (booked) [P (booked)]
+
+
+## Last seen
+
+The practice last saw MRN00002778 on 2024-10-14. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

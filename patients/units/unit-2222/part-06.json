@@ -26,140 +26,6 @@
           ]
         },
         {
-          "id": "2025-07-21a",
-          "kind": "portal_message",
-          "start": "2025-07-21T21:05",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "nosebleeds",
-              "author": "patient",
-              "date": "2025-07-21T21:05",
-              "body": "Had two nosebleeds this week and my gums bleed when I brush. I've been dragging for a couple months and get headaches and my eyes are blurry, I thought I just needed new glasses. INR was fine in June. Should I stop the warfarin?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: nosebleeds",
-              "author": "RN",
-              "date": "2025-07-22T07:45",
-              "body": "Don't stop the warfarin on your own. The doctor wants to see you today - 11:15. We will check your INR and blood count while you're here. If a nosebleed won't stop with 15 minutes of pressure, go to the ER."
-            }
-          ]
-        },
-        {
-          "id": "2025-07-22a",
-          "kind": "office_visit",
-          "start": "2025-07-22T11:15",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Nosebleeds, fatigue, headaches",
-          "state": {
-            "weight_kg": 76.0,
-            "labs": {
-              "Hemoglobin": 10.2,
-              "Platelets": 150,
-              "Total Protein": 9.4,
-              "Albumin": 3.5
-            }
-          },
-          "measure": [
-            "bp",
-            "hr",
-            "spo2",
-            "temp_c",
-            "weight_kg"
-          ],
-          "labs": [
-            {
-              "panel": "Complete Blood Count (CBC)",
-              "collected": "2025-07-22T11:45",
-              "results": [
-                {
-                  "test": "Hemoglobin",
-                  "value": 10.2
-                },
-                {
-                  "test": "Mean Corpuscular Volume"
-                },
-                {
-                  "test": "Platelets",
-                  "value": 150
-                },
-                {
-                  "test": "White Blood Cells"
-                }
-              ]
-            },
-            {
-              "panel": "Comprehensive Metabolic Panel (CMP)",
-              "collected": "2025-07-22T11:45",
-              "results": [
-                {
-                  "test": "Total Protein",
-                  "value": 9.4
-                },
-                {
-                  "test": "Albumin",
-                  "value": 3.5
-                },
-                {
-                  "test": "Creatinine"
-                },
-                {
-                  "test": "Calcium"
-                }
-              ]
-            },
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2025-07-22T11:45",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Office visit, established patient, high MDM",
-              "performed": "2025-07-22T11:15"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Same-day visit",
-              "author": "PCP",
-              "date": "2025-07-22T12:05",
-              "body": "Same-day visit.\n\nHPI: About two months of feeling run down, daily dull headaches and blurry vision in both eyes. This week two nosebleeds that stopped with pressure, and his gums bleed brushing. No black or bloody stools, urine clear. No fevers. Eating well, swallowing fine. Finished BCG in June; cystoscopy 7/8 clear.\n\nExam: Pale. Gums with a little oozing at the lower incisors, no active nosebleed. No petechiae or bruising on the limbs. Heart irreg irreg. Lungs clear. Abdomen soft, no masses felt. Neuro nonfocal.\n\nPlan: CBC, CMP and INR drawn now, will call this afternoon. Warfarin unchanged pending INR."
-            },
-            {
-              "type": "Progress Notes",
-              "title": "Addendum - results",
-              "author": "PCP",
-              "date": "2025-07-22T16:40",
-              "body": "Addendum: INR in range, so not from warfarin excess. Hgb 10.2 (14.3 in April), MCV normal, platelets 150. Total protein 9.4 with albumin 3.5 - a large globulin gap. Anemia, high protein, mucosal bleeding, headaches and blurry vision together raise concern for a paraprotein. Paternal uncle had Waldenstrom. Urgent hematology referral placed and I called their office directly; they will see him 8/11 and asked us to call if symptoms worsen before then. Called pt and explained. Return/ED precautions for bleeding, confusion, worsening vision."
-            }
-          ],
-          "conditions": [
-            {
-              "label": "Anemia, unspecified",
-              "action": "diagnosed",
-              "onset": "2025-06-01"
-            }
-          ],
-          "orders": [
-            {
-              "id": "heme-referral-2025",
-              "action": "placed",
-              "order": "Hematology referral",
-              "category": "referral",
-              "to": "Hematology & Oncology",
-              "reason": "Anemia, elevated globulin, mucosal bleeding - urgent"
-            }
-          ]
-        },
-        {
           "id": "2025-07-29a",
           "kind": "specialist_visit",
           "start": "2025-07-29T13:00",
@@ -213,20 +79,14 @@
               ]
             }
           ],
-          "orders": [
-            {
-              "id": "heme-referral-2025",
-              "action": "done",
-              "date": "2025-08-11T08:30"
-            }
-          ],
+          "orders": [],
           "documents": [
             {
               "type": "Consult Note",
               "title": "Hematology consultation",
               "author": "hematology",
               "date": "2025-08-11T18:00",
-              "body": "OUTSIDE HEMATOLOGY/ONCOLOGY - new consultation. Date of service 08/11/2025.\n\nReferred by his PCP for anemia with an elevated globulin.\n\nHPI: 71 year old man previously treated for esophageal adenocarcinoma (chemoradiation 2024, complete response) and high-grade T1 bladder cancer (TURBT and BCG 2025). For about two months he has had fatigue, headaches and blurred vision, and recently began bleeding spontaneously from the gums and nose.\n\nOther history: type 2 diabetes, hypertension, permanent AF on warfarin, prior mild stroke, AAA s/p EVAR with cholesterol embolism, inclusion body myositis, PAD, GERD, hyperlipidemia.\nMedications: metformin, lisinopril, hydrochlorothiazide, metoprolol succinate, warfarin, aspirin, atorvastatin, omeprazole. NKDA.\nFamily: paternal uncle with Waldenstrom macroglobulinemia; father ruptured AAA; mother diabetes, macular degeneration; brother hypertension.\nSocial: retired construction foreman; 40 pack-years, quit 2017; red wine most evenings.\n\nExam: pale. Fundoscopy shows engorged retinal veins. Distal sensory loss in both lower extremities. No palpable lymphadenopathy or splenomegaly.\n\nLabs today: hemoglobin 10.2 g/dL, MCV 89 fL, platelets 150,000/uL. SPEP with a monoclonal IgM spike, M-protein 3.6 g/dL; IgM 4,850 mg/dL. Serum viscosity elevated at 4.6 cP.\n\nProcedure today: bone marrow aspirate and biopsy, posterior iliac crest, tolerated well (INR checked; warfarin not held, held pressure).\n\nAssessment: monoclonal IgM paraproteinemia with symptomatic hyperviscosity (headache, visual blurring, retinal venous engorgement, mucosal bleeding) and anemia - most consistent with Waldenstrom macroglobulinemia, marrow pending.\n\nPlan:\n- Plasmapheresis urgently: first session tomorrow 8/12, second 8/14.\n- Marrow results expected within the week; definitive therapy to follow.\n- Avoid transfusion before plasmapheresis.\n- He will continue warfarin; any significant bleeding to the ED."
+              "body": "OUTSIDE HEMATOLOGY/ONCOLOGY - new consultation. Date of service 08/11/2025.\n\nReferred for anemia with an elevated globulin.\n\nHPI: 71 year old man previously treated for esophageal adenocarcinoma (chemoradiation 2024, complete response) and high-grade T1 bladder cancer (TURBT and BCG 2025). For about two months he has had fatigue, headaches and blurred vision, and recently began bleeding spontaneously from the gums and nose.\n\nOther history: type 2 diabetes, hypertension, permanent AF on warfarin, prior mild stroke, AAA s/p EVAR with cholesterol embolism, inclusion body myositis, PAD, GERD, hyperlipidemia.\nMedications: metformin, lisinopril, hydrochlorothiazide, metoprolol succinate, warfarin, aspirin, atorvastatin, omeprazole. NKDA.\nFamily: paternal uncle with Waldenstrom macroglobulinemia; father ruptured AAA; mother diabetes, macular degeneration; brother hypertension.\nSocial: retired construction foreman; 40 pack-years, quit 2017; red wine most evenings.\n\nExam: pale. Fundoscopy shows engorged retinal veins. Distal sensory loss in both lower extremities. No palpable lymphadenopathy or splenomegaly.\n\nLabs today: hemoglobin 10.2 g/dL, MCV 89 fL, platelets 150,000/uL. SPEP with a monoclonal IgM spike, M-protein 3.6 g/dL; IgM 4,850 mg/dL. Serum viscosity elevated at 4.6 cP.\n\nProcedure today: bone marrow aspirate and biopsy, posterior iliac crest, tolerated well (INR checked; warfarin not held, held pressure).\n\nAssessment: monoclonal IgM paraproteinemia with symptomatic hyperviscosity (headache, visual blurring, retinal venous engorgement, mucosal bleeding) and anemia - most consistent with Waldenstrom macroglobulinemia, marrow pending.\n\nPlan:\n- Plasmapheresis urgently: first session tomorrow 8/12, second 8/14.\n- Marrow results expected within the week; definitive therapy to follow.\n- Avoid transfusion before plasmapheresis.\n- He will continue warfarin; any significant bleeding to the ED."
             }
           ]
         },
@@ -236,14 +96,7 @@
           "start": "2025-08-18T14:00",
           "service": "Hematology & Oncology",
           "reason": "Bone marrow results and treatment plan",
-          "conditions": [
-            {
-              "label": "Waldenström macroglobulinemia",
-              "icd10": "C88.0",
-              "action": "diagnosed",
-              "onset": "2025-06-01"
-            }
-          ],
+          "conditions": [],
           "reports": [
             {
               "study": "Surgical pathology report",
@@ -260,114 +113,6 @@
               "author": "hematology",
               "date": "2025-08-18T17:30",
               "body": "OUTSIDE HEMATOLOGY/ONCOLOGY - follow-up. Date of service 08/18/2025.\n\nBone marrow 8/11: 15% clonal lymphoplasmacytic cells. With the IgM monoclonal protein this confirms Waldenstrom macroglobulinemia.\n\nPlasmapheresis 8/12 and 8/14 completed. Serum viscosity after: 2.3 cP. Headaches gone, vision clearer, no bleeding since the first session.\n\nDiagnosis: Waldenstrom macroglobulinemia with hyperviscosity, treated with plasmapheresis.\n\nTreatment plan: bendamustine-rituximab, six cycles every 28 days starting 9/2. Viscosity and IgM monitored for flare after rituximab, with repeat plasmapheresis if needed. Weekly CBC early on. His warfarin can continue with closer INR checks by his PCP's office. We have asked urology to defer maintenance BCG during chemoimmunotherapy; they agree.\nThank you for the prompt referral."
-            }
-          ]
-        },
-        {
-          "id": "2025-08-26a",
-          "kind": "telehealth_visit",
-          "start": "2025-08-26T10:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Check-in after new diagnosis",
-          "procedures": [
-            {
-              "procedure": "Telehealth visit, established patient, moderate MDM",
-              "performed": "2025-08-26T10:30"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Video visit",
-              "author": "PCP",
-              "date": "2025-08-26T11:00",
-              "body": "Video visit from home, identity confirmed.\n\nCheck-in after hematology diagnosed Waldenstrom macroglobulinemia (marrow 15% lymphoplasmacytic cells, IgM spike) with hyperviscosity; plasmapheresis x2 8/12 and 8/14 with symptoms resolved. Starts bendamustine-rituximab 9/2 for 6 cycles.\n\nHe's tired of being a patient but feels much better since the plasma exchange - no headaches, vision back to his usual, no bleeding.\n\nA/P:\n1. WM - per hematology.\n2. Warfarin during chemo - INR every 2-3 weeks; RN to align with his infusion labs.\n3. Bladder cancer - maintenance BCG deferred by urology during treatment; cystoscopy in October.\n4. DM2/HTN - continue, labs at the wellness visit.\n5. Flu and covid in October; no live vaccines.\nFollow up after cycle 3 or sooner."
-            }
-          ]
-        },
-        {
-          "id": "2025-09-16a",
-          "kind": "lab_only",
-          "start": "2025-09-16T08:15",
-          "reason": "INR and CBC",
-          "state": {
-            "labs": {
-              "Hemoglobin": 10.6
-            }
-          },
-          "labs": [
-            {
-              "panel": "Complete Blood Count (CBC)",
-              "collected": "2025-09-16T08:15",
-              "results": [
-                {
-                  "test": "Hemoglobin"
-                },
-                {
-                  "test": "Platelets"
-                }
-              ]
-            },
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2025-09-16T08:15",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ],
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "INR",
-              "author": "RN",
-              "date": "2025-09-16T12:10",
-              "body": "INR in range after cycle 1. Hgb about the same. Tired for a few days after the infusion, better now. No bleeding. Same warfarin dose. Next INR 10/7 with his vaccines."
-            }
-          ]
-        },
-        {
-          "id": "2025-10-07a",
-          "kind": "nurse_visit",
-          "start": "2025-10-07T13:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Vaccines, INR",
-          "labs": [
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2025-10-07T13:35",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ],
-          "immunizations": [
-            {
-              "vaccine": "Influenza, high-dose, trivalent",
-              "date": "2025-10-07T13:40"
-            },
-            {
-              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
-              "date": "2025-10-07T13:42"
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Immunization administration",
-              "performed": "2025-10-07T13:40"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Nurse Note",
-              "title": "Nurse visit",
-              "author": "RN",
-              "date": "2025-10-07T13:55",
-              "body": "Timed between cycles per hematology. Flu HD R deltoid, covid updated L deltoid. Pressure held. No reaction. INR in range."
             }
           ]
         },
@@ -390,23 +135,6 @@
               "author": "urology",
               "date": "2025-10-21T10:00",
               "body": "OUTSIDE UROLOGY - surveillance cystoscopy. Date 10/21/2025.\nHigh-grade T1 urothelial carcinoma s/p TURBT x2 and BCG induction. Maintenance BCG on hold during bendamustine-rituximab for Waldenstrom.\nFindings: healed right lateral wall scar. No tumor.\nPlan: cystoscopy every 3 months; revisit maintenance BCG after chemoimmunotherapy."
-            }
-          ]
-        },
-        {
-          "id": "2025-11-04a",
-          "kind": "lab_only",
-          "start": "2025-11-04T08:20",
-          "reason": "INR",
-          "labs": [
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2025-11-04T08:20",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
             }
           ]
         },
@@ -435,120 +163,6 @@
               "author": "hematology",
               "date": "2025-11-25T14:00",
               "body": "OUTSIDE HEMATOLOGY/ONCOLOGY. Date of service 11/25/2025.\nWaldenstrom macroglobulinemia on bendamustine-rituximab, cycle 4 day 1 today.\nAfter 3 cycles: M-protein 1.5 g/dL (3.6 at diagnosis). No hyperviscosity symptoms; no IgM flare requiring plasmapheresis. Fatigue for a few days after each cycle. No infections.\nPlan: continue to 6 cycles; response assessment after completion."
-            }
-          ]
-        },
-        {
-          "id": "2025-12-09a",
-          "kind": "annual_physical",
-          "start": "2025-12-09T10:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Annual wellness visit",
-          "state": {
-            "weight_kg": 76.0,
-            "labs": {
-              "Hemoglobin": 11.4,
-              "Hemoglobin A1c": 6.3,
-              "Total Protein": 8.2,
-              "Albumin": 3.7
-            }
-          },
-          "measure": [
-            "bp",
-            "hr",
-            "spo2",
-            "temp_c",
-            "weight_kg"
-          ],
-          "labs": [
-            {
-              "panel": "Comprehensive Metabolic Panel (CMP)",
-              "collected": "2025-12-09T09:30",
-              "results": [
-                {
-                  "test": "Creatinine"
-                },
-                {
-                  "test": "Total Protein"
-                }
-              ]
-            },
-            {
-              "panel": "Complete Blood Count (CBC)",
-              "collected": "2025-12-09T09:30",
-              "results": [
-                {
-                  "test": "Hemoglobin"
-                }
-              ]
-            },
-            {
-              "panel": "Lipid Panel",
-              "collected": "2025-12-09T09:30",
-              "results": [
-                {
-                  "test": "Low Density Lipoprotein"
-                }
-              ]
-            },
-            {
-              "panel": null,
-              "collected": "2025-12-09T09:30",
-              "results": [
-                {
-                  "test": "Hemoglobin A1c"
-                },
-                {
-                  "test": "Microalbumin/Creatinine Ratio"
-                }
-              ]
-            },
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2025-12-09T09:30",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ],
-          "surveys": [
-            {
-              "survey": "PHQ-2 total score",
-              "value": 1
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Annual wellness visit, subsequent",
-              "performed": "2025-12-09T10:00"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Annual Wellness Visit",
-              "author": "PCP",
-              "date": "2025-12-09T10:55",
-              "body": "AWV, delayed from the fall by treatment.\n\nYear: bladder cancer (high-grade T1) - TURBT x2 and BCG induction, cystoscopies clear. Waldenstrom macroglobulinemia with hyperviscosity in August - plasmapheresis, now on bendamustine-rituximab, cycle 5 in two weeks; M-protein down from 3.6 to 1.5. Esophageal cancer surveillance CT clear in July. EVAR stable.\n\nFunction: independent in ADLs, cooks for himself. Uses rails. No falls. Drives short distances. Fatigue a few days after each cycle. PHQ-2 1. Advance care planning discussed; he wants full treatment for now.\n\nROS: no headaches or vision change since plasmapheresis. No bleeding. No dysphagia. No urinary symptoms. Occasional palpitations as always.\n\nExam: Wt 76.6. Pale-ish. Heart irreg irreg, no murmur. Lungs clear. Abdomen soft, nontender. Quads and forearms thin; needs arms to rise. Feet: skin intact, DP present; monofilament and vibration reduced at the toes and forefoot bilaterally - same distal sensory loss hematology noted in August.\n\nLabs today: Hgb 11.4, improving. Cr 1.1. Total protein 8.5, coming down. A1c 6.3. LDL ~100. UACR normal. INR in range.\n\nA/P:\n1. WM - on BR per hematology, responding.\n2. Bladder cancer - surveillance cystoscopy every 3 months.\n3. Esophageal adenocarcinoma - surveillance.\n4. DM2 - well controlled. Foot care reviewed given reduced sensation: daily foot checks, proper shoes.\n5. HTN - controlled.\n6. AF/warfarin - INR stable through chemo.\n7. AAA s/p EVAR - duplex January.\n8. IBM - stable.\n9. HLD/PAD - same.\nVaccines up to date for the season. RTC 3-4 months."
-            }
-          ]
-        },
-        {
-          "id": "2025-12-30a",
-          "kind": "lab_only",
-          "start": "2025-12-30T08:30",
-          "reason": "INR",
-          "labs": [
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2025-12-30T08:30",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
             }
           ]
         },
@@ -599,23 +213,6 @@
           ]
         },
         {
-          "id": "2026-02-03a",
-          "kind": "lab_only",
-          "start": "2026-02-03T08:10",
-          "reason": "INR",
-          "labs": [
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2026-02-03T08:10",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ]
-        },
-        {
           "id": "2026-02-15a",
           "kind": "ed_visit",
           "start": "2026-02-15T13:20",
@@ -639,13 +236,7 @@
             "rr",
             "spo2"
           ],
-          "conditions": [
-            {
-              "label": "Urinary tract infection",
-              "action": "diagnosed",
-              "onset": "2026-02-12"
-            }
-          ],
+          "conditions": [],
           "labs": [
             {
               "panel": "Urinalysis",
@@ -697,21 +288,7 @@
               ]
             }
           ],
-          "medications": [
-            {
-              "drug_text": "cefpodoxime proxetil 200 MG Oral Tablet",
-              "action": "start",
-              "sig": "Take 1 tablet by mouth twice daily for 10 days",
-              "dose": {
-                "value": 200,
-                "unit": "mg"
-              },
-              "frequency": "BID",
-              "route": "Oral",
-              "course": "short",
-              "reason": "Urinary tract infection"
-            }
-          ],
+          "medications": [],
           "procedures": [
             {
               "procedure": "Emergency department visit, moderate MDM",
@@ -725,110 +302,6 @@
               "author": "emergency medicine",
               "date": "2026-02-15T19:45",
               "body": "OUTSIDE EMERGENCY DEPARTMENT RECORD. Date of service 02/15/2026.\n\nCC: fever, burning with urination.\n\nHPI: 71 year old man with a history of bladder cancer (TURBT, BCG) and Waldenstrom macroglobulinemia (last bendamustine-rituximab 1/20/2026) with 3 days of fever, dysuria and urinary frequency. No flank pain. No vomiting.\n\nPMH: also esophageal adenocarcinoma s/p chemoradiation, AAA s/p EVAR, permanent AF on warfarin, prior stroke, DM2, HTN, HLD, PAD, IBM, GERD.\nMeds: metformin 1000 mg BID, lisinopril 20 mg, hydrochlorothiazide 12.5 mg, metoprolol succinate 50 mg, warfarin 5 mg, aspirin 81 mg, atorvastatin 40 mg, omeprazole 20 mg. Allergies: NKDA.\n\nVitals: BP 145/90, HR 88, T 38.4 C.\nExam: uncomfortable, nontoxic. Suprapubic tenderness. No flank or CVA tenderness. Heart irregularly irregular. Lungs clear.\n\nData: urinalysis with pyuria and bacteriuria. Creatinine 1.1. WBC 12,000. Urine culture sent. Abdominal ultrasound from last month reviewed: aneurysm present, no change in size.\n\nED course: ceftriaxone 1 g IV. Tolerating oral fluids, fever down.\n\nImpression: urinary tract infection (cystitis with fever), recent chemoimmunotherapy.\nDisposition: discharged. Cefpodoxime 200 mg twice daily for 10 days. Antibiotic may raise INR - INR with PCP this week. Return for rigors, flank pain, vomiting, confusion. PCP follow-up in 1 week. Culture results will be sent to PCP."
-            }
-          ]
-        },
-        {
-          "id": "2026-02-16a",
-          "kind": "telephone",
-          "start": "2026-02-16T09:00",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Post-ED call",
-              "author": "PCP",
-              "date": "2026-02-16T09:00",
-              "body": "Called after seeing the ED record from yesterday - UTI with fever, ceftriaxone in the ED, now on cefpodoxime x10 days. This morning no fever, still burning but less. Drinking well. Hematology made aware by pt. INR Thursday 2/19 because of the antibiotic. Visit Monday 2/23. Call if fever returns or flank pain."
-            }
-          ]
-        },
-        {
-          "id": "2026-02-17a",
-          "kind": "telephone",
-          "start": "2026-02-17T13:20",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Urine culture",
-              "author": "RN",
-              "date": "2026-02-17T13:20",
-              "body": "ED culture final: E. coli, sensitive to cefpodoxime. Continue current antibiotic. Pt feeling better, no fever."
-            }
-          ]
-        },
-        {
-          "id": "2026-02-19a",
-          "kind": "lab_only",
-          "start": "2026-02-19T08:15",
-          "reason": "INR on antibiotic",
-          "labs": [
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2026-02-19T08:15",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio",
-                  "value": 3.4
-                }
-              ]
-            }
-          ],
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "INR high",
-              "author": "RN",
-              "date": "2026-02-19T12:30",
-              "body": "INR 3.4 on cefpodoxime. No bleeding, no dark stools, urine not bloody. Hold tonight's warfarin, then 5 mg daily. Recheck at visit Monday."
-            }
-          ]
-        },
-        {
-          "id": "2026-02-23a",
-          "kind": "office_visit",
-          "start": "2026-02-23T10:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "ED follow-up, UTI",
-          "state": {
-            "weight_kg": 76.0
-          },
-          "measure": [
-            "bp",
-            "hr",
-            "spo2",
-            "temp_c",
-            "weight_kg"
-          ],
-          "conditions": [
-            {
-              "label": "Urinary tract infection",
-              "action": "resolved"
-            }
-          ],
-          "labs": [
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2026-02-23T10:50",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Office visit, established patient, moderate MDM",
-              "performed": "2026-02-23T10:30"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "ED follow-up",
-              "author": "PCP",
-              "date": "2026-02-23T11:05",
-              "body": "ED f/u. UTI 2/15 with fever (E. coli, cefpodoxime-sensitive). Day 8 of 10 of cefpodoxime. No fever since 2/16. Burning and frequency gone. No flank pain.\n\nExam: afebrile. No suprapubic tenderness. No CVA tenderness. Heart irreg irreg. Lungs clear.\n\nINR today back in range after one held dose.\n\nA/P:\n1. UTI - resolved clinically. Finish the course. No test of cure needed.\n2. Warfarin - INR in range; back to monthly once antibiotic done.\n3. WM - end-of-treatment visit with hematology in March.\n4. Bladder cancer - cystoscopy in April.\nRTC April."
             }
           ]
         },
@@ -857,105 +330,6 @@
               "author": "hematology",
               "date": "2026-03-10T14:30",
               "body": "OUTSIDE HEMATOLOGY/ONCOLOGY. Date of service 03/10/2026.\nWaldenstrom macroglobulinemia, completed bendamustine-rituximab x6 (9/2/2025-1/20/2026). E. coli UTI in February treated as an outpatient.\nM-protein 0.7 g/dL (3.6 at diagnosis): partial response. No hyperviscosity symptoms. Hemoglobin improving.\nPlan: observation, no maintenance therapy. Labs and visit every 3 months. From our standpoint urology may resume maintenance BCG when they judge it appropriate; we suggest waiting until counts are fully recovered."
-            }
-          ]
-        },
-        {
-          "id": "2026-03-31a",
-          "kind": "lab_only",
-          "start": "2026-03-31T08:20",
-          "reason": "INR",
-          "labs": [
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2026-03-31T08:20",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "2026-04-14a",
-          "kind": "office_visit",
-          "start": "2026-04-14T13:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Chronic disease follow-up",
-          "state": {
-            "weight_kg": 77.5,
-            "bp": [
-              134,
-              82
-            ],
-            "labs": {
-              "Hemoglobin": 12.4,
-              "Hemoglobin A1c": 6.4,
-              "Total Protein": 7.6,
-              "Albumin": 3.9
-            }
-          },
-          "measure": [
-            "bp",
-            "hr",
-            "spo2",
-            "weight_kg"
-          ],
-          "labs": [
-            {
-              "panel": "Comprehensive Metabolic Panel (CMP)",
-              "collected": "2026-04-14T13:30",
-              "results": [
-                {
-                  "test": "Creatinine"
-                },
-                {
-                  "test": "Total Protein"
-                }
-              ]
-            },
-            {
-              "panel": "Complete Blood Count (CBC)",
-              "collected": "2026-04-14T13:30",
-              "results": [
-                {
-                  "test": "Hemoglobin"
-                }
-              ]
-            },
-            {
-              "panel": null,
-              "collected": "2026-04-14T13:30",
-              "results": [
-                {
-                  "test": "Hemoglobin A1c"
-                }
-              ]
-            },
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2026-04-14T13:30",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Office visit, established patient, moderate MDM",
-              "performed": "2026-04-14T13:00"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Office visit",
-              "author": "PCP",
-              "date": "2026-04-14T13:45",
-              "body": "F/u. Done with treatment and feeling more like himself. Energy better, walking to the end of the street and back. Weight up to 77.4. No urinary symptoms since February. No bleeding. Swallowing fine.\n\nExam: color better. Heart irreg irreg. Lungs clear. No edema. Feet with reduced sensation at the toes as before, skin intact.\n\nLabs: Hgb 12.1, total protein 7.7, A1c 6.0, Cr 1.15, INR in range.\n\nA/P:\n1. WM - partial response, observation with hematology.\n2. Bladder cancer - cystoscopy schedule per urology; BCG decision pending.\n3. Esophageal adenocarcinoma - CT in May.\n4. DM2 - A1c 6.0, same.\n5. HTN - 130s/80s, same.\n6. AF/warfarin - monthly INR.\n7. AAA s/p EVAR - stable on January duplex.\nAWV late summer."
             }
           ]
         },
@@ -1012,23 +386,6 @@
           ]
         },
         {
-          "id": "2026-05-26a",
-          "kind": "lab_only",
-          "start": "2026-05-26T08:05",
-          "reason": "INR",
-          "labs": [
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2026-05-26T08:05",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ]
-        },
-        {
           "id": "2026-06-09a",
           "kind": "specialist_visit",
           "start": "2026-06-09T08:30",
@@ -1067,44 +424,6 @@
           ]
         },
         {
-          "id": "2026-06-23a",
-          "kind": "portal_message",
-          "start": "2026-06-23T08:40",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "refills",
-              "author": "patient",
-              "date": "2026-06-23T08:40",
-              "body": "Need refills on lisinopril, hctz and atorvastatin to the mail order. Thanks"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: refills",
-              "author": "MA",
-              "date": "2026-06-23T10:15",
-              "body": "Sent all three as 90-day supplies with refills. Have a good summer, Mr. Rossi."
-            }
-          ]
-        },
-        {
-          "id": "2026-07-07a",
-          "kind": "lab_only",
-          "start": "2026-07-07T08:25",
-          "reason": "INR",
-          "labs": [
-            {
-              "panel": "Prothrombin Time with INR",
-              "collected": "2026-07-07T08:25",
-              "results": [
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ]
-        },
-        {
           "id": "2026-07-14a",
           "kind": "specialist_visit",
           "start": "2026-07-14T09:30",
@@ -1125,61 +444,6 @@
               "body": "OUTSIDE UROLOGY - surveillance cystoscopy. Date 07/14/2026.\nHigh-grade T1 urothelial carcinoma, TURBT 3/2025 and 4/2025, BCG induction 5-6/2025, maintenance deferred during and after WM therapy.\nFindings: no recurrence. Healed scar right lateral wall.\nPlan: cystoscopy every 3 months through the second year. We discussed resuming maintenance BCG; he prefers to continue surveillance alone for now, which is reasonable given clear cystoscopies."
             }
           ]
-        },
-        {
-          "id": "2026-08-18a",
-          "kind": "portal_message",
-          "start": "2026-08-18T09:15",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Wellness visit",
-              "author": "front desk",
-              "date": "2026-08-18T09:15",
-              "body": "Hi Mr. Rossi, your annual wellness visit is booked for Tuesday 9/8 at 10:00. Please come in for fasting labs the week before; the order is in. Bring your medication bottles."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Wellness visit",
-              "author": "patient",
-              "date": "2026-08-18T12:02",
-              "body": "Will come Thursday the 27th in the morning for the blood. See you the 8th."
-            }
-          ]
-        },
-        {
-          "id": "2026-08-27a",
-          "kind": "lab_only",
-          "start": "2026-08-27T07:50",
-          "reason": "Pre-visit fasting labs",
-          "labs": [
-            {
-              "panel": null,
-              "collected": "2026-08-27T07:50",
-              "pending": true,
-              "results": [
-                {
-                  "test": "Hemoglobin A1c"
-                },
-                {
-                  "test": "Low Density Lipoprotein"
-                },
-                {
-                  "test": "Creatinine"
-                },
-                {
-                  "test": "Prothrombin Time-International Normalized Ratio"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "2026-09-08a",
-          "kind": "annual_physical",
-          "start": "2026-09-08T10:00",
-          "reason": "Annual wellness visit",
-          "appointment": "booked"
         }
       ]
     }

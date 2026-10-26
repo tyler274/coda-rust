@@ -75,3 +75,8 @@
 - 2026-07-13 telephone: gabapentin stopped, zoster resolved [A13]
 - 2026-08-26 office visit: diabetes follow-up, labs pending [P]
 - 2026-10-07 booked: annual physical [P]
+
+
+## Last seen
+
+The practice last saw MRN00002700 on 2026-05-06. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

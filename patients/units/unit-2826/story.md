@@ -104,3 +104,8 @@ One line per contact, date order. Tag = build-req letter the contact rests on.
 - 2026-06-09 portal: lisinopril refill [P]
 - 2026-08-18 BP follow-up; BMP [A9, P]
 - 2026-09-14 booked annual wellness visit, BP and medication review [P]
+
+
+## Last seen
+
+The practice last saw MRN00002826 on 2026-02-24. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

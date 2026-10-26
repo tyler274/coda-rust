@@ -29,3 +29,8 @@
 - 2026-07-09 portal: Hgb result (P)
 - 2026-08-05 nurse visit: BP 120/78 off meds, preeclampsia resolved (A7)
 - 2026-10-13 booked annual physical (P)
+
+
+## Last seen
+
+The practice last saw MRN00001675 on 2026-05-21. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

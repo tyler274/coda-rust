@@ -66,6 +66,10 @@ notes. Texture carries no new clinical fact.
 - **Gaps stay gaps.** Where the source leaves care undone (a drug never raised, an
   imaging study never ordered), nobody fills it and nobody remarks on it, unless
   build-req says otherwise.
+- **The last visit.** The practice last saw the patient on the seed's `last_seen`:
+  that day has a held visit, and no practice visit comes after it. After it come
+  only messages, refills, a draw ordered at that visit, and outside records filed
+  as received, without updating the practice's lists.
 
 ## Today
 
@@ -74,8 +78,9 @@ everything is dated before it. Only two things reach past today:
 
 - **A result not back yet.** A draw from the last two weeks that has not come back:
   mark it `"pending": true` and name the tests with no values.
-- **A visit already booked.** A primary-care visit after today is an event with
-  `"appointment": "booked"`, its time, kind and `reason`, and nothing else.
+- **A visit already booked.** Only when the seed's `booked` is true: a primary-care
+  visit after today is an event with `"appointment": "booked"`, its time, kind and
+  `reason`, and nothing else.
 
 What happens after today is decided later, not written here. The chart stops
 mid-life, not at a turning point. Most patients have nothing open today; some

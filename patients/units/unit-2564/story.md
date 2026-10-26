@@ -33,3 +33,8 @@
 - 2026-08-19 portal: result note (P)
 - 2026-08-24 phone: confirms physical (P)
 - 2026-09-22 booked annual physical (P)
+
+
+## Last seen
+
+The practice last saw MRN00002564 on 2025-02-11. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

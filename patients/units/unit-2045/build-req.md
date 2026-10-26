@@ -191,3 +191,8 @@ office whose records follow. He brings:
   cancelled visit, one no-show.
 - Today: a primary-care follow-up booked for 2026-09-22. Nothing else open.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002045 on 2025-01-29. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -113,3 +113,8 @@ the research testing; no neurology referral, brain imaging or cognitive medicati
   booked visit after today.
 - Normal findings for anything the source does not mention.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002875 on 2025-12-01. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

@@ -22,3 +22,8 @@
 - 2026-08-13 neurology letter (visit 08-11) received [A5]
 - 2026-08-25 portal: back at desk work, asks about driving [P]
 - 2026-09-22 booked follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00002643 on 2026-07-21. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

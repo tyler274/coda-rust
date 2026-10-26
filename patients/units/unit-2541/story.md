@@ -82,3 +82,8 @@ One line per contact, date order, with the build-req letter each rests on.
 - 2026-08-10 outside_records: ID monthly letter (A8)
 - 2026-08-25 lab_only: monthly LFTs drawn, pending at today (P)
 - 2026-09-22 office_visit booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002541 on 2026-06-16. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

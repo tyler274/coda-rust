@@ -263,3 +263,8 @@ no transplant evaluation.
   scheduling, records requests and outside-letter filing, a cancelled visit (2025-04-21) and a lab no-show (2024-12-09).
 - **Today.** The 2026-08-24 draw is pending; the 2026-09-14 visit is booked.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002708 on 2026-04-20. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

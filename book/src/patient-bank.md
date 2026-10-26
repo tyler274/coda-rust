@@ -35,6 +35,9 @@ primary-care chart the same person would have there:
 - A source diagnosis with no treatment gets its standard care. After the source
   ends, the patient follows the ordinary course, with no new diagnoses.
 - Dates move so the history ends before today.
+- How long ago the practice last saw the patient varies as in a real panel, from
+  weeks to years. Outside records that arrive after that visit are filed but not
+  reconciled, and only some patients have a visit booked.
 - A source who cannot be a living primary-care patient has no chart.
 
 Vitals, lab values and calculated results are made by code from the patient's

@@ -110,3 +110,8 @@
 2026-08-17 lab only: methotrexate monitoring, resulted (P)
 2026-08-19 portal: lab results message (P)
 2026-09-14 booked: follow-up, anticoagulation review (P)
+
+
+## Last seen
+
+The practice last saw MRN00002839 on 2026-06-08. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

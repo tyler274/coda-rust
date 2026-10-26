@@ -148,3 +148,8 @@ Allowed without listing, with ordinary normal results unless a level above says 
   vaccines, asthma and AATD check).
 
 No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002788 on 2025-06-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

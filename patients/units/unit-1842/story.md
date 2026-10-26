@@ -45,3 +45,8 @@
 - 2026-07-14 portal: still well, CO poisoning resolved [A9, R9]
 - 2026-08-11 portal: schedules October physical [P]
 - 2026-10-20 annual physical booked [P]
+
+
+## Last seen
+
+The practice last saw MRN00001842 on 2025-10-21. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

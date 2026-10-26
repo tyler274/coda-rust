@@ -32,24 +32,183 @@
           "service": "Critical Care",
           "reason": "Collapse during marathon, hyperthermia",
           "conditions": [
-            {"label": "Exertional heatstroke, initial encounter", "icd10": "T67.02XA", "action": "diagnosed", "onset": "2026-07-12"},
-            {"label": "Hypotension, unspecified", "icd10": "I95.9", "action": "diagnosed", "onset": "2026-07-12"}
+            {
+              "label": "Exertional heatstroke, initial encounter",
+              "icd10": "T67.02XA",
+              "action": "diagnosed",
+              "onset": "2026-07-12"
+            },
+            {
+              "label": "Hypotension, unspecified",
+              "icd10": "I95.9",
+              "action": "diagnosed",
+              "onset": "2026-07-12"
+            }
           ],
           "vitals": [
-            {"time": "2026-07-12T10:50", "temp_c": 41.3, "hr": 118, "bp": [88, 60]},
-            {"time": "2026-07-12T11:20", "temp_c": 38.9},
-            {"time": "2026-07-12T13:00", "bp": [112, 70]}
+            {
+              "time": "2026-07-12T10:50",
+              "temp_c": 41.3,
+              "hr": 118,
+              "bp": [
+                88,
+                60
+              ]
+            },
+            {
+              "time": "2026-07-12T11:20",
+              "temp_c": 38.9
+            },
+            {
+              "time": "2026-07-12T13:00",
+              "bp": [
+                112,
+                70
+              ]
+            }
           ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-12T11:00", "results": [{"test": "Hemoglobin", "value": 13.9}, {"test": "White Blood Cells", "value": 13.4}, {"test": "Platelets", "value": 160}]},
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-12T11:00", "results": [{"test": "Blood Urea Nitrogen", "value": 42}, {"test": "Creatinine", "value": 2.1}, {"test": "Aspartate Aminotransferase", "value": 720}, {"test": "Alanine Aminotransferase", "value": 640}]},
-            {"panel": null, "collected": "2026-07-12T11:00", "results": [{"test": "Creatine Kinase", "value": 2350}]},
-            {"panel": "Prothrombin Time with INR", "collected": "2026-07-12T11:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-13T05:00", "results": [{"test": "Blood Urea Nitrogen", "value": 28}, {"test": "Creatinine", "value": 1.6}, {"test": "Aspartate Aminotransferase", "value": 940}, {"test": "Alanine Aminotransferase", "value": 810}]},
-            {"panel": null, "collected": "2026-07-13T05:00", "results": [{"test": "Creatine Kinase", "value": 3100}]},
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-16T05:30", "results": [{"test": "Blood Urea Nitrogen", "value": 16}, {"test": "Creatinine", "value": 1.1}, {"test": "Aspartate Aminotransferase", "value": 164}, {"test": "Alanine Aminotransferase", "value": 298}]},
-            {"panel": null, "collected": "2026-07-16T05:30", "results": [{"test": "Creatine Kinase", "value": 640}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-16T05:30", "results": [{"test": "White Blood Cells", "value": 8.2}, {"test": "Hemoglobin", "value": 13.5}, {"test": "Platelets", "value": 171}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-12T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 160
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-12T11:00",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 42
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 2.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 720
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 640
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-12T11:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 2350
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-07-12T11:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-13T05:00",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 940
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 810
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-13T05:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 3100
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-16T05:30",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 164
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 298
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-16T05:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 640
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-16T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 171
+                }
+              ]
+            }
           ],
           "documents": [
             {
@@ -89,17 +248,81 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Hospital follow-up, heat stroke",
           "conditions": [
-            {"label": "Hypotension, unspecified", "icd10": "I95.9", "action": "resolved", "onset": "2026-07-12"}
+            {
+              "label": "Hypotension, unspecified",
+              "icd10": "I95.9",
+              "action": "resolved",
+              "onset": "2026-07-12"
+            }
           ],
-          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-21T09:40", "results": [{"test": "Creatinine", "value": 0.9}, {"test": "Aspartate Aminotransferase", "value": 46}, {"test": "Alanine Aminotransferase", "value": 118}, {"test": "Blood Urea Nitrogen"}, {"test": "Bilirubin, Total"}]},
-            {"panel": null, "collected": "2026-07-21T09:40", "results": [{"test": "Creatine Kinase", "value": 210}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-21T09:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-21T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 46
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 118
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-21T09:40",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 210
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-21T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Transitional care management, high complexity", "performed": "2026-07-21T09:00"},
-            {"procedure": "Venipuncture", "performed": "2026-07-21T09:40"}
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-07-21T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-21T09:40"
+            }
           ],
           "documents": [
             {
@@ -153,16 +376,65 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Heat stroke follow-up, labs",
           "conditions": [
-            {"label": "Exertional heatstroke, initial encounter", "icd10": "T67.02XA", "action": "resolved", "onset": "2026-07-12"}
+            {
+              "label": "Exertional heatstroke, initial encounter",
+              "icd10": "T67.02XA",
+              "action": "resolved",
+              "onset": "2026-07-12"
+            }
           ],
-          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-08-11T08:20", "resulted": "2026-08-11T14:30", "results": [{"test": "Creatinine", "value": 0.9}, {"test": "Aspartate Aminotransferase", "value": 24}, {"test": "Alanine Aminotransferase", "value": 36}, {"test": "Blood Urea Nitrogen"}]},
-            {"panel": null, "collected": "2026-08-11T08:20", "resulted": "2026-08-11T14:30", "results": [{"test": "Creatine Kinase", "value": 142}]}
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-11T08:20",
+              "resulted": "2026-08-11T14:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 36
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-11T08:20",
+              "resulted": "2026-08-11T14:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 142
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-08-11T09:00"},
-            {"procedure": "Venipuncture", "performed": "2026-08-11T08:20"}
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-08-11T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-11T08:20"
+            }
           ],
           "documents": [
             {
@@ -187,34 +459,6 @@
               "body": "All normal now: creatinine 0.9, AST 24, ALT 36, CK 142. You're cleared to start the easy running plan we talked about. Tylenol and the occasional drink are fine again."
             }
           ]
-        },
-        {
-          "id": "2026-08-20a",
-          "kind": "portal_message",
-          "start": "2026-08-20T19:02",
-          "documents": [
-            {
-              "type": "Patient message",
-              "title": "First runs",
-              "author": "patient",
-              "date": "2026-08-20T19:02",
-              "body": "Done four runs now, 20-25 minutes each at 6am, felt totally normal. Heart rate a little higher than usual for the pace. Is that expected? Ok to go to 35 min next week?"
-            },
-            {
-              "type": "Patient message",
-              "title": "RE: First runs",
-              "author": "PCP",
-              "date": "2026-08-20T21:15",
-              "body": "Expected — you lost some fitness in a month off. Yes to 35 minutes if it still feels easy, keep the early start. See you at your physical in September."
-            }
-          ]
-        },
-        {
-          "id": "2026-09-22a",
-          "kind": "annual_physical",
-          "start": "2026-09-22T08:00",
-          "appointment": "booked",
-          "reason": "Annual physical"
         }
       ]
     }

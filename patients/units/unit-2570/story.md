@@ -39,3 +39,8 @@
 - 2026-08-07 pharmacy: auto-refill request declined while hospitalized (P)
 - 2026-08-20 outside records: ED record received; inpatient records still outstanding (A6)
 - 2026-08-21 telephone: mother calls, still in ICU; medication list and history sent to hospital (A6)
+
+
+## Last seen
+
+The practice last saw MRN00002570 on 2026-06-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -9,11 +9,50 @@
           "start": "2026-01-27T15:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "Preoperative evaluation",
-          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-27T15:50", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-27T15:50", "results": [{"test": "Glucose"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
-            {"panel": null, "collected": "2026-01-27T15:50", "results": [{"test": "Hemoglobin A1c"}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-27T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-27T15:50",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-27T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
           ],
           "reports": [
             {
@@ -24,9 +63,18 @@
             }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-27T15:20"},
-            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2026-01-27T15:35"},
-            {"procedure": "Venipuncture", "performed": "2026-01-27T15:50"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-27T15:20"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-01-27T15:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-27T15:50"
+            }
           ],
           "documents": [
             {
@@ -61,15 +109,55 @@
           "service": "General Surgery",
           "reason": "Laparoscopic cholecystectomy",
           "vitals": [
-            {"time": "2026-02-06T08:41", "hr": 40, "bp": [110, 70]}
+            {
+              "time": "2026-02-06T08:41",
+              "hr": 40,
+              "bp": [
+                110,
+                70
+              ]
+            }
           ],
           "conditions": [
-            {"label": "Vagal bradycardia secondary to pneumoperitoneum", "icd10": "R00.1", "action": "diagnosed", "onset": "2026-02-06"},
-            {"label": "Cholelithiasis", "action": "resolved", "note": "Status post laparoscopic cholecystectomy 2026-02-06"}
+            {
+              "label": "Vagal bradycardia secondary to pneumoperitoneum",
+              "icd10": "R00.1",
+              "action": "diagnosed",
+              "onset": "2026-02-06"
+            },
+            {
+              "label": "Cholelithiasis",
+              "action": "resolved",
+              "note": "Status post laparoscopic cholecystectomy 2026-02-06"
+            }
           ],
           "medications": [
-            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain. Dispense 10 tablets.", "dose": {"value": 1, "unit": "tablet"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "Postoperative pain"},
-            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets by mouth every 8 hours as needed for pain", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "short", "reason": "Postoperative pain"}
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain. Dispense 10 tablets.",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            }
           ],
           "reports": [
             {
@@ -81,7 +169,10 @@
             }
           ],
           "procedures": [
-            {"procedure": "Laparoscopic cholecystectomy", "performed": "2026-02-06T08:10"}
+            {
+              "procedure": "Laparoscopic cholecystectomy",
+              "performed": "2026-02-06T08:10"
+            }
           ],
           "documents": [
             {
@@ -128,13 +219,31 @@
           "start": "2026-02-12T11:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Hoarseness",
-          "measure": ["bp", "hr", "spo2", "temp_c"],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ],
           "conditions": [
-            {"label": "Acute laryngitis", "icd10": "J04.0", "action": "diagnosed", "onset": "2026-02-06"},
-            {"label": "Vagal bradycardia secondary to pneumoperitoneum", "icd10": "R00.1", "action": "resolved", "note": "Transient, intraoperative; no recurrence on telemetry"}
+            {
+              "label": "Acute laryngitis",
+              "icd10": "J04.0",
+              "action": "diagnosed",
+              "onset": "2026-02-06"
+            },
+            {
+              "label": "Vagal bradycardia secondary to pneumoperitoneum",
+              "icd10": "R00.1",
+              "action": "resolved",
+              "note": "Transient, intraoperative; no recurrence on telemetry"
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-02-12T11:00"}
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-02-12T11:00"
+            }
           ],
           "documents": [
             {
@@ -168,7 +277,11 @@
           "start": "2026-02-26T19:20",
           "reason": "Voice update",
           "conditions": [
-            {"label": "Acute laryngitis", "icd10": "J04.0", "action": "resolved"}
+            {
+              "label": "Acute laryngitis",
+              "icd10": "J04.0",
+              "action": "resolved"
+            }
           ],
           "documents": [
             {
@@ -195,17 +308,103 @@
           "service": "Emergency Medicine / Critical Care",
           "reason": "Right upper quadrant pain, fever, jaundice and confusion",
           "vitals": [
-            {"time": "2026-03-07T10:25", "temp_c": 38.9, "bp": [90, 60], "hr": 110, "rr": 22}
+            {
+              "time": "2026-03-07T10:25",
+              "temp_c": 38.9,
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 110,
+              "rr": 22
+            }
           ],
           "conditions": [
-            {"label": "Choledocholithiasis with cholangitis", "icd10": "K80.33", "action": "diagnosed", "onset": "2026-03-06", "note": "Retained common bile duct stone after cholecystectomy"},
-            {"label": "Septic shock", "icd10": "R65.21", "action": "diagnosed", "onset": "2026-03-07"}
+            {
+              "label": "Choledocholithiasis with cholangitis",
+              "icd10": "K80.33",
+              "action": "diagnosed",
+              "onset": "2026-03-06",
+              "note": "Retained common bile duct stone after cholecystectomy"
+            },
+            {
+              "label": "Septic shock",
+              "icd10": "R65.21",
+              "action": "diagnosed",
+              "onset": "2026-03-07"
+            }
           ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-07T10:40", "results": [{"test": "White Blood Cells", "value": 18.0}, {"test": "Hemoglobin", "value": 12.5}, {"test": "Platelets", "value": 250}]},
-            {"panel": "Hepatic Panel (LFT)", "collected": "2026-03-07T10:40", "results": [{"test": "Bilirubin, Total", "value": 5.2}, {"test": "Bilirubin, Direct", "value": 3.8}, {"test": "Alkaline Phosphatase", "value": 210}, {"test": "Aspartate Aminotransferase", "value": 80}, {"test": "Alanine Aminotransferase", "value": 75}]},
-            {"panel": null, "collected": "2026-03-07T10:40", "results": [{"test": "Lipase", "value": 900}, {"test": "Amylase", "loinc": "1798-8", "unit": "U/L", "value": 300}]},
-            {"panel": null, "collected": "2026-03-07T10:45", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (2 of 2 sets)"}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-07T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-03-07T10:40",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 5.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 3.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 210
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 75
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-07T10:40",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 900
+                },
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 300
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-07T10:45",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (2 of 2 sets)"
+                }
+              ]
+            }
           ],
           "reports": [
             {
@@ -216,13 +415,38 @@
             }
           ],
           "medications": [
-            {"drug": "lisinopril 10 MG Oral Tablet", "action": "stop", "reason": "Held at hospital discharge after septic shock"},
-            {"drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily with food through 03/16 to complete the antibiotic course", "dose": {"value": 1, "unit": "tablet"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Cholangitis"}
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Held at hospital discharge after septic shock"
+            },
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food through 03/16 to complete the antibiotic course",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Cholangitis"
+            }
           ],
           "procedures": [
-            {"procedure": "Emergency department visit, high MDM", "performed": "2026-03-07T10:20"},
-            {"procedure": "Initial hospital inpatient care", "performed": "2026-03-07T13:30"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-03-13T12:00"}
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-03-07T10:20"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-07T13:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-03-13T12:00"
+            }
           ],
           "documents": [
             {
@@ -269,25 +493,110 @@
           "start": "2026-03-19T14:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Hospital follow-up",
-          "state": {"bp": [138, 86], "labs": {"Lipase": 36}},
-          "vitals": {"bp": [138, 86]},
-          "measure": ["hr", "spo2", "weight_kg", "temp_c"],
+          "state": {
+            "bp": [
+              138,
+              86
+            ],
+            "labs": {
+              "Lipase": 36
+            }
+          },
+          "vitals": {
+            "bp": [
+              138,
+              86
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
           "conditions": [
-            {"label": "Septic shock", "icd10": "R65.21", "action": "resolved"},
-            {"label": "Choledocholithiasis with cholangitis", "icd10": "K80.33", "action": "resolved"}
+            {
+              "label": "Septic shock",
+              "icd10": "R65.21",
+              "action": "resolved"
+            },
+            {
+              "label": "Choledocholithiasis with cholangitis",
+              "icd10": "K80.33",
+              "action": "resolved"
+            }
           ],
           "medications": [
-            {"drug": "lisinopril 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
           ],
           "labs": [
-            {"panel": "Hepatic Panel (LFT)", "collected": "2026-03-19T14:30", "results": [{"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}, {"test": "Alanine Aminotransferase"}]},
-            {"panel": null, "collected": "2026-03-19T14:30", "results": [{"test": "Lipase"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-19T14:30", "results": [{"test": "White Blood Cells"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-19T14:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-03-19T14:30",
+              "results": [
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-19T14:30",
+              "results": [
+                {
+                  "test": "Lipase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-19T14:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-19T14:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Transitional care management, high complexity", "performed": "2026-03-19T14:00"},
-            {"procedure": "Venipuncture", "performed": "2026-03-19T14:30"}
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-19T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-19T14:30"
+            }
           ],
           "documents": [
             {
@@ -321,7 +630,24 @@
           "service": "Gastroenterology",
           "reason": "Post-ERCP follow-up",
           "labs": [
-            {"panel": "Hepatic Panel (LFT)", "collected": "2026-04-21T09:10", "results": [{"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]}
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-21T09:10",
+              "results": [
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
           ],
           "documents": [
             {
@@ -339,15 +665,53 @@
           "start": "2026-05-19T16:10",
           "service": "Internal Medicine — Primary Care",
           "reason": "Diabetes and blood pressure follow-up",
-          "state": {"bp": [128, 80]},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "state": {
+            "bp": [
+              128,
+              80
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": null, "collected": "2026-05-19T16:35", "results": [{"test": "Hemoglobin A1c"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-05-19T16:35", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]}
+            {
+              "panel": null,
+              "collected": "2026-05-19T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-19T16:35",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-19T16:10"},
-            {"procedure": "Venipuncture", "performed": "2026-05-19T16:35"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-19T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-19T16:35"
+            }
           ],
           "documents": [
             {
@@ -356,58 +720,6 @@
               "author": "PCP",
               "date": "2026-05-19T16:45",
               "body": "S: DM/HTN f/u, first routine visit since the March admission. Feels like herself again, back to evening walks. No abdominal pain, fever or jaundice. GI letter 4/21: LFTs normal, no further ERCP planned. Back on lisinopril since 3/19 - home BPs back to her usual range. Sugars stable, no lows. Taking all meds.\n\nO: vitals as charted. Well. Sclerae anicteric. Heart RRR, lungs clear. Abd soft, nontender. Feet: intact skin, sensation normal, pulses good. No edema.\n\nA/P\n1. T2DM - A1c and BMP today. Continue metformin 1000 BID, glipizide 5.\n2. HTN - back at goal on lisinopril 10.\n3. S/p cholecystectomy, choledocholithiasis x2 cleared - doing well, nothing further.\n4. Lipids - atorvastatin 20, lipids with the fall physical.\nRTC September for physical; flu/COVID then."
-            }
-          ]
-        },
-        {
-          "id": "2026-05-20a",
-          "kind": "portal_message",
-          "start": "2026-05-20T10:40",
-          "reason": "Lab results",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "May labs",
-              "author": "PCP",
-              "date": "2026-05-20T10:40",
-              "body": "Hi Sandra, your A1c is 7.6 - better than January, though still a little above where you usually run. After the winter you've had I'm comfortable leaving your medicines as they are and rechecking at your physical. Kidney function and potassium are normal on the lisinopril. See you in September."
-            }
-          ]
-        },
-        {
-          "id": "2026-06-23a",
-          "kind": "pharmacy",
-          "start": "2026-06-23T09:15",
-          "reason": "Mail-order refills",
-          "documents": [
-            {
-              "type": "Refill Encounter",
-              "title": "90-Day Supply Request",
-              "author": "MA",
-              "date": "2026-06-23T09:15",
-              "body": "Mail-order renewal request: metformin 1000 mg BID, glipizide 5 mg daily, lisinopril 10 mg daily, atorvastatin 20 mg qHS, 90-day supplies. Lisinopril restarted 3/19 at the same dose. Last visit 5/19. Pended to PCP - approved, 3 refills each."
-            }
-          ]
-        },
-        {
-          "id": "2026-08-04a",
-          "kind": "portal_message",
-          "start": "2026-08-04T08:30",
-          "reason": "Scheduling",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Physical appointment",
-              "author": "patient",
-              "date": "2026-08-04T08:30",
-              "body": "Hello, I'd like to book my yearly physical for after school starts, ideally a Tuesday early morning. Can I get my flu shot at the same time?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Physical appointment",
-              "author": "front desk",
-              "date": "2026-08-04T11:05",
-              "body": "Hi Sandra, you're booked Tuesday 9/22 at 7:40 AM. Please come fasting for labs. Flu vaccine should be in by then and we can give it at the visit."
             }
           ]
         },

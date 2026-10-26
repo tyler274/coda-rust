@@ -32,3 +32,8 @@
 - 2026-03-11 general surgery letter: full activity; perforation resolved (A5)
 - 2026-07-21 portal: schedules physical, asks about vaccines (P, A3)
 - 2026-09-17 booked annual physical (P)
+
+
+## Last seen
+
+The practice last saw MRN00002563 on 2026-01-27. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

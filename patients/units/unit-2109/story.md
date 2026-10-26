@@ -54,3 +54,8 @@
 - 2026-06-25 portal result note [P]
 - 2026-08-13 portal: new wrist splint [A5, P]
 - 2026-09-22 booked follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00002109 on 2025-11-04. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

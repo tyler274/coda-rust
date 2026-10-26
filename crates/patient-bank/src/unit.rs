@@ -219,8 +219,18 @@ fn brief(unit: &Unit, seeds: &Seeds, drafts: &Path, out: &Path) -> Result<i32> {
     println!("\nTargets (a guide to how much this life would leave in a chart, not a gate):");
     for m in &unit.members {
         println!(
-            "  {}: {} documents, {} observations, about {} years with the practice",
-            m.mrn, m.target_documents, m.target_observations, m.years_with_practice
+            "  {}: {} documents, {} observations, about {} years with the practice; last \
+             seen {}, {}",
+            m.mrn,
+            m.target_documents,
+            m.target_observations,
+            m.years_with_practice,
+            m.last_seen.0,
+            if m.booked {
+                "a visit booked after today"
+            } else {
+                "nothing booked"
+            }
         );
     }
     let taken = write_taken(unit, seeds, out)?;

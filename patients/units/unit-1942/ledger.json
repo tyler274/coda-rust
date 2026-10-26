@@ -633,89 +633,11 @@
           ]
         },
         {
-          "id": "2025-10-11a",
-          "kind": "pharmacy",
-          "start": "2025-10-11T11:05",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "outside immunization report",
-          "immunizations": [
-            {
-              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
-              "date": "2025-10-11T11:05"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Outside Records",
-              "title": "Pharmacy Immunization Report",
-              "date": "2025-10-13T08:30",
-              "author": "pharmacist",
-              "body": "Vaccine administration record, retail pharmacy.\nNatalia Gillespie, DOB 02/27/1999.\nCOVID-19 mRNA vaccine (Pfizer-BioNTech), 2025-2026 formula, 0.3 mL IM left deltoid, given 10/11/2025.\nPatient-reported allergies: none. No adverse event observed."
-            }
-          ]
-        },
-        {
-          "id": "2025-12-23a",
-          "kind": "portal_message",
-          "start": "2025-12-23T07:52",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "hives recurred",
-          "orders": [
-            {
-              "id": "allergy-referral",
-              "action": "placed",
-              "order": "Allergy and immunology referral",
-              "category": "referral",
-              "to": "Allergy and Immunology",
-              "reason": "recurrent hives"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Hives Back",
-              "date": "2025-12-23T07:52",
-              "author": "patient",
-              "body": "Ugh, the hives are back. Woke up with them all over my stomach and back and on both arms, exactly like in April. Lips and tongue are fine and I'm breathing normally. Haven't changed anything, no new meds or food. Do I go back to derm?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Hives Back",
-              "date": "2025-12-23T08:34",
-              "author": "PCP",
-              "body": "Sorry, Natalia, bad timing right before the holiday. Since this is round two, dermatology suggested allergy, and the allergist can see you tomorrow at 10:20. I booked it and sent the referral. If you can tolerate the itch until then, it's fine to wait so they can see it as it is. Any swelling of your lips, tongue or throat, or trouble breathing, call 911 or go to the ED, don't wait for me."
-            }
-          ]
-        },
-        {
           "id": "2025-12-24a",
           "kind": "specialist_visit",
           "start": "2025-12-24T10:20",
           "service": "Allergy and Immunology",
           "reason": "recurrent hives",
-          "conditions": [
-            {
-              "label": "Acute urticaria",
-              "action": "diagnosed",
-              "onset": "2025-12-23",
-              "icd10": "L50.9"
-            }
-          ],
-          "medications": [
-            {
-              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
-              "action": "start",
-              "sig": "Take 1 tablet by mouth once daily as needed for hives; take every day during a flare",
-              "dose": {
-                "value": 10,
-                "unit": "mg"
-              },
-              "frequency": "DAILY",
-              "route": "Oral",
-              "course": "chronic",
-              "reason": "Acute urticaria"
-            }
-          ],
           "vitals": {
             "bp": [
               110,
@@ -726,13 +648,6 @@
             "temp_c": 36.6,
             "spo2": 96
           },
-          "orders": [
-            {
-              "id": "allergy-referral",
-              "action": "done",
-              "date": "2025-12-24T10:20"
-            }
-          ],
           "documents": [
             {
               "type": "Consult Note",
@@ -751,96 +666,11 @@
           ]
         },
         {
-          "id": "2025-12-30a",
-          "kind": "portal_message",
-          "start": "2025-12-30T09:15",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "hives update",
-          "conditions": [
-            {
-              "label": "Acute urticaria",
-              "action": "resolved",
-              "icd10": "L50.9"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Update",
-              "date": "2025-12-30T09:15",
-              "author": "patient",
-              "body": "Just letting you know the hives cleared up by Sunday. The allergist said it's the same short-term kind as before and gave me cetirizine to keep at home for next time. Happy new year!"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Update",
-              "date": "2025-12-30T10:02",
-              "author": "PCP",
-              "body": "So glad it settled quickly. Keep the cetirizine handy, and I'll file the allergist's note when it arrives. Happy new year to you too."
-            }
-          ]
-        },
-        {
           "id": "2026-01-05a",
           "kind": "outside_records",
           "start": "2026-01-05T16:00",
           "service": "Internal Medicine — Primary Care",
-          "reason": "allergy consult received",
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Outside Records Review",
-              "date": "2026-01-05T16:00",
-              "author": "PCP",
-              "body": "Allergy consult 12/24 reviewed. Second episode acute urticaria, no further workup. Cetirizine 10 mg prn on med list. Return to allergy if hives most days for 6 wk."
-            }
-          ]
-        },
-        {
-          "id": "2026-04-14a",
-          "kind": "pharmacy",
-          "start": "2026-04-14T10:40",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "refill request",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Refill Request",
-              "date": "2026-04-14T10:40",
-              "author": "RN",
-              "body": "Pharmacy refill request: cetirizine 10 mg tab, #30. Original Rx from allergy, no refills left. Pt confirms by message she keeps it on hand, no hives since December, wants a bottle at home and one at her desk. Approved per PCP standing order, #30 with 2 refills."
-            }
-          ]
-        },
-        {
-          "id": "2026-07-28a",
-          "kind": "portal_message",
-          "start": "2026-07-28T13:22",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "scheduling",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Physical",
-              "date": "2026-07-28T13:22",
-              "author": "patient",
-              "body": "Hi, can I set up my physical for September? Also I think I'm due for a Pap this year?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Physical",
-              "date": "2026-07-28T14:05",
-              "author": "front desk",
-              "body": "Hi Natalia, you're booked Tuesday 9/22 at 8:40. Yes, your Pap is due, and the doctor will do it at that visit. See you then!"
-            }
-          ]
-        },
-        {
-          "id": "2026-09-22a",
-          "kind": "annual_physical",
-          "start": "2026-09-22T08:40",
-          "reason": "annual physical with Pap",
-          "appointment": "booked"
+          "reason": "allergy consult received"
         }
       ]
     }

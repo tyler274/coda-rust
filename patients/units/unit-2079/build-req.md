@@ -192,3 +192,8 @@ calcium of 10.2 and nobody pursues it. Nobody remarks on these.
   road.
 - A primary-care visit booked for 2026-09-15.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002079 on 2026-06-09. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

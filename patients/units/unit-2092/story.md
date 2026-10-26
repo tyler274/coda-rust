@@ -51,3 +51,8 @@
 - 2026-08-24 office visit: follow-up, CMP, vitamin D pending (P, A3, A4)
 - 2026-08-25 portal: CMP result note (P)
 - 2026-09-21 office visit booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002092 on 2026-05-26. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -223,3 +223,8 @@ Allowed without listing, with ordinary normal results unless a level here says o
 - Booked visit after 2026-08-27: chronic care follow-up on 2026-11-17.
 
 No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002223 on 2025-11-13. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

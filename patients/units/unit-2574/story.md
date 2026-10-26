@@ -52,3 +52,8 @@
 - 2026-06-15 annual physical, labs (P)
 - 2026-08-10 pharmacy: folic acid refill (P)
 - 2026-09-14 booked: sickle cell follow-up and flu vaccine (P)
+
+
+## Last seen
+
+The practice last saw MRN00002574 on 2026-06-15. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

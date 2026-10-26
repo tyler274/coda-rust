@@ -1,9 +1,7 @@
 {
   "unit": "unit-1683",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"prenatal vitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001683",
@@ -2076,21 +2074,6 @@
           ]
         },
         {
-          "id": "2024-09-27a",
-          "kind": "portal_message",
-          "start": "2024-09-27T11:45",
-          "reason": "Lab results",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Lab results",
-              "date": "2024-09-27T11:45",
-              "author": "PCP",
-              "body": "Hi Yuki, all normal this year, including thyroid and liver tests. See you next fall, or sooner if anything comes up."
-            }
-          ]
-        },
-        {
           "id": "2024-11-06a",
           "kind": "outside_records",
           "start": "2024-11-06T13:30",
@@ -2100,60 +2083,7 @@
               "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
               "date": "2024-10-19T10:40"
             }
-          ],
-          "documents": [
-            {
-              "type": "Outside Records",
-              "title": "Immunization registry — COVID-19 2024-25",
-              "date": "2024-11-06T13:30",
-              "author": "MA",
-              "body": "2024-25 COVID-19 vaccine (Pfizer) 10/19/24, retail pharmacy, per registry. Immunization record updated."
-            }
           ]
-        },
-        {
-          "id": "2025-01-29a",
-          "kind": "lab_only",
-          "start": "2025-01-29T07:20",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Thyroid function on methimazole",
-          "labs": [
-            {
-              "panel": null,
-              "collected": "2025-01-29T07:20",
-              "results": [
-                {
-                  "test": "Thyroid Stimulating Hormone",
-                  "value": 1.4
-                },
-                {
-                  "test": "Free Thyroxine",
-                  "value": 1.1
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Venipuncture",
-              "performed": "2025-01-29T07:20"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Result Note",
-              "title": "Result note — TFTs",
-              "date": "2025-01-30T12:10",
-              "author": "PCP",
-              "body": "Normal TSH and FT4 on methimazole 5 mg. No change. Copy to endocrinology for March."
-            }
-          ],
-          "state": {
-            "labs": {
-              "Free Thyroxine": 1.1,
-              "Thyroid Stimulating Hormone": 1.5
-            }
-          }
         },
         {
           "id": "2025-03-11a",
@@ -2185,71 +2115,11 @@
           ]
         },
         {
-          "id": "2025-04-22a",
-          "kind": "pharmacy",
-          "start": "2025-04-22T10:35",
-          "reason": "Refill request",
-          "documents": [
-            {
-              "type": "Medication Note",
-              "title": "Refill — methimazole 5 mg",
-              "date": "2025-04-22T10:35",
-              "author": "MA",
-              "body": "Electronic refill request from pharmacy, methimazole 5 mg #90. Labs current (1/2025). Pended."
-            },
-            {
-              "type": "Medication Note",
-              "title": "Refill sent",
-              "date": "2025-04-22T13:05",
-              "author": "PCP",
-              "body": "Approved, 90 days x 3 refills."
-            }
-          ]
-        },
-        {
           "id": "2025-08-25a",
           "kind": "specialist_visit",
           "start": "2025-08-25T09:00",
           "service": "Obstetrics & Gynecology",
           "reason": "First prenatal visit",
-          "conditions": [
-            {
-              "label": "Pregnant state, incidental",
-              "action": "diagnosed",
-              "onset": "2025-06-02",
-              "note": "G2P1, LMP 2025-06-02, EDD 2026-03-09",
-              "icd10": "Z33.1"
-            }
-          ],
-          "medications": [
-            {
-              "drug": "methimazole 5 MG Oral Tablet",
-              "action": "stop",
-              "reason": "Pregnancy; changed to propylthiouracil"
-            },
-            {
-              "drug_text": "propylthiouracil 50 MG Oral Tablet",
-              "action": "start",
-              "sig": "Take 2 tablets (100 mg) by mouth three times daily",
-              "dose": {
-                "value": 100,
-                "unit": "mg"
-              },
-              "frequency": "TID",
-              "route": "Oral",
-              "course": "chronic",
-              "reason": "Graves disease in pregnancy"
-            },
-            {
-              "drug_text": "prenatal vitamin Oral Tablet",
-              "action": "start",
-              "sig": "Take 1 tablet by mouth daily",
-              "frequency": "DAILY",
-              "route": "Oral",
-              "course": "chronic",
-              "reason": "Pregnancy"
-            }
-          ],
           "vitals": {
             "bp": [
               123,
@@ -2360,242 +2230,17 @@
           ]
         },
         {
-          "id": "2025-08-26a",
-          "kind": "telephone",
-          "start": "2025-08-26T11:05",
-          "reason": "Records request from obstetrics",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Records request",
-              "date": "2025-08-26T11:05",
-              "author": "front desk",
-              "body": "OB/GYN office called requesting recent notes, med list and labs for a new prenatal patient. Release on file. Last 2 years of notes, labs and endocrinology letters faxed."
-            }
-          ]
-        },
-        {
-          "id": "2025-08-27a",
-          "kind": "portal_message",
-          "start": "2025-08-27T20:15",
-          "reason": "Pregnancy, medication change",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Some news",
-              "date": "2025-08-27T20:15",
-              "author": "patient",
-              "body": "Hi! Wanted you to hear it from me. I'm 12 weeks pregnant, due in March. I saw the OB on Monday. They took me off the methimazole and I'm on PTU now, 100 mg three times a day, plus prenatal vitamins. Does anything change for my physical in September?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Some news",
-              "date": "2025-08-28T07:45",
-              "author": "PCP",
-              "body": "Congratulations! I got the OB note. Your medication list here is updated: PTU 100 mg three times daily and the prenatal vitamin, methimazole stopped. Keep the September physical. We'll check liver tests then, since PTU can affect the liver and you also have hepatitis B, and I'll coordinate thyroid labs with the OB so you aren't stuck twice. Flu shot is safe and recommended in pregnancy."
-            }
-          ]
-        },
-        {
-          "id": "2025-09-24a",
-          "kind": "annual_physical",
-          "start": "2025-09-24T07:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Annual physical",
-          "vitals": {
-            "bp": [
-              124,
-              74
-            ],
-            "hr": 81,
-            "rr": 16,
-            "temp_c": 36.8,
-            "spo2": 96,
-            "weight_kg": 59.8
-          },
-          "labs": [
-            {
-              "panel": "Hepatic Panel (LFT)",
-              "collected": "2025-09-24T08:05",
-              "results": [
-                {
-                  "test": "Alanine Aminotransferase",
-                  "value": 21
-                },
-                {
-                  "test": "Aspartate Aminotransferase",
-                  "value": 27
-                },
-                {
-                  "test": "Bilirubin, Total",
-                  "value": 0.6
-                },
-                {
-                  "test": "Alkaline Phosphatase",
-                  "value": 82
-                },
-                {
-                  "test": "Bilirubin, Direct",
-                  "value": 0.1
-                },
-                {
-                  "test": "Albumin",
-                  "value": 4.4
-                },
-                {
-                  "test": "Total Protein",
-                  "value": 7.3
-                }
-              ]
-            },
-            {
-              "panel": "Complete Blood Count (CBC)",
-              "collected": "2025-09-24T08:05",
-              "results": [
-                {
-                  "test": "White Blood Cells",
-                  "value": 7.3
-                },
-                {
-                  "test": "Platelets",
-                  "value": 237
-                },
-                {
-                  "test": "Red Blood Cells",
-                  "value": 4.34
-                },
-                {
-                  "test": "Hemoglobin",
-                  "value": 12.8
-                },
-                {
-                  "test": "Hematocrit",
-                  "value": 38.6
-                },
-                {
-                  "test": "Mean Corpuscular Volume",
-                  "value": 89
-                },
-                {
-                  "test": "Mean Corpuscular Hemoglobin",
-                  "value": 29.5
-                },
-                {
-                  "test": "Mean Corpuscular Hemoglobin Concentration",
-                  "value": 33.2
-                },
-                {
-                  "test": "Red Cell Distribution Width",
-                  "value": 12.8
-                },
-                {
-                  "test": "Mean Platelet Volume",
-                  "value": 9.6
-                }
-              ]
-            },
-            {
-              "panel": null,
-              "collected": "2025-09-24T08:05",
-              "results": [
-                {
-                  "test": "Thyroid Stimulating Hormone",
-                  "value": 0.4
-                },
-                {
-                  "test": "Free Thyroxine",
-                  "value": 1.3
-                }
-              ]
-            }
-          ],
-          "surveys": [
-            {
-              "survey": "PHQ-2 total score",
-              "value": 0
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Preventive visit, established patient, 18-39",
-              "performed": "2025-09-24T07:30"
-            },
-            {
-              "procedure": "Venipuncture",
-              "performed": "2025-09-24T08:05"
-            },
-            {
-              "procedure": "Immunization administration",
-              "performed": "2025-09-24T08:10"
-            }
-          ],
-          "immunizations": [
-            {
-              "vaccine": "Influenza, trivalent, injectable",
-              "date": "2025-09-24T08:10"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Annual Physical",
-              "date": "2025-09-24T08:40",
-              "author": "PCP",
-              "body": "Annual, 32 y/o, 16 weeks pregnant (G2P1, EDD 3/9/26), prenatal care with OB.\n\nInterval: Graves disease, switched from methimazole to PTU 100 mg TID at her first prenatal visit 8/25. Tolerating it, no rash. No palpitations.\nHep B: prenatal HBsAg and HBeAg positive per OB labs. No abdominal pain, no jaundice, no dark urine.\nMigraine: none this pregnancy so far.\nStill teaching and coaching.\n\nMeds: propylthiouracil 100 mg TID, prenatal vitamin daily. NKDA.\n\nExam: Vitals as charted. Well. Small smooth goiter, unchanged. Heart regular, no murmur. Lungs clear. Abdomen soft, gravid, nontender. Skin warm, no jaundice, no rash. No edema.\nPHQ-2: 0.\n\nA/P\n1. Graves disease in pregnancy on PTU: TSH and FT4 today, results to OB. Liver panel today and periodically on PTU.\n2. Chronic hepatitis B: LFTs as above. CBC.\n3. Migraine without aura: quiet.\n4. Pregnancy: per OB; anatomy scan in October.\n5. Flu shot today. Cervical screening current.\n\nWill see her after delivery; RTC sooner as needed."
-            }
-          ],
-          "state": {
-            "hr": 80,
-            "weight_kg": 59.6,
-            "labs": {
-              "Free Thyroxine": 1.4,
-              "Thyroid Stimulating Hormone": 0.4
-            }
-          },
-          "measure": [
-            "bp",
-            "hr",
-            "rr",
-            "temp_c",
-            "spo2",
-            "weight_kg"
-          ]
-        },
-        {
-          "id": "2025-09-26a",
-          "kind": "portal_message",
-          "start": "2025-09-26T12:30",
-          "reason": "Lab results",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Your labs",
-              "date": "2025-09-26T12:30",
-              "author": "PCP",
-              "body": "Liver tests are normal on the PTU. Thyroid is where we want it in pregnancy, TSH on the low side of normal with a free T4 in range. Blood count normal. I sent these to your OB."
-            }
-          ]
-        },
-        {
           "id": "2025-10-20a",
           "kind": "imaging",
           "start": "2025-10-20T10:15",
           "service": "Obstetrics & Gynecology",
           "reason": "Fetal anatomy survey, 20 weeks",
-          "conditions": [
-            {
-              "label": "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified",
-              "action": "diagnosed",
-              "note": "Fetal skin defect consistent with aplasia cutis congenita on 20-week anatomy scan",
-              "icd10": "O35.8XX0"
-            }
-          ],
           "vitals": {
             "bp": [
               119,
               70
             ],
-            "hr": 68
+            "hr": 56
           },
           "reports": [
             {
@@ -2622,65 +2267,6 @@
           ]
         },
         {
-          "id": "2025-10-22a",
-          "kind": "telephone",
-          "start": "2025-10-22T16:20",
-          "reason": "Patient call after anatomy scan",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Call with patient",
-              "date": "2025-10-22T16:20",
-              "author": "PCP",
-              "body": "Pt asked to talk after her anatomy scan. She's read the OB note and wanted to go over it with someone who knows her. Main worry is guilt about the methimazole. Listened. Reinforced what OB told her: the rest of the scan is normal, growth is normal, and the switch was made. She has her OB visit in 4 weeks and feels okay about the plan. Offered a visit here anytime; she declined for now. Sounded steadier by the end of the call."
-            }
-          ]
-        },
-        {
-          "id": "2025-10-29a",
-          "kind": "lab_only",
-          "start": "2025-10-29T07:15",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Thyroid function in pregnancy on PTU",
-          "labs": [
-            {
-              "panel": null,
-              "collected": "2025-10-29T07:15",
-              "results": [
-                {
-                  "test": "Thyroid Stimulating Hormone",
-                  "value": 0.4
-                },
-                {
-                  "test": "Free Thyroxine",
-                  "value": 1.4
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Venipuncture",
-              "performed": "2025-10-29T07:15"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Result Note",
-              "title": "Result note — TFTs",
-              "date": "2025-10-29T16:15",
-              "author": "PCP",
-              "body": "TSH and free T4 in the target range for pregnancy on PTU. Results faxed to OB."
-            }
-          ],
-          "state": {
-            "labs": {
-              "Free Thyroxine": 1.4,
-              "Thyroid Stimulating Hormone": 0.4
-            }
-          }
-        },
-        {
           "id": "2025-11-18a",
           "kind": "specialist_visit",
           "start": "2025-11-18T08:40",
@@ -2691,7 +2277,7 @@
               111,
               71
             ],
-            "hr": 76,
+            "hr": 64,
             "weight_kg": 66.7
           },
           "documents": [
@@ -2713,84 +2299,6 @@
           ]
         },
         {
-          "id": "2025-11-26a",
-          "kind": "lab_only",
-          "start": "2025-11-26T07:20",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Thyroid function in pregnancy on PTU",
-          "labs": [
-            {
-              "panel": null,
-              "collected": "2025-11-26T07:20",
-              "results": [
-                {
-                  "test": "Thyroid Stimulating Hormone",
-                  "value": 0.5
-                },
-                {
-                  "test": "Free Thyroxine",
-                  "value": 1.4
-                }
-              ]
-            },
-            {
-              "panel": "Hepatic Panel (LFT)",
-              "collected": "2025-11-26T07:20",
-              "results": [
-                {
-                  "test": "Alanine Aminotransferase",
-                  "value": 23
-                },
-                {
-                  "test": "Aspartate Aminotransferase",
-                  "value": 28
-                },
-                {
-                  "test": "Alkaline Phosphatase",
-                  "value": 95
-                },
-                {
-                  "test": "Bilirubin, Total",
-                  "value": 0.7
-                },
-                {
-                  "test": "Bilirubin, Direct",
-                  "value": 0.1
-                },
-                {
-                  "test": "Albumin",
-                  "value": 4.2
-                },
-                {
-                  "test": "Total Protein",
-                  "value": 7.0
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Venipuncture",
-              "performed": "2025-11-26T07:20"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Result Note",
-              "title": "Result note — TFTs",
-              "date": "2025-11-26T16:20",
-              "author": "PCP",
-              "body": "TFTs stable on PTU 100 mg TID. Liver panel normal. Sent to OB and endocrinology."
-            }
-          ],
-          "state": {
-            "labs": {
-              "Free Thyroxine": 1.4,
-              "Thyroid Stimulating Hormone": 0.5
-            }
-          }
-        },
-        {
           "id": "2025-12-09a",
           "kind": "specialist_visit",
           "start": "2025-12-09T15:30",
@@ -2801,7 +2309,7 @@
               121,
               77
             ],
-            "hr": 76,
+            "hr": 64,
             "rr": 16,
             "temp_c": 36.6,
             "weight_kg": 68.2
@@ -2831,50 +2339,6 @@
             "temp_c",
             "weight_kg"
           ]
-        },
-        {
-          "id": "2025-12-23a",
-          "kind": "lab_only",
-          "start": "2025-12-23T09:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Thyroid function in pregnancy on PTU",
-          "labs": [
-            {
-              "panel": null,
-              "collected": "2025-12-23T09:30",
-              "results": [
-                {
-                  "test": "Thyroid Stimulating Hormone",
-                  "value": 0.4
-                },
-                {
-                  "test": "Free Thyroxine",
-                  "value": 1.5
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Venipuncture",
-              "performed": "2025-12-23T09:30"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Result Note",
-              "title": "Result note — TFTs",
-              "date": "2025-12-23T16:30",
-              "author": "PCP",
-              "body": "Free T4 upper normal, TSH low-normal; fine for pregnancy on PTU per OB/endo targets. No change. Copy to OB."
-            }
-          ],
-          "state": {
-            "labs": {
-              "Free Thyroxine": 1.5,
-              "Thyroid Stimulating Hormone": 0.4
-            }
-          }
         },
         {
           "id": "2026-01-06a",
@@ -2908,104 +2372,11 @@
           ]
         },
         {
-          "id": "2026-01-21a",
-          "kind": "lab_only",
-          "start": "2026-01-21T07:10",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Thyroid function in pregnancy on PTU",
-          "labs": [
-            {
-              "panel": null,
-              "collected": "2026-01-21T07:10",
-              "results": [
-                {
-                  "test": "Thyroid Stimulating Hormone",
-                  "value": 0.4
-                },
-                {
-                  "test": "Free Thyroxine",
-                  "value": 1.4
-                }
-              ]
-            },
-            {
-              "panel": "Hepatic Panel (LFT)",
-              "collected": "2026-01-21T07:10",
-              "results": [
-                {
-                  "test": "Alanine Aminotransferase",
-                  "value": 22
-                },
-                {
-                  "test": "Aspartate Aminotransferase",
-                  "value": 24
-                },
-                {
-                  "test": "Alkaline Phosphatase",
-                  "value": 80
-                },
-                {
-                  "test": "Bilirubin, Total",
-                  "value": 0.7
-                },
-                {
-                  "test": "Bilirubin, Direct",
-                  "value": 0.1
-                },
-                {
-                  "test": "Albumin",
-                  "value": 4.5
-                },
-                {
-                  "test": "Total Protein",
-                  "value": 6.6
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Venipuncture",
-              "performed": "2026-01-21T07:10"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Result Note",
-              "title": "Result note — TFTs",
-              "date": "2026-01-21T16:10",
-              "author": "PCP",
-              "body": "Stable TFTs on PTU. LFTs normal. Faxed to OB."
-            }
-          ],
-          "state": {
-            "labs": {
-              "Free Thyroxine": 1.4,
-              "Thyroid Stimulating Hormone": 0.4
-            }
-          }
-        },
-        {
           "id": "2026-01-27a",
           "kind": "specialist_visit",
           "start": "2026-01-27T13:10",
           "service": "Obstetrics & Gynecology",
           "reason": "Headache, 34 weeks",
-          "medications": [
-            {
-              "drug": "acetaminophen 500 MG Oral Tablet",
-              "action": "start",
-              "sig": "Take 2 tablets (1,000 mg) by mouth every 6 hours as needed for headache",
-              "dose": {
-                "value": 1000,
-                "unit": "mg"
-              },
-              "frequency": "Q6H PRN",
-              "route": "Oral",
-              "course": "short",
-              "reason": "Migraine without aura"
-            }
-          ],
           "vitals": {
             "bp": [
               122,
@@ -3037,13 +2408,6 @@
           "start": "2026-02-10T10:00",
           "service": "Obstetrics & Gynecology",
           "reason": "Prenatal visit, 36 weeks",
-          "conditions": [
-            {
-              "label": "Thrombocytopenia",
-              "action": "diagnosed",
-              "note": "Gestational; platelets 115,000 at 36 weeks"
-            }
-          ],
           "vitals": {
             "bp": [
               120,
@@ -3143,90 +2507,12 @@
           ]
         },
         {
-          "id": "2026-02-12a",
-          "kind": "portal_message",
-          "start": "2026-02-12T18:50",
-          "reason": "Question about platelets",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Platelets?",
-              "date": "2026-02-12T18:50",
-              "author": "patient",
-              "body": "The OB said my platelets are a little low and it's probably from the pregnancy. Is that something to worry about with my liver? Just want your take."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Platelets?",
-              "date": "2026-02-13T07:30",
-              "author": "PCP",
-              "body": "Good question. A mild dip like yours late in pregnancy is common and usually comes back to normal after the baby is born. Your platelets were normal in September and your liver tests have always been normal. Your clotting tests were normal too. Let's recheck a blood count at your postpartum visit with me and make sure it has come back up."
-            }
-          ]
-        },
-        {
-          "id": "2026-02-18a",
-          "kind": "lab_only",
-          "start": "2026-02-18T07:25",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Thyroid function in pregnancy on PTU",
-          "labs": [
-            {
-              "panel": null,
-              "collected": "2026-02-18T07:25",
-              "results": [
-                {
-                  "test": "Thyroid Stimulating Hormone",
-                  "value": 0.5
-                },
-                {
-                  "test": "Free Thyroxine",
-                  "value": 1.3
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Venipuncture",
-              "performed": "2026-02-18T07:25"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Result Note",
-              "title": "Result note — TFTs",
-              "date": "2026-02-18T16:25",
-              "author": "PCP",
-              "body": "TFTs in range at 37 weeks. Copy to OB for delivery planning."
-            }
-          ],
-          "state": {
-            "labs": {
-              "Free Thyroxine": 1.3,
-              "Thyroid Stimulating Hormone": 0.5
-            }
-          }
-        },
-        {
           "id": "2026-03-02a",
           "kind": "hospital_admission",
           "start": "2026-03-02T04:40",
           "end": "2026-03-04T11:30",
           "service": "Obstetrics & Gynecology",
           "reason": "Active labor at 39 weeks",
-          "conditions": [
-            {
-              "label": "Pregnant state, incidental",
-              "action": "resolved",
-              "icd10": "Z33.1"
-            },
-            {
-              "label": "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified",
-              "action": "resolved",
-              "icd10": "O35.8XX0"
-            }
-          ],
           "vitals": [
             {
               "time": "2026-03-02T04:50",
@@ -3284,250 +2570,18 @@
           ]
         },
         {
-          "id": "2026-03-09a",
-          "kind": "telephone",
-          "start": "2026-03-09T10:40",
-          "reason": "Postpartum check-in",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Postpartum check-in",
-              "date": "2026-03-09T10:40",
-              "author": "RN",
-              "body": "Called after receiving the delivery summary. Pt one week postpartum, doing well, baby boy home and feeding, pediatrics appointment done. Taking PTU and prenatal vitamin. No fever, no heavy bleeding, no palpitations. Booked postpartum visit with PCP 4/14 for CBC and thyroid labs per discharge summary. Endocrinology visit already set for late April."
-            }
-          ]
-        },
-        {
-          "id": "2026-04-14a",
-          "kind": "office_visit",
-          "start": "2026-04-14T13:20",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Postpartum follow-up, platelets and thyroid",
-          "conditions": [
-            {
-              "label": "Thrombocytopenia",
-              "action": "resolved"
-            }
-          ],
-          "vitals": {
-            "bp": [
-              126,
-              68
-            ],
-            "hr": 89,
-            "rr": 16,
-            "temp_c": 36.7,
-            "spo2": 97,
-            "weight_kg": 61.2
-          },
-          "labs": [
-            {
-              "panel": "CBC with Differential",
-              "collected": "2026-04-14T13:55",
-              "results": [
-                {
-                  "test": "Hemoglobin",
-                  "value": 13.3
-                },
-                {
-                  "test": "Platelets",
-                  "value": 231
-                },
-                {
-                  "test": "White Blood Cells",
-                  "value": 6.9
-                },
-                {
-                  "test": "Red Blood Cells",
-                  "value": 4.41
-                },
-                {
-                  "test": "Hematocrit",
-                  "value": 40.6
-                },
-                {
-                  "test": "Mean Corpuscular Volume",
-                  "value": 92
-                },
-                {
-                  "test": "Mean Corpuscular Hemoglobin",
-                  "value": 30.2
-                },
-                {
-                  "test": "Mean Corpuscular Hemoglobin Concentration",
-                  "value": 32.8
-                },
-                {
-                  "test": "Red Cell Distribution Width",
-                  "value": 12.8
-                },
-                {
-                  "test": "Neutrophils %",
-                  "value": 58
-                },
-                {
-                  "test": "Lymphocytes %",
-                  "value": 30
-                },
-                {
-                  "test": "Monocytes %",
-                  "value": 7
-                },
-                {
-                  "test": "Eosinophils %",
-                  "value": 4
-                },
-                {
-                  "test": "Basophils %",
-                  "value": 1
-                },
-                {
-                  "test": "Absolute Neutrophil Count",
-                  "value": 4.0
-                }
-              ]
-            },
-            {
-              "panel": "Hepatic Panel (LFT)",
-              "collected": "2026-04-14T13:55",
-              "results": [
-                {
-                  "test": "Alanine Aminotransferase",
-                  "value": 26
-                },
-                {
-                  "test": "Aspartate Aminotransferase",
-                  "value": 24
-                },
-                {
-                  "test": "Alkaline Phosphatase",
-                  "value": 80
-                },
-                {
-                  "test": "Bilirubin, Total",
-                  "value": 0.8
-                },
-                {
-                  "test": "Bilirubin, Direct",
-                  "value": 0.1
-                },
-                {
-                  "test": "Albumin",
-                  "value": 4.3
-                },
-                {
-                  "test": "Total Protein",
-                  "value": 7.0
-                }
-              ]
-            },
-            {
-              "panel": null,
-              "collected": "2026-04-14T13:55",
-              "results": [
-                {
-                  "test": "Thyroid Stimulating Hormone",
-                  "value": 0.8
-                },
-                {
-                  "test": "Free Thyroxine",
-                  "value": 1.2
-                }
-              ]
-            }
-          ],
-          "surveys": [
-            {
-              "survey": "PHQ-9 total score",
-              "value": 3
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Office visit, established patient, moderate MDM",
-              "performed": "2026-04-14T13:20"
-            },
-            {
-              "procedure": "Venipuncture",
-              "performed": "2026-04-14T13:55"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Office Visit — Postpartum Follow-up",
-              "date": "2026-04-14T14:20",
-              "author": "PCP",
-              "body": "6 weeks postpartum after SVD 3/2/26 (boy, 3,400 g). Here for the labs the discharge summary asked for.\n\nS: Recovering well. Tired in the way you'd expect with a newborn. No palpitations, heat intolerance or tremor. No headaches since delivery. Bleeding has stopped. No bruising or nosebleeds. Mood okay; good support at home. Baby followed by pediatrics, doing well.\nMeds: propylthiouracil 100 mg TID, prenatal vitamin. NKDA.\n\nO: Vitals as charted, weight down toward baseline. Well appearing. Thyroid small, smooth, unchanged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Skin no petechiae, no jaundice.\nPHQ-9: 3.\n\nA/P\n1. Gestational thrombocytopenia: CBC today; expect recovery.\n2. Graves disease, postpartum on PTU: TSH/FT4 today. Postpartum is a common time for Graves to flare; endocrinology is seeing her 4/27 to decide on going back to methimazole. Results will go to them.\n3. Chronic hepatitis B: hepatic panel.\n4. Mood: screen low, reviewed what to watch for.\nAnnual physical in the fall."
-            }
-          ],
-          "state": {
-            "hr": 74,
-            "weight_kg": 61.0,
-            "labs": {
-              "Free Thyroxine": 1.2,
-              "Platelets": 231,
-              "Thyroid Stimulating Hormone": 0.8
-            }
-          },
-          "measure": [
-            "bp",
-            "hr",
-            "rr",
-            "temp_c",
-            "spo2",
-            "weight_kg"
-          ]
-        },
-        {
-          "id": "2026-04-16a",
-          "kind": "portal_message",
-          "start": "2026-04-16T12:05",
-          "reason": "Lab results",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Postpartum labs",
-              "date": "2026-04-16T12:05",
-              "author": "PCP",
-              "body": "Good news on all fronts. Platelets are back to normal at 231, so the low count was from the pregnancy and is resolved. Thyroid tests are normal, and so are your liver tests. Copies sent to endocrinology for your visit on the 27th."
-            }
-          ]
-        },
-        {
           "id": "2026-04-27a",
           "kind": "specialist_visit",
           "start": "2026-04-27T10:20",
           "service": "Endocrinology & Metabolism",
           "reason": "Graves disease, postpartum",
-          "medications": [
-            {
-              "drug_text": "propylthiouracil 50 MG Oral Tablet",
-              "action": "stop",
-              "reason": "Postpartum; changed back to methimazole"
-            },
-            {
-              "drug": "methimazole 5 MG Oral Tablet",
-              "action": "start",
-              "sig": "Take 1 tablet (5 mg) by mouth once daily",
-              "dose": {
-                "value": 5,
-                "unit": "mg"
-              },
-              "frequency": "DAILY",
-              "route": "Oral",
-              "course": "chronic",
-              "reason": "Graves disease"
-            }
-          ],
           "vitals": {
             "bp": [
               108,
               77
             ],
-            "hr": 71,
-            "weight_kg": 62.1
+            "hr": 65,
+            "weight_kg": 72.7
           },
           "documents": [
             {
@@ -3535,7 +2589,7 @@
               "title": "Endocrinology Follow-up",
               "date": "2026-04-29T09:20",
               "author": "endocrinology",
-              "body": "Endocrinology follow-up 4/27/2026.\n\nGraves disease, now 8 weeks postpartum after an uncomplicated vaginal delivery 3/2. Methimazole was switched to propylthiouracil 100 mg TID at 12 weeks and continued through delivery. Fetal aplasia cutis congenita was noted on the anatomy scan; baby is followed by pediatrics.\n\nFeels well; no hyperthyroid symptoms. TFTs 4/14 at your office: TSH 0.8, free T4 1.2, both normal. Platelets recovered to 231. Liver tests normal.\n\nExam: HR regular, no tremor, small goiter unchanged, eyes quiet.\n\nAssessment: Graves disease, euthyroid postpartum on PTU.\nPlan: Stop propylthiouracil. Resume methimazole 5 mg daily, her pre-pregnancy dose; methimazole is preferred outside the first trimester and avoids the liver risk of PTU. Reviewed agranulocytosis precautions again. TFTs in 6 weeks with PCP, then every 3-4 months over the postpartum year. Return 6 months. Discussed that any future pregnancy should be planned with us in advance.\n\nEndocrinology"
+              "body": "Endocrinology follow-up 4/27/2026.\n\nGraves disease, now 8 weeks postpartum after an uncomplicated vaginal delivery 3/2. Methimazole was switched to propylthiouracil 100 mg TID at 12 weeks and continued through delivery. Fetal aplasia cutis congenita was noted on the anatomy scan; baby is followed by pediatrics.\n\nFeels well; no hyperthyroid symptoms. TFTs 4/14 at an outside lab: TSH 0.8, free T4 1.2, both normal. Platelets recovered to 231. Liver tests normal.\n\nExam: HR regular, no tremor, small goiter unchanged, eyes quiet.\n\nAssessment: Graves disease, euthyroid postpartum on PTU.\nPlan: Stop propylthiouracil. Resume methimazole 5 mg daily, her pre-pregnancy dose; methimazole is preferred outside the first trimester and avoids the liver risk of PTU. Reviewed agranulocytosis precautions again. TFTs in 6 weeks with PCP, then every 3-4 months over the postpartum year. Return 6 months. Discussed that any future pregnancy should be planned with us in advance.\n\nEndocrinology"
             }
           ],
           "measure": [
@@ -3543,158 +2597,16 @@
             "hr",
             "weight_kg"
           ]
-        },
-        {
-          "id": "2026-04-29a",
-          "kind": "pharmacy",
-          "start": "2026-04-29T15:10",
-          "reason": "Medication reconciliation",
-          "documents": [
-            {
-              "type": "Medication Note",
-              "title": "Medication list updated",
-              "date": "2026-04-29T15:10",
-              "author": "MA",
-              "body": "Endocrinology note received. PTU discontinued; methimazole 5 mg daily resumed (Rx from endocrinology, filled 4/27). Med list reconciled. Lab order for TFTs early June placed per endo."
-            }
-          ]
-        },
-        {
-          "id": "2026-06-08a",
-          "kind": "lab_only",
-          "start": "2026-06-08T07:40",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Thyroid function after restarting methimazole",
-          "labs": [
-            {
-              "panel": null,
-              "collected": "2026-06-08T07:40",
-              "results": [
-                {
-                  "test": "Thyroid Stimulating Hormone",
-                  "value": 1.3
-                },
-                {
-                  "test": "Free Thyroxine",
-                  "value": 1.1
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Venipuncture",
-              "performed": "2026-06-08T07:40"
-            }
-          ],
-          "state": {
-            "labs": {
-              "Free Thyroxine": 1.1,
-              "Thyroid Stimulating Hormone": 1.3
-            }
-          }
-        },
-        {
-          "id": "2026-06-09a",
-          "kind": "portal_message",
-          "start": "2026-06-09T12:45",
-          "reason": "Thyroid results",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Thyroid labs",
-              "date": "2026-06-09T12:45",
-              "author": "PCP",
-              "body": "Thyroid tests are normal six weeks back on methimazole 5 mg. No change. Forwarded to endocrinology. Next check in about 3 months; we can do it with your physical in September."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Thyroid labs",
-              "date": "2026-06-09T21:10",
-              "author": "patient",
-              "body": "Great, thank you. September works."
-            }
-          ]
-        },
-        {
-          "id": "2026-07-21a",
-          "kind": "pharmacy",
-          "start": "2026-07-21T09:30",
-          "reason": "Refill request",
-          "documents": [
-            {
-              "type": "Medication Note",
-              "title": "Refill — methimazole",
-              "date": "2026-07-21T09:30",
-              "author": "MA",
-              "body": "Pharmacy requesting 90-day supply of methimazole 5 mg (endo Rx was 30 days with 1 refill). TFTs 6/8 normal. Pended for PCP."
-            },
-            {
-              "type": "Medication Note",
-              "title": "Refill sent",
-              "date": "2026-07-21T12:15",
-              "author": "PCP",
-              "body": "Sent 90 days, 1 refill. Labs with physical in September."
-            }
-          ]
-        },
-        {
-          "id": "2026-08-18a",
-          "kind": "portal_message",
-          "start": "2026-08-18T20:05",
-          "reason": "Scheduling",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Physical",
-              "date": "2026-08-18T20:05",
-              "author": "patient",
-              "body": "Hi, school starts back next week. Can I get my physical in September, early morning if possible? I'd like my flu shot then too."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Physical",
-              "date": "2026-08-19T08:30",
-              "author": "front desk",
-              "body": "You're booked Wednesday 9/16 at 7:30 am. Come fasting for labs. Flu vaccine will be available by then."
-            }
-          ]
-        },
-        {
-          "id": "2026-09-16a",
-          "kind": "annual_physical",
-          "start": "2026-09-16T07:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Annual physical",
-          "appointment": "booked"
         }
       ]
     }
   ],
   "terms": {
     "conditions": {
-      "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified|O35.8XX0": {
-        "code": "O35.8XX0",
-        "display": "Maternal care for other (suspected) fetal abnormality and damage, not applicable or unspecified",
-        "receipt": "NLM Clinical Tables ICD-10-CM"
-      },
       "Personal history of other diseases of the digestive system|Z87.19": {
         "code": "Z87.19",
         "display": "Personal history of other diseases of the digestive system",
         "receipt": "NLM Clinical Tables ICD-10-CM"
-      },
-      "Pregnant state, incidental|Z33.1": {
-        "code": "Z33.1",
-        "display": "Pregnant state, incidental",
-        "receipt": "NLM Clinical Tables ICD-10-CM"
-      }
-    },
-    "medications": {
-      "propylthiouracil 50 MG Oral Tablet": {
-        "code": "198175",
-        "display": "propylthiouracil 50 MG Oral Tablet",
-        "ingredient": "propylthiouracil",
-        "receipt": "NLM RxNav approximateTerm + properties"
       }
     },
     "labs": {
@@ -3727,9 +2639,6 @@
         "display": "US for pregnancy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal vitamin Oral Tablet\""
-    ]
+    }
   }
 }

@@ -35,3 +35,8 @@
 - 2026-06-11 portal: labs normal (P)
 - 2026-08-18 portal: fluticasone refill, confirms October visit (P)
 - 2026-10-13 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002788 on 2025-06-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

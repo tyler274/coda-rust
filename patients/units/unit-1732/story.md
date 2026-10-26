@@ -39,3 +39,8 @@
 - 2026-07-22 psychiatry visit, remission (letter 7/24) [A6]
 - 2026-08-18 portal: 90-day sertraline supply, schedule follow-up [P]
 - 2026-09-18 booked: mood follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00001732 on 2026-07-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

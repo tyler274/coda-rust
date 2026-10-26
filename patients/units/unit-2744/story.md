@@ -48,3 +48,8 @@
 - 2026-06-10 office visit: leakage unchanged; urogynecology re-referral (P)
 - 2026-08-05 portal: asks about referral, still open (P)
 - 2026-10-14 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002744 on 2026-06-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

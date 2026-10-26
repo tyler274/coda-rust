@@ -83,3 +83,8 @@
 - 2026-08-11 annual_physical: preventive visit; labs (P)
 - 2026-08-13 portal_message: results (P)
 - 2026-11-17 office_visit: booked diabetes follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002693 on 2026-08-11. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

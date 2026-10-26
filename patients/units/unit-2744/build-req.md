@@ -159,3 +159,8 @@ incontinence; no colonoscopy (FIT only). The chart keeps these without comment.
   records requests; one missed visit; a cancelled visit.
 - Booked annual physical 2026-10-14. The urogynecology re-referral is open today.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002744 on 2026-06-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

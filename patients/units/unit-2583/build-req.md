@@ -142,3 +142,8 @@ pharmacy is named.
   every visit from 2023-03-03 on, and the healing then healed right temporal
   craniotomy scar from 2026-03.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002583 on 2026-03-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

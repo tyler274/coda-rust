@@ -29,3 +29,8 @@
 - 2026-07-07 specialist_visit: bronchoscopy healed, RTW full duty 07-13; tracheobronchial rupture and chest trauma resolved [A4, R2]
 - 2026-08-18 portal_message: schedules physical; reminder re November CTA [P, A3]
 - 2026-09-22 annual_physical: booked [P]
+
+
+## Last seen
+
+The practice last saw MRN00002603 on 2026-05-26. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.
