@@ -272,6 +272,8 @@ stateDiagram-v2
 %% event open Settings | by you | needs DIn, AReady | reason: Settings stay reachable even before newer Terms, for exporting, deleting your account and withdrawing AI permission | Your name, AI, privacy, export, sign-out and deletion (ui-surface-map.md, Settings).
 %% event open AI settings | by you | needs DIn, AReady | reason: AI settings stay reachable even before newer Terms, for withdrawing permission | Your AI permission, the AI switch, and proactive work.
 %% event go back on You | by you | needs TabYou | reason: only the tab you're on goes back | You return to your health library; nothing you had saved changes. How far back goes is presentation.
+%% events you open something on Today = open an insight | open a measurement on Today | choose Today's measurements | open your Plan | open the Reminder | open the Check-in | open For my doctor | open your doctor's plan
+%% events you open a page on You = open a records group | open a record | open Measurements & trends | open a measurement in You | open Health history | open Earlier insights | search your health | open Sources & data | open Doctors & hospitals | open your phone's health data | open Settings | open AI settings
 %% event open supporting information | by you | needs TabDuet, TCur | reason: citations are in the conversation; newer Terms wait first | The exact version of what a reply cited, never a newer one in its place (C6; ui-surface-map.md, cited source).
 %% event close the supporting information | by you | needs CoSource | reason: only open supporting information closes | You're back in the conversation where you were.
 %% event {read} shows a saved copy | by the app | needs RdLoading@{key} | reason: only a read in progress shows a saved copy | What you saw last appears at once and refreshes quietly; loading shows only when nothing can.
@@ -1136,46 +1138,11 @@ stateDiagram-v2
           %% use read as todayitem: read = the item
           [*] --> TiNone
           state "Nothing open on Today" as TiNone
-          TiNone --> RdLoading : open an insight
-          RdShown --> RdLoading : open an insight
-          RdKept --> RdLoading : open an insight
-          RdFailed --> RdLoading : open an insight
-          RdLoading --> RdLoading : open an insight
-          TiNone --> RdLoading : open a measurement on Today
-          RdShown --> RdLoading : open a measurement on Today
-          RdKept --> RdLoading : open a measurement on Today
-          RdFailed --> RdLoading : open a measurement on Today
-          RdLoading --> RdLoading : open a measurement on Today
-          TiNone --> RdLoading : choose Today's measurements
-          RdShown --> RdLoading : choose Today's measurements
-          RdKept --> RdLoading : choose Today's measurements
-          RdFailed --> RdLoading : choose Today's measurements
-          RdLoading --> RdLoading : choose Today's measurements
-          TiNone --> RdLoading : open your Plan
-          RdShown --> RdLoading : open your Plan
-          RdKept --> RdLoading : open your Plan
-          RdFailed --> RdLoading : open your Plan
-          RdLoading --> RdLoading : open your Plan
-          TiNone --> RdLoading : open the Reminder
-          RdShown --> RdLoading : open the Reminder
-          RdKept --> RdLoading : open the Reminder
-          RdFailed --> RdLoading : open the Reminder
-          RdLoading --> RdLoading : open the Reminder
-          TiNone --> RdLoading : open the Check-in
-          RdShown --> RdLoading : open the Check-in
-          RdKept --> RdLoading : open the Check-in
-          RdFailed --> RdLoading : open the Check-in
-          RdLoading --> RdLoading : open the Check-in
-          TiNone --> RdLoading : open For my doctor
-          RdShown --> RdLoading : open For my doctor
-          RdKept --> RdLoading : open For my doctor
-          RdFailed --> RdLoading : open For my doctor
-          RdLoading --> RdLoading : open For my doctor
-          TiNone --> RdLoading : open your doctor's plan
-          RdShown --> RdLoading : open your doctor's plan
-          RdKept --> RdLoading : open your doctor's plan
-          RdFailed --> RdLoading : open your doctor's plan
-          RdLoading --> RdLoading : open your doctor's plan
+          TiNone --> RdLoading : you open something on Today
+          RdShown --> RdLoading : you open something on Today
+          RdKept --> RdLoading : you open something on Today
+          RdFailed --> RdLoading : you open something on Today
+          RdLoading --> RdLoading : you open something on Today
           RdShown --> TiNone : go back on Today
           RdKept --> TiNone : go back on Today
           RdFailed --> TiNone : go back on Today
@@ -1257,66 +1224,11 @@ stateDiagram-v2
           %% use read as youitem: read = the page
           [*] --> YiNone
           state "Only the library open" as YiNone
-          YiNone --> RdLoading : open a records group
-          RdShown --> RdLoading : open a records group
-          RdKept --> RdLoading : open a records group
-          RdFailed --> RdLoading : open a records group
-          RdLoading --> RdLoading : open a records group
-          YiNone --> RdLoading : open a record
-          RdShown --> RdLoading : open a record
-          RdKept --> RdLoading : open a record
-          RdFailed --> RdLoading : open a record
-          RdLoading --> RdLoading : open a record
-          YiNone --> RdLoading : open Measurements & trends
-          RdShown --> RdLoading : open Measurements & trends
-          RdKept --> RdLoading : open Measurements & trends
-          RdFailed --> RdLoading : open Measurements & trends
-          RdLoading --> RdLoading : open Measurements & trends
-          YiNone --> RdLoading : open a measurement in You
-          RdShown --> RdLoading : open a measurement in You
-          RdKept --> RdLoading : open a measurement in You
-          RdFailed --> RdLoading : open a measurement in You
-          RdLoading --> RdLoading : open a measurement in You
-          YiNone --> RdLoading : open Health history
-          RdShown --> RdLoading : open Health history
-          RdKept --> RdLoading : open Health history
-          RdFailed --> RdLoading : open Health history
-          RdLoading --> RdLoading : open Health history
-          YiNone --> RdLoading : open Earlier insights
-          RdShown --> RdLoading : open Earlier insights
-          RdKept --> RdLoading : open Earlier insights
-          RdFailed --> RdLoading : open Earlier insights
-          RdLoading --> RdLoading : open Earlier insights
-          YiNone --> RdLoading : search your health
-          RdShown --> RdLoading : search your health
-          RdKept --> RdLoading : search your health
-          RdFailed --> RdLoading : search your health
-          RdLoading --> RdLoading : search your health
-          YiNone --> RdLoading : open Sources & data
-          RdShown --> RdLoading : open Sources & data
-          RdKept --> RdLoading : open Sources & data
-          RdFailed --> RdLoading : open Sources & data
-          RdLoading --> RdLoading : open Sources & data
-          YiNone --> RdLoading : open Doctors & hospitals
-          RdShown --> RdLoading : open Doctors & hospitals
-          RdKept --> RdLoading : open Doctors & hospitals
-          RdFailed --> RdLoading : open Doctors & hospitals
-          RdLoading --> RdLoading : open Doctors & hospitals
-          YiNone --> RdLoading : open your phone's health data
-          RdShown --> RdLoading : open your phone's health data
-          RdKept --> RdLoading : open your phone's health data
-          RdFailed --> RdLoading : open your phone's health data
-          RdLoading --> RdLoading : open your phone's health data
-          YiNone --> RdLoading : open Settings
-          RdShown --> RdLoading : open Settings
-          RdKept --> RdLoading : open Settings
-          RdFailed --> RdLoading : open Settings
-          RdLoading --> RdLoading : open Settings
-          YiNone --> RdLoading : open AI settings
-          RdShown --> RdLoading : open AI settings
-          RdKept --> RdLoading : open AI settings
-          RdFailed --> RdLoading : open AI settings
-          RdLoading --> RdLoading : open AI settings
+          YiNone --> RdLoading : you open a page on You
+          RdShown --> RdLoading : you open a page on You
+          RdKept --> RdLoading : you open a page on You
+          RdFailed --> RdLoading : you open a page on You
+          RdLoading --> RdLoading : you open a page on You
           RdShown --> YiNone : go back on You
           RdKept --> YiNone : go back on You
           RdFailed --> YiNone : go back on You
@@ -1418,10 +1330,8 @@ stateDiagram-v2
       %% when AppBack, NtOn, DIn | reason: a reply alerts like a text, only while you're away and this device allows alerts (Dev 2026-10-26)
       NoNone --> NoWaiting : Duet tells you what you asked for or your practice's news [you're away, alerts allowed, not mid-reply]
       %% when AppBack, NtOn, DIn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what you asked for and your practice's news alert wherever alerts are allowed; while Duet writes it waits for the reply (Dev 2026-10-26)
-      NoNone --> NoWaiting : Duet finishes its own work with something to tell you [you're away, alerts allowed, your switch on, not mid-reply]
-      %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet noticed on its own alerts only once you turn it on (north-star.md, Notifications; Dev 2026-10-26)
-      NoNone --> NoWaiting : Duet proposes a note [you're away, alerts allowed, your switch on, not mid-reply]
-      %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet offers on its own alerts only once you turn it on (Dev 2026-10-26)
+      NoNone --> NoWaiting : Duet noticed something on its own [you're away, alerts allowed, your switch on, not mid-reply]
+      %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet noticed or offers on its own alerts only once you turn it on (north-star.md, Notifications; Dev 2026-10-26)
       NoNone --> NoWaiting : Duet stops writing early [with what you asked for or your practice's news waiting, you're away, alerts allowed]
       %% when OmAsked, AppBack, NtOn, DIn | reason: a reply that stops posts what waited, and what you asked for and your practice's news alert wherever alerts are allowed (Dev 2026-10-26)
       NoNone --> NoWaiting : Duet stops writing early [with only Duet's own message waiting, you're away, alerts allowed, your switch on]
