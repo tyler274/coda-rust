@@ -1,0 +1,882 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001776",
+   "events": [
+    {
+     "id": "2024-01-24a",
+     "kind": "outside_records",
+     "start": "2024-01-24T12:30",
+     "reason": "Gynecology consultation received",
+     "conditions": [
+      {
+       "label": "Uterine leiomyoma",
+       "action": "diagnosed",
+       "onset": "2024-01-15"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-01-15T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.2
+        },
+        {
+         "test": "Ferritin",
+         "value": 15
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        },
+        {
+         "test": "Prothrombin Time",
+         "value": 12
+        },
+        {
+         "test": "Activated partial thromboplastin time",
+         "loinc": "14979-9",
+         "unit": "s",
+         "value": 30
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Pelvic ultrasound",
+       "performed": "2024-01-15T10:30",
+       "text": "TECHNIQUE: Transvaginal pelvic ultrasound.\nFINDINGS: Uterus enlarged with a lobulated contour. Multiple well-circumscribed hypoechoic masses within the myometrium, the largest measuring 5.0 cm. Posterior aspect of the uterus partly beyond the transvaginal field of view. Endometrium not distorted where seen. Both ovaries normal in size and appearance. No free fluid.",
+       "conclusion": "Multiple uterine leiomyomas, largest 5 cm."
+      }
+     ],
+     "orders": [
+      {
+       "id": "gyn-referral",
+       "action": "done",
+       "date": "2024-01-24T12:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecology Consultation",
+       "author": "gynecology",
+       "date": "2024-01-24T12:30",
+       "body": "GYNECOLOGY NEW PATIENT CONSULT\nVisit date: 2024-01-15\n\nReferred by primary care for worsening menstrual bleeding.\n\nMs. Nakamura is 34, G0. Over the last 6 months her menses have grown heavy and prolonged — 8 to 10 days, changing pads about every 2 hours on the heaviest days — with a sense of pelvic pressure. She also notes urinary frequency and constipation, which she connects to the pressure. Iron deficiency anemia, diagnosed by her internist in 2020, on oral iron; celiac disease followed by GI.\n\nMeds: ferrous sulfate 325 mg TID, multivitamin, calcium carbonate/vitamin D3 BID.\nAllergies: NKDA.\nFamily: mother had uterine fibroids; sister celiac; maternal grandmother osteoporosis.\n\nExam: abdomen soft, nontender. A firm, irregular lower abdominal mass is palpable, in keeping with an enlarged uterus. Bimanual: enlarged irregular uterus, mobile, nontender. Adnexa not separately felt.\n\nLabs: Hgb 10.2 g/dL, ferritin 15 ng/mL, platelets 250,000, PT 12 s, aPTT 30 s.\n\nUltrasound (TV): several well-circumscribed hypoechoic intramyometrial masses, largest 5 cm.\n\nImpression: symptomatic uterine leiomyomas with heavy menstrual bleeding; iron deficiency anemia. Coagulation normal.\n\nPlan: options reviewed in general terms (medical therapy, procedures, surgery). She would like time to think. Continue iron. Return in 6 months, sooner if bleeding worsens."
+      },
+      {
+       "type": "Result Note",
+       "title": "Gynecology Letter Reviewed",
+       "author": "PCP",
+       "date": "2024-01-25T07:45",
+       "body": "Fibroids confirmed on ultrasound, largest 5 cm. Added uterine leiomyoma to problem list. Gyn follow-up in July."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-19a",
+     "kind": "portal_message",
+     "start": "2024-03-19T21:10",
+     "reason": "Refill",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Iron Refill",
+       "author": "patient",
+       "date": "2024-03-19T21:10",
+       "body": "Could you send ferrous sulfate refills? Also the pharmacy says my calcium is on backorder in the store brand, is any calcium + D okay?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Iron Refill",
+       "author": "RN",
+       "date": "2024-03-20T08:30",
+       "body": "Refill sent. Any calcium carbonate 600 mg with vitamin D 400 units is fine — just check the label says gluten-free."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-16a",
+     "kind": "lab_only",
+     "start": "2024-04-16T07:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "CBC and iron",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.1,
+       "Ferritin": 14
+      }
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-04-16T07:20",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.1
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2024-04-16T07:20",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        },
+        {
+         "test": "Ferritin",
+         "value": 14
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-04-16T07:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "CBC and Iron",
+       "author": "PCP",
+       "date": "2024-04-17T08:15",
+       "body": "Hgb 10.1, ferritin 14. Steady despite the heavier bleeding. Gyn follow-up is in July. Released to portal."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-06a",
+     "kind": "outside_records",
+     "start": "2024-08-06T14:15",
+     "reason": "Gynecology follow-up received",
+     "medications": [
+      {
+       "drug_text": "tranexamic acid 650 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 2 tablets (1300 mg) by mouth three times daily for up to 5 days during menses",
+       "dose": {
+        "value": 1300,
+        "unit": "mg"
+       },
+       "frequency": "TID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "heavy menstrual bleeding with fibroids"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-07-15T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.2
+        },
+        {
+         "test": "Hematocrit",
+         "value": 30.5
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 78
+        },
+        {
+         "test": "Ferritin",
+         "value": 15
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Pelvic ultrasound",
+       "performed": "2024-07-15T10:20",
+       "text": "TECHNIQUE: Transabdominal and transvaginal pelvic ultrasound. Comparison: transvaginal study 2024-01-15.\nFINDINGS: Enlarged uterus. Subserosal fibroid of the posterior uterine wall measuring 10 cm, larger than on the prior transvaginal study, where it was incompletely seen. Pedunculated fibroid arising from the anterior wall measuring 5 cm. Endometrial stripe normal in thickness. Ovaries normal. No free fluid. Kidneys without hydronephrosis.",
+       "conclusion": "Posterior subserosal fibroid 10 cm and anterior pedunculated fibroid 5 cm. Normal endometrial stripe."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecology Follow-up",
+       "author": "gynecology",
+       "date": "2024-08-06T14:15",
+       "body": "GYNECOLOGY FOLLOW-UP\nVisit date: 2024-07-15\n\nShe returns with fibroids, iron deficiency anemia and celiac disease. For 6 months she has felt pelvic pressure and as if she does not fully empty her bladder. Over the past year, flow has been heavier and lasts longer; cycles remain regular. No urinary leakage, no painful urination. Never pregnant; not currently sexually active.\n\nMeds: ferrous sulfate 325 mg TID, multivitamin, calcium carbonate/vitamin D3 BID.\nAllergies: NKDA.\n\nExam: abdomen nontender; a pelvic mass rises to the level of the umbilicus.\n\nLabs: Hgb 10.2 g/dL, Hct 30.5%, MCV 78 fL, ferritin 15 ng/mL.\n\nUltrasound (TA and TV): 10 cm subserosal fibroid, posterior wall; 5 cm pedunculated fibroid, anterior wall; endometrial stripe normal.\n\nAssessment: symptomatic uterine leiomyomas with bulk symptoms and heavy menstrual bleeding; anemia.\n\nPlan:\n- Abdominal myomectomy discussed, including risks and recovery. She prefers to defer surgery for now and will let us know when she is ready.\n- Tranexamic acid 1300 mg three times daily for up to 5 days with each period.\n- Continue oral iron.\n- Repeat ultrasound in one year or sooner with symptoms."
+      },
+      {
+       "type": "Result Note",
+       "title": "Gynecology Letter Reviewed",
+       "author": "PCP",
+       "date": "2024-08-07T07:30",
+       "body": "July gyn note in. Fibroids larger (10 cm posterior, 5 cm pedunculated). Tranexamic acid with menses started by gyn — added to med list. Surgery deferred by patient."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-24a",
+     "kind": "annual_physical",
+     "start": "2024-09-24T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.4,
+       "Ferritin": 16,
+       "Tissue Transglutaminase IgA": 2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-09-24T16:15",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.4
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2024-09-24T16:15",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        },
+        {
+         "test": "Ferritin",
+         "value": 16
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-24T16:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-24T16:15",
+       "results": [
+        {
+         "test": "Tissue Transglutaminase IgA",
+         "value": 2
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-09-24T16:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-09-24T16:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-09-24T15:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-09-24T16:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-09-24T15:30",
+       "body": "ANNUAL VISIT\n\nGyn notes from January and July reviewed with her. Using tranexamic acid with periods since August — two cycles so far, she thinks the heaviest days are a little lighter. Pressure and bladder fullness unchanged. She is not ready for surgery during the school year and will revisit with gyn.\n\nRLS controlled on gabapentin. Celiac quiet. Iron TID.\n\nMeds: ferrous sulfate 325 TID; gabapentin 300 qhs; tranexamic acid 1300 TID up to 5 days with menses; MVI; calcium/D BID.\n\nExam: well, mild pallor. Heart regular. Lungs clear. Abdomen: firm, nontender pelvic mass to about the umbilicus, as described by gyn.\n\nPHQ-2 0. Flu and COVID vaccines given. Labs drawn."
+      },
+      {
+       "type": "Result Note",
+       "title": "Results",
+       "author": "PCP",
+       "date": "2024-09-26T08:00",
+       "body": "Hgb 10.4, ferritin 16, tTG negative, CMP fine. Sent to portal."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-11a",
+     "kind": "office_visit",
+     "start": "2025-03-11T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.1,
+       "Ferritin": 14
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-03-11T16:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.1
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2025-03-11T16:30",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        },
+        {
+         "test": "Ferritin",
+         "value": 14
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2025-03-11T15:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2025-03-11T15:50",
+       "body": "Interval follow-up.\n\nPeriods: tranexamic acid each cycle, still 8 or so days. Pelvic pressure steady. Has a gyn visit planned for the summer.\nLegs: fine on gabapentin.\nGI: no symptoms.\n\nExam: mild pallor. Heart RRR, lungs clear. Abdomen with the known firm pelvic mass, nontender.\n\nPlan: CBC, iron studies. Continue current meds. Physical in the fall."
+      },
+      {
+       "type": "Result Note",
+       "title": "Results",
+       "author": "PCP",
+       "date": "2025-03-13T07:40",
+       "body": "Hgb 10.1, ferritin 14 — her usual. Released with comment."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-17a",
+     "kind": "pharmacy",
+     "start": "2025-06-17T09:30",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Gabapentin Refill",
+       "author": "MA",
+       "date": "2025-06-17T09:30",
+       "body": "Pharmacy request: gabapentin 300 mg capsules #90. Last filled March. Pended to PCP."
+      },
+      {
+       "type": "Refill Request",
+       "title": "Gabapentin Refill — Signed",
+       "author": "PCP",
+       "date": "2025-06-17T12:05",
+       "body": "Approved #90 x3."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-23a",
+     "kind": "annual_physical",
+     "start": "2025-10-23T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.3,
+       "Ferritin": 13,
+       "Tissue Transglutaminase IgA": 2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-10-23T16:15",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.3
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ],
+       "resulted": "2025-10-24T09:00"
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2025-10-23T16:15",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        },
+        {
+         "test": "Ferritin",
+         "value": 13
+        }
+       ],
+       "resulted": "2025-10-24T09:00"
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-10-23T16:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ],
+       "resulted": "2025-10-24T09:00"
+      },
+      {
+       "panel": null,
+       "collected": "2025-10-23T16:15",
+       "results": [
+        {
+         "test": "Tissue Transglutaminase IgA",
+         "value": 2
+        }
+       ],
+       "resulted": "2025-10-24T09:00"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-23T16:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2025-10-23T15:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-23T16:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-10-23T15:30",
+       "body": "PREVENTIVE VISIT\n\nJuniper is 35, here for her yearly. School started fine. Says her gyn visit this summer got pushed and she has not rebooked; still on tranexamic acid with periods, bleeding about the same, pressure the same. Not ready to plan surgery mid-year. Legs quiet at night on gabapentin. Celiac without symptoms.\n\nMeds: ferrous sulfate 325 TID, gabapentin 300 qhs, tranexamic acid with menses, MVI, calcium/D BID. NKDA.\n\nExam: well-appearing, mild pallor. Thyroid normal. Heart regular, lungs clear. Abdomen: firm pelvic mass to the umbilicus, nontender. Feet: slight distal light-touch reduction, unchanged.\n\nPHQ-2 0.\n\nPlan:\n- Flu vaccine today; she'll get her COVID shot at the pharmacy.\n- CBC, iron studies, CMP, tTG.\n- Encouraged her to rebook gyn.\n- Pap/HPV due 2026.\n- Follow up in 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-24a",
+     "kind": "portal_message",
+     "start": "2025-10-24T12:10",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your Results",
+       "author": "PCP",
+       "date": "2025-10-24T12:10",
+       "body": "Juniper — hemoglobin 10.3 and ferritin 13, in your usual range; celiac antibody still negative; chemistries normal. Don't forget to rebook with gyn."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Your Results",
+       "author": "patient",
+       "date": "2025-10-24T20:02",
+       "body": "Thanks, will do over winter break."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-28a",
+     "kind": "portal_message",
+     "start": "2026-01-28T19:15",
+     "reason": "Hospitalization",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "I was in the hospital",
+       "author": "patient",
+       "date": "2026-01-28T19:15",
+       "body": "Hi — wanted you to know I was in a bad car accident on the 18th. I was bleeding inside and they took me to surgery that night, then I was in the hospital until the 23rd. They gave me a lot of blood. I'm home now with my sister helping, sore but walking. The trauma surgery clinic is seeing me next week. I'm out of school for a few weeks. Should I come in?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: I was in the hospital",
+       "author": "PCP",
+       "date": "2026-01-29T07:20",
+       "body": "Juniper, I'm so sorry — I'm glad you're home. Yes, please book a visit with me after your surgery clinic check. Keep taking your iron. Call right away for fever, worsening belly pain, vomiting, fainting or a racing heart. We're requesting the hospital records now."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Records Request — Hospital",
+       "author": "front desk",
+       "date": "2026-01-29T09:00",
+       "body": "Release signed electronically. Requested ED record, operative report and discharge summary from the regional trauma center for admission 1/18–1/23/2026."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-19a",
+     "kind": "outside_records",
+     "start": "2026-02-19T10:40",
+     "reason": "Hospital records received (partial)",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-01-18T16:55",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 7.0
+        },
+        {
+         "test": "Hematocrit",
+         "value": 21
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        },
+        {
+         "test": "Prothrombin Time",
+         "value": 12
+        },
+        {
+         "test": "Activated partial thromboplastin time",
+         "loinc": "14979-9",
+         "unit": "s",
+         "value": 30
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-01-18T19:40",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 1.7
+        },
+        {
+         "test": "Fibrinogen",
+         "loinc": "3255-7",
+         "unit": "mg/dL",
+         "value": 130
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT head without contrast",
+       "performed": "2026-01-18T23:30",
+       "text": "INDICATION: high-speed motor vehicle collision, post-operative.\nTECHNIQUE: Axial noncontrast CT of the head.\nFINDINGS: No intracranial hemorrhage, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. No calvarial fracture. Visualized paranasal sinuses and mastoids clear.",
+       "conclusion": "No acute intracranial abnormality."
+      },
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2026-01-18T17:05",
+       "text": "Portable AP chest, trauma bay. Lungs clear. No pneumothorax. No pleural effusion. Mediastinum not widened. No displaced rib fracture.",
+       "conclusion": "No acute traumatic finding."
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Record",
+       "author": "emergency medicine",
+       "date": "2026-02-19T10:40",
+       "body": "EMERGENCY DEPARTMENT — TRAUMA\nArrival: 2026-01-18 16:40, by ambulance.\n\n36-year-old woman, restrained driver in a high-speed motor vehicle collision. On arrival alert but pale and anxious, complaining of abdominal pain and dizziness. History per patient and EMS: iron deficiency anemia, uterine fibroids, celiac disease, restless legs, osteopenia, heavy periods. Home meds per patient: ferrous sulfate 325 mg TID, multivitamin, calcium carbonate/vitamin D3. No known drug allergies. No prior surgery.\n\nPrimary survey: airway patent, breath sounds equal. BP 90/60, HR 120, RR 22. GCS 15.\nAbdomen distended, tender throughout all four quadrants with guarding.\n\nLabs: Hgb 7 g/dL, Hct 21%, platelets 250,000, PT 12 s, PTT 30 s. Type and crossmatch sent, blood type pending.\nFAST: free fluid in the abdomen.\nPortable chest and pelvis films: no acute traumatic findings.\n\nAssessment: hemorrhagic shock from intra-abdominal bleeding after blunt trauma.\n\nCourse: two large-bore IVs. Emergency-release O-negative red cells started in the bay; massive transfusion protocol activated. Trauma surgery at bedside; taken directly to the operating room at 17:35."
+      },
+      {
+       "type": "Operative Note",
+       "title": "Operative Report — Exploratory Laparotomy",
+       "author": "trauma surgery",
+       "date": "2026-02-19T10:40",
+       "body": "OPERATIVE REPORT\nDate of surgery: 2026-01-18\nPreoperative diagnosis: hemorrhagic shock, blunt abdominal trauma, positive FAST.\nPostoperative diagnosis: small-bowel mesenteric laceration with active hemorrhage; traumatic hemorrhagic shock with acute coagulopathy.\nProcedure: exploratory laparotomy, suture ligation of mesenteric bleeding vessel, repair of mesenteric laceration.\nAnesthesia: general endotracheal.\n\nFindings: approximately 1.5 L of hemoperitoneum. Laceration of the small-bowel mesentery with an actively bleeding mesenteric vessel. Bowel viable throughout after hemostasis; no resection required. Liver, spleen, stomach, colon, kidneys and retroperitoneum without injury. Enlarged fibroid uterus noted, not injured. Diffuse oozing from raw surfaces during the case; INR 1.7, fibrinogen 130 mg/dL on intraoperative labs.\n\nDescription: midline laparotomy, four-quadrant packing, systematic exploration. Bleeding mesenteric vessel suture-ligated; mesenteric defect closed. Small bowel run twice from ligament to ileocecal valve. Oozing treated with plasma and cryoprecipitate with improvement. Fascia closed, skin stapled.\n\nResuscitation totals: 6 units packed red cells, 4 units plasma, 1 apheresis platelet unit, 1 pooled cryoprecipitate dose.\nEBL: see anesthesia record. Specimens: none. Complications: none apparent.\nDisposition: surgical ICU, intubated, then extubated the same night.\n\nBlood type resulted O positive."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-14a",
+     "kind": "outside_records",
+     "start": "2026-04-14T15:20",
+     "reason": "Discharge summary received",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-01-23T05:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 8.9
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital Discharge Summary",
+       "author": "trauma surgery",
+       "date": "2026-04-14T15:20",
+       "body": "DISCHARGE SUMMARY\nAdmitted: 2026-01-18. Discharged: 2026-01-23.\n\nDischarge diagnoses:\n1. Traumatic hemorrhagic shock with acute coagulopathy after high-speed motor vehicle collision.\n2. Laceration of small-bowel mesentery, status post exploratory laparotomy with suture ligation and repair 1/18.\nChronic: iron deficiency anemia, celiac disease, uterine leiomyoma, restless legs syndrome, osteopenia, menorrhagia.\n\nHospital course: Arrived in hemorrhagic shock with positive FAST; emergency-release O-negative blood and massive transfusion protocol, then emergency laparotomy (see operative report). Intraoperative coagulopathy (INR 1.7, fibrinogen 130) corrected with plasma and cryoprecipitate. Total 6 u PRBC, 4 u plasma, 1 apheresis platelet unit, 1 pooled cryoprecipitate dose. Extubated post-op night. Tertiary survey and post-operative CT head and cervical spine without contrast: no further injury. Chest and pelvis films normal. Diet advanced, bowel function returned, ambulating independently. Hemoglobin 8.9 g/dL on day of discharge, stable.\n\nDischarge medications:\n- Oxycodone 5 mg every 6 hours as needed for pain, 5 days.\n- Acetaminophen 1000 mg every 8 hours.\n- Resume home ferrous sulfate, multivitamin, calcium carbonate/vitamin D3.\n\nFollow-up: trauma surgery clinic in 2 weeks for staple removal and wound check. Primary care in 1–2 weeks.\nActivity: no lifting over 10 lb for 6 weeks. No driving while taking oxycodone."
+      },
+      {
+       "type": "Result Note",
+       "title": "Hospital Records Filed",
+       "author": "PCP",
+       "date": "2026-04-15T07:50",
+       "body": "Discharge summary finally in, filed with the ED record and op note received in February. Patient still to come in for post-hospital visit — front desk to call her."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Scheduling Outreach",
+       "author": "front desk",
+       "date": "2026-04-15T11:30",
+       "body": "Called pt to book follow-up per PCP. Left voicemail with call-back number."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-12a",
+     "kind": "pharmacy",
+     "start": "2026-05-12T09:15",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Ferrous Sulfate Refill",
+       "author": "MA",
+       "date": "2026-05-12T09:15",
+       "body": "Pharmacy request for ferrous sulfate 325 mg #270. Pended to PCP."
+      },
+      {
+       "type": "Refill Request",
+       "title": "Ferrous Sulfate Refill — Signed",
+       "author": "PCP",
+       "date": "2026-05-12T13:20",
+       "body": "Approved #270 with 1 refill. Message to pt: please book the visit we talked about."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "portal_message",
+     "start": "2026-08-11T18:45",
+     "reason": "Scheduling",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Appointment",
+       "author": "patient",
+       "date": "2026-08-11T18:45",
+       "body": "Sorry I've been so slow to come in. The surgery clinic released me in the spring and I've been feeling mostly back to normal. I'd like to come in before school gets busy — is September 10 after 3:30 still open?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Appointment",
+       "author": "front desk",
+       "date": "2026-08-12T08:40",
+       "body": "You're booked Thursday September 10 at 3:45 with your doctor. See you then!"
+      }
+     ]
+    },
+    {
+     "id": "2026-09-10a",
+     "kind": "office_visit",
+     "start": "2026-09-10T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after January hospitalization",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,222 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002090",
+      "given": "Timothy", "family": "Cole", "birth_date": "1982-09-11",
+      "address_line": "212 Pleasant Street, Unit 4, Easthampton, MA 01027",
+      "phone": "+1-508-555-0181", "email": "timothy.cole@example.test",
+      "marital_status": "single",
+      "summary": "Man with HIV since 2010 and intermittent ART adherence, followed by an outside ID clinic, living in transitional housing and working construction on and off. Over 2020-2026 he has oral hairy leukoplakia, candidal esophagitis, AIDS-related Kaposi sarcoma, a second PJP pneumonia, primary CNS lymphoma presenting with a seizure, and cryptosporidiosis after the practice last saw him.",
+      "events": [
+        {
+          "id": "2019-07-09a",
+          "kind": "telephone",
+          "start": "2019-07-09T10:40",
+          "reason": "New patient request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Intake Call", "author": "front desk", "date": "2019-07-09T10:52",
+             "body": "Caller is looking for a primary care doctor in town. Has not had one for a while; gets his HIV care at an outside infectious disease clinic and wants a PCP for everything else. Insurance is MassHealth/Medicaid, card verified. Mailing address is a transitional housing program on Pleasant St. Cell is the best number, ok to leave a message.\n\nScheduled new patient visit 7/16 at 9:00. Release of information signed for the ID clinic and his last primary care office; requests faxed today. Asked him to bring all his medication bottles."}
+          ]
+        },
+        {
+          "id": "2019-07-16a",
+          "kind": "establish_care",
+          "start": "2019-07-16T09:00",
+          "end": "2019-07-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Human immunodeficiency virus disease", "action": "diagnosed", "onset": "2010-06-01", "note": "Diagnosed 2010; followed by outside ID clinic; adherence on and off over the years"},
+            {"label": "History of Pneumocystis jirovecii pneumonia", "icd10": "Z87.01", "action": "history", "onset": "2018-03-01", "note": "One episode in 2018, before joining"},
+            {"label": "History of oropharyngeal candidiasis", "icd10": "Z86.19", "action": "history", "onset": "2018-03-01"},
+            {"label": "Polysubstance use disorder (cocaine and methamphetamine)", "icd10": "F19.20", "action": "diagnosed", "onset": "2012-01-01", "note": "Intranasal and smoked use"},
+            {"label": "Housing instability, housed", "icd10": "Z59.819", "action": "diagnosed", "onset": "2019-01-01", "note": "Transitional housing program"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2017-01-01", "note": "Quit 2017, 10 pack-years"}
+          ],
+          "medications": [
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV; prescribed by ID"},
+            {"drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet", "action": "historical", "sig": "Take 1 double-strength tablet by mouth three times weekly (Mon/Wed/Fri)", "dose": {"value": 1, "unit": "tablet"}, "frequency": "THREE_TIMES_WEEKLY", "route": "Oral", "course": "chronic", "reason": "PJP prophylaxis; prescribed by ID"},
+            {"drug_text": "fluconazole 100 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily as needed for thrush", "dose": {"value": 100, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "Thrush; prescribed by ID"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth as needed for pain or fever", "dose": {"value": 500, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 75.0, "height_cm": 178.0, "labs": {"Low Density Lipoprotein": 95}},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-07-16T10:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-07-16T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2019-07-16T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Housing status", "value": "Transitional housing"},
+            {"item": "Occupation", "value": "Construction laborer, intermittent work"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per month"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-07-16T09:55"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, high MDM", "performed": "2019-07-16T09:00"},
+            {"procedure": "Immunization administration", "performed": "2019-07-16T09:55"}
+          ],
+          "orders": [{"id": "rec-prior-2019", "action": "placed", "order": "Records request, prior primary care and ID clinic", "category": "procedure", "reason": "establish care"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-07-16T10:40",
+             "body": "NEW PATIENT VISIT\n\n36M here to set up primary care. HIV since 2010, care at an outside ID clinic, which he says he goes to \"most of the time.\" Admits there have been stretches over the years when he stopped his pills, usually when things got chaotic with housing. Currently taking his once-daily ART pill and the TMP-SMX three days a week. Had PJP pneumonia last year (2018) when he was off meds, hospitalized, recovered. Has had thrush in the past and keeps fluconazole on hand for it. No current mouth symptoms.\n\nSubstance use: cocaine and meth, both snorted and smoked, on and off for years. Used a few weeks ago. Not in a program. Open to talking about it, not ready to commit to anything today.\n\nSocial: lives in a transitional housing program here in Easthampton, shared kitchen. Works construction when there's work. Quit cigarettes in 2017, about 10 pack-years. Drinks once or twice a month. Single.\n\nPMH: HIV; PJP 2018; oral thrush in past; polysubstance use.\nPSH: tonsillectomy at 12.\nMeds (all from ID): bictegravir/FTC/TAF 1 tab daily; TMP-SMX DS 1 tab M/W/F; fluconazole 100 mg daily prn thrush; acetaminophen 500 mg prn.\nAllergies: none known to medications.\nFH: dad has high blood pressure, mom type 2 diabetes. No blood cancers or immune problems in the family that he knows of.\n\nROS: no fevers, sweats, cough, weight change, diarrhea, rash. Mood ok. PHQ-2 1.\n\nExam: thin-normal build, comfortable. Oropharynx clear, no plaques or thrush. No cervical/axillary nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin without lesions. No edema. Alert, appropriate.\n\nA/P\n1. HIV - ID manages ART and prophylaxis; will get their notes. Adherence reinforced; he knows what happens when he stops.\n2. Polysubstance use (cocaine/methamphetamine) - discussed harm reduction, never use alone, offered referral to outpatient treatment; he'll think about it.\n3. Housing - transitional program; gave info for the housing navigator at the community action agency.\n4. Hx PJP, hx thrush - on prophylaxis per ID.\n5. Health maintenance - Tdap given today. CMP, CBC, lipids drawn. Flu shot in the fall.\n\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2019-07-18a",
+          "kind": "portal_message",
+          "start": "2019-07-18T16:10",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your recent lab work", "author": "PCP", "date": "2019-07-18T16:10",
+             "body": "Hi Timothy, your blood work from Tuesday came back fine: kidney and liver tests normal, blood counts normal, cholesterol in a good range. Nothing to change. See you in the fall."}
+          ]
+        },
+        {
+          "id": "2019-09-03a",
+          "kind": "outside_records",
+          "start": "2019-09-03T11:20",
+          "reason": "Records received",
+          "orders": [{"id": "rec-prior-2019", "action": "done", "date": "2019-09-03T11:20"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Records Received - Prior Primary Care Office", "author": "MA", "date": "2019-09-03T11:20",
+             "body": "Two pages faxed back from his former primary care office in response to our July request: an old medication list (same ART, TMP-SMX and fluconazole he takes now) and an immunization printout without dates for the last several years. No visit notes; the office said he had not been seen there in a few years. Nothing yet from the ID clinic; second request faxed. Scanned and routed to PCP."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T14:25"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T14:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Influenza Vaccine", "author": "RN", "date": "2019-10-08T14:40",
+             "body": "Walk-in for flu vaccine. Screening questions negative, no prior reactions. Quadrivalent flu 0.5 mL IM left deltoid, VIS reviewed. Tolerated, no reaction during 15 minute observation. Reminded of his follow-up in November."}
+          ]
+        },
+        {
+          "id": "2019-11-12a",
+          "kind": "office_visit",
+          "start": "2019-11-12T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "No-Show", "author": "front desk", "date": "2019-11-12T11:05",
+             "body": "Patient did not arrive for 10:30 follow-up. Called cell, mailbox full. Text sent with our number to rebook."}
+          ]
+        },
+        {
+          "id": "2019-12-03a",
+          "kind": "office_visit",
+          "start": "2019-12-03T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, substance use and housing",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "social": [{"item": "Housing status", "value": "Transitional housing"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-12-03T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Follow-up", "author": "PCP", "date": "2019-12-03T16:25",
+             "body": "Missed November, came in today after our text. Says work dried up for the winter and he's been around the house more, which is not always good for him. Has used cocaine a couple of times since we met, meth once. No overdoses, nobody hurt. Still on the waitlist for a permanent unit through the housing program.\n\nTaking ART daily \"pretty much\"; last ID visit in the summer, next one in the new year. Taking the TMP-SMX. No mouth sores, fevers, cough or weight change.\n\nPHQ-9 4. Sleep a bit off.\n\nExam: NAD. Mouth clear. Lungs clear. Heart regular. No edema. Skin clear.\n\nA/P\n1. Polysubstance use - still intermittent use. Motivational conversation; he says he'd like to be done with it \"eventually.\" Gave walk-in hours for the outpatient recovery program; naloxone discussed, he already carries some from the housing program.\n2. HIV - per ID. Asked him to sign another release so their notes reach us.\n3. Housing - waitlisted, no change.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "office_visit",
+          "start": "2020-03-24T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment Cancelled", "author": "front desk", "date": "2020-03-23T13:15",
+             "body": "Routine in-person visits on hold for the next several weeks because of COVID. Spoke with patient, cancelled tomorrow's visit. He has no urgent issues. Will offer a video or phone visit when the schedule opens."}
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "telephone",
+          "start": "2020-04-14T11:05",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request - TMP-SMX", "author": "RN", "date": "2020-04-14T11:20",
+             "body": "Pharmacy faxed refill request for TMP-SMX DS. Prescriber on file is his ID clinic. Called the ID clinic nurse line, they will send it today. Let patient know; he has 2 tablets left, enough until pickup."}
+          ]
+        },
+        {
+          "id": "2020-06-23a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-23T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, substance use",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2020-06-23T13:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-06-23T13:35",
+             "body": "Video visit, he is in his room at the housing program; consent for video visit obtained.\n\nHe says the lockdown months were rough. Used cocaine and some meth earlier this month, a few days in a row, and it scared him how fast it took over. Wants to stop for real this time. No chest pain, no seizures, no injection use.\n\nTaking ART and TMP-SMX. Had a phone visit with ID last month.\n\nMood: down but not hopeless, no thoughts of harming himself. Eating ok.\n\nA/P\n1. Polysubstance use (cocaine/methamphetamine) - motivated today. Warm handoff: messaged the outpatient recovery program, they will call him this week for intake (telehealth groups running). Carries naloxone. Talked through triggers (no work, isolation) and who he can call.\n2. HIV - continue per ID.\nVideo check-in in 3 months, sooner if he wants."}
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "telehealth_visit",
+          "start": "2020-09-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-09-22T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-09-22T10:25",
+             "body": "Video, at home.\n\nNo cocaine or meth since June. Went to the recovery program's online groups through the summer, now goes once a week. Picked up some framing work in August. Housing unchanged.\n\nTaking ART daily, TMP-SMX MWF. Has an ID visit in December. No thrush lately.\n\nA/P\n1. Polysubstance use - about 3 months without use. Strongly encouraged; keep groups going.\n2. HIV - ID in December.\n3. Flu shot next month at a nurse visit.\nRTC early next year in person if allowed."}
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "nurse_visit",
+          "start": "2020-10-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-20T08:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-20T08:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Influenza Vaccine", "author": "RN", "date": "2020-10-20T08:55",
+             "body": "Masked, screened at door, afebrile. Flu vaccine 0.5 mL IM right deltoid. VIS given. Tolerated without issue."}
+          ]
+        },
+        {
+          "id": "2020-12-17a",
+          "kind": "specialist_visit",
+          "start": "2020-12-17T10:00",
+          "service": "Infectious Diseases",
+          "reason": "HIV routine follow-up",
+          "conditions": [
+            {"label": "HIV-related opportunistic skin infection", "icd10": "L08.9", "action": "diagnosed", "onset": "2020-10-01", "note": "Recent infection reported by patient, healed by the ID visit; per ID problem list"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2020-12-17T10:40", "resulted": "2020-12-18T15:00", "results": [
+              {"test": "CD4 Count", "value": 220},
+              {"test": "HIV-1 RNA Viral Load", "text": "Undetectable"},
+              {"test": "Varicella zoster virus IgG", "loinc": "15410-4", "text": "Negative"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Diseases Clinic Letter", "author": "infectious disease", "date": "2020-12-28T09:30",
+             "body": "OUTSIDE INFECTIOUS DISEASES CLINIC - VISIT SUMMARY TO PRIMARY CARE\nDate of visit: 12/17/2020\n\nScheduled HIV follow-up. Feels well today, nothing new. Reports he is taking his ART every day. Most recent CD4 before today was 350 in June. Mentions a skin infection earlier this fall that has cleared; we have added HIV-related opportunistic skin infection to his problem list. He asked whether he is due for any vaccines.\n\nCurrent: bictegravir/emtricitabine/tenofovir alafenamide 1 tab daily; TMP-SMX DS three times weekly; fluconazole 100 mg daily prn thrush; acetaminophen prn. NKDA.\nSocial: one sexual partner, uses condoms every time. Former smoker. No drug use for about 6 months.\n\nExam: well appearing. Unremarkable exam today, including skin and oropharynx.\n\nResults today: CD4 220 cells/mm3. HIV-1 RNA undetectable. VZV IgG negative.\n\nImpression: HIV, virally suppressed on current regimen; CD4 lower than in June. Not immune to varicella.\n\nPlan: continue current regimen and prophylaxis. He is seronegative for VZV with a CD4 above 200; we would support varicella vaccination (2 doses, 3 months apart) through his primary care office if convenient for him. Return in 6 months with labs."}
+          ]
+        },
+        {
+          "id": "2020-12-29a",
+          "kind": "telephone",
+          "start": "2020-12-29T14:10",
+          "reason": "Vaccine planning",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "ID Letter Follow-up - Varicella Vaccine", "author": "RN", "date": "2020-12-29T14:25",
+             "body": "PCP reviewed ID letter (CD4 220, undetectable viral load, VZV IgG negative) and agrees with varicella vaccine x2. Called patient, explained it is a live vaccine and ok at his CD4 per ID. He wants it. Nurse visit booked 1/12. Vaccine ordered from distributor."}
+          ]
+        }
+      ]
+    }
+  ]
+}

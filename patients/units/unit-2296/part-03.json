@@ -1,0 +1,391 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002296",
+   "events": [
+    {
+     "id": "2024-02-06a",
+     "kind": "office_visit",
+     "start": "2024-02-06T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Leg swelling, abdominal fullness",
+     "state": {
+      "weight_kg": 78.0
+     },
+     "vitals": {
+      "spo2": 93
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-02-06T15:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-02-06T15:00",
+       "results": [
+        {
+         "test": "Hematocrit"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-02-06T14:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-rhf",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "worsening right heart failure on furosemide"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-02-06T15:10",
+       "body": "S: Since around November his legs swell higher, his belt is tighter and he feels full after half a plate. Less able to get around - stops twice to the mailbox now. No chest pain. Sleeps in recliner as before, no new orthopnea. Taking furosemide every morning. On O2 2 L.\n\nO: SpO2 93% on 2 L. Weight up ~4 kg from last summer. JVP elevated. Lungs diminished, no crackles. Abdomen mildly full, liver edge palpable. Pitting edema to mid-shin bilaterally.\n\nA/P\nWorsening right-sided heart failure/cor pulmonale. Would like cardiology input (echo, ?diuretic plan). Referral placed; they can see him 3/1. BMP and CBC today. Low salt reviewed, daily weights. Call if short of breath at rest."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-08a",
+     "kind": "telephone",
+     "start": "2024-02-08T10:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Lab results",
+       "author": "RN",
+       "date": "2024-02-08T10:20",
+       "body": "Per PCP, called pt with Tuesday's labs: kidney function, potassium and blood count stable. Cardiology appt confirmed for 3/1 at 9:00. Pt asked whether to take an extra water pill when swollen - PCP says no, keep 40 mg daily until cardiology weighs in."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-01a",
+     "kind": "specialist_visit",
+     "start": "2024-03-01T09:00",
+     "service": "Cardiology",
+     "reason": "Right heart failure",
+     "conditions": [
+      {
+       "label": "Tricuspid valve regurgitation",
+       "icd10": "I36.1",
+       "action": "diagnosed",
+       "onset": "2024-03-01"
+      }
+     ],
+     "vitals": {
+      "temp_c": 37.2,
+      "hr": 92,
+      "bp": [
+       128,
+       76
+      ],
+      "rr": 20
+     },
+     "measure": [
+      "spo2",
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2024-03-01T09:20",
+       "text": "Sinus rhythm, rate 92. Right axis deviation. Right bundle branch block.",
+       "conclusion": "Right axis deviation; right bundle branch block."
+      },
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2024-03-01T10:15",
+       "text": "Right ventricle hypertrophied and dilated. Tricuspid regurgitation present. Left ventricle normal in size with normal systolic function. Mitral and aortic valves without significant disease. No pericardial effusion.",
+       "conclusion": "Right ventricular hypertrophy and dilation with tricuspid regurgitation. Normal left ventricular function."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-rhf",
+       "action": "done",
+       "date": "2024-03-01T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology consultation",
+       "author": "cardiology",
+       "date": "2024-03-04T14:00",
+       "body": "OUTSIDE CARDIOLOGY GROUP - CONSULTATION\nDate of service: 3/1/2024\n\nReferred for worsening right heart failure. Over three months: more leg swelling, abdominal fullness and shrinking exercise tolerance. He denies chest pain and orthopnea.\n\nMedications (per patient): tiotropium, albuterol. Allergies: NKDA.\nSocial: 45 pack-years, still smoking.\n\nExam: temp 37.2 C, pulse 92, BP 128/76, RR 20. JVD to 8 cm above the sternal angle. Pitting edema to mid-shins bilaterally. Hepatomegaly. Loud P2. Systolic murmur.\n\nECG: right axis deviation, right bundle branch block.\nTTE today: hypertrophied, dilated right ventricle with tricuspid regurgitation; normal LV function.\n\nImpression: cor pulmonale with tricuspid regurgitation secondary to RV dilation; pulmonary hypertension from COPD.\nRecommendations: no change in medications from our side. Continue oxygen. Follow with pulmonary. Return as needed."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-05a",
+     "kind": "portal_message",
+     "start": "2024-03-05T08:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Cardiology visit",
+       "author": "PCP",
+       "date": "2024-03-05T08:30",
+       "body": "Got the cardiology letter. The ultrasound showed the right side of your heart is thickened and enlarged and one valve (the tricuspid) is leaking, which goes with the lung-related heart strain we've been treating. They did not change your medicines. Keep the water pill, oxygen and inhalers as you are, and let me know if the swelling climbs."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-21a",
+     "kind": "office_visit",
+     "start": "2024-05-21T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "vitals": {
+      "spo2": 92
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-05-21T11:10",
+       "results": [
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-05-21T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-05-21T11:15",
+       "body": "Follow-up after cardiology. They found tricuspid regurgitation from the dilated RV; no med changes. Swelling about the same, belly a little full. Breathing at his baseline. Using oxygen. Smoking 1 ppd, 45 pack-years now.\n\nExam: SpO2 92% on 2 L. JVP up. Holosystolic murmur LLSB. Edema 1+ to shins.\n\nPlan: continue furosemide 40, inhalers, oxygen. BMP today. Pulmonary follow-up as scheduled. Smoking counseling - declines."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-29a",
+     "kind": "specialist_visit",
+     "start": "2024-05-29T09:00",
+     "service": "Otolaryngology",
+     "reason": "Laryngeal cancer surveillance with CT",
+     "reports": [
+      {
+       "study": "CT neck with contrast",
+       "loinc": "24836-9",
+       "performed": "2024-05-22T13:00",
+       "text": "Stable postoperative changes of the left larynx. No mass or adenopathy.",
+       "conclusion": "No evidence of recurrence."
+      },
+      {
+       "study": "CT chest",
+       "performed": "2024-05-22T13:00",
+       "text": "Hyperinflation. Enlarged main pulmonary artery. No pulmonary nodule or mass. No lymphadenopathy. No effusion.",
+       "conclusion": "No evidence of metastatic disease."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "ENT surveillance",
+       "author": "otolaryngology",
+       "date": "2024-05-30T10:00",
+       "body": "OUTSIDE OTOLARYNGOLOGY\nThree years after left partial laryngectomy. Scope clean, neck negative. Third and final surveillance CT neck/chest: no recurrence. NED.\nPlan: yearly clinic exam with laryngoscopy from here."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-25a",
+     "kind": "pharmacy",
+     "start": "2024-06-25T14:00",
+     "documents": [
+      {
+       "type": "Medication Refill",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2024-06-25T14:00",
+       "body": "Albuterol MDI and furosemide 40 mg refills, 90 days. Approved per protocol."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-13a",
+     "kind": "specialist_visit",
+     "start": "2024-08-13T13:20",
+     "service": "Dermatology",
+     "reason": "Annual skin check",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology skin check",
+       "author": "dermatology",
+       "date": "2024-08-14T09:10",
+       "body": "OUTSIDE DERMATOLOGY\nYearly skin exam. Came with portable oxygen. Lip scar fine. Sun damage, no suspicious lesions. Return 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-10a",
+     "kind": "specialist_visit",
+     "start": "2024-09-10T13:10",
+     "service": "Pulmonary & Critical Care",
+     "reason": "COPD and cor pulmonale follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonary follow-up",
+       "author": "pulmonology",
+       "date": "2024-09-12T09:15",
+       "body": "OUTSIDE PULMONARY & CRITICAL CARE - FOLLOW-UP\nSeen by cardiology in March: RV hypertrophy and dilation with tricuspid regurgitation on echo. Breathing at his baseline, edema to the shins as before.\nPlan: no medication changes. Right heart catheterization to be arranged before the next visit to measure pulmonary pressures. Return in about 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "annual_physical",
+     "start": "2024-10-22T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 6
+      }
+     ],
+     "vitals": {
+      "spo2": 92
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-10-22T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-10-22T09:40",
+       "results": [
+        {
+         "test": "Hematocrit"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-10-22T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-10-22T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2024-10-22T09:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-22T09:52"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2024-10-22T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-22T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2024-10-22T09:55",
+       "body": "MEDICARE AWV\n\nInterval: cardiology 3/2024 - tricuspid regurgitation with dilated RV, no changes. ENT finished CT surveillance, now yearly scopes. Derm clean.\nFunction: independent but slow; groceries delivered now. No falls. Uses portable O2 out of the house.\nPHQ-2 0. AUDIT-C 6. Tobacco 1 ppd; counseled; declines.\n\nExam: SpO2 92% on 2 L. Lungs diminished. Holosystolic murmur LLSB. 1+ edema.\n\nVaccines: high-dose flu, updated COVID today. Pneumococcal: PPSV23 2018, PCV13 2020 - complete.\nColon: colonoscopy 2016; repeat discussion next year given lungs.\nLabs: CMP, CBC, lipids, A1c."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-24a",
+     "kind": "portal_message",
+     "start": "2024-10-24T11:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2024-10-24T11:50",
+       "body": "Labs from Tuesday: kidneys and potassium normal, blood count stable, A1c and cholesterol fine. See you in the spring, sooner if the swelling worsens."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

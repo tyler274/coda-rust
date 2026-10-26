@@ -1,0 +1,804 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002296",
+   "given": "Richard",
+   "family": "Bianchi",
+   "birth_date": "1953-10-08",
+   "address_line": "212 Shaker Farm Road",
+   "phone": "+1-774-555-0140",
+   "email": "richard.bianchi@example.test",
+   "marital_status": "divorced",
+   "summary": "Retired Westfield farmer and heavy smoker with severe COPD who joined in 2020; lower-lip and laryngeal squamous cell carcinomas treated surgically, then cor pulmonale with pulmonary hypertension, secondary polycythemia on home oxygen and tricuspid regurgitation. Last seen 2025-09-08 when sent for admission; a later admission for a complicated parapneumonic effusion reached the chart as records.",
+   "events": [
+    {
+     "id": "2020-08-11a",
+     "kind": "telephone",
+     "start": "2020-08-11T10:05",
+     "reason": "New patient intake call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient intake",
+       "author": "front desk",
+       "date": "2020-08-11T10:05",
+       "body": "Caller: patient. His primary care doctor in town retired this spring and he has been without one since. Wants to join. Medicare plus a supplement; card info taken, membership paperwork mailed to the farm address since he says he does not do much email.\n\nSays he has \"bad lungs\" and is on three inhalers. Records release signed over the phone consent form to be completed at the visit; request faxed to the prior office today.\n\nNew patient visit booked Tue 8/18, 8:40. Bring inhalers and pill bottles."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-18a",
+     "kind": "establish_care",
+     "start": "2020-08-18T08:40",
+     "end": "2020-08-18T09:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care; COPD",
+     "conditions": [
+      {
+       "label": "Chronic obstructive pulmonary disease",
+       "action": "diagnosed",
+       "onset": "2012-01-01",
+       "note": "Severe, GOLD group D; several hospitalizations for exacerbations before joining"
+      },
+      {
+       "label": "Nicotine dependence, cigarettes",
+       "action": "diagnosed",
+       "onset": "1980-01-01",
+       "note": "1 ppd since about 1980"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+       "sig": "Inhale contents of 1 capsule once daily",
+       "dose": {
+        "value": 18,
+        "unit": "ug"
+       },
+       "frequency": "DAILY",
+       "route": "Inhalation",
+       "course": "chronic",
+       "action": "historical"
+      },
+      {
+       "drug": "60 ACTUAT fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler",
+       "sig": "Inhale 1 puff twice daily, rinse mouth after",
+       "dose": {
+        "value": 1,
+        "unit": "puff"
+       },
+       "frequency": "BID",
+       "route": "Inhalation",
+       "course": "chronic",
+       "action": "historical"
+      },
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "sig": "Inhale 1-2 puffs every 4-6 hours as needed for shortness of breath",
+       "dose": {
+        "value": 2,
+        "unit": "puff"
+       },
+       "frequency": "Q4-6H PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "action": "historical"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired farmer"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "3-4 drinks most evenings"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 6
+      }
+     ],
+     "state": {
+      "weight_kg": 76.2,
+      "height_cm": 178.0,
+      "spo2": 94,
+      "labs": {
+       "Hemoglobin A1c": 5.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-08-18T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-08-18T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-08-18T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-08-18T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2020-08-18T08:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-lip",
+       "action": "placed",
+       "order": "Dermatology referral",
+       "category": "referral",
+       "to": "Dermatology",
+       "reason": "non-healing lower lip lesion"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-08-18T09:45",
+       "body": "NEW PATIENT VISIT\n\n66 y/o retired farmer establishing care after his longtime PCP retired.\n\nCOPD: told years ago it was \"severe.\" Several hospital stays for flare-ups over the last decade, none in the past year by his account. Has seen a pulmonary group on and off. Uses tiotropium every morning and the fluticasone/salmeterol disk twice a day \"most days\"; albuterol a few times a day, more in humid weather. Breathless walking up to the barn or carrying feed, fine on the flat at his own pace. Chronic morning cough with some white sputum. No oxygen at home.\n\nTobacco: 1 pack a day since his mid-20s, so roughly 40 pack-years. Has quit \"a dozen times\" for a few weeks each. Not interested in a quit date today.\nAlcohol: 3-4 drinks most evenings, beer or rye. AUDIT-C 6.\n\nAlso mentions a sore on his lower lip that \"won't heal,\" there for a few months, gets a crust, picks at it. Spent his life outdoors without a hat most days.\n\nPMH: COPD. PSH: none.\nMeds: tiotropium 18 mcg inh daily; fluticasone/salmeterol 250/50 1 inh BID; albuterol MDI PRN.\nAllergies: no known drug allergies.\nFH: father had COPD and lung cancer; mother had heart disease.\nSH: divorced, lives alone on the home farm, leased the fields out when he retired. Drives.\n\nEXAM: thin man, mildly short of breath conversing after the walk from the lot. Prolonged expiration, scattered faint wheezes, distant breath sounds. Heart regular, no murmur. No JVD. No edema. Lower lip vermilion: about 1 cm crusted firm lesion, slightly raised. No palpable neck nodes.\n\nA/P\n1. COPD, severe, GOLD D by history. Continue current triple therapy. Inhaler technique reviewed; he was skipping the evening dose of the disk. Requesting old records and PFTs from the prior office.\n2. Tobacco: strongly advised quitting. Discussed patch/gum, varenicline. Declines for now; will revisit.\n3. Lower lip lesion, persistent: needs biopsy. Dermatology referral placed.\n4. Alcohol above recommended limits: brief counseling given.\n5. Health maintenance: labs today (CMP, CBC, lipids, A1c, hep C, HIV). Prior records to confirm colonoscopy and vaccines. Flu shot when the high-dose arrives.\n\nPHQ-2: 0.\nRTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-08-21a",
+     "kind": "portal_message",
+     "start": "2020-08-21T16:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2020-08-21T16:20",
+       "body": "Mr. Bianchi, your bloodwork from Tuesday came back fine: kidney and liver tests normal, blood counts normal, cholesterol in a reasonable range, sugar (A1c) normal. Hepatitis C and HIV screens negative. Nothing to change. The dermatology office should be calling you to schedule the lip appointment."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-02a",
+     "kind": "outside_records",
+     "start": "2020-09-02T13:10",
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal polysaccharide PPSV23",
+       "date": "2018-10-16T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior PCP records",
+       "author": "MA",
+       "date": "2020-09-02T13:10",
+       "body": "Records received by fax from the patient's former primary care office (48 pages). Abstracted:\n- COPD on triple inhaled therapy for several years; spirometry in 2017 showed severe obstruction.\n- Screening colonoscopy 2016: no polyps, repeat in 10 years.\n- PPSV23 given 10/2018. Flu shots most years.\n- Ongoing smoking counseling documented at most visits.\nOriginal pages scanned under Media. Forwarded to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-29a",
+     "kind": "nurse_visit",
+     "start": "2020-09-29T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and pneumococcal vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-09-29T10:35"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV13",
+       "date": "2020-09-29T10:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-09-29T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2020-09-29T10:40",
+       "body": "High-dose flu given L deltoid. PCV13 given R deltoid (PPSV23 was 2018 per old records). VIS sheets given. No reaction during the wait. He asked again about the dermatology date; called derm while he was here, he is on for 11/9."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-09a",
+     "kind": "specialist_visit",
+     "start": "2020-11-09T13:20",
+     "service": "Dermatology",
+     "reason": "Lower lip lesion",
+     "conditions": [
+      {
+       "label": "Squamous cell carcinoma of skin of lip",
+       "icd10": "C44.02",
+       "action": "diagnosed",
+       "onset": "2020-05-01",
+       "note": "Lower lip vermilion, 1 cm"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2020-11-09T13:50",
+       "issued": "2020-11-11T15:00",
+       "text": "Specimen: lower lip vermilion, shave biopsy. Microscopic: invasive cords of atypical squamous epithelium with keratin pearl formation extending into the dermis.",
+       "conclusion": "Invasive squamous cell carcinoma, keratinizing type, lower lip. Peripheral and deep margins involved by tumor."
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-lip",
+       "action": "done",
+       "date": "2020-11-09T13:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology consultation",
+       "author": "dermatology",
+       "date": "2020-11-12T09:00",
+       "body": "OUTSIDE DERMATOLOGY GROUP - CONSULTATION LETTER\nDate of visit: 11/09/2020\nRe: Richard Bianchi, DOB 10/08/1953\nReferred by: primary care\n\nThank you for this referral. Mr. Bianchi reports a sore on the lower lip that has been there several months and has slowly gotten bigger. He denies weight loss, fevers or night sweats. He farmed his whole working life, mostly without sun protection, and smokes about a pack a day, which he has done for 40 years.\n\nExam: on the vermilion border of the lower lip there is a firm, ulcerated 1 cm nodule with a small area of crust. Cervical and submandibular chains without palpable adenopathy. No other suspicious lesions on the face, scalp, neck or arms on today's check; scattered solar lentigines.\n\nProcedure: shave biopsy of the lip lesion under local anesthesia.\n\nPathology (finalized 11/11): invasive keratinizing squamous cell carcinoma with keratin pearls.\n\nAssessment: cutaneous squamous cell carcinoma, lower lip.\nPlan: surgical excision with our dermatologic surgery team, scheduled 11/30. Sun protection and lip balm with SPF reviewed. We will follow him for skin checks.\n\nMedications reviewed: tiotropium, fluticasone/salmeterol, albuterol. NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-30a",
+     "kind": "procedure_visit",
+     "start": "2020-11-30T08:00",
+     "end": "2020-11-30T10:30",
+     "service": "Dermatologic Surgery",
+     "reason": "Excision of lip squamous cell carcinoma",
+     "conditions": [
+      {
+       "label": "Squamous cell carcinoma of skin of lip",
+       "icd10": "C44.02",
+       "action": "resolved"
+      },
+      {
+       "label": "History of other malignant neoplasm of skin",
+       "action": "diagnosed",
+       "onset": "2020-11-30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2020-11-30T09:10",
+       "issued": "2020-12-02T14:00",
+       "text": "Specimen: lower lip, wedge excision, oriented. Residual invasive keratinizing squamous cell carcinoma at the prior biopsy site. Margins: all margins free of tumor.",
+       "conclusion": "Squamous cell carcinoma, lower lip, completely excised with clear margins."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Lip excision",
+       "author": "dermatology",
+       "date": "2020-12-03T11:00",
+       "body": "OUTSIDE DERMATOLOGIC SURGERY - PROCEDURE REPORT (received by fax)\nDate of procedure: 11/30/2020\nProcedure: excision of squamous cell carcinoma, lower lip vermilion, with layered closure.\nAnesthesia: local.\nFindings: healed biopsy site with residual firm induration, excised with margin and closed primarily.\nPathology 12/02: residual SCC, margins clear.\nComplications: none. EBL minimal.\nAllergies: NKDA.\nPlan: suture removal 1 week; skin check in 6 months then yearly. Patient instructed on wound care and sun protection."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-08a",
+     "kind": "portal_message",
+     "start": "2020-12-08T19:44",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "lip and covid shot",
+       "author": "patient",
+       "date": "2020-12-08T19:44",
+       "body": "Stitches came out friday, lip is healing ok just numb in one spot. The skin doc says they got it all. Question - when can I get the covid vaccine with my lungs? My neighbor says the pharmacies are taking names."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: lip and covid shot",
+       "author": "PCP",
+       "date": "2020-12-09T08:12",
+       "body": "Glad to hear it, and the pathology report reached us: clean margins. Numbness at the scar often improves over months.\n\nYou will be in an early group for the vaccine because of your age and lungs. The state is rolling it out by phases; I would sign up with the pharmacy as your neighbor said, and we will message patients when we know more."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-26a",
+     "kind": "pharmacy",
+     "start": "2021-01-26T11:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior authorization",
+       "author": "MA",
+       "date": "2021-01-26T11:15",
+       "body": "Pharmacy faxed: supplement plan switched preferred product for fluticasone/salmeterol 250/50 for 2021, brand rejected. Generic equivalent is covered without PA. New Rx sent for the generic disk, same directions. Pt notified by phone, he said \"as long as it's the same purple thing.\" Explained it may look different."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-16a",
+     "kind": "outside_records",
+     "start": "2021-03-16T09:30",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-17T14:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-10T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "COVID-19 vaccine record",
+       "author": "MA",
+       "date": "2021-03-16T09:30",
+       "body": "State immunization registry query: Pfizer COVID-19 vaccine dose 1 on 2/17/2021 and dose 2 on 3/10/2021, both given at a retail pharmacy clinic. Entered into immunization history."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-06a",
+     "kind": "office_visit",
+     "start": "2021-04-06T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hoarseness",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-04-06T14:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ent-hoarse",
+       "action": "placed",
+       "order": "Otolaryngology referral",
+       "category": "referral",
+       "to": "Otolaryngology",
+       "reason": "progressive hoarseness and dysphagia in a smoker, rule out laryngeal malignancy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-04-06T14:40",
+       "body": "CC: voice changes\n\nVoice has been getting rougher since late January. Initially blamed it on a cold, but it never came back. Now hoarse all day. Sometimes feels food (bread, meat) catch on the way down and a sense of a lump in his throat; liquids fine. Mild throat ache. No coughing up blood, no fevers, no night sweats, weight stable by his account. Still smoking 1 ppd; drinks most evenings. Breathing at baseline.\n\nLip healed, follows with dermatology.\n\nMeds: tiotropium daily, fluticasone/salmeterol BID, albuterol PRN.\nAllergies: no known drug allergies.\n\nExam: voice hoarse and husky. Oropharynx without visible lesion, no thrush. Neck supple, no palpable mass or node, thyroid not enlarged. Lungs with diffuse decreased breath sounds and prolonged expiration, no crackles. Heart regular. Lip scar well healed.\n\nA/P\nHoarseness >2 months with intermittent solid-food dysphagia in a heavy smoker and drinker. Needs direct visualization of the larynx soon. Urgent ENT referral placed; called the ENT office and they will see him 4/28. Told him to call if he has trouble swallowing liquids, breathing noise, or coughs up blood.\nSmoking: talked again about stopping, especially now. He will \"think about it.\""
+      }
+     ]
+    },
+    {
+     "id": "2021-04-28a",
+     "kind": "specialist_visit",
+     "start": "2021-04-28T09:30",
+     "service": "Otolaryngology",
+     "reason": "Hoarseness and dysphagia",
+     "conditions": [
+      {
+       "label": "Squamous cell carcinoma of larynx",
+       "icd10": "C32.0",
+       "action": "diagnosed",
+       "onset": "2021-01-25",
+       "note": "Left true vocal cord"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2021-04-28T10:05",
+       "issued": "2021-05-03T12:00",
+       "text": "Specimen: left true vocal cord, biopsy. Fragments of squamous mucosa with invasive squamous cell carcinoma.",
+       "conclusion": "Invasive squamous cell carcinoma, left true vocal cord."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ent-hoarse",
+       "action": "done",
+       "date": "2021-04-28T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Otolaryngology consultation",
+       "author": "otolaryngology",
+       "date": "2021-05-04T10:00",
+       "body": "OUTSIDE OTOLARYNGOLOGY - HEAD AND NECK SURGERY\nNew patient consultation, seen 4/28/2021. Letter dictated after pathology returned.\n\nHPI: 67-year-old man referred for three months of worsening hoarseness and intermittent difficulty swallowing. He notes a mild discomfort in the throat and the feeling of a lump when he swallows solids. About five months ago he had a squamous cell carcinoma of the lower lip excised by dermatology. No fevers, sweats or unintended weight loss.\n\nHabits: smokes 1 pack per day; 3 to 4 alcoholic drinks most evenings.\n\nMeds: tiotropium, fluticasone/salmeterol, albuterol. Allergies: none known.\n\nExam: husky voice. Mild tenderness over the anterior neck, nothing visible. No palpable cervical masses. Laryngoscopy: irregular exophytic lesion on the left true vocal cord; that cord moves less than the right. Biopsy taken in clinic under topical anesthesia; tolerated well.\n\nPathology (5/3): invasive squamous cell carcinoma.\n\nImpression: squamous cell carcinoma of the left true vocal cord.\nPlan: CT neck and chest with contrast for staging, then discussion at our tumor board and surgical planning. Smoking cessation is strongly advised and he was given the state quitline number."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-11a",
+     "kind": "imaging",
+     "start": "2021-05-11T11:00",
+     "service": "Radiology",
+     "reason": "Staging, laryngeal carcinoma",
+     "reports": [
+      {
+       "study": "CT neck with contrast",
+       "loinc": "24836-9",
+       "performed": "2021-05-11T11:10",
+       "text": "Technique: axial images through the neck after IV contrast. Soft tissue thickening and enhancing mass along the left true vocal cord. No cervical lymphadenopathy by size or morphology. Thyroid, salivary glands and airway otherwise unremarkable.",
+       "conclusion": "Left true vocal cord mass. No cervical nodal disease."
+      },
+      {
+       "study": "CT chest",
+       "performed": "2021-05-11T11:10",
+       "text": "Technique: contrast-enhanced axial images of the chest. Lungs hyperinflated. No pulmonary nodule or mass. No mediastinal or hilar lymphadenopathy. No pleural effusion. Heart size normal.",
+       "conclusion": "Hyperinflated lungs. No evidence of intrathoracic metastatic disease."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-13a",
+     "kind": "telephone",
+     "start": "2021-05-13T17:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call with patient re: diagnosis",
+       "author": "PCP",
+       "date": "2021-05-13T17:05",
+       "body": "Called him after the ENT letter and CT reports came in. He already knew the biopsy result. CT shows no spread to the neck nodes or lungs, which ENT told him is good news. Surgery being planned for early June.\n\nHe sounded flat. Asked how he is doing: \"Can't say I'm surprised.\" Not drinking more than usual, sleeping ok. Again offered help with quitting: nicotine patch or varenicline. Declined, says he has cut to \"about a pack.\" Told him smoking after treatment raises the chance of another cancer and he should call any time. He will."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-02a",
+     "kind": "specialist_visit",
+     "start": "2021-06-02T10:40",
+     "service": "Dermatology",
+     "reason": "Skin check after lip SCC",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology follow-up",
+       "author": "dermatology",
+       "date": "2021-06-04T09:00",
+       "body": "OUTSIDE DERMATOLOGY - FOLLOW-UP\n6-month skin check after excision of lower lip SCC. Scar on the lower lip well healed, no nodularity. Full skin exam: solar lentigines and sun damage over the forearms and face; no suspicious lesions today. No cervical adenopathy.\nPlan: yearly skin exams, broad-brim hat, SPF lip balm. Aware of upcoming laryngeal surgery."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-09a",
+     "kind": "hospital_admission",
+     "start": "2021-06-09T07:00",
+     "end": "2021-06-11T11:30",
+     "service": "Otolaryngology",
+     "reason": "Partial laryngectomy for left vocal cord carcinoma",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2021-06-09T09:30",
+       "issued": "2021-06-14T13:00",
+       "text": "Specimen: left partial laryngectomy, oriented, with separately submitted margin biopsies. Invasive squamous cell carcinoma involving the left true vocal cord. All surgical margins and margin biopsies negative for carcinoma.",
+       "conclusion": "Invasive squamous cell carcinoma, left true vocal cord; margins negative."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge summary - partial laryngectomy",
+       "author": "otolaryngology",
+       "date": "2021-06-14T15:00",
+       "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted 6/9/2021, discharged 6/11/2021. Service: Otolaryngology - Head and Neck Surgery.\n\nDiagnosis: squamous cell carcinoma, left true vocal cord.\nProcedure 6/9: direct laryngoscopy with frozen-section biopsies and partial laryngectomy. Frozen sections clear.\n\nCourse: extubated in the OR. Overnight monitoring for airway, uneventful. Pain controlled with oral medication. Swallow evaluation POD1: safe for soft solids and thin liquids with small sips. Continued home inhalers; one albuterol neb for wheeze the first night. Ambulating, voiding.\n\nFinal pathology: invasive SCC, all margins negative. Tumor board recommendation: no adjuvant radiation; surveillance.\n\nDischarge meds: home inhalers unchanged; acetaminophen as needed.\nAllergies: NKDA.\nFollow-up: ENT clinic 4 weeks. PCP 1-2 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-22a",
+     "kind": "office_visit",
+     "start": "2021-06-22T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-operative follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-06-22T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-06-22T11:30",
+       "body": "S: Two weeks out from partial laryngectomy. Voice weak and breathy, tires by afternoon. Swallowing soft food and most solids now, slower. Neck sore early on, now just tight. Using acetaminophen once in a while. Breathing about as usual. Smoking \"less,\" maybe half a pack, though he admits it creeps up.\n\nPath reviewed with him: margins negative, no radiation planned.\n\nO: breathy, soft voice. Neck incisions healing, no erythema or drainage. Lungs: decreased BS throughout, no crackles. Heart regular. No edema.\n\nA/P\n1. SCC left vocal cord s/p partial laryngectomy. Recovering. ENT 7/7.\n2. COPD: stable on current inhalers.\n3. Tobacco: encouraged him to keep cutting down to zero; offered patch again. Declines.\nReturn in fall for wellness visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-07a",
+     "kind": "specialist_visit",
+     "start": "2021-07-07T14:00",
+     "service": "Otolaryngology",
+     "reason": "Post-operative visit",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Otolaryngology follow-up",
+       "author": "otolaryngology",
+       "date": "2021-07-09T08:30",
+       "body": "OUTSIDE OTOLARYNGOLOGY - FOLLOW-UP LETTER\nSeen 7/7/2021, four weeks after left partial laryngectomy. Healing well; flexible laryngoscopy shows the operative bed mucosalized, airway adequate. Voice breathy as expected. Swallowing without aspiration symptoms.\n\nFinal margins were negative and the tumor board did not recommend adjuvant therapy.\n\nSurveillance plan: flexible laryngoscopy in clinic every 3 to 4 months for two years, then every 6 to 12 months; CT neck and chest yearly for three years. We once again urged him to stop smoking."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-24a",
+     "kind": "pharmacy",
+     "start": "2021-08-24T09:20",
+     "documents": [
+      {
+       "type": "Medication Refill",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2021-08-24T09:20",
+       "body": "Electronic refill request: tiotropium 18 mcg capsules, 90-day supply. Last office visit 6/22. Approved by PCP per protocol, sent with 3 refills."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "annual_physical",
+     "start": "2021-10-05T09:00",
+     "end": "2021-10-05T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "conditions": [
+      {
+       "label": "Squamous cell carcinoma of larynx",
+       "icd10": "C32.0",
+       "action": "resolved"
+      },
+      {
+       "label": "History of laryngeal cancer",
+       "action": "diagnosed",
+       "onset": "2021-06-09"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 6
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-10-05T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-10-05T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-10-05T09:50",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-10-05T09:55"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2021-10-05T09:56"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-05T09:58"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2021-10-05T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-05T09:55"
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us",
+       "action": "placed",
+       "order": "Abdominal aortic ultrasound",
+       "category": "imaging",
+       "reason": "AAA screening, male smoker 65-75"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2021-10-05T10:05",
+       "body": "MEDICARE ANNUAL WELLNESS VISIT (initial)\n\nInterval: lower lip SCC excised 11/2020, clear margins, derm skin check 6/2021 clean. Left vocal cord SCC: partial laryngectomy 6/9/21, margins negative, no adjuvant therapy; ENT surveillance ongoing, most recent scope clear. Voice still breathy but stronger than in June.\n\nCOPD: stable, no flares this year. Same three inhalers. Gets winded with barn chores.\n\nFunctional: independent with ADLs and IADLs. Lives alone, drives, does his own shopping. No falls. Hearing ok in quiet rooms. Home has stairs to the bedroom, manages.\nCognition: clock draw and 3-word recall normal.\nPHQ-2: 0. AUDIT-C: 6 - still 3-4 drinks most nights; discussed cutting back, he is not keen.\nTobacco: still ~1 ppd. Counseled. Declines meds.\n\nAdvance directive: will think about a health care proxy; form given.\n\nExam: BP fine. Breathy voice. Healed neck scars. Lungs: decreased breath sounds, prolonged expiratory phase. Heart regular, no murmur. No edema. Lip scar ok.\n\nScreening/prevention:\n- Colonoscopy 2016 normal (old records).\n- AAA: ever-smoker male 65-75, ordering one-time abdominal aortic ultrasound.\n- Vaccines today: high-dose flu, Shingrix #1, COVID booster. Shingrix #2 in 2-6 months at pharmacy.\n- Labs: CMP, CBC, lipids.\n\nProblem list updated: laryngeal cancer moved to history after surgery with negative margins."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-07a",
+     "kind": "portal_message",
+     "start": "2021-10-07T12:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2021-10-07T12:40",
+       "body": "Wellness visit labs are back and look fine: kidneys, liver, potassium, blood counts and cholesterol all in range. The aorta ultrasound is set for 10/19."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "imaging",
+     "start": "2021-10-19T13:30",
+     "service": "Radiology",
+     "reason": "AAA screening",
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2021-10-19T13:40",
+       "text": "Limited abdominal ultrasound for aortic screening. The abdominal aorta measures up to 2.1 cm in maximal outer-to-outer diameter, without aneurysm. Iliac origins normal in caliber. Visualized liver and kidneys unremarkable.",
+       "conclusion": "No abdominal aortic aneurysm."
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us",
+       "action": "done",
+       "date": "2021-10-19T13:30"
+      }
+     ]
+    },
+    {
+     "id": "2021-11-03a",
+     "kind": "specialist_visit",
+     "start": "2021-11-03T09:10",
+     "service": "Otolaryngology",
+     "reason": "Laryngeal cancer surveillance",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "ENT surveillance",
+       "author": "otolaryngology",
+       "date": "2021-11-05T10:00",
+       "body": "OUTSIDE OTOLARYNGOLOGY - SURVEILLANCE NOTE\nFive months after left partial laryngectomy. Voice slowly improving. No dysphagia, odynophagia or ear pain.\nFlexible laryngoscopy: operative site well healed, no mucosal lesion, airway patent. Neck without palpable adenopathy.\nNo evidence of recurrence. Next scope in 3-4 months; CT neck/chest at one year. Still smoking - counseled."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

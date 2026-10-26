@@ -1,0 +1,2744 @@
+{
+  "unit": "unit-2542",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002542",
+      "given": "Malik",
+      "family": "Hughes",
+      "birth_date": "1990-04-13",
+      "address_line": "58 Linden St Apt 2",
+      "phone": "+1-978-555-0167",
+      "email": "malik.hughes@example.test",
+      "marital_status": "single",
+      "summary": "36-year-old logistics coordinator with perinatally acquired HIV followed at an outside ID clinic and genital HSV-2 on suppression. A 2023 adherence lapse brought an unsuppressed viral load and HIV-associated thrombocytopenia that recovered with adherence; later primary syphilis (2025) and chlamydial epididymitis (2026), both treated.",
+      "events": [
+        {
+          "id": "2021-05-24a",
+          "kind": "telephone",
+          "start": "2021-05-24T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "date": "2021-05-24T10:12",
+              "author": "front desk",
+              "body": "Caller wants to transfer primary care here. Says his old PCP's office stopped taking his plan. Has Medicaid, verified active. Gets HIV care at an outside ID clinic and wants to keep that. Booked new patient appt 6/8 at 9:00. Records release forms emailed for prior PCP and the ID clinic; he will sign and send back."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "establish_care",
+          "start": "2021-06-08T09:00",
+          "end": "2021-06-08T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {
+              "label": "Human immunodeficiency virus [HIV] disease",
+              "action": "diagnosed",
+              "onset": "1990-04-13",
+              "note": "Perinatally acquired; HIV care at outside ID clinic",
+              "icd10": "B20"
+            },
+            {
+              "label": "Genital herpes simplex virus type 2 infection",
+              "action": "diagnosed",
+              "note": "On daily suppression",
+              "icd10": "A60.00"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV, prescribed by infectious disease"
+            },
+            {
+              "drug_text": "valacyclovir 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HSV-2 suppression"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              69
+            ],
+            "hr": 65,
+            "spo2": 96,
+            "weight_kg": 83.2,
+            "height_cm": 179.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-08T09:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-06-08T09:55",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 314
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.19
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-06-08T09:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 115
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 120
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 189
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 139
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2021-06-08T09:55",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social (1-2 drinks per week)"
+            },
+            {
+              "item": "Occupation",
+              "value": "Logistics coordinator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-06-08T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-06-08T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-06-08T09:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-06-08T09:40"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2021-06-08T09:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-06-08T09:00",
+              "author": "PCP",
+              "body": "31M here to set up primary care. Transferring from a prior PCP office.\n\nHIV since birth (mother HIV+). Followed by an outside ID clinic every ~6 mo, on Biktarvy 1 tab daily, which ID prescribes. Per pt last viral load was undetectable and CD4 'in the 600s'. No OIs that he knows of. Also genital HSV-2, on valacyclovir 500 daily for suppression for years; rare breakthrough, none recently.\n\nPSH: circumcised as a newborn, nothing else.\nMeds: Biktarvy daily, valacyclovir 500 mg daily.\nAllergies: none to meds.\nFH: mother HIV+. Father - doesn't know his history. Maternal grandmother with type 2 DM.\nSH: works as a logistics coordinator for a distribution company. Never smoked. A drink or two on weekends. No IV or other drug use. Single, sexually active, more than one partner; says he uses condoms.\nCOVID: two Pfizer doses this spring at a pharmacy.\n\nROS: negative except as above.\nExam: well appearing. HEENT unremarkable, no thrush. No cervical/axillary nodes. Heart RRR no murmur. Lungs clear. Abd soft, no HSM. Skin without rash. GU deferred.\nPHQ-2 0.\n\nA/P\n1. HIV, perinatal, stable per report - continue care with ID. Records requested. Will keep copies of their labs here.\n2. Genital HSV-2 - continue valacyclovir; I can handle refills.\n3. Health maintenance - PCV20 and first MenACWY today (both recommended with HIV). Second MenACWY in 8 wk, nurse visit. Baseline CMP, CBC, lipids, UA.\nFollow up yearly for physical, sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.1,
+            "height_cm": 179.0,
+            "labs": {
+              "CD4 Count": 680
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2021-06-10T16:20",
+              "author": "PCP",
+              "body": "Hi Malik - your kidney and liver tests, blood counts, cholesterol and urine all came back normal. Nice to have a baseline on file here. We'll see you in August for the second meningitis shot."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "outside_records",
+          "start": "2021-06-21T11:05",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-04-27T08:40",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 680
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-30T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior PCP and ID Clinic",
+              "date": "2021-06-21T11:05",
+              "author": "MA",
+              "body": "Received 38 pages by fax, prior primary care office plus the outside ID clinic.\n\nPrior PCP: routine visits, problem list HIV (perinatal) and genital HSV-2. Allergies NKDA. COVID mRNA doses x2 spring 2021 entered from the pharmacy record. No other screening due at his age.\n\nID clinic: most recent visit April 2021. HIV-1 RNA not detected, CD4 in the normal range, on bictegravir/FTC/TAF daily with good adherence documented. Plan: q6 month follow-up with labs.\n\nAbstracted into chart. Forwarded to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-10a",
+          "kind": "nurse_visit",
+          "start": "2021-08-10T15:30",
+          "reason": "MenACWY dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-08-10T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2021-08-10T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "date": "2021-08-10T15:30",
+              "author": "RN",
+              "body": "In for 2nd MenACWY. No problems after the first one. Given 0.5 mL IM L deltoid, VIS reviewed. Tolerated well, left after 15 min. Series complete; booster due in 5 years."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T17:10",
+          "reason": "flu and COVID booster",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T17:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T17:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-19T17:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2021-10-19T17:10",
+              "author": "RN",
+              "body": "After-work slot. Flu vaccine R deltoid, Pfizer booster L deltoid. Feels well, no fever. Observed 15 min, fine."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "specialist_visit",
+          "start": "2021-11-16T10:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-11-16T10:40",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 679
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2021-11-19T09:30",
+              "author": "infectious disease",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC - Visit 11/16/2021\nRe: Malik Hughes\n\nSix-month visit for perinatally acquired HIV. Doing well, no missed doses he can think of. No fevers, weight steady. HSV quiet on valacyclovir.\nAllergies: NKDA.\nMeds: bictegravir/emtricitabine/TAF 1 tab daily; valacyclovir 500 mg daily.\nExam unremarkable, no oral lesions, no adenopathy.\nLabs: HIV-1 RNA not detected. CD4 stable.\nPlan: continue current regimen, return in 6 months. Thank you for sharing his care."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-09a",
+          "kind": "portal_message",
+          "start": "2022-03-09T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill Request",
+              "date": "2022-03-09T21:14",
+              "author": "patient",
+              "body": "Hey, can I get a refill on the valacyclovir? Down to like 5 pills. Same pharmacy. Thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill Request",
+              "date": "2022-03-10T09:02",
+              "author": "MA",
+              "body": "Sent to your pharmacy, 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "annual_physical",
+          "start": "2022-05-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              75
+            ],
+            "hr": 66,
+            "spo2": 96,
+            "weight_kg": 82.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-05-17T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-17T09:10",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 290
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.14
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-05-17T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-05-17T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-17T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-05-17T08:30",
+              "author": "PCP",
+              "body": "Annual exam. No concerns. Last ID visit in Nov was fine, next one is June. Taking Biktarvy and valacyclovir daily, no HSV outbreaks this year.\nSH unchanged. Long shifts at the warehouse office lately, sleeping ok. Never smoker, 1-2 drinks/wk.\nPHQ-2: 0.\nExam: NAD. Oropharynx clear. Neck supple, no nodes. Heart regular, no murmur. Lungs clear. Abd benign. Skin clear. Ext normal.\n\nA/P: healthy 32M with well-controlled HIV per ID.\n- CMP, CBC, lipids today.\n- Vaccines: flu/COVID this fall.\n- Safer sex reviewed, he gets STI screens through ID.\nRTC 1 yr."
+            },
+            {
+              "type": "Result Note",
+              "title": "Annual Labs Reviewed",
+              "date": "2022-05-19T12:40",
+              "author": "PCP",
+              "body": "CMP, CBC, lipids normal. Pt notified via portal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "specialist_visit",
+          "start": "2022-06-14T13:20",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-06-14T14:00",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 675
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2022-06-20T10:15",
+              "author": "infectious disease",
+              "body": "Outside ID clinic, seen 6/14/22.\n\nHIV, acquired perinatally, on BIC/FTC/TAF. Reports taking it every day. No new symptoms. No new partners since his last visit per his report.\nNKDA. Meds unchanged.\nExam: well, no lymphadenopathy, no oral candidiasis, skin clear.\nViral load remains undetectable; CD4 holding steady. RPR non-reactive.\nContinue regimen. Next visit December."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:45",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T16:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T16:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2022-10-18T16:45",
+              "author": "RN",
+              "body": "Flu (L arm) and Pfizer bivalent booster (R arm). Afebrile, feels fine. No reaction during observation. Pt reminded about his ID appt in December."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "specialist_visit",
+          "start": "2022-12-06T09:40",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-06T10:15",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 683
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2022-12-12T14:00",
+              "author": "infectious disease",
+              "body": "INFECTIOUS DISEASE - outside clinic letter\nDate of visit: 12/06/2022\n\nRoutine HIV visit. He feels well. Says work has been hectic with holiday shipping. Adherence reported as good, though he admits a couple of late doses.\nAllergies: none known.\nMedications: bictegravir/emtricitabine/tenofovir alafenamide daily, valacyclovir 500 mg daily.\nExam: normal.\nResults: HIV RNA undetectable. CD4 stable.\nAssessment/plan: virologically suppressed. Continue. Return in about 3 months for routine check."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-06a",
+          "kind": "specialist_visit",
+          "start": "2023-03-06T11:00",
+          "service": "Infectious Disease",
+          "reason": "routine HIV check",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-06T11:45",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Reactive"
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "unit": "copies/mL",
+                  "value": 55000
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 600
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Non-reactive"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-06T11:45",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 277
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.22
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Visit",
+              "date": "2023-03-09T15:20",
+              "author": "infectious disease",
+              "body": "Outside Infectious Disease Clinic\nVisit date: March 6, 2023\nPatient: Malik Hughes, 32 y/o M\n\nReason: scheduled check-in, HIV acquired at birth.\n\nInterval: no complaints today. Sexually active with several partners. Tells me he uses condoms reliably, with one exception about two months back - a new partner, no condom. No IV drug use, ever.\nOn direct questioning he acknowledges he has been skipping Biktarvy doses on and off for the last few months, more on busy weeks.\n\nNKDA.\nCurrent meds: bictegravir/emtricitabine/TAF 1 tab daily; valacyclovir 500 mg daily.\nPSH: neonatal circumcision.\n\nVitals normal. Looks well. Exam without abnormality.\n\nLabs today:\n- HIV-1 antibody: positive (as expected)\n- HIV-1 RNA: 55,000 copies/mL\n- CD4: 600 cells/mm3\n- CBC: normal\n- Hepatitis panel (HBsAg, HCV Ab): negative\n\nImpression: loss of viral suppression, consistent with the missed doses he describes. CD4 preserved.\nPlan: long talk about taking the pill every day, phone alarm, pill box. Continue current regimen. Repeat viral load in about 3 months. Call sooner with any problems.\n\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "portal_message",
+          "start": "2023-03-13T12:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your ID Visit",
+              "date": "2023-03-13T12:31",
+              "author": "PCP",
+              "body": "Hi Malik, I got the letter from your ID visit. Your viral load has come up because of the missed Biktarvy doses. The good news is your CD4 is still in a healthy range. If cost, refills or anything else is getting in the way of taking it every day, tell me and we'll sort it out. Your pharmacy can also set you up on automatic refills. Your ID team wants a recheck in about 3 months."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your ID Visit",
+              "date": "2023-03-13T19:48",
+              "author": "patient",
+              "body": "ok thanks. its mostly just forgetting. Ill set the alarm"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-18a",
+          "kind": "portal_message",
+          "start": "2023-08-18T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bruises On Legs",
+              "date": "2023-08-18T08:05",
+              "author": "patient",
+              "body": "For about the last week or two I keep getting bruises I don't remember getting and now there's little red dots all over both shins. Not itchy. Should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bruises On Legs",
+              "date": "2023-08-18T09:20",
+              "author": "RN",
+              "body": "Yes, we'd like to see you. Booked you Monday 8/21 at 8:15. If you get any bleeding from your gums or nose that won't stop, blood in your urine or stool, or a bad headache before then, go to the ER. Please avoid ibuprofen or aspirin for now."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "office_visit",
+          "start": "2023-08-21T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "easy bruising, leg rash",
+          "conditions": [
+            {
+              "label": "Thrombocytopenia",
+              "action": "diagnosed",
+              "onset": "2023-08-07",
+              "note": "Isolated; in the setting of non-suppressed HIV"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              73
+            ],
+            "hr": 69,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 82.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-21T08:40",
+              "resulted": "2023-08-21T11:30",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 31
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.19
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-21T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-21T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral-2023",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "isolated thrombocytopenia, platelets 31"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-08-21T08:15",
+              "author": "PCP",
+              "body": "S: ~2 wk of bruises he can't account for, then a speckled red rash on both lower legs. No nosebleeds, gum bleeding, blood in urine or stool. No fever, no recent illness. No new meds, no OTC NSAIDs or supplements. Asked about the Biktarvy - honest that he is still missing doses, maybe 2-3 a week.\n\nO: Afebrile. Pinpoint non-blanching petechiae over both shins, a few 2-3 cm bruises on thighs and forearms. Mouth: no blood blisters. No cervical, axillary or inguinal nodes. Spleen not palpable. Heart/lungs normal.\n\nCBC sent stat: platelets 31. Hgb and WBC normal.\n\nA/P: isolated thrombocytopenia with petechiae. With his viral load up in March, HIV-related platelet destruction is the leading thought, but needs hematology.\n- Called outside hematology, they will see him Wed 8/23.\n- No NSAIDs/aspirin, no contact sports, ER precautions reviewed.\n- Adherence: again, every day. He agreed to set up a weekly pill box.\n- Will update ID."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to Hematology",
+              "date": "2023-08-21T11:50",
+              "author": "PCP",
+              "body": "Spoke with hematology on call re plt 31, petechiae, HIV not suppressed. Urgent slot Wed. Pt informed by phone, he can make it."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-08-23a",
+          "kind": "specialist_visit",
+          "start": "2023-08-23T13:30",
+          "service": "Hematology",
+          "reason": "thrombocytopenia",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-23T13:15",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 25
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.72
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-08-23T13:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-23T13:15",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 29.4
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Reactive"
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Detected"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral-2023",
+              "action": "done",
+              "date": "2023-08-23T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "date": "2023-08-25T10:40",
+              "author": "hematology",
+              "body": "HEMATOLOGY CONSULTATION - outside hematology/oncology group\nDate seen: 08/23/2023\nReferred by: primary care, for low platelets\n\nHPI: 33-year-old man with HIV acquired at birth and genital HSV-2, on Biktarvy and valacyclovir, last at his ID clinic about six months ago. Two weeks of bruising with little provocation and pinpoint spots on the lower legs. No infections in recent weeks and no new medications or supplements. Admits inconsistent ART use since early this year.\n\nAllergies: NKDA\nMeds: bictegravir/emtricitabine/TAF daily, valacyclovir 500 mg daily\nFH: mother with HIV. Father unknown. Maternal grandmother type 2 diabetes.\nSH: logistics coordinator. Never smoker. Alcohol 1-2 drinks/week.\n\nExam: petechiae both lower legs. Liver and spleen not enlarged. No lymph node enlargement anywhere.\n\nData:\n- Platelets 25 x10^9/L, Hgb 14 g/dL, WBC 6.5 x10^9/L\n- Smear reviewed personally: red and white cells look normal; platelets few but normal in appearance. Isolated thrombocytopenia.\n- PT/INR, aPTT normal\n- As part of our standard workup for isolated thrombocytopenia: HCV antibody negative; HIV-1/2 Ag/Ab reactive and HIV-1 RNA detected, in keeping with his known, currently unsuppressed infection.\n\nAssessment: isolated thrombocytopenia, most likely HIV-associated, driven by uncontrolled viremia.\n\nRecommendations:\n1. The main treatment here is getting his virus back under control - daily ART without missed doses. Discussed with him at length.\n2. Bleeding precautions; no NSAIDs or aspirin.\n3. CBC weekly to start (can be drawn at his PCP office), then spacing out.\n4. Seek care for any bleeding.\nWill see him back in about 3 months, sooner if counts drop."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-30a",
+          "kind": "lab_only",
+          "start": "2023-08-30T07:50",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-30T07:50",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 44
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.18
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-30T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC - Platelets",
+              "date": "2023-08-30T14:05",
+              "author": "PCP",
+              "body": "Platelets 44, up from 25 last week. Copy faxed to hematology. Pt says he hasn't missed a dose since the visit. Keep going."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "telephone",
+          "start": "2023-09-12T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab Draw Reschedule",
+              "date": "2023-09-12T10:30",
+              "author": "front desk",
+              "body": "Pt called, couldn't make this week's blood draw due to a work schedule change. Moved to early Oct per hematology's spacing ok. Order on file."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "lab_only",
+          "start": "2023-10-04T07:40",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-04T07:40",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 118
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.07
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-04T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC - Platelets",
+              "date": "2023-10-04T15:12",
+              "author": "PCP",
+              "body": "Platelets 118. Big improvement. Faxed to hematology. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "specialist_visit",
+          "start": "2023-11-29T09:15",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-29T09:50",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 640
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-29T09:50",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 176
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.17
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2023-12-04T11:00",
+              "author": "infectious disease",
+              "body": "Outside ID Clinic - visit 11/29/2023\n\nFollow-up after his viral load rebounded in March and the low-platelet episode this summer (seen by hematology in August). Since then he has been using a weekly pillbox and alarms; reports no missed doses in about three months.\nNKDA. Meds: BIC/FTC/TAF daily, valacyclovir 500 mg daily.\nExam: no petechiae or bruising now. No adenopathy.\nLabs: HIV-1 RNA not detected (<20). CD4 640. Platelets 176.\nAssessment: resuppressed on the same regimen; thrombocytopenia has resolved alongside.\nPlan: same regimen, 6-month visits."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-01a",
+          "kind": "outside_records",
+          "start": "2023-12-01T13:40",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up Letter",
+              "date": "2023-12-01T13:40",
+              "author": "hematology",
+              "body": "Hematology follow-up (chart review and phone visit, 11/30/2023)\n\nMr. Hughes's platelet count has recovered: 44 on 8/30, 118 on 10/4, and 176 on the 11/29 draw at his ID clinic, coinciding with consistent ART use and viral resuppression. No bleeding since our visit.\nAllergies: NKDA.\nAssessment: HIV-associated thrombocytopenia, resolved.\nPlan: no ongoing hematology follow-up needed. Please re-refer if platelets fall below 100 or with any bleeding. A CBC with routine labs is reasonable going forward."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "annual_physical",
+          "start": "2024-02-13T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Thrombocytopenia",
+              "action": "resolved",
+              "note": "Recovered with viral resuppression; released by hematology"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              72
+            ],
+            "hr": 71,
+            "spo2": 96,
+            "weight_kg": 81.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-02-13T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-13T09:20",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.18
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-02-13T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-02-13T08:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-02-13T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-13T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-02-13T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-02-13T08:45",
+              "author": "PCP",
+              "body": "Physical, a bit overdue (last May 2022).\n\nInterval: viral load came up last spring from missed doses, then platelets dropped to 25 in August with petechiae. Hematology saw him; platelets came back to normal once he was taking ART daily, and ID found him undetectable again in Nov. Hematology has released him. Still using the pillbox, no misses he can recall.\nNo bruising, no bleeding. No HSV recurrences.\nMeds: Biktarvy daily, valacyclovir 500 daily. NKDA.\nNever smoker, alcohol 1-2/wk. Multiple partners, says he mostly uses condoms.\nMissed flu shot in the fall - giving today.\nPHQ-2 0.\n\nExam: well. Skin: no petechiae or bruising. No nodes. Heart RRR. Lungs clear. Abdomen soft, spleen not felt.\n\nA/P\n1. HIV - suppressed again on Biktarvy, ID following.\n2. Thrombocytopenia, HIV-related - resolved; marking resolved. CBC today.\n3. HSV-2 - stable on suppression.\n4. HM - flu today. CMP, CBC, lipids.\nRTC 1 yr."
+            },
+            {
+              "type": "Result Note",
+              "title": "Labs Reviewed",
+              "date": "2024-02-15T10:22",
+              "author": "PCP",
+              "body": "CBC normal including platelets. CMP and lipids normal. Sent to pt."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "specialist_visit",
+          "start": "2024-06-11T14:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-06-11T14:40",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 683
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2024-06-17T09:05",
+              "author": "infectious disease",
+              "body": "Outside infectious disease clinic, 6/11/2024.\n\nStable. Taking his ART daily. No symptoms. Annual STI screen sent.\nAllergies: NKDA. Meds unchanged (BIC/FTC/TAF, valacyclovir).\nExam normal.\nHIV RNA undetectable, CD4 stable. RPR non-reactive; urine GC/CT negative.\nContinue. RTC 6 mo."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "pharmacy",
+          "start": "2024-08-20T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Call - Prior Authorization",
+              "date": "2024-08-20T11:15",
+              "author": "MA",
+              "body": "Pharmacy called: Biktarvy claim rejected, Medicaid PA expired. Biktarvy is prescribed by his ID clinic - gave pharmacy the ID clinic's number and also called ID's nurse line, who will resubmit today. Pt has 6 tablets left; told him to call us if it isn't resolved by Friday."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PA Follow-up",
+              "date": "2024-08-22T09:40",
+              "author": "MA",
+              "body": "Pharmacy confirms PA approved, Biktarvy filled. Pt picked it up."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T16:30",
+          "reason": "flu vaccine",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2024-10-22T17:10",
+              "author": "front desk",
+              "body": "No-show for flu shot nurse visit. Left voicemail to reschedule."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "specialist_visit",
+          "start": "2024-12-10T10:20",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-10T10:55",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 720
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2024-12-16T15:30",
+              "author": "infectious disease",
+              "body": "OUTSIDE ID CLINIC\nSeen 12/10/24 for HIV care.\n\nNo concerns. Taking it daily; the August insurance authorization renewal went through before he ran out.\nNKDA.\nMeds: bictegravir/emtricitabine/tenofovir alafenamide; valacyclovir 500 mg.\nExam: unremarkable.\nViral load not detected; CD4 stable.\nPlan: continue, follow up in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-24a",
+          "kind": "office_visit",
+          "start": "2025-02-24T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "vitals": {
+            "bp": [
+              127,
+              64
+            ],
+            "hr": 62,
+            "spo2": 96,
+            "weight_kg": 82.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-24T16:40",
+              "resulted": "2025-02-27T10:15",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Reactive (immune)"
+                },
+                {
+                  "test": "Hepatitis A virus total antibody",
+                  "loinc": "109972-0",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "Varicella zoster virus IgG",
+                  "loinc": "111373-7",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-24T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-02-24T16:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-24T16:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-02-24T16:30"
+            },
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-02-24T16:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-02-24T16:00",
+              "author": "PCP",
+              "body": "34M, routine check-in. HIV from birth, followed by ID; genital HSV-2. Had the bruising/low platelet episode in 2023, none since.\nSays he takes Biktarvy and valacyclovir every day. No complaints at all today.\n\nVaccines: last flu was here about a year ago, skipped this fall. Doesn't remember ever having chickenpox or shingles. No idea whether he's immune to hep A or hep B. Last tetanus shot - can't recall, nothing in his records here.\nSexual hx: several partners, condoms some of the time but not always.\nNKDA.\n\nExam: well. Skin clear, no petechiae. No adenopathy. Heart and lungs normal. Abdomen benign.\n\nPlan:\n- Tdap today, plus flu (still in season).\n- Hep B surface Ab, hep A total Ab, varicella IgG - will vaccinate based on results.\n- Condoms every time; encouraged him to keep up STI screens at ID.\n- Continue current meds.\nPhysical due early next year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunity Results",
+              "date": "2025-02-27T12:10",
+              "author": "PCP",
+              "body": "Hi Malik - you're immune to hepatitis B (probably vaccinated as a kid) and to chickenpox, so nothing needed for those. You are not immune to hepatitis A. That's a two-shot vaccine, 6 months apart. The front desk will reach out to book the first one with our nurse."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunity Results",
+              "date": "2025-02-27T18:33",
+              "author": "patient",
+              "body": "sounds good. late afternoon works best for me"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "nurse_visit",
+          "start": "2025-03-25T16:15",
+          "reason": "hepatitis A vaccine dose 1",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-03-25T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2025-03-25T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Hep A #1",
+              "date": "2025-03-25T16:15",
+              "author": "RN",
+              "body": "Hep A vaccine 1 mL IM R deltoid. VIS given. Fine afterward. Dose 2 due late Sept or later - reminder set."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "specialist_visit",
+          "start": "2025-06-10T09:30",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-10T10:05",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 673
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2025-06-16T14:45",
+              "author": "infectious disease",
+              "body": "Outside Infectious Disease - 06/10/2025\n\nSuppressed on BIC/FTC/TAF. He reports multiple partners with inconsistent condom use; counseled. STI panel sent.\nAllergies: NKDA.\nMeds: bictegravir/emtricitabine/TAF daily, valacyclovir 500 mg daily. Received Tdap and first hep A dose at his PCP.\nExam: normal, no genital lesions reported.\nResults: VL not detected, CD4 stable, RPR non-reactive, GC/CT negative.\nPlan: continue; return in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "specialist_visit",
+          "start": "2025-09-03T10:45",
+          "service": "Infectious Disease",
+          "reason": "painless penile ulcer",
+          "conditions": [
+            {
+              "label": "Primary genital syphilis",
+              "action": "diagnosed",
+              "onset": "2025-08-13",
+              "icd10": "A51.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "4 ML penicillin G benzathine 600000 UNT/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "2.4 million units IM once, given in clinic",
+              "dose": {
+                "value": 2400000,
+                "unit": "U"
+              },
+              "frequency": "ONCE",
+              "route": "Intramuscular",
+              "course": "short",
+              "reason": "primary syphilis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-03T11:10",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "Treponema pallidum particle agglutination (TP-PA)",
+                  "loinc": "71793-4",
+                  "text": "Reactive"
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Visit - Genital Ulcer",
+              "date": "2025-09-08T16:00",
+              "author": "infectious disease",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nDate of visit: 9/3/2025\n\nCC: sore on the penis x3 weeks.\n\nHe noticed a sore on the shaft about three weeks ago. It doesn't hurt, hasn't grown or shrunk, and nothing drains from it. He has felt some swelling in both groins. Different from his usual herpes - no tingling, no blisters. Multiple partners, condoms not every time.\n\nAllergies: NKDA.\nMeds: bictegravir/emtricitabine/TAF daily; valacyclovir 500 mg daily.\n\nExam: single firm, indurated ulcer on the penile shaft, clean base, not tender. Both inguinal regions with enlarged, non-tender nodes.\n\nLabs: RPR non-reactive. TP-PA reactive. HIV RNA not detected on today's draw.\n\nAssessment: primary syphilis. A non-reactive RPR this early is not unusual; the treponemal test and the classic painless indurated chancre make the diagnosis.\n\nPlan:\n- Benzathine penicillin G 2.4 million units IM, one dose, given today. Observed 30 min, no reaction.\n- Partner notification through the state health department; he was given the DIS contact.\n- Abstain until the ulcer heals and partners are treated.\n- Return in about 3 months with repeat RPR.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "portal_message",
+          "start": "2025-09-09T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ID Visit Follow-up",
+              "date": "2025-09-09T13:05",
+              "author": "PCP",
+              "body": "Hi Malik, I saw the note from your ID visit last week - glad they got you treated the same day. Let me know if the sore isn't clearly healing in the next couple of weeks. Your second hep A shot is due now too; we can do it with your flu shot in October."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ID Visit Follow-up",
+              "date": "2025-09-09T20:17",
+              "author": "patient",
+              "body": "Its already looking better. October is fine"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T16:40",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T16:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2025-10-21T16:45"
+            },
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T16:46"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-21T16:48"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2025-10-21T16:40",
+              "author": "RN",
+              "body": "Three vaccines today: hep A #2 (R deltoid, series now complete), flu (L deltoid), 2025-26 Pfizer COVID (L deltoid, 1 inch below). No fever, no complaints. Waited 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "specialist_visit",
+          "start": "2025-12-09T09:00",
+          "service": "Infectious Disease",
+          "reason": "HIV and syphilis follow-up",
+          "conditions": [
+            {
+              "label": "Primary genital syphilis",
+              "action": "resolved",
+              "note": "Treated 9/2025; ulcer healed",
+              "icd10": "A51.0"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-09T09:35",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 713
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2025-12-15T11:20",
+              "author": "infectious disease",
+              "body": "Outside ID clinic, visit 12/09/2025.\n\nThree months after penicillin for primary syphilis. The ulcer closed within a few weeks and has not come back. No rash, no new lesions. Partners were notified.\nNKDA.\nMeds: BIC/FTC/TAF daily, valacyclovir 500 mg daily.\nExam: penile shaft healed, no residual induration. No rash on palms or soles. Inguinal nodes no longer prominent.\nLabs: RPR non-reactive. HIV RNA not detected. CD4 in a good range.\nAssessment: primary syphilis, treated. HIV suppressed.\nPlan: RPR again with next routine labs. Reinforced condoms. Return 6 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "CD4 Count": 720
+            }
+          }
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "telephone",
+          "start": "2026-01-13T09:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2026-01-13T09:25",
+              "author": "MA",
+              "body": "Pharmacy requesting renewal of valacyclovir 500 mg, no refills left. Last seen 2/2025, physical due - pended to PCP; scheduler to call pt about a physical."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Approved",
+              "date": "2026-01-13T14:02",
+              "author": "PCP",
+              "body": "Approved 90-day supply x1. Needs physical this spring."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "ed_visit",
+          "start": "2026-02-23T19:40",
+          "end": "2026-02-24T00:15",
+          "service": "Emergency Medicine",
+          "reason": "left testicular pain and swelling",
+          "conditions": [
+            {
+              "label": "Chlamydial epididymitis",
+              "action": "diagnosed",
+              "onset": "2026-02-21",
+              "icd10": "A56.19"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 500 MG Injection",
+              "action": "start",
+              "sig": "500 mg IM once in the ED",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intramuscular",
+              "course": "short",
+              "reason": "epididymitis"
+            },
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 10 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "chlamydial epididymitis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              80
+            ],
+            "hr": 88,
+            "rr": 18,
+            "temp_c": 38.3,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-02-23T20:05",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 30
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.4
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-23T20:05",
+              "resulted": "2026-02-23T23:20",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-02-23T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-02-25T08:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT - outside hospital\nArrival 02/23/2026 19:40\n\nChief complaint: L testicle pain and swelling x 2 days, burning with urination, penile discharge.\n\nHPI: 35M with perinatally acquired HIV (on ART), HSV-2, and syphilis treated last fall. Two days of worsening left testicular pain and swelling. Lying down with the scrotum propped up helps some. Over the same stretch, burning when he urinates and a whitish, milky drip from the penis. Several partners, condoms not consistently.\n\nAllergies: NKDA\nHome meds: bictegravir/emtricitabine/TAF, valacyclovir 500 mg daily\n\nVitals: T 38.3 C (100.9 F), BP 130/80, HR 88.\n\nExam: uncomfortable but nontoxic. Left testis swollen and tender, sitting higher than the right. Lifting the scrotum eases the pain (Prehn sign positive). Cremasteric reflex present. Right side normal.\n\nResults: UA with pyuria and positive leukocyte esterase. Urine NAAT: Chlamydia trachomatis positive, N. gonorrhoeae negative.\n\nED course / MDM: presentation fits epididymitis, most likely sexually transmitted given urethritis symptoms; preserved cremasteric reflex and relief with elevation favor this over torsion. Ceftriaxone 500 mg IM given in the ED; tolerated. Doxycycline 100 mg twice daily for 10 days prescribed.\n\nDisposition: discharged home 00:15. Scrotal support, ice, rest. Abstain from sex until treatment finished and partners treated. Follow up with PCP within a week. Return for worsening pain, high fever or vomiting.\n\nDiagnosis: acute left epididymitis, chlamydial."
+            }
+          ],
+          "measure": [
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "telephone",
+          "start": "2026-02-25T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED Call",
+              "date": "2026-02-25T10:15",
+              "author": "RN",
+              "body": "ED record received. Called pt: on day 2 of doxycycline, taking it with food, fever gone, pain a little better. Booked PCP f/u 3/3."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "office_visit",
+          "start": "2026-03-03T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, epididymitis",
+          "vitals": {
+            "bp": [
+              118,
+              73
+            ],
+            "hr": 67,
+            "temp_c": 36.8,
+            "weight_kg": 81.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-03-03T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-retest-2026",
+              "action": "placed",
+              "order": "Chlamydia trachomatis NAAT, urine (test of reinfection)",
+              "category": "lab",
+              "reason": "retest 3 months after treatment"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2026-03-03T16:20",
+              "author": "PCP",
+              "body": "Here after the ED visit 2/23 for left epididymitis, urine positive for chlamydia (GC neg). Got ceftriaxone there, now day 8 of 10 of doxycycline. Pain and swelling way down, burning with urination gone, no more discharge. No fever since the first day. Some stomach upset with the doxy, manageable with meals.\nHasn't had sex since; he notified his partners and says they're getting treated.\n\nExam: afebrile. Testes symmetric, no swelling, non-tender, no masses. No urethral discharge. No inguinal nodes.\n\nA/P: chlamydial epididymitis, responding.\n- Finish doxycycline.\n- Retest chlamydia ~3 months out - will do at his physical, booked 5/1.\n- Condoms; discussed that he's had two bacterial STIs in 6 months.\nRTC 5/1."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-01a",
+          "kind": "annual_physical",
+          "start": "2026-05-01T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, chlamydia retest",
+          "conditions": [
+            {
+              "label": "Chlamydial epididymitis",
+              "action": "resolved",
+              "note": "Treated; retest pending at visit",
+              "icd10": "A56.19"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              69
+            ],
+            "hr": 65,
+            "spo2": 98,
+            "weight_kg": 82.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-01T09:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-01T09:05",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 301
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.39
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-05-01T09:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 113
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 137
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-01T09:05",
+              "resulted": "2026-05-04T13:40",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-05-01T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-01T09:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-retest-2026",
+              "action": "done",
+              "date": "2026-05-01T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-05-01T08:30",
+              "author": "PCP",
+              "body": "Physical; also due for the chlamydia recheck after the February epididymitis.\n\nInterval: finished the doxycycline, everything settled within about two weeks. No testicular pain, no urinary symptoms, no discharge since. Saw ID in December: syphilis treated, RPR negative, viral load undetectable. Taking Biktarvy and valacyclovir daily.\nNKDA. Never smoker. 1-2 drinks most weeks. Still at the logistics job.\nSexual hx: multiple partners; says he's been using condoms consistently since February.\nPHQ-2 0.\n\nExam: well-appearing. HEENT normal. No adenopathy. Heart regular, no murmurs. Lungs clear. Abdomen soft. GU: testes normal size, non-tender, no masses. Skin without lesions.\n\nA/P\n1. HIV, perinatal - suppressed, ID following q6 months.\n2. Genital HSV-2 - quiet on valacyclovir; refilled.\n3. Chlamydial epididymitis - clinically resolved; urine GC/CT retest sent today.\n4. Primary syphilis 2025 - treated per ID.\n5. HM - Tdap 2025, hep A series done, PCV20 2021;  Flu/COVID in the fall. CMP, CBC, lipids.\nFollow-up in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "portal_message",
+          "start": "2026-05-05T11:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-05-05T11:50",
+              "author": "PCP",
+              "body": "Malik - your chlamydia and gonorrhea recheck is negative, so the infection is cleared. Blood counts, kidney and liver tests and cholesterol are all normal. See you in September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab Results",
+              "date": "2026-05-05T12:14",
+              "author": "patient",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "specialist_visit",
+          "start": "2026-06-09T10:10",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-09T10:45",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 728
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2026-06-15T09:40",
+              "author": "infectious disease",
+              "body": "Outside infectious disease clinic - seen 6/9/2026\n\nDoing well. Epididymitis in February treated in the ED, retest negative at his PCP in May. Daily ART, no missed doses reported.\nAllergies: NKDA.\nMeds: bictegravir/emtricitabine/TAF daily; valacyclovir 500 mg daily.\nExam: normal; no genital lesions.\nLabs: VL not detected. CD4 stable. RPR non-reactive.\nPlan: continue, 6 months.\n\n[Filed to chart as received.]"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill",
+              "date": "2026-07-14T10:05",
+              "author": "MA",
+              "body": "Pharmacy fax: valacyclovir 500 mg refill request. Rx from 5/1 still has refills on file - pharmacy notified, filled."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "September Appointment",
+              "date": "2026-08-18T19:22",
+              "author": "patient",
+              "body": "Just checking I'm still on for Sept 15. Can I get my flu shot at that visit?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: September Appointment",
+              "date": "2026-08-19T08:55",
+              "author": "front desk",
+              "body": "Yes, you're set for Tuesday 9/15 at 4:00. Flu vaccine should be in by then and we'll plan on it."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "office_visit",
+          "start": "2026-09-15T16:00",
+          "reason": "routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Chlamydial epididymitis|A56.19": {
+        "code": "A56.19",
+        "display": "Other chlamydial genitourinary infection",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Genital herpes simplex virus type 2 infection|A60.00": {
+        "code": "A60.00",
+        "display": "Herpesviral infection of urogenital system, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Human immunodeficiency virus [HIV] disease|B20": {
+        "code": "B20",
+        "display": "Human immunodeficiency virus [HIV] disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Primary genital syphilis|A51.0": {
+        "code": "A51.0",
+        "display": "Primary genital syphilis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "4 ML penicillin G benzathine 600000 UNT/ML Prefilled Syringe": {
+        "code": "731570",
+        "display": "4 ML penicillin G benzathine 600000 UNT/ML Prefilled Syringe",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ceftriaxone 500 MG Injection": {
+        "code": "1665005",
+        "display": "ceftriaxone 500 MG Injection",
+        "ingredient": "ceftriaxone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "valacyclovir 500 MG Oral Tablet": {
+        "code": "313565",
+        "display": "valacyclovir 500 MG Oral Tablet",
+        "ingredient": "valacyclovir",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "3173-2",
+        "display": "aPTT in Blood by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis A virus total antibody": {
+        "code": "109972-0",
+        "display": "Hepatitis A virus Ab [Measurement] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Treponema pallidum particle agglutination (TP-PA)": {
+        "code": "71793-4",
+        "display": "Treponema pallidum Ab [Titer] in Serum or Plasma by Agglutination",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Varicella zoster virus IgG": {
+        "code": "111373-7",
+        "display": "Varicella zoster virus IgG Ab [Measurement] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

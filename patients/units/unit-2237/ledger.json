@@ -1,0 +1,1972 @@
+{
+  "unit": "unit-2237",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002237",
+      "given": "Thomas",
+      "family": "Reardon",
+      "birth_date": "1956-08-19",
+      "address_line": "27 Glendale Road, Southampton, MA 01073",
+      "phone": "+1-917-555-0161",
+      "email": "thomas.reardon@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal supervisor with long-standing CAD, prior MI and stents, HFrEF (LVEF 30%), hypertension and hyperlipidemia who joined in 2023. Unstable angina in July 2025 led to an LAD stent; the practice last saw him in October 2025, after which he had two admissions for cardiogenic shock, known to the practice only through outside records.",
+      "events": [
+        {
+          "id": "2023-08-14a",
+          "kind": "establish_care",
+          "start": "2023-08-14T09:00",
+          "end": "2023-08-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Coronary artery disease",
+              "action": "history",
+              "onset": "2015-01-01"
+            },
+            {
+              "label": "Old myocardial infarction",
+              "action": "history",
+              "onset": "2020-01-01"
+            },
+            {
+              "label": "Presence of coronary artery stent",
+              "action": "history",
+              "onset": "2020-01-01"
+            },
+            {
+              "label": "Heart failure with reduced ejection fraction",
+              "action": "history",
+              "onset": "2020-01-01",
+              "note": "LVEF 30% on echo after 2020 MI"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2005-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2015-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Heart failure"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension, heart failure"
+            },
+            {
+              "drug": "carvedilol 12.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with food",
+              "dose": {
+                "value": 12.5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Heart failure"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Coronary artery disease"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              84
+            ],
+            "hr": 75,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 92.3,
+            "height_cm": 177.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-08-14T10:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.03
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-14T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 155
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-14T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired postal service supervisor"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-14T10:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "40 pack-year former smoker, quit 2020"
+            },
+            {
+              "id": "aaa-us-2023",
+              "action": "placed",
+              "order": "Abdominal aortic ultrasound screening",
+              "category": "imaging",
+              "reason": "Male former smoker age 65-75"
+            },
+            {
+              "id": "records-2023",
+              "action": "placed",
+              "order": "Request records from prior primary care and cardiology",
+              "category": "procedure"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-08-14T10:20",
+              "author": "PCP",
+              "body": "66M here to set up care. Was with a practice closer to his old route for years; his wife wanted somewhere they could actually reach the doctor by phone.\n\nCardiac history, from him and the bottle bag he brought:\n- CAD. First PCI around 2015. MI in 2020, second PCI with a drug-eluting stent at that time.\n- Heart failure with reduced EF. Tells me the echo after the 2020 MI said 30%. Records to confirm.\n- HTN since roughly 2005. Admits he went years taking it some days and not others.\n- High cholesterol since about 2015. Stopped and started the statin more than once because he was worried it would make his muscles ache. Never actually had a reaction he can describe. Taking it now.\n- Aspirin since the MI; forgets it now and then.\n\nCurrently: some tiredness if he pushes on hills, otherwise no chest pain, no orthopnea, sleeps flat on one pillow, ankles fine. No palpitations, no fainting.\n\nMeds: furosemide 40 daily, lisinopril 20 daily, carvedilol 12.5 bid, atorvastatin 40 daily, aspirin 81 daily.\nAllergies: none known.\nFH: father died of an MI at 58. Mother had high BP and cholesterol, died at 82. Older brother has coronary disease, had bypass at 62.\nSH: married. Retired postal service supervisor. Smoked about 40 pack-years, quit 2020. No alcohol. Does black-and-white photography, walks most mornings.\n\nExam: well appearing, talkative. Neck veins flat. Heart regular, S1 S2, no murmur or gallop. Lungs clear throughout. Abdomen soft. No ankle edema. Distal pulses 2+.\n\nA/P\n1. CAD with old MI, stents. Continue aspirin and atorvastatin.\n2. HFrEF, EF 30% by report. Euvolemic today. Continue furosemide, lisinopril, carvedilol. BMP today.\n3. HTN. 138/84 today on the above. Watch.\n4. Lipids: fasting panel today.\n5. Health maintenance: hep C screen today. Eligible for lung screening - LDCT ordered. One-time aortic ultrasound ordered. Colonoscopy per him in 2019 and normal - confirm in records. Flu/COVID/pneumococcal in the fall.\n6. Records request to prior PCP and cardiology.\nRTC 6 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              84
+            ],
+            "weight_kg": 92.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Creatinine": 1.02,
+              "Low Density Lipoprotein": 88,
+              "Potassium": 4.4
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "outside_records",
+          "start": "2023-08-29T14:10",
+          "reason": "Prior primary care and cardiology records received",
+          "orders": [
+            {
+              "id": "records-2023",
+              "action": "done",
+              "date": "2023-08-29T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2023-08-29T14:10",
+              "author": "front desk",
+              "body": "Records received, 38 pages, from his previous primary care office and an outside cardiology group. Indexed to chart.\n\nPCP summary of contents:\n- Echocardiogram 2020, done after his MI: LV ejection fraction 30%.\n- Catheterization 2020: PCI with drug-eluting stent at the time of the infarction. An earlier PCI noted in the history (around 2015); that procedure note itself not in the packet.\n- Colonoscopy 2019: normal, no polyps. Next due 2029.\n- Medication list matches what he brought: furosemide 40, lisinopril 20, carvedilol 12.5 bid, atorvastatin 40, aspirin 81.\n- No drug allergies listed.\n- Several notes over the years remark on missed doses and gaps in refills.\nReviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-30a",
+          "kind": "portal_message",
+          "start": "2023-08-30T08:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Your lab results",
+              "date": "2023-08-30T08:40",
+              "author": "PCP",
+              "body": "Hi Mr. Reardon, your labs from the 14th look good. Kidney function and potassium are fine on your water pill and lisinopril. Blood counts normal. LDL cholesterol is under 100 on the atorvastatin, which is where we want it to stay, so please keep taking it every day. Hepatitis C screen negative. Your old records arrived too and confirm what you told me. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "vitals": {
+            "bp": [
+              135,
+              92
+            ],
+            "hr": 84
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-10T11:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T11:06"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-10T11:08"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine Visit",
+              "date": "2023-10-10T11:25",
+              "author": "RN",
+              "body": "In for fall shots per PCP plan. Screening questions negative, no prior reactions. High-dose flu L deltoid, 2023-24 COVID R deltoid, PCV20 L deltoid below the flu site. VIS sheets reviewed. Sat 15 min after, felt fine, left with wife."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "imaging",
+          "start": "2023-11-08T13:30",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-11-08T13:30",
+              "text": "Indication: annual lung cancer screening, former smoker, 40 pack-years, quit 2020. Baseline exam.\nTechnique: low-dose non-contrast CT of the chest.\nFindings: No pulmonary nodules. Airways patent. No consolidation or effusion. Coronary artery calcification and coronary stents noted. Heart size normal. No pericardial effusion. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-11-08T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2023-11-09T07:50",
+              "author": "PCP",
+              "body": "Screening CT negative, Lung-RADS 1. Coronary calcium and stents expected given his history. Repeat next fall. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "imaging",
+          "start": "2023-12-05T10:15",
+          "reason": "Abdominal aortic aneurysm screening",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-12-05T10:15",
+              "text": "Indication: one-time AAA screening, male former smoker.\nThe abdominal aorta is visualized from the diaphragm to the bifurcation. Normal caliber throughout, no aneurysmal dilatation. Common iliac arteries normal in caliber.",
+              "conclusion": "No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us-2023",
+              "action": "done",
+              "date": "2023-12-05T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Aorta screen",
+              "date": "2023-12-06T12:15",
+              "author": "PCP",
+              "body": "Normal aorta, no aneurysm. No further screening needed. Released to portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              79
+            ],
+            "hr": 79,
+            "spo2": 97,
+            "weight_kg": 91.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-20T14:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-20T14:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-20T14:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-02-20T15:05",
+              "author": "PCP",
+              "body": "S: six month check. Winter has kept him inside more, misses his morning walks. No chest discomfort. Breathing the same, no orthopnea or swelling. Says he's taken every pill since the fall, wife set up a weekly pill box. Weighs himself sometimes, not daily.\n\nO: vitals reviewed, weight down a bit from August. JVP not elevated. RRR, no gallop. Lungs clear. No edema.\n\nA/P: HFrEF stable on furosemide/lisinopril/carvedilol; BP improved. CAD without angina on aspirin and statin. BMP today. Encouraged daily weights - call if up 3 lb in a day or 5 in a week. RTC August for wellness visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              80
+            ],
+            "weight_kg": 91.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "pharmacy",
+          "start": "2024-04-16T09:30",
+          "reason": "90-day refills",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2024-04-16T09:30",
+              "author": "MA",
+              "body": "Pharmacy fax asking to switch all five of his maintenance meds to 90-day supplies for his Part D plan. Sent furosemide, lisinopril, carvedilol and atorvastatin x90 with 1 refill per PCP standing order. Aspirin is OTC, nothing needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "pharmacy",
+          "start": "2024-06-11T16:00",
+          "reason": "Outside vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-06-08T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine notification",
+              "date": "2024-06-11T16:00",
+              "author": "MA",
+              "body": "State registry update from his pharmacy: Shingrix dose 1 given 06/08/2024. Entered into immunization history. Dose 2 due in 2-6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              137,
+              81
+            ],
+            "hr": 79,
+            "rr": 17,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 91.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-08-20T10:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 289
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-20T10:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2024-08-20T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-08-20T10:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-20T10:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-08-20T10:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-08-20T10:50",
+              "author": "PCP",
+              "body": "Medicare AWV, turned 68 yesterday. Wife with him.\n\nFunctional: independent with everything, drives, does the shopping. No falls this year. Hearing ok, vision ok with readers. PHQ-2 0. Cognition: 3-word recall 3/3, clock normal.\n\nCardiac: no chest pain, no swelling. Has gone back to walking most mornings now the weather is good, two blocks to a cafe and back plus more on good days, camera in hand. No exertional symptoms with that.\n\nMeds reviewed bottle by bottle - all five present and he can say what each is for. Advance directive: wife is his health care proxy, they will bring a copy.\n\nExam: BP and weight stable. Heart regular, no gallop. Lungs clear. No edema.\n\nPlan\n- Labs: BMP, CBC, lipids today.\n- Tdap today (none on record).\n- Shingrix #2 due - pharmacy is fine. RSV vaccine recommended with his heart failure, same trip.\n- LDCT due November, ordered.\n- Colonoscopy up to date (2019).\n- Flu and COVID in October here.\n- Same meds. See him in 6 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2024-08-21T17:30",
+              "author": "PCP",
+              "body": "Labs fine - kidney function and potassium normal, LDL in the 90s on atorvastatin 40, blood count normal. Portal message sent."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 94
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "pharmacy",
+          "start": "2024-09-17T15:20",
+          "reason": "Outside vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-09-13T13:00"
+            },
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2024-09-13T13:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine notification",
+              "date": "2024-09-17T15:20",
+              "author": "MA",
+              "body": "Registry shows Shingrix #2 and Abrysvo RSV both given 9/13 at his pharmacy. Added to history. Shingles series complete."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "vitals": {
+            "bp": [
+              130,
+              87
+            ],
+            "hr": 73
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T10:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T10:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine Visit",
+              "date": "2024-10-08T10:55",
+              "author": "RN",
+              "body": "Flu (high dose) R deltoid and 2024-25 Moderna L deltoid. Tolerated. He asked whether the RSV shot needs a booster - told him not at this time per current guidance. 15 min observation, no issues."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T08:45",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-11-12T08:45",
+              "text": "Indication: annual lung cancer screening. Comparison 11/08/2023.\nTechnique: low-dose non-contrast CT of the chest.\nFindings: Lungs clear without nodules. No consolidation, effusion or pneumothorax. Coronary calcifications and stents again seen. No lymphadenopathy.",
+              "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-11-12T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2024-11-13T08:10",
+              "author": "PCP",
+              "body": "Second annual LDCT negative. Next due 11/2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Six-month follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2025-01-28T11:30",
+              "author": "front desk",
+              "body": "No-show for 10:40. Called home, wife answered - the driveway was iced over and he forgot to call. Rebooked for 2/11."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              139,
+              75
+            ],
+            "hr": 85,
+            "spo2": 99,
+            "weight_kg": 91.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-11T10:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-11T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-11T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-02-11T11:10",
+              "author": "PCP",
+              "body": "Rescheduled from the ice day.\nFeels the same as always. No chest pain or pressure with his usual walking. Breathing fine on a pillow. No ankle swelling. Pill box still going, maybe misses an evening carvedilol once a week.\nExam: comfortable. JVP normal. Regular rhythm, no S3. Lungs clear bilaterally. Legs without edema.\nA/P: HFrEF, CAD, HTN all stable on current regimen. Talked about the evening dose - he'll put the box by the TV. BMP. Back in summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "portal_message",
+          "start": "2025-05-20T19:12",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Refills",
+              "date": "2025-05-20T19:12",
+              "author": "patient",
+              "body": "Hello, I need my carvedilol and the water pill sent again, the pharmacy says no refills left. Same pharmacy as before. Thank you, Tom Reardon"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Refills",
+              "date": "2025-05-21T09:05",
+              "author": "MA",
+              "body": "Hi Tom, both sent this morning as 90-day supplies with a refill. Please book your summer check-up when you get a chance."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-03a",
+          "kind": "office_visit",
+          "start": "2025-07-03T15:40",
+          "end": "2025-07-03T16:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chest pressure",
+          "medications": [
+            {
+              "drug_text": "nitroglycerin 0.4 MG Sublingual Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3 doses; call 911 if pain persists after the first dose",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Sublingual",
+              "course": "chronic",
+              "reason": "Angina"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              81
+            ],
+            "hr": 88,
+            "rr": 13,
+            "spo2": 98,
+            "weight_kg": 91.6
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-07-03T15:55",
+              "text": "Sinus rhythm, rate 80. Normal axis. Normal intervals. Nonspecific ST-T wave changes in the lateral leads. No acute ST elevation. No prior tracing in our system for comparison.",
+              "conclusion": "Sinus rhythm with nonspecific ST-T changes."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-07-03T15:40"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-07-03T15:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2025",
+              "action": "placed",
+              "order": "Cardiology referral, urgent",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Progressive angina"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Same-day request",
+              "date": "2025-07-03T11:20",
+              "author": "RN",
+              "body": "Wife called. For a couple of months Tom has been getting a pressure in his chest walking up their stairs or going fast after breakfast; this week it came on while he was sitting reading. Nothing right now. Told her if it happens again and doesn't stop within a few minutes to call 911. Put him in PCP's 3:40 today."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: chest pressure",
+              "date": "2025-07-03T16:40",
+              "author": "PCP",
+              "body": "S: Two months of a squeezing feeling behind the breastbone that goes into his left arm. Brought on by the stairs at home or walking briskly after a meal, eases after he stops for a few minutes. Gets sweaty and short of breath with it and says it frightens him - feels like something bad is about to happen. No nausea, no vomiting, no racing heart. He has quit the walk to the cafe because two blocks sets it off. This past week it has come more often, and on Monday it started while he was sitting at the table with the paper. Lasted maybe five minutes. He kept it to himself until his wife saw him stop eating mid-breakfast. Taking his meds.\n\nO: comfortable at rest, no pain now. Heart regular, no murmur or gallop. Lungs clear. No edema. ECG: sinus, nonspecific ST-T changes laterally; nothing old here to compare.\n\nA/P: Accelerating angina with one episode at rest in a man with known CAD and stents - unstable pattern. Pain-free now and ECG without acute change. Discussed ED today vs urgent cardiology; he strongly prefers outpatient. Spoke with on-call cardiology, who can see him first thing Monday 7/7.\n- Nitroglycerin SL 0.4 prn sent; showed him how to use it.\n- Any pain at rest lasting more than 5 minutes or not gone after one nitro: 911, no driving himself. Wife present and understands.\n- Continue aspirin, carvedilol, statin and the rest unchanged.\n- I will call Friday to check in."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in call",
+              "date": "2025-07-04T12:05",
+              "author": "PCP",
+              "body": "Called. One brief episode last evening on the stairs, went away with rest, did not need nitro. Nothing at rest since. Confirmed Monday cardiology time. Precautions repeated."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-07a",
+          "kind": "specialist_visit",
+          "start": "2025-07-07T08:00",
+          "service": "Cardiology",
+          "reason": "Progressive angina",
+          "conditions": [
+            {
+              "label": "Acute coronary syndrome",
+              "action": "diagnosed",
+              "onset": "2025-06-30",
+              "note": "Unstable angina, rest pain",
+              "icd10": "I24.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              148,
+              90
+            ],
+            "hr": 84,
+            "spo2": 98,
+            "weight_kg": 91.8
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-07-07T08:20",
+              "text": "Sinus rhythm. Nonspecific ST-T wave abnormalities. No Q waves. No acute injury pattern.",
+              "conclusion": "Nonspecific ST-T changes."
+            },
+            {
+              "study": "Exercise stress test",
+              "performed": "2025-07-07T09:30",
+              "text": "Bruce protocol. Test stopped early for typical chest pressure at a low workload. Horizontal ST depression developed during exercise and resolved in recovery. No arrhythmia. Blood pressure response appropriate.",
+              "conclusion": "Positive for inducible ischemia at low exertion. High-risk result; proceeding to catheterization."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral-2025",
+              "action": "done",
+              "date": "2025-07-07T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "date": "2025-07-08T16:00",
+              "author": "cardiology",
+              "body": "Outside cardiology group\nDate of service: 07/07/2025\nReferred by: his primary care physician, for accelerating angina.\n\nThank you for sending Mr. Reardon, 68. He describes eight or nine weeks of central chest pressure with radiation down the left arm, initially on stairs or brisk walking after meals, recently more often and now at rest, including while reading in the morning. Episodes bring sweating, dyspnea and a strong sense of dread. He has been restricting what he does to avoid them; his wife reports he has become anxious and withdrawn. No nausea or palpitations.\n\nBackground: CAD with PCI about 2015; MI in 2020 with drug-eluting stent; ischemic cardiomyopathy with EF 30%; hypertension, often treated intermittently; hyperlipidemia with irregular statin use over the years. Former smoker, 40 pack-years, quit 2020. No alcohol. Father died of MI at 58; brother had CABG at 62.\nMeds: furosemide 40 daily, lisinopril 20 daily, carvedilol 12.5 bid, atorvastatin 40 daily, aspirin 81 daily, SL nitroglycerin prn (new). No drug allergies.\n\nExam: BP 148/90, HR 84, BMI 29. Normal S1 and S2, no murmurs, rubs or gallops. Lungs clear. No peripheral edema.\n\nECG: nonspecific ST-T changes. Treadmill: ischemic ST depression and typical symptoms at low workload.\n\nImpression: acute coronary syndrome - unstable angina with rest symptoms in established multivessel-risk CAD.\nPlan: direct admission today for coronary angiography, likely PCI tomorrow. Continue aspirin; he was reminded it is not optional. Will update you after the procedure."
+            }
+          ],
+          "measure": [
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-07b",
+          "kind": "hospital_admission",
+          "start": "2025-07-07T12:30",
+          "end": "2025-07-09T13:00",
+          "service": "Cardiology",
+          "reason": "Unstable angina, coronary angiography and PCI",
+          "medications": [
+            {
+              "drug": "clopidogrel 75 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 75,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Drug-eluting stent, acute coronary syndrome"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Coronary stent placement, single vessel",
+              "performed": "2025-07-08T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Cardiac catheterization report",
+              "date": "2025-07-11T10:20",
+              "author": "cardiology",
+              "body": "Regional hospital cardiac catheterization laboratory\nProcedure date: 07/08/2025\nIndication: unstable angina, positive stress test.\nAccess: right radial artery.\nFindings: multivessel coronary artery disease. Tight stenosis of the left anterior descending artery, the culprit for his symptoms. Previously placed stents patent.\nIntervention: PCI of the LAD with one drug-eluting stent; good final result, normal flow, no complication. Eptifibatide given during the procedure after a discussion of bleeding risk, which he accepted.\nRecommendations: aspirin 81 mg daily indefinitely; clopidogrel 75 mg daily for 12 months; continue home medications."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-07-11T10:25",
+              "author": "hospitalist",
+              "body": "Regional hospital\nAdmitted 07/07/2025 from cardiology clinic, discharged 07/09/2025.\nDiagnosis: acute coronary syndrome (unstable angina). LAD drug-eluting stent 07/08.\nCourse: angiography and PCI as per the cath report. Eptifibatide peri-procedure. Radial site clean, no hematoma. No recurrent chest pain after the stent. Ambulating without symptoms before discharge.\nAllergies: NKDA.\nDischarge medications: aspirin 81 mg daily; clopidogrel 75 mg daily (NEW); atorvastatin 40 mg daily; carvedilol 12.5 mg twice daily; lisinopril 20 mg daily; furosemide 40 mg daily; nitroglycerin 0.4 mg SL prn.\nFollow-up: cardiology in about 4 weeks; primary care as scheduled. Do not stop clopidogrel without speaking to cardiology."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "telephone",
+          "start": "2025-07-10T14:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-07-10T14:30",
+              "author": "RN",
+              "body": "Spoke with pt. Home since yesterday afternoon, stent placed Tuesday. No chest pain, wrist sore but not swollen. Picked up the new clopidogrel; reviewed that he takes it every day with the aspirin and never stops it on his own. Has nitro at the bedside. Bruising precautions reviewed. Cardiology follow-up in August. Will route to PCP when hospital papers arrive."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "specialist_visit",
+          "start": "2025-08-12T13:00",
+          "service": "Cardiology",
+          "reason": "Post-PCI follow-up",
+          "vitals": {
+            "bp": [
+              134,
+              82
+            ],
+            "hr": 79,
+            "weight_kg": 91.0
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up letter",
+              "date": "2025-08-14T09:00",
+              "author": "cardiology",
+              "body": "Outside cardiology group\nDate of service: 08/12/2025\n\nDear colleague,\nMr. Reardon is five weeks out from his LAD stent. He has had no angina since the procedure and has not used nitroglycerin. He has gone back to his morning routine, including the walk to the cafe. No bleeding or unusual bruising. Wrist access site healed. Heart regular without gallop, lungs clear, no edema.\nAssessment: CAD after recent ACS and PCI, angina-free. Ischemic cardiomyopathy, compensated.\nPlan: aspirin and clopidogrel for a total of 12 months, then aspirin alone. No medication changes today. See me in three months.\nAllergies: none known."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "office_visit",
+          "start": "2025-10-03T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after coronary stent; flu vaccine",
+          "conditions": [
+            {
+              "label": "Acute coronary syndrome",
+              "action": "resolved",
+              "onset": "2025-06-30",
+              "icd10": "I24.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              78
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 90.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-03T09:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-03T09:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-03T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-03T09:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-03T09:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-03T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-10-03T10:10",
+              "author": "PCP",
+              "body": "First time I've seen him since the July stent. Hospital and cardiology letters reviewed.\n\nS: No chest pressure since the procedure. Has not needed a single nitro. Back to his walks and to photographing on the way; says he feels better than he did all spring. Taking aspirin and clopidogrel daily, no bleeding besides easy bruising on the forearms. Breathing unchanged, no orthopnea, ankles fine. Wife still runs the pill box.\n\nO: looks well. Neck veins flat. RRR, no gallop. Lungs clear. Radial site healed. No edema.\n\nA/P\n1. CAD, ACS in July treated with LAD DES - resolved, angina-free. DAPT through July 2026 per cardiology. Continue atorvastatin 40.\n2. HFrEF, compensated. Same furosemide, lisinopril, carvedilol. BMP today.\n3. HTN acceptable.\n4. Lipids today.\n5. Flu shot today. LDCT due next month, ordered. COVID booster at pharmacy when convenient.\n6. RTC January."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2025-10-04T08:30",
+              "author": "PCP",
+              "body": "BMP normal, LDL similar to last year on atorvastatin 40. Released with a short note."
+            }
+          ],
+          "state": {
+            "weight_kg": 91.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-11a",
+          "kind": "hospital_admission",
+          "start": "2025-10-11T07:50",
+          "end": "2025-10-18T12:00",
+          "service": "Emergency Medicine",
+          "reason": "Cardiogenic shock",
+          "vitals": [
+            {
+              "time": "2025-10-11T07:55",
+              "bp": [
+                82,
+                54
+              ],
+              "hr": 112,
+              "rr": 26,
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-11T08:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 46
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-11T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-11T08:05",
+              "results": [
+                {
+                  "test": "Natriuretic peptide B",
+                  "loinc": "30934-4",
+                  "unit": "pg/mL",
+                  "value": 1480
+                },
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 64
+                },
+                {
+                  "test": "Lactate",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-18T06:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 65
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-10-11T08:20",
+              "text": "Portable AP chest. Enlarged cardiac silhouette. Bilateral interstitial edema with small bilateral pleural effusions. Coronary stents noted. No pneumothorax.",
+              "conclusion": "Cardiomegaly with pulmonary edema and small effusions."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-10-11T08:00",
+              "text": "Sinus tachycardia, rate 112. Nonspecific ST-T changes. No ST elevation.",
+              "conclusion": "Sinus tachycardia with nonspecific ST-T changes."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-10-13T11:00",
+              "text": "Left ventricle dilated with globally reduced systolic function. LVEF approximately 30%. Right ventricular function preserved. No significant valvular disease. No pericardial effusion.",
+              "conclusion": "LVEF about 30%, unchanged from prior reports."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-11T07:50"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-11T11:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-18T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2025-10-21T09:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department\nArrival 10/11/2025 07:50 by ambulance.\n\nHPI (from wife): three days of getting more breathless, unable to lie flat, legs swelling. Found on the floor at home this morning. He has been nauseated for several days and skipped a number of doses of his furosemide, lisinopril, carvedilol and atorvastatin. Known CAD with LAD stent in July, prior MI, HFrEF EF 30%.\n\nArrival: BP 82/54, HR 112, RR 26, SpO2 88% on room air. Diaphoretic and anxious. JVP to the angle of the jaw at 45 degrees. S3 present. Crackles at both bases. Cool extremities with sluggish capillary refill. Pitting edema to the knees.\n\nBNP 1,480. hs-troponin I 64. Lactate 4.1. Creatinine 1.6.\nECG: sinus tachycardia, nonspecific ST-T changes.\nPortable CXR: cardiomegaly, pulmonary edema.\n\nImpression: cardiogenic shock, acute on chronic systolic heart failure, precipitated by missed medications.\nOxygen started. Cardiology and ICU consulted; admitted to ICU for right heart catheterization and inotropic support."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-10-21T09:20",
+              "author": "hospitalist",
+              "body": "Regional hospital\nAdmitted 10/11/2025, discharged 10/18/2025.\n\nPrincipal diagnosis: cardiogenic shock due to acutely decompensated heart failure with reduced ejection fraction.\nSecondary: medication nonadherence (missed doses because of nausea); CAD with LAD stent 07/2025; prior MI; hypertension; hyperlipidemia.\n\nCourse: Admitted to the ICU. Right heart catheterization on day 1: RA 16 mmHg, PCWP 28 mmHg, cardiac index 1.7 L/min/m2. Started on dobutamine and IV furosemide with good diuresis. Dobutamine weaned off on hospital day 4. Oxygen weaned to room air. Lactate cleared. Mentation and perfusion normal by transfer to the floor. Nausea settled as he improved. Formal echo: LVEF about 30%. Troponin rise felt to be demand-related; no new coronary event. Creatinine 1.6 on arrival, 1.2 at discharge. Discharge weight 89 kg.\n\nAllergies: NKDA.\nDischarge medications (unchanged doses): furosemide 40 mg daily; lisinopril 20 mg daily; carvedilol 12.5 mg twice daily; atorvastatin 40 mg daily; aspirin 81 mg daily; clopidogrel 75 mg daily; nitroglycerin 0.4 mg SL prn.\nInstructions: take every dose; daily weights; 2 g sodium diet; call for weight gain over 3 lb in a day.\nFollow-up: cardiology in 2 weeks; primary care within 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "telephone",
+          "start": "2025-10-22T10:45",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-hospital call",
+              "date": "2025-10-22T10:45",
+              "author": "RN",
+              "body": "Hospital papers came in yesterday - ICU stay 10/11-10/18 for heart failure/shock. Called home, spoke with wife (pt in the room, ok for her to speak for him). He is tired but walking around the house, weighing every morning, 89 kg today. Nausea gone. She has every pill in the box again and watches him take them. Cardiology Nov 4. Offered a visit with PCP next week; she'd like to wait until after cardiology and will call to book. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP review",
+              "date": "2025-10-22T13:10",
+              "author": "PCP",
+              "body": "Read the discharge summary. Agree with plan. Would like to see him after his cardiology visit - front desk please follow up in 2 weeks if no appointment made."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "specialist_visit",
+          "start": "2025-11-04T14:00",
+          "service": "Cardiology",
+          "reason": "Post-hospital heart failure follow-up",
+          "vitals": {
+            "bp": [
+              133,
+              79
+            ],
+            "hr": 77,
+            "weight_kg": 90.0
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up letter",
+              "date": "2025-11-07T08:45",
+              "author": "cardiology",
+              "body": "Outside cardiology group\nDate of service: 11/04/2025\n\nDear colleague,\nI saw Mr. Reardon after his October admission for cardiogenic shock from decompensated HFrEF in the setting of missed doses. He is much improved: sleeps flat, no edema, no chest pain. Weight steady at 89 kg on his home scale. His wife now fills a pill organizer and he reports taking every dose.\nExam: JVP not raised, regular rhythm without gallop, lungs clear, no edema.\nPlan: no medication changes. Continue aspirin and clopidogrel until July 2026. Daily weights. Return in about 3 months, sooner for weight gain or breathlessness."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "telephone",
+          "start": "2025-11-18T11:20",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling follow-up",
+              "date": "2025-11-18T11:20",
+              "author": "front desk",
+              "body": "Called per PCP to book post-hospital visit. Wife says cardiology saw him and he's doing well; they'd rather keep the January appointment that's already on the books. Ok'd by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T09:10",
+          "reason": "Refills",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2025-12-09T09:10",
+              "author": "MA",
+              "body": "eRx requests from pharmacy for lisinopril 20, atorvastatin 40 and clopidogrel 75. All match the current list. Sent 90 days each per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2026-01-19T16:05",
+              "author": "front desk",
+              "body": "Wife called to cancel tomorrow - snow forecast and he doesn't want to go out. Said he's fine, nothing new. Will call back to reschedule in the spring."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "portal_message",
+          "start": "2026-04-07T20:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "carvedilol and furosemide",
+              "date": "2026-04-07T20:30",
+              "author": "patient",
+              "body": "My wife says we are almost out of the carvedilol and furosemide. Could you send them in. Also we keep meaning to make an appointment, will do it soon. Tom"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: carvedilol and furosemide",
+              "date": "2026-04-08T08:50",
+              "author": "MA",
+              "body": "Both sent to your pharmacy for 90 days. Dr. would like to see you - you're overdue since October. Our scheduler will call you this week."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling attempt",
+              "date": "2026-04-10T10:15",
+              "author": "front desk",
+              "body": "Called to schedule follow-up, no answer. Left voicemail with call-back number."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "specialist_visit",
+          "start": "2026-07-01T10:30",
+          "service": "Cardiology",
+          "reason": "Twelve-month post-PCI follow-up",
+          "vitals": {
+            "bp": [
+              131,
+              80
+            ],
+            "hr": 76,
+            "weight_kg": 91.1
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up letter",
+              "date": "2026-07-06T11:40",
+              "author": "cardiology",
+              "body": "Outside cardiology group\nDate of service: 07/01/2026\n\nDear colleague,\nMr. Reardon is now a year from his LAD stent. No angina. Breathing stable at his usual level; no admissions since October. No bleeding.\nExam: euvolemic, regular rhythm, clear lungs, no edema.\nPlan: he has completed 12 months of dual antiplatelet therapy; clopidogrel stopped today. Aspirin 81 mg daily continues. Other medications unchanged: furosemide 40 daily, lisinopril 20 daily, carvedilol 12.5 twice daily, atorvastatin 40 daily. Follow-up in 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "hospital_admission",
+          "start": "2026-07-10T09:05",
+          "end": "2026-07-17T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Cardiogenic shock",
+          "vitals": [
+            {
+              "time": "2026-07-10T09:10",
+              "bp": [
+                78,
+                55
+              ],
+              "hr": 120,
+              "rr": 28
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-07-11T14:00",
+              "text": "Left ventricle dilated with severely reduced global systolic function. LVEF 25-30%. Right ventricular function preserved. No significant valvular disease. No pericardial effusion.",
+              "conclusion": "Severely reduced LV systolic function, LVEF 25-30%."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-07-10T09:05"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-07-10T12:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-07-17T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-07-21T09:40",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department\nArrival 07/10/2026 09:05.\n\n69-year-old man with CAD, prior MI, HFrEF and an ICU stay last October for cardiogenic shock. This morning, abruptly, severe breathlessness and confusion; wife called EMS.\nHome medications: furosemide 40 mg daily, lisinopril 20 mg daily, carvedilol 12.5 mg twice daily, atorvastatin 40 mg daily, aspirin 81 mg daily. NKDA.\n\nOn arrival: BP 78/55, HR 120, RR 28. Confused, cool and clammy peripherally. JVD present. Diffuse crackles throughout both lungs.\nBedside echo: severely decreased left ventricular contractility.\n\nImpression: cardiogenic shock. Cardiology and ICU at bedside; admitted to the cardiac ICU."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-07-21T09:45",
+              "author": "hospitalist",
+              "body": "Regional hospital\nAdmitted 07/10/2026, discharged 07/17/2026.\n\nPrincipal diagnosis: cardiogenic shock, acute on chronic systolic heart failure.\nHistory: CAD with LAD stent 07/2025, prior MI, HFrEF, hypertension, hyperlipidemia. Prior admission 10/2025 for cardiogenic shock.\n\nCourse: cardiac ICU. Dobutamine and IV furosemide. Confusion resolved within the first day as perfusion improved. Dobutamine off on hospital day 3. Formal echo LVEF 25-30%. Transferred to the floor and mobilized.\n\nAllergies: NKDA.\nDischarge medications: furosemide 40 mg daily; lisinopril 20 mg daily; carvedilol 12.5 mg twice daily; atorvastatin 40 mg daily; aspirin 81 mg daily.\nFollow-up: heart failure cardiology clinic; primary care within 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "telephone",
+          "start": "2026-07-22T11:00",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-hospital call",
+              "date": "2026-07-22T11:00",
+              "author": "RN",
+              "body": "Second admission received yesterday (7/10-7/17, cardiogenic shock again). Called; wife answered. Home and resting, walking room to room, weighing daily. Thinking clearly. Heart failure cardiology appointment is set. Tried to get him in here this week; she would like a morning after Labor Day, when he is steadier for the car ride. Booked 9/1 at 9:00 with PCP for hospital follow-up and his yearly wellness visit. Told her to call sooner for weight up 3 lb, more swelling or breathlessness."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP review",
+              "date": "2026-07-22T15:20",
+              "author": "PCP",
+              "body": "Reviewed both outside records. Will reconcile his list at the 9/1 visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T18:45",
+          "reason": "Appointment question",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "September appointment",
+              "date": "2026-08-11T18:45",
+              "author": "patient",
+              "body": "This is his wife writing on Tom's account. Should we bring all his pill bottles from the hospital to the September 1 appointment, and the paper with his weights? He is doing ok."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: September appointment",
+              "date": "2026-08-12T08:30",
+              "author": "RN",
+              "body": "Yes please - every bottle, including anything over the counter, and the weight log. Glad he's doing ok. Call us if anything changes before then."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-01a",
+          "kind": "office_visit",
+          "start": "2026-09-01T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up and annual wellness visit",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute coronary syndrome|I24.9": {
+        "code": "I24.9",
+        "display": "Acute ischemic heart disease, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "nitroglycerin 0.4 MG Sublingual Tablet": {
+        "code": "198039",
+        "display": "nitroglycerin 0.4 MG Sublingual Tablet",
+        "ingredient": "nitroglycerin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Natriuretic peptide B": {
+        "code": "30934-4",
+        "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

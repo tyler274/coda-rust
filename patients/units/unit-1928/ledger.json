@@ -1,0 +1,927 @@
+{
+  "unit": "unit-1928",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001928",
+      "given": "Kelly",
+      "family": "Langevin",
+      "birth_date": "1990-03-09",
+      "address_line": "41 Torrey Brook Road",
+      "phone": "+1-413-555-0145",
+      "email": "kelly.langevin@example.test",
+      "marital_status": "single",
+      "summary": "Healthy 34-year-old self-employed landscape gardener on a combined oral contraceptive who joined in September 2024. Allergic contact dermatitis of the hands from a new soap in early 2025, then a rectangular contact dermatitis at the wound dressing after an ED visit for a gardening cut to the left forearm, which recurred with a second cut in May 2026 after her last practice visit.",
+      "events": [
+        {
+          "id": "2024-08-21a",
+          "kind": "telephone",
+          "start": "2024-08-21T10:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2024-08-21T10:40",
+              "author": "front desk",
+              "body": "Caller would like to establish with the practice; her previous doctor's office in another town has stopped taking new appointments for established patients on short notice and she wants someone closer to home. Membership explained, she enrolled by phone. BCBS card info taken. New patient visit set for Tue 9/10 at 8:30. Sent the records release form through the portal, she signed it back the same afternoon. Asked her to bring her current pill pack to the visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:30",
+          "end": "2024-09-10T09:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "medications": [
+            {
+              "drug_text": "ethinyl estradiol 0.03 MG / levonorgestrel 0.15 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Contraception"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              76
+            ],
+            "hr": 63,
+            "temp_c": 36.2,
+            "spo2": 99,
+            "weight_kg": 63.9,
+            "height_cm": 167.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T09:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social drinker, 1-2 glasses of wine per week"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-09-10T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-09-10T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-09-10T09:25",
+              "author": "PCP",
+              "body": "34F here to set up primary care. Feels well, no complaints today. Previous PCP was a family practice she saw every year or two; records requested.\n\nPMH: none. Has never been hospitalized. PSH: none.\nMeds: combined OCP, levonorgestrel 0.15 / EE 0.03, one daily, on it for years without trouble. No headaches with aura, no clots in herself or family. No supplements.\nAllergies: no known drug allergies.\nFH: mother gets seasonal hay fever. A maternal uncle has eczema. Nothing else she knows of.\nSH: runs her own landscape and garden business, mostly solo, busiest April through November, outdoors all day in season. Never smoked. Wine a glass or two a week. No drugs. Lives in Easthampton.\nGyn: last Pap at prior office in 2022, told it was normal. Periods regular on the pill.\n\nROS: negative across the board other than seasonal sunburn and the odd sore back after a long planting day.\n\nExam: well-appearing, tanned. Vitals in flowsheet, BP normal. HEENT clear, thyroid not enlarged. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin: no rashes, no concerning pigmented lesions on a quick look at back and arms. Ext warm, no swelling. Mood bright, PHQ-2 is 0.\n\nAssessment/plan:\n1. Health maintenance - baseline CBC, CMP, lipids; one-time HIV and hep C screens drawn today. Tdap today since she can't remember her last one and she gets scraped up at work all the time. Flu and COVID in October when the fall supply is in.\n2. Contraception - BP fine, nonsmoker, no migraine with aura; continue current pill, I'll take over refills.\n3. Cervical screening - per her report done 2022; will confirm from the records.\nSunscreen and tick checks discussed, she knows the drill. RTC yearly or as needed, text anytime."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "height_cm": 168.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-09-12T16:05",
+              "author": "PCP",
+              "body": "Hi Kelly - everything from Tuesday came back fine. Blood counts, kidney and liver numbers, sugar and cholesterol are all in a good range, and the HIV and hepatitis C screens were negative. Nothing to do here. Flu and COVID shots in October - the nurses will reach out."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "outside_records",
+          "start": "2024-09-26T11:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2024-09-26T11:20",
+              "author": "front desk",
+              "body": "Received 23 pages from prior family practice covering 2016-2024. Summary for PCP review:\n- Annual visits most years; no chronic diagnoses listed.\n- Combined OCP (levonorgestrel/ethinyl estradiol) prescribed continuously.\n- Cervical cytology 2022: negative for intraepithelial lesion; HPV co-test negative. Next screen due 2027.\n- Childhood immunizations documented complete.\n- No allergies on file.\nAbstracted into chart and filed to media. PCP initialed 9/27."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-17T07:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-17T07:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2024-10-17T08:05",
+              "author": "RN",
+              "body": "In early before heading out to a job. Feeling well, no fever. Screening questions negative. Influenza 0.5 mL IM left deltoid; 2024-25 COVID (Pfizer) 0.3 mL IM right deltoid. VIS sheets offered, she declined paper copies. Tolerated both, observed 15 min, left in good spirits."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-09a",
+          "kind": "pharmacy",
+          "start": "2025-01-09T13:10",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request - oral contraceptive",
+              "date": "2025-01-09T13:10",
+              "author": "MA",
+              "body": "E-refill request from pharmacy for levonorgestrel 0.15 mg/ethinyl estradiol 0.03 mg, 3-pack. Seen 9/2024, BP normal, on PCP protocol. Approved 3 packs x 3 refills. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-02a",
+          "kind": "portal_message",
+          "start": "2025-02-02T09:12",
+          "orders": [
+            {
+              "id": "derm-referral-2025",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Vesicular itchy rash of both hands and wrists"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash on my hands",
+              "date": "2025-02-02T09:12",
+              "author": "patient",
+              "body": "Sorry to bug you on a Sunday. Since yesterday both my hands and wrists are red, puffy and covered in tiny blisters and the itching is driving me crazy. I switched to a different hand soap at the kitchen sink on Friday and that's the only thing I can think of - no new meds or foods, haven't been anywhere. Photo attached. No fever, I feel fine otherwise."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash on my hands",
+              "date": "2025-02-02T10:30",
+              "author": "PCP",
+              "body": "Not bugging me at all. From the photo this looks like a contact reaction, and the timing with the new soap fits. Put that soap away for good and wash with plain water or your old soap. Cool compresses help the itch. Because it's blistering on both hands and you use your hands for a living, I'd like a dermatologist to see it right away - I've sent a referral and asked them to work you in tomorrow; their office will call in the morning. If you get a fever, spreading redness up the arms, or anything in your mouth or eyes, call me."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "outside_records",
+          "start": "2025-02-11T14:40",
+          "conditions": [
+            {
+              "label": "Allergic contact dermatitis",
+              "action": "diagnosed",
+              "onset": "2025-02-01",
+              "note": "Hands and wrists, after a new hand soap",
+              "icd10": "L23.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "triamcinolone acetonide 1 MG/ML Topical Cream",
+              "action": "historical",
+              "sig": "Apply a thin layer to affected areas twice daily for 2 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Allergic contact dermatitis (dermatology)"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-03T11:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-03T11:30",
+              "results": [
+                {
+                  "test": "Immunoglobulin E, serum",
+                  "loinc": "19113-0",
+                  "unit": "[IU]/mL",
+                  "value": 43
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2025",
+              "action": "done",
+              "date": "2025-02-11T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "date": "2025-02-11T14:40",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY - CONSULTATION\nDate of service: 02/03/2025\nReferred by: primary care physician\n\nReason: pruritic eruption of both hands and wrists x 2 days.\n\nMs. Langevin is a 34-year-old landscape gardener who changed to a new brand of hand soap and developed an intensely itchy eruption on the hands and wrists the following day. She has started no medications and reports no new foods or travel. No prior skin disease of note. Medications: combined oral contraceptive daily. Allergies: NKDA. Family history notable for seasonal allergic rhinitis in her mother and atopic dermatitis in a maternal uncle. Never smoker; drinks wine socially.\n\nExamination: Afebrile. Dorsal hands and wrists bilaterally show erythema and edema studded with numerous small vesicles. Oral and conjunctival mucosa spared. No signs of systemic involvement. Remainder of the skin and general examination unremarkable.\n\nLaboratory (drawn today): CBC within normal limits. Total serum IgE 43 IU/mL, not elevated.\n\nImpression: Allergic contact dermatitis of the hands and wrists, temporally linked to the new hand soap.\n\nRecommendations:\n1. Discontinue the soap; use a fragrance-free cleanser.\n2. Triamcinolone acetonide 0.1% cream to affected skin twice daily for 2 weeks, then stop.\n3. Liberal bland emollient; cotton-lined gloves under work gloves for wet or soil work while healing.\n4. Return if not clearing in 2-3 weeks.\n\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "portal_message",
+          "start": "2025-02-25T19:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hands update",
+              "date": "2025-02-25T19:48",
+              "author": "patient",
+              "body": "Quick update - hands are back to normal. Finished the cream last week. Threw out the soap. Thanks for getting me in so fast."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hands update",
+              "date": "2025-02-26T07:55",
+              "author": "PCP",
+              "body": "Great news. Their letter came through and it matches what we thought. Keep the emollient going through spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-05a",
+          "kind": "portal_message",
+          "start": "2025-05-05T18:20",
+          "conditions": [
+            {
+              "label": "Laceration of left forearm",
+              "action": "diagnosed",
+              "onset": "2025-05-01",
+              "note": "Superficial, gardening fall; cleaned and dressed in ED",
+              "icd10": "S51.812A"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Arm rash after the ER",
+              "date": "2025-05-05T18:20",
+              "author": "patient",
+              "body": "On Thursday I slipped on a wet bank at a client's place and cut my left forearm on an edging stone. Went to the ER because it bled a lot - they cleaned it out and put a big dressing on, no stitches. The cut itself looks good. But since Saturday the skin under where the dressing was is red and super itchy, and it's in a perfect rectangle. A little bigger today but not outside the rectangle. No fever. Is this infected?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Arm rash after the ER",
+              "date": "2025-05-05T19:02",
+              "author": "PCP",
+              "body": "Sorry about the fall. An itchy rash shaped exactly like the dressing, with the cut itself healing well and no fever, sounds much more like a skin reaction to the dressing than an infection. Leave it uncovered or use plain gauze and paper tape. Since you already have a dermatologist, call them first thing - they'll probably see you this week. If it turns warm, painful, starts streaking, or you run a fever, let me know right away. Come in next week so I can look at the cut."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "office_visit",
+          "start": "2025-05-13T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Recheck left forearm laceration",
+          "conditions": [
+            {
+              "label": "Laceration of left forearm",
+              "action": "resolved",
+              "onset": "2025-05-01",
+              "icd10": "S51.812A"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "triamcinolone acetonide 1 MG/ML Topical Cream",
+              "action": "historical",
+              "sig": "Apply a thin layer to the forearm rash twice daily for 2 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Contact dermatitis at dressing site (dermatology)"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              76
+            ],
+            "hr": 62,
+            "temp_c": 36.6,
+            "weight_kg": 64.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, straightforward MDM",
+              "performed": "2025-05-13T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-05-13T16:55",
+              "author": "PCP",
+              "body": "F/u left forearm cut from 5/1 (ED, cleaned + dressed, no sutures). Saw her dermatologist 5/6 for the rectangular itchy rash under the dressing - told it was a contact reaction and given triamcinolone 0.1% cream BID x 2 wk, using it. Itch much better. Their letter isn't in yet. Tdap given here 9/2024, so current. No fever.\n\nExam: afebrile, vitals ok. Left dorsal forearm: linear cut about 3 cm fully closed, no drainage, no tenderness. Surrounding rectangle of pink, scaly, slightly thickened skin with a few scratch marks, fading at the edges. No warmth, no streaking, no epitrochlear or axillary nodes.\n\nA/P: laceration healed - resolved. Dressing-site contact dermatitis improving, finish the derm course. Will chase the derm letter for the chart. Told her to mention the reaction whenever someone goes to bandage her."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "pharmacy",
+          "start": "2025-06-19T10:02",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request - oral contraceptive",
+              "date": "2025-06-19T10:02",
+              "author": "MA",
+              "body": "Pharmacy request levonorgestrel/EE 0.15/0.03, 3 packs. BP normal 5/13. Approved x 1 with 3 refills through physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "telephone",
+          "start": "2025-07-22T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request - dermatology",
+              "date": "2025-07-22T11:15",
+              "author": "front desk",
+              "body": "Still no note in the chart from her 5/6 dermatology visit. Called their office - visit is signed on their end, it just never went out. They'll fax it this week. Will watch for it."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "outside_records",
+          "start": "2025-08-05T09:30",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology follow-up",
+              "date": "2025-08-05T09:30",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY - FOLLOW-UP NOTE\nDate of service: 05/06/2025\n\nSeen again three months after her hand dermatitis from soap, which resolved. Five days ago she fell while gardening and was treated in an emergency department for a superficial laceration of the left forearm; the wound was cleaned and dressed and has healed well. Two days after that visit a red patch appeared under the dressing and has become progressively more pruritic, enlarging slightly but staying within a rectangular outline. Denies fever, chills or other systemic symptoms. No history of chronic skin disease. Medications: oral contraceptive. NKDA.\n\nExam: Dorsal left forearm with a sharply marginated, erythematous, lichenified plaque bearing fine scale and mild excoriation, rectangular in outline. Healed laceration within it. No warmth, no fluctuance. No regional lymphadenopathy.\n\nAssessment: Allergic contact dermatitis, left forearm, confined to the area of the wound dressing - consistent with a reaction to the dressing or its adhesive.\n\nPlan: Triamcinolone 0.1% cream twice daily for 2 weeks. Avoid the same type of dressing. Follow up as needed.\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "portal_message",
+          "start": "2025-10-28T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2025-10-28T12:40",
+              "author": "patient",
+              "body": "Season's winding down - can I get my yearly checkup in mid-November? Mornings are best. Also want my flu shot and the new COVID one then if that's ok."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2025-10-28T14:05",
+              "author": "front desk",
+              "body": "You're all set for Thursday 11/13 at 8:00. Please come fasting for bloodwork and we'll do both vaccines that day."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-13a",
+          "kind": "annual_physical",
+          "start": "2025-11-13T08:00",
+          "end": "2025-11-13T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              78
+            ],
+            "hr": 60,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 63.4,
+            "height_cm": 167.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-13T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 290
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-13T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-13T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-13T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-11-13T08:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-11-13T09:10",
+              "author": "PCP",
+              "body": "35F annual exam. Busy season done; says she's tired in the good way. No new health issues. Hands stayed clear since February with the fragrance-free soap. Forearm patch from the dressing reaction cleared over the summer. Pill going fine, no breakthrough bleeding, no headaches.\n\nMeds: levonorgestrel 0.15 / EE 0.03 daily.\nAllergies: NKDA. Contact dermatitis history (soap; wound dressing) - noted in problem list.\nSH unchanged, never smoker, light wine.\n\nROS: negative.\n\nExam: vitals in flowsheet, BP normal, weight steady. Well appearing. HEENT unremarkable. Neck supple, no nodes or thyromegaly. Heart regular, no murmur. Lungs clear throughout. Abdomen soft, no masses. Skin: hands normal; left dorsal forearm with healed linear scar, no active dermatitis. No suspicious moles. Neuro grossly normal. Affect bright; PHQ-9 2.\n\nA/P:\n- Adult preventive care. CBC and CMP today. Lipids were fine last year, not repeating. Pap/HPV next due 2027 per 2022 result. Flu and 2025-26 COVID today.\n- Contraception: continue, renewed x 1 year.\n- Allergic contact dermatitis, hx: quiet. Avoid that soap and that kind of dressing.\nSee you next November; message anytime."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "portal_message",
+          "start": "2025-11-14T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-11-14T15:20",
+              "author": "PCP",
+              "body": "Your blood count and chemistry panel from yesterday are normal. Have a good winter!"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-09a",
+          "kind": "portal_message",
+          "start": "2026-05-09T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Same arm, same rash",
+              "date": "2026-05-09T08:05",
+              "author": "patient",
+              "body": "You won't believe it. Went down on a slope Wednesday and opened up the same forearm again, so back to the ER - cleaned and bandaged, no stitches. I told them about last year but I don't think it registered. Yesterday the same itchy red rectangle started under the bandage. Cut looks fine, no fever. I already got myself an appointment with dermatology Monday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Same arm, same rash",
+              "date": "2026-05-09T09:40",
+              "author": "PCP",
+              "body": "Oh no - sorry, Kelly. Good that you booked derm already. Take the bandage off now and keep it to plain gauze if anything. Same warning signs as last time: warmth, pain, streaks or fever, message me. Please ask derm to send us their note."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "outside_records",
+          "start": "2026-06-03T10:10",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology follow-up",
+              "date": "2026-06-03T10:10",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY - CLINIC NOTE\nDate of service: 05/11/2026\n\nReturning patient, known to us for soap-related hand dermatitis (02/2025) and a similar dressing-site eruption on the left forearm after an ED visit in 05/2025. Five days ago she again slipped while gardening and had a superficial laceration of the left forearm cleaned and dressed in an emergency department. The wound is healing well. Two days after that visit a red patch appeared where the dressing sat; over 3 days it has grown more itchy and spread slightly but remains inside a rectangular boundary. No fever, chills or systemic complaints. Medications: oral contraceptive. NKDA.\n\nExam: Well-defined erythematous, lichenified plaque with fine scale and a few excoriations over the dorsal left forearm, rectangular in configuration, surrounding the healing laceration. No warmth or fluctuance; no regional adenopathy.\n\nAssessment: Recurrent allergic contact dermatitis at a wound-dressing site.\n\nPlan: Triamcinolone 0.1% cream twice daily for 2 weeks. Ask for non-adhesive dressings for any future wound care, and mention this reaction to whoever is dressing a wound.\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-30a",
+          "kind": "portal_message",
+          "start": "2026-07-30T09:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Annual physical reminder",
+              "date": "2026-07-30T09:00",
+              "author": "front desk",
+              "body": "Hi Kelly, your yearly physical is due in November. Reply here or call when your schedule settles down and we'll get you on the books."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Allergic contact dermatitis|L23.9": {
+        "code": "L23.9",
+        "display": "Allergic contact dermatitis, unspecified cause",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Laceration of left forearm|S51.812A": {
+        "code": "S51.812A",
+        "display": "Laceration without foreign body of left forearm, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ethinyl estradiol 0.03 MG / levonorgestrel 0.15 MG Oral Tablet": {
+        "code": "238019",
+        "display": "ethinyl estradiol 0.03 MG / levonorgestrel 0.15 MG Oral Tablet",
+        "ingredient": "ethinyl",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Immunoglobulin E, serum": {
+        "code": "19113-0",
+        "display": "IgE [Units/volume] in Serum or Plasma",
+        "unit": "[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

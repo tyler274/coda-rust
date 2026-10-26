@@ -1,0 +1,1101 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002213",
+   "events": [
+    {
+     "id": "2022-01-05a",
+     "kind": "specialist_visit",
+     "start": "2022-01-05T14:00",
+     "service": "Ophthalmology",
+     "reason": "Ophthalmology consult",
+     "conditions": [
+      {
+       "label": "Hypertensive retinopathy",
+       "icd10": "H35.033",
+       "action": "diagnosed",
+       "onset": "2022-01-05"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ophtho-referral",
+       "action": "done",
+       "date": "2022-01-05T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Ophthalmology consultation (outside)",
+       "author": "ophthalmology",
+       "date": "2022-01-12T10:30",
+       "body": "OUTSIDE OPHTHALMOLOGY\nVisit 01/05/2022. Referred for an abnormal vision screen.\n69-year-old man with hypertension, type 2 diabetes, CKD and a history of colon cancer. No acute loss of vision. Over several months he has noticed occasional trouble with peripheral vision and a fuzziness around bright lights. Does not wear corrective lenses. He admits he has not always been consistent with his blood pressure medication.\nMeds per patient list; NKDA. Nonsmoker, no alcohol.\nExam: visual acuity mildly reduced in both eyes. Intraocular pressures normal. Dilated fundus exam: arteriovenous nicking of the retinal vessels. No diabetic retinopathy seen.\nImpression: hypertensive retinopathy.\nPlan: blood pressure control is the treatment; discussed taking his pills daily. Return 1 year, sooner for any change."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-13a",
+     "kind": "portal_message",
+     "start": "2022-01-13T08:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Eye doctor letter",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Re: eye doctor",
+       "author": "patient",
+       "date": "2022-01-13T08:50",
+       "body": "Eye doctor said the blood vessels in back of my eyes show the blood pressure. I'll be honest I miss the evening pills sometimes. Should I change anything?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: eye doctor",
+       "author": "PCP",
+       "date": "2022-01-13T17:20",
+       "body": "Thanks for being straight with me. Your BP pills are both once a day, so you can take them together in the morning with the metformin. That alone might fix it. Keep a few home readings and bring them in March."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-22a",
+     "kind": "office_visit",
+     "start": "2022-03-22T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-03-22T10:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-03-22T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-03-22T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2022-03-22T09:30",
+       "body": "Moved both BP meds to mornings after the eye visit; says he hasn't missed since. Home log 124-136 / 74-82.\nHypertensive retinopathy noted on Jan eye exam. No diabetic retinopathy.\nNo complaints today.\nExam: as charted. RRR, lungs clear, no edema.\nPlan: continue. BMP and A1c today. PCV in the fall with flu. RTC 6 mo."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-17a",
+     "kind": "office_visit",
+     "start": "2022-05-17T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lightheaded spells",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-05-17T15:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "intermittent lightheadedness"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Acute Visit",
+       "author": "PCP",
+       "date": "2022-05-17T15:00",
+       "body": "Asked to be seen: for a few months, every couple of weeks, a brief lightheaded feeling, seconds, usually sitting or standing around, not with exertion. Never passed out, no chest pain, no racing heart. Not tied to meals. Sugars not low as far as he knows.\nMeds unchanged, taking them all in the morning now.\nExam: BP as charted, orthostatic readings without a drop. HR regular. No murmur, no carotid bruit. Neuro nonfocal.\nA/P: intermittent lightheadedness without syncope. BP not low. Will ask cardiology to evaluate with rhythm assessment given age and diabetes. Told him not to drive if he feels faint and to call 911 for passing out or chest pain."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-07a",
+     "kind": "specialist_visit",
+     "start": "2022-07-07T11:00",
+     "service": "Cardiology",
+     "reason": "Cardiology consult",
+     "vitals": {
+      "bp": [
+       132,
+       78
+      ],
+      "hr": 58
+     },
+     "conditions": [
+      {
+       "label": "First-degree AV block with bundle branch block (incomplete trifascicular block)",
+       "icd10": "I45.3",
+       "action": "diagnosed",
+       "onset": "2022-07-07"
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2022-07-07T11:10",
+       "text": "Sinus rhythm. First-degree AV block, PR 220 ms. QRS duration 120 ms with bundle branch block.",
+       "conclusion": "First-degree AV block with bundle branch block."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral",
+       "action": "done",
+       "date": "2022-07-07T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Cardiology consultation (outside)",
+       "author": "cardiology",
+       "date": "2022-07-13T14:00",
+       "body": "OUTSIDE CARDIOLOGY GROUP — CONSULT\nDate of visit 07/07/2022. Reason: lightheadedness.\n69M, history of colon cancer s/p resection, hypertensive retinopathy, HTN, DM2, HLD, CKD 3. Overall feels well; occasional lightheaded episodes over a few months. No chest pain, palpitations or syncope.\nMeds: metformin, lisinopril, atorvastatin, amlodipine 5, aspirin 81. NKDA.\nFH: father HTN and CAD. Never smoker, no alcohol, retired accountant.\nExam: BP 132/78, HR 58 and regular. Heart sounds without murmur, rub or gallop.\nECG: sinus rhythm, first-degree AV block with PR 220 ms; QRS 120 ms with bundle branch block.\nImpression: first-degree AV block with bundle branch block (incomplete trifascicular block). No pacing indication at present.\nPlan: avoid beta-blockers, nondihydropyridine calcium channel blockers and other AV-nodal slowing drugs. Call or go to the ED for any fainting. Annual ECG here."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-20a",
+     "kind": "office_visit",
+     "start": "2022-09-20T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-20T11:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-20T11:00",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Total Cholesterol"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-20T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2022-09-20T11:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-09-20T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2022-09-20T10:30",
+       "body": "Cardiology letter reviewed: first-degree AV block plus bundle branch block, no pacemaker now, avoid AV nodal blockers. Added an alert to the chart. He still gets the odd lightheaded second or two, no worse. No fainting.\nBP good. Diabetes stable.\nExam: RRR, slow-normal rate. Lungs clear. Feet: monofilament intact, pulses palpable.\nPlan: PCV20 today (prior PPSV23 2018). Labs today. RTC after AWV."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-11a",
+     "kind": "nurse_visit",
+     "start": "2022-10-11T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-11T09:02"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-11T09:04"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-11T09:02"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2022-10-11T09:00",
+       "body": "Fluzone HD left arm, Pfizer bivalent booster right arm. Waited 15 min. No issues."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "annual_physical",
+     "start": "2022-12-06T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-12-06T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-12-06T09:00",
+       "body": "AWV.\nDoing well. Eye follow-up planned January. Cardiology yearly. No falls, independent with everything, still drives. Mood good, PHQ-2 0.\nAdvance directive on file (wife is proxy).\nVaccines current. Colonoscopy surveillance next due 2024.\nExam: normal. BP as charted.\nPlan: continue meds. Labs in spring."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-14a",
+     "kind": "portal_message",
+     "start": "2023-02-14T07:55",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refills",
+       "author": "patient",
+       "date": "2023-02-14T07:55",
+       "body": "Need my atorvastatin and amlodipine sent again, pharmacy says no refills left. Thanks."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Refills",
+       "author": "MA",
+       "date": "2023-02-14T11:30",
+       "body": "Sent both to your pharmacy for 90 days with refills. You're due for a visit in March, the front desk will reach out."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-21a",
+     "kind": "office_visit",
+     "start": "2023-03-21T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Creatinine": 1.6
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-03-21T13:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-03-21T13:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-03-21T13:30",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-03-21T13:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Total Cholesterol"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-03-21T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2023-03-21T13:00",
+       "body": "Routine. Feels okay. Some low back stiffness in the mornings this winter, nothing he wants worked up.\nBP at home in range. Taking everything.\nExam: as charted. Heart regular. Lungs clear. Feet fine.\nLabs today; creatinine has crept up slightly over the years, still 3a. Avoid NSAIDs reinforced.\nRTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-16a",
+     "kind": "office_visit",
+     "start": "2023-05-16T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Back and leg pain with walking",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-05-16T10:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ortho-referral",
+       "action": "placed",
+       "order": "Orthopedics referral",
+       "category": "referral",
+       "to": "Orthopedics",
+       "reason": "low back and bilateral leg pain with walking"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Acute Visit",
+       "author": "PCP",
+       "date": "2023-05-16T10:00",
+       "body": "For about four months, low back ache and both legs ache when he walks more than a few minutes. Better when he sits, or leans on the cart at the grocery store. No numbness, tingling, weakness. No bowel or bladder trouble. No fever, no weight loss.\nExam: tender to lumbar extension, flexion fine. Straight leg raise negative. Strength 5/5, reflexes symmetric, sensation intact. Pedal pulses palpable.\nA/P: story sounds like spinal stenosis (neurogenic claudication), though vascular claudication should be excluded given DM. Orthopedics referral; they can check ABI. No NSAIDs with his kidneys."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-10a",
+     "kind": "specialist_visit",
+     "start": "2023-07-10T09:00",
+     "service": "Orthopedics",
+     "reason": "Orthopedics consult",
+     "conditions": [
+      {
+       "label": "Lumbar spinal stenosis",
+       "action": "diagnosed",
+       "onset": "2023-01-01"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ortho-referral",
+       "action": "done",
+       "date": "2023-07-10T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Orthopedic spine note (outside)",
+       "author": "orthopedics",
+       "date": "2023-07-31T12:00",
+       "body": "OUTSIDE ORTHOPEDICS — brief note to PCP (visit 07/10/2023)\n70M with six months of low back pain and bilateral leg pain, a dull ache that comes on after a few minutes of walking and eases with sitting or bending forward; no numbness or tingling. Lumbar extension provokes pain. Sensation and motor strength intact in both legs. ABI normal.\nImpression: lumbar spinal stenosis. Plan: MRI lumbar spine, physical therapy referral, follow up as needed."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-12a",
+     "kind": "portal_message",
+     "start": "2023-07-12T19:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Orthopedic visit update",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Saw the back doctor",
+       "author": "patient",
+       "date": "2023-07-12T19:40",
+       "body": "Saw orthopedics Monday. He thinks it's narrowing in the lower spine, not my circulation, they did the leg pressure test and it was normal. MRI ordered and physical therapy. Just letting you know since we haven't gotten a letter."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Saw the back doctor",
+       "author": "PCP",
+       "date": "2023-07-12T21:05",
+       "body": "Thanks, that fits. Good that the leg circulation test was normal. I'll watch for the MRI."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-24a",
+     "kind": "imaging",
+     "start": "2023-07-24T16:00",
+     "service": "Radiology",
+     "reason": "MRI lumbar spine",
+     "reports": [
+      {
+       "study": "MRI lumbar spine without contrast",
+       "performed": "2023-07-24T16:00",
+       "text": "Five lumbar-type vertebrae. Alignment normal. Vertebral body heights preserved; no fracture or marrow lesion. Conus normal, ends at L1. L3-L4: disc bulge and facet hypertrophy with mild central canal narrowing. L4-L5: disc bulge with facet arthropathy and ligamentum flavum thickening producing moderate central canal stenosis; foramina adequately patent. L5-S1: no significant narrowing.",
+       "conclusion": "Moderate central canal stenosis at L4-L5; mild at L3-L4."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "MRI lumbar spine (outside)",
+       "author": "radiology",
+       "date": "2023-07-26T09:00",
+       "body": "Outside report received, see results."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-19a",
+     "kind": "office_visit",
+     "start": "2023-09-19T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-09-19T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2023-09-19T10:00",
+       "body": "Went to PT 6 weeks, does the flexion exercises daily. Walks farther before the legs ache, uses a stationary bike. Ortho note and MRI reviewed (moderate L4-5 stenosis).\nDM/HTN: no issues.\nExam: gait normal. No edema.\nPlan: continue home exercises. Flu/COVID/RSV with nurse in October. RTC AWV."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "nurse_visit",
+     "start": "2023-10-10T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-10-10T09:32"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-10T09:34"
+      },
+      {
+       "vaccine": "RSV, bivalent (Abrysvo)",
+       "date": "2023-10-10T09:36"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-10T09:32"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2023-10-10T09:30",
+       "body": "Flu HD left deltoid, updated Pfizer COVID right deltoid, Abrysvo RSV right deltoid (lower). Shared decision done with PCP at last visit. Monitored, fine."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-05a",
+     "kind": "annual_physical",
+     "start": "2023-12-05T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-12-05T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-12-05T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-12-05T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-12-05T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-12-05T09:00",
+       "body": "AWV. Back pain manageable with exercises. Saw ophthalmology in the winter, stable per patient. No falls. PHQ-2 0. Independent ADLs, drives, does his own bills and taxes.\nExam: unremarkable today.\nLabs drawn. Colonoscopy due summer 2024, GI will contact.\nContinue current regimen."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-16a",
+     "kind": "office_visit",
+     "start": "2024-04-16T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Left hip and thigh pain",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Alkaline Phosphatase": 380
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-04-16T11:30",
+       "results": [
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-04-16T11:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-04-16T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Acute Visit",
+       "author": "PCP",
+       "date": "2024-04-16T11:00",
+       "body": "Different from the back: for about a year, a deep ache in the left hip and upper thigh, worse as the day goes on, makes him stop and rest walking the neighborhood loop. Wife came today and adds that his hat doesn't fit anymore (bought a bigger one) and he has the TV louder for months. No fever, chills, sweats, weight loss, no fall or injury.\nExam: mild frontal prominence of the forehead. Hearing reduced to whisper on the left. Left thigh appears slightly bowed. Hip ROM mildly painful at end range. Neuro intact.\nA/P: thigh pain, skull change, hearing loss — concern for Paget disease of bone. CMP today (alk phos). Will refer to endocrinology depending on result."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-18a",
+     "kind": "portal_message",
+     "start": "2024-04-18T12:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab result and referral",
+     "orders": [
+      {
+       "id": "endo-referral",
+       "action": "placed",
+       "order": "Endocrinology referral",
+       "category": "referral",
+       "to": "Endocrinology",
+       "reason": "elevated alkaline phosphatase, suspected Paget disease"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Blood test result",
+       "author": "PCP",
+       "date": "2024-04-18T12:15",
+       "body": "Mr. Wells, your alkaline phosphatase (a bone/liver enzyme) is high while calcium and liver tests are normal. Together with the thigh, hat size and hearing, Paget disease of bone is the likely cause. I've referred you to endocrinology, who treat this. It is very treatable. Kidney numbers stable."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-28a",
+     "kind": "specialist_visit",
+     "start": "2024-06-28T13:00",
+     "service": "Endocrinology",
+     "reason": "Endocrinology consult",
+     "vitals": {
+      "bp": [
+       142,
+       86
+      ]
+     },
+     "conditions": [
+      {
+       "label": "Paget disease of bone",
+       "icd10": "M88.89",
+       "action": "diagnosed",
+       "onset": "2024-06-28"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-06-28T13:30",
+       "results": [
+        {
+         "test": "Phosphorus"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-06-28T13:30",
+       "results": [
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "endo-referral",
+       "action": "done",
+       "date": "2024-06-28T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Endocrinology consultation (outside)",
+       "author": "endocrinology",
+       "date": "2024-07-03T15:00",
+       "body": "OUTSIDE ENDOCRINOLOGY\nSeen 06/28/2024 at your request.\n71-year-old with HTN, type 2 diabetes, hyperlipidemia, CKD 3, colon cancer treated by resection, and lumbar stenosis. Walking has become harder over the past year with a deep left hip and upper thigh ache that builds through the day; he stops frequently on neighborhood walks. Hat size has gone up recently and his wife notes months of poor hearing. No fevers, chills, night sweats, weight loss or trauma. Lives independently, retired from accounting.\nExam: T 36.7, BP 142/86, BMI 26. Mild frontal bossing; hearing decreased on the left; bowing deformity of the left femur. Neurologic exam normal.\nLabs: calcium normal, phosphate normal, alkaline phosphatase elevated.\nImpression: Paget disease of bone.\nPlan: skull, pelvis and left femur radiographs; 25-OH vitamin D; then zoledronic acid infusion if vitamin D adequate. Renal function acceptable for a single 5 mg dose with hydration."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-17a",
+     "kind": "procedure_visit",
+     "start": "2024-07-17T08:00",
+     "service": "Gastroenterology",
+     "reason": "Surveillance colonoscopy",
+     "procedures": [
+      {
+       "procedure": "Colonoscopy, diagnostic",
+       "performed": "2024-07-17T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Colonoscopy (outside GI)",
+       "author": "gastroenterology",
+       "date": "2024-07-19T09:30",
+       "body": "Colonoscopy 07/17/2024, 4 years after right hemicolectomy (stage I). Good prep. Anastomosis normal. Colon and rectum normal, no polyps.\nNext colonoscopy in 5 years."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-06a",
+     "kind": "outside_records",
+     "start": "2024-08-06T10:00",
+     "service": "Endocrinology",
+     "reason": "Endocrinology update",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-07-12T09:00",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Endocrinology follow-up (outside)",
+       "author": "endocrinology",
+       "date": "2024-08-06T10:00",
+       "body": "Update on Mr. Wells: radiographs show changes typical of Paget disease in the skull, left hemipelvis and left femur, no fracture. 25-hydroxy vitamin D normal. Zoledronic acid 5 mg IV given 07/30/2024 in our infusion suite with pre-hydration; tolerated with one day of achiness. Recheck alkaline phosphatase in 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-17a",
+     "kind": "office_visit",
+     "start": "2024-09-17T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "bp": [
+       138,
+       84
+      ]
+     },
+     "medications": [
+      {
+       "action": "historical",
+       "sig": "5 mg IV once (given 7/30/2024 by endocrinology)",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "Paget disease of bone",
+       "drug_text": "100 ML zoledronic acid 0.05 MG/ML Injection"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-09-17T10:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-17T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-09-17T10:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Total Cholesterol"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-17T10:30",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-09-17T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2024-09-17T10:00",
+       "body": "Had zoledronic acid in July for Paget's. Thigh ache is somewhat better. Colonoscopy in July normal.\nHearing still down on the left; he isn't interested in hearing aids right now.\nDM/HTN: home BP 130s/80s.\nExam: BP as charted. Heart regular. Lungs clear. Feet ok.\nPlan: labs today. Flu and COVID next month. RTC AWV December."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "nurse_visit",
+     "start": "2024-10-08T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2024-10-08T09:32"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-08T09:34"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-08T09:32"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2024-10-08T09:30",
+       "body": "Flu HD L arm, 2024-25 Pfizer COVID R arm. Tolerated."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-03a",
+     "kind": "annual_physical",
+     "start": "2024-12-03T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-12-03T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-12-03T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2024-12-03T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2024-12-03T09:00",
+       "body": "AWV. Stable year aside from the Paget's diagnosis and treatment. Walking more. No falls. PHQ-2 0. Hearing: declines referral for now. Vision: ophtho yearly.\nExam: frontal bossing as before. Otherwise normal.\nPlan: labs. Continue meds. RTC 3 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

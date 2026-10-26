@@ -1,0 +1,174 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002704",
+      "events": [
+        {
+          "id": "2025-01-17a",
+          "kind": "portal_message",
+          "start": "2025-01-17T20:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Done with chemo", "author": "patient", "date": "2025-01-17T20:05", "body": "Sixth and last round of chemo was yesterday!! Now it's just the Herceptin every 3 weeks, and radiation starts mid February. I'd like to come in sometime in February if you have time, nothing urgent."},
+            {"type": "Patient Message", "title": "RE: Done with chemo", "author": "front desk", "date": "2025-01-20T09:30", "body": "Congratulations! You're booked Thursday 2/13 at 4:00 with the doctor."}
+          ]
+        },
+        {
+          "id": "2025-02-13a",
+          "kind": "office_visit",
+          "start": "2025-02-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after chemotherapy; neck pain",
+          "conditions": [
+            {"label": "Cervical radiculopathy", "action": "resolved", "note": "resolved with physical therapy"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-13T16:30", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-13T16:00"},
+            {"procedure": "Venipuncture", "performed": "2025-02-13T16:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-02-13T16:42", "body": "S: Finished 6 cycles of TCH 1/16. Continuing trastuzumab q3wk. Radiation to R breast/axilla starts Monday, about 6 weeks. Energy coming back slowly. Hair growing in.\nNeck and L arm: no pain or tingling for over a month. Finished PT, does the exercises at home and changed how she sits at the chair at work.\nHot flashes several times a day, worse at night with sweats. No period since October. Oncology aware.\nNeurology letter received in December - reviewed.\n\nO: Vitals as charted, BP at goal. Neck full ROM, no pain. Arm strength and sensation normal to light touch, reflexes symmetric. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P\n1. Cervical radiculopathy - resolved with PT. Off problem list.\n2. Breast ca on trastuzumab, radiation next; tamoxifen to follow per oncology.\n3. Vasomotor symptoms with chemo-related loss of periods - bothersome. She'd like to see a gynecologist about it once radiation is done; she will call the one her friends use.\n4. HTN controlled. BMP today.\n5. Lipids - recheck at physical in the fall."}
+          ]
+        },
+        {
+          "id": "2025-03-31a",
+          "kind": "portal_message",
+          "start": "2025-03-31T07:48",
+          "documents": [
+            {"type": "Patient Message", "title": "Radiation finished", "author": "patient", "date": "2025-03-31T07:48", "body": "FYI finished radiation Friday. Skin is pink and sore under my arm but settling. Oncology is starting me on tamoxifen next week. Still getting Herceptin."},
+            {"type": "Patient Message", "title": "RE: Radiation finished", "author": "PCP", "date": "2025-03-31T12:20", "body": "Great news to finish. Thanks for the update - I'll add tamoxifen to your list once you start."}
+          ]
+        },
+        {
+          "id": "2025-04-07a",
+          "kind": "pharmacy",
+          "start": "2025-04-07T15:10",
+          "medications": [
+            {"drug_text": "tamoxifen 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hormone receptor-positive breast cancer"}
+          ],
+          "documents": [
+            {"type": "Medication Fill History", "title": "Fill history reconciliation", "author": "MA", "date": "2025-04-08T09:00", "body": "Pharmacy fill history shows tamoxifen 20 mg tablets, #30, filled 4/7/2025, prescriber outside oncology. Added to med list as outside prescription."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "specialist_visit",
+          "start": "2025-06-10T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "hot flashes and night sweats",
+          "conditions": [
+            {"label": "Menopausal and female climacteric states", "action": "diagnosed", "onset": "2024-12-01", "note": "vasomotor symptoms after chemotherapy-induced amenorrhea"}
+          ],
+          "vitals": {"bp": [128, 78], "hr": 76},
+          "measure": ["weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-06-10T11:00", "results": [{"test": "Follicle Stimulating Hormone", "value": 82}]},
+            {"panel": null, "collected": "2025-06-10T11:00", "results": [{"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "text": "<20"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-10T11:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-06-10T11:00", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Consultation", "author": "gynecology", "date": "2025-06-20T14:05", "body": "Outside gynecology office - visit 6/10/2025.\n\n47-year-old seen for hot flashes and night sweats over roughly half a year that wake her most nights and are wearing on her at work. Background: right breast cancer (HER2+, hormone receptor+) treated with lumpectomy, chemotherapy and radiation; currently on trastuzumab infusions and tamoxifen. No menses since chemotherapy last autumn. Hypertension on hydrochlorothiazide and lisinopril. NKDA. Non-smoker, no alcohol.\n\nBP 128/78, HR 76, BMI 26. General exam unremarkable.\n\nLabs: FSH 82 IU/L and estradiol <20 pg/mL, both in the postmenopausal range. CBC and liver tests normal.\n\nAssessment: menopausal vasomotor syndrome after chemotherapy-induced ovarian suppression, aggravated by tamoxifen. Hormone therapy is not an option with her cancer.\n\nPlan: layered clothing, cooler bedroom, sleep routine, avoid known triggers. Offered venlafaxine as a non-hormonal option compatible with tamoxifen; she prefers to hold off for now. Return in 6 months or sooner with bleeding."}
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "pharmacy",
+          "start": "2025-07-22T08:45",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "MA", "date": "2025-07-22T08:45", "body": "eRx renewal request hydrochlorothiazide 25 mg and lisinopril 10 mg, 90-day supply. Last BMP 2/2025 normal. Approved per protocol x1; physical due in the fall - reminder sent."}
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "specialist_visit",
+          "start": "2025-09-08T13:15",
+          "service": "Medical Oncology",
+          "reason": "oncology follow-up during trastuzumab therapy",
+          "conditions": [
+            {"label": "Cardiomyopathy due to drug and external agent", "icd10": "I42.7", "action": "diagnosed", "onset": "2025-09-08", "note": "trastuzumab-induced cardiotoxicity, asymptomatic left ventricular dysfunction, LVEF 45% from 55%"}
+          ],
+          "medications": [
+            {"drug_text": "trastuzumab 150 MG Injection", "action": "stop", "reason": "LVEF decline; 16 of 17 planned doses given"}
+          ],
+          "vitals": {"bp": [130, 85], "hr": 78},
+          "documents": [
+            {"type": "Consult Note", "title": "Medical Oncology Follow-up", "author": "oncology", "date": "2025-09-15T10:30", "body": "Outside medical oncology - follow-up 9/8/2025.\n\nRight breast IDC, pT2 pN0, ER+/PR+/HER2+. Chemotherapy and radiation finished about six months ago; trastuzumab alone every 3 weeks since. Tamoxifen 20 mg daily since April. She has no shortness of breath, chest pain or palpitations.\n\nBP 130/85, HR 78. Examination unremarkable, no edema, lungs clear.\n\nSurveillance echocardiogram today: LVEF 45%. Pre-treatment echocardiogram (9/2024): LVEF 55%.\n\nAssessment: asymptomatic left ventricular dysfunction due to trastuzumab, a 10-point fall to below 50%.\n\nPlan: trastuzumab held today. She has received 16 of 17 planned doses; after discussion we will not resume it. Continue lisinopril. Repeat echocardiogram in 3 months. Continue tamoxifen. Next oncology visit in 3 months."}
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "annual_physical",
+          "start": "2025-10-01T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 75.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-01T08:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-10-01T08:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Total Cholesterol"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-01T08:45", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2025-10-01T08:45", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-01T08:40"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-01T08:41"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-10-01T08:00"},
+            {"procedure": "Immunization administration", "performed": "2025-10-01T08:40"},
+            {"procedure": "Venipuncture", "performed": "2025-10-01T08:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-10-01T08:58", "body": "48F, annual. Missed last year's physical during treatment.\n\nInterval: oncology letter 9/15 received - LVEF 45% from 55% on trastuzumab, no symptoms; trastuzumab stopped for good, repeat echo in December. Tamoxifen since April. Gyn saw her in June for hot flashes, labs postmenopausal range; she declined venlafaxine.\nFeels well, no exertional dyspnea, orthopnea or swelling. Hot flashes still there but she's coping. Weight up about 4 kg since spring - less active, snacking at night when she can't sleep.\nPHQ-2 1.\n\nExam: vitals as charted. R breast healed lumpectomy scar, radiation skin changes mild; no masses either breast, no axillary nodes. Heart RRR, no murmur or gallop, no JVD. Lungs clear. No edema. Neck full ROM.\n\nA/P\n1. Trastuzumab-related LV dysfunction, asymptomatic - trastuzumab removed from med list. Lisinopril continues (also helps here). Repeat echo per oncology.\n2. Breast ca on tamoxifen; surveillance mammogram due ~1 yr after surgery/radiation - oncology arranging.\n3. HTN controlled. CMP.\n4. Lipids, CBC, TSH today.\n5. Weight gain - talked about evening routine and walking again.\n6. Flu + updated COVID today."}
+          ]
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "portal_message",
+          "start": "2025-10-03T13:30",
+          "documents": [
+            {"type": "Result Note", "title": "Physical labs", "author": "PCP", "date": "2025-10-03T13:30", "body": "Your labs are back: kidney and liver tests, potassium, blood counts and thyroid are normal. Cholesterol is about where it was last year. Good to see your blood counts fully recovered after chemo."}
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "outside_records",
+          "start": "2025-12-17T11:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology note - repeat echocardiogram", "author": "oncology", "date": "2025-12-17T11:20", "body": "Outside medical oncology, brief note. Repeat transthoracic echocardiogram 12/10/2025: LVEF 50%, improved from 45% in September. Remains asymptomatic. Trastuzumab remains discontinued. Continue lisinopril and tamoxifen. Surveillance mammogram ordered for January. Next visit in 4 months."}
+          ]
+        },
+        {
+          "id": "2025-12-24a",
+          "kind": "specialist_visit",
+          "start": "2025-12-24T09:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "irregular uterine bleeding",
+          "conditions": [
+            {"label": "Benign endometrial hyperplasia", "icd10": "N85.01", "action": "diagnosed", "onset": "2025-12-24", "note": "hyperplasia without atypia on office biopsy, on tamoxifen"}
+          ],
+          "state": {"weight_kg": 79.0},
+          "vitals": {"bp": [130, 85]},
+          "measure": ["weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-24T09:40", "results": [{"test": "Hemoglobin", "value": 13.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2025-12-24T09:40", "results": [{"test": "Prothrombin Time", "value": 11}]},
+            {"panel": null, "collected": "2025-12-24T09:40", "results": [{"test": "Activated partial thromboplastin time", "loinc": "3173-2", "unit": "s", "value": 30}]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2025-12-24T09:20", "text": "Transabdominal and transvaginal pelvic ultrasound. Uterus anteverted, mildly enlarged, homogeneous myometrium. Endometrium measures 14 mm, without focal lesion on grayscale. Both ovaries visualized, normal in size and appearance. No adnexal mass. No free fluid.", "conclusion": "Thickened endometrium, 14 mm, in a patient on tamoxifen. Normal ovaries, no adnexal mass."},
+            {"study": "Surgical pathology report", "performed": "2025-12-24T09:30", "issued": "2025-12-30T15:00", "text": "Specimen: endometrium, office pipelle biopsy. Fragments of proliferative-type endometrium with an increased gland-to-stroma ratio and glandular crowding; glands with cytologic features matching the background endometrium. No cytologic atypia. No carcinoma.", "conclusion": "Endometrial hyperplasia without atypia."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Visit", "author": "gynecology", "date": "2026-01-08T10:10", "body": "Outside gynecology office - visit 12/24/2025.\n\nReturns for routine follow-up; seen in June for vasomotor symptoms on tamoxifen. Two months of irregular bleeding - unpredictable spotting and light flow after more than a year without periods. Hot flashes and night sweats continue. Tamoxifen about 8 months.\n\nMeds per patient list: hydrochlorothiazide, lisinopril, tamoxifen, trastuzumab. NKDA.\n\nBP 130/85, BMI 29.\nPelvic exam: uterus slightly enlarged, non-tender. No adnexal masses.\n\nLabs: hemoglobin 13.2 g/dL, platelets 250,000, PT 11 s, aPTT 30 s.\nPelvic ultrasound today: endometrium 14 mm, no adnexal mass.\nOffice endometrial biopsy performed today; result 12/30: endometrial hyperplasia without atypia.\n\nAssessment: endometrial hyperplasia without atypia, on tamoxifen; irregular bleeding as ovarian function returns after chemotherapy.\n\nPlan: levonorgestrel intrauterine system recommended, placement scheduled 1/14. Discussed with her oncologist: continue tamoxifen. Repeat endometrial sampling in 3 to 6 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

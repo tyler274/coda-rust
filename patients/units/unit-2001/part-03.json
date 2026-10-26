@@ -1,0 +1,275 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002001",
+      "events": [
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-28T08:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-01-28T08:55", "body": "Routine 4-month check.\n\nNo GI symptoms on daily pantoprazole. No chest pressure, no exertional dyspnea, though winter work is lighter. Home BP when he remembers, 130s/80s. Pack a day.\n\nMeds reconciled: lisinopril 20, atorvastatin 40, pantoprazole 40. Allergy: blood products.\n\nExam: comfortable. Regular rate and rhythm, no murmur. Chest clear. Abdomen soft, scar well healed. Ankles without swelling.\n\nA/P\n- HTN: above goal here today and a bit high at home. Offered a second agent; he would rather tighten up on salt and bring a home log in spring. Documented.\n- CAD/lipids: LDL still above where I'd like in September. He is still not keen on the higher statin dose. Left as is for now, his call, documented.\n- Gastric ulcer hx: stable on PPI.\n- Tobacco: precontemplative. Counseled briefly.\n\nRTC at physical, call with any chest symptoms."}
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "ed_visit",
+          "start": "2025-04-22T06:50",
+          "end": "2025-04-22T07:40",
+          "service": "Emergency Medicine",
+          "reason": "Crushing chest pain radiating to left arm",
+          "conditions": [
+            {"label": "ST-segment elevation myocardial infarction, inferior wall", "icd10": "I21.19", "action": "diagnosed", "onset": "2025-04-22"}
+          ],
+          "vitals": [
+            {"time": "2025-04-22T06:55", "bp": [150, 90], "hr": 98, "rr": 22, "spo2": 94}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-04-22T07:00", "results": [{"test": "Troponin I", "loinc": "10839-9", "unit": "ng/mL", "value": 0.5}]},
+            {"panel": null, "collected": "2025-04-22T07:00", "results": [{"test": "Creatine kinase MB", "loinc": "32673-6", "unit": "U/L", "value": 25}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-22T07:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-22T07:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-04-22T06:54", "text": "Sinus rhythm, rate 98. ST-segment elevation in leads II, III and aVF.", "conclusion": "Inferior ST-elevation myocardial infarction. Cath lab activated."},
+            {"study": "Chest X-ray, 1 view", "performed": "2025-04-22T07:10", "text": "Portable AP chest. Lungs clear. No pleural effusion or pneumothorax. Cardiomediastinal silhouette within normal limits.", "conclusion": "No acute cardiopulmonary process."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-04-22T06:50"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-04-22T06:54"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-04-22T07:45", "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 06:50 by private vehicle (driven by a coworker).\n\nCC: chest pain.\n\nHPI: 55M, coronary disease, admitted last year for an upper GI bleed. Woke around 04:45 with a severe crushing pain mid-chest going down the left arm, now 2 hours. Short of breath, nauseated, drenched in sweat. Took nothing for it.\n\nPMH (per our system): HTN, hyperlipidemia, CAD, peptic ulcer disease, tobacco use disorder, acute hemolytic transfusion reaction 2024.\nPSH: operative repair of bleeding gastric ulcer.\nMeds: lisinopril, atorvastatin.\nAllergies: BLOOD PRODUCTS (acute hemolytic transfusion reaction).\nFH: CAD.\nSH: smokes 1 pack per day.\n\nVS: BP 150/90, HR 98, RR 22, SpO2 94% RA.\nExam: diaphoretic, uncomfortable. Heart regular, no murmurs, rubs or gallops. Lungs clear. No JVD. Extremities warm.\n\nECG at 06:54: ST elevation II, III, aVF. STEMI alert called, interventional cardiology paged.\nTroponin I 0.5 ng/mL (ref <0.04). CK-MB 25 U/L (ref 0-24). CBC and BMP within normal limits.\nPortable CXR: unremarkable.\n\nAssessment: inferior STEMI.\nED course: STEMI pathway, prior GI bleed flagged to the interventional team; to cath lab 07:40.\nDisposition: admitted to cardiology."}
+          ]
+        },
+        {
+          "id": "2025-04-22b",
+          "kind": "hospital_admission",
+          "start": "2025-04-22T07:40",
+          "end": "2025-04-25T11:30",
+          "service": "Cardiology",
+          "reason": "Inferior STEMI, primary PCI",
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary stent"},
+            {"drug": "clopidogrel 75 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 75, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary stent"},
+            {"drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Post myocardial infarction"},
+            {"drug_text": "nitroglycerin 0.4 MG Sublingual Tablet", "action": "start", "sig": "Dissolve 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3; call 911 if pain persists", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "PRN", "route": "Sublingual", "course": "chronic", "reason": "Angina"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "stop", "reason": "Increased to 80 mg after MI"},
+            {"drug": "atorvastatin 80 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 80, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"}
+          ],
+          "procedures": [
+            {"procedure": "Coronary stent placement, single vessel", "performed": "2025-04-22T08:15"}
+          ],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2025-04-23T10:30", "text": "Left ventricle normal in size with normal wall thickness. LVEF 55% by biplane method. Hypokinesis of the inferior wall. Right ventricle normal in size and function. No significant valvular disease. No pericardial effusion.", "conclusion": "LVEF 55% with inferior wall hypokinesis. No significant valve disease."}
+          ],
+          "orders": [
+            {"id": "cardiac-rehab", "action": "placed", "order": "Cardiac rehabilitation referral", "category": "referral", "to": "Cardiac Rehabilitation", "reason": "STEMI with PCI"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary — Cardiology", "author": "cardiology", "date": "2025-04-25T14:00", "body": "REGIONAL HOSPITAL — CARDIOLOGY DISCHARGE SUMMARY\nAdmitted 04/22/2025, discharged 04/25/2025.\n\nDiagnosis: acute inferior ST-elevation myocardial infarction.\nProcedure: emergent coronary angiography and PCI. Culprit: total occlusion of the right coronary artery, treated with one drug-eluting stent with TIMI 3 flow restored. Right radial access.\n\nCourse: uncomplicated after PCI. No recurrent pain, no arrhythmia on telemetry. Echo 04/23: LVEF 55%, inferior hypokinesis, no significant valve disease. Given his 2024 bleeding gastric ulcer, clopidogrel chosen as the P2Y12 agent and pantoprazole continued.\n\nAllergies: blood products (acute hemolytic transfusion reaction).\n\nDischarge medications:\n- aspirin 81 mg daily (new)\n- clopidogrel 75 mg daily (new), do not stop without talking to cardiology; planned 12 months\n- metoprolol succinate 25 mg daily (new)\n- atorvastatin 80 mg daily (increased from 40)\n- nitroglycerin 0.4 mg SL as needed (new)\n- lisinopril 20 mg daily (continued)\n- pantoprazole 40 mg daily (continued)\n\nSmoking: counseled at length; declined pharmacotherapy.\nFollow-up: PCP within 1 week; cardiology clinic 4 weeks; cardiac rehab referral sent. No driving for 1 week, no heavy lifting for 1 week from the radial site."},
+            {"type": "Outside Records", "title": "Hospital records received", "author": "MA", "date": "2025-04-25T16:20", "body": "Discharge summary, ED record, ECG and echo received and filed. Med list updated per discharge. PCP visit 4/29 booked."}
+          ]
+        },
+        {
+          "id": "2025-04-29a",
+          "kind": "office_visit",
+          "start": "2025-04-29T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after MI",
+          "conditions": [
+            {"label": "Presence of coronary artery stent", "action": "diagnosed", "onset": "2025-04-22"}
+          ],
+          "state": {"bp": [128, 80]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-29T10:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-04-29T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-04-29T11:30", "body": "One week out from an inferior STEMI (4/22), RCA occlusion stented, home 4/25. Discharge summary and echo reviewed: EF 55%, inferior hypokinesis.\n\nHe is shaken. No chest pain since the cath. Wrist site a little bruised. Walking the driveway and back without trouble. No black stools on aspirin plus clopidogrel. Mild fatigue, he thinks from the metoprolol. Has not used the nitro.\n\nMed rec done with bottles: aspirin 81, clopidogrel 75, metoprolol succinate 25, atorvastatin 80, lisinopril 20, pantoprazole 40, nitro SL prn. All filled.\n\nSmoking: says he has cut way back, then admits to about a pack a day again by the weekend.\n\nPHQ-9: 3.\n\nExam: BP and HR as charted. R radial site with small ecchymosis, good pulse, no hematoma. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P\n1. Inferior STEMI s/p DES to RCA: DAPT x 12 months, keep the PPI with it given the ulcer. Reviewed bleeding signs to call about. Reviewed nitro use and when to call 911.\n2. CAD: high-intensity statin now. Lipids in 3 months.\n3. HTN: better on the added metoprolol.\n4. Tobacco: the single most important thing now. Offered varenicline again; he declines, wants to try cold turkey. Quitline info.\n5. Cardiac rehab: referral in; he is calling them this week.\n6. BMP today on the new regimen.\n\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "specialist_visit",
+          "start": "2025-05-20T14:00",
+          "service": "Cardiology",
+          "reason": "Post-MI follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Clinic Letter", "author": "cardiology", "date": "2025-05-21T10:15", "body": "Dear Doctor,\n\nThank you for sharing the care of Kevin Allard, seen today 4 weeks after an inferior STEMI treated with a drug-eluting stent to the right coronary artery.\n\nHe has had no angina and has not needed nitroglycerin. He started cardiac rehabilitation last week. No bleeding on dual antiplatelet therapy. He continues to smoke.\n\nBlood pressure and heart rate at goal. Regular rhythm, clear lungs, radial site healed.\n\nImpression: CAD s/p PCI to RCA, LVEF 55%, clinically stable.\nPlan: continue aspirin 81, clopidogrel 75 for 12 months, metoprolol succinate 25, atorvastatin 80, lisinopril 20, pantoprazole 40. Smoking cessation urged. Return in 6 months.\n\nAllergies: blood products.\n\nSincerely,\nOutside cardiology"}
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after MI, lipids",
+          "conditions": [
+            {"label": "ST-segment elevation myocardial infarction, inferior wall", "icd10": "I21.19", "action": "resolved"},
+            {"label": "Old myocardial infarction", "action": "diagnosed", "onset": "2025-04-22"}
+          ],
+          "state": {"labs": {"Low Density Lipoprotein": 66}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-07-22T07:30", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-07-22T07:30", "results": [{"test": "Alanine Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-07-22T07:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-07-22T08:10", "body": "3 months post inferior MI.\n\nGoing to rehab twice a week, says the staff push harder than his foreman ever did. Back at work on a supervisory basis, not lifting. No angina, no nitro use. No bleeding, no dark stools. Muscle aches none on atorvastatin 80.\n\nStill smoking, fewer on rehab days.\n\nExam: regular, no murmur, clear lungs, no edema.\n\nLabs today: LDL down substantially on atorvastatin 80 compared with last year on 40. LFTs normal.\n\nA/P\n- CAD s/p RCA stent / old inferior MI: problem list updated, acute entry closed. Continue DAPT through April 2026, metoprolol, high-intensity statin, lisinopril, PPI.\n- LDL now close to goal; recheck in 6 months.\n- Tobacco: counseled again.\n\nPhysical in September."}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-19T09:30",
+          "reason": "Cardiac rehabilitation completion",
+          "orders": [
+            {"id": "cardiac-rehab", "action": "done", "date": "2025-08-19T09:30"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Cardiac Rehabilitation Discharge Letter", "author": "cardiac rehabilitation", "date": "2025-08-19T09:30", "body": "OUTPATIENT CARDIAC REHABILITATION — PROGRAM COMPLETION\nDiagnosis: inferior STEMI s/p PCI to RCA, 04/2025.\nProgram: 12 weeks, 24 of 24 monitored sessions, 05/2025 to 08/2025.\nNo angina or arrhythmia during sessions. Exercise tolerance improved steadily over the program. Education completed on medications, diet and activity.\nOngoing concern: continues to smoke; cessation resources given.\nRecommend: continue home walking program 30 minutes most days.\n\nAllergies on file: blood products."}
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:00",
+          "end": "2025-09-16T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-16T08:35", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-16T08:35", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-16T08:42"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-09-16T08:43"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-09-16T08:00"},
+            {"procedure": "Immunization administration", "performed": "2025-09-16T08:42"}
+          ],
+          "orders": [
+            {"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "to": "Radiology", "reason": "Annual screening, current smoker"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-09-16T09:15", "body": "Physical, 55M.\n\nYear in brief: inferior STEMI in April with a stent to the RCA; finished cardiac rehab in August, all 24 sessions. Ulcer history quiet on daily PPI.\n\nNow: walking most evenings, working full days again. No chest pain or pressure, no breathlessness on hills, no palpitations, no syncope. No bleeding or bruising beyond the usual on two antiplatelets. Bowels normal color.\n\nMeds: aspirin 81, clopidogrel 75, metoprolol succinate 25, atorvastatin 80, lisinopril 20, pantoprazole 40, NTG SL prn (unused).\nAllergies: blood products (acute hemolytic transfusion reaction).\nTobacco: 1 ppd. AUDIT-C 1. PHQ-2 0.\n\nExam: Vitals reviewed. No pallor. Neck veins flat, no carotid bruit. Heart: regular, no murmur or gallop. Lungs: clear throughout. Abdomen: soft, healed scar. Legs: no swelling, good pulses. Skin: weathered, nothing concerning.\n\nA/P\n- CAD s/p PCI, old inferior MI: stable. Meds as above; DAPT to April 2026 then cardiology to decide.\n- HTN: at goal.\n- Lipids: much improved on the higher statin in July.\n- Gastric ulcer hx: continue PPI while on DAPT and beyond.\n- Tobacco: counseled; declines medication.\n- LDCT next month ordered. Flu and COVID today.\n- Colon screening next due 2029.\n\nRTC 4 months."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "imaging",
+          "start": "2025-10-07T15:30",
+          "service": "Radiology",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-10-07T15:30", "text": "Comparison: 10/2024. Technique: low-dose CT of the chest without contrast. Lungs: no nodules. No airspace disease. No effusion. Heart size normal; coronary stent noted. Mediastinum and hila unremarkable. Upper abdomen and bones without acute finding.", "conclusion": "Lung-RADS 1, negative. Continue annual screening."}
+          ],
+          "orders": [
+            {"id": "ldct-2025", "action": "done", "date": "2025-10-07T15:30"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "CT result", "author": "PCP", "date": "2025-10-08T12:40", "body": "Kevin, this year's lung screening CT is negative. Same again next fall."}
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "ed_visit",
+          "start": "2025-10-23T15:20",
+          "end": "2025-10-23T16:05",
+          "service": "Emergency Medicine",
+          "reason": "Chest pain while mowing, radiating to left arm and jaw",
+          "conditions": [
+            {"label": "ST-segment elevation myocardial infarction, inferior wall", "icd10": "I21.19", "action": "diagnosed", "onset": "2025-10-23"}
+          ],
+          "vitals": [
+            {"time": "2025-10-23T15:24", "bp": [150, 90], "hr": 98, "rr": 22, "spo2": 94}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-10-23T15:30", "results": [{"test": "Troponin I", "loinc": "10839-9", "unit": "ng/mL", "value": 0.5}]},
+            {"panel": null, "collected": "2025-10-23T15:30", "results": [{"test": "Creatine kinase MB", "loinc": "32673-6", "unit": "U/L", "value": 25}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-23T15:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-23T15:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-10-23T15:23", "text": "Sinus rhythm at 98. ST elevation in II, III and aVF.", "conclusion": "Acute inferior ST elevation. STEMI activation."},
+            {"study": "Chest X-ray, 1 view", "performed": "2025-10-23T15:40", "text": "Single portable view. Clear lungs. No effusion. Normal heart size and mediastinal contour. Coronary stent projects over the heart.", "conclusion": "No acute abnormality."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-10-23T15:20"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-10-23T15:23"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-10-23T16:10", "body": "REGIONAL HOSPITAL ED\nArrival 15:20, EMS.\n\nCC: chest pain.\n\nHPI: 55M with CAD and an inferior MI in April this year, on the mower at a client's property when a heavy pressure came on in the center of his chest about 45 min before arrival, spreading to the left arm and jaw. Sweating, visibly anxious. Crew called 911.\n\nPMH: HTN, HLD, CAD, inferior STEMI 04/2025, PUD, tobacco use disorder, acute hemolytic transfusion reaction 2024.\nPSH: gastric ulcer repair.\nHome meds (per pt in the moment): lisinopril, atorvastatin.\nAllergies: BLOOD PRODUCTS.\nFH: father MI at 62, mother HTN, brother hyperlipidemia.\nSH: 30 pack-year smoker.\n\nVS: BP 150/90, HR 98, RR 22, SpO2 94% on room air.\nExam: diaphoretic, anxious. Cardiac regular, no murmur, rub or gallop. Lungs clear to auscultation.\n\nECG: ST elevation II, III, aVF.\nLabs: troponin I 0.5 ng/mL (ref <0.04); CK-MB 25 U/L (ref 0-24); CBC and electrolytes normal.\nCXR: unremarkable.\n\nImpression: recurrent inferior STEMI.\nPlan: STEMI activation; to cath lab 16:05; cardiology admitting."}
+          ]
+        },
+        {
+          "id": "2025-10-23b",
+          "kind": "hospital_admission",
+          "start": "2025-10-23T16:05",
+          "end": "2025-10-25T12:00",
+          "service": "Cardiology",
+          "reason": "Recurrent inferior STEMI, PCI",
+          "procedures": [
+            {"procedure": "Coronary stent placement, single vessel", "performed": "2025-10-23T16:40"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary — Cardiology", "author": "cardiology", "date": "2025-10-25T15:30", "body": "REGIONAL HOSPITAL — CARDIOLOGY DISCHARGE SUMMARY\nAdmitted 10/23/2025, discharged 10/25/2025.\n\nDiagnosis: recurrent acute inferior STEMI.\nProcedure: emergent coronary angiography: new severe stenosis of the proximal right coronary artery; the April 2025 RCA stent widely patent. One drug-eluting stent to the proximal RCA, TIMI 3 flow. Right radial access.\n\nCourse: pain-free after PCI, telemetry without arrhythmia, radial site clean. Patient confirms taking aspirin and clopidogrel daily.\n\nAllergies: blood products (acute hemolytic transfusion reaction).\n\nDischarge medications (unchanged from admission):\n- aspirin 81 mg daily\n- clopidogrel 75 mg daily; dual antiplatelet therapy now planned through 10/2026\n- metoprolol succinate 25 mg daily\n- atorvastatin 80 mg daily\n- lisinopril 20 mg daily\n- pantoprazole 40 mg daily\n- nitroglycerin 0.4 mg SL prn\n\nSmoking cessation counseling repeated; declined medication.\nFollow-up: PCP within 1 week; cardiology 6 weeks."},
+            {"type": "Outside Records", "title": "Hospital records received", "author": "MA", "date": "2025-10-27T09:10", "body": "ED record and cardiology discharge summary received, filed. No med changes. Post-hospital visit booked 10/30."}
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "office_visit",
+          "start": "2025-10-30T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after second MI",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-10-30T09:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-10-30T09:50", "body": "Second inferior STEMI on 10/23, six months after the first. Cath: new tight lesion in the proximal RCA, the April stent open. Another DES. Home 10/25, no med changes, DAPT clock reset to October 2026.\n\nHe is quieter than usual today. Says the crew saw the whole thing. No chest pain since, no nitro, no bleeding. Taking everything, showed me the weekly pill box.\n\nPHQ-9 4, not depressed, worried.\n\nExam: right wrist healing. Regular rhythm, clear lungs, no edema.\n\nA/P\n1. Recurrent inferior STEMI s/p second RCA stent. Meds unchanged per cardiology: aspirin, clopidogrel through 10/2026, metoprolol succinate 25, atorvastatin 80, lisinopril 20, pantoprazole 40, NTG prn.\n2. Tobacco: told him plainly that the cigarettes are the one risk still fully in his hands. Offered varenicline or patch plus gum. Declines; says he will cut down for the winter.\n3. Return to work: cardiology's call; he will ask at the 6-week visit.\n\nRTC January."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "specialist_visit",
+          "start": "2025-12-09T11:00",
+          "service": "Cardiology",
+          "reason": "Follow-up after second PCI",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Clinic Letter", "author": "cardiology", "date": "2025-12-10T14:30", "body": "Dear Doctor,\n\nKevin Allard returns 6 weeks after a second inferior STEMI with a drug-eluting stent to the proximal right coronary artery. He has been free of angina and has not taken nitroglycerin. No bleeding on dual antiplatelet therapy. Still smoking, somewhat less.\n\nBlood pressure and heart rate at goal, rhythm regular. Lungs clear. No edema.\n\nPlan: no changes. Aspirin 81 mg and clopidogrel 75 mg through October 2026, then reassess. Metoprolol succinate 25 mg, atorvastatin 80 mg, lisinopril 20 mg, pantoprazole 40 mg. May return to full work duties. Smoking cessation strongly advised. Return in 5 to 6 months.\n\nSincerely,\nOutside cardiology"}
+          ]
+        }
+      ]
+    }
+  ]
+}

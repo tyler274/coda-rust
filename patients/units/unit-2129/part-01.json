@@ -1,0 +1,892 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002129",
+   "given": "Andre",
+   "family": "Medeiros",
+   "birth_date": "1985-09-03",
+   "address_line": "27 Fernbrook Road",
+   "phone": "+1-347-555-0153",
+   "email": "andre.medeiros@example.test",
+   "marital_status": "single",
+   "summary": "High school math teacher who joined in 2021 with seasonal allergies and mild acne. Developed nephrotic syndrome from FSGS in 2022, treated by nephrology to complete remission; SIRS after a viral URI in 2024; toxic epidermal necrolysis from urgent-care amoxicillin in 2025 requiring ICU care, now healed.",
+   "events": [
+    {
+     "id": "2021-05-11a",
+     "kind": "telephone",
+     "start": "2021-05-11T15:42",
+     "reason": "new patient request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient intake call",
+       "author": "front desk",
+       "date": "2021-05-11T15:42",
+       "body": "Caller wants to establish with the practice; previous doctor's office is closing its adult panel. Teaches math at the high school, asked for an appointment after 3 pm if possible. Membership agreement and BCBS PPO card info emailed for him to complete. Records release signed electronically for prior primary care office. New pt visit set for 5/20 at 3:45."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-20a",
+     "kind": "establish_care",
+     "start": "2021-05-20T15:45",
+     "end": "2021-05-20T16:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "establish care",
+     "conditions": [
+      {
+       "label": "Allergic rhinitis due to pollen",
+       "action": "history",
+       "onset": "2005-04-01",
+       "note": "spring and fall, uses cetirizine as needed"
+      },
+      {
+       "label": "Acne vulgaris",
+       "action": "history",
+       "onset": "2002-01-01",
+       "note": "mild, untreated"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily as needed for allergy symptoms",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "seasonal allergic rhinitis"
+      }
+     ],
+     "state": {
+      "weight_kg": 84.0,
+      "height_cm": 182.0,
+      "bp": [
+       120,
+       74
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Social, 1-2 drinks on weekends"
+      },
+      {
+       "item": "Occupation",
+       "value": "High school mathematics teacher"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-05-20T16:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-05-20T16:35",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-05-20T16:35",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2021-05-20T16:35",
+       "results": [
+        {
+         "test": "Urine Protein"
+        },
+        {
+         "test": "Urine Blood"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-05-20T16:35",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, low MDM",
+       "performed": "2021-05-20T15:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-05-20T17:20",
+       "body": "35 y/o man here to set up primary care. Previous office is no longer taking adults on his plan. Feels well overall.\n\nPMH: Seasonal allergies since his late teens/early 20s, worse April-May and again September. Takes cetirizine 10 mg on the days he needs it, which is most of the spring. Mild acne off and on since high school, mostly forehead and jaw; never used a prescription for it and isn't bothered enough to want one.\nPSH: none.\nMeds: cetirizine 10 mg daily PRN.\nAllergies: no known drug allergies.\nFH: Dad has type 2 diabetes and high blood pressure. Mom has hypothyroidism and seasonal allergies. An uncle on his father's side was on dialysis; family never learned the cause.\nSH: Teaches algebra and precalculus at the high school. Lives in Amherst. Never smoked. A drink or two on weekends. No drug use. Coaches the math team.\n\nROS otherwise negative.\n\nExam: Well appearing. HEENT: mild pale nasal turbinates, oropharynx clear, TMs normal. Neck supple, no nodes or thyromegaly. Heart RRR, no murmur. Lungs clear. Abd soft, nontender, no organomegaly. Ext warm, no swelling. Skin: a few small comedones and papules on forehead, no cysts or scarring.\n\nAssessment/plan:\n1. Health maintenance. Baseline CMP, CBC, lipids, UA. One-time HIV and hep C screens; he agrees. Tetanus and COVID per prior records, will confirm when they arrive.\n2. Seasonal allergic rhinitis, controlled with as-needed cetirizine. Continue.\n3. Mild acne. No treatment wanted.\n4. FH of kidney disease in an uncle, unknown cause. Baseline creatinine and UA today.\n\nRTC for a physical in about a year, sooner as needed."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-25a",
+     "kind": "portal_message",
+     "start": "2021-05-25T07:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2021-05-25T07:10",
+       "body": "Hi Andre, everything from your first visit came back normal: kidney and liver tests, blood counts, cholesterol and urine. The HIV and hepatitis C screens were negative. Nothing to change. Good to meet you."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your lab results",
+       "author": "patient",
+       "date": "2021-05-25T21:33",
+       "body": "Great, thanks for the quick turnaround."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-04a",
+     "kind": "outside_records",
+     "start": "2021-06-04T10:15",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-27T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-17T10:00"
+      },
+      {
+       "vaccine": "Tdap",
+       "date": "2017-08-22T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "MA",
+       "date": "2021-06-04T10:15",
+       "body": "34 pages received from previous primary care office covering 2014-2020. Summary for chart: annual visits most years, routine labs unremarkable, problem list allergic rhinitis and mild acne. Tdap 8/2017. COVID primary series (Pfizer) 3/27/21 and 4/17/21 per state registry printout he brought. No hospitalizations. Entered immunizations; forwarded to PCP for review."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "nurse_visit",
+     "start": "2021-10-19T15:30",
+     "reason": "flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-19T15:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-19T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Influenza vaccination",
+       "author": "RN",
+       "date": "2021-10-19T15:45",
+       "body": "Came by after school for flu vaccine. No fever today, no prior reactions. Quadrivalent 0.5 mL IM left deltoid. VIS reviewed. Tolerated well, left after brief observation."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-19a",
+     "kind": "portal_message",
+     "start": "2022-04-19T19:52",
+     "medications": [
+      {
+       "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+       "action": "stop",
+       "reason": "converted to prescription for coverage"
+      },
+      {
+       "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily as needed for allergy symptoms",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "seasonal allergic rhinitis"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Allergy pills",
+       "author": "patient",
+       "date": "2022-04-19T19:52",
+       "body": "Pollen is brutal this week. I've been buying cetirizine over the counter but my plan apparently covers it with a prescription. Could you send one in? Same 10 mg I always take."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Allergy pills",
+       "author": "PCP",
+       "date": "2022-04-20T08:05",
+       "body": "Sent cetirizine 10 mg, 90 tablets with refills, to your pharmacy. If the eyes are itchy too, an OTC antihistamine eye drop is fine on top of it."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-21a",
+     "kind": "annual_physical",
+     "start": "2022-06-21T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-06-21T10:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-06-21T10:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-06-21T10:10",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-06-21T10:10",
+       "results": [
+        {
+         "test": "Urine Protein"
+        },
+        {
+         "test": "Urine Blood"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2022-06-21T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-06-21T11:02",
+       "body": "Last week of school, so he's on a morning slot. Doing well. Allergies were bad in April, settled with daily cetirizine and now he's back to occasional use. Skin unchanged. Exercise: pickup basketball twice a week. Sleep fine, mood good.\n\nMeds: cetirizine 10 mg PRN. NKDA.\nSH: unchanged; weekend drinks only, never smoker.\n\nExam: NAD. HEENT normal. Neck no adenopathy. CV regular, no murmur. Lungs clear. Abdomen benign. No edema. Skin: scattered small papules on forehead.\nPHQ-9: 1.\n\nA/P:\n- Adult preventive care. Labs: CMP, CBC, lipids, UA. Tdap current (2017). COVID primary series done; booster discussed, he'll get it at the pharmacy.\n- Allergic rhinitis: PRN cetirizine.\n- Acne: stable, no treatment.\nSee in a year."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-24a",
+     "kind": "portal_message",
+     "start": "2022-06-24T12:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2022-06-24T12:40",
+       "body": "Andre, your labs from Tuesday are all in a good range, cholesterol included, and the urine was clean. Enjoy the summer."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-12a",
+     "kind": "telehealth_visit",
+     "start": "2022-09-12T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "cough and congestion",
+     "conditions": [
+      {
+       "label": "Acute upper respiratory infection",
+       "action": "diagnosed",
+       "onset": "2022-09-08"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2022-09-12T16:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2022-09-12T16:45",
+       "body": "Video from his classroom after dismissal. Four days of stuffy nose, sore throat and dry cough, started the first week back with students. Tmax 99.8 at home. No shortness of breath, no facial pain, no ear pain. Eating and drinking normally. Home COVID antigen negative x2.\n\nOn video: speaking full sentences, congested voice, no distress, no increased work of breathing.\n\nImpression: viral upper respiratory infection.\nPlan: supportive care, fluids, saline rinses, acetaminophen or ibuprofen as needed, honey for the cough. Antibiotics not indicated. Call if fever above 101, breathing trouble, or not better in 10 days."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-26a",
+     "kind": "office_visit",
+     "start": "2022-09-26T15:50",
+     "end": "2022-09-26T16:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "leg swelling and fatigue",
+     "conditions": [
+      {
+       "label": "Acute upper respiratory infection",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "weight_kg": 88.0,
+      "labs": {
+       "Albumin": 2.6,
+       "Total Cholesterol": 290,
+       "Low Density Lipoprotein": 198,
+       "Total Protein": 5.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-26T16:40",
+       "resulted": "2022-09-27T09:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-26T16:40",
+       "resulted": "2022-09-27T09:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-09-26T16:40",
+       "resulted": "2022-09-27T09:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-09-26T16:40",
+       "resulted": "2022-09-26T17:30",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "4+"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "neph-referral",
+       "action": "placed",
+       "order": "Nephrology referral, urgent",
+       "category": "referral",
+       "to": "Nephrology",
+       "reason": "heavy proteinuria with edema"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-09-26T15:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-09-26T18:05",
+       "body": "CC: legs swelling, tired.\n\nHe noticed his socks leaving deep marks in early August, before school started, and figured it was the heat. Swelling in both ankles and shins has kept up since, worse by evening, and the last couple of weeks his eyes look puffy when he wakes up. More tired than usual, napping after school, which isn't like him. Pants a little tight at the waist. The cold from two weeks ago is gone. Urine looks foamy to him. No dyspnea, no orthopnea, no chest pain, no rash, no joint pain. No new meds or supplements, no NSAIDs beyond a few doses with the cold.\n\nExam: Up 4 kg from June. Mild puffiness of both lower lids. JVP not elevated. Heart regular, no gallop. Lungs clear, no crackles. Abdomen soft, no fluid wave. 2+ pitting edema to mid-shin bilaterally, symmetric, calves nontender.\n\nUA in office: protein 4+, blood negative.\n\nAssessment: new edema with heavy proteinuria, picture of nephrotic syndrome until proven otherwise. Cardiac and liver causes unlikely on exam. FH of an uncle with ESRD.\n\nPlan:\n- CMP, lipids, CBC sent today.\n- Called nephrology directly; they can see him next Monday 10/3.\n- Low-salt diet in the meantime, legs up in the evening.\n- Avoid ibuprofen/naproxen.\n- He knows to go to the ED for breathlessness, chest pain or much less urine."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-28a",
+     "kind": "telephone",
+     "start": "2022-09-28T12:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Lab results call",
+       "author": "RN",
+       "date": "2022-09-28T12:10",
+       "body": "Called pt on his lunch break per PCP. Albumin low and cholesterol high, consistent with the protein loss in his urine; kidney function (creatinine) normal, blood counts normal. Nephrology appt confirmed Mon 10/3 at 2:30, he has arranged coverage for his last classes. Swelling about the same. Reinforced low salt, no NSAIDs. He verbalized understanding."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-03a",
+     "kind": "specialist_visit",
+     "start": "2022-10-03T14:30",
+     "service": "Nephrology",
+     "reason": "nephrotic-range proteinuria",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-10-03T15:20",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "4+"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-10-03T15:20",
+       "results": [
+        {
+         "test": "Albumin",
+         "value": 2.5
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-10-03T15:20",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 300
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-10-03T15:20",
+       "results": [
+        {
+         "test": "Protein/Creatinine ratio, urine",
+         "loinc": "2890-2",
+         "unit": "g/g",
+         "value": 6.8
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "neph-referral",
+       "action": "done",
+       "date": "2022-10-03T14:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology Consultation",
+       "author": "nephrology",
+       "date": "2022-10-05T11:20",
+       "body": "Outside nephrology group, new consultation. Received by fax 10/5/2022.\n\nReason: edema and heavy proteinuria, referred by his primary care physician.\n\nHPI: 37-year-old teacher with roughly two months of tiredness and swelling of both legs. He had a viral respiratory illness about three weeks ago, managed by his PCP with supportive care, now over. Describes foamy urine. No hematuria, rash, arthralgia, or NSAID use beyond a few doses.\n\nPMH: allergic rhinitis, mild acne. Meds: cetirizine 10 mg as needed. Allergies: NKDA.\nFH: father with type 2 DM and HTN; mother with hypothyroidism and seasonal allergies; paternal uncle with ESRD, cause unknown.\nSH: never smoker, light weekend alcohol, high school math teacher.\n\nExam: Vitals within normal limits. Periorbital edema present. Lower extremities with 2+ pitting edema bilaterally. Cardiopulmonary exam unremarkable. No rash.\n\nData: Urinalysis with 4+ protein; microscopy shows oval fat bodies with Maltese-cross pattern under polarized light, no RBC casts. Serum albumin 2.5 g/dL. Total cholesterol 300 mg/dL. Creatinine 1.0 mg/dL. Spot urine protein/creatinine 6.8 g/g.\n\nImpression: nephrotic syndrome in a young adult with preserved filtration. Differential includes minimal change disease, FSGS and membranous nephropathy; a tissue diagnosis will guide therapy.\n\nPlan: percutaneous kidney biopsy scheduled 10/13. Sodium restriction. Avoid NSAIDs. Will see after pathology returns.\n\ncc: primary care physician"
+      }
+     ]
+    },
+    {
+     "id": "2022-10-13a",
+     "kind": "procedure_visit",
+     "start": "2022-10-13T08:00",
+     "end": "2022-10-13T14:00",
+     "service": "Nephrology",
+     "reason": "kidney biopsy",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2022-10-13T09:10",
+       "issued": "2022-10-19T16:00",
+       "text": "Specimen: native kidney, left, percutaneous needle core biopsy (ultrasound guided, 16-gauge, two cores).\nLight microscopy: adequate sample with multiple glomeruli for evaluation. Scattered glomeruli show segmental areas of sclerosis with hyalinosis; the remaining glomeruli appear unremarkable. Tubules and interstitium without significant change. Vessels unremarkable.\nImmunofluorescence: negative for IgG, IgA, IgM, C3 and C1q; no immune complex deposits.\nElectron microscopy: no electron-dense deposits identified.",
+       "conclusion": "Focal segmental glomerulosclerosis. No immune complex or complement deposition."
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Focal segmental glomerulosclerosis",
+       "icd10": "N04.1",
+       "action": "diagnosed",
+       "onset": "2022-08-01",
+       "note": "biopsy proven, nephrotic presentation"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Kidney biopsy pathology received",
+       "author": "MA",
+       "date": "2022-10-24T09:05",
+       "body": "Pathology report from the outside hospital (kidney biopsy 10/13/22) received by fax and scanned. Routed to PCP."
+      },
+      {
+       "type": "Procedure Note",
+       "title": "Percutaneous Kidney Biopsy",
+       "author": "nephrology",
+       "date": "2022-10-24T09:05",
+       "body": "Outside procedure note, received 10/24/2022. Indication: nephrotic syndrome. Consent obtained. Prone position, left lower pole localized by ultrasound, local anesthetic, two cores with 16-gauge automated device. No immediate complications. Observed 4 hours, hemoglobin stable, urine clear, discharged home with instructions."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-24a",
+     "kind": "specialist_visit",
+     "start": "2022-10-24T14:30",
+     "service": "Nephrology",
+     "reason": "biopsy results",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 3 tablets (60 mg) by mouth every morning with food",
+       "dose": {
+        "value": 60,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "focal segmental glomerulosclerosis"
+      },
+      {
+       "drug": "losartan potassium 25 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "proteinuria"
+      },
+      {
+       "drug": "furosemide 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "edema"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology Follow-up",
+       "author": "nephrology",
+       "date": "2022-10-26T10:40",
+       "body": "Outside nephrology follow-up, visit 10/24/2022, received 10/26/2022.\n\nBiopsy reviewed with patient: focal segmental glomerulosclerosis without immune deposits. With the full nephrotic picture and no secondary cause found, we are treating as primary disease.\n\nStill has ankle and shin edema. No complications after the biopsy. Vitals unremarkable.\n\nPlan:\n1. Prednisone 60 mg each morning, to continue at full dose until remission or up to about 16 weeks, then a slow taper. Reviewed effects on mood, sleep, appetite and glucose.\n2. Losartan 25 mg daily for proteinuria; BMP in 2 weeks.\n3. Furosemide 20 mg daily for the swelling, to stop once edema clears.\n4. 2 g sodium diet.\n5. Return in 6-8 weeks with urine protein/creatinine.\n\nMeds: cetirizine 10 mg PRN, prednisone, losartan, furosemide. Allergies: NKDA.\n\ncc: primary care physician"
+      }
+     ]
+    },
+    {
+     "id": "2022-10-31a",
+     "kind": "office_visit",
+     "start": "2022-10-31T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up, new kidney diagnosis",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-10-31T16:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-31T16:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-10-31T15:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-31T16:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-10-31T17:10",
+       "body": "Follow-up after his kidney biopsy and nephrology visit. Diagnosis is FSGS; nephrology started prednisone 60 mg, losartan 25 mg and furosemide 20 mg one week ago. He has read a lot and came in with a page of questions, mostly whether this is what his uncle had and whether he can keep teaching. Swelling a bit better with the water pill. Tolerating prednisone so far.\n\nExam: puffiness around eyes less. Lungs clear. 1+ pitting edema at the ankles. \n\nA/P:\n1. FSGS with nephrotic syndrome, on steroids per nephrology. We went through what is and isn't known about familial kidney disease; the rest of that conversation belongs with nephrology. He can work. Hand hygiene in class while immunosuppressed; flu vaccine today. BMP today for the 2-week potassium/creatinine check nephrology asked for, results to them.\n2. Allergic rhinitis: cetirizine PRN.\nNext: physical next summer, sooner with any fever or worse swelling."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-16a",
+     "kind": "portal_message",
+     "start": "2022-11-16T20:14",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Flu going around school",
+       "author": "patient",
+       "date": "2022-11-16T20:14",
+       "body": "Half my 3rd period is out with flu. I'm fine, no symptoms. Since I'm on the prednisone should I be doing anything different? Masking?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Flu going around school",
+       "author": "PCP",
+       "date": "2022-11-17T07:48",
+       "body": "Good that you got the flu shot. A mask in class during this stretch is reasonable, and wash hands before eating. If you get a fever or body aches, message or call the same day so we can test and treat early."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-12a",
+     "kind": "specialist_visit",
+     "start": "2022-12-12T14:30",
+     "service": "Nephrology",
+     "reason": "FSGS follow-up",
+     "state": {
+      "weight_kg": 85.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-12-12T15:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-12T15:10",
+       "results": [
+        {
+         "test": "Protein/Creatinine ratio, urine",
+         "loinc": "2890-2",
+         "unit": "g/g",
+         "value": 2.1
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug": "furosemide 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "edema resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology Follow-up",
+       "author": "nephrology",
+       "date": "2022-12-14T09:30",
+       "body": "Outside nephrology note, visit 12/12/2022, received 12/14/2022.\n\nSeven weeks into prednisone 60 mg. Swelling gone; weight back to his usual. No infections.\nExam: no periorbital or leg edema. BP normal.\nUrine protein/creatinine 2.1 g/g, down from 6.8. Chemistry acceptable.\n\nPlan: stop furosemide. Continue prednisone 60 mg and losartan 25 mg. Recheck in 8 weeks.\n\ncc: primary care physician"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

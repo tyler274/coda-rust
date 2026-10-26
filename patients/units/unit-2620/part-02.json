@@ -1,0 +1,427 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002620",
+      "events": [
+        {
+          "id": "2024-09-21a",
+          "kind": "ed_visit",
+          "start": "2024-09-21T14:10",
+          "end": "2024-09-21T21:05",
+          "service": "Emergency Medicine",
+          "reason": "Left chest pain and shortness of breath",
+          "conditions": [
+            {
+              "label": "Primary spontaneous pneumothorax",
+              "icd10": "J93.11",
+              "action": "diagnosed",
+              "onset": "2024-09-21",
+              "note": "Small, left"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-09-21T14:18",
+              "bp": [
+                130,
+                80
+              ],
+              "hr": 100,
+              "rr": 22,
+              "spo2": 95,
+              "weight_kg": 68.0,
+              "height_cm": 190.5
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-09-21T14:45",
+              "text": "PA and lateral views of the chest. A thin pleural line is seen at the left apex with a small rim of absent lung markings beyond it; the left lung is otherwise expanded. No mediastinal shift. Trachea midline. Right lung clear. Heart size normal. No pleural effusion. No acute osseous abnormality.",
+              "conclusion": "Small left apical pneumothorax. No tension, no lung collapse.",
+              "issued": "2024-09-21T15:10"
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2024-09-21T20:30",
+              "text": "Upright AP view of the chest for interval comparison with the study from earlier today. The small left apical pneumothorax is unchanged in size. No mediastinal shift. Lungs otherwise clear.",
+              "conclusion": "Stable small left pneumothorax.",
+              "issued": "2024-09-21T20:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-09-23T09:30",
+              "body": "Regional hospital emergency department. Visit 09/21/2024, arrival 14:10. Received by fax 09/23/2024.\n\nCC: L sided chest pain, SOB.\nHPI: 24M, previously healthy, playing basketball this afternoon when he felt an abrupt sharp pain on the left side of his chest along with feeling winded. Pain stabs with a big breath, stays put on the left, no spread to arm/jaw/back. Did not fall or get hit. No cold or fever lately.\nPMH: none. PSH: none. Meds: none. Allergies: NKDA.\nFHx: father had a primary spontaneous pneumothorax in his 20s. Nothing else significant.\nSH: nonsmoker.\n\nTriage VS: BP 130/80, HR 100, RR 22, SpO2 95% RA.\nExam: tall, thin young man, 6'3\", 150 lb, uncomfortable but speaking easily. Left-sided breath sounds diminished; no wheezing, no crackles. Trachea in the midline. Heart tachycardic, regular, no murmur. Abdomen benign. Calves soft.\n\nCXR: small L apical pneumothorax, lung not collapsed (see report).\n\nED course: small, clinically stable primary spontaneous pneumothorax; managed with observation. Repeat upright film at about 6 h showed no change. Pain eased, saturations held, resting comfortably on room air.\n\nDx: Primary spontaneous pneumothorax, small, left.\nDispo: home. No flying or diving until cleared. Avoid heavy exertion and contact sport for now. Return at once for worsening breathlessness or chest pain. See PCP this week; repeat chest x-ray in 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "telephone",
+          "start": "2024-09-23T10:05",
+          "reason": "Post-ED call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED Follow-up Call",
+              "author": "RN",
+              "date": "2024-09-23T10:05",
+              "body": "ED fax received this morning (collapsed lung, small, left, sent home Saturday night). Called Henry. Says the stabbing pain is mostly gone, a little twinge with a deep breath, breathing feels normal walking around campus. No fever. Has not played or lifted since. Booked with PCP tomorrow 11:20. Told him to go back to the ED if breathing gets worse before then."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "office_visit",
+          "start": "2024-09-24T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, pneumothorax",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "cxr-recheck-2024",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "Follow-up of left pneumothorax"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-09-24T11:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-09-24T11:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T11:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-09-24T11:20",
+              "body": "Seen 3 days after ED visit for a small L primary spontaneous pneumothorax (ED record reviewed; observed, repeat film stable, discharged). He feels close to normal. Slight catch at the end of a deep breath, otherwise no pain. Walking to class without trouble. No cough.\n\nExam: comfortable, talking in long sentences. Sat normal on RA. Breath sounds present and symmetric to my ear; no added sounds. Heart regular. \n\nA/P: Small L PSP, improving clinically.\n- Repeat 2-view CXR in 2 weeks to confirm it has closed; ordered.\n- No basketball, lifting or teaching high-intensity classes until that film is clear; walking is fine. He'll get a sub for his classes.\n- No air travel until cleared. Scuba diving is off the table going forward, and I explained why.\n- Cannabis: asked him to stop smoking it at all; edibles if he must. He agreed.\n- Same father-son pattern; counseled that a second episode on the same side is the trigger for a surgical opinion.\nFlu shot today."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "imaging",
+          "start": "2024-10-08T15:00",
+          "service": "Radiology",
+          "reason": "Follow-up of left pneumothorax",
+          "conditions": [
+            {
+              "label": "Primary spontaneous pneumothorax",
+              "icd10": "J93.11",
+              "action": "resolved",
+              "onset": "2024-09-21"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-recheck-2024",
+              "action": "done",
+              "date": "2024-10-08T15:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-10-08T15:00",
+              "text": "PA and lateral chest. Comparison 09/21/2024. The left lung is fully expanded; no visible pleural line and lung markings extend to the chest wall at both apices. No effusion. Heart and mediastinum normal. Osseous structures intact.",
+              "conclusion": "Resolution of the previously seen small left pneumothorax. No acute cardiopulmonary process.",
+              "issued": "2024-10-08T16:40"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "portal_message",
+          "start": "2024-10-09T07:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Chest X-ray Result",
+              "author": "PCP",
+              "date": "2024-10-09T07:50",
+              "body": "Henry, yesterday's chest x-ray shows the left lung completely back out with no air left around it. You're cleared to go back to basketball, lifting and teaching, and to fly. Ease back in over a week or so. Still no diving, and please keep the smoke out of those lungs."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Chest X-ray Result",
+              "author": "patient",
+              "date": "2024-10-09T08:31",
+              "body": "Awesome, thank you!! Going to start with the lighter classes."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-19a",
+          "kind": "pharmacy",
+          "start": "2024-10-19T12:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-19T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside Immunization",
+              "author": "MA",
+              "date": "2024-10-22T09:10",
+              "body": "State registry update shows 2024-25 Moderna COVID vaccine given 10/19/2024 at a community pharmacy. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-02a",
+          "kind": "hospital_admission",
+          "start": "2025-07-02T15:40",
+          "end": "2025-07-05T10:30",
+          "service": "Emergency Medicine",
+          "reason": "Left chest pain, recurrent pneumothorax",
+          "conditions": [
+            {
+              "label": "Primary spontaneous pneumothorax",
+              "icd10": "J93.11",
+              "action": "diagnosed",
+              "onset": "2025-07-02",
+              "note": "Recurrent, left, complete collapse"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-07-02T15:48",
+              "rr": 21,
+              "spo2": 96
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-07-02T16:05",
+              "text": "Upright frontal chest. Comparison 10/08/2024. Left pneumothorax: the visceral pleural line is displaced well away from the chest wall and no lung markings are seen peripheral to it; the left lung is collapsed toward the hilum. Mediastinum midline. Right lung clear. No effusion.",
+              "conclusion": "Recurrent left pneumothorax with collapse of the left lung. No mediastinal shift.",
+              "issued": "2025-07-02T16:25"
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-07-03T06:40",
+              "text": "Portable AP chest. Interval placement of a small-bore left pleural catheter with its tip toward the apex. The left lung is now re-expanded; no residual pneumothorax is seen. No subcutaneous emphysema. Right lung clear.",
+              "conclusion": "Left lung re-expanded with pleural catheter in place.",
+              "issued": "2025-07-03T07:30"
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-07-05T07:55",
+              "text": "Upright frontal chest after removal of the left pleural catheter. Lung markings reach the chest wall on the left. No pneumothorax. No effusion. Heart size normal.",
+              "conclusion": "No pneumothorax after catheter removal.",
+              "issued": "2025-07-05T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-07-07T08:40",
+              "body": "Regional hospital ED. Visit 07/02/2025, arrival 15:40. Received 07/07/2025.\n\nCC: L chest pain while lifting.\nHPI: 25 y/o M doing a set at the gym when sharp left chest pain came on all at once; it bites with each deep breath and stays left-sided. A bit short of breath. Denies injury, recent illness, cough, fevers. No palpitations, no lightheadedness, did not pass out. He had a similar abrupt episode about nine months ago, Sept 2024, small L pneumothorax handled with observation.\nPMH: primary spontaneous pneumothorax, L, 09/2024. No other history.\nMeds: none. Allergies: NKDA.\nFHx: no cardiac disease in the family; father had a spontaneous pneumothorax in his 20s.\nSH: no cigarettes; occasional recreational cannabis.\n\nExam: alert, speaking full sentences, looks mildly anxious. RR mildly up at 21; SpO2 96% RA. Heart sounds normal, no murmur or rub. L breath sounds reduced.\n\nCXR: L lung collapsed, pleural line visible, no peripheral markings.\n\nProcedure: small-bore L chest tube, 4th intercostal space mid-axillary line, local anesthesia, sterile technique, placed to suction. Tolerated well.\n\nImpression: recurrent L primary spontaneous pneumothorax, complete collapse. Admitted to the hospitalist service."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospitalist",
+              "date": "2025-07-07T08:45",
+              "body": "Admitted 07/02/2025, discharged 07/05/2025.\nPrincipal diagnosis: recurrent left primary spontaneous pneumothorax.\n\nCourse: Admitted from the ED after small-bore L chest tube placement for a fully collapsed left lung. Film the next morning showed full re-expansion. Tube to water seal on day 2 without air leak; removed on hospital day 3, and the post-removal film showed no pneumothorax. Pain settled over the stay. Ambulating on room air at discharge.\n\nDischarge exam: comfortable; L chest tube site dressed, clean, no crepitus; breath sounds equal.\nDischarge meds: none.\nAllergies: NKDA.\n\nInstructions: second ipsilateral episode, so outpatient thoracic surgery evaluation is recommended; PCP to arrange. No flying for at least 2 weeks and not until cleared. No diving. No heavy lifting for 2 weeks. Stop smoking cannabis. Return for any recurrent chest pain or breathlessness.\nFollow up with PCP within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-07a",
+          "kind": "telephone",
+          "start": "2025-07-07T11:15",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2025-07-07T11:15",
+              "body": "Hospital paperwork came in today. Reached Henry: home since Saturday morning, chest sore where the tube was, not short of breath. Dressing came off yesterday, site dry. Says he is \"kind of freaked out it happened again.\" Booked Thursday 7/10 at 10:00 with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "office_visit",
+          "start": "2025-07-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, recurrent pneumothorax",
+          "conditions": [
+            {
+              "label": "Situational anxiety",
+              "icd10": "F41.8",
+              "action": "diagnosed",
+              "onset": "2025-07-02"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "orders": [
+            {
+              "id": "thoracic-referral",
+              "action": "placed",
+              "order": "Thoracic surgery referral",
+              "category": "referral",
+              "to": "Thoracic Surgery",
+              "reason": "Recurrent left primary spontaneous pneumothorax"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-07-10T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-07-10T10:00",
+              "body": "Follow-up after 7/2-7/5 admission for a second L spontaneous pneumothorax, this time a complete collapse treated with a small-bore chest tube (discharge summary and films reviewed; last film no pneumothorax). No discharge meds.\n\nNow: mild soreness at the tube site, improving. Breathing normal. He has not been back to the gym. Biggest issue is worry. He keeps noticing his chest, slept poorly the first few nights, nervous about teaching and about it happening when he's alone. No panic attacks. Mood otherwise okay, still enjoying things, working on his thesis.\n\nExam: well-appearing, a little tense. Sat normal on RA. L lateral chest wall tube site healing, no redness or drainage, no crepitus. Breath sounds equal bilaterally. Heart regular. GAD-7 9, PHQ-2 1.\n\nA/P:\n1. Recurrent L primary spontaneous pneumothorax, re-expanded. Second same-side event, so referring to thoracic surgery to talk through surgery to prevent another one. No flying for now. No lifting over light weights for another week, then gradual return. Stays off smoked cannabis.\n2. Situational anxiety after the recurrence. Talked through what to watch for and what to do, which seemed to help. He doesn't want medication and I don't think he needs it. Recheck at his physical.\n"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "specialist_visit",
+          "start": "2025-08-12T13:30",
+          "service": "Thoracic Surgery",
+          "reason": "Recurrent left spontaneous pneumothorax",
+          "orders": [
+            {
+              "id": "thoracic-referral",
+              "action": "done",
+              "date": "2025-08-12T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Thoracic Surgery Consultation",
+              "author": "thoracic surgery",
+              "date": "2025-08-14T15:20",
+              "body": "Outside thoracic surgery group. Date of consultation: 08/12/2025.\n\nThank you for asking us to see Mr. Bergeron, a 25-year-old graduate student and fitness instructor, regarding recurrent left primary spontaneous pneumothorax.\n\nHistory: small left pneumothorax 09/2024 managed with observation; complete left collapse 07/2025 needing a small-bore tube and a 3-day admission. Back to light exercise over the last 2 weeks with no symptoms. Father with a pneumothorax in his twenties. No cigarettes; occasional cannabis, now not smoked. No medications. NKDA.\n\nExam: tall, slender, no distress. Healed left tube site. Clear, symmetric breath sounds. Heart regular.\n\nImaging reviewed: hospital films 07/2025 show full re-expansion and no pneumothorax after tube removal.\n\nAssessment and plan: After a second ipsilateral episode, we generally offer video-assisted thoracoscopic bleb resection with pleurodesis, and I reviewed the procedure, recovery and the reduction in recurrence risk with him. He would rather not have surgery in the middle of his program right now. That is a reasonable choice while he is well. We agreed:\n- Surgery to be revisited promptly with any further episode, or sooner if he changes his mind.\n- No scuba diving, permanently.\n- Air travel is acceptable now that his lung has been fully expanded for more than a month; seek care before flying if any symptoms recur.\n- No smoking of any substance.\nHappy to see him again any time.\n\nAllergies: NKDA. Medications: none."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "portal_message",
+          "start": "2025-08-19T21:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flying",
+              "author": "patient",
+              "date": "2025-08-19T21:02",
+              "body": "Hi, I have a conference in October that I'd need to fly to (about 5 hrs). The surgeon said flying is ok now but I wanted to double check with you since I'm kind of paranoid about it. Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flying",
+              "author": "PCP",
+              "date": "2025-08-20T07:45",
+              "body": "Hi Henry, I agree with the surgeon. Your lung has been fully up since early July, so the flight is fine. If you get new one-sided chest pain or breathlessness before the trip, don't board; get checked first. Enjoy the conference. We have you down for a physical in October, and we can talk more then."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T09:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-07T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-07T08:40",
+              "body": "Annual exam, 25 y/o.\n\nInterval: L pneumothorax recurrence 7/2025 with chest tube; thoracic surgery 8/12 offered VATS, he chose to hold off for now (letter on file). Since July: no chest pain, no breathlessness. Back to teaching full classes and lifting, avoiding max-effort lifts by his own choice. Flew to and from his conference last month without a problem. Not smoking cannabis at all now. Alcohol a couple of drinks a week.\nWorry has settled a lot. Occasionally checks in with himself during a hard workout but it isn't running his day. Sleeping fine.\nNo meds. NKDA.\nFHx unchanged (father, spontaneous pneumothorax).\n\nExam: fit, relaxed. Weight steady. HEENT normal. Neck without nodes. Lungs clear, equal air entry. Heart regular, no murmur. Abdomen soft. Healed L lateral chest scar. Skin otherwise clear. PHQ-2 0, GAD-7 5.\n\nA/P:\n1. Recurrent L primary spontaneous pneumothorax, quiet since July. Surgery deferred by his choice; he knows a third episode means going back to the surgeon, and to call or go to the ED the same day for symptoms.\n2. Situational anxiety, better. No treatment.\n3. Health maintenance: flu vaccine today. Tdap 2022. Labs from 2022 normal; nothing needed this year.\nPhysical again next fall."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

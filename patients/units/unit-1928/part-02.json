@@ -1,0 +1,436 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001928",
+      "events": [
+        {
+          "id": "2025-01-09a",
+          "kind": "pharmacy",
+          "start": "2025-01-09T13:10",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request - oral contraceptive",
+              "author": "MA",
+              "date": "2025-01-09T13:10",
+              "body": "E-refill request from pharmacy for levonorgestrel 0.15 mg/ethinyl estradiol 0.03 mg, 3-pack. Seen 9/2024, BP normal, on PCP protocol. Approved 3 packs x 3 refills. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-02a",
+          "kind": "portal_message",
+          "start": "2025-02-02T09:12",
+          "orders": [
+            {
+              "id": "derm-referral-2025",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Vesicular itchy rash of both hands and wrists"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash on my hands",
+              "author": "patient",
+              "date": "2025-02-02T09:12",
+              "body": "Sorry to bug you on a Sunday. Since yesterday both my hands and wrists are red, puffy and covered in tiny blisters and the itching is driving me crazy. I switched to a different hand soap at the kitchen sink on Friday and that's the only thing I can think of - no new meds or foods, haven't been anywhere. Photo attached. No fever, I feel fine otherwise."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash on my hands",
+              "author": "PCP",
+              "date": "2025-02-02T10:30",
+              "body": "Not bugging me at all. From the photo this looks like a contact reaction, and the timing with the new soap fits. Put that soap away for good and wash with plain water or your old soap. Cool compresses help the itch. Because it's blistering on both hands and you use your hands for a living, I'd like a dermatologist to see it right away - I've sent a referral and asked them to work you in tomorrow; their office will call in the morning. If you get a fever, spreading redness up the arms, or anything in your mouth or eyes, call me."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "outside_records",
+          "start": "2025-02-11T14:40",
+          "conditions": [
+            {
+              "label": "Allergic contact dermatitis",
+              "icd10": "L23.9",
+              "action": "diagnosed",
+              "onset": "2025-02-01",
+              "note": "Hands and wrists, after a new hand soap"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "triamcinolone acetonide 1 MG/ML Topical Cream",
+              "action": "historical",
+              "sig": "Apply a thin layer to affected areas twice daily for 2 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Allergic contact dermatitis (dermatology)"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-03T11:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-03T11:30",
+              "results": [
+                {
+                  "test": "Immunoglobulin E, serum",
+                  "loinc": "19113-0",
+                  "unit": "[IU]/mL",
+                  "value": 43
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2025",
+              "action": "done",
+              "date": "2025-02-11T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "author": "dermatology",
+              "date": "2025-02-11T14:40",
+              "body": "OUTSIDE DERMATOLOGY - CONSULTATION\nDate of service: 02/03/2025\nReferred by: primary care physician\n\nReason: pruritic eruption of both hands and wrists x 2 days.\n\nMs. Langevin is a 34-year-old landscape gardener who changed to a new brand of hand soap and developed an intensely itchy eruption on the hands and wrists the following day. She has started no medications and reports no new foods or travel. No prior skin disease of note. Medications: combined oral contraceptive daily. Allergies: NKDA. Family history notable for seasonal allergic rhinitis in her mother and atopic dermatitis in a maternal uncle. Never smoker; drinks wine socially.\n\nExamination: Afebrile. Dorsal hands and wrists bilaterally show erythema and edema studded with numerous small vesicles. Oral and conjunctival mucosa spared. No signs of systemic involvement. Remainder of the skin and general examination unremarkable.\n\nLaboratory (drawn today): CBC within normal limits. Total serum IgE 43 IU/mL, not elevated.\n\nImpression: Allergic contact dermatitis of the hands and wrists, temporally linked to the new hand soap.\n\nRecommendations:\n1. Discontinue the soap; use a fragrance-free cleanser.\n2. Triamcinolone acetonide 0.1% cream to affected skin twice daily for 2 weeks, then stop.\n3. Liberal bland emollient; cotton-lined gloves under work gloves for wet or soil work while healing.\n4. Return if not clearing in 2-3 weeks.\n\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "portal_message",
+          "start": "2025-02-25T19:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hands update",
+              "author": "patient",
+              "date": "2025-02-25T19:48",
+              "body": "Quick update - hands are back to normal. Finished the cream last week. Threw out the soap. Thanks for getting me in so fast."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hands update",
+              "author": "PCP",
+              "date": "2025-02-26T07:55",
+              "body": "Great news. Their letter came through and it matches what we thought. Keep the emollient going through spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-05a",
+          "kind": "portal_message",
+          "start": "2025-05-05T18:20",
+          "conditions": [
+            {
+              "label": "Laceration of left forearm",
+              "icd10": "S51.812A",
+              "action": "diagnosed",
+              "onset": "2025-05-01",
+              "note": "Superficial, gardening fall; cleaned and dressed in ED"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Arm rash after the ER",
+              "author": "patient",
+              "date": "2025-05-05T18:20",
+              "body": "On Thursday I slipped on a wet bank at a client's place and cut my left forearm on an edging stone. Went to the ER because it bled a lot - they cleaned it out and put a big dressing on, no stitches. The cut itself looks good. But since Saturday the skin under where the dressing was is red and super itchy, and it's in a perfect rectangle. A little bigger today but not outside the rectangle. No fever. Is this infected?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Arm rash after the ER",
+              "author": "PCP",
+              "date": "2025-05-05T19:02",
+              "body": "Sorry about the fall. An itchy rash shaped exactly like the dressing, with the cut itself healing well and no fever, sounds much more like a skin reaction to the dressing than an infection. Leave it uncovered or use plain gauze and paper tape. Since you already have a dermatologist, call them first thing - they'll probably see you this week. If it turns warm, painful, starts streaking, or you run a fever, let me know right away. Come in next week so I can look at the cut."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "office_visit",
+          "start": "2025-05-13T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Recheck left forearm laceration",
+          "conditions": [
+            {
+              "label": "Laceration of left forearm",
+              "icd10": "S51.812A",
+              "action": "resolved",
+              "onset": "2025-05-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "triamcinolone acetonide 1 MG/ML Topical Cream",
+              "action": "historical",
+              "sig": "Apply a thin layer to the forearm rash twice daily for 2 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Contact dermatitis at dressing site (dermatology)"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, straightforward MDM",
+              "performed": "2025-05-13T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-05-13T16:55",
+              "body": "F/u left forearm cut from 5/1 (ED, cleaned + dressed, no sutures). Saw her dermatologist 5/6 for the rectangular itchy rash under the dressing - told it was a contact reaction and given triamcinolone 0.1% cream BID x 2 wk, using it. Itch much better. Their letter isn't in yet. Tdap given here 9/2024, so current. No fever.\n\nExam: afebrile, vitals ok. Left dorsal forearm: linear cut about 3 cm fully closed, no drainage, no tenderness. Surrounding rectangle of pink, scaly, slightly thickened skin with a few scratch marks, fading at the edges. No warmth, no streaking, no epitrochlear or axillary nodes.\n\nA/P: laceration healed - resolved. Dressing-site contact dermatitis improving, finish the derm course. Will chase the derm letter for the chart. Told her to mention the reaction whenever someone goes to bandage her."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "pharmacy",
+          "start": "2025-06-19T10:02",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request - oral contraceptive",
+              "author": "MA",
+              "date": "2025-06-19T10:02",
+              "body": "Pharmacy request levonorgestrel/EE 0.15/0.03, 3 packs. BP normal 5/13. Approved x 1 with 3 refills through physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "telephone",
+          "start": "2025-07-22T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request - dermatology",
+              "author": "front desk",
+              "date": "2025-07-22T11:15",
+              "body": "Still no note in the chart from her 5/6 dermatology visit. Called their office - visit is signed on their end, it just never went out. They'll fax it this week. Will watch for it."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "outside_records",
+          "start": "2025-08-05T09:30",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology follow-up",
+              "author": "dermatology",
+              "date": "2025-08-05T09:30",
+              "body": "OUTSIDE DERMATOLOGY - FOLLOW-UP NOTE\nDate of service: 05/06/2025\n\nSeen again three months after her hand dermatitis from soap, which resolved. Five days ago she fell while gardening and was treated in an emergency department for a superficial laceration of the left forearm; the wound was cleaned and dressed and has healed well. Two days after that visit a red patch appeared under the dressing and has become progressively more pruritic, enlarging slightly but staying within a rectangular outline. Denies fever, chills or other systemic symptoms. No history of chronic skin disease. Medications: oral contraceptive. NKDA.\n\nExam: Dorsal left forearm with a sharply marginated, erythematous, lichenified plaque bearing fine scale and mild excoriation, rectangular in outline. Healed laceration within it. No warmth, no fluctuance. No regional lymphadenopathy.\n\nAssessment: Allergic contact dermatitis, left forearm, confined to the area of the wound dressing - consistent with a reaction to the dressing or its adhesive.\n\nPlan: Triamcinolone 0.1% cream twice daily for 2 weeks. Avoid the same type of dressing. Follow up as needed.\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "portal_message",
+          "start": "2025-10-28T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "author": "patient",
+              "date": "2025-10-28T12:40",
+              "body": "Season's winding down - can I get my yearly checkup in mid-November? Mornings are best. Also want my flu shot and the new COVID one then if that's ok."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "author": "front desk",
+              "date": "2025-10-28T14:05",
+              "body": "You're all set for Thursday 11/13 at 8:00. Please come fasting for bloodwork and we'll do both vaccines that day."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-13a",
+          "kind": "annual_physical",
+          "start": "2025-11-13T08:00",
+          "end": "2025-11-13T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-13T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-13T08:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-13T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-11-13T08:42"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-13T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-11-13T09:10",
+              "body": "35F annual exam. Busy season done; says she's tired in the good way. No new health issues. Hands stayed clear since February with the fragrance-free soap. Forearm patch from the dressing reaction cleared over the summer. Pill going fine, no breakthrough bleeding, no headaches.\n\nMeds: levonorgestrel 0.15 / EE 0.03 daily.\nAllergies: NKDA. Contact dermatitis history (soap; wound dressing) - noted in problem list.\nSH unchanged, never smoker, light wine.\n\nROS: negative.\n\nExam: vitals in flowsheet, BP normal, weight steady. Well appearing. HEENT unremarkable. Neck supple, no nodes or thyromegaly. Heart regular, no murmur. Lungs clear throughout. Abdomen soft, no masses. Skin: hands normal; left dorsal forearm with healed linear scar, no active dermatitis. No suspicious moles. Neuro grossly normal. Affect bright; PHQ-9 2.\n\nA/P:\n- Adult preventive care. CBC and CMP today. Lipids were fine last year, not repeating. Pap/HPV next due 2027 per 2022 result. Flu and 2025-26 COVID today.\n- Contraception: continue, renewed x 1 year.\n- Allergic contact dermatitis, hx: quiet. Avoid that soap and that kind of dressing.\nSee you next November; message anytime."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "portal_message",
+          "start": "2025-11-14T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-11-14T15:20",
+              "body": "Your blood count and chemistry panel from yesterday are normal. Have a good winter!"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-09a",
+          "kind": "portal_message",
+          "start": "2026-05-09T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Same arm, same rash",
+              "author": "patient",
+              "date": "2026-05-09T08:05",
+              "body": "You won't believe it. Went down on a slope Wednesday and opened up the same forearm again, so back to the ER - cleaned and bandaged, no stitches. I told them about last year but I don't think it registered. Yesterday the same itchy red rectangle started under the bandage. Cut looks fine, no fever. I already got myself an appointment with dermatology Monday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Same arm, same rash",
+              "author": "PCP",
+              "date": "2026-05-09T09:40",
+              "body": "Oh no - sorry, Kelly. Good that you booked derm already. Take the bandage off now and keep it to plain gauze if anything. Same warning signs as last time: warmth, pain, streaks or fever, message me. Please ask derm to send us their note."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "outside_records",
+          "start": "2026-06-03T10:10",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology follow-up",
+              "author": "dermatology",
+              "date": "2026-06-03T10:10",
+              "body": "OUTSIDE DERMATOLOGY - CLINIC NOTE\nDate of service: 05/11/2026\n\nReturning patient, known to us for soap-related hand dermatitis (02/2025) and a similar dressing-site eruption on the left forearm after an ED visit in 05/2025. Five days ago she again slipped while gardening and had a superficial laceration of the left forearm cleaned and dressed in an emergency department. The wound is healing well. Two days after that visit a red patch appeared where the dressing sat; over 3 days it has grown more itchy and spread slightly but remains inside a rectangular boundary. No fever, chills or systemic complaints. Medications: oral contraceptive. NKDA.\n\nExam: Well-defined erythematous, lichenified plaque with fine scale and a few excoriations over the dorsal left forearm, rectangular in configuration, surrounding the healing laceration. No warmth or fluctuance; no regional adenopathy.\n\nAssessment: Recurrent allergic contact dermatitis at a wound-dressing site.\n\nPlan: Triamcinolone 0.1% cream twice daily for 2 weeks. Ask for non-adhesive dressings for any future wound care, and mention this reaction to whoever is dressing a wound.\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-30a",
+          "kind": "portal_message",
+          "start": "2026-07-30T09:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Annual physical reminder",
+              "author": "front desk",
+              "date": "2026-07-30T09:00",
+              "body": "Hi Kelly, your yearly physical is due in November. Reply here or call when your schedule settles down and we'll get you on the books."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

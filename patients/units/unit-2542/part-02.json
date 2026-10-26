@@ -1,0 +1,237 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002542",
+      "events": [
+        {
+          "id": "2023-03-06a",
+          "kind": "specialist_visit",
+          "start": "2023-03-06T11:00",
+          "service": "Infectious Disease",
+          "reason": "routine HIV check",
+          "labs": [
+            {"panel": null, "collected": "2023-03-06T11:45", "results": [
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Reactive"},
+              {"test": "HIV-1 RNA Viral Load", "value": 55000, "unit": "copies/mL"},
+              {"test": "CD4 Count", "value": 600},
+              {"test": "Hepatitis B Surface Antigen", "text": "Non-reactive"},
+              {"test": "Hepatitis C Antibody", "text": "Non-reactive"}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-03-06T11:45", "results": [{"test": "Platelets"}, {"test": "White Blood Cells"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Visit", "author": "infectious disease", "date": "2023-03-09T15:20", "body": "Outside Infectious Disease Clinic\nVisit date: March 6, 2023\nPatient: Malik Hughes, 32 y/o M\n\nReason: scheduled check-in, HIV acquired at birth.\n\nInterval: no complaints today. Sexually active with several partners. Tells me he uses condoms reliably, with one exception about two months back - a new partner, no condom. No IV drug use, ever.\nOn direct questioning he acknowledges he has been skipping Biktarvy doses on and off for the last few months, more on busy weeks.\n\nNKDA.\nCurrent meds: bictegravir/emtricitabine/TAF 1 tab daily; valacyclovir 500 mg daily.\nPSH: neonatal circumcision.\n\nVitals normal. Looks well. Exam without abnormality.\n\nLabs today:\n- HIV-1 antibody: positive (as expected)\n- HIV-1 RNA: 55,000 copies/mL\n- CD4: 600 cells/mm3\n- CBC: normal\n- Hepatitis panel (HBsAg, HCV Ab): negative\n\nImpression: loss of viral suppression, consistent with the missed doses he describes. CD4 preserved.\nPlan: long talk about taking the pill every day, phone alarm, pill box. Continue current regimen. Repeat viral load in about 3 months. Call sooner with any problems.\n\ncc: primary care"}
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "portal_message",
+          "start": "2023-03-13T12:31",
+          "documents": [
+            {"type": "Patient Message", "title": "Your ID Visit", "author": "PCP", "date": "2023-03-13T12:31", "body": "Hi Malik, I got the letter from your ID visit. Your viral load has come up because of the missed Biktarvy doses. The good news is your CD4 is still in a healthy range. If cost, refills or anything else is getting in the way of taking it every day, tell me and we'll sort it out. Your pharmacy can also set you up on automatic refills. Your ID team wants a recheck in about 3 months."},
+            {"type": "Patient Message", "title": "RE: Your ID Visit", "author": "patient", "date": "2023-03-13T19:48", "body": "ok thanks. its mostly just forgetting. Ill set the alarm"}
+          ]
+        },
+        {
+          "id": "2023-08-18a",
+          "kind": "portal_message",
+          "start": "2023-08-18T08:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Bruises On Legs", "author": "patient", "date": "2023-08-18T08:05", "body": "For about the last week or two I keep getting bruises I don't remember getting and now there's little red dots all over both shins. Not itchy. Should I come in?"},
+            {"type": "Patient Message", "title": "RE: Bruises On Legs", "author": "RN", "date": "2023-08-18T09:20", "body": "Yes, we'd like to see you. Booked you Monday 8/21 at 8:15. If you get any bleeding from your gums or nose that won't stop, blood in your urine or stool, or a bad headache before then, go to the ER. Please avoid ibuprofen or aspirin for now."}
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "office_visit",
+          "start": "2023-08-21T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "easy bruising, leg rash",
+          "conditions": [
+            {"label": "Thrombocytopenia", "action": "diagnosed", "onset": "2023-08-07", "note": "Isolated; in the setting of non-suppressed HIV"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-08-21T08:40", "resulted": "2023-08-21T11:30", "results": [{"test": "Platelets", "value": 31}, {"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "orders": [
+            {"id": "heme-referral-2023", "action": "placed", "order": "Hematology referral", "category": "referral", "to": "Hematology", "reason": "isolated thrombocytopenia, platelets 31"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-08-21T08:15"},
+            {"procedure": "Venipuncture", "performed": "2023-08-21T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-08-21T08:15", "body": "S: ~2 wk of bruises he can't account for, then a speckled red rash on both lower legs. No nosebleeds, gum bleeding, blood in urine or stool. No fever, no recent illness. No new meds, no OTC NSAIDs or supplements. Asked about the Biktarvy - honest that he is still missing doses, maybe 2-3 a week.\n\nO: Afebrile. Pinpoint non-blanching petechiae over both shins, a few 2-3 cm bruises on thighs and forearms. Mouth: no blood blisters. No cervical, axillary or inguinal nodes. Spleen not palpable. Heart/lungs normal.\n\nCBC sent stat: platelets 31. Hgb and WBC normal.\n\nA/P: isolated thrombocytopenia with petechiae. With his viral load up in March, HIV-related platelet destruction is the leading thought, but needs hematology.\n- Called outside hematology, they will see him Wed 8/23.\n- No NSAIDs/aspirin, no contact sports, ER precautions reviewed.\n- Adherence: again, every day. He agreed to set up a weekly pill box.\n- Will update ID."},
+            {"type": "Telephone Encounter", "title": "Call to Hematology", "author": "PCP", "date": "2023-08-21T11:50", "body": "Spoke with hematology on call re plt 31, petechiae, HIV not suppressed. Urgent slot Wed. Pt informed by phone, he can make it."}
+          ]
+        },
+        {
+          "id": "2023-08-23a",
+          "kind": "specialist_visit",
+          "start": "2023-08-23T13:30",
+          "service": "Hematology",
+          "reason": "thrombocytopenia",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-08-23T13:15", "results": [
+              {"test": "Platelets", "value": 25},
+              {"test": "Hemoglobin", "value": 14.0},
+              {"test": "White Blood Cells", "value": 6.5}
+            ]},
+            {"panel": "Prothrombin Time with INR", "collected": "2023-08-23T13:15", "results": [{"test": "Prothrombin Time"}, {"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": null, "collected": "2023-08-23T13:15", "results": [
+              {"test": "Activated partial thromboplastin time", "loinc": "3173-2", "unit": "s", "value": 29.4},
+              {"test": "Hepatitis C Antibody", "text": "Non-reactive"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Reactive"},
+              {"test": "HIV-1 RNA Viral Load", "text": "Detected"}
+            ]}
+          ],
+          "orders": [
+            {"id": "heme-referral-2023", "action": "done", "date": "2023-08-23T13:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Consultation", "author": "hematology", "date": "2023-08-25T10:40", "body": "HEMATOLOGY CONSULTATION - outside hematology/oncology group\nDate seen: 08/23/2023\nReferred by: primary care, for low platelets\n\nHPI: 33-year-old man with HIV acquired at birth and genital HSV-2, on Biktarvy and valacyclovir, last at his ID clinic about six months ago. Two weeks of bruising with little provocation and pinpoint spots on the lower legs. No infections in recent weeks and no new medications or supplements. Admits inconsistent ART use since early this year.\n\nAllergies: NKDA\nMeds: bictegravir/emtricitabine/TAF daily, valacyclovir 500 mg daily\nFH: mother with HIV. Father unknown. Maternal grandmother type 2 diabetes.\nSH: logistics coordinator. Never smoker. Alcohol 1-2 drinks/week.\n\nExam: petechiae both lower legs. Liver and spleen not enlarged. No lymph node enlargement anywhere.\n\nData:\n- Platelets 25 x10^9/L, Hgb 14 g/dL, WBC 6.5 x10^9/L\n- Smear reviewed personally: red and white cells look normal; platelets few but normal in appearance. Isolated thrombocytopenia.\n- PT/INR, aPTT normal\n- As part of our standard workup for isolated thrombocytopenia: HCV antibody negative; HIV-1/2 Ag/Ab reactive and HIV-1 RNA detected, in keeping with his known, currently unsuppressed infection.\n\nAssessment: isolated thrombocytopenia, most likely HIV-associated, driven by uncontrolled viremia.\n\nRecommendations:\n1. The main treatment here is getting his virus back under control - daily ART without missed doses. Discussed with him at length.\n2. Bleeding precautions; no NSAIDs or aspirin.\n3. CBC weekly to start (can be drawn at his PCP office), then spacing out.\n4. Seek care for any bleeding.\nWill see him back in about 3 months, sooner if counts drop."}
+          ]
+        },
+        {
+          "id": "2023-08-30a",
+          "kind": "lab_only",
+          "start": "2023-08-30T07:50",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-30T07:50", "results": [{"test": "Platelets", "value": 44}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-08-30T07:50"}],
+          "documents": [
+            {"type": "Result Note", "title": "CBC - Platelets", "author": "PCP", "date": "2023-08-30T14:05", "body": "Platelets 44, up from 25 last week. Copy faxed to hematology. Pt says he hasn't missed a dose since the visit. Keep going."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "telephone",
+          "start": "2023-09-12T10:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Lab Draw Reschedule", "author": "front desk", "date": "2023-09-12T10:30", "body": "Pt called, couldn't make this week's blood draw due to a work schedule change. Moved to early Oct per hematology's spacing ok. Order on file."}
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "lab_only",
+          "start": "2023-10-04T07:40",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-04T07:40", "results": [{"test": "Platelets", "value": 118}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-10-04T07:40"}],
+          "documents": [
+            {"type": "Result Note", "title": "CBC - Platelets", "author": "PCP", "date": "2023-10-04T15:12", "body": "Platelets 118. Big improvement. Faxed to hematology. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "specialist_visit",
+          "start": "2023-11-29T09:15",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2023-11-29T09:50", "results": [
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"},
+              {"test": "CD4 Count", "value": 640}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-11-29T09:50", "results": [{"test": "Platelets", "value": 176}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2023-12-04T11:00", "body": "Outside ID Clinic - visit 11/29/2023\n\nFollow-up after his viral load rebounded in March and the low-platelet episode this summer (seen by hematology in August). Since then he has been using a weekly pillbox and alarms; reports no missed doses in about three months.\nNKDA. Meds: BIC/FTC/TAF daily, valacyclovir 500 mg daily.\nExam: no petechiae or bruising now. No adenopathy.\nLabs: HIV-1 RNA not detected (<20). CD4 640. Platelets 176.\nAssessment: resuppressed on the same regimen; thrombocytopenia has resolved alongside.\nPlan: same regimen, 6-month visits."}
+          ]
+        },
+        {
+          "id": "2023-12-01a",
+          "kind": "outside_records",
+          "start": "2023-12-01T13:40",
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Follow-up Letter", "author": "hematology", "date": "2023-12-01T13:40", "body": "Hematology follow-up (chart review and phone visit, 11/30/2023)\n\nMr. Hughes's platelet count has recovered: 44 on 8/30, 118 on 10/4, and 176 on the 11/29 draw at his ID clinic, coinciding with consistent ART use and viral resuppression. No bleeding since our visit.\nAllergies: NKDA.\nAssessment: HIV-associated thrombocytopenia, resolved.\nPlan: no ongoing hematology follow-up needed. Please re-refer if platelets fall below 100 or with any bleeding. A CBC with routine labs is reasonable going forward."}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "annual_physical",
+          "start": "2024-02-13T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {"label": "Thrombocytopenia", "action": "resolved", "note": "Recovered with viral resuppression; released by hematology"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-02-13T09:20", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-13T09:20", "results": [{"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2024-02-13T09:20", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-02-13T09:15"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-02-13T08:45"},
+            {"procedure": "Immunization administration", "performed": "2024-02-13T09:15"},
+            {"procedure": "Venipuncture", "performed": "2024-02-13T09:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-02-13T08:45", "body": "Physical, a bit overdue (last May 2022).\n\nInterval: viral load came up last spring from missed doses, then platelets dropped to 25 in August with petechiae. Hematology saw him; platelets came back to normal once he was taking ART daily, and ID found him undetectable again in Nov. Hematology has released him. Still using the pillbox, no misses he can recall.\nNo bruising, no bleeding. No HSV recurrences.\nMeds: Biktarvy daily, valacyclovir 500 daily. NKDA.\nNever smoker, alcohol 1-2/wk. Multiple partners, says he mostly uses condoms.\nMissed flu shot in the fall - giving today.\nPHQ-2 0.\n\nExam: well. Skin: no petechiae or bruising. No nodes. Heart RRR. Lungs clear. Abdomen soft, spleen not felt.\n\nA/P\n1. HIV - suppressed again on Biktarvy, ID following.\n2. Thrombocytopenia, HIV-related - resolved; marking resolved. CBC today.\n3. HSV-2 - stable on suppression.\n4. HM - flu today. CMP, CBC, lipids.\nRTC 1 yr."},
+            {"type": "Result Note", "title": "Labs Reviewed", "author": "PCP", "date": "2024-02-15T10:22", "body": "CBC normal including platelets. CMP and lipids normal. Sent to pt."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "specialist_visit",
+          "start": "2024-06-11T14:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2024-06-11T14:40", "results": [
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"},
+              {"test": "CD4 Count"},
+              {"test": "Rapid Plasma Reagin", "text": "Non-reactive"},
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2024-06-17T09:05", "body": "Outside infectious disease clinic, 6/11/2024.\n\nStable. Taking his ART daily. No symptoms. Annual STI screen sent.\nAllergies: NKDA. Meds unchanged (BIC/FTC/TAF, valacyclovir).\nExam normal.\nHIV RNA undetectable, CD4 stable. RPR non-reactive; urine GC/CT negative.\nContinue. RTC 6 mo."}
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "pharmacy",
+          "start": "2024-08-20T11:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy Call - Prior Authorization", "author": "MA", "date": "2024-08-20T11:15", "body": "Pharmacy called: Biktarvy claim rejected, Medicaid PA expired. Biktarvy is prescribed by his ID clinic - gave pharmacy the ID clinic's number and also called ID's nurse line, who will resubmit today. Pt has 6 tablets left; told him to call us if it isn't resolved by Friday."},
+            {"type": "Telephone Encounter", "title": "PA Follow-up", "author": "MA", "date": "2024-08-22T09:40", "body": "Pharmacy confirms PA approved, Biktarvy filled. Pt picked it up."}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T16:30",
+          "reason": "flu vaccine",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed Appointment", "author": "front desk", "date": "2024-10-22T17:10", "body": "No-show for flu shot nurse visit. Left voicemail to reschedule."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "specialist_visit",
+          "start": "2024-12-10T10:20",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2024-12-10T10:55", "results": [
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"},
+              {"test": "CD4 Count"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2024-12-16T15:30", "body": "OUTSIDE ID CLINIC\nSeen 12/10/24 for HIV care.\n\nNo concerns. Taking it daily; the August insurance authorization renewal went through before he ran out.\nNKDA.\nMeds: bictegravir/emtricitabine/tenofovir alafenamide; valacyclovir 500 mg.\nExam: unremarkable.\nViral load not detected; CD4 stable.\nPlan: continue, follow up in 6 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

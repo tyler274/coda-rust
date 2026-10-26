@@ -1,0 +1,174 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001917",
+      "events": [
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T16:15",
+          "reason": "Membership renewal",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Renewal invoice",
+              "author": "patient",
+              "date": "2026-02-10T16:15",
+              "body": "Hi, I got the renewal invoice for this year. Can I split it into two payments like last time?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Renewal invoice",
+              "author": "front desk",
+              "date": "2026-02-11T09:20",
+              "body": "Yes, you're set up for two installments, February and August. The first is posted to your card on file. Thanks, Tracy!"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-24a",
+          "kind": "portal_message",
+          "start": "2026-05-24T08:10",
+          "reason": "Facial weakness again",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "It's happening again",
+              "author": "patient",
+              "date": "2026-05-24T08:10",
+              "body": "Sorry to bother you on a Sunday. Yesterday morning my smile felt off on the RIGHT side again and today it's worse, the eye won't shut all the way. No other weakness, no headache. Third time now. What should I do?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: It's happening again",
+              "author": "PCP",
+              "date": "2026-05-24T08:45",
+              "body": "Not a bother. I just spoke with the neurology office's on-call doctor; they will see you tomorrow morning at 9:00 even though it's the holiday, which keeps you inside the window for treatment. Start drops and tape tonight like before. If you get weakness in an arm or leg, slurred speech, or a severe headache, go to the ED instead. Send me a note after you see them."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-25a",
+          "kind": "specialist_visit",
+          "start": "2026-05-25T09:00",
+          "service": "Neurology",
+          "reason": "Recurrent right facial weakness",
+          "measure": ["bp", "hr"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-25T09:50", "resulted": "2026-05-25T13:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-05-25T09:50", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 15}]},
+            {"panel": null, "collected": "2026-05-25T09:50", "results": [{"test": "Glucose", "value": 90, "loinc": "2345-7", "unit": "mg/dL"}]},
+            {"panel": null, "collected": "2026-05-25T09:50", "resulted": "2026-05-27T11:00", "results": [{"test": "Lyme Disease Antibody with Reflex to Immunoblot", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "mri-brain-2026", "action": "placed", "order": "MRI brain and internal auditory canals with and without contrast", "category": "imaging", "reason": "Recurrent alternating facial palsy"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-25T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "author": "neurology",
+              "date": "2026-05-28T14:40",
+              "body": "Outpatient neurology, visit of 05/25/2026. Copy to PCP.\n\nInterval history: now 37, seen in September 2025 for a left Bell palsy (prior right-sided episode January 2025), both recovered. Two days ago she woke with a lopsided smile; over the next day the right side weakened further and the right eye will not close fully. No preceding illness, injury, or other neurological complaint. No current medications. No known drug allergies.\n\nExamination: no forehead movement on the right; right eye closure incomplete; right side of the mouth does not elevate. Taste reduced across the front two-thirds of the right tongue. Other cranial nerves normal. Ear canals and tympanic membranes normal on otoscopy. No vesicles or rash at the ear, face or oral mucosa. Strength, sensation, reflexes and gait normal; general examination otherwise unremarkable.\n\nLabs drawn today: CBC normal. ESR 15 mm/hr (ref 0-20). Glucose 90 mg/dL (ref 70-100). Lyme antibody negative (resulted 5/27).\n\nImpression: third episode of idiopathic peripheral facial palsy, right side, alternating sides over 16 months; normal screening labs.\n\nPlan:\n1. Prednisone 60 mg daily for 7 days (prescribed today).\n2. Lubricating drops every 2 hours while awake, lid taping at night.\n3. Given recurrence on alternating sides, MRI of the brain with gadolinium including the internal auditory canals.\n4. Follow-up in about 10 weeks with the MRI result."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-28a",
+          "kind": "portal_message",
+          "start": "2026-05-28T17:30",
+          "reason": "Neurology visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Saw neurology",
+              "author": "patient",
+              "date": "2026-05-28T17:30",
+              "body": "Saw neurology Monday, same steroids and drops as last time, and they did blood work and want an MRI. Scheduled for June 9."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Saw neurology",
+              "author": "PCP",
+              "date": "2026-05-28T18:15",
+              "body": "Thanks, Tracy. Their note just came in and your blood tests look normal, including the Lyme test. The MRI is a sensible step after a third episode. I'll keep an eye out for the report."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "imaging",
+          "start": "2026-06-09T07:30",
+          "reason": "Recurrent alternating facial palsy",
+          "orders": [
+            {"id": "mri-brain-2026", "action": "done", "date": "2026-06-09T07:30"}
+          ],
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24590-2",
+              "performed": "2026-06-09T07:30",
+              "issued": "2026-06-11T09:10",
+              "text": "Outside imaging center. Received by the practice 06/11/2026.\nClinical indication: recurrent facial palsy on alternating sides.\nTechnique: multiplanar, multisequence MR imaging of the brain with thin sections through the internal auditory canals, before and after intravenous gadolinium.\nFindings: Brain parenchyma normal in signal and volume. No mass, hemorrhage or restricted diffusion. Ventricles and sulci normal for age. Both facial nerves follow a normal course through the cerebellopontine angles, internal auditory canals and temporal bones without abnormal enhancement or thickening. Vestibulocochlear nerves normal. No cerebellopontine angle mass. Normal postcontrast enhancement pattern intracranially. Parotid glands normal where imaged. Mastoids and middle ears clear.",
+              "conclusion": "Normal MRI of the brain and internal auditory canals. No enhancing lesion along either facial nerve and no mass."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging",
+              "title": "MRI brain and IACs, outside report",
+              "author": "radiology",
+              "date": "2026-06-11T09:10",
+              "body": "Outside MRI report for study of 06/09/2026 received and filed. Normal brain and internal auditory canals; no lesion along either facial nerve. Ordered by outside neurology."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T20:05",
+          "reason": "MRI question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI",
+              "author": "patient",
+              "date": "2026-06-16T20:05",
+              "body": "Did you get my MRI? The portal says normal but I don't know what half the words mean. Is it okay that they didn't find a reason?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: MRI",
+              "author": "PCP",
+              "date": "2026-06-16T21:00",
+              "body": "I did, and it's a reassuring scan: no tumor, nothing pressing on either facial nerve, and the brain itself looks normal. Not finding a cause is actually the usual answer with Bell palsy, even when it comes back. Neurology will go over it with you at the August visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "specialist_visit",
+          "start": "2026-08-11T10:30",
+          "service": "Neurology",
+          "reason": "Follow-up recurrent facial palsy",
+          "measure": ["bp", "hr"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-08-11T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "author": "neurology",
+              "date": "2026-08-13T11:50",
+              "body": "Outpatient neurology, visit of 08/11/2026. Copy to PCP.\n\nSeen 11 weeks after the third episode (right side, May 2026). Completed the steroid course. Steady improvement; eye now closes fully and she has stopped the drops except on windy days.\n\nExam: right eye closure complete; forehead movement returned; slight residual asymmetry of the right side of the smile on full effort. Remaining neurological examination normal.\n\nMRI brain and internal auditory canals with contrast (6/9/2026) reviewed: normal.\n\nImpression: recurrent idiopathic facial palsy, three episodes on alternating sides, recovering well from the most recent; screening labs and MRI normal.\n\nPlan: no further testing. Return promptly with any new episode. Otherwise follow up as needed."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

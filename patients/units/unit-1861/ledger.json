@@ -1,0 +1,1637 @@
+{
+  "unit": "unit-1861",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\"",
+    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001861",
+      "given": "Margo",
+      "family": "Norris",
+      "birth_date": "2005-09-30",
+      "address_line": "17 Laurel Ridge Road, Apt 3",
+      "phone": "+1-518-555-0182",
+      "email": "margo.norris@example.test",
+      "marital_status": "single",
+      "summary": "First-year college cross-country runner with bulimia nervosa in remission on fluoxetine who joins in 2023, develops functional hypothalamic amenorrhea and female athlete triad in 2024, and relapses with laxative purging in 2026 with an ED visit for hyperchloremic acidosis after saline. Referred to an outpatient eating-disorder program; not seen since March 2026.",
+      "events": [
+        {
+          "id": "2023-10-02a",
+          "kind": "telephone",
+          "start": "2023-10-02T10:42",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Request",
+              "date": "2023-10-02T10:42",
+              "author": "front desk",
+              "body": "Caller is a first-year student who just moved into the dorms for the fall term, family lives out of state. Wants a doctor nearby rather than going home for refills. Takes fluoxetine, calcium with vitamin D and a multivitamin. Insurance is the university student plan, card info taken. Booked new patient visit 10/10 at 9:00. Asked her to have her old pediatric office send records; release form emailed."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "establish_care",
+          "start": "2023-10-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Bulimia nervosa",
+              "action": "diagnosed",
+              "onset": "2022-02-01",
+              "note": "Diagnosed at 16 under prior adolescent care; no purging by her report since",
+              "icd10": "F50.20"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bulimia nervosa"
+            },
+            {
+              "drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              63
+            ],
+            "hr": 70,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 45.5,
+            "height_cm": 165.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-10T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 302
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-10T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-10T09:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "College student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-10-10T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T09:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T09:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-10-10T09:00",
+              "author": "PCP",
+              "body": "18F, first-year college student, here to set up care locally. Runs cross-country for the college team, practices six days a week.\n\nHx: bulimia nervosa dx at 16 through her adolescent clinic back home. Did outpatient therapy for about a year and was started on fluoxetine 20 mg then; has stayed on it. States she has not binged or purged in well over a year, no vomiting, no laxatives or diet pills. Not currently seeing a therapist; would like to keep the option open. Also on calcium/vit D 600 mg/400 IU BID (mom's idea, mom has osteoporosis) and a daily multivitamin.\nMenses: has been irregular since practice started in August, last one early September. Not sexually active.\nPSH: wisdom teeth out at 16.\nFH: mother osteoporosis, father HTN, older sister with bulimia nervosa.\nSH: never smoked, no alcohol, no drugs. Lives in a dorm with one roommate.\nAllergies: NKDA.\n\nExam: thin young woman, well appearing. Wt 45.5 kg, ht 165 cm, BMI 16.7. HEENT normal, no parotid swelling, dentition intact without enamel wear. Neck supple, thyroid not enlarged. Heart RRR without murmur. Lungs clear. Abd soft, nontender. Skin warm, no lanugo. Knuckles without calluses. Mood euthymic, PHQ-9 4.\n\nA/P\n1. Bulimia nervosa, in remission by her account. Continue fluoxetine 20. Talked openly about the pull between running and food; she knows to tell me early if old habits come back. Low weight noted and discussed; she says she has always been on the slim side. Weight check at each visit.\n2. Irregular menses since training ramped up. Keep a calendar; if no period by winter break let me know.\n3. Health maintenance: CBC, CMP, TSH today. Flu and updated COVID given. Pediatric records requested.\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              108,
+              66
+            ],
+            "weight_kg": 45.5,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "portal_message",
+          "start": "2023-10-12T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2023-10-12T16:05",
+              "author": "PCP",
+              "body": "Hi Margo, your blood count, chemistry panel and thyroid test all came back normal. Nothing to change. Good luck at the meet this weekend."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "outside_records",
+          "start": "2023-10-24T13:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Pediatric Records",
+              "date": "2023-10-24T13:20",
+              "author": "outside pediatrics",
+              "body": "Summary of records from prior pediatric practice, covering birth through August 2023 (48 pages received by fax).\n\nProblem list: bulimia nervosa, diagnosed age 16 by adolescent medicine; therapy notes through spring 2023 describe sustained remission of purging.\nMedications at transfer: fluoxetine 20 mg daily (started age 16), calcium carbonate/vitamin D 600 mg/400 IU twice daily, multivitamin daily.\nSurgical: third molar extraction under oral surgery at age 16, uncomplicated.\nAllergies: none known.\nImmunizations: routine childhood series complete, including Tdap at 11, HPV series complete, MenACWY two doses.\nScreening: annual well visits with normal vision and hearing; lipid screen at 17 normal.\n\nFiled to chart. PCP reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-04a",
+          "kind": "portal_message",
+          "start": "2024-01-04T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Still No Period",
+              "date": "2024-01-04T21:14",
+              "author": "patient",
+              "body": "Hi, you said to tell you if my period didn't come back by break. It still hasn't, last one was the beginning of September. I'm back on campus Sunday. Should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Still No Period",
+              "date": "2024-01-05T09:31",
+              "author": "RN",
+              "body": "Thanks for letting us know. Doctor would like to see you Monday 1/8 at 2:30 and draw some labs at that visit. Reply here if that time does not work."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-08a",
+          "kind": "office_visit",
+          "start": "2024-01-08T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Missed periods",
+          "vitals": {
+            "bp": [
+              110,
+              64
+            ],
+            "hr": 78,
+            "temp_c": 36.5,
+            "weight_kg": 44.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-01-08T14:45",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-08T14:55",
+              "resulted": "2024-01-10T11:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "Prolactin",
+                  "value": 9
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 3.4
+                },
+                {
+                  "test": "Luteinizing hormone",
+                  "loinc": "10501-5",
+                  "unit": "m[IU]/mL",
+                  "value": 1.1
+                },
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 16
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-08T14:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-08T14:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "Secondary amenorrhea workup"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-01-08T14:30",
+              "author": "PCP",
+              "body": "S: No menses since early Sept, so about 4 months. Training heavier this winter, team is aiming at championship meets. Some fatigue on long runs. Denies vomiting, laxatives, skipping meals on purpose. Not sexually active. No headaches, vision change, galactorrhea, hair growth or acne. Eating 'pretty normally' but admits she does not always keep up with mileage.\n\nO: Wt 44.2 kg (down from 45.5 in Oct). Thin, appears well. Thyroid normal size. Heart and lungs normal. No acne or hirsutism. Urine hCG negative in office.\n\nA/P: Secondary amenorrhea in a lean endurance athlete with ED history, low weight trending down. Hypothalamic cause most likely but needs a proper workup.\n- TSH, prolactin, FSH, LH, estradiol sent.\n- Referral to gynecology at the college health service, where she can be seen between classes.\n- Asked her to eat back her training; she was receptive.\nWill message results."
+            }
+          ],
+          "state": {
+            "weight_kg": 44.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-01-10a",
+          "kind": "portal_message",
+          "start": "2024-01-10T15:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hormone Results",
+              "date": "2024-01-10T15:48",
+              "author": "PCP",
+              "body": "Margo, thyroid and prolactin are normal. Your FSH, LH and estrogen levels are all on the low side, which fits with the brain dialing down the reproductive hormones when the body is short on fuel for the amount of training. Gynecology will go over this with you on the 29th. Keep the calcium and vitamin D going."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-29a",
+          "kind": "specialist_visit",
+          "start": "2024-01-29T11:00",
+          "service": "Gynecology",
+          "reason": "Missed menstrual periods",
+          "conditions": [
+            {
+              "label": "Secondary amenorrhea",
+              "action": "diagnosed",
+              "onset": "2023-10-01",
+              "icd10": "N91.1"
+            },
+            {
+              "label": "Functional hypothalamic amenorrhea",
+              "action": "diagnosed",
+              "onset": "2023-10-01",
+              "icd10": "E23.3"
+            },
+            {
+              "label": "Female athlete triad",
+              "action": "diagnosed",
+              "onset": "2023-10-01",
+              "icd10": "E63.8"
+            },
+            {
+              "label": "Protein-calorie malnutrition",
+              "action": "diagnosed",
+              "onset": "2023-10-01",
+              "icd10": "E46"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              107,
+              68
+            ],
+            "hr": 73,
+            "temp_c": 36.7,
+            "weight_kg": 43.8,
+            "height_cm": 165.0
+          },
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2024-01-29T11:40",
+              "text": "Transabdominal pelvic ultrasound. Uterus anteverted and small for age, endometrium thin. Both ovaries small with few follicles, no dominant follicle and no cyst or mass. No free fluid.",
+              "conclusion": "Small uterus and ovaries with decreased follicular activity."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "done",
+              "date": "2024-01-29T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "date": "2024-02-01T09:15",
+              "author": "gynecology",
+              "body": "College Health Service, Gynecology Clinic\nDate of visit: 01/29/2024\nReason for referral: secondary amenorrhea\n\nThank you for sending this 18-year-old student. She has had no menstrual bleeding for more than four months. She has never been sexually active and has never been pregnant. She runs cross-country competitively and her training volume went up this season ahead of championship meets. She is more tired during workouts and sometimes feels lightheaded when she stands quickly. She denies vomiting, laxatives or worries about her body shape, and describes herself as having always been thin. She often feels cold, and her mother has told her she looks paler lately.\n\nPMH: bulimia nervosa (in remission by report). PSH: third molars removed at 16.\nMeds: fluoxetine 20 mg daily, calcium carbonate/vitamin D 600 mg/400 IU twice daily, multivitamin daily.\nAllergies: NKDA.\nFH: osteoporosis in mother, sister with bulimia nervosa, father with hypertension.\nSH: never smoker, no alcohol, full-time student.\n\nExam: weight 43.8 kg, height 165 cm, BMI 16.1. Vital signs within normal limits. Thin body habitus with dry skin. Secondary sexual development looks delayed for her age. No hirsutism, no acne.\nLabs from PCP reviewed: urine hCG negative, TSH and prolactin normal, low FSH, LH and estradiol.\nPelvic ultrasound today: small uterus and ovaries with decreased follicular activity.\n\nImpression:\n1. Secondary amenorrhea due to functional hypothalamic amenorrhea.\n2. Female athlete triad: low energy availability with menstrual dysfunction.\n3. Protein-calorie malnutrition, BMI 16.1.\n\nPlan: The cause is energy deficit, not a structural problem. She should increase intake and cut back training load in discussion with her coach. Continue calcium and vitamin D. Recommend a sports dietitian; the PCP office will place the referral. No hormonal therapy at this time. Return to gynecology if no menses after weight restoration.\n\nGynecology, College Health Service"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after gynecology consult",
+          "vitals": {
+            "bp": [
+              118,
+              64
+            ],
+            "hr": 74,
+            "weight_kg": 44.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-13T15:40",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 36
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-13T15:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-13T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dietitian-referral",
+              "action": "placed",
+              "order": "Sports dietitian referral",
+              "category": "referral",
+              "to": "Nutrition",
+              "reason": "Functional hypothalamic amenorrhea, low energy availability"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-02-13T15:15",
+              "author": "PCP",
+              "body": "Here to go over the gyn consult. Agrees with the explanation, a little relieved it is 'not something wrong with my ovaries'. Still no period. Has talked to her coach, who cut her weekly mileage and moved her off the travel squad for two meets. Eating three meals, snacks hit or miss. No vomiting or laxatives. PHQ-9 5, sleeping fine.\n\nWt 44.0 kg. BP and HR fine. Exam otherwise unchanged.\n\nA/P\nFHA / athlete triad / low weight: sports dietitian referral placed today, she prefers someone who works with runners. Continue Ca/vit D; vitamin D level sent. Weight check in about 6 weeks with RN or at next visit.\nBulimia nervosa, remission: continue fluoxetine 20. We talked about how restricting can tip back into old patterns; she agreed to flag it.\nRTC late summer, sooner if needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 44.0
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "outside_records",
+          "start": "2024-03-12T10:05",
+          "orders": [
+            {
+              "id": "dietitian-referral",
+              "action": "done",
+              "date": "2024-03-12T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Sports Dietitian Initial Assessment",
+              "date": "2024-03-12T10:05",
+              "author": "dietitian",
+              "body": "Sports nutrition initial assessment, seen 03/05/2024.\nReferred for low energy availability with amenorrhea in a collegiate distance runner. Diet recall shows intake well short of her training needs, particularly on long-run days. Plan built with her: three meals and two snacks daily, recovery snack within an hour of practice, a fueling plan for long runs. Coach has agreed to fewer training miles for the rest of the indoor season. Will follow every 2-3 weeks. Thank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "pharmacy",
+          "start": "2024-05-20T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2024-05-20T11:30",
+              "author": "MA",
+              "body": "Pharmacy fax: refill request fluoxetine 20 mg caps #90. Pt going home for summer and wants a 90-day supply. Approved per PCP, 90 days with 1 refill sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "office_visit",
+          "start": "2024-09-10T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up amenorrhea and weight",
+          "conditions": [
+            {
+              "label": "Secondary amenorrhea",
+              "action": "resolved",
+              "onset": "2023-10-01",
+              "icd10": "N91.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              58
+            ],
+            "hr": 75,
+            "temp_c": 36.6,
+            "weight_kg": 48.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-09-10T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-09-10T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-10T09:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-09-10T08:40",
+              "author": "PCP",
+              "body": "Back for sophomore year. Period came back in July and has come every 4-5 weeks since. Worked with the dietitian through the spring, stopped over the summer but kept the meal pattern. Running again with the team, mileage still below last fall per coach. No purging, no laxatives. Feels warmer and less wiped out.\n\nWt 48.2 kg, BMI 17.7, up about 4 kg since February. Exam: well appearing, skin less dry, heart and lungs normal.\n\nA/P\n- Secondary amenorrhea: resolved with weight gain. FHA and triad stay on the list since the risk returns if intake slips during heavy training.\n- Bulimia nervosa: stable, fluoxetine 20.\n- Ca/vit D and multivitamin continue.\n- Flu and COVID given today.\nRTC for a physical next summer."
+            }
+          ],
+          "state": {
+            "weight_kg": 48.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T19:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill and Physical",
+              "date": "2025-01-21T19:02",
+              "author": "patient",
+              "body": "Hi, can I get my fluoxetine refilled at the campus pharmacy instead of the one at home? Also when should I book a physical, my team needs a form signed before preseason in August."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill and Physical",
+              "date": "2025-01-22T10:14",
+              "author": "MA",
+              "body": "Refill sent to the pharmacy you listed. For the preseason form, book the physical for mid-August and bring the form along. You can schedule online or call us."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, athletic clearance form",
+          "vitals": {
+            "bp": [
+              111,
+              70
+            ],
+            "hr": 60,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 49.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-19T10:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 312
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-19T10:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-19T10:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 91
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-19T10:55",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-19T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-19T10:20",
+              "author": "PCP",
+              "body": "19F here for yearly exam and team preseason form. Junior year starting. Periods regular through the spring and summer. No purging or laxatives. Running about the same volume as last year, coach keeps her capped. Eats with teammates most nights. Never smokes or vapes, no alcohol. Not sexually active. PHQ-9 3.\nMeds: fluoxetine 20 daily, Ca/vit D BID, MVI.\n\nExam: Wt 49.0 kg, BMI 18.0. Pleasant, well appearing. Eyes, ears, throat normal. No parotid enlargement, teeth without erosion. Neck without nodes or thyromegaly. Heart regular, no murmur at rest or with standing. Lungs clear. Abd soft. Spine straight, full ROM all joints. Skin clear. Neuro grossly normal.\n\nA/P\n- Well adult: CBC with diff, CMP, lipids. One-time HIV and hep C screening offered and accepted. Cervical screening starts at 21.\n- Bulimia nervosa in remission, FHA and triad improved with weight up to 49 kg. Continue current meds.\n- Cleared for full participation; form signed and scanned.\nFlu and COVID when the fall supply arrives."
+            }
+          ],
+          "state": {
+            "weight_kg": 49.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T12:37",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical Results",
+              "date": "2025-08-21T12:37",
+              "author": "PCP",
+              "body": "Hi Margo, all of your labs from the physical were normal, including blood counts, chemistry and cholesterol, and the HIV and hepatitis C screens were negative. Have a good season."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T16:12"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T16:12"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-07T16:14"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2025-10-07T16:10",
+              "author": "RN",
+              "body": "Screening questions reviewed, no contraindications. Flu vaccine given IM left arm, COVID updated dose given IM right arm. VIS sheets provided. Observed 15 minutes after, no reaction, left for practice."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2026-02-02a",
+          "kind": "ed_visit",
+          "start": "2026-02-02T13:25",
+          "end": "2026-02-03T02:40",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue and lightheadedness",
+          "conditions": [
+            {
+              "label": "Hyperchloremic metabolic acidosis due to excess normal saline infusion",
+              "action": "diagnosed",
+              "onset": "2026-02-02",
+              "icd10": "E87.29"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 5 days",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Low potassium"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              64
+            ],
+            "hr": 72,
+            "rr": 17,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 46.8,
+            "height_cm": 165.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-02T13:50",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-02T13:55",
+              "resulted": "2026-02-02T14:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                },
+                {
+                  "test": "Potassium",
+                  "value": 2.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 109
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 16
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 22
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-02T13:55",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-02T13:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-02T15:10",
+              "results": [
+                {
+                  "test": "Occult blood, stool (guaiac)",
+                  "loinc": "2335-8",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-02T21:30",
+              "resulted": "2026-02-02T22:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 117
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 14
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 6
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-02-02T13:40",
+              "text": "Sinus rhythm. Normal axis. PR and QRS intervals normal. Flattened T waves with prominent U waves across the precordial leads. No ST elevation.",
+              "conclusion": "U waves and flattened T waves."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-02T13:25"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-02-02T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2026-02-04T08:50",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, visit 02/02/2026, arrived 13:25, discharged 02/03/2026 02:40.\n\nCC: tired and lightheaded for days.\n\nHPI: 20-year-old college student with bulimia nervosa, functional hypothalamic amenorrhea and female athlete triad, worked up for amenorrhea in January 2024. Her roommate drove her in after weeks of fatigue and lightheadedness. Per roommate she has been spending more than an hour in the bathroom every morning and talks constantly about flushing toxins out of her system. Patient admits her eating has been erratic and that she takes over-the-counter herbal laxatives often to keep her weight down. Denies vomiting, diet pills, diuretics or other weight control. LMP about 3 months ago.\n\nMeds: fluoxetine 20 mg daily, calcium carbonate/vitamin D 600 mg/400 IU BID, multivitamin. Herbal laxatives OTC.\nAllergies: NKDA. FH: mother osteoporosis, sister bulimia nervosa, father HTN. SH: never smoker, no alcohol, student.\n\nExam: weight 46.8 kg, BMI 17.2. Tired appearing. Mucous membranes dry. Pulse faintly irregular. Heart and lungs otherwise normal. Abdomen mildly tender throughout, bowel sounds hyperactive, no guarding. DTRs diminished and symmetric. Rectal: guaiac negative stool.\n\nECG: U waves, flattened T waves.\nLabs: urine hCG negative. BMP Na 134, K 2.7, Cl 109, HCO3 16, BUN 22, Cr 0.9, glucose 82, AG 9. Mg 1.7. CBC unremarkable.\n\nCourse: placed on monitor. 2 L normal saline IV for volume depletion. Potassium chloride IV and by mouth. Repeat BMP at 21:30: Na 137, K 3.3, Cl 117, HCO3 14, AG 6. Lightheadedness improved, tolerating food and fluids, walking without symptoms.\n\nDiagnoses:\n1. Hyperchloremic metabolic acidosis due to excess normal saline infusion, on top of bicarbonate and potassium losses from laxative misuse; potassium 2.7 with ECG changes, improved to 3.3.\n2. Bulimia nervosa with laxative misuse.\n\nDisposition: home with roommate. Potassium chloride 20 mEq ER twice daily for 5 days. Stop all laxatives. PCP visit within one week with repeat chemistry. Strongly advised eating-disorder treatment; resources given. Return for palpitations, fainting or weakness.\n\nEmergency Medicine attending"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "telephone",
+          "start": "2026-02-03T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED Call",
+              "date": "2026-02-03T11:20",
+              "author": "RN",
+              "body": "Called after ED notification. Pt home from the ED overnight, says she feels 'washed out but better'. Picked up the potassium this morning, taking it with food. Has thrown out the laxative teas, roommate with her. No palpitations or fainting. Appt made Mon 2/9 3:30 with PCP, labs that day. Knows to go back to the ED for palpitations, passing out or weakness."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "office_visit",
+          "start": "2026-02-09T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "vitals": {
+            "bp": [
+              105,
+              63
+            ],
+            "hr": 72,
+            "temp_c": 37.0,
+            "weight_kg": 46.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-09T15:55",
+              "resulted": "2026-02-10T09:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 108
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-09T15:55",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-09T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-09T15:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ed-program-referral",
+              "action": "placed",
+              "order": "Eating disorder program referral",
+              "category": "referral",
+              "to": "Eating disorder program",
+              "reason": "Bulimia nervosa with laxative misuse"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2026-02-09T15:30",
+              "author": "PCP",
+              "body": "Seen for ED f/u (ED record received and reviewed). Finished the potassium yesterday. No laxatives since the ED. Says the laxative use crept in over the fall, after she missed her November check here, and she hid it from her roommate and family. Feels ashamed, also relieved it is out. Lightheadedness gone. No vomiting. Bowels sluggish this week. No period since early November. PHQ-9 6, no SI.\n\nWt 46.5 kg. BP and HR normal, pulse regular today. Mucous membranes moist. Abd soft, minimally tender. Reflexes present and equal.\n\nA/P\n1. Bulimia nervosa, relapsed with laxative misuse. Needs specialized care: referral placed to an outpatient eating-disorder program, she agrees. Continue fluoxetine 20 for now; will defer dose changes to the program.\n2. Hyperchloremic acidosis and low K after ED saline and laxative losses. Repeat BMP and Mg today.\n3. Amenorrhea again since November, in the setting above. Will revisit at next visit.\nRTC 4 weeks, sooner if any symptoms."
+            }
+          ],
+          "state": {
+            "weight_kg": 46.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "portal_message",
+          "start": "2026-02-11T08:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-02-11T08:45",
+              "author": "PCP",
+              "body": "Margo, your potassium is back to normal at 3.8 and magnesium is fine. The bicarbonate is still a touch low at 21 but much better than in the ED. We'll recheck at your March visit. The eating-disorder program should call you to set up intake; let us know if you haven't heard from them in a week."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-06a",
+          "kind": "office_visit",
+          "start": "2026-03-06T13:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up eating disorder and labs",
+          "conditions": [
+            {
+              "label": "Hyperchloremic metabolic acidosis due to excess normal saline infusion",
+              "action": "resolved",
+              "onset": "2026-02-02",
+              "icd10": "E87.29"
+            },
+            {
+              "label": "Secondary amenorrhea",
+              "action": "diagnosed",
+              "onset": "2025-12-01",
+              "icd10": "N91.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              66
+            ],
+            "hr": 75,
+            "temp_c": 36.8,
+            "weight_kg": 47.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-06T14:10",
+              "resulted": "2026-03-07T10:05",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-06T13:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-06T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-03-06T13:45",
+              "author": "PCP",
+              "body": "4 week f/u. Program intake is booked for 3/25. Has stayed off laxatives, one urge she talked herself out of. Eating three meals, roommate eats with her. No vomiting. Not running. Still no menses, none since early November. PHQ-9 5.\n\nWt 47.0 kg (46.5 last visit). Vitals normal. Well hydrated. Heart regular. Abd benign.\n\nA/P\n1. Bulimia nervosa: holding steady while waiting for the program. Fluoxetine 20 for now; the program psychiatrist will decide on the dose.\n2. Hyperchloremic acidosis: BMP today to confirm it has cleared.\n3. Secondary amenorrhea, recurrent, on the FHA/triad background. Expect return with steady intake; gyn again if not.\n4. Ca/vit D and multivitamin continue.\nFollow-up after she is settled with the program, roughly 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 47.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T09:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-03-09T09:20",
+              "author": "PCP",
+              "body": "Good news, your chemistry panel is completely normal now: potassium 4.1 and bicarbonate 24. The acid level problem from the ED has resolved. Keep it up and good luck at intake on the 25th."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "outside_records",
+          "start": "2026-04-02T14:15",
+          "orders": [
+            {
+              "id": "ed-program-referral",
+              "action": "done",
+              "date": "2026-04-02T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Eating Disorder Program Intake",
+              "date": "2026-04-02T14:15",
+              "author": "eating disorder program",
+              "body": "Outpatient Eating Disorder Program, intake evaluation 03/25/2026.\n\nThank you for referring this 20-year-old student with bulimia nervosa, recently relapsed with laxative misuse, seen in an ED in February for electrolyte and acid-base derangement, since corrected per your records. She reports no laxative use since the ED visit and no vomiting. Weight today 47.4 kg.\n\nPlan:\n- Weekly individual therapy (CBT for eating disorders).\n- Program dietitian every other week; weekly blinded weights.\n- Program psychiatry: fluoxetine increased to 40 mg daily, with a plan to reach 60 mg if tolerated. Prescription sent by our psychiatrist.\n- No return to competitive running until the team agrees on readiness.\nWe will send updates. Please continue routine primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "portal_message",
+          "start": "2026-06-10T17:33",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "date": "2026-06-10T17:33",
+              "author": "patient",
+              "body": "Hi, I'm away for the summer and back in September. Can I book a checkup for when I'm back, mid September?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "date": "2026-06-11T09:02",
+              "author": "front desk",
+              "body": "You're booked Monday 9/14 at 10:00. We'll send a reminder the week before."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T10:00",
+          "reason": "Follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Bulimia nervosa|F50.20": {
+        "code": "F50.20",
+        "display": "Bulimia nervosa, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Female athlete triad|E63.8": {
+        "code": "E63.8",
+        "display": "Other specified nutritional deficiencies",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Functional hypothalamic amenorrhea|E23.3": {
+        "code": "E23.3",
+        "display": "Hypothalamic dysfunction, not elsewhere classified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyperchloremic metabolic acidosis due to excess normal saline infusion|E87.29": {
+        "code": "E87.29",
+        "display": "Other acidosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Protein-calorie malnutrition|E46": {
+        "code": "E46",
+        "display": "Unspecified protein-calorie malnutrition",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary amenorrhea|N91.1": {
+        "code": "N91.1",
+        "display": "Secondary amenorrhea",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Estradiol": {
+        "code": "2243-4",
+        "display": "Estradiol (E2) [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Luteinizing hormone": {
+        "code": "10501-5",
+        "display": "Lutropin [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Occult blood, stool (guaiac)": {
+        "code": "2335-8",
+        "display": "Hemoglobin [Presence] in Stool from gastrointestinal",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\"",
+      "drug \"multivitamin Oral Tablet\""
+    ]
+  }
+}

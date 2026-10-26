@@ -1,0 +1,296 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002792",
+      "events": [
+        {
+          "id": "2026-01-06a",
+          "kind": "procedure_visit",
+          "start": "2026-01-06T08:30",
+          "service": "General Surgery",
+          "reason": "Muscle biopsy, left thigh",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-01-06T08:30",
+              "issued": "2026-01-14T16:20",
+              "text": "Specimen: skeletal muscle, left vastus lateralis, open biopsy (fresh and fixed portions). Frozen and paraffin sections show perifascicular atrophy, with small, basophilic fibers concentrated at the edges of fascicles. Perivascular inflammatory infiltrates in the perimysium, predominantly lymphocytes. Scattered necrotic and regenerating fibers. No rimmed vacuoles, no inclusions. Special stains and enzyme histochemistry otherwise unremarkable for this pattern.",
+              "conclusion": "Inflammatory myopathy with perifascicular atrophy and perivascular inflammation, consistent with dermatomyositis."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "specialist_visit",
+          "start": "2026-01-21T13:30",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis, results and treatment",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-01-21T14:30", "results": [
+              {"test": "Creatine Kinase", "value": 3480},
+              {"test": "Hepatitis B Surface Antigen", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "Quantiferon-TB Gold", "text": "Negative"}
+            ]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-01-21T14:30", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 104},
+              {"test": "Alanine Aminotransferase", "value": 78}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-21T14:30", "results": [{"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (60 mg) by mouth every morning", "dose": {"value": 60, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Dermatomyositis"},
+            {"drug": "methotrexate 2.5 MG Oral Tablet", "action": "historical", "sig": "Take 6 tablets (15 mg) by mouth once a week on the same day", "dose": {"value": 15, "unit": "mg"}, "frequency": "WEEKLY", "route": "Oral", "course": "chronic", "reason": "Dermatomyositis"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "cholecalciferol 0.025 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (1000 units) by mouth daily", "dose": {"value": 1000, "unit": "[iU]"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "author": "rheumatology",
+              "date": "2026-01-26T09:15",
+              "body": "RHEUMATOLOGY FOLLOW-UP - 01/21/2026\n\nShe returns to go over the workup for the problem first evaluated by dermatology in July 2024. Over the last six months she has had more trouble with stairs and with lifting her arms; brushing her hair now tires her out, and she notices her neck feels weak holding her head up while sitting. No dysphagia or dyspnea. No regular medications. NKDA.\n\nPSH: cholecystectomy 2014, tubal ligation 1999.\nFH: mother - autoimmune thyroiditis; maternal aunt - rheumatoid arthritis; father - hypertension.\nSH: high school math teacher; never smoked; wine 1-2 glasses a week.\n\nExam: Symmetric proximal weakness in arms and legs; neck flexors 4/5. Violaceous rash of the eyelids. Scaly red patches over the knuckles. Lungs clear.\n\nResults:\n- CK 3,480 U/L today (3,120 in November). AST 104, ALT 78.\n- Myositis panel: anti-Mi-2 positive; remaining myositis-specific antibodies negative.\n- EMG 12/10: irritable myopathy, proximal.\n- Muscle biopsy (L vastus lateralis) 01/06: perifascicular atrophy with perivascular inflammation - consistent with dermatomyositis.\n- Pre-treatment screening: HBsAg nonreactive, HCV Ab nonreactive, QuantiFERON negative.\n\nAssessment: Dermatomyositis, confirmed by antibody, electrodiagnostic and biopsy findings.\n\nPlan:\n1. Prednisone 60 mg each morning. Will taper by response.\n2. Methotrexate 15 mg once weekly, folic acid 1 mg daily. No alcohol beyond an occasional glass. CBC and liver tests every 4-6 weeks at first.\n3. Vitamin D3 1000 units daily; calcium through diet.\n4. CT chest, abdomen and pelvis for age-appropriate malignancy screening in adult dermatomyositis; her mammogram, Pap and colonoscopy are current.\n5. Please consider bone density and pneumococcal vaccination with her PCP.\n6. Return in 8 weeks.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "portal_message",
+          "start": "2026-01-23T20:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update from rheumatology",
+              "author": "patient",
+              "date": "2026-01-23T20:12",
+              "body": "Hi - rheumatology confirmed the dermatomyositis. I started prednisone 60 mg yesterday and the methotrexate this Sunday, plus folic acid and vitamin D. They said you might want to do a bone scan and a pneumonia vaccine. CT scan is booked for Feb 4. Should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update from rheumatology",
+              "author": "PCP",
+              "date": "2026-01-24T09:02",
+              "body": "Thanks for the update, glad you have a plan. Yes - let's see you after the CT. The front desk will offer Feb 11. We'll give the pneumonia vaccine then and order the bone density test. Prednisone can raise blood sugar, so we'll check it at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "imaging",
+          "start": "2026-02-04T07:50",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-02-04T07:50",
+              "text": "CT of the chest with IV contrast, performed with the abdomen and pelvis. Lungs are clear without nodules, consolidation, ground-glass or reticular opacity. No interstitial lung disease. Airways patent. No pleural or pericardial effusion. Heart size normal. No mediastinal, hilar or axillary lymphadenopathy. Thyroid and visualized breast tissue unremarkable. No osseous lesion.",
+              "conclusion": "Normal CT chest. No mass, adenopathy or interstitial lung disease."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-02-04T07:50",
+              "text": "Liver, spleen, pancreas, adrenal glands and kidneys normal in appearance. Gallbladder surgically absent; no biliary dilatation. Bowel normal in caliber without wall thickening or mass. Uterus and adnexa unremarkable for age. No ascites. No retroperitoneal, mesenteric or pelvic lymphadenopathy. Bones without suspicious lesion.",
+              "conclusion": "No evidence of malignancy in the abdomen or pelvis. Post-cholecystectomy."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "office_visit",
+          "start": "2026-02-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after rheumatology, starting immunosuppression",
+          "state": {"weight_kg": 69.5},
+          "vitals": {"bp": [126, 80]},
+          "measure": ["hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-11T16:10", "results": [{"test": "Glucose"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2026-02-11T16:15"}
+          ],
+          "orders": [
+            {"id": "dxa-2026", "action": "placed", "order": "DXA bone density, hip and spine", "category": "imaging", "reason": "long-term glucocorticoid therapy"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-02-11T15:40"},
+            {"procedure": "Immunization administration", "performed": "2026-02-11T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-02-11T15:40",
+              "body": "Here to catch up after rheumatology. Dermatomyositis now confirmed (anti-Mi-2 positive, myopathic EMG, biopsy with perifascicular atrophy). Three weeks into prednisone 60 mg daily; methotrexate 15 mg weekly with folic acid and vitamin D3 1000 units.\n\nSays the stairs feel a bit easier already. Took methotrexate the last 3 Sundays without nausea. CT last week normal - she had read the report and was relieved.\n\nExam: BP 126/80. Weight up about 1.5 kg. Lids still dusky. Strength in the hip flexors 4/5, shoulders 4+/5. Lungs clear.\n\nA/P:\n1. Dermatomyositis - treatment per rheumatology. Reviewed weekly (not daily) methotrexate dosing; she has a pill box marked for Sundays.\n2. Glucocorticoid therapy - BMP for glucose today. DXA ordered. Vitamin D on board, dietary calcium ok (yogurt, milk).\n3. Immunosuppressed - PCV20 given today. Flu and COVID already this season. Shingrix complete (2023). No live vaccines.\n4. Follow up in summer, or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "imaging",
+          "start": "2026-02-25T10:30",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2026-02-25T10:30",
+              "text": "Dual-energy x-ray absorptiometry of the lumbar spine (L1-L4) and left hip. All vertebral levels evaluable. Lumbar spine T-score -0.9. Total hip T-score -0.4. Indication: long-term glucocorticoid therapy.",
+              "conclusion": "Normal bone density (WHO criteria)."
+            }
+          ],
+          "orders": [
+            {"id": "dxa-2026", "action": "done", "date": "2026-02-25T10:30"}
+          ]
+        },
+        {
+          "id": "2026-02-27a",
+          "kind": "portal_message",
+          "start": "2026-02-27T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bone density result",
+              "author": "PCP",
+              "date": "2026-02-27T12:40",
+              "body": "Good news - your bone density is normal (spine -0.9, hip -0.4). Keep up the vitamin D and calcium from food. We'll repeat it in a couple of years if you're still on prednisone. Your sugar on the 11th was fine too."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-18a",
+          "kind": "specialist_visit",
+          "start": "2026-03-18T14:10",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-03-18T15:00", "results": [{"test": "Creatine Kinase", "value": 910}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-03-18T15:00", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 40},
+              {"test": "Alanine Aminotransferase", "value": 38}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-18T15:00", "results": [{"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "stop", "sig": "Take 3 tablets (60 mg) by mouth every morning"},
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (40 mg) by mouth every morning", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Dermatomyositis"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "author": "rheumatology",
+              "date": "2026-03-23T08:40",
+              "body": "Rheumatology follow-up 03/18/2026.\n\nDermatomyositis (anti-Mi-2), 8 weeks into treatment. Clear improvement: climbs her classroom stairs without stopping, can hold her arms up to wash her hair. Lid and knuckle redness fading. Neck no longer feels weak. Methotrexate tolerated, no mouth sores.\n\nExam: deltoids and hip flexors 4+/5, neck flexors 5/5. Faint heliotrope.\n\nLabs: CK 910 (from 3,480). AST 40, ALT 38. CBC fine.\n\nPlan: Prednisone down to 40 mg daily. Methotrexate 15 mg weekly unchanged with folic acid. Labs again in 4-6 weeks. Return in 8 weeks.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "specialist_visit",
+          "start": "2026-05-13T13:50",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-05-13T14:40", "results": [{"test": "Creatine Kinase", "value": 260}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-05-13T14:40", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-13T14:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "stop", "sig": "Take 2 tablets (40 mg) by mouth every morning"},
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (20 mg) by mouth every morning", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Dermatomyositis"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "author": "rheumatology",
+              "date": "2026-05-18T11:25",
+              "body": "Follow-up visit 5/13/26 - dermatomyositis.\n\nContinues to improve. Teaching full days without needing to sit; stairs fine. Skin nearly clear. Taking methotrexate every Sunday with folic acid daily; no GI upset.\n\nExam: strength 5-/5 proximally, symmetric. Minimal residual lid discoloration.\n\nLabs: CK 260. Liver tests and CBC normal.\n\nPlan: Prednisone 20 mg daily. Methotrexate 15 mg weekly continues. Labs before next visit. Back in about 3 months.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "office_visit",
+          "start": "2026-07-08T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, dermatomyositis on prednisone and methotrexate",
+          "state": {"weight_kg": 71.5},
+          "vitals": {"bp": [128, 80], "weight_kg": 71.5},
+          "measure": ["hr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2026-07-08T09:55", "results": [
+              {"test": "Creatine Kinase", "value": 170},
+              {"test": "Hemoglobin A1c"}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-08T09:55", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-08T09:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-08T09:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-07-08T09:20",
+              "body": "Summer check-in. Dermatomyositis much improved - she finished the school year without trouble on the stairs and is gardening again. On prednisone 20 mg daily since mid-May, methotrexate 15 mg Sundays, folic acid, D3. No mouth sores, no cough, no breathlessness. A few pounds up on prednisone.\n\nExam: BP 128/80. Wt 71.5 kg. Lids nearly clear, knuckles faint pink. Strength 5-/5 hip flexors, otherwise 5/5. Lungs clear. No edema.\n\nA/P:\n1. Dermatomyositis, responding. CK, CMP, CBC today (also covers rheum's monitoring labs this cycle - will forward).\n2. Prednisone effects - A1c today. BP fine. DXA normal in Feb.\n3. Health maintenance: flu and COVID in the fall (inactivated only). Mammogram due November.\n4. Rheumatology next in August."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "portal_message",
+          "start": "2026-07-10T08:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wednesday's labs",
+              "author": "PCP",
+              "date": "2026-07-10T08:45",
+              "body": "Heather, the CK is down to 170 - in the normal range for the first time since this started. Liver tests, blood counts, kidney function and A1c are all normal. I've sent the results to rheumatology. Enjoy the summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wednesday's labs",
+              "author": "patient",
+              "date": "2026-07-10T10:02",
+              "body": "That's wonderful news. Thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "specialist_visit",
+          "start": "2026-08-12T14:20",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-08-12T15:05", "results": [{"test": "Creatine Kinase", "value": 140}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "author": "rheumatology",
+              "date": "2026-08-19T13:30",
+              "body": "Rheumatology - 08/12/2026\n\nDermatomyositis, anti-Mi-2 positive. Doing very well; strength near normal and the rash has essentially cleared. Ready for the school year. Labs from her PCP in July reviewed (CK 170, liver tests and CBC normal).\n\nCurrent: prednisone 20 mg daily, methotrexate 15 mg weekly, folic acid 1 mg, vitamin D3 1000 units.\n\nExam: 5/5 proximal strength except hip flexors 5-/5. Skin clear.\n\nCK today 140.\n\nPlan: Reduce prednisone to 15 mg daily. Continue methotrexate 15 mg weekly and folic acid. Labs in 6 weeks. Next visit in 3 months.\n\ncc: PCP"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Rheumatology note received",
+              "author": "MA",
+              "date": "2026-08-19T14:05",
+              "body": "Rheumatology note from 8/12 received by fax and scanned. Routed to PCP inbox."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

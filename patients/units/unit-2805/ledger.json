@@ -1,0 +1,2178 @@
+{
+  "unit": "unit-2805",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002805",
+      "given": "Patricia",
+      "family": "Farrell",
+      "birth_date": "1967-03-15",
+      "address_line": "37 Mill River Lane, Leeds, MA 01053",
+      "phone": "+1-603-555-0147",
+      "email": "patricia.farrell@example.test",
+      "marital_status": "married",
+      "summary": "Former smoker with hypertension and hyperlipidemia who joined in 2022 doing yearly FIT; a 2025 risk conversation led to colonoscopy and a stage III ascending colon adenocarcinoma, resected and treated with adjuvant CAPOX, complicated in January 2026 by clindamycin-associated diarrhea seen by GI after her last practice visit.",
+      "events": [
+        {
+          "id": "2022-06-07a",
+          "kind": "telephone",
+          "start": "2022-06-07T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-06-07T10:20",
+              "author": "front desk",
+              "body": "Caller wants to transfer her care here; her old office is no longer taking her plan's preferred-provider tier. Works in a high school front office, flexible in summer. Takes two daily BP/cholesterol pills. Booked new-patient visit 6/21 at 9:00. Asked her to sign the release so we can pull records from the prior office; form emailed."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "establish_care",
+          "start": "2022-06-21T09:00",
+          "end": "2022-06-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "note": "diagnosed at prior practice; on amlodipine"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed",
+              "note": "diagnosed at prior practice; on atorvastatin"
+            },
+            {
+              "label": "Family history of colon cancer",
+              "action": "diagnosed",
+              "note": "father at 67; paternal grandfather"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug": "atorvastatin 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth as needed for pain",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pain"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Iodinated contrast media",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              81
+            ],
+            "hr": 60,
+            "spo2": 97,
+            "weight_kg": 73.8,
+            "height_cm": 162.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-21T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 94
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-21T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-06-21T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-21T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 glasses of wine per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school administrative assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-06-21T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            },
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-06-21T10:00",
+              "author": "PCP",
+              "body": "55F transferring care. Here to get set up and keep her two regular meds going.\n\nHTN: on amlodipine 5 mg for several years via her old office. No home cuff. No headaches, no palpitations, no ankle swelling.\nLipids: atorvastatin 20 mg, tolerates it fine, no muscle aches.\nTakes acetaminophen 500 mg now and then for ordinary aches; no NSAIDs.\n\nPSH: appendectomy at 16, gallbladder out at 42.\nAllergies: PENICILLIN - anaphylaxis (as a young adult, needed epinephrine). IV CONTRAST - hives with a CT years ago.\nFH: father had colon cancer at 67; his father also had colon cancer. Mother has osteoporosis.\nSH: high school administrative assistant. Smoked ~15 pack-years, quit 2017. Wine 2-3 glasses a month. Married.\n\nScreening: Pap/HPV done 2021 at old office, normal per pt. Mammogram 2021. Has been doing the stool kit (FIT) yearly; had a long talk with her old doctor about colonoscopy and prefers the kit for now. Discussed again given dad and grandfather; she knows colonoscopy is the stronger test, wants to keep FIT this year. Will send kit.\n\nExam: well, pleasant. BP as recorded. Neck supple, no thyroid enlargement. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender, healed RLQ and laparoscopic scars. No peripheral edema.\n\nA/P\n1. HTN - at goal, continue amlodipine 5.\n2. Hyperlipidemia - continue atorvastatin 20; fasting lipids, CMP, CBC today. A1c once.\n3. Screening - HCV and HIV once today. FIT kit. Screening mammogram order. Old records requested.\n4. Former smoker, 15 pk-yr - below the pack-year threshold for lung CT screening.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              82
+            ],
+            "weight_kg": 74.6,
+            "height_cm": 163.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4,
+              "Low Density Lipoprotein": 101
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "portal_message",
+          "start": "2022-06-24T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-06-24T16:40",
+              "author": "PCP",
+              "body": "Hi Patricia, your blood work looks good. Kidney and liver tests normal, blood counts normal, A1c in the normal range, hepatitis C and HIV screens negative. LDL is right around 100 on the atorvastatin, which is fine for you. No changes. The stool kit should come in the mail within the week."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "outside_records",
+          "start": "2022-07-12T11:00",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2021-05-18T10:00",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV co-test. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative."
+            },
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-11-09T13:30",
+              "text": "Bilateral CC and MLO views. Scattered areas of fibroglandular density. No suspicious mass, calcification or architectural distortion. Prior films not available.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-04-02T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-07-12T11:00",
+              "author": "front desk",
+              "body": "Records from her previous internal medicine office arrived, 38 pages, covering 2016-2022. Contents: office notes for blood pressure and cholesterol on amlodipine 5 and atorvastatin 20; Pap with HPV co-test 5/2021 negative; screening mammogram 11/2021 negative; FIT 2021 negative; Tdap 4/2019. Allergy page lists penicillin (anaphylaxis) and iodinated contrast (hives). Imported to chart; flagged for PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "lab_only",
+          "start": "2022-07-19T08:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-07-17T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "done",
+              "date": "2022-07-19T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Stool test result",
+              "date": "2022-07-19T14:10",
+              "author": "MA",
+              "body": "Your stool screening test (FIT) was negative. We will send a new kit next summer. Please call if you notice blood in your stool or a change in bowel habits before then."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T15:30",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-13T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-13T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-13T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2022-10-13T15:50",
+              "author": "RN",
+              "body": "Came after school. Screened, no fever or illness today. Penicillin/contrast allergies noted, no vaccine reactions in the past. Flu 0.5 mL IM left deltoid; Pfizer bivalent booster IM right deltoid. Observed 15 min, fine. VIS provided."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "imaging",
+          "start": "2022-11-17T08:15",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-17T08:15",
+              "text": "Bilateral CC and MLO tomosynthesis views compared with 11/2021. Scattered fibroglandular densities. No mass, suspicious calcifications or distortion. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: negative. Routine annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-11-17T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Mammogram result",
+              "date": "2022-11-18T09:30",
+              "author": "MA",
+              "body": "Your screening mammogram on 11/17 was normal. Next one is due in a year."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and cholesterol follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              80
+            ],
+            "hr": 66,
+            "spo2": 98,
+            "weight_kg": 74.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-12-13T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-12-13T16:05",
+              "author": "PCP",
+              "body": "6-mo f/u. Feels fine, busy stretch at work before the break. Taking amlodipine and atorvastatin every morning, no missed doses she knows of. No dizziness, no swelling.\nExam: BP as charted, at goal. RRR. Lungs clear. No edema.\nFIT 7/22 negative, mammo 11/22 negative, flu and COVID booster done 10/22.\nPlan: same meds, 90-day supplies sent. Physical in June with labs."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-04a",
+          "kind": "pharmacy",
+          "start": "2023-04-04T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request",
+              "date": "2023-04-04T09:10",
+              "author": "RN",
+              "body": "Pharmacy fax for amlodipine 5 mg and atorvastatin 20 mg, 90 days each. Last seen 12/13/22, BP at goal. Approved per protocol with 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "annual_physical",
+          "start": "2023-06-14T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              81
+            ],
+            "hr": 59,
+            "spo2": 96,
+            "weight_kg": 74.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-14T08:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-14T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-14T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-06-14T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-06-14T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-06-14T08:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            },
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-06-14T08:50",
+              "author": "PCP",
+              "body": "Physical, 56F. School year just wrapped. No complaints. Walks most evenings.\nROS: no chest discomfort, no breathlessness, no change in bowel habit, no blood in stool, no weight change, no urinary symptoms. Postmenopausal, no bleeding.\nMeds: amlodipine 5, atorvastatin 20, acetaminophen prn. Allergies: penicillin (anaphylaxis), contrast (hives).\nExam: BP as charted. HEENT normal. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Breasts deferred to mammo. Abdomen soft, nontender, no masses. Skin without suspicious lesions. No edema.\nPHQ-2 0.\nPrevention: Pap/HPV 2021 negative, next 2026. Mammo 11/22 neg, ordering this year's. FIT again this summer; re-offered colonoscopy given her father and grandfather, she prefers the kit again. Shingrix #1 today, #2 in 2-6 mo.\nPlan: CMP, CBC, lipids today. Continue meds."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-16a",
+          "kind": "portal_message",
+          "start": "2023-06-16T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from your physical",
+              "date": "2023-06-16T12:15",
+              "author": "PCP",
+              "body": "Everything from Wednesday is back and normal, cholesterol about where it was last year. Keep doing what you're doing. Your arm may stay a bit sore from the shingles shot for a day or two."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-06a",
+          "kind": "lab_only",
+          "start": "2023-07-06T08:45",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-07-03T06:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "done",
+              "date": "2023-07-06T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Stool test result",
+              "date": "2023-07-06T13:00",
+              "author": "MA",
+              "body": "Good news, your FIT came back negative. Next kit will go out in summer 2024."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "nurse_visit",
+          "start": "2023-09-19T15:45",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-19T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-09-19T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix #2",
+              "date": "2023-09-19T16:00",
+              "author": "RN",
+              "body": "Second Shingrix, IM left deltoid. After dose 1 she had a tired evening and a sore arm, nothing more. Series complete. Reminded flu/COVID clinic opens in October."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T15:30",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2023-10-24T15:50",
+              "author": "RN",
+              "body": "Flu (L deltoid) and 2023-24 COVID (R deltoid). Feeling well today. Waited 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "imaging",
+          "start": "2023-11-28T07:45",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-28T07:45",
+              "text": "Bilateral tomosynthesis screening views, compared with 2021 and 2022. Scattered fibroglandular tissue. No new mass, suspicious calcification or asymmetry.",
+              "conclusion": "BI-RADS 1: negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-11-28T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Mammogram result",
+              "date": "2023-11-29T10:00",
+              "author": "MA",
+              "body": "Your mammogram from 11/28 is normal. See you for your next one in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-01-24a",
+          "kind": "telephone",
+          "start": "2024-01-24T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-01-24T09:05",
+              "author": "front desk",
+              "body": "Called re: missed 4 pm yesterday. Pt apologized, a staff meeting at school ran over and she lost track. Rebooked Tue 2/6 at 4:15."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              82
+            ],
+            "hr": 65,
+            "spo2": 96,
+            "weight_kg": 75.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-06T16:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.64
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-06T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-02-06T16:40",
+              "author": "PCP",
+              "body": "Rescheduled from the 23rd. Feels well. On amlodipine 5 and atorvastatin 20, no side effects, no ankle swelling. Bought a wrist cuff over break, numbers mostly 120s-130s/70s-80s.\nExam: BP charted, at goal. Heart regular. Lungs clear. Ankles without edema.\nA/P: HTN controlled - continue. BMP today since she missed the last draw window. Lipids due with June physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "annual_physical",
+          "start": "2024-06-18T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              146,
+              78
+            ],
+            "hr": 71,
+            "spo2": 97,
+            "weight_kg": 74.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-18T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-18T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 219
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-18T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 90
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-06-18T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            },
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-06-18T08:55",
+              "author": "PCP",
+              "body": "57F, yearly exam. Good year overall. Still walking evenings. No new symptoms.\nROS negative: no chest pressure or exertional breathlessness, bowels regular without blood or black stool, weight steady, sleeping fine.\nMeds/allergies unchanged (penicillin anaphylaxis, contrast hives).\nExam: BP charted. Eyes, ears, throat clear. No thyroid enlargement or cervical nodes. Heart regular without murmur or gallop. Lungs clear. Abdomen soft, nontender, no organomegaly. Extremities warm, no edema. Skin: no concerning lesions.\nPHQ-2: 1.\nPrevention: FIT kit to go out again (neg 2022, 2023); colonoscopy offered, still declines. Mammo due November. Pap/HPV next 2026. Shingrix complete. Tdap 2019.\nPlan: annual labs drawn. Continue amlodipine 5 / atorvastatin 20. Back in a year, sooner prn."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "portal_message",
+          "start": "2024-06-20T17:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2024-06-20T17:30",
+              "author": "PCP",
+              "body": "Patricia - labs from Tuesday are all within normal limits and your LDL is holding steady. Watch for the FIT kit in the mail; please send it back within a couple of weeks of getting it."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "portal_message",
+          "start": "2024-09-10T10:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Reminder: stool screening kit",
+              "date": "2024-09-10T10:20",
+              "author": "MA",
+              "body": "Hi Patricia, our records show the FIT kit mailed in June hasn't come back to the lab. If you misplaced it we can mail another. Let us know!"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "outside_records",
+          "start": "2024-10-08T13:00",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-05T11:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-05T11:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization record",
+              "date": "2024-10-08T13:00",
+              "author": "front desk",
+              "body": "State registry/pharmacy notice: influenza (trivalent) and 2024-25 COVID vaccine given at a retail pharmacy on 10/5/24. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "imaging",
+          "start": "2024-12-10T07:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-12-10T07:30",
+              "text": "Bilateral screening tomosynthesis compared with 2021 through 2023. Breast tissue scattered fibroglandular. No suspicious mass, calcifications or architectural distortion.",
+              "conclusion": "BI-RADS 1: negative. Annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-12-10T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Mammogram result",
+              "date": "2024-12-11T09:15",
+              "author": "MA",
+              "body": "Your 12/10 mammogram showed no signs of cancer. Next screening due late 2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "pharmacy",
+          "start": "2025-03-11T11:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request",
+              "date": "2025-03-11T11:40",
+              "author": "RN",
+              "body": "eRx renewal request: amlodipine 5 mg #90, atorvastatin 20 mg #90. Seen 6/24, BP controlled. Sent with 1 refill. Physical due in June - pt has one on the books for 6/10."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "telephone",
+          "start": "2025-06-09T08:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2025-06-09T08:15",
+              "author": "front desk",
+              "body": "Pt cancelled tomorrow 8 am physical, end-of-year paperwork at school. Will call back in July to rebook."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "annual_physical",
+          "start": "2025-06-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-08-04a",
+          "kind": "office_visit",
+          "start": "2025-08-04T10:30",
+          "end": "2025-08-04T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Colon cancer risk; questions about stool screening",
+          "vitals": {
+            "bp": [
+              134,
+              83
+            ],
+            "hr": 55,
+            "spo2": 97,
+            "weight_kg": 75.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-04T11:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.64
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 102
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-04T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 214
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-04T11:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-04T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "cancelled",
+              "date": "2025-08-04T11:10"
+            },
+            {
+              "id": "gi-colonoscopy",
+              "action": "placed",
+              "order": "Gastroenterology referral for colonoscopy",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "colorectal cancer screening; father and paternal grandfather with colorectal cancer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-08-04T11:40",
+              "author": "PCP",
+              "body": "58F. Booked this in place of the physical she cancelled in June. Main agenda is colon cancer. She never sent back last year's FIT, and over the summer she has been reading about stool tests and wants to know how much a negative one is really worth for someone with her family.\n\nNo change in bowel habits, no blood, no black stools, no belly pain, appetite and weight steady by her account. Energy fine.\n\nPMH: HTN, hyperlipidemia. PSH: appendectomy (16), cholecystectomy (42).\nMeds: amlodipine 5 daily, atorvastatin 20 daily, acetaminophen 500 prn.\nAllergies: penicillin (anaphylaxis), iodinated contrast (hives).\nFH: father colorectal cancer at 67, paternal grandfather colorectal cancer, mother osteoporosis.\nSH: HS admin assistant; ex-smoker 15 pk-yr, quit 2017; wine 2-3 glasses/month.\n\nExam: BP charted. Heart regular. Lungs clear. Abdomen soft, nontender, no mass or organ enlargement.\n\nCounseling, ~20 min: a stool test can miss cancers and many polyps; how reassuring a negative result is depends on how likely disease was to begin with. With a first-degree relative and a grandparent on the same side, her starting risk is higher than average, so a negative FIT tells her less than it would tell her neighbor. Colonoscopy both looks at the whole colon and removes polyps. She asked good questions and agrees to go ahead this time.\n\nA/P\n1. CRC screening, increased risk by family history - GI referral for colonoscopy; the overdue FIT order cancelled. She'll take the first opening.\n2. HTN - at goal on amlodipine 5.\n3. Hyperlipidemia - atorvastatin 20; lipids, CMP, CBC today since the physical slipped.\n4. Mammogram due in the fall.\nRTC after colonoscopy / physical in the winter."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "procedure_visit",
+          "start": "2025-08-12T07:30",
+          "end": "2025-08-12T10:00",
+          "service": "Gastroenterology",
+          "reason": "Colonoscopy",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-08-12T08:30",
+              "text": "Specimen: ascending colon mass, cold forceps biopsies (6 fragments). Microscopic: fragments of colonic mucosa with invasive adenocarcinoma forming irregular glands with desmoplastic stroma; moderately differentiated. Background mucosa unremarkable.",
+              "conclusion": "Ascending colon, biopsy: invasive adenocarcinoma, moderately differentiated.",
+              "issued": "2025-08-14T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2025-08-12T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy report (outside gastroenterology)",
+              "date": "2025-08-14T11:20",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY - COLONOSCOPY REPORT (received 8/14/2025)\nDate of procedure: 8/12/2025\nIndication: colorectal cancer screening; father with colorectal cancer at 67, paternal grandfather with colorectal cancer. Prior screening by FIT.\nAllergies: penicillin (anaphylaxis), iodinated contrast (hives).\nSedation: monitored anesthesia care. Prep: split-dose, good (BBPS 8).\nFindings: Scope advanced to the cecum, identified by the appendiceal stump and ileocecal valve; cecal photos taken. In the ascending colon, an ulcerated, friable, partially circumferential mass; the scope passed it. Multiple cold forceps biopsies obtained. Area tattooed distally with India ink. The remainder of the colon, transverse through rectum, without polyps or other lesions. Retroflexion in the rectum unremarkable.\nImpression: ascending colon mass, suspicious for malignancy, biopsied and tattooed.\nPlan: await pathology; CT chest/abdomen/pelvis and CEA; referral to colorectal surgery placed by our office. PCP notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-14a",
+          "kind": "outside_records",
+          "start": "2025-08-14T11:30",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of colon",
+              "action": "diagnosed",
+              "onset": "2025-08-12",
+              "note": "ascending colon adenocarcinoma, moderately differentiated, on colonoscopy biopsy"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-colonoscopy",
+              "action": "done",
+              "date": "2025-08-14T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Colonoscopy and pathology received",
+              "date": "2025-08-14T11:30",
+              "author": "front desk",
+              "body": "Colonoscopy report (8/12) and biopsy pathology received by fax from the GI group. Pathology positive for adenocarcinoma. Routed urgently to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-14b",
+          "kind": "telephone",
+          "start": "2025-08-14T12:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "date": "2025-08-14T12:50",
+              "author": "PCP",
+              "body": "Called Patricia. GI had already told her about the mass after the procedure; today I went over the biopsy - it is a cancer (adenocarcinoma) of the right side of the colon. She was composed and had already written down questions. GI has ordered staging CT and CEA and referred her to colorectal surgery. Reminded her to tell radiology about her contrast hives so they can premedicate. She knows she can call or text me any time. Will follow along."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "imaging",
+          "start": "2025-08-19T07:00",
+          "service": "Radiology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-19T06:50",
+              "results": [
+                {
+                  "test": "Carcinoembryonic Antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 2.4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-08-19T07:20",
+              "text": "Technique: helical CT of the chest with IV contrast, part of a chest/abdomen/pelvis staging exam. Patient premedicated with steroids and an antihistamine for prior contrast hives; no reaction. Findings: no pulmonary nodules or masses. No pleural effusion. No mediastinal, hilar or axillary adenopathy. Heart size normal. Visualized bones without lytic or blastic lesions.",
+              "conclusion": "No evidence of thoracic metastatic disease.",
+              "issued": "2025-08-19T14:00"
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-08-19T07:20",
+              "text": "Technique: portal venous phase CT abdomen and pelvis after premedication. Findings: focal wall thickening/mass of the ascending colon at the site of the tattoo. No liver lesions. Surgically absent gallbladder and appendix. Spleen, pancreas, adrenals and kidneys unremarkable. No ascites. No retroperitoneal or pelvic adenopathy. No peritoneal nodularity. Bladder and uterus unremarkable.",
+              "conclusion": "Known ascending colon primary. No evidence of distant metastatic disease.",
+              "issued": "2025-08-19T14:00"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "outside_records",
+          "start": "2025-08-25T10:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Staging CT and CEA received",
+              "date": "2025-08-25T10:10",
+              "author": "front desk",
+              "body": "Received from the hospital radiology department: CT chest and CT abdomen/pelvis with contrast dated 8/19/25 and CEA from the same morning. Filed and sent to PCP. Surgical consult note not included."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-02a",
+          "kind": "portal_message",
+          "start": "2025-09-02T19:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgery done",
+              "date": "2025-09-02T19:45",
+              "author": "patient",
+              "body": "Just wanted to let you know they did my surgery on Thursday the 28th - laparoscopic, right side of the colon taken out and reconnected. I came home Sunday. Sore but walking around the house. They said the oncologist will call once the pathology is final. Do I keep taking my blood pressure and cholesterol pills as usual?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surgery done",
+              "date": "2025-09-03T07:30",
+              "author": "PCP",
+              "body": "So glad you are home. Yes, keep amlodipine and atorvastatin as usual; acetaminophen is fine for pain unless the surgeons told you otherwise. Let's do a quick video check next week - the front desk will reach out. Call sooner for fever, worsening belly pain, vomiting or redness at the incisions."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-11a",
+          "kind": "telehealth_visit",
+          "start": "2025-09-11T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-operative check",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-09-11T12:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-hosp",
+              "action": "placed",
+              "order": "Records request: hospital discharge summary and surgical pathology",
+              "category": "procedure",
+              "reason": "right hemicolectomy 8/28/25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-09-11T12:45",
+              "author": "PCP",
+              "body": "Video, pt at her kitchen table. Two weeks after laparoscopic right hemicolectomy (8/28). Pain mild, acetaminophen once or twice a day. Eating small meals, bowels moving, no blood. No fever. Incisions look clean and closed on camera, no redness. Walking a bit more each day.\nShe was told the cancer had reached some lymph nodes and that she'll meet oncology later this month about chemo. We don't have the op note, discharge summary or final pathology yet.\nPlan: continue home meds unchanged. Requesting hospital records. She'll message after the oncology visit. Mammogram can wait until treatment plans settle."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "outside_records",
+          "start": "2025-10-07T14:20",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-08-28T11:00",
+              "text": "Specimen: right colon and terminal ileum, laparoscopic right hemicolectomy. Tumor site: ascending colon. Histologic type: adenocarcinoma, moderately differentiated. Tumor penetrates to the surface of the visceral peritoneum (pT4a). Proximal, distal and radial margins negative. Lymph nodes: 2 of 23 positive (pN1b). Mismatch repair immunohistochemistry: MLH1, PMS2, MSH2 and MSH6 retained (intact).",
+              "conclusion": "Adenocarcinoma of the ascending colon, pT4a pN1b, margins negative, MMR proficient. AJCC stage IIIB.",
+              "issued": "2025-09-03T15:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-hosp",
+              "action": "done",
+              "date": "2025-10-07T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary (outside)",
+              "date": "2025-10-07T14:20",
+              "author": "colorectal surgery",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY (received 10/7/2025 after second request)\nAdmitted 8/28/2025, discharged 8/31/2025. Service: colorectal surgery.\nDiagnosis: adenocarcinoma of the ascending colon.\nProcedure 8/28: laparoscopic right hemicolectomy with primary (stapled) ileocolic anastomosis.\nAllergies: penicillin (anaphylaxis); iodinated contrast (hives).\nCourse: uncomplicated. Enhanced recovery pathway; clear liquids POD0, regular diet POD2, return of bowel function POD2. Pain controlled with scheduled acetaminophen. Ambulating independently.\nDischarge meds: home amlodipine 5 mg daily, atorvastatin 20 mg daily, acetaminophen 500 mg as needed.\nFinal pathology: pT4a N1b (2/23), margins negative, MMR intact - stage III. Referred to medical oncology for adjuvant therapy.\nFollow-up: surgical clinic 2 weeks; medical oncology."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "pharmacy",
+          "start": "2025-10-20T10:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Fill history / oncology records",
+              "date": "2025-10-20T10:40",
+              "author": "RN",
+              "body": "Pharmacy benefit fill history pulled during an amlodipine renewal shows new fills on 10/14: capecitabine 500 mg tabs (specialty pharmacy) and ondansetron 4 mg ODT. No oncology note in our chart. Called pt: started chemotherapy (CAPOX) at the cancer center 10/16, infusion every 3 weeks with capecitabine tablets two weeks on, one off. Amlodipine renewed. Records request faxed to oncology for consult note and treatment plan."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "office_visit",
+          "start": "2025-12-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up during chemotherapy",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of colon",
+              "action": "diagnosed",
+              "onset": "2025-08-12",
+              "note": "stage IIIB (pT4a N1b), s/p laparoscopic right hemicolectomy 8/28/25; adjuvant CAPOX via oncology"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "capecitabine 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (1,500 mg) by mouth twice daily on days 1-14 of each 21-day cycle",
+              "dose": {
+                "value": 1500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Malignant neoplasm of colon (prescribed by oncology)"
+            },
+            {
+              "drug_text": "oxaliplatin 5 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "130 mg/m2 IV on day 1 of each 21-day cycle at the infusion center",
+              "dose": {
+                "value": 130,
+                "unit": "mg/m2"
+              },
+              "frequency": "every 21 days",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Malignant neoplasm of colon (given by oncology)"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "historical",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chemotherapy nausea (prescribed by oncology)"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              86
+            ],
+            "hr": 70,
+            "spo2": 97,
+            "weight_kg": 71.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-12T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-12-12T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-12-12T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-12-12T14:50",
+              "author": "PCP",
+              "body": "Check-in midway through adjuvant chemo. Oncology records still haven't come despite our request in October, so history is from Patricia and her pill bottles.\n\nStage IIIB ascending colon adenocarcinoma (pT4a N1b, 2/23 nodes, MMR intact) - lap right hemicolectomy 8/28. CAPOX started 10/16: oxaliplatin at the infusion center day 1, capecitabine 1,500 mg BID days 1-14, q21 days, plan for 8 cycles. Cycle 3 was 12/1; cycle 4 moved to 12/29 around the holidays. Bloodwork at the cancer center each cycle - she says they've been fine to proceed.\n\nFeels wiped out for a few days after each infusion, then picks up. Mild nausea, ondansetron helps. Working shortened days. Weight down about 3 kg since summer, eating less. Mood okay; PHQ-9 4.\n\nBP charted, at goal on amlodipine 5. Atorvastatin 20 continues.\n\nExam: tired-appearing but comfortable. Heart regular. Lungs clear. Abdomen soft, healed laparoscopic incisions, nontender. No edema.\n\nA/P\n1. Colon cancer stage III on adjuvant CAPOX - oncology-run. Med list updated with capecitabine, oxaliplatin and ondansetron per patient. Re-requesting oncology notes.\n2. HTN - controlled, continue.\n3. Hyperlipidemia - continue atorvastatin; lipids from August fine.\n4. Flu vaccine today (inactivated OK during chemo, she checked with oncology). Mammogram deferred until after treatment.\n5. Weight - small meals, protein; oncology following.\nRTC after chemo finishes, sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "pharmacy",
+          "start": "2026-01-06T09:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request",
+              "date": "2026-01-06T09:20",
+              "author": "RN",
+              "body": "Amlodipine 5 mg #90 renewal from pharmacy. Seen 12/12, BP at goal. Approved."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "portal_message",
+          "start": "2026-01-16T07:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Diarrhea",
+              "date": "2026-01-16T07:50",
+              "author": "patient",
+              "body": "Since Wednesday I've had a lot of watery diarrhea, 6 or more times a day, even overnight. No fever and no blood. My next chemo was supposed to be Monday the 19th and the oncology nurse says they're holding it and getting me in with GI. I'm drinking as much as I can. Just keeping you posted."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Diarrhea",
+              "date": "2026-01-16T08:30",
+              "author": "PCP",
+              "body": "Thank you for telling me. Glad oncology is on it and GI is involved. Keep sipping fluids with some salt and sugar in them (broth, oral rehydration drinks). Go to the ER or call oncology right away for fever, blood in the stool, dizziness when standing, or if you can't keep fluids down. Let me know what GI says."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-29a",
+          "kind": "specialist_visit",
+          "start": "2026-01-29T13:30",
+          "service": "Gastroenterology",
+          "reason": "Watery diarrhea during chemotherapy",
+          "vitals": {
+            "bp": [
+              129,
+              78
+            ],
+            "hr": 56,
+            "spo2": 96,
+            "weight_kg": 69.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-29T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-29T14:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 65
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-29T14:30",
+              "results": [
+                {
+                  "test": "Clostridioides difficile toxin A+B, stool",
+                  "loinc": "34468-9",
+                  "unit": "",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Occult blood, stool",
+                  "loinc": "2335-8",
+                  "unit": "",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation (outside)",
+              "date": "2026-02-24T10:15",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY - CONSULTATION LETTER (visit 1/29/2026; received 2/24/2026)\nReferred by: medical oncology. cc: primary care.\n\nReason: watery diarrhea during adjuvant chemotherapy.\n\nHistory: 58-year-old woman we know from her colonoscopy in August, now with stage III ascending colon adenocarcinoma after laparoscopic right hemicolectomy, on adjuvant CAPOX; also hypertension and hyperlipidemia. Her fourth cycle finished about three weeks ago and cycle 5 is on hold. Roughly two weeks ago she began passing six to eight large, watery brown stools a day, and they keep coming even when she eats nothing overnight. She took a 7-day course of clindamycin from her dentist, finishing 1/9 (penicillin anaphylaxis), and the diarrhea began a few days later. No travel, no sick contacts, nothing unusual eaten. Eating less, and down 3 kg since her last oncology visit. No fever, no blood in the stool, no abdominal pain.\n\nMeds: amlodipine 5 mg daily, atorvastatin 20 mg daily, acetaminophen 500 mg as needed; capecitabine and oxaliplatin per oncology (held); ondansetron as needed. Clindamycin completed.\nAllergies: penicillin (anaphylaxis), iodinated contrast (hives).\nFamily history: father and paternal grandfather with colorectal cancer; mother with osteoporosis.\nSocial: high school administrative assistant; former smoker (15 pack-years, quit 2017); wine 2-3 glasses a month.\n\nExam: vitals within normal limits. Alert, not toxic. Mucous membranes moist. Heart and lungs unremarkable. Abdomen: healed laparoscopic incisions, mild tenderness diffusely without rebound or guarding, normal bowel sounds, no mass. No edema.\n\nData (1/29): hemoglobin 12.1 g/dL, WBC 5.0 K/uL, platelets 250 K/uL; sodium 140, potassium 3.5, creatinine 1.0. Stool C. difficile toxin negative. Fecal occult blood negative.\n\nImpression: antibiotic-associated diarrhea due to clindamycin, C. difficile negative.\n\nRecommendations: oral hydration with electrolyte drinks; we expect this to ease now that the antibiotic is finished. Timing of the next chemotherapy cycle is up to oncology once stools settle. Return to us as needed; she knows to call for fever, blood or worsening.\n\nThank you for involving us."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "outside_records",
+          "start": "2026-02-24T10:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "GI consult letter received",
+              "date": "2026-02-24T10:15",
+              "author": "front desk",
+              "body": "GI consult letter for the 1/29 visit received by fax today with stool studies and labs. Filed; routed to PCP to review."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "date": "2026-03-10T20:05",
+              "author": "patient",
+              "body": "Quick update - the diarrhea finally quit in early February and they restarted chemo on Feb 9. Cycle 6 was last week. Two more to go. Eating better again."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "date": "2026-03-11T07:45",
+              "author": "PCP",
+              "body": "That is a relief to hear. We got the GI letter; nothing for you to do from our end. Hang in there for the home stretch."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T11:00",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request",
+              "date": "2026-05-19T11:00",
+              "author": "RN",
+              "body": "Atorvastatin 20 mg #90 renewal. Last office visit 12/12/25. Approved x1; pt due for follow-up visit - message sent to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "imaging",
+          "start": "2026-06-23T07:00",
+          "service": "Radiology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-23T06:45",
+              "results": [
+                {
+                  "test": "Carcinoembryonic Antigen",
+                  "loinc": "2039-6",
+                  "unit": "ng/mL",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-06-23T07:25",
+              "text": "Technique: CT chest with IV contrast following steroid/antihistamine premedication; no reaction. Comparison 8/19/2025. Lungs clear without nodules. No adenopathy. No effusion. Osseous structures intact.",
+              "conclusion": "No evidence of metastatic disease in the chest.",
+              "issued": "2026-06-23T15:10"
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-06-23T07:25",
+              "text": "Comparison 8/19/2025. Post-surgical change of right hemicolectomy with intact ileocolic anastomosis; no soft-tissue mass at the anastomosis. Liver without focal lesions. No adenopathy, ascites or peritoneal nodularity. Other solid organs unremarkable.",
+              "conclusion": "Expected post-operative appearance. No evidence of recurrent or metastatic disease.",
+              "issued": "2026-06-23T15:10"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "outside_records",
+          "start": "2026-07-21T13:40",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Oncology treatment summary (outside)",
+              "date": "2026-07-21T13:40",
+              "author": "oncology",
+              "body": "MEDICAL ONCOLOGY - TREATMENT SUMMARY AND SURVIVORSHIP PLAN\nDiagnosis: adenocarcinoma of the ascending colon, pT4a pN1b (2/23), MMR proficient, stage IIIB. Laparoscopic right hemicolectomy 8/28/2025.\nAdjuvant therapy: CAPOX x 8 cycles. Cycles 1-4 10/16/2025-12/29/2025. Cycle 5 delayed for clindamycin-associated diarrhea (seen by GI 1/29/2026, C. difficile negative), which resolved by early February. Cycles 5-8 given 2/9, 3/2, 3/23 and 4/13/2026; final capecitabine dose 4/26/2026. Treatment complete.\nSurveillance: CT chest/abdomen/pelvis with contrast (premedicated) 6/23/2026 - no evidence of disease. CEA 1.6 ng/mL (pre-op 2.4).\nPlan: CEA every 3-6 months and CT every 6-12 months; one-year surveillance colonoscopy with gastroenterology; return to primary care for routine care, blood pressure and cholesterol, and age-appropriate screening.\nAllergies: penicillin (anaphylaxis), iodinated contrast (hives) - premedicate for contrast studies."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for your checkup",
+              "date": "2026-08-11T09:30",
+              "author": "front desk",
+              "body": "Hi Patricia, our records show you're due for a yearly physical and a blood pressure check. Reply here or call and we'll find a time that works around the start of school."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "medications": {
+      "capecitabine 500 MG Oral Tablet": {
+        "code": "200328",
+        "display": "capecitabine 500 MG Oral Tablet",
+        "ingredient": "capecitabine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "oxaliplatin 5 MG/ML Injectable Solution": {
+        "code": "1736776",
+        "display": "10 ML oxaliplatin 5 MG/ML Injection",
+        "ingredient": "oxaliplatin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Carcinoembryonic Antigen": {
+        "code": "2039-6",
+        "display": "Carcinoembryonic Ag [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Clostridioides difficile toxin A+B, stool": {
+        "code": "34468-9",
+        "display": "Clostridioides difficile toxin A+B [Presence] in Stool by Immunoassay",
+        "unit": "",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Occult blood, stool": {
+        "code": "2335-8",
+        "display": "Hemoglobin [Presence] in Stool from gastrointestinal",
+        "unit": "",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

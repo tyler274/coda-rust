@@ -1,0 +1,263 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002792",
+      "given": "Heather",
+      "family": "Fournier",
+      "birth_date": "1970-10-25",
+      "address_line": "27 Cold Spring Rd",
+      "phone": "+1-508-555-0155",
+      "email": "heather.fournier@example.test",
+      "marital_status": "married",
+      "summary": "Healthy high school math teacher who joined in 2022. Develops a heliotrope rash and proximal weakness in 2024; dermatology makes a clinical diagnosis of dermatomyositis, rheumatology confirms it in January 2026 (anti-Mi-2, EMG, biopsy) and starts prednisone and methotrexate.",
+      "events": [
+        {
+          "id": "2022-08-02a",
+          "kind": "telephone",
+          "start": "2022-08-02T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2022-08-02T10:20",
+              "body": "Caller would like to transfer her primary care here; her previous doctor retired in the spring. Teaches math at the high school and wants to get in before classes resume. Reviewed membership and that labs/imaging still bill to her PPO. New pt preventive visit set for 8/10 at 9:00. Records release form emailed for her prior office."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-10a",
+          "kind": "establish_care",
+          "start": "2022-08-10T09:00",
+          "end": "2022-08-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient preventive visit",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 68.0, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.8, "Hemoglobin A1c": 5.3}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 glasses of wine per week"},
+            {"item": "Occupation", "value": "High school mathematics teacher"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-10T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-10T10:05", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-08-10T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-08-10T10:05", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Hemoglobin A1c"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2022-08-10T09:50"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 40-64", "performed": "2022-08-10T09:00"},
+            {"procedure": "Immunization administration", "performed": "2022-08-10T09:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2022-08-10T09:00",
+              "body": "51 y/o woman establishing care. Prior PCP retired; records requested.\n\nNo active complaints. Feels well, walks most evenings, gardens. No chronic conditions and no daily medications.\n\nPMH: none.\nPSH: lap cholecystectomy 2014; tubal ligation 1999.\nMeds: none.\nAllergies: NKDA.\nFH: mother - autoimmune thyroiditis; father - hypertension; maternal aunt - rheumatoid arthritis.\nSH: teaches high school math. Never smoker. Wine 1-2 glasses a week. No drugs.\n\nROS: negative except as above. No fatigue, no weight change, no joint pain, no rash.\n\nExam: Well appearing. HEENT normal. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, healed lap scars. Skin without rash. Strength 5/5 throughout. No edema.\n\nPHQ-2 = 0.\n\nAssessment/Plan:\n1. Adult preventive care. Screening labs: CBC, CMP, lipids, TSH (mother's thyroid history), A1c. One-time hep C and HIV screen, she agrees.\n2. Immunizations: no record of a tetanus booster in 10+ years - Tdap given today. Flu and COVID in the fall. Discussed Shingrix series, she'd like to start after the school year settles.\n3. Cancer screening: per her, colonoscopy last year and a mammogram last year were both fine; Pap 2 years ago. Will confirm from records.\n4. RTC 1 year, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-12a",
+          "kind": "portal_message",
+          "start": "2022-08-12T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-08-12T16:40",
+              "body": "Hi Heather - all of your bloodwork from Wednesday came back normal: blood counts, kidney and liver tests, thyroid, sugar (A1c), and cholesterol all in good ranges. Hep C and HIV screens negative. Nothing to change. Enjoy the rest of the summer."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "outside_records",
+          "start": "2022-08-24T11:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "prior PCP office",
+              "date": "2022-08-24T11:10",
+              "body": "38 pages received electronically from the patient's previous primary care office (provider retired 2022).\n\nSummary of contents:\n- Problem list: none active. Surgical: cholecystectomy 2014, tubal ligation 1999.\n- Medications: none.\n- Allergies: no known drug allergies.\n- Colonoscopy 05/2021, average-risk screening: normal exam to the cecum, no polyps. Repeat in 10 years.\n- Screening mammogram 10/2021: BI-RADS 1, negative.\n- Pap with HR-HPV co-test 09/2020: NILM, HPV negative.\n- Immunizations: influenza yearly; COVID primary series 2021 plus one booster.\n- Office notes 2017-2022: annual physicals, unremarkable.\n\nReviewed and abstracted to chart. HM updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T15:30",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-12T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-12T15:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-12T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2022-10-12T15:30",
+              "body": "Came in after school. Screening questions negative, no prior reactions. Influenza quadrivalent 0.5 mL IM L deltoid. Pfizer bivalent booster IM R deltoid. Observed 15 min, felt fine, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "imaging",
+          "start": "2022-11-09T07:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-09T07:40",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison: 10/2021 outside study. Breast density: scattered areas of fibroglandular density. No suspicious mass, architectural distortion or calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine annual screening recommended."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-08a",
+          "kind": "nurse_visit",
+          "start": "2023-03-08T15:45",
+          "reason": "Shingrix dose 1",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-03-08T15:50"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-03-08T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix #1",
+              "author": "RN",
+              "date": "2023-03-08T15:45",
+              "body": "Shingrix dose 1 of 2, 0.5 mL IM L deltoid. Told her to expect a sore arm and maybe a day of feeling run down; she chose a Wednesday so she has Thursday to recover. Dose 2 due in 2-6 months, will book before she leaves."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "nurse_visit",
+          "start": "2023-06-14T15:40",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-06-14T15:45"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-06-14T15:45"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix #2",
+              "author": "RN",
+              "date": "2023-06-14T15:40",
+              "body": "Second Shingrix, R deltoid. After dose 1 she had a tender arm and chills overnight, resolved by the next afternoon - not a contraindication, she wanted to finish the series. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-16a",
+          "kind": "annual_physical",
+          "start": "2023-08-16T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-16T09:10", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-16T09:10", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-16T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-08-16T09:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-08-16T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-08-16T08:30",
+              "body": "Annual exam. Doing well. Summer off, back to school in two weeks. Walking 3-4 evenings a week.\n\nNo meds. NKDA. FH/SH unchanged from last year.\n\nROS: no chest pain, dyspnea, GI or GU complaints. No rash, no muscle or joint complaints.\n\nExam: NAD. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen benign. Skin clear. Extremities without edema. Neuro grossly normal, strength normal.\n\nPHQ-2 negative.\n\nA/P: Healthy 52 y/o.\n- Labs: CBC, CMP, lipids, A1c.\n- Mammogram due in November - order placed.\n- Colon screening up to date (2021). Pap/HPV due 2025.\n- Shingrix done. Flu and the new COVID shot this fall.\n- Back in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-18a",
+          "kind": "portal_message",
+          "start": "2023-08-18T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-08-18T12:15",
+              "body": "Heather, your labs look great - nothing out of range. See you next August. Your mammogram order is in; the imaging center will call to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:35",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-11T15:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-11T15:42"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-11T15:40"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu/COVID",
+              "author": "MA",
+              "date": "2023-10-11T15:35",
+              "body": "Flu 0.5 mL IM left arm, 2023-24 COVID (Pfizer) IM right arm. VIS reviewed. No reaction during 15 min wait."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "imaging",
+          "start": "2023-11-08T16:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-08T16:10",
+              "text": "Screening tomosynthesis of both breasts compared with 11/2022 and 10/2021. Scattered fibroglandular densities. No new mass, no suspicious calcification, no distortion. Axillary tails unremarkable.",
+              "conclusion": "Negative mammogram (BI-RADS 1). Return in one year."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

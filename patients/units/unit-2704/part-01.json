@@ -1,0 +1,199 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002704",
+      "given": "Gretchen",
+      "family": "Lindqvist",
+      "birth_date": "1977-08-20",
+      "address_line": "212 Bridge Road",
+      "phone": "+1-603-555-0195",
+      "email": "gretchen.lindqvist@example.test",
+      "marital_status": "single",
+      "summary": "Dental hygienist with treated Hodgkin lymphoma (2014) and hypertension who joins in 2022, is found to have HER2-positive right breast cancer in 2024 and goes through lumpectomy, chemotherapy with trastuzumab, radiation and tamoxifen. Trastuzumab is stopped for an asymptomatic LVEF drop; tamoxifen brings endometrial hyperplasia, an IUD and an AGC Pap with Actinomyces. Hyperlipidemia is never treated.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "telephone",
+          "start": "2022-08-30T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2022-08-30T10:12", "body": "Caller wants to transfer care here; her previous primary care doctor retired over the summer. Reviewed membership and how insurance still applies to labs and imaging. New patient visit set for 9/13 at 8:40. Release signed electronically for prior office records; request sent. Asked her to bring her blood pressure medicines or a list."}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T08:40",
+          "end": "2022-09-13T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "note": "on two drugs at joining"},
+            {"label": "History of Hodgkin lymphoma", "action": "history", "onset": "2014-03-01", "note": "chemotherapy and radiation 2014, in remission"}
+          ],
+          "medications": [
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [128, 80], "weight_kg": 70.8, "height_cm": 165.0, "labs": {"Low Density Lipoprotein": 136, "High Density Lipoprotein": 40, "Triglycerides": 118, "Thyroid Stimulating Hormone": 1.8}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T09:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-13T09:30", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T09:30", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-13T09:30", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2022-09-13T09:30", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-09-13T09:30", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Does not drink"},
+            {"item": "Occupation", "value": "Dental hygienist"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2022-09-13T09:25"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-09-13T08:40"},
+            {"procedure": "Immunization administration", "performed": "2022-09-13T09:25"},
+            {"procedure": "Venipuncture", "performed": "2022-09-13T09:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-09-13T09:35", "body": "45 y/o woman, dental hygienist, transferring care after her prior PCP retired.\n\nHTN: diagnosed some years back at her old office. Takes HCTZ 25 every morning and lisinopril 10 daily, rarely misses. Checks BP at work now and then, usually 120s/80ish. No headaches, chest pain or swelling.\n\nOncologic hx: Hodgkin lymphoma in 2014, treated with combination chemo plus radiation at an academic center, in remission since. Discharged from oncology follow-up a couple of years ago. Has her treatment summary somewhere at home, will look.\n\nPSH: none. Meds as above. NKDA.\nFH: mother has HTN and osteoporosis (broke a hip at 70) and had uterine (endometrial) cancer at 60. Father had coronary disease young, at 55. Maternal aunt had breast cancer at 52.\nSH: never smoked, no alcohol. Hygienist in a group dental office, 4 days a week.\nGyn: periods regular. Last Pap and mammogram at prior office last year, normal per pt; records requested.\n\nExam: BP and vitals as recorded. Well appearing. Thyroid without nodules. No cervical, supraclavicular or axillary nodes. Heart RRR no murmur. Lungs clear. Abd benign. No edema.\n\nA/P\n1. Essential HTN, controlled on HCTZ 25 + lisinopril 10. Continue. CMP today.\n2. Hx Hodgkin lymphoma in remission. CBC, TSH today. Will get her treatment summary for the chart.\n3. Health maintenance: lipids, hep C and HIV screen (done once, she agrees). Tdap given today (none she can recall). Screening mammogram due next month, order placed. Colonoscopy at 45 - discussed, she'd like to wait till spring.\n4. Return in 6 months for BP, sooner if needed."}
+          ],
+          "orders": [
+            {"id": "mammo-2022", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "routine screening"}
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:40",
+          "documents": [
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2022-09-15T16:40", "body": "Hi Gretchen, your labs look good: kidney function, potassium, blood count and thyroid are all normal, and the hepatitis C and HIV screens are negative. LDL cholesterol is a bit above ideal; nothing to start for it, we'll recheck it next year. Take care."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T11:05",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "MA", "date": "2022-09-20T11:05", "body": "11 pages from prior PCP office scanned. Contents: visit notes 2019-2022 for hypertension on hydrochlorothiazide and lisinopril; Pap 2021 negative for intraepithelial lesion; screening mammogram 2021 BI-RADS 1, negative; lymphoma treatment summary not included. Allergies listed as NKDA. Routed to PCP."},
+            {"type": "Progress Notes", "title": "Outside records reviewed", "author": "PCP", "date": "2022-09-21T07:50", "body": "Reviewed. BP control has been steady on this regimen for years. Pap and mammogram current. Lymphoma treatment summary not in this packet; pt says she'll forward hers."}
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "imaging",
+          "start": "2022-10-12T14:20",
+          "orders": [{"id": "mammo-2022", "action": "done", "date": "2022-10-12T14:20"}],
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2022-10-12T14:20", "text": "Bilateral screening mammogram with tomosynthesis. Comparison with outside study from 2021. Breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.", "conclusion": "BI-RADS 1: negative. Routine annual screening."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-18T16:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-18T16:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccine visit", "author": "RN", "date": "2022-10-18T16:50", "body": "Came after work for vaccines. Afebrile, no acute illness. Flu vaccine 0.5 mL IM left deltoid; Pfizer bivalent booster IM right deltoid. VIS provided. Observed 15 minutes, no reaction. Mammogram result reviewed with her; she had already seen it in the portal."}
+          ]
+        },
+        {
+          "id": "2023-03-16a",
+          "kind": "office_visit",
+          "start": "2023-03-16T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-16T15:50", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-03-16T15:20"},
+            {"procedure": "Venipuncture", "performed": "2023-03-16T15:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hypertension Follow-up", "author": "PCP", "date": "2023-03-16T15:48", "body": "S: Here for BP. Feels well. Taking both meds. Work busy - short-staffed, more patients per day. No dizziness on standing, no cramps.\nO: Vitals reviewed, BP at goal. Heart regular. Lungs clear. No ankle edema.\nA/P: HTN controlled on HCTZ 25 / lisinopril 10. BMP today for K and creatinine on the diuretic and ACE inhibitor. Colonoscopy referral sent today now that she's ready. Physical in the fall."}
+          ],
+          "orders": [
+            {"id": "colo-2023", "action": "placed", "order": "Screening colonoscopy referral", "category": "referral", "to": "Gastroenterology", "reason": "average-risk colorectal cancer screening"}
+          ]
+        },
+        {
+          "id": "2023-06-23a",
+          "kind": "outside_records",
+          "start": "2023-06-29T09:15",
+          "orders": [{"id": "colo-2023", "action": "done", "date": "2023-06-29T09:15"}],
+          "procedures": [{"procedure": "Colonoscopy, screening, average risk", "performed": "2023-06-23T08:30"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Colonoscopy report", "author": "gastroenterology", "date": "2023-06-29T09:15", "body": "Outpatient endoscopy unit. Procedure date 6/23/2023. Indication: screening, average risk, first exam. Prep: good, adequate in all segments. Cecum reached and identified by appendiceal orifice and ileocecal valve. Withdrawal time 9 minutes. Findings: normal mucosa throughout the colon and rectum; no polyps; small internal hemorrhoids on retroflexion. Impression: normal screening colonoscopy. Recommendation: next screening colonoscopy in 10 years. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "annual_physical",
+          "start": "2023-09-21T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-21T08:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-21T08:40", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-21T08:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-21T08:36"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-09-21T08:00"},
+            {"procedure": "Immunization administration", "performed": "2023-09-21T08:35"},
+            {"procedure": "Venipuncture", "performed": "2023-09-21T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-21T08:45", "body": "46F annual.\n\nInterval: colonoscopy in June was normal, 10-yr recall. No new issues. BP fine at home checks. Walks most evenings.\n\nROS negative incl. no breast changes, no fevers or sweats, no weight loss, no new lumps anywhere.\nMeds: HCTZ 25, lisinopril 10. NKDA.\nPHQ-2 0.\n\nExam: vitals as charted. HEENT normal. Thyroid normal. No lymphadenopathy cervical/supraclavicular/axillary. Breasts deferred to mammogram per her preference; no concerns reported. Heart RRR, no murmur. Lungs clear. Abdomen soft. Skin no lesions of concern. Ext no edema.\n\nA/P\n- HTN: at goal. Continue. CMP.\n- Hx Hodgkin lymphoma 2014: remains well.\n- Lipids repeat today (LDL was borderline last year).\n- Mammogram due next month - ordered. Pap current (2021), next due 2024.\n- Flu and updated COVID given.\n- Follow up in 6 months."}
+          ],
+          "orders": [
+            {"id": "mammo-2023", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "routine screening"}
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "portal_message",
+          "start": "2023-09-25T12:10",
+          "documents": [
+            {"type": "Result Note", "title": "Physical labs", "author": "PCP", "date": "2023-09-25T12:10", "body": "Labs from your physical are back. Kidneys, liver and potassium are normal. LDL cholesterol is about where it was last year, borderline. Keep up the walking. See you in the spring."}
+          ]
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "imaging",
+          "start": "2023-10-26T13:40",
+          "orders": [{"id": "mammo-2023", "action": "done", "date": "2023-10-26T13:40"}],
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-10-26T13:40", "text": "Bilateral screening mammogram with tomosynthesis, compared with 10/2022. Heterogeneously dense breast tissue. No new or suspicious mass, distortion or grouped calcifications. Stable bilateral appearance.", "conclusion": "BI-RADS 1: negative. Annual screening recommended."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T10:02",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "MA", "date": "2023-12-05T10:02", "body": "Pharmacy fax: 90-day refills requested for hydrochlorothiazide 25 mg and lisinopril 10 mg. Last BMP 3/2023 normal, seen 9/2023. Sent per protocol, 90 days x 1 refill each."}
+          ]
+        }
+      ]
+    }
+  ]
+}

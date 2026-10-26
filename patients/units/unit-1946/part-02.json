@@ -1,0 +1,178 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001946",
+      "events": [
+        {
+          "id": "2024-01-23a",
+          "kind": "portal_message",
+          "start": "2024-01-23T09:02",
+          "documents": [
+            {"type": "Patient Message", "title": "Insurance Card", "author": "patient", "date": "2024-01-23T09:02",
+             "body": "My employer sent new insurance cards for the year. Same plan but the member ID changed. Photos of front and back attached."},
+            {"type": "Patient Message", "title": "RE: Insurance Card", "author": "front desk", "date": "2024-01-23T11:46",
+             "body": "Thanks Madison, the new member ID is entered and the old card is inactivated on our end."}
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "annual_physical",
+          "start": "2024-04-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical and Pap",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2024-04-16T09:30", "issued": "2024-04-22T14:00",
+             "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+             "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-04-16T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-04-16T09:50",
+             "body": "Annual. 28F, feels well. Work fine. Regular cycles, no GYN complaints. No meds, NKDA. Never smoker, social alcohol. Exercising.\n\nROS neg.\n\nExam: vitals normal. Well. Neck: no thyroid enlargement. Cardiac RRR, no murmurs. Lungs clear. Abd soft. Pelvic: normal external genitalia, vaginal mucosa normal, cervix without lesion, Pap obtained; bimanual without masses or tenderness. Skin clear. No edema. PHQ-2: 1 (some low-energy days, not most days).\n\nA/P:\n1. Wellness exam. Pap (cytology alone at 28) sent.\n2. Mood: screen negative, no concerns raised.\n3. Vaccines: flu this fall.\n4. Labs not needed this year.\n\nYearly f/u."}
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "portal_message",
+          "start": "2024-04-23T08:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap Result", "author": "PCP", "date": "2024-04-23T08:15",
+             "body": "Your Pap from last week is normal. Next one is due in three years, spring 2027."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "measure": ["temp_c"],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-22T16:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-22T16:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza Vaccine", "author": "RN", "date": "2024-10-22T16:58",
+             "body": "Rescheduled from 10/8 (work conflict). Well today. Trivalent flu 0.5 mL IM L deltoid. No reaction during observation. Declined COVID this season."}
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "portal_message",
+          "start": "2025-01-17T20:41",
+          "documents": [
+            {"type": "Patient Message", "title": "Fingers Changing Color", "author": "patient", "date": "2025-01-17T20:41",
+             "body": "Hi, since it got cold this winter my fingers keep going numb and turning colors, white first and then kind of blue, then bright red when they warm back up. It's happening a few times a week, outside and sometimes at my desk when a deadline is crunching. My mom has had something like this for years. Is this worth coming in for?"},
+            {"type": "Patient Message", "title": "RE: Fingers Changing Color", "author": "PCP", "date": "2025-01-18T09:12",
+             "body": "Yes, I'd like to see you and take a look at your hands. The front desk will reach out for a time next week. In the meantime keep your hands and your core warm. If you ever see a sore or open spot on a fingertip, message me right away."}
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "finger color changes with cold",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-21T11:20"}],
+          "orders": [{"id": "rheum-referral", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "episodic digital color change, family history of lupus"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-01-21T12:05",
+             "body": "CC: fingers turning white/blue/red in the cold\n\nS: 28F. Since early this winter, attacks of finger numbness with a color sequence: pale/white, then blue, then red as they rewarm. Several times a week. Triggers are cold (walking from the parking lot, holding iced drinks) and stressful moments at work. Each episode passes once she warms up or calms down. Never had a sore, crack or dark spot on a fingertip. Mother has Raynaud's; maternal aunt has lupus. Denies new meds or supplements (takes none). Never smoker.\n\nO: Vitals normal. Hands warm in the exam room, normal color, no digital pitting, ulcers or scars. Skin of fingers soft, not thickened. Radial pulses 2+ bilaterally. Nails normal to inspection. Joints without swelling.\n\nA/P: Episodic triphasic color change with cold and stress, suspect Raynaud phenomenon. Probably primary given her age and mother's history, but with an aunt with lupus I'd like rheumatology to evaluate and decide on testing.\n- Referral to rheumatology placed.\n- Keep whole body warm, gloves in the cold, rewarm hands in warm water when an attack starts.\n- Message for any fingertip sore."}
+          ]
+        },
+        {
+          "id": "2025-01-23a",
+          "kind": "telephone",
+          "start": "2025-01-23T10:05",
+          "reason": "referral scheduling",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Referral Coordination", "author": "front desk", "date": "2025-01-23T10:05",
+             "body": "Rheumatology referral sent with last office note. Outside rheumatology office confirmed new consult Mon 2/17. Pt notified by phone, aware to arrive 20 min early for paperwork."}
+          ]
+        },
+        {
+          "id": "2025-02-17a",
+          "kind": "specialist_visit",
+          "start": "2025-02-17T10:00",
+          "service": "Rheumatology",
+          "reason": "Raynaud evaluation",
+          "conditions": [{"label": "Raynaud phenomenon", "action": "diagnosed", "onset": "2024-12-01", "note": "primary pattern"}],
+          "labs": [
+            {"panel": null, "collected": "2025-02-17T10:55", "resulted": "2025-02-19T15:20", "results": [
+              {"test": "Antinuclear Antibodies", "text": "Negative"},
+              {"test": "Rheumatoid Factor", "text": "Negative"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Office consultation, comprehensive", "performed": "2025-02-17T10:00"}],
+          "orders": [{"id": "rheum-referral", "action": "done", "date": "2025-02-17T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Consultation", "author": "rheumatology", "date": "2025-02-24T13:30",
+             "body": "OUTPATIENT RHEUMATOLOGY CONSULTATION\nDate of visit: 02/17/2025\nReason for referral: episodic digital color change\n\nThank you for asking us to see this 28-year-old marketing coordinator.\n\nHistory: Over the current winter she has had attacks in her fingers several times per week. Cold air and tense periods at work set them off. Her fingers blanch, turn dusky blue, then flush red as circulation returns or the stress resolves, with numbness during the attack. She has had no digital ulcers and no gangrene.\n\nPast medical history: none of note. Medications: none. Allergies: NKDA.\nFamily history: mother with Raynaud phenomenon; maternal aunt with systemic lupus erythematosus.\nSocial: never smoker; drinks socially, 1-2 per week; marketing coordinator.\n\nExam: Vital signs normal. Well appearing. Hands: no skin breakdown or ulceration. Bedside nailfold capillary exam normal, without dilated or dropped-out loops. No sclerodactyly. No telangiectasias. No synovitis.\n\nLabs drawn today: ANA (IFA) negative. Rheumatoid factor negative. (Resulted 02/19/2025.)\n\nImpression: Raynaud phenomenon with features of the primary form: onset in her twenties, no tissue injury, normal nailfolds, negative serologies, and a mother with the same condition. No sign of an associated connective tissue disease today.\n\nRecommendations:\n1. Warmth for the whole body, not just the hands: layers, a hat, gloves or mittens outdoors, hand warmers in pockets on cold days.\n2. At the onset of an attack, warm the hands under warm water or tuck them under the arms.\n3. Strategies to lower stress at work, since that is a clear trigger for her.\n4. No medication needed at this time.\n5. She should return to us or to you promptly for a fingertip ulcer, new rash, joint swelling or trouble swallowing. Routine follow-up with primary care.\n\nAllergies: NKDA.\n\nOutside Rheumatology"}
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "portal_message",
+          "start": "2025-02-25T07:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Rheumatology Letter", "author": "PCP", "date": "2025-02-25T07:40",
+             "body": "Hi Madison, I got the rheumatology letter. Your lupus and rheumatoid screening tests were negative and your nailfold exam was normal, which all points to the common primary type of Raynaud's. Their advice matches ours: stay warm all over, gloves and hand warmers, warm water at the start of an attack. No medication for now. We'll check in at your physical."}
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "annual_physical",
+          "start": "2025-05-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-05-13T08:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Neutrophils %"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-05-13T08:45", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-05-13T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-05-13T08:50",
+             "body": "Yearly visit, 29F.\n\nRaynaud's: seen by rheumatology in Feb, primary type, serologies negative. Attacks tapered off once the weather turned; none in the past few weeks. Kept gloves in her bag and a hand warmer at her desk through March and felt it helped. No fingertip sores.\n\nOtherwise well. No meds. NKDA. Never smoker, social drinker.\n\nROS: no rash, joint swelling, mouth sores or swallowing trouble.\n\nExam: vitals normal. Well. Heart regular rate, no murmur. Lungs clear. Abdomen benign. Hands: normal color and temperature, no pits or ulcers, nailfolds unremarkable to inspection. No edema. PHQ-2 0.\n\nA/P:\n1. Raynaud phenomenon, primary: quiet for the season. Continue warming measures next winter. No drug.\n2. Wellness: CBC and CMP today. Pap current (2024). Flu and COVID in the fall.\n\nRTC 1 yr or sooner if attacks become hard to manage."}
+          ]
+        },
+        {
+          "id": "2025-05-15a",
+          "kind": "portal_message",
+          "start": "2025-05-15T13:22",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2025-05-15T13:22",
+             "body": "Blood count and chemistry panel from your physical are normal. Enjoy the warm months!"}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T08:15"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-14T08:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-14T08:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza and COVID-19 Vaccines", "author": "RN", "date": "2025-10-14T08:30",
+             "body": "Feeling well, no fever. Trivalent flu IM left deltoid; 2025-26 Moderna COVID IM right deltoid. Fact sheets given. 15 min observation without issue. Pt mentions fingers already acting up on cold mornings; reminded her she can message the PCP if it gets worse."}
+          ]
+        }
+      ]
+    }
+  ]
+}

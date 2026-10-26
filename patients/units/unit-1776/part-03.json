@@ -1,0 +1,656 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001776",
+   "events": [
+    {
+     "id": "2022-01-24a",
+     "kind": "outside_records",
+     "start": "2022-01-24T09:50",
+     "reason": "Neurology consultation received",
+     "medications": [
+      {
+       "drug": "gabapentin 300 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth at bedtime",
+       "dose": {
+        "value": 300,
+        "unit": "mg"
+       },
+       "frequency": "QHS",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "restless legs syndrome"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-referral",
+       "action": "done",
+       "date": "2022-01-24T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Telehealth Consultation",
+       "author": "neurology",
+       "date": "2022-01-24T09:50",
+       "body": "NEUROLOGY — TELEHEALTH VISIT\nDate of service: 2022-01-17\nVisit by secure video; patient at home.\n\n32-year-old woman with celiac disease and iron deficiency anemia, referred for restless legs first evaluated in January 2021. For several months the symptoms have been steady: in the evening she feels a deep, crawling discomfort in both legs with an irresistible need to move them, relieved only while she is moving. She gets out of bed and walks, which pushes back her sleep, and she is tired the following day. Nothing during the day; worst lying down at night. No snoring, gasping or observed apneas.\n\nShe eats a vegetarian diet. Menses are heavy, 6 to 7 days.\n\nMedications: ferrous sulfate 325 mg three times daily, multivitamin, calcium carbonate/vitamin D3.\nAllergies: none.\n\nExam (video): alert, fluent, cranial nerves grossly normal, moves all limbs symmetrically, normal finger-nose and gait as observed. Neurologic examination normal within the limits of video.\n\nAssessment: restless legs syndrome, persistent, in the setting of iron deficiency.\n\nPlan:\n- Start gabapentin 300 mg at bedtime.\n- Continue iron; ideally ferritin above 75 for RLS.\n- Check in by phone in two weeks."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-04a",
+     "kind": "outside_records",
+     "start": "2022-02-04T11:15",
+     "reason": "Neurology addendum received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Neurology Addendum",
+       "author": "neurology",
+       "date": "2022-02-04T11:15",
+       "body": "Telephone follow-up 2022-01-31: two weeks into gabapentin 300 mg nightly. Partial relief — falls asleep sooner on most nights, still some evenings with symptoms. Mild morning grogginess the first few days, now gone. Continue current dose. Return as needed or in 6 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "Neurology Notes Reviewed",
+       "author": "PCP",
+       "date": "2022-02-04T16:30",
+       "body": "Gabapentin 300 mg qhs added to med list as started by neurology. Partial benefit at two weeks."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-22a",
+     "kind": "pharmacy",
+     "start": "2022-02-22T10:05",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Gabapentin Refill Request",
+       "author": "MA",
+       "date": "2022-02-22T10:05",
+       "body": "Pharmacy refill request for gabapentin 300 mg capsules, #30. Original Rx from outside neurology. Pt asks if PCP can manage refills going forward. Routed to PCP."
+      },
+      {
+       "type": "Refill Request",
+       "title": "Gabapentin Refill — Approved",
+       "author": "PCP",
+       "date": "2022-02-22T13:40",
+       "body": "OK to refill gabapentin 300 mg at bedtime, #90 with 3 refills. We'll manage going forward."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-15a",
+     "kind": "lab_only",
+     "start": "2022-03-15T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Iron recheck",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.4,
+       "Ferritin": 13
+      }
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-03-15T07:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.4
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2022-03-15T07:30",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        },
+        {
+         "test": "Ferritin",
+         "value": 13
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-03-15T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Iron Recheck",
+       "author": "PCP",
+       "date": "2022-03-16T12:40",
+       "body": "Neurology suggested aiming for a ferritin above 75 for her legs. Ferritin 13, hemoglobin 10.4 on oral iron TID. Message to patient: keep taking it consistently; we'll go over it at the May visit."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Iron Recheck",
+       "author": "patient",
+       "date": "2022-03-16T20:10",
+       "body": "Ugh, OK. I really am taking them! See you in May."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-10a",
+     "kind": "office_visit",
+     "start": "2022-05-10T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up: anemia, celiac, restless legs",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.5,
+       "Mean Corpuscular Volume": 76,
+       "Ferritin": 14,
+       "Iron": 36,
+       "Tissue Transglutaminase IgA": 9
+      },
+      "weight_kg": 57.8
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-05-10T16:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.5
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2022-05-10T16:30",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        },
+        {
+         "test": "Ferritin",
+         "value": 14
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-05-10T16:30",
+       "results": [
+        {
+         "test": "Tissue Transglutaminase IgA",
+         "value": 9
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-05-10T15:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-05-10T15:50",
+       "body": "Follow-up.\n\nRLS: gabapentin at bedtime helps — she's asleep within half an hour most nights now, maybe two bad nights a week. No daytime sedation.\nGI: stools normal again since the fall; strict about cross-contamination at school lunches. Weight coming back up.\nIron: TID, tolerating. Periods still heavy and long.\nNumbness in feet comes and goes, mild.\n\nExam: BP fine. Pale conjunctivae. Heart RRR, lungs clear. Feet: light touch slightly reduced at the toes bilaterally, strength normal.\n\nA/P:\n1. IDA — labs today.\n2. Celiac on GFD — tTG today.\n3. RLS — continue gabapentin 300 qhs.\n4. Neuropathy — stable, mild.\n5. Osteopenia — calcium/D.\nPhysical in September."
+      },
+      {
+       "type": "Result Note",
+       "title": "Results",
+       "author": "PCP",
+       "date": "2022-05-12T08:05",
+       "body": "Hgb 10.5, ferritin 14, tTG 9 — continuing to fall. Portal message sent."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-20a",
+     "kind": "annual_physical",
+     "start": "2022-09-20T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-09-20T16:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-20T16:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-09-20T16:10"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-09-20T16:12"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2022-09-20T15:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-09-20T16:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-09-20T15:30",
+       "body": "ANNUAL\n\nGood summer — gardened, swam. Feels steadier than last year. Sleep decent on gabapentin. No GI flares. Periods heavy, she is used to them.\n\nMeds: ferrous sulfate 325 TID, gabapentin 300 qhs, MVI, calcium carbonate/D3 BID.\nNKDA.\n\nExam: well. Thyroid normal. Heart regular. Lungs clear. Abdomen soft, nontender. Mild conjunctival pallor. Skin normal. Feet: mild distal light-touch reduction, unchanged.\n\nPHQ-2: 0.\n\nPrevention: Pap/HPV 2021 negative — next 2026. Flu and bivalent COVID booster today.\n\nLabs: CBC, CMP."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-29a",
+     "kind": "office_visit",
+     "start": "2022-11-29T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2022-12-01a",
+     "kind": "portal_message",
+     "start": "2022-12-01T18:20",
+     "reason": "Missed appointment",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Missed Tuesday",
+       "author": "patient",
+       "date": "2022-12-01T18:20",
+       "body": "So sorry — I completely forgot Tuesday's appointment, we had a staff meeting run late. Can I come in the spring instead? Also could you send a new iron prescription, I'm on my last bottle."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Missed Tuesday",
+       "author": "MA",
+       "date": "2022-12-02T09:10",
+       "body": "No problem. You're booked for May. Ferrous sulfate refill sent to your pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-16a",
+     "kind": "office_visit",
+     "start": "2023-05-16T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up: anemia, celiac",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.3,
+       "Ferritin": 12,
+       "Tissue Transglutaminase IgA": 3
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-05-16T16:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.3
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2023-05-16T16:30",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        },
+        {
+         "test": "Ferritin",
+         "value": 12
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-05-16T16:30",
+       "results": [
+        {
+         "test": "Tissue Transglutaminase IgA",
+         "value": 3
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-05-16T15:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-05-16T15:50",
+       "body": "Rescheduled from November.\n\nDoing well overall. GFD strict. Legs controlled most nights on gabapentin. Iron TID. Feet tingle now and then. Periods heavy, 6–7 days, same as before.\n\nExam: mild pallor. Heart, lungs normal. Abdomen soft.\n\nPlan: CBC, iron studies, tTG. Continue all meds. Physical in the fall."
+      },
+      {
+       "type": "Result Note",
+       "title": "Results",
+       "author": "PCP",
+       "date": "2023-05-18T07:50",
+       "body": "tTG now 3 — in the normal range for the first time. Hgb 10.3, ferritin 12, unchanged. Portal message: 'Your celiac antibody is finally normal — great work on the diet. Iron is about where it has been.'"
+      }
+     ]
+    },
+    {
+     "id": "2023-09-19a",
+     "kind": "annual_physical",
+     "start": "2023-09-19T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-09-19T16:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-09-19T16:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-09-19T16:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-09-19T16:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2023-09-19T15:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-09-19T16:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-09-19T15:30",
+       "body": "PREVENTIVE VISIT\n\nNew class of 22 five-year-olds. Energy fair. Sleep OK on gabapentin. Bowels normal. Periods are heavy and she thinks a bit longer than last year; she wants to see if that settles.\n\nMeds unchanged: ferrous sulfate TID, gabapentin 300 qhs, MVI, calcium/D BID.\n\nExam: well. Heart regular, lungs clear. Abdomen soft, not tender. Pallor mild.\n\nPHQ-2 0.\nFlu and updated COVID vaccine given. CBC/CMP drawn.\nAsked her to message if periods keep lengthening."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-04a",
+     "kind": "office_visit",
+     "start": "2023-12-04T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Heavy periods, pelvic pressure",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "gyn-referral",
+       "action": "placed",
+       "order": "Gynecology referral",
+       "category": "referral",
+       "to": "Gynecology",
+       "reason": "heavier, longer menses and pelvic pressure"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-12-04T15:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-12-04T15:45",
+       "body": "CC: periods getting worse.\n\nSince about the summer her periods have become heavier and longer — now more than a week, soaking through pads quickly on the heavy days. She also has a sense of fullness or pressure low in the pelvis, and has been running to the bathroom more and a bit constipated. Mother had fibroids.\n\nExam: abdomen soft, nontender; lower abdomen feels full above the pubis, hard to define on exam. Pelvic deferred to gynecology at her request.\n\nA/P: worsening heavy menstrual bleeding with pelvic pressure; family history of fibroids. Gynecology referral for evaluation and pelvic imaging. Continue iron."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

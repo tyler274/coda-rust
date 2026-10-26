@@ -1,0 +1,112 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001946",
+      "events": [
+        {
+          "id": "2026-01-06a",
+          "kind": "portal_message",
+          "start": "2026-01-06T19:18",
+          "documents": [
+            {"type": "Patient Message", "title": "Raynaud's Again", "author": "patient", "date": "2026-01-06T19:18",
+             "body": "Hi, my fingers have been bothering me pretty much all year whenever it's cold, and now that it's winter again it's every time I go outside. Same thing as before, they go pale and cold, then bluish, then red and tingly when they warm up, and it goes away by itself after a few minutes. Gloves help but don't stop it. Is there any chance this is a circulation or heart issue? I'd feel better if someone checked."},
+            {"type": "Patient Message", "title": "RE: Raynaud's Again", "author": "PCP", "date": "2026-01-07T08:03",
+             "body": "Thanks for the update. Let's get you in this week so I can examine your hands and we can talk about next steps, including a cardiology opinion if you'd like one."}
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "office_visit",
+          "start": "2026-01-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Raynaud follow-up",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-01-08T15:40"}],
+          "orders": [{"id": "cardiology-referral", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "Raynaud phenomenon, vascular evaluation requested by patient"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-01-08T16:15",
+             "body": "29F with primary Raynaud phenomenon (rheumatology 2/2025, ANA and RF negative).\n\nS: Over the past year, finger discomfort with cold exposure: fingers go pale and cold, then bluish, then red with tingling on rewarming; settles on its own within minutes. More frequent now that winter is back. Uses gloves and hand warmers with partial relief. No fingertip sores, no rash, no joint pain, no swallowing trouble. Worried this could be a blood vessel or heart problem and would like that looked at.\n\nO: Vitals normal. Hands warm today, no color change, no ulcers or pitting. Radial pulses full and symmetric. Heart RRR without murmur. Lungs clear.\n\nA/P: Raynaud phenomenon, primary, ongoing in winter. Nothing on exam to suggest tissue injury. She'd like a cardiovascular opinion for reassurance, reasonable to obtain.\n- Cardiology referral placed.\n- Continue warming measures; add a heavier pair of mittens for commuting.\n- No medication for now; revisit after cardiology."}
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "telephone",
+          "start": "2026-01-09T09:30",
+          "reason": "referral scheduling",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Referral Coordination", "author": "front desk", "date": "2026-01-09T09:30",
+             "body": "Cardiology referral faxed with yesterday's note and the 2025 rheumatology letter. Outside cardiology group booked her Thu 2/12 at 1:15. Left detailed voicemail for pt per her preference, also sent portal note."}
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "specialist_visit",
+          "start": "2026-02-12T13:15",
+          "service": "Cardiology",
+          "reason": "Raynaud phenomenon, cardiovascular evaluation",
+          "vitals": {"temp_c": 36.9, "bp": [114, 72], "hr": 76, "rr": 14},
+          "procedures": [{"procedure": "Office consultation, comprehensive", "performed": "2026-02-12T13:15"}],
+          "orders": [{"id": "cardiology-referral", "action": "done", "date": "2026-02-12T13:15"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Consultation", "author": "cardiology", "date": "2026-02-18T10:10",
+             "body": "CARDIOLOGY OUTPATIENT CONSULTATION\nVisit date: 02/12/2026\nReferred by: primary care physician\nReason: Raynaud phenomenon, patient requests cardiovascular evaluation\n\nMs. Ouellette is a 29-year-old woman seen in our office for the first time, about a year after a rheumatology evaluation for episodic color change and numbness in the fingers. She comes in midwinter describing a year of intermittent finger discomfort. With cold exposure her fingers first become pale and cool, then turn bluish, and then redden and tingle as they rewarm. Each episode clears without intervention in a matter of minutes.\n\nPrior workup: ANA and rheumatoid factor negative (rheumatology, 02/2025).\nMedications: none. Allergies: NKDA.\nFamily history: mother with Raynaud phenomenon; maternal aunt with SLE.\nSocial: nonsmoker.\n\nReview of systems: no joint pain, no rash, no difficulty swallowing. Otherwise negative.\n\nVitals: T 36.9 C (98.4 F), BP 114/72, HR 76, RR 14.\nExam: Normal. Alert, comfortable. Normal jugular venous pressure. Regular rhythm, normal S1 S2, no murmurs, rubs or gallops. Lungs clear. Radial, ulnar, femoral and pedal pulses intact and symmetric. Hands warm with normal color at rest, no ulceration. No edema.\n\nImpression: Raynaud phenomenon, primary, with a normal cardiovascular examination. No findings to suggest structural heart disease or arterial disease.\n\nPlan:\n- Continue conservative measures: keep the core and hands warm, gloves and hand warmers, rewarm promptly at the start of an episode, manage work stress where possible.\n- No medication recommended.\n- No cardiology follow-up needed; return to primary care. Glad to see her again if anything changes.\n\nThank you for the referral.\nOutside Cardiology"}
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "portal_message",
+          "start": "2026-02-19T12:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Cardiology Letter", "author": "PCP", "date": "2026-02-19T12:05",
+             "body": "Hi Madison, the cardiology note came in. Your heart and circulation exam was normal, and they agree this is the primary type of Raynaud's with no sign of a heart or artery problem. Same plan: warmth and gloves, no medicine needed. We'll go over it at your physical next month."},
+            {"type": "Patient Message", "title": "RE: Cardiology Letter", "author": "patient", "date": "2026-02-19T18:47",
+             "body": "That's a relief, thank you. See you in March."}
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "annual_physical",
+          "start": "2026-03-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, Raynaud follow-up",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-03-19T09:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}, {"test": "Lymphocytes %"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-03-19T09:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2026-03-19T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-03-19T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-03-19T09:25",
+             "body": "ANNUAL / Raynaud f/u. Turned 30 earlier this month.\n\nRaynaud phenomenon, primary: rheumatology 2/2025 and cardiology 2/2026 both reassuring (serologies negative, normal nailfolds, normal vascular exam). This winter's attacks were frequent in Jan-Feb but brief and manageable with mittens, hand warmers and rewarming under warm water; fewer now that it's milder. No fingertip sores. No rash, joint swelling or swallowing trouble. She is comfortable without medication.\n\nOtherwise well. No meds. NKDA. Never smoker. Social alcohol.\n\nExam: vitals normal. Well appearing. HEENT normal. Heart RRR, no murmur. Lungs clear. Abdomen soft. Hands warm, pink, no ulcers, no skin thickening. Distal pulses intact. No edema. PHQ-2 0.\n\nA/P:\n1. Raynaud phenomenon, primary: stable. Continue conservative measures. No drug; we can revisit next winter if attacks interfere with work or daily life. Message for any fingertip sore.\n2. Wellness: CBC, CMP and lipid panel today. Pap current (due spring 2027). Tdap good until 2029. Flu/COVID next fall.\n\nRTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "portal_message",
+          "start": "2026-03-20T16:02",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2026-03-20T16:02",
+             "body": "Your labs from yesterday look good: normal blood count, kidney and liver function, sugar, and a healthy cholesterol profile. Nothing to follow up on."}
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "portal_message",
+          "start": "2026-06-02T10:27",
+          "documents": [
+            {"type": "Patient Message", "title": "Pharmacy Update", "author": "patient", "date": "2026-06-02T10:27",
+             "body": "Could you switch my pharmacy on file to the one on Main Street near my apartment? I don't have any prescriptions right now, just want it updated."},
+            {"type": "Patient Message", "title": "RE: Pharmacy Update", "author": "front desk", "date": "2026-06-02T13:40",
+             "body": "Done, your preferred pharmacy has been updated."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,236 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002237",
+      "given": "Thomas",
+      "family": "Reardon",
+      "birth_date": "1956-08-19",
+      "address_line": "27 Glendale Road, Southampton, MA 01073",
+      "phone": "+1-917-555-0161",
+      "email": "thomas.reardon@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal supervisor with long-standing CAD, prior MI and stents, HFrEF (LVEF 30%), hypertension and hyperlipidemia who joined in 2023. Unstable angina in July 2025 led to an LAD stent; the practice last saw him in October 2025, after which he had two admissions for cardiogenic shock, known to the practice only through outside records.",
+      "events": [
+        {
+          "id": "2023-08-14a",
+          "kind": "establish_care",
+          "start": "2023-08-14T09:00",
+          "end": "2023-08-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Coronary artery disease", "action": "history", "onset": "2015-01-01"},
+            {"label": "Old myocardial infarction", "action": "history", "onset": "2020-01-01"},
+            {"label": "Presence of coronary artery stent", "action": "history", "onset": "2020-01-01"},
+            {"label": "Heart failure with reduced ejection fraction", "action": "history", "onset": "2020-01-01", "note": "LVEF 30% on echo after 2020 MI"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2005-01-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2015-01-01"}
+          ],
+          "medications": [
+            {"drug": "furosemide 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Heart failure"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension, heart failure"},
+            {"drug": "carvedilol 12.5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with food", "dose": {"value": 12.5, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Heart failure"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"bp": [138, 84], "weight_kg": 92.0, "height_cm": 178.0, "labs": {"Low Density Lipoprotein": 88, "Creatinine": 1.02, "Potassium": 4.4}},
+          "vitals": {"bp": [138, 84]},
+          "measure": ["hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-08-14T10:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-14T10:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-14T10:05", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-08-14T10:05", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Retired postal service supervisor"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-08-14T09:00"},
+            {"procedure": "Venipuncture", "performed": "2023-08-14T10:05"}
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "40 pack-year former smoker, quit 2020"},
+            {"id": "aaa-us-2023", "action": "placed", "order": "Abdominal aortic ultrasound screening", "category": "imaging", "reason": "Male former smoker age 65-75"},
+            {"id": "records-2023", "action": "placed", "order": "Request records from prior primary care and cardiology", "category": "procedure"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-08-14T10:20", "body": "66M here to set up care. Was with a practice closer to his old route for years; his wife wanted somewhere they could actually reach the doctor by phone.\n\nCardiac history, from him and the bottle bag he brought:\n- CAD. First PCI around 2015. MI in 2020, second PCI with a drug-eluting stent at that time.\n- Heart failure with reduced EF. Tells me the echo after the 2020 MI said 30%. Records to confirm.\n- HTN since roughly 2005. Admits he went years taking it some days and not others.\n- High cholesterol since about 2015. Stopped and started the statin more than once because he was worried it would make his muscles ache. Never actually had a reaction he can describe. Taking it now.\n- Aspirin since the MI; forgets it now and then.\n\nCurrently: some tiredness if he pushes on hills, otherwise no chest pain, no orthopnea, sleeps flat on one pillow, ankles fine. No palpitations, no fainting.\n\nMeds: furosemide 40 daily, lisinopril 20 daily, carvedilol 12.5 bid, atorvastatin 40 daily, aspirin 81 daily.\nAllergies: none known.\nFH: father died of an MI at 58. Mother had high BP and cholesterol, died at 82. Older brother has coronary disease, had bypass at 62.\nSH: married. Retired postal service supervisor. Smoked about 40 pack-years, quit 2020. No alcohol. Does black-and-white photography, walks most mornings.\n\nExam: well appearing, talkative. Neck veins flat. Heart regular, S1 S2, no murmur or gallop. Lungs clear throughout. Abdomen soft. No ankle edema. Distal pulses 2+.\n\nA/P\n1. CAD with old MI, stents. Continue aspirin and atorvastatin.\n2. HFrEF, EF 30% by report. Euvolemic today. Continue furosemide, lisinopril, carvedilol. BMP today.\n3. HTN. 138/84 today on the above. Watch.\n4. Lipids: fasting panel today.\n5. Health maintenance: hep C screen today. Eligible for lung screening - LDCT ordered. One-time aortic ultrasound ordered. Colonoscopy per him in 2019 and normal - confirm in records. Flu/COVID/pneumococcal in the fall.\n6. Records request to prior PCP and cardiology.\nRTC 6 months, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "outside_records",
+          "start": "2023-08-29T14:10",
+          "reason": "Prior primary care and cardiology records received",
+          "orders": [{"id": "records-2023", "action": "done", "date": "2023-08-29T14:10"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care practice", "author": "front desk", "date": "2023-08-29T14:10", "body": "Records received, 38 pages, from his previous primary care office and an outside cardiology group. Indexed to chart.\n\nPCP summary of contents:\n- Echocardiogram 2020, done after his MI: LV ejection fraction 30%.\n- Catheterization 2020: PCI with drug-eluting stent at the time of the infarction. An earlier PCI noted in the history (around 2015); that procedure note itself not in the packet.\n- Colonoscopy 2019: normal, no polyps. Next due 2029.\n- Medication list matches what he brought: furosemide 40, lisinopril 20, carvedilol 12.5 bid, atorvastatin 40, aspirin 81.\n- No drug allergies listed.\n- Several notes over the years remark on missed doses and gaps in refills.\nReviewed by PCP."}
+          ]
+        },
+        {
+          "id": "2023-08-30a",
+          "kind": "portal_message",
+          "start": "2023-08-30T08:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Communication", "title": "Your lab results", "author": "PCP", "date": "2023-08-30T08:40", "body": "Hi Mr. Reardon, your labs from the 14th look good. Kidney function and potassium are fine on your water pill and lisinopril. Blood counts normal. LDL cholesterol is under 100 on the atorvastatin, which is where we want it to stay, so please keep taking it every day. Hepatitis C screen negative. Your old records arrived too and confirm what you told me. Talk soon."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-10T11:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T11:06"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-10-10T11:08"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T11:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccine Visit", "author": "RN", "date": "2023-10-10T11:25", "body": "In for fall shots per PCP plan. Screening questions negative, no prior reactions. High-dose flu L deltoid, 2023-24 COVID R deltoid, PCV20 L deltoid below the flu site. VIS sheets reviewed. Sat 15 min after, felt fine, left with wife."}
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "imaging",
+          "start": "2023-11-08T13:30",
+          "reason": "Lung cancer screening",
+          "orders": [{"id": "ldct-2023", "action": "done", "date": "2023-11-08T13:30"}],
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-11-08T13:30", "text": "Indication: annual lung cancer screening, former smoker, 40 pack-years, quit 2020. Baseline exam.\nTechnique: low-dose non-contrast CT of the chest.\nFindings: No pulmonary nodules. Airways patent. No consolidation or effusion. Coronary artery calcification and coronary stents noted. Heart size normal. No pericardial effusion. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.", "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2023-11-09T07:50", "body": "Screening CT negative, Lung-RADS 1. Coronary calcium and stents expected given his history. Repeat next fall. Portal note sent."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "imaging",
+          "start": "2023-12-05T10:15",
+          "reason": "Abdominal aortic aneurysm screening",
+          "orders": [{"id": "aaa-us-2023", "action": "done", "date": "2023-12-05T10:15"}],
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2023-12-05T10:15", "text": "Indication: one-time AAA screening, male former smoker.\nThe abdominal aorta is visualized from the diaphragm to the bifurcation. Normal caliber throughout, no aneurysmal dilatation. Common iliac arteries normal in caliber.", "conclusion": "No abdominal aortic aneurysm."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Aorta screen", "author": "PCP", "date": "2023-12-06T12:15", "body": "Normal aorta, no aneurysm. No further screening needed. Released to portal."}
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure and blood pressure follow-up",
+          "state": {"bp": [132, 80], "weight_kg": 91.4},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-20T14:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-20T14:20"},
+            {"procedure": "Venipuncture", "performed": "2024-02-20T14:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-02-20T15:05", "body": "S: six month check. Winter has kept him inside more, misses his morning walks. No chest discomfort. Breathing the same, no orthopnea or swelling. Says he's taken every pill since the fall, wife set up a weekly pill box. Weighs himself sometimes, not daily.\n\nO: vitals reviewed, weight down a bit from August. JVP not elevated. RRR, no gallop. Lungs clear. No edema.\n\nA/P: HFrEF stable on furosemide/lisinopril/carvedilol; BP improved. CAD without angina on aspirin and statin. BMP today. Encouraged daily weights - call if up 3 lb in a day or 5 in a week. RTC August for wellness visit."}
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "pharmacy",
+          "start": "2024-04-16T09:30",
+          "reason": "90-day refills",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2024-04-16T09:30", "body": "Pharmacy fax asking to switch all five of his maintenance meds to 90-day supplies for his Part D plan. Sent furosemide, lisinopril, carvedilol and atorvastatin x90 with 1 refill per PCP standing order. Aspirin is OTC, nothing needed."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "pharmacy",
+          "start": "2024-06-11T16:00",
+          "reason": "Outside vaccine record",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-06-08T11:00"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Pharmacy vaccine notification", "author": "MA", "date": "2024-06-11T16:00", "body": "State registry update from his pharmacy: Shingrix dose 1 given 06/08/2024. Entered into immunization history. Dose 2 due in 2-6 months."}
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {"labs": {"Low Density Lipoprotein": 94}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-08-20T10:30", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-20T10:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-08-20T10:30", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2024-08-20T10:25"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2024-08-20T09:40"},
+            {"procedure": "Immunization administration", "performed": "2024-08-20T10:25"},
+            {"procedure": "Venipuncture", "performed": "2024-08-20T10:30"}
+          ],
+          "orders": [{"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-08-20T10:50", "body": "Medicare AWV, turned 68 yesterday. Wife with him.\n\nFunctional: independent with everything, drives, does the shopping. No falls this year. Hearing ok, vision ok with readers. PHQ-2 0. Cognition: 3-word recall 3/3, clock normal.\n\nCardiac: no chest pain, no swelling. Has gone back to walking most mornings now the weather is good, two blocks to a cafe and back plus more on good days, camera in hand. No exertional symptoms with that.\n\nMeds reviewed bottle by bottle - all five present and he can say what each is for. Advance directive: wife is his health care proxy, they will bring a copy.\n\nExam: BP and weight stable. Heart regular, no gallop. Lungs clear. No edema.\n\nPlan\n- Labs: BMP, CBC, lipids today.\n- Tdap today (none on record).\n- Shingrix #2 due - pharmacy is fine. RSV vaccine recommended with his heart failure, same trip.\n- LDCT due November, ordered.\n- Colonoscopy up to date (2019).\n- Flu and COVID in October here.\n- Same meds. See him in 6 months."},
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2024-08-21T17:30", "body": "Labs fine - kidney function and potassium normal, LDL in the 90s on atorvastatin 40, blood count normal. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "pharmacy",
+          "start": "2024-09-17T15:20",
+          "reason": "Outside vaccine record",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-09-13T13:00"},
+            {"vaccine": "RSV, bivalent (Abrysvo)", "date": "2024-09-13T13:05"}
+          ],
+          "documents": [
+            {"type": "Immunization Record", "title": "Pharmacy vaccine notification", "author": "MA", "date": "2024-09-17T15:20", "body": "Registry shows Shingrix #2 and Abrysvo RSV both given 9/13 at his pharmacy. Added to history. Shingles series complete."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T10:35"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T10:36"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T10:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccine Visit", "author": "RN", "date": "2024-10-08T10:55", "body": "Flu (high dose) R deltoid and 2024-25 Moderna L deltoid. Tolerated. He asked whether the RSV shot needs a booster - told him not at this time per current guidance. 15 min observation, no issues."}
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T08:45",
+          "reason": "Lung cancer screening",
+          "orders": [{"id": "ldct-2024", "action": "done", "date": "2024-11-12T08:45"}],
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-11-12T08:45", "text": "Indication: annual lung cancer screening. Comparison 11/08/2023.\nTechnique: low-dose non-contrast CT of the chest.\nFindings: Lungs clear without nodules. No consolidation, effusion or pneumothorax. Coronary calcifications and stents again seen. No lymphadenopathy.", "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2024-11-13T08:10", "body": "Second annual LDCT negative. Next due 11/2025."}
+          ]
+        }
+      ]
+    }
+  ]
+}

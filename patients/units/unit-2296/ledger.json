@@ -1,0 +1,4460 @@
+{
+  "unit": "unit-2296",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002296",
+      "given": "Richard",
+      "family": "Bianchi",
+      "birth_date": "1953-10-08",
+      "address_line": "212 Shaker Farm Road",
+      "phone": "+1-774-555-0140",
+      "email": "richard.bianchi@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired Westfield farmer and heavy smoker with severe COPD who joined in 2020; lower-lip and laryngeal squamous cell carcinomas treated surgically, then cor pulmonale with pulmonary hypertension, secondary polycythemia on home oxygen and tricuspid regurgitation. Last seen 2025-09-08 when sent for admission; a later admission for a complicated parapneumonic effusion reached the chart as records.",
+      "events": [
+        {
+          "id": "2020-08-11a",
+          "kind": "telephone",
+          "start": "2020-08-11T10:05",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake",
+              "date": "2020-08-11T10:05",
+              "author": "front desk",
+              "body": "Caller: patient. His primary care doctor in town retired this spring and he has been without one since. Wants to join. Medicare plus a supplement; card info taken, membership paperwork mailed to the farm address since he says he does not do much email.\n\nSays he has \"bad lungs\" and is on three inhalers. Records release signed over the phone consent form to be completed at the visit; request faxed to the prior office today.\n\nNew patient visit booked Tue 8/18, 8:40. Bring inhalers and pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-18a",
+          "kind": "establish_care",
+          "start": "2020-08-18T08:40",
+          "end": "2020-08-18T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; COPD",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "diagnosed",
+              "onset": "2012-01-01",
+              "note": "Severe, GOLD group D; several hospitalizations for exacerbations before joining"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "1980-01-01",
+              "note": "1 ppd since about 1980"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule once daily",
+              "dose": {
+                "value": 18,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic"
+            },
+            {
+              "drug": "60 ACTUAT fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler",
+              "action": "historical",
+              "sig": "Inhale 1 puff twice daily, rinse mouth after",
+              "dose": {
+                "value": 1,
+                "unit": "puff"
+              },
+              "frequency": "BID",
+              "route": "Inhalation",
+              "course": "chronic"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 1-2 puffs every 4-6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              69
+            ],
+            "hr": 71,
+            "rr": 13,
+            "temp_c": 36.5,
+            "spo2": 95,
+            "weight_kg": 76.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-08-18T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-08-18T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-08-18T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-18T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired farmer"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "3-4 drinks most evenings"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-08-18T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-lip",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "non-healing lower lip lesion"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-08-18T09:45",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n66 y/o retired farmer establishing care after his longtime PCP retired.\n\nCOPD: told years ago it was \"severe.\" Several hospital stays for flare-ups over the last decade, none in the past year by his account. Has seen a pulmonary group on and off. Uses tiotropium every morning and the fluticasone/salmeterol disk twice a day \"most days\"; albuterol a few times a day, more in humid weather. Breathless walking up to the barn or carrying feed, fine on the flat at his own pace. Chronic morning cough with some white sputum. No oxygen at home.\n\nTobacco: 1 pack a day since his mid-20s, so roughly 40 pack-years. Has quit \"a dozen times\" for a few weeks each. Not interested in a quit date today.\nAlcohol: 3-4 drinks most evenings, beer or rye. AUDIT-C 6.\n\nAlso mentions a sore on his lower lip that \"won't heal,\" there for a few months, gets a crust, picks at it. Spent his life outdoors without a hat most days.\n\nPMH: COPD. PSH: none.\nMeds: tiotropium 18 mcg inh daily; fluticasone/salmeterol 250/50 1 inh BID; albuterol MDI PRN.\nAllergies: no known drug allergies.\nFH: father had COPD and lung cancer; mother had heart disease.\nSH: divorced, lives alone on the home farm, leased the fields out when he retired. Drives.\n\nEXAM: thin man, mildly short of breath conversing after the walk from the lot. Prolonged expiration, scattered faint wheezes, distant breath sounds. Heart regular, no murmur. No JVD. No edema. Lower lip vermilion: about 1 cm crusted firm lesion, slightly raised. No palpable neck nodes.\n\nA/P\n1. COPD, severe, GOLD D by history. Continue current triple therapy. Inhaler technique reviewed; he was skipping the evening dose of the disk. Requesting old records and PFTs from the prior office.\n2. Tobacco: strongly advised quitting. Discussed patch/gum, varenicline. Declines for now; will revisit.\n3. Lower lip lesion, persistent: needs biopsy. Dermatology referral placed.\n4. Alcohol above recommended limits: brief counseling given.\n5. Health maintenance: labs today (CMP, CBC, lipids, A1c, hep C, HIV). Prior records to confirm colonoscopy and vaccines. Flu shot when the high-dose arrives.\n\nPHQ-2: 0.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "spo2": 94,
+            "weight_kg": 76.2,
+            "height_cm": 178.0,
+            "labs": {
+              "Hemoglobin A1c": 5.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-08-21a",
+          "kind": "portal_message",
+          "start": "2020-08-21T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2020-08-21T16:20",
+              "author": "PCP",
+              "body": "Mr. Bianchi, your bloodwork from Tuesday came back fine: kidney and liver tests normal, blood counts normal, cholesterol in a reasonable range, sugar (A1c) normal. Hepatitis C and HIV screens negative. Nothing to change. The dermatology office should be calling you to schedule the lip appointment."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-02a",
+          "kind": "outside_records",
+          "start": "2020-09-02T13:10",
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2018-10-16T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior PCP records",
+              "date": "2020-09-02T13:10",
+              "author": "MA",
+              "body": "Records received by fax from the patient's former primary care office (48 pages). Abstracted:\n- COPD on triple inhaled therapy for several years; spirometry in 2017 showed severe obstruction.\n- Screening colonoscopy 2016: no polyps, repeat in 10 years.\n- PPSV23 given 10/2018. Flu shots most years.\n- Ongoing smoking counseling documented at most visits.\nOriginal pages scanned under Media. Forwarded to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-29a",
+          "kind": "nurse_visit",
+          "start": "2020-09-29T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and pneumococcal vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-29T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2020-09-29T10:35"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV13",
+              "date": "2020-09-29T10:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2020-09-29T10:40",
+              "author": "RN",
+              "body": "High-dose flu given L deltoid. PCV13 given R deltoid (PPSV23 was 2018 per old records). VIS sheets given. No reaction during the wait. He asked again about the dermatology date; called derm while he was here, he is on for 11/9."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-09a",
+          "kind": "specialist_visit",
+          "start": "2020-11-09T13:20",
+          "service": "Dermatology",
+          "reason": "Lower lip lesion",
+          "conditions": [
+            {
+              "label": "Squamous cell carcinoma of skin of lip",
+              "action": "diagnosed",
+              "onset": "2020-05-01",
+              "note": "Lower lip vermilion, 1 cm",
+              "icd10": "C44.02"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2020-11-09T13:50",
+              "text": "Specimen: lower lip vermilion, shave biopsy. Microscopic: invasive cords of atypical squamous epithelium with keratin pearl formation extending into the dermis.",
+              "conclusion": "Invasive squamous cell carcinoma, keratinizing type, lower lip. Peripheral and deep margins involved by tumor.",
+              "issued": "2020-11-11T15:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-lip",
+              "action": "done",
+              "date": "2020-11-09T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "date": "2020-11-12T09:00",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY GROUP - CONSULTATION LETTER\nDate of visit: 11/09/2020\nRe: Richard Bianchi, DOB 10/08/1953\nReferred by: primary care\n\nThank you for this referral. Mr. Bianchi reports a sore on the lower lip that has been there several months and has slowly gotten bigger. He denies weight loss, fevers or night sweats. He farmed his whole working life, mostly without sun protection, and smokes about a pack a day, which he has done for 40 years.\n\nExam: on the vermilion border of the lower lip there is a firm, ulcerated 1 cm nodule with a small area of crust. Cervical and submandibular chains without palpable adenopathy. No other suspicious lesions on the face, scalp, neck or arms on today's check; scattered solar lentigines.\n\nProcedure: shave biopsy of the lip lesion under local anesthesia.\n\nPathology (finalized 11/11): invasive keratinizing squamous cell carcinoma with keratin pearls.\n\nAssessment: cutaneous squamous cell carcinoma, lower lip.\nPlan: surgical excision with our dermatologic surgery team, scheduled 11/30. Sun protection and lip balm with SPF reviewed. We will follow him for skin checks.\n\nMedications reviewed: tiotropium, fluticasone/salmeterol, albuterol. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-30a",
+          "kind": "procedure_visit",
+          "start": "2020-11-30T08:00",
+          "end": "2020-11-30T10:30",
+          "service": "Dermatologic Surgery",
+          "reason": "Excision of lip squamous cell carcinoma",
+          "conditions": [
+            {
+              "label": "Squamous cell carcinoma of skin of lip",
+              "action": "resolved",
+              "icd10": "C44.02"
+            },
+            {
+              "label": "History of other malignant neoplasm of skin",
+              "action": "diagnosed",
+              "onset": "2020-11-30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2020-11-30T09:10",
+              "text": "Specimen: lower lip, wedge excision, oriented. Residual invasive keratinizing squamous cell carcinoma at the prior biopsy site. Margins: all margins free of tumor.",
+              "conclusion": "Squamous cell carcinoma, lower lip, completely excised with clear margins.",
+              "issued": "2020-12-02T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Lip excision",
+              "date": "2020-12-03T11:00",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGIC SURGERY - PROCEDURE REPORT (received by fax)\nDate of procedure: 11/30/2020\nProcedure: excision of squamous cell carcinoma, lower lip vermilion, with layered closure.\nAnesthesia: local.\nFindings: healed biopsy site with residual firm induration, excised with margin and closed primarily.\nPathology 12/02: residual SCC, margins clear.\nComplications: none. EBL minimal.\nAllergies: NKDA.\nPlan: suture removal 1 week; skin check in 6 months then yearly. Patient instructed on wound care and sun protection."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "portal_message",
+          "start": "2020-12-08T19:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "lip and covid shot",
+              "date": "2020-12-08T19:44",
+              "author": "patient",
+              "body": "Stitches came out friday, lip is healing ok just numb in one spot. The skin doc says they got it all. Question - when can I get the covid vaccine with my lungs? My neighbor says the pharmacies are taking names."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: lip and covid shot",
+              "date": "2020-12-09T08:12",
+              "author": "PCP",
+              "body": "Glad to hear it, and the pathology report reached us: clean margins. Numbness at the scar often improves over months.\n\nYou will be in an early group for the vaccine because of your age and lungs. The state is rolling it out by phases; I would sign up with the pharmacy as your neighbor said, and we will message patients when we know more."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-26a",
+          "kind": "pharmacy",
+          "start": "2021-01-26T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization",
+              "date": "2021-01-26T11:15",
+              "author": "MA",
+              "body": "Pharmacy faxed: supplement plan switched preferred product for fluticasone/salmeterol 250/50 for 2021, brand rejected. Generic equivalent is covered without PA. New Rx sent for the generic disk, same directions. Pt notified by phone, he said \"as long as it's the same purple thing.\" Explained it may look different."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "outside_records",
+          "start": "2021-03-16T09:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-17T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-10T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "COVID-19 vaccine record",
+              "date": "2021-03-16T09:30",
+              "author": "MA",
+              "body": "State immunization registry query: Pfizer COVID-19 vaccine dose 1 on 2/17/2021 and dose 2 on 3/10/2021, both given at a retail pharmacy clinic. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-06a",
+          "kind": "office_visit",
+          "start": "2021-04-06T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hoarseness",
+          "vitals": {
+            "bp": [
+              123,
+              76
+            ],
+            "hr": 78,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 94,
+            "weight_kg": 75.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-04-06T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-hoarse",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "progressive hoarseness and dysphagia in a smoker, rule out laryngeal malignancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-04-06T14:40",
+              "author": "PCP",
+              "body": "CC: voice changes\n\nVoice has been getting rougher since late January. Initially blamed it on a cold, but it never came back. Now hoarse all day. Sometimes feels food (bread, meat) catch on the way down and a sense of a lump in his throat; liquids fine. Mild throat ache. No coughing up blood, no fevers, no night sweats, weight stable by his account. Still smoking 1 ppd; drinks most evenings. Breathing at baseline.\n\nLip healed, follows with dermatology.\n\nMeds: tiotropium daily, fluticasone/salmeterol BID, albuterol PRN.\nAllergies: no known drug allergies.\n\nExam: voice hoarse and husky. Oropharynx without visible lesion, no thrush. Neck supple, no palpable mass or node, thyroid not enlarged. Lungs with diffuse decreased breath sounds and prolonged expiration, no crackles. Heart regular. Lip scar well healed.\n\nA/P\nHoarseness >2 months with intermittent solid-food dysphagia in a heavy smoker and drinker. Needs direct visualization of the larynx soon. Urgent ENT referral placed; called the ENT office and they will see him 4/28. Told him to call if he has trouble swallowing liquids, breathing noise, or coughs up blood.\nSmoking: talked again about stopping, especially now. He will \"think about it.\""
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-04-28a",
+          "kind": "specialist_visit",
+          "start": "2021-04-28T09:30",
+          "service": "Otolaryngology",
+          "reason": "Hoarseness and dysphagia",
+          "conditions": [
+            {
+              "label": "Squamous cell carcinoma of larynx",
+              "action": "diagnosed",
+              "onset": "2021-01-25",
+              "note": "Left true vocal cord",
+              "icd10": "C32.0"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-04-28T10:05",
+              "text": "Specimen: left true vocal cord, biopsy. Fragments of squamous mucosa with invasive squamous cell carcinoma.",
+              "conclusion": "Invasive squamous cell carcinoma, left true vocal cord.",
+              "issued": "2021-05-03T12:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-hoarse",
+              "action": "done",
+              "date": "2021-04-28T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology consultation",
+              "date": "2021-05-04T10:00",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY - HEAD AND NECK SURGERY\nNew patient consultation, seen 4/28/2021. Letter dictated after pathology returned.\n\nHPI: 67-year-old man referred for three months of worsening hoarseness and intermittent difficulty swallowing. He notes a mild discomfort in the throat and the feeling of a lump when he swallows solids. About five months ago he had a squamous cell carcinoma of the lower lip excised by dermatology. No fevers, sweats or unintended weight loss.\n\nHabits: smokes 1 pack per day; 3 to 4 alcoholic drinks most evenings.\n\nMeds: tiotropium, fluticasone/salmeterol, albuterol. Allergies: none known.\n\nExam: husky voice. Mild tenderness over the anterior neck, nothing visible. No palpable cervical masses. Laryngoscopy: irregular exophytic lesion on the left true vocal cord; that cord moves less than the right. Biopsy taken in clinic under topical anesthesia; tolerated well.\n\nPathology (5/3): invasive squamous cell carcinoma.\n\nImpression: squamous cell carcinoma of the left true vocal cord.\nPlan: CT neck and chest with contrast for staging, then discussion at our tumor board and surgical planning. Smoking cessation is strongly advised and he was given the state quitline number."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "imaging",
+          "start": "2021-05-11T11:00",
+          "service": "Radiology",
+          "reason": "Staging, laryngeal carcinoma",
+          "reports": [
+            {
+              "study": "CT neck with contrast",
+              "loinc": "24836-9",
+              "performed": "2021-05-11T11:10",
+              "text": "Technique: axial images through the neck after IV contrast. Soft tissue thickening and enhancing mass along the left true vocal cord. No cervical lymphadenopathy by size or morphology. Thyroid, salivary glands and airway otherwise unremarkable.",
+              "conclusion": "Left true vocal cord mass. No cervical nodal disease."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2021-05-11T11:10",
+              "text": "Technique: contrast-enhanced axial images of the chest. Lungs hyperinflated. No pulmonary nodule or mass. No mediastinal or hilar lymphadenopathy. No pleural effusion. Heart size normal.",
+              "conclusion": "Hyperinflated lungs. No evidence of intrathoracic metastatic disease."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-13a",
+          "kind": "telephone",
+          "start": "2021-05-13T17:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call with patient re: diagnosis",
+              "date": "2021-05-13T17:05",
+              "author": "PCP",
+              "body": "Called him after the ENT letter and CT reports came in. He already knew the biopsy result. CT shows no spread to the neck nodes or lungs, which ENT told him is good news. Surgery being planned for early June.\n\nHe sounded flat. Asked how he is doing: \"Can't say I'm surprised.\" Not drinking more than usual, sleeping ok. Again offered help with quitting: nicotine patch or varenicline. Declined, says he has cut to \"about a pack.\" Told him smoking after treatment raises the chance of another cancer and he should call any time. He will."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-02a",
+          "kind": "specialist_visit",
+          "start": "2021-06-02T10:40",
+          "service": "Dermatology",
+          "reason": "Skin check after lip SCC",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology follow-up",
+              "date": "2021-06-04T09:00",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY - FOLLOW-UP\n6-month skin check after excision of lower lip SCC. Scar on the lower lip well healed, no nodularity. Full skin exam: solar lentigines and sun damage over the forearms and face; no suspicious lesions today. No cervical adenopathy.\nPlan: yearly skin exams, broad-brim hat, SPF lip balm. Aware of upcoming laryngeal surgery."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-09a",
+          "kind": "hospital_admission",
+          "start": "2021-06-09T07:00",
+          "end": "2021-06-11T11:30",
+          "service": "Otolaryngology",
+          "reason": "Partial laryngectomy for left vocal cord carcinoma",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-06-09T09:30",
+              "text": "Specimen: left partial laryngectomy, oriented, with separately submitted margin biopsies. Invasive squamous cell carcinoma involving the left true vocal cord. All surgical margins and margin biopsies negative for carcinoma.",
+              "conclusion": "Invasive squamous cell carcinoma, left true vocal cord; margins negative.",
+              "issued": "2021-06-14T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary - partial laryngectomy",
+              "date": "2021-06-14T15:00",
+              "author": "otolaryngology",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted 6/9/2021, discharged 6/11/2021. Service: Otolaryngology - Head and Neck Surgery.\n\nDiagnosis: squamous cell carcinoma, left true vocal cord.\nProcedure 6/9: direct laryngoscopy with frozen-section biopsies and partial laryngectomy. Frozen sections clear.\n\nCourse: extubated in the OR. Overnight monitoring for airway, uneventful. Pain controlled with oral medication. Swallow evaluation POD1: safe for soft solids and thin liquids with small sips. Continued home inhalers; one albuterol neb for wheeze the first night. Ambulating, voiding.\n\nFinal pathology: invasive SCC, all margins negative. Tumor board recommendation: no adjuvant radiation; surveillance.\n\nDischarge meds: home inhalers unchanged; acetaminophen as needed.\nAllergies: NKDA.\nFollow-up: ENT clinic 4 weeks. PCP 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "office_visit",
+          "start": "2021-06-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-operative follow-up",
+          "vitals": {
+            "bp": [
+              133,
+              77
+            ],
+            "hr": 69,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 94,
+            "weight_kg": 76.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-06-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-06-22T11:30",
+              "author": "PCP",
+              "body": "S: Two weeks out from partial laryngectomy. Voice weak and breathy, tires by afternoon. Swallowing soft food and most solids now, slower. Neck sore early on, now just tight. Using acetaminophen once in a while. Breathing about as usual. Smoking \"less,\" maybe half a pack, though he admits it creeps up.\n\nPath reviewed with him: margins negative, no radiation planned.\n\nO: breathy, soft voice. Neck incisions healing, no erythema or drainage. Lungs: decreased BS throughout, no crackles. Heart regular. No edema.\n\nA/P\n1. SCC left vocal cord s/p partial laryngectomy. Recovering. ENT 7/7.\n2. COPD: stable on current inhalers.\n3. Tobacco: encouraged him to keep cutting down to zero; offered patch again. Declines.\nReturn in fall for wellness visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-07-07a",
+          "kind": "specialist_visit",
+          "start": "2021-07-07T14:00",
+          "service": "Otolaryngology",
+          "reason": "Post-operative visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology follow-up",
+              "date": "2021-07-09T08:30",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY - FOLLOW-UP LETTER\nSeen 7/7/2021, four weeks after left partial laryngectomy. Healing well; flexible laryngoscopy shows the operative bed mucosalized, airway adequate. Voice breathy as expected. Swallowing without aspiration symptoms.\n\nFinal margins were negative and the tumor board did not recommend adjuvant therapy.\n\nSurveillance plan: flexible laryngoscopy in clinic every 3 to 4 months for two years, then every 6 to 12 months; CT neck and chest yearly for three years. We once again urged him to stop smoking."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-24a",
+          "kind": "pharmacy",
+          "start": "2021-08-24T09:20",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request",
+              "date": "2021-08-24T09:20",
+              "author": "MA",
+              "body": "Electronic refill request: tiotropium 18 mcg capsules, 90-day supply. Last office visit 6/22. Approved by PCP per protocol, sent with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "annual_physical",
+          "start": "2021-10-05T09:00",
+          "end": "2021-10-05T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "conditions": [
+            {
+              "label": "Squamous cell carcinoma of larynx",
+              "action": "resolved",
+              "icd10": "C32.0"
+            },
+            {
+              "label": "History of laryngeal cancer",
+              "action": "diagnosed",
+              "onset": "2021-06-09"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              74
+            ],
+            "hr": 71,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 93,
+            "weight_kg": 76.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-05T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-05T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-10-05T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 136
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2021-10-05T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-05T09:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2021-10-05T09:55"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-10-05T09:56"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-05T09:58"
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "placed",
+              "order": "Abdominal aortic ultrasound",
+              "category": "imaging",
+              "reason": "AAA screening, male smoker 65-75"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2021-10-05T10:05",
+              "author": "PCP",
+              "body": "MEDICARE ANNUAL WELLNESS VISIT (initial)\n\nInterval: lower lip SCC excised 11/2020, clear margins, derm skin check 6/2021 clean. Left vocal cord SCC: partial laryngectomy 6/9/21, margins negative, no adjuvant therapy; ENT surveillance ongoing, most recent scope clear. Voice still breathy but stronger than in June.\n\nCOPD: stable, no flares this year. Same three inhalers. Gets winded with barn chores.\n\nFunctional: independent with ADLs and IADLs. Lives alone, drives, does his own shopping. No falls. Hearing ok in quiet rooms. Home has stairs to the bedroom, manages.\nCognition: clock draw and 3-word recall normal.\nPHQ-2: 0. AUDIT-C: 6 - still 3-4 drinks most nights; discussed cutting back, he is not keen.\nTobacco: still ~1 ppd. Counseled. Declines meds.\n\nAdvance directive: will think about a health care proxy; form given.\n\nExam: BP fine. Breathy voice. Healed neck scars. Lungs: decreased breath sounds, prolonged expiratory phase. Heart regular, no murmur. No edema. Lip scar ok.\n\nScreening/prevention:\n- Colonoscopy 2016 normal (old records).\n- AAA: ever-smoker male 65-75, ordering one-time abdominal aortic ultrasound.\n- Vaccines today: high-dose flu, Shingrix #1, COVID booster. Shingrix #2 in 2-6 months at pharmacy.\n- Labs: CMP, CBC, lipids.\n\nProblem list updated: laryngeal cancer moved to history after surgery with negative margins."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-07a",
+          "kind": "portal_message",
+          "start": "2021-10-07T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2021-10-07T12:40",
+              "author": "PCP",
+              "body": "Wellness visit labs are back and look fine: kidneys, liver, potassium, blood counts and cholesterol all in range. The aorta ultrasound is set for 10/19."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "imaging",
+          "start": "2021-10-19T13:30",
+          "service": "Radiology",
+          "reason": "AAA screening",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2021-10-19T13:40",
+              "text": "Limited abdominal ultrasound for aortic screening. The abdominal aorta measures up to 2.1 cm in maximal outer-to-outer diameter, without aneurysm. Iliac origins normal in caliber. Visualized liver and kidneys unremarkable.",
+              "conclusion": "No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "done",
+              "date": "2021-10-19T13:30"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-03a",
+          "kind": "specialist_visit",
+          "start": "2021-11-03T09:10",
+          "service": "Otolaryngology",
+          "reason": "Laryngeal cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ENT surveillance",
+              "date": "2021-11-05T10:00",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY - SURVEILLANCE NOTE\nFive months after left partial laryngectomy. Voice slowly improving. No dysphagia, odynophagia or ear pain.\nFlexible laryngoscopy: operative site well healed, no mucosal lesion, airway patent. Neck without palpable adenopathy.\nNo evidence of recurrence. Next scope in 3-4 months; CT neck/chest at one year. Still smoking - counseled."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "outside_records",
+          "start": "2022-01-11T15:00",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-01-04T11:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2022-01-04T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine notification",
+              "date": "2022-01-11T15:00",
+              "author": "MA",
+              "body": "Pharmacy notification: Shingrix dose 2 and Tdap given 1/4/2022. Shingrix series complete. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-16a",
+          "kind": "office_visit",
+          "start": "2022-02-16T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worsening shortness of breath, ankle swelling",
+          "vitals": {
+            "bp": [
+              127,
+              74
+            ],
+            "hr": 77,
+            "rr": 18,
+            "temp_c": 36.7,
+            "spo2": 92,
+            "weight_kg": 76.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-02-16T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-rhf",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "progressive dyspnea and new leg edema in severe COPD; please see sooner"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-02-16T16:00",
+              "author": "PCP",
+              "body": "S: Breathing has been sliding since about September. Now winded after one trip to the mailbox. Cough most of the day, yellow-white sputum, no blood, no fever. For two weeks his ankles have been puffy by evening, sock marks. No chest pain. No palpitations or fainting. Using albuterol 4-5 times a day. Still smoking 1 ppd.\n\nO: SpO2 92% on room air at rest. Speaking in full sentences. Neck veins visible at 45 degrees. Lungs: decreased breath sounds, scattered rhonchi, no focal crackles. Heart regular, P2 seems loud. Ankle/pretibial pitting edema bilaterally.\n\nA/P\nProgressive dyspnea with new peripheral edema in severe COPD - concern for right heart strain. He has a routine pulmonary appointment in April; called the pulmonary office and they moved him to 3/8. They will get labs, CXR and ECG there. Reviewed warning signs (worse breathing at rest, chest pain, confusion) - ED. Leg elevation. Albuterol as needed.\nAgain advised stopping smoking."
+            }
+          ],
+          "state": {
+            "spo2": 92
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-01a",
+          "kind": "specialist_visit",
+          "start": "2022-03-01T10:00",
+          "service": "Otolaryngology",
+          "reason": "Laryngeal cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ENT surveillance",
+              "date": "2022-03-03T08:45",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY - SURVEILLANCE\nNine months after left partial laryngectomy. Voice stable. Flexible laryngoscopy without suspicious lesion. No neck adenopathy. He mentions more breathlessness this winter and an upcoming pulmonary visit. NED. Return 3-4 months with CT."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "specialist_visit",
+          "start": "2022-03-08T13:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Dyspnea, cough, leg swelling",
+          "conditions": [
+            {
+              "label": "Cor pulmonale (chronic)",
+              "action": "diagnosed",
+              "onset": "2022-02-01",
+              "note": "Chronic right heart failure secondary to COPD",
+              "icd10": "I27.81"
+            },
+            {
+              "label": "Pulmonary hypertension",
+              "action": "diagnosed",
+              "onset": "2022-02-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily in the morning",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Right heart failure with edema"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 98,
+            "rr": 22,
+            "temp_c": 37.0,
+            "spo2": 92,
+            "weight_kg": 76.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-08T13:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-08T13:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 40
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 35
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-03-08T13:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-08T13:40",
+              "results": [
+                {
+                  "test": "Natriuretic peptide B",
+                  "loinc": "30934-4",
+                  "unit": "pg/mL",
+                  "value": 250
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2022-03-08T13:20",
+              "text": "PA and lateral views. Lungs hyperinflated with flattened diaphragms. Central pulmonary arteries prominent. No focal consolidation, effusion or pneumothorax. Cardiac silhouette within normal limits.",
+              "conclusion": "Hyperinflation consistent with COPD. Prominent pulmonary artery."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2022-03-08T13:30",
+              "text": "Sinus rhythm, rate 98. Right axis deviation. Tall R wave in V1 with right ventricular strain pattern.",
+              "conclusion": "Right axis deviation and right ventricular hypertrophy."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-rhf",
+              "action": "done",
+              "date": "2022-03-08T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary consultation",
+              "date": "2022-03-11T09:30",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONARY & CRITICAL CARE GROUP - CLINIC LETTER\nVisit 3/8/2022\n\nDear colleague,\nI saw Mr. Bianchi, whom we know for severe COPD, earlier than planned. Over six months his breathing has steadily worsened; he has a daily productive cough and in recent weeks swollen legs. No chest pain, palpitations or syncope. History also of lip and laryngeal squamous cell carcinoma, both treated surgically. He smokes about 40 pack-years and continues.\n\nMedications: tiotropium, albuterol, fluticasone/salmeterol. NKDA.\n\nExam: BP 135/85, HR 98, RR 22, SpO2 92% on room air. Jugular venous distension; P2 is prominent and there is a palpable right ventricular heave. Abdomen soft, liver edge palpable below the costal margin. Pitting edema 2+ of both legs to mid-shin.\n\nLabs: Hgb 15.2, WBC 7.8, platelets 250, BNP 250, creatinine 1.1, AST 40, ALT 35, albumin 3.9, INR 1.0.\nCXR: hyperinflation with a prominent pulmonary artery.\nECG: right axis deviation and RVH.\n\nImpression: cor pulmonale - right heart failure due to pulmonary hypertension from his COPD.\nPlan:\n- Start furosemide 40 mg each morning. BMP in two weeks (we've asked your office to draw it).\n- Continue triple inhaled therapy.\n- Smoking cessation remains the most important step.\n- Return 3 months."
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "lab_only",
+          "start": "2022-03-22T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-22T08:15",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-22T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP on furosemide",
+              "date": "2022-03-23T12:10",
+              "author": "PCP",
+              "body": "BMP 2 weeks after starting furosemide: potassium and creatinine normal. Copy to pulmonary. Pt notified via phone message."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.0
+          }
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "office_visit",
+          "start": "2022-04-12T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, right heart failure",
+          "vitals": {
+            "bp": [
+              128,
+              77
+            ],
+            "hr": 66,
+            "rr": 18,
+            "temp_c": 36.4,
+            "spo2": 92,
+            "weight_kg": 74.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-04-12T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-04-12T10:55",
+              "author": "PCP",
+              "body": "Follow-up after pulmonary started furosemide for cor pulmonale. Ankles much better, gone by morning. Urinating more in the morning, otherwise fine. Breathing a bit easier, still limited. Down about 2 kg since February.\n\nExam: SpO2 92% RA. JVP lower than in February. Lungs: decreased BS, no crackles. Trace ankle edema.\n\nLabs 3/22: K and Cr normal.\n\nA/P\n1. Cor pulmonale/pulmonary hypertension: improved on furosemide 40 daily. Daily weights - call if up 2 kg. Low salt (he eats a lot of canned soup; talked about that).\n2. COPD: continue tiotropium, fluticasone/salmeterol, albuterol PRN.\n3. Tobacco 1 ppd, counseled.\nRTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "specialist_visit",
+          "start": "2022-05-10T08:30",
+          "service": "Otolaryngology",
+          "reason": "Laryngeal cancer surveillance with CT",
+          "reports": [
+            {
+              "study": "CT neck with contrast",
+              "loinc": "24836-9",
+              "performed": "2022-05-03T10:00",
+              "text": "Postoperative changes of left partial laryngectomy. No mass or abnormal enhancement at the operative site. No cervical lymphadenopathy.",
+              "conclusion": "Expected postsurgical changes. No evidence of recurrence."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2022-05-03T10:00",
+              "text": "Hyperinflated lungs. No pulmonary nodule or mass. No lymphadenopathy. Main pulmonary artery prominent. No effusion.",
+              "conclusion": "No evidence of metastatic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ENT surveillance",
+              "date": "2022-05-12T09:00",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY - SURVEILLANCE\nOne year after left partial laryngectomy. Voice serviceable. No dysphagia. Scope: operative bed clean, no lesion. Neck soft, no nodes.\nOne-year CT neck and chest 5/3: postoperative changes only, no recurrence or metastasis.\nPlan: scope every 3-4 months through June 2023, then less often. Next CT in a year."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "specialist_visit",
+          "start": "2022-06-14T13:40",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Cor pulmonale follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary follow-up",
+              "date": "2022-06-16T09:00",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONARY & CRITICAL CARE - FOLLOW-UP\nThree months on furosemide 40 mg for cor pulmonale. Edema much improved, breathing somewhat better. Still smoking.\nExam: SpO2 92% on room air. JVP lower. Trace ankle edema.\nPlan: no changes. Continue triple inhaled therapy and furosemide. Return 6 months to a year, sooner if worse."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "specialist_visit",
+          "start": "2022-07-19T11:00",
+          "service": "Dermatology",
+          "reason": "Annual skin check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology skin check",
+              "date": "2022-07-21T09:00",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY - ANNUAL SKIN EXAM\nHistory of lower lip SCC excised 2020. Lip scar intact, no recurrence. Full skin exam: chronic sun damage, lentigines. No suspicious lesions. Continue sun protection; return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-26a",
+          "kind": "office_visit",
+          "start": "2022-07-26T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              71
+            ],
+            "hr": 81,
+            "rr": 18,
+            "temp_c": 36.4,
+            "spo2": 92,
+            "weight_kg": 74.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-07-26T10:10",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-07-26T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-07-26T10:15",
+              "author": "PCP",
+              "body": "Summer follow-up. Haying season was hard to watch from the porch, he says, but he stayed out of the dust. Breathing about the same as spring. Swelling controlled. Pulmonary saw him in June, no changes. ENT surveillance clean in May.\n\nMeds: tiotropium, fluticasone/salmeterol, albuterol PRN, furosemide 40 daily. Taking all.\n\nExam: SpO2 92% RA. Lungs diminished. No edema. Weight stable.\n\nPlan: BMP today. Continue. Flu/COVID this fall. AWV in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "nurse_visit",
+          "start": "2022-09-27T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T14:12"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-09-27T14:12"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-09-27T14:14"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2022-09-27T14:25",
+              "author": "RN",
+              "body": "High-dose flu L arm, bivalent COVID booster R arm. Tolerated. Observed 15 minutes. He asked to move his October physical to the 18th; done."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "annual_physical",
+          "start": "2022-10-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 70,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 92,
+            "weight_kg": 73.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-18T09:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 10.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-18T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.32
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 50.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-18T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-18T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2022-10-18T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2022-10-18T09:50",
+              "author": "PCP",
+              "body": "MEDICARE AWV (subsequent)\n\nYear in brief: right heart failure from COPD diagnosed by pulmonary in March, on furosemide; ENT surveillance negative; derm skin check clean.\n\nFunction: independent, slower. Stops to rest walking the driveway. Still drives. No falls. Lives alone; a neighbor checks in.\nPHQ-2 0. AUDIT-C 6, unchanged.\nTobacco: 1 ppd. He knows what I'll say. Declines medication.\nHealth care proxy: still not done; reminded.\n\nExam: SpO2 92% RA. Lungs diminished with prolonged expiration. Heart regular, loud P2. Trace ankle edema.\n\nPrevention: flu and bivalent COVID done 9/27. Shingrix and Tdap complete. Colonoscopy 2016. AAA screen normal 2021.\nLabs: CMP, CBC, lipids, A1c.\n\nPlan: continue all meds. Follow-up winter."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 16.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "portal_message",
+          "start": "2022-10-20T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-10-20T13:05",
+              "author": "PCP",
+              "body": "Your labs from the wellness visit: kidney function and potassium normal on the water pill. Cholesterol and A1c fine. Your hemoglobin is a bit higher than last year (16.9); with lungs like yours the body sometimes makes more red cells. We'll keep an eye on it."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "specialist_visit",
+          "start": "2022-11-09T09:00",
+          "service": "Otolaryngology",
+          "reason": "Laryngeal cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ENT surveillance",
+              "date": "2022-11-10T16:00",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY - SURVEILLANCE\n17 months after partial laryngectomy. Asymptomatic from a laryngeal standpoint. Scope clean. Neck negative. NED. Next visit 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "pharmacy",
+          "start": "2022-12-13T09:05",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request",
+              "date": "2022-12-13T09:05",
+              "author": "MA",
+              "body": "Refill requests from mail-order pharmacy: tiotropium 18 mcg caps, fluticasone/salmeterol 250/50, furosemide 40 mg, 90-day supplies. Seen 10/18. Approved by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "office_visit",
+          "start": "2023-01-24T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, headaches",
+          "vitals": {
+            "bp": [
+              135,
+              72
+            ],
+            "hr": 67,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 90,
+            "weight_kg": 73.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-01-24T14:05",
+              "resulted": "2023-01-25T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 18.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 56
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 6.15
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-01-24T14:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-24T13:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-poly",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "erythrocytosis, Hgb 18.8 / Hct 56"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-01-24T14:10",
+              "author": "PCP",
+              "body": "S: ~2 months of feeling wiped out, dull headaches most mornings, lightheaded when he stands quickly, and he can't keep his mind on the newspaper. No vision loss, no weakness or numbness, no chest pain. Breathing unchanged from fall. Sleeping in the recliner some nights. Still smoking 1 ppd.\n\nO: SpO2 90% RA at rest. Face ruddy. Lungs diminished. Heart regular, loud P2. Trace edema. Neuro nonfocal.\n\nA/P\nFatigue, headaches, poor concentration - check CBC (Hgb rose to 16.9 in October) and BMP today.\nAddendum 1/25: Hgb 18.8, Hct 56. BMP ok. Erythrocytosis, most likely secondary to chronic hypoxemia and smoking. Hematology referral placed. Called pt (see phone note)."
+            }
+          ],
+          "state": {
+            "spo2": 90
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-26a",
+          "kind": "telephone",
+          "start": "2023-01-26T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "CBC result",
+              "date": "2023-01-26T09:15",
+              "author": "RN",
+              "body": "Called pt per PCP: red blood count high; hematology referral sent and they have an opening 2/20. Pt agreeable. Reinforced fluids, and to go to ED for chest pain, weakness on one side, or trouble speaking. Pt verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-20a",
+          "kind": "specialist_visit",
+          "start": "2023-02-20T10:30",
+          "service": "Hematology & Oncology",
+          "reason": "Erythrocytosis",
+          "conditions": [
+            {
+              "label": "Secondary polycythemia",
+              "action": "diagnosed",
+              "onset": "2022-12-01",
+              "icd10": "D75.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              69
+            ],
+            "hr": 76,
+            "spo2": 89,
+            "weight_kg": 73.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-20T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 19.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 57
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-02-20T10:15",
+              "resulted": "2023-02-22T14:00",
+              "results": [
+                {
+                  "test": "Erythropoietin",
+                  "loinc": "15061-5",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-poly",
+              "action": "done",
+              "date": "2023-02-20T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology consultation",
+              "date": "2023-02-23T11:00",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY & ONCOLOGY - CONSULT LETTER\nVisit 2/20/2023\n\nReason: erythrocytosis.\n\n69-year-old man with severe COPD (GOLD D), pulmonary hypertension with chronic right heart failure, and previously treated laryngeal and lower lip squamous cell carcinomas. He describes tiredness, headaches, some dizziness and difficulty concentrating. He smokes a pack a day.\n\nExam: SpO2 89% breathing room air. Breath sounds decreased on both sides; slight cyanosis of the lips. Neurologic exam normal. Spleen not palpable; no lymphadenopathy.\n\nLabs: Hgb 19.0, Hct 57%, MCV 89. Serum erythropoietin elevated (resulted 2/22).\n\nAssessment: secondary polycythemia, driven by chronic hypoxemia (and smoking). The raised EPO and absent splenomegaly argue against a primary marrow process.\n\nRecommendations:\n1. Continuous supplemental oxygen - his resting saturation qualifies. Primary care to order.\n2. Smoking cessation.\n3. No phlebotomy for now; will recheck CBC here in about 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "office_visit",
+          "start": "2023-03-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Home oxygen evaluation",
+          "conditions": [
+            {
+              "label": "Dependence on supplemental oxygen",
+              "action": "diagnosed",
+              "onset": "2023-03-07"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "oxygen 99 % Gas for Inhalation",
+              "action": "start",
+              "sig": "2 liters per minute by nasal cannula, continuous",
+              "dose": {
+                "value": 2,
+                "unit": "L/min"
+              },
+              "frequency": "CONTINUOUS",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Chronic hypoxemia, SpO2 89% on room air"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              139,
+              68
+            ],
+            "hr": 78,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 89,
+            "weight_kg": 74.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-07T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dme-o2",
+              "action": "placed",
+              "order": "Home oxygen concentrator and portable system, 2 L/min continuous",
+              "category": "procedure",
+              "reason": "resting hypoxemia with secondary polycythemia and cor pulmonale"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-03-07T11:45",
+              "author": "PCP",
+              "body": "Here to set up home oxygen per hematology (secondary polycythemia, Hgb 19.0/Hct 57, EPO high).\n\nResting SpO2 89% on room air after 10 min seated. On 2 L/min nasal cannula: 94%.\n\nLong talk about oxygen and cigarettes: no smoking with oxygen on or in the same room, open flame risk, burns to the face. He says he will smoke on the porch with it off. Not ideal - again offered patch/varenicline, he declines.\n\nA/P\n1. Chronic hypoxemic respiratory failure with secondary polycythemia and cor pulmonale: home oxygen 2 L/min continuous via nasal cannula, concentrator plus portable tanks. Order and certificate of medical necessity sent to the oxygen supplier.\n2. Secondary polycythemia: hematology rechecking in ~4 months.\n3. COPD, right heart failure: meds unchanged.\nRTC 4 months."
+            }
+          ],
+          "state": {
+            "spo2": 93
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "telephone",
+          "start": "2023-03-14T15:40",
+          "orders": [
+            {
+              "id": "dme-o2",
+              "action": "done",
+              "date": "2023-03-14T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Oxygen supplier",
+              "date": "2023-03-14T15:40",
+              "author": "MA",
+              "body": "Oxygen supplier called: concentrator and portable cylinders delivered to the home 3/13, setup and safety teaching done. They need the signed CMN back - placed in PCP folder, signed and faxed same day."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "specialist_visit",
+          "start": "2023-03-21T09:20",
+          "service": "Otolaryngology",
+          "reason": "Laryngeal cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ENT surveillance",
+              "date": "2023-03-22T13:00",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY - SURVEILLANCE\nNow on home oxygen. Voice stable. Scope: no lesion. Neck negative. NED. CT neck/chest in May."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "imaging",
+          "start": "2023-05-09T10:00",
+          "service": "Radiology",
+          "reason": "Laryngeal cancer surveillance",
+          "reports": [
+            {
+              "study": "CT neck with contrast",
+              "loinc": "24836-9",
+              "performed": "2023-05-09T10:05",
+              "text": "Stable postoperative appearance of the left larynx. No mass. No cervical lymphadenopathy.",
+              "conclusion": "No evidence of recurrent disease."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2023-05-09T10:05",
+              "text": "Hyperinflated lungs without nodule or mass. Enlarged main pulmonary artery. No lymphadenopathy or effusion.",
+              "conclusion": "No evidence of metastatic disease."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "specialist_visit",
+          "start": "2023-06-12T14:00",
+          "service": "Hematology & Oncology",
+          "reason": "Secondary polycythemia follow-up",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-12T13:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 17.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 52
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.71
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology follow-up",
+              "date": "2023-06-14T10:00",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY - FOLLOW-UP\nThree months on continuous oxygen 2 L. Headaches gone, thinking clearer, energy somewhat better. Still smokes (off oxygen, he says).\nCBC: Hgb 17.4, Hct 52%.\nAssessment: secondary polycythemia improving with oxygen. Phlebotomy not indicated. Discharged to primary care to follow CBC every 6 months; re-refer if Hct climbs above 55%."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hematocrit": 52,
+              "Hemoglobin": 17.4
+            }
+          }
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "office_visit",
+          "start": "2023-07-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              66
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 93,
+            "weight_kg": 74.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-07-18T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-18T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-07-18T09:35",
+              "author": "PCP",
+              "body": "On oxygen 2 L since March; wears it most of the day and all night, off for \"porch time.\" Headaches resolved. Breathing same. Edema controlled. Hematology discharged him back to us, Hgb 17.4/Hct 52 in June. ENT CT in May clean.\n\nExam: SpO2 93% on 2 L. Lungs diminished. Loud P2. No edema.\n\nPlan: BMP today. CBC every 6 months - next with AWV. Oxygen safety reviewed again. Continue meds."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "specialist_visit",
+          "start": "2023-08-22T10:10",
+          "service": "Dermatology",
+          "reason": "Annual skin check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology skin check",
+              "date": "2023-08-23T08:30",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY\nAnnual exam, hx lower lip SCC 2020. Lip scar quiet. Sun damage, no suspicious lesions. RTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "specialist_visit",
+          "start": "2023-09-12T14:20",
+          "service": "Pulmonary & Critical Care",
+          "reason": "COPD and cor pulmonale follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary follow-up",
+              "date": "2023-09-14T10:30",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONARY & CRITICAL CARE - FOLLOW-UP\nNow on continuous oxygen 2 L since March for hypoxemia with secondary polycythemia. Feels clearer-headed. Dyspnea unchanged. Edema controlled on furosemide 40 mg.\nExam: SpO2 93% on 2 L. Diminished breath sounds. Trace edema.\nPlan: no changes. Oxygen and smoking safety reviewed. Return in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "annual_physical",
+          "start": "2023-10-03T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "vitals": {
+            "bp": [
+              126,
+              76
+            ],
+            "hr": 66,
+            "rr": 17,
+            "temp_c": 36.9,
+            "spo2": 93,
+            "weight_kg": 74.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-03T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-03T09:40",
+              "results": [
+                {
+                  "test": "Hematocrit",
+                  "value": 52.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.81
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 17.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-03T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 189
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 138
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-10-03T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-03T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2023-10-03T09:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-03T09:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-10-03T09:55",
+              "author": "PCP",
+              "body": "MEDICARE AWV\n\nThis year: secondary polycythemia found in January, home O2 2 L since March, improved. ENT CT clean. Derm clean.\nFunction: independent; slower on stairs; no falls. Oxygen tubing trip hazard discussed.\nPHQ-2 0. AUDIT-C 6. Tobacco 1 ppd, declines treatment.\nHealth care proxy: brought it back signed (names a longtime neighbor - copy scanned).\n\nExam: SpO2 93% on 2 L. Lungs diminished. Heart regular, loud P2. Trace edema.\n\nFlu (high-dose) and updated COVID today. Discussed RSV vaccine - get at pharmacy.\nLabs: CMP, CBC, lipids."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "portal_message",
+          "start": "2023-10-05T16:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-10-05T16:15",
+              "author": "PCP",
+              "body": "Your blood counts are holding where hematology wanted them on the oxygen, and kidney function and potassium are normal on the furosemide. Cholesterol fine. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "outside_records",
+          "start": "2023-11-08T12:00",
+          "immunizations": [
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2023-11-01T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine notification",
+              "date": "2023-11-08T12:00",
+              "author": "MA",
+              "body": "Pharmacy notification received: RSV vaccine given 11/1/2023. Entered."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "specialist_visit",
+          "start": "2023-11-29T08:50",
+          "service": "Otolaryngology",
+          "reason": "Laryngeal cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ENT surveillance",
+              "date": "2023-11-30T12:00",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY\n2.5 years after partial laryngectomy. Scope clean, neck negative. NED. Interval now every 6 months; final surveillance CT in spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg swelling, abdominal fullness",
+          "vitals": {
+            "bp": [
+              135,
+              72
+            ],
+            "hr": 79,
+            "rr": 17,
+            "temp_c": 36.9,
+            "spo2": 93,
+            "weight_kg": 77.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-06T15:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-06T15:00",
+              "results": [
+                {
+                  "test": "Hematocrit",
+                  "value": 51.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.52
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 17.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-06T14:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-rhf",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "worsening right heart failure on furosemide"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-02-06T15:10",
+              "author": "PCP",
+              "body": "S: Since around November his legs swell higher, his belt is tighter and he feels full after half a plate. Less able to get around - stops twice to the mailbox now. No chest pain. Sleeps in recliner as before, no new orthopnea. Taking furosemide every morning. On O2 2 L.\n\nO: SpO2 93% on 2 L. Weight up ~4 kg from last summer. JVP elevated. Lungs diminished, no crackles. Abdomen mildly full, liver edge palpable. Pitting edema to mid-shin bilaterally.\n\nA/P\nWorsening right-sided heart failure/cor pulmonale. Would like cardiology input (echo, ?diuretic plan). Referral placed; they can see him 3/1. BMP and CBC today. Low salt reviewed, daily weights. Call if short of breath at rest."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-08a",
+          "kind": "telephone",
+          "start": "2024-02-08T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab results",
+              "date": "2024-02-08T10:20",
+              "author": "RN",
+              "body": "Per PCP, called pt with Tuesday's labs: kidney function, potassium and blood count stable. Cardiology appt confirmed for 3/1 at 9:00. Pt asked whether to take an extra water pill when swollen - PCP says no, keep 40 mg daily until cardiology weighs in."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-01a",
+          "kind": "specialist_visit",
+          "start": "2024-03-01T09:00",
+          "service": "Cardiology",
+          "reason": "Right heart failure",
+          "conditions": [
+            {
+              "label": "Tricuspid valve regurgitation",
+              "action": "diagnosed",
+              "onset": "2024-03-01",
+              "icd10": "I36.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              76
+            ],
+            "hr": 92,
+            "rr": 20,
+            "temp_c": 37.2,
+            "spo2": 94,
+            "weight_kg": 78.0
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2024-03-01T09:20",
+              "text": "Sinus rhythm, rate 92. Right axis deviation. Right bundle branch block.",
+              "conclusion": "Right axis deviation; right bundle branch block."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-03-01T10:15",
+              "text": "Right ventricle hypertrophied and dilated. Tricuspid regurgitation present. Left ventricle normal in size with normal systolic function. Mitral and aortic valves without significant disease. No pericardial effusion.",
+              "conclusion": "Right ventricular hypertrophy and dilation with tricuspid regurgitation. Normal left ventricular function."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-rhf",
+              "action": "done",
+              "date": "2024-03-01T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation",
+              "date": "2024-03-04T14:00",
+              "author": "cardiology",
+              "body": "OUTSIDE CARDIOLOGY GROUP - CONSULTATION\nDate of service: 3/1/2024\n\nReferred for worsening right heart failure. Over three months: more leg swelling, abdominal fullness and shrinking exercise tolerance. He denies chest pain and orthopnea.\n\nMedications (per patient): tiotropium, albuterol. Allergies: NKDA.\nSocial: 45 pack-years, still smoking.\n\nExam: temp 37.2 C, pulse 92, BP 128/76, RR 20. JVD to 8 cm above the sternal angle. Pitting edema to mid-shins bilaterally. Hepatomegaly. Loud P2. Systolic murmur.\n\nECG: right axis deviation, right bundle branch block.\nTTE today: hypertrophied, dilated right ventricle with tricuspid regurgitation; normal LV function.\n\nImpression: cor pulmonale with tricuspid regurgitation secondary to RV dilation; pulmonary hypertension from COPD.\nRecommendations: no change in medications from our side. Continue oxygen. Follow with pulmonary. Return as needed."
+            }
+          ],
+          "measure": [
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "portal_message",
+          "start": "2024-03-05T08:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cardiology visit",
+              "date": "2024-03-05T08:30",
+              "author": "PCP",
+              "body": "Got the cardiology letter. The ultrasound showed the right side of your heart is thickened and enlarged and one valve (the tricuspid) is leaking, which goes with the lung-related heart strain we've been treating. They did not change your medicines. Keep the water pill, oxygen and inhalers as you are, and let me know if the swelling climbs."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              115,
+              76
+            ],
+            "hr": 75,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 92,
+            "weight_kg": 77.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-05-21T11:10",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 10.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 71
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-21T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-05-21T11:15",
+              "author": "PCP",
+              "body": "Follow-up after cardiology. They found tricuspid regurgitation from the dilated RV; no med changes. Swelling about the same, belly a little full. Breathing at his baseline. Using oxygen. Smoking 1 ppd, 45 pack-years now.\n\nExam: SpO2 92% on 2 L. JVP up. Holosystolic murmur LLSB. Edema 1+ to shins.\n\nPlan: continue furosemide 40, inhalers, oxygen. BMP today. Pulmonary follow-up as scheduled. Smoking counseling - declines."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-29a",
+          "kind": "specialist_visit",
+          "start": "2024-05-29T09:00",
+          "service": "Otolaryngology",
+          "reason": "Laryngeal cancer surveillance with CT",
+          "reports": [
+            {
+              "study": "CT neck with contrast",
+              "loinc": "24836-9",
+              "performed": "2024-05-22T13:00",
+              "text": "Stable postoperative changes of the left larynx. No mass or adenopathy.",
+              "conclusion": "No evidence of recurrence."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2024-05-22T13:00",
+              "text": "Hyperinflation. Enlarged main pulmonary artery. No pulmonary nodule or mass. No lymphadenopathy. No effusion.",
+              "conclusion": "No evidence of metastatic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ENT surveillance",
+              "date": "2024-05-30T10:00",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY\nThree years after left partial laryngectomy. Scope clean, neck negative. Third and final surveillance CT neck/chest: no recurrence. NED.\nPlan: yearly clinic exam with laryngoscopy from here."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "pharmacy",
+          "start": "2024-06-25T14:00",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request",
+              "date": "2024-06-25T14:00",
+              "author": "MA",
+              "body": "Albuterol MDI and furosemide 40 mg refills, 90 days. Approved per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "specialist_visit",
+          "start": "2024-08-13T13:20",
+          "service": "Dermatology",
+          "reason": "Annual skin check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology skin check",
+              "date": "2024-08-14T09:10",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY\nYearly skin exam. Came with portable oxygen. Lip scar fine. Sun damage, no suspicious lesions. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "specialist_visit",
+          "start": "2024-09-10T13:10",
+          "service": "Pulmonary & Critical Care",
+          "reason": "COPD and cor pulmonale follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary follow-up",
+              "date": "2024-09-12T09:15",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONARY & CRITICAL CARE - FOLLOW-UP\nSeen by cardiology in March: RV hypertrophy and dilation with tricuspid regurgitation on echo. Breathing at his baseline, edema to the shins as before.\nPlan: no medication changes. Right heart catheterization to be arranged before the next visit to measure pulmonary pressures. Return in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "vitals": {
+            "bp": [
+              118,
+              70
+            ],
+            "hr": 68,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 92,
+            "weight_kg": 78.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T09:40",
+              "results": [
+                {
+                  "test": "Hematocrit",
+                  "value": 49.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.39
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 179
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 90
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-10-22T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-22T09:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T09:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-10-22T09:55",
+              "author": "PCP",
+              "body": "MEDICARE AWV\n\nInterval: cardiology 3/2024 - tricuspid regurgitation with dilated RV, no changes. ENT finished CT surveillance, now yearly scopes. Derm clean.\nFunction: independent but slow; groceries delivered now. No falls. Uses portable O2 out of the house.\nPHQ-2 0. AUDIT-C 6. Tobacco 1 ppd; counseled; declines.\n\nExam: SpO2 92% on 2 L. Lungs diminished. Holosystolic murmur LLSB. 1+ edema.\n\nVaccines: high-dose flu, updated COVID today. Pneumococcal: PPSV23 2018, PCV13 2020 - complete.\nColon: colonoscopy 2016; repeat discussion next year given lungs.\nLabs: CMP, CBC, lipids, A1c."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T11:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-10-24T11:50",
+              "author": "PCP",
+              "body": "Labs from Tuesday: kidneys and potassium normal, blood count stable, A1c and cholesterol fine. See you in the spring, sooner if the swelling worsens."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "pharmacy",
+          "start": "2025-01-14T10:00",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request",
+              "date": "2025-01-14T10:00",
+              "author": "MA",
+              "body": "Refill requests: fluticasone/salmeterol 250/50 and albuterol MDI, 90 days. Last visit 10/22/24. Approved per protocol. Note: albuterol filled every 3-4 weeks lately - flagged for PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "telephone",
+          "start": "2025-02-19T11:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Short of breath",
+              "date": "2025-02-19T11:25",
+              "author": "RN",
+              "body": "Pt called: more short of breath and coughing more phlegm for a couple of weeks, scale up \"a few pounds.\" No fever, no chest pain. Breathing at rest ok on 2 L, O2 sat on his finger meter 91-92%. Has pulmonary appt 3/3 and a heart catheter test 2/24 that pulmonary ordered.\nAdvised: take furosemide daily as prescribed, limit salt, daily weights, use albuterol. If breathing worse at rest, sats below 88 on oxygen, fever, or chest pain - ED. Offered visit this week; he prefers to wait for pulmonary. PCP aware."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-24a",
+          "kind": "procedure_visit",
+          "start": "2025-02-24T07:30",
+          "end": "2025-02-24T12:00",
+          "service": "Cardiology",
+          "reason": "Right heart catheterization",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Right heart catheterization",
+              "date": "2025-02-26T09:00",
+              "author": "cardiology",
+              "body": "OUTSIDE CARDIAC CATHETERIZATION LABORATORY - PROCEDURE REPORT\nDate: 2/24/2025. Referring: pulmonary.\nProcedure: right heart catheterization via right internal jugular vein under ultrasound guidance, moderate sedation.\nResult: pulmonary artery systolic pressure 35 mm Hg.\nComplications: none. Hemostasis with manual pressure.\nAllergies: NKDA.\nResults to referring pulmonologist."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-03a",
+          "kind": "specialist_visit",
+          "start": "2025-03-03T13:30",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Dyspnea, cough, weight gain",
+          "vitals": {
+            "bp": [
+              122,
+              79
+            ],
+            "hr": 82,
+            "rr": 16,
+            "spo2": 94,
+            "weight_kg": 80.8
+          },
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-03-03T12:30",
+              "text": "Right ventricle hypertrophied and dilated. Tricuspid regurgitation. Left ventricular size and systolic function normal. No pericardial effusion.",
+              "conclusion": "Right ventricular hypertrophy and dilation with tricuspid regurgitation."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary follow-up",
+              "date": "2025-03-06T10:00",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONARY & CRITICAL CARE - FOLLOW-UP LETTER\nVisit 3/3/2025\n\nMr. Bianchi, whom we have followed for severe COPD and right heart failure since 2022, comes in with a month of more breathlessness, more productive cough, and a 4 kg weight gain. He says he has not missed his inhalers. He continues to smoke a pack a day (45 pack-years) and drinks 3-4 drinks most evenings.\n\nExam: JVP elevated with a prominent v wave. Low-pitched holosystolic murmur at the left lower sternal border, louder with inspiration. Abdomen distended; the liver is enlarged and pulsatile. Pitting edema both legs.\n\nEcho today: RV hypertrophy and dilation with tricuspid regurgitation.\nRight heart catheterization 2/24: PA systolic pressure 35 mm Hg.\n\nImpression: severe COPD with cor pulmonale and secondary tricuspid regurgitation.\nPlan: continue tiotropium, fluticasone/salmeterol, albuterol, furosemide 40 mg daily and oxygen 2 L. Stop smoking. Return 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-06b",
+          "kind": "portal_message",
+          "start": "2025-03-06T17:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "pulmonary",
+              "date": "2025-03-06T17:10",
+              "author": "patient",
+              "body": "Saw the lung doctor monday. They said keep everything the same. I'm still up about 8 or 9 lbs. Is that ok?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: pulmonary",
+              "date": "2025-03-07T07:55",
+              "author": "PCP",
+              "body": "I read their letter. Keep weighing yourself every morning and keep the salt down. If the weight keeps climbing, or the swelling reaches your knees, call and we'll see you. Let's plan a visit in May either way."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "office_visit",
+          "start": "2025-05-13T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "vitals": {
+            "bp": [
+              134,
+              69
+            ],
+            "hr": 75,
+            "rr": 18,
+            "temp_c": 36.7,
+            "spo2": 92,
+            "weight_kg": 80.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-13T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-13T09:50",
+              "results": [
+                {
+                  "test": "Hematocrit",
+                  "value": 48.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.43
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-13T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-05-13T10:00",
+              "author": "PCP",
+              "body": "Spring check. Pulmonary in March: echo RV hypertrophy/dilation with TR; RHC PA systolic 35; no med changes. Weight steady since then. Breathing \"like always.\" Cough with morning phlegm. On O2 2 L.\n\nExam: SpO2 92% on 2 L. Elevated JVP. Holosystolic murmur LLSB. Abdomen full. 1-2+ edema to shins.\n\nA/P: COPD, cor pulmonale with TR, secondary polycythemia, on O2 - stable on current regimen. BMP, CBC today. Smoking: same conversation, same answer. RTC September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "portal_message",
+          "start": "2025-05-14T15:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-05-14T15:30",
+              "author": "PCP",
+              "body": "Yesterday's labs are fine - kidney function and potassium in range, red count about where it has been. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-28a",
+          "kind": "specialist_visit",
+          "start": "2025-05-28T09:40",
+          "service": "Otolaryngology",
+          "reason": "Laryngeal cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ENT yearly surveillance",
+              "date": "2025-05-29T11:00",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY\nFour years after left partial laryngectomy. No voice change beyond baseline, no dysphagia. Laryngoscopy clean. No neck masses. NED. Yearly follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-16a",
+          "kind": "specialist_visit",
+          "start": "2025-07-16T10:30",
+          "service": "Dermatology",
+          "reason": "Annual skin check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology skin check",
+              "date": "2025-07-17T08:40",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY\nAnnual exam. Lower lip scar without change. Chronic photodamage. No new skin cancer. RTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "office_visit",
+          "start": "2025-09-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worse shortness of breath and leg swelling",
+          "vitals": {
+            "bp": [
+              117,
+              74
+            ],
+            "hr": 64,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 88,
+            "weight_kg": 80.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-09-08T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-09-08T10:05",
+              "author": "PCP",
+              "body": "Came for his September visit but worse this week: short of breath walking room to room, legs swollen to the knees, more cough with sputum, up at night. Taking furosemide and inhalers. On 2 L.\n\nExam: winded after the walk from the waiting room, settles sitting. SpO2 88% on 2 L. JVP elevated. Faint crackles at both bases, diminished throughout. Loud P2. Pitting edema to knees.\n\nA/P\nDecompensated right heart failure with probable COPD flare. Not safe to manage at home. Discussed with hospitalist - direct admission to the regional hospital medical floor today. Neighbor driving him. Med list sent with him."
+            }
+          ],
+          "state": {
+            "spo2": 88
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-08b",
+          "kind": "hospital_admission",
+          "start": "2025-09-08T12:30",
+          "end": "2025-09-13T11:00",
+          "service": "Internal Medicine",
+          "reason": "Worsening dyspnea and bilateral leg swelling",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-08T13:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-08T13:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 17.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.72
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 52.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 234
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "date": "2025-09-16T10:00",
+              "author": "hospitalist",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted 9/8/2025 (direct admission from PCP). Discharged 9/13/2025.\n\nPresentation: worsening shortness of breath and swelling of both legs. Long-standing severe COPD with several prior admissions for exacerbations; pulmonary hypertension with chronic right heart failure; tricuspid regurgitation; secondary polycythemia; treated laryngeal and lip SCC.\n\nExam on admission: elevated jugular venous pressure, pitting edema of both legs, loud pulmonic component of S2, faint crackles at both bases.\n\nHospital course:\n1. COPD exacerbation - doxycycline 100 mg twice daily x5 days and prednisone 40 mg daily x5 days, scheduled nebulizers, oxygen titrated back to his home 2 L.\n2. Acute on chronic right heart failure - IV furosemide with good diuresis, transitioned back to furosemide 40 mg by mouth daily at discharge.\n\nDischarge medications: home regimen unchanged (tiotropium, fluticasone/salmeterol, albuterol, furosemide 40 mg daily, oxygen 2 L continuous); antibiotic and prednisone courses completed in hospital.\nAllergies: NKDA.\nFollow-up: PCP within 1-2 weeks; pulmonary as scheduled. Smoking cessation advised."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "telephone",
+          "start": "2025-09-17T10:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-09-17T10:45",
+              "author": "RN",
+              "body": "Transition call after 9/8-9/13 admission. Pt home, breathing \"better than before I went in.\" Weight 2 kg below admission per his scale. Taking furosemide 40 daily and all inhalers, on O2 2 L. Finished the steroid and antibiotic in the hospital. No fever. Follow-up scheduled 9/23 with PCP. Reviewed red flags."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23b",
+          "kind": "telephone",
+          "start": "2025-09-23T07:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2025-09-23T07:50",
+              "author": "front desk",
+              "body": "Pt called to cancel 10:00 today, no ride - neighbor's truck broke down. Feels ok. Offered video visit, he does not have a way to do video. Will call back to reschedule."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "office_visit",
+          "start": "2025-09-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "pharmacy",
+          "start": "2025-10-21T09:10",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request",
+              "date": "2025-10-21T09:10",
+              "author": "MA",
+              "body": "Furosemide 40 mg, 90-day, refill request. Approved by PCP. Left message asking pt to schedule his hospital follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "ed_visit",
+          "start": "2025-11-04T06:40",
+          "end": "2025-11-04T13:00",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, cough, fever",
+          "vitals": [
+            {
+              "time": "2025-11-04T06:45",
+              "hr": 102,
+              "rr": 26,
+              "temp_c": 38.7,
+              "spo2": 89
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-11-04T07:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 16.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 88
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.62
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 17.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 51.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 301
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 9
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 2
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 14.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-04T07:00",
+              "results": [
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-04T07:00",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 200
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-04T10:30",
+              "results": [
+                {
+                  "test": "Pleural fluid pH",
+                  "loinc": "2750-8",
+                  "unit": "[pH]",
+                  "value": 7.1
+                },
+                {
+                  "test": "Pleural fluid glucose",
+                  "loinc": "2346-5",
+                  "unit": "mg/dL",
+                  "value": 30
+                },
+                {
+                  "test": "Pleural fluid LDH",
+                  "loinc": "2530-4",
+                  "unit": "U/L",
+                  "value": 600
+                },
+                {
+                  "test": "Pleural fluid protein",
+                  "loinc": "2882-9",
+                  "unit": "g/dL",
+                  "value": 4.5
+                },
+                {
+                  "test": "Pleural fluid WBC",
+                  "loinc": "26466-3",
+                  "unit": "/uL",
+                  "value": 20000
+                },
+                {
+                  "test": "Pleural fluid neutrophils",
+                  "loinc": "26519-9",
+                  "unit": "%",
+                  "value": 90
+                },
+                {
+                  "test": "Pleural fluid Gram stain",
+                  "loinc": "664-3",
+                  "text": "Gram-positive cocci in clusters"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-11-04T07:10",
+              "text": "Portable AP view. Right lower lobe airspace consolidation. Blunting of the right costophrenic angle. Hyperinflated lungs. No pneumothorax.",
+              "conclusion": "Right lower lobe consolidation with blunted right costophrenic angle."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department note",
+              "date": "2025-11-06T09:00",
+              "author": "emergency medicine",
+              "body": "COMMUNITY HOSPITAL ED - PROVIDER NOTE\nSeen: 11/4/2025\n\nCC: short of breath, cough, fever.\nHPI: 72-year-old man with severe COPD on 2 L home oxygen and cor pulmonale, back with several days of more dyspnea and a cough productive of yellow sputum, with fever. Was admitted in September for a COPD flare and treated with antibiotics and steroids.\nMeds: tiotropium, fluticasone/salmeterol, albuterol, furosemide 40 mg, O2 2 L. Allergies: NKDA.\nSocial: current smoker 1 ppd (45 pack-years); 3-4 drinks most evenings; retired farmer.\n\nTriage: T 38.7 C, HR 102, RR 26, SpO2 89% on room air (portable tank empty on arrival).\nExam: decreased breath sounds with dullness to percussion at the right base.\n\nLabs: leukocytosis with left shift (WBC 16.8, neutrophils 88%, bands reported).\nCXR: RLL consolidation, blunted right costophrenic angle.\nThoracentesis (ED, ultrasound-guided): cloudy fluid. pH 7.10; glucose 30; LDH 600 (serum 200); protein 4.5 (serum 7.0); WBC 20,000 with 90% neutrophils; Gram stain gram-positive cocci in clusters.\n\nAssessment: right lower lobe pneumonia with complicated parapneumonic effusion.\nED course: blood cultures, IV vancomycin, oxygen, pulmonary and surgery consulted; chest tube placed. Admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04b",
+          "kind": "hospital_admission",
+          "start": "2025-11-04T13:00",
+          "end": "2025-11-12T12:00",
+          "service": "Internal Medicine",
+          "reason": "Complicated parapneumonic effusion",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-04T10:30",
+              "resulted": "2025-11-07T09:00",
+              "results": [
+                {
+                  "test": "Pleural fluid culture",
+                  "loinc": "618-9",
+                  "text": "Staphylococcus aureus, methicillin-susceptible"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-11-10T08:00",
+              "text": "Portable AP view after right chest tube removal. Improving right lower lobe opacity. Small residual blunting at the right base. No pneumothorax.",
+              "conclusion": "Improving right lower lobe consolidation and effusion; no pneumothorax after tube removal."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "date": "2025-11-14T11:20",
+              "author": "hospitalist",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted 11/4/2025 from the ED. Discharged 11/12/2025.\n\nDiagnoses: right lower lobe pneumonia with complicated parapneumonic effusion. Background severe COPD on home O2, cor pulmonale with tricuspid regurgitation, secondary polycythemia, treated laryngeal and lip SCC.\n\nCourse:\n- Right chest tube thoracostomy 11/4 with good drainage; tube removed 11/10 with follow-up film showing improvement and no pneumothorax.\n- Pleural culture: methicillin-susceptible Staphylococcus aureus. Vancomycin narrowed to IV cefazolin 11/7. Defervesced by day 3.\n- Oxygen back to baseline 2 L. Diuretic held two days while eating poorly, then resumed at 40 mg.\n\nDischarge medications: cephalexin 500 mg four times daily to complete 4 weeks of total antibiotic therapy (through 12/2); home regimen otherwise unchanged.\nAllergies: NKDA.\nFollow-up: pulmonary clinic with chest x-ray in 3-4 weeks; PCP 1-2 weeks. Strongly advised to stop smoking."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "telephone",
+          "start": "2025-11-17T14:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-11-17T14:20",
+              "author": "RN",
+              "body": "Transition call after 11/4-11/12 admission (pneumonia/pleural infection, chest tube). Pt taking cephalexin 4x daily, has enough through 12/2. No fever. Chest tube site with small dressing, dry. Breathing back near usual on 2 L. PCP visit booked 11/24; pulmonary 12/9."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24b",
+          "kind": "telephone",
+          "start": "2025-11-24T08:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2025-11-24T08:05",
+              "author": "front desk",
+              "body": "Pt cancelled 11:00 - snow coming, doesn't want to drive with the tanks. Says he will see the lung doctor 12/9 and \"catch up with you after the holidays.\" Note to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "office_visit",
+          "start": "2025-11-24T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "specialist_visit",
+          "start": "2025-12-09T10:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Follow-up after pleural infection",
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-12-09T09:40",
+              "text": "PA and lateral views. Hyperinflated lungs. The right lower lobe consolidation has cleared and the right pleural effusion has resolved. No pneumothorax.",
+              "conclusion": "Resolution of right lower lobe consolidation and effusion."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary follow-up",
+              "date": "2025-12-11T09:30",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONARY & CRITICAL CARE - FOLLOW-UP\nSeen 12/9/2025 after admission for RLL pneumonia with complicated parapneumonic effusion (MSSA), treated with chest tube and antibiotics; finished cephalexin 12/2. Feels back to his usual. No fever.\nChest tube site healed.\nCXR today: consolidation and effusion resolved.\nPlan: continue tiotropium, fluticasone/salmeterol, albuterol, furosemide 40 mg, O2 2 L. Smoking cessation again advised. Return in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T09:40",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request",
+              "date": "2026-01-20T09:40",
+              "author": "MA",
+              "body": "Refill: tiotropium caps and fluticasone/salmeterol 250/50, 90 days. Approved x1 by PCP with note: overdue for visit, needs appointment before next refill. Message left for pt."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Oxygen paperwork",
+              "date": "2026-03-10T12:30",
+              "author": "front desk",
+              "body": "The oxygen company faxed their yearly renewal form; Dr. signed it and it went back today. Your chart also shows you are due for a checkup - please call us to set one up."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Oxygen paperwork",
+              "date": "2026-03-11T18:02",
+              "author": "patient",
+              "body": "thanks. will call when the roads dry out."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "specialist_visit",
+          "start": "2026-05-19T09:30",
+          "service": "Otolaryngology",
+          "reason": "Laryngeal cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "ENT yearly surveillance",
+              "date": "2026-05-21T10:00",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY\nFive years after left partial laryngectomy. Asymptomatic. Laryngoscopy clean; neck negative. No evidence of recurrence. Yearly visits continue while he smokes."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "pharmacy",
+          "start": "2026-06-23T10:15",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request",
+              "date": "2026-06-23T10:15",
+              "author": "MA",
+              "body": "Furosemide 40 mg and albuterol MDI refill requests. PCP approved 30-day supply only; pt must schedule. Called and left message."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "telephone",
+          "start": "2026-08-11T13:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling",
+              "date": "2026-08-11T13:50",
+              "author": "front desk",
+              "body": "Pt returned our calls. Booked follow-up Mon 9/14 at 10:00 (PCP), 40 minutes. Says breathing is \"same as ever.\" Reminded him to bring all inhalers and his weight log. Refills extended 30 days to cover until the visit per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Overdue chronic care follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Cor pulmonale (chronic)|I27.81": {
+        "code": "I27.81",
+        "display": "Cor pulmonale (chronic)",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary polycythemia|D75.1": {
+        "code": "D75.1",
+        "display": "Secondary polycythemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Squamous cell carcinoma of larynx|C32.0": {
+        "code": "C32.0",
+        "display": "Malignant neoplasm of glottis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Squamous cell carcinoma of skin of lip|C44.02": {
+        "code": "C44.02",
+        "display": "Squamous cell carcinoma of skin of lip",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tricuspid valve regurgitation|I36.1": {
+        "code": "I36.1",
+        "display": "Nonrheumatic tricuspid (valve) insufficiency",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "oxygen 99 % Gas for Inhalation": {
+        "code": "312172",
+        "display": "oxygen 99 % Gas for Inhalation",
+        "ingredient": "oxygen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "tiotropium 0.018 MG Inhalation Powder": {
+        "code": "485032",
+        "display": "tiotropium 0.018 MG Inhalation Powder",
+        "ingredient": "tiotropium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Erythropoietin": {
+        "code": "15061-5",
+        "display": "Erythropoietin (EPO) [Units/volume] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lactate dehydrogenase": {
+        "code": "2532-0",
+        "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Natriuretic peptide B": {
+        "code": "30934-4",
+        "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Pleural fluid Gram stain": {
+        "code": "664-3",
+        "display": "Microscopic observation [Identifier] in Specimen by Gram stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Pleural fluid LDH": {
+        "code": "2530-4",
+        "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Pleural fluid",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Pleural fluid WBC": {
+        "code": "26466-3",
+        "display": "Leukocytes [#/volume] in Body fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Pleural fluid culture": {
+        "code": "618-9",
+        "display": "Bacteria identified in Pleural fluid by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Pleural fluid glucose": {
+        "code": "2346-5",
+        "display": "Glucose [Mass/volume] in Pleural fluid",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Pleural fluid neutrophils": {
+        "code": "26519-9",
+        "display": "Granulocytes/Leukocytes in Pleural fluid",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Pleural fluid pH": {
+        "code": "2750-8",
+        "display": "pH of Pleural fluid",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Pleural fluid protein": {
+        "code": "2882-9",
+        "display": "Protein [Mass/volume] in Pleural fluid",
+        "unit": "g/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT neck with contrast": {
+        "code": "24836-9",
+        "display": "CT Nasopharynx and Neck W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

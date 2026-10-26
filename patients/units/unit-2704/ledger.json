@@ -1,0 +1,2562 @@
+{
+  "unit": "unit-2704",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002704",
+      "given": "Gretchen",
+      "family": "Lindqvist",
+      "birth_date": "1977-08-20",
+      "address_line": "212 Bridge Road",
+      "phone": "+1-603-555-0195",
+      "email": "gretchen.lindqvist@example.test",
+      "marital_status": "single",
+      "summary": "Dental hygienist with treated Hodgkin lymphoma (2014) and hypertension who joins in 2022, is found to have HER2-positive right breast cancer in 2024 and goes through lumpectomy, chemotherapy with trastuzumab, radiation and tamoxifen. Trastuzumab is stopped for an asymptomatic LVEF drop; tamoxifen brings endometrial hyperplasia, an IUD and an AGC Pap with Actinomyces. Hyperlipidemia is never treated.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "telephone",
+          "start": "2022-08-30T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-08-30T10:12",
+              "author": "front desk",
+              "body": "Caller wants to transfer care here; her previous primary care doctor retired over the summer. Reviewed membership and how insurance still applies to labs and imaging. New patient visit set for 9/13 at 8:40. Release signed electronically for prior office records; request sent. Asked her to bring her blood pressure medicines or a list."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T08:40",
+          "end": "2022-09-13T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "note": "on two drugs at joining"
+            },
+            {
+              "label": "History of Hodgkin lymphoma",
+              "action": "history",
+              "onset": "2014-03-01",
+              "note": "chemotherapy and radiation 2014, in remission"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              78
+            ],
+            "hr": 73,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 70.3,
+            "height_cm": 164.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-13T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T09:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 133
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 200
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 156
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Does not drink"
+            },
+            {
+              "item": "Occupation",
+              "value": "Dental hygienist"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-13T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-13T09:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-13T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-13T09:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-13T09:35",
+              "author": "PCP",
+              "body": "45 y/o woman, dental hygienist, transferring care after her prior PCP retired.\n\nHTN: diagnosed some years back at her old office. Takes HCTZ 25 every morning and lisinopril 10 daily, rarely misses. Checks BP at work now and then, usually 120s/80ish. No headaches, chest pain or swelling.\n\nOncologic hx: Hodgkin lymphoma in 2014, treated with combination chemo plus radiation at an academic center, in remission since. Discharged from oncology follow-up a couple of years ago. Has her treatment summary somewhere at home, will look.\n\nPSH: none. Meds as above. NKDA.\nFH: mother has HTN and osteoporosis (broke a hip at 70) and had uterine (endometrial) cancer at 60. Father had coronary disease young, at 55. Maternal aunt had breast cancer at 52.\nSH: never smoked, no alcohol. Hygienist in a group dental office, 4 days a week.\nGyn: periods regular. Last Pap and mammogram at prior office last year, normal per pt; records requested.\n\nExam: BP and vitals as recorded. Well appearing. Thyroid without nodules. No cervical, supraclavicular or axillary nodes. Heart RRR no murmur. Lungs clear. Abd benign. No edema.\n\nA/P\n1. Essential HTN, controlled on HCTZ 25 + lisinopril 10. Continue. CMP today.\n2. Hx Hodgkin lymphoma in remission. CBC, TSH today. Will get her treatment summary for the chart.\n3. Health maintenance: lipids, hep C and HIV screen (done once, she agrees). Tdap given today (none she can recall). Screening mammogram due next month, order placed. Colonoscopy at 45 - discussed, she'd like to wait till spring.\n4. Return in 6 months for BP, sooner if needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              80
+            ],
+            "weight_kg": 70.8,
+            "height_cm": 165.0,
+            "labs": {
+              "High Density Lipoprotein": 40,
+              "Low Density Lipoprotein": 136,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Triglycerides": 118
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2022-09-15T16:40",
+              "author": "PCP",
+              "body": "Hi Gretchen, your labs look good: kidney function, potassium, blood count and thyroid are all normal, and the hepatitis C and HIV screens are negative. LDL cholesterol is a bit above ideal; nothing to start for it, we'll recheck it next year. Take care."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T11:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-20T11:05",
+              "author": "MA",
+              "body": "11 pages from prior PCP office scanned. Contents: visit notes 2019-2022 for hypertension on hydrochlorothiazide and lisinopril; Pap 2021 negative for intraepithelial lesion; screening mammogram 2021 BI-RADS 1, negative; lymphoma treatment summary not included. Allergies listed as NKDA. Routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records reviewed",
+              "date": "2022-09-21T07:50",
+              "author": "PCP",
+              "body": "Reviewed. BP control has been steady on this regimen for years. Pap and mammogram current. Lymphoma treatment summary not in this packet; pt says she'll forward hers."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "imaging",
+          "start": "2022-10-12T14:20",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-10-12T14:20",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison with outside study from 2021. Breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: negative. Routine annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-10-12T14:20"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.8
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine visit",
+              "date": "2022-10-18T16:50",
+              "author": "RN",
+              "body": "Came after work for vaccines. Afebrile, no acute illness. Flu vaccine 0.5 mL IM left deltoid; Pfizer bivalent booster IM right deltoid. VIS provided. Observed 15 minutes, no reaction. Mammogram result reviewed with her; she had already seen it in the portal."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-03-16a",
+          "kind": "office_visit",
+          "start": "2023-03-16T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              81
+            ],
+            "hr": 70,
+            "weight_kg": 70.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-16T15:50",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-16T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-16T15:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2023",
+              "action": "placed",
+              "order": "Screening colonoscopy referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "average-risk colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hypertension Follow-up",
+              "date": "2023-03-16T15:48",
+              "author": "PCP",
+              "body": "S: Here for BP. Feels well. Taking both meds. Work busy - short-staffed, more patients per day. No dizziness on standing, no cramps.\nO: Vitals reviewed, BP at goal. Heart regular. Lungs clear. No ankle edema.\nA/P: HTN controlled on HCTZ 25 / lisinopril 10. BMP today for K and creatinine on the diuretic and ACE inhibitor. Colonoscopy referral sent today now that she's ready. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-23a",
+          "kind": "outside_records",
+          "start": "2023-06-29T09:15",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2023-06-23T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2023",
+              "action": "done",
+              "date": "2023-06-29T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Colonoscopy report",
+              "date": "2023-06-29T09:15",
+              "author": "gastroenterology",
+              "body": "Outpatient endoscopy unit. Procedure date 6/23/2023. Indication: screening, average risk, first exam. Prep: good, adequate in all segments. Cecum reached and identified by appendiceal orifice and ileocecal valve. Withdrawal time 9 minutes. Findings: normal mucosa throughout the colon and rectum; no polyps; small internal hemorrhoids on retroflexion. Impression: normal screening colonoscopy. Recommendation: next screening colonoscopy in 10 years. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "annual_physical",
+          "start": "2023-09-21T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              72
+            ],
+            "hr": 74,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 71.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-21T08:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-21T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 135
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 197
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 42
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 155
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-21T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-21T08:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-21T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-21T08:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-21T08:36"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-21T08:45",
+              "author": "PCP",
+              "body": "46F annual.\n\nInterval: colonoscopy in June was normal, 10-yr recall. No new issues. BP fine at home checks. Walks most evenings.\n\nROS negative incl. no breast changes, no fevers or sweats, no weight loss, no new lumps anywhere.\nMeds: HCTZ 25, lisinopril 10. NKDA.\nPHQ-2 0.\n\nExam: vitals as charted. HEENT normal. Thyroid normal. No lymphadenopathy cervical/supraclavicular/axillary. Breasts deferred to mammogram per her preference; no concerns reported. Heart RRR, no murmur. Lungs clear. Abdomen soft. Skin no lesions of concern. Ext no edema.\n\nA/P\n- HTN: at goal. Continue. CMP.\n- Hx Hodgkin lymphoma 2014: remains well.\n- Lipids repeat today (LDL was borderline last year).\n- Mammogram due next month - ordered. Pap current (2021), next due 2024.\n- Flu and updated COVID given.\n- Follow up in 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "portal_message",
+          "start": "2023-09-25T12:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2023-09-25T12:10",
+              "author": "PCP",
+              "body": "Labs from your physical are back. Kidneys, liver and potassium are normal. LDL cholesterol is about where it was last year, borderline. Keep up the walking. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "imaging",
+          "start": "2023-10-26T13:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-10-26T13:40",
+              "text": "Bilateral screening mammogram with tomosynthesis, compared with 10/2022. Heterogeneously dense breast tissue. No new or suspicious mass, distortion or grouped calcifications. Stable bilateral appearance.",
+              "conclusion": "BI-RADS 1: negative. Annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-10-26T13:40"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T10:02",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request",
+              "date": "2023-12-05T10:02",
+              "author": "MA",
+              "body": "Pharmacy fax: 90-day refills requested for hydrochlorothiazide 25 mg and lisinopril 10 mg. Last BMP 3/2023 normal, seen 9/2023. Sent per protocol, 90 days x 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "telephone",
+          "start": "2024-03-20T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-03-20T09:05",
+              "author": "front desk",
+              "body": "LM re: missed BP visit yesterday. Pt called back - ran late with a patient at work and forgot to call. Rebooked 4/3 at 7:50 am."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-03a",
+          "kind": "office_visit",
+          "start": "2024-04-03T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              131,
+              71
+            ],
+            "hr": 72,
+            "weight_kg": 71.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-03T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hypertension Follow-up",
+              "date": "2024-04-03T08:12",
+              "author": "PCP",
+              "body": "Early slot before work. Sorry about missing last month. BP fine on both meds; no side effects. Exam: heart regular, lungs clear, no edema. Plan: same regimen. Annual labs with the fall physical. Pap due this year - can do at physical or with a gynecologist, she'll decide."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-03a",
+          "kind": "portal_message",
+          "start": "2024-06-03T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Breast lump",
+              "date": "2024-06-03T21:14",
+              "author": "patient",
+              "body": "Hi, I've had a lump in my right breast for maybe 6 weeks. I thought it was my cycle but it hasn't gone away and tonight I noticed the skin over it pulls in a little when I lift my arm. It doesn't hurt. Can I be seen this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Breast lump",
+              "date": "2024-06-04T08:20",
+              "author": "RN",
+              "body": "Thank you for writing. The doctor wants to see you tomorrow, Wednesday at 11:20. Please reply if that doesn't work and we'll find another time."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-05a",
+          "kind": "office_visit",
+          "start": "2024-06-05T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right breast lump",
+          "vitals": {
+            "bp": [
+              132,
+              74
+            ],
+            "hr": 66,
+            "temp_c": 36.7,
+            "weight_kg": 70.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-05T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "diag-mammo-2024",
+              "action": "placed",
+              "order": "Diagnostic mammogram, right, with ultrasound",
+              "category": "imaging",
+              "reason": "palpable right breast mass with skin retraction"
+            },
+            {
+              "id": "breast-surg-ref",
+              "action": "placed",
+              "order": "Breast surgery referral",
+              "category": "referral",
+              "to": "Breast Surgery",
+              "reason": "palpable right breast mass"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Breast Mass",
+              "date": "2024-06-05T11:58",
+              "author": "PCP",
+              "body": "CC: R breast lump.\n\nHPI: Noticed ~6 wks ago in the shower. Painless. Not changed with her cycle. Over the weekend saw slight puckering of the skin when raising the arm. No nipple discharge, no fever, no weight change.\nLast screening mammogram 10/2023 negative.\nFH maternal aunt breast ca at 52. Hodgkin treatment 2014.\n\nExam (chaperone present): R breast upper outer quadrant firm mass ~3 cm, non-tender, somewhat fixed to overlying tissue, subtle skin retraction over it with arm raised. No nipple discharge. L breast without mass. No axillary or supraclavicular nodes palpable either side.\n\nA/P: Palpable R breast mass with skin changes in a 46 y/o - needs prompt workup despite negative mammogram last fall. Urgent diagnostic mammogram + ultrasound ordered; breast surgery referral placed at the same time so she isn't waiting on one to get the other. Talked through what the imaging can and can't tell us. She'll message with any questions. I'll call when the report is in."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "imaging",
+          "start": "2024-06-10T09:30",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2024-06-10T09:30",
+              "text": "Outside breast imaging center. Indication: palpable right breast mass, skin retraction. Right diagnostic mammogram with tomosynthesis and spot compression views, compared with screening study of 10/2023. At the site of the palpable marker in the upper outer quadrant of the right breast there is an irregular high-density mass measuring 2.8 cm with associated fine pleomorphic microcalcifications, new from the prior study. Mild overlying skin thickening and retraction. Targeted ultrasound: irregular hypoechoic mass with indistinct margins at the 10 o'clock position corresponding to the mammographic finding. Right axilla: lymph nodes with normal morphology.",
+              "conclusion": "BI-RADS 5: highly suggestive of malignancy, right breast upper outer quadrant. Tissue sampling recommended; patient has a breast surgery appointment 6/18."
+            }
+          ],
+          "orders": [
+            {
+              "id": "diag-mammo-2024",
+              "action": "done",
+              "date": "2024-06-10T09:30"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10b",
+          "kind": "telephone",
+          "start": "2024-06-10T17:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Imaging result call",
+              "date": "2024-06-10T17:25",
+              "author": "PCP",
+              "body": "Called pt with the mammogram/US result. Explained the finding is very suspicious and needs a biopsy, which the breast surgeon can do at her visit next week. She was quiet, asked good questions. Offered to talk again anytime this week."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "specialist_visit",
+          "start": "2024-06-18T13:00",
+          "service": "Breast Surgery",
+          "reason": "right breast mass",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of upper-outer quadrant of right female breast",
+              "action": "diagnosed",
+              "onset": "2024-04-20",
+              "note": "invasive ductal carcinoma, grade 2, ER+/PR+, HER2 3+",
+              "icd10": "C50.411"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-06-18T13:40",
+              "text": "Specimen: right breast, 10 o'clock, ultrasound-guided core needle biopsy (4 cores). Gross: four tan-white cores, 1.2 to 1.6 cm. Microscopic: invasive ductal carcinoma, no special type, Nottingham grade 2 (tubules 3, nuclear pleomorphism 2, mitoses 1). Microcalcifications present in association with tumor. Ancillary studies: estrogen receptor positive (90%, strong); progesterone receptor positive (60%, moderate); HER2 by immunohistochemistry 3+ (positive).",
+              "conclusion": "Right breast, 10 o'clock, core biopsy: invasive ductal carcinoma, grade 2. ER positive, PR positive, HER2 positive (3+).",
+              "issued": "2024-06-21T10:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "breast-surg-ref",
+              "action": "done",
+              "date": "2024-06-18T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Breast Surgery Consultation",
+              "date": "2024-06-24T08:30",
+              "author": "breast surgery",
+              "body": "Outside surgical breast clinic - consultation letter.\n\nThank you for referring Ms. Lindqvist, 46, who has had a right breast lump for about two months, painless, with dimpling of the skin over it. She has no nipple discharge.\n\nPMH: hypertension; Hodgkin lymphoma 2014, treated with chemotherapy and radiation, in remission. Meds: hydrochlorothiazide 25 mg, lisinopril 10 mg. Allergies: NKDA. Never smoker, no alcohol. Works as a dental hygienist.\n\nExam: right breast upper outer quadrant, 3 cm firm mass, not tender; the skin above it is slightly drawn in. No nipple discharge. Left breast and both axillae without palpable abnormality.\n\nImaging from 6/10 reviewed: 2.8 cm irregular density with microcalcifications, BI-RADS 5.\n\nProcedure today: ultrasound-guided core needle biopsy of the right breast mass, 14-gauge, four cores, clip placed. Tolerated well.\n\nPathology (6/21): invasive ductal carcinoma, grade 2, ER+, PR+, HER2 3+.\n\nPlan: discussed with patient by phone 6/21. She is a candidate for breast conservation: right lumpectomy with sentinel lymph node biopsy, scheduled 7/18. Referral to medical oncology for systemic therapy given HER2-positive disease. She will need adjuvant radiation; radiation oncology after systemic therapy."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "telephone",
+          "start": "2024-06-24T12:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in after diagnosis",
+              "date": "2024-06-24T12:30",
+              "author": "PCP",
+              "body": "Called after the surgeon's letter came in. She knows the pathology; surgery 7/18. Coping, taking some time off work around the surgery. Reviewed that her BP meds are fine to continue up to surgery unless anesthesia says otherwise. Will see her after the operation and once oncology has a plan. Told her to message anytime."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-18a",
+          "kind": "procedure_visit",
+          "start": "2024-07-18T07:30",
+          "end": "2024-07-18T13:00",
+          "service": "Breast Surgery",
+          "reason": "right lumpectomy with sentinel lymph node biopsy",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-07-18T09:10",
+              "text": "Specimens: (A) right breast lumpectomy, wire/clip localized, oriented; (B) right axillary sentinel lymph node #1; (C) right axillary sentinel lymph node #2. (A) Invasive ductal carcinoma, Nottingham grade 2, greatest dimension 2.9 cm. Biopsy clip and biopsy site changes identified. Margins negative for invasive carcinoma; closest margin superior, 4 mm. No lymphovascular invasion identified. (B), (C) two lymph nodes, negative for metastatic carcinoma (0/2), including on cytokeratin immunostain.",
+              "conclusion": "Right breast lumpectomy: invasive ductal carcinoma, grade 2, 2.9 cm, margins negative. Sentinel lymph nodes 0/2. Prior receptor status ER+, PR+, HER2 3+. pT2 pN0(sn).",
+              "issued": "2024-07-24T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pathology received - lumpectomy",
+              "date": "2024-07-26T10:40",
+              "author": "MA",
+              "body": "Surgical pathology report from outside hospital received by fax for 7/18 right lumpectomy with sentinel node biopsy. Operative note not included; requested. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "portal_message",
+          "start": "2024-07-29T19:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "After surgery",
+              "date": "2024-07-29T19:02",
+              "author": "patient",
+              "body": "Just an update - surgery went fine, the incisions are healing, the surgeon says the nodes were clear. I'm seeing oncology at the end of August. Do I still need my appointment with you on the 13th?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: After surgery",
+              "date": "2024-07-30T07:45",
+              "author": "PCP",
+              "body": "So glad the nodes were clear. Yes, please keep the 13th. We'll check your blood pressure and fasting labs that we skipped, and I want to go over your Hodgkin history with everything else that's going on. Please come fasting."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "office_visit",
+          "start": "2024-08-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after breast surgery; lipids; long-term effects of lymphoma treatment",
+          "conditions": [
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed",
+              "onset": "2024-08-13"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              85
+            ],
+            "hr": 78,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 70.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-13T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 322
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-13T08:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 220
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 35
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 160
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 125
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 185
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T08:35",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T08:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-08-13T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-13T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-08-13T09:10",
+              "author": "PCP",
+              "body": "S: Follow-up about 4 weeks after R lumpectomy + SLNB for IDC (grade 2, ER/PR+, HER2 3+, 2.9 cm, 0/2 nodes). Healing well, some tightness at the axillary incision. Oncology consult 8/29. Feels physically fine, no symptoms. What's on her mind today is the lymphoma treatment from 2014 - she's read that chemo and radiation from back then can catch up with people years later and wants to know what she should be watching for, especially now with more treatment coming.\nNo chest pain, dyspnea, palpitations, edema. No neck swelling, no fatigue beyond the surgery.\nMeds: HCTZ 25, lisinopril 10. NKDA.\n\nO: BP 138/85, HR 78. BMI 26. Incisions R breast and axilla healed, no erythema or fluid. Heart: regular rhythm, no murmurs, rubs or gallops. Lungs clear. Thyroid not enlarged. No adenopathy.\nFasting labs today (resulted same day): CBC normal. Total cholesterol 220, HDL 35, LDL 160, TG 125. Fasting glucose 98. TSH normal.\n\nA/P\n1. Late effects of Hodgkin treatment - we talked through the main ones: heart (some chemo drugs and chest radiation raise long-term heart risk), thyroid underactivity if radiation fields reached the neck, and second cancers, which is part of why her breast exam got prompt attention. Oncology will check heart function before HER2-directed treatment. Thyroid normal today; recheck yearly.\n2. Hyperlipidemia - LDL 160 and HDL 35, higher than the borderline numbers of the last 2 years. With dad's early heart disease this matters. She's facing chemo in the next weeks and doesn't want another new pill on top of that; reasonable to revisit once active treatment is done. Diet discussed.\n3. HTN - a little above goal today, post-op and stressed; continue current meds, recheck at next visit.\n4. Breast ca - per surgery/oncology. Will follow along."
+            }
+          ],
+          "state": {
+            "labs": {
+              "High Density Lipoprotein": 35,
+              "Low Density Lipoprotein": 160,
+              "Triglycerides": 125
+            }
+          },
+          "measure": [
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "specialist_visit",
+          "start": "2024-08-29T10:00",
+          "service": "Medical Oncology",
+          "reason": "adjuvant therapy for right breast cancer",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical Oncology Consultation",
+              "date": "2024-09-05T15:20",
+              "author": "oncology",
+              "body": "Outside medical oncology - consult summary.\n\nDiagnosis: right breast invasive ductal carcinoma, pT2 pN0(sn), grade 2, ER+/PR+, HER2 3+, s/p lumpectomy and sentinel node biopsy 7/18/2024 with negative margins.\nRelevant history: Hodgkin lymphoma 2014 treated with chemotherapy and radiation; hypertension on hydrochlorothiazide and lisinopril. NKDA.\n\nRecommendation: adjuvant docetaxel and carboplatin with trastuzumab every 3 weeks for 6 cycles, followed by trastuzumab alone to complete one year. Adjuvant radiation to the right breast and axilla after chemotherapy. Endocrine therapy with tamoxifen after radiation, planned for at least 5 years. Baseline echocardiogram before cycle 1. Her prior lymphoma therapy was considered in choosing a non-anthracycline regimen. Target start early October.\n\nWe will keep you updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "office_visit",
+          "start": "2024-09-26T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "neck pain with left arm tingling",
+          "vitals": {
+            "bp": [
+              124,
+              85
+            ],
+            "hr": 74,
+            "temp_c": 36.6,
+            "weight_kg": 70.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-26T14:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-26T15:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-09-26T15:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-ref",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "neck pain with left arm paresthesias"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Neck Pain",
+              "date": "2024-09-26T15:20",
+              "author": "PCP",
+              "body": "S: About 2 weeks of left-sided neck pain with a pins-and-needles feeling running down the left arm into the hand, comes and goes. Sharper when she turns her head to the left. No injury. Back at work part time before chemo; she's bent over the chair most of the day. No weakness she's noticed, no bowel/bladder change, no fevers.\nChemo starts 10/3 (TCH). Baseline echo done last week.\n\nO: Vitals as charted. Neck: tender left paraspinal muscles, rotation to the left limited by pain. Upper extremity strength grossly symmetric. Will defer detailed neuro exam to neurology.\n\nA/P\n1. Neck pain with left arm paresthesias, likely a pinched cervical nerve root from posture. Given cancer history and that it isn't settling, referral to neurology for a full exam. Heat, gentle stretching, acetaminophen as needed; avoid NSAIDs with chemo starting.\n2. PCV20 today before chemo (will be immunosuppressed). Flu/COVID in October between cycles - she'll check timing with oncology.\n3. HTN - BP fine today."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-04a",
+          "kind": "portal_message",
+          "start": "2024-10-04T18:30",
+          "medications": [
+            {
+              "drug_text": "docetaxel 20 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "IV every 3 weeks for 6 cycles per oncology",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "breast cancer"
+            },
+            {
+              "drug_text": "carboplatin 10 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "IV every 3 weeks for 6 cycles per oncology",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "breast cancer"
+            },
+            {
+              "drug_text": "trastuzumab 150 MG Injection",
+              "action": "historical",
+              "sig": "6 mg/kg IV every 3 weeks per oncology (after loading dose)",
+              "dose": {
+                "value": 6,
+                "unit": "mg/kg"
+              },
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "HER2-positive breast cancer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "First infusion done",
+              "date": "2024-10-04T18:30",
+              "author": "patient",
+              "body": "First chemo was yesterday. Tired today but OK. Infusion nurse said I should still get my flu shot but between rounds - is next Friday ok?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: First infusion done",
+              "date": "2024-10-07T09:10",
+              "author": "RN",
+              "body": "Next Friday 10/11 is fine and matches what oncology recommended. Booked you at 3:30 for flu and COVID. Doctor added your chemo medicines to your list here so it stays current."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-11a",
+          "kind": "nurse_visit",
+          "start": "2024-10-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.9
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-11T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-11T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-11T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine visit",
+              "date": "2024-10-11T15:55",
+              "author": "RN",
+              "body": "On chemotherapy, cycle 1 given 10/3; oncology OK'd vaccines today. Afebrile. Inactivated flu IM left deltoid, updated COVID IM left deltoid separate site. VIS given. Observed 15 min, no reaction."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "specialist_visit",
+          "start": "2024-10-23T09:40",
+          "service": "Neurology",
+          "reason": "neck pain with left arm tingling",
+          "conditions": [
+            {
+              "label": "Cervical radiculopathy",
+              "action": "diagnosed",
+              "onset": "2024-09-11"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-ref",
+              "action": "done",
+              "date": "2024-10-23T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2024-12-02T11:00",
+              "author": "neurology",
+              "body": "Outpatient neurology - visit of 10/23/2024.\n\nReason: neck pain and left arm tingling, referred by her primary care physician.\n\nShe is 47 and currently receiving adjuvant chemotherapy with trastuzumab for right breast cancer; Hodgkin lymphoma in 2014, in remission. For six weeks she has had off-and-on neck pain with tingling that travels down the left arm. The pain is sharp and is brought on by turning her head to the left or tipping it back. No trauma. Her work keeps her neck bent and turned in one position for long stretches.\n\nMeds: hydrochlorothiazide, lisinopril; chemotherapy with trastuzumab per oncology. NKDA. Never smoker, no alcohol.\n\nExam: Light touch reduced over the left thumb and index finger. Left triceps reflex diminished compared with the right; other reflexes symmetric. Strength 5/5 throughout both arms. No muscle wasting or fasciculations. Neck movement painful on left rotation and on extension. Foraminal compression with the head turned left reproduces her arm symptoms. Gait normal.\n\nImpression: left cervical radiculopathy.\n\nPlan: physical therapy for cervical traction and posture work, workstation and posture adjustments at work, acetaminophen as needed. Follow up as needed if symptoms worsen or weakness develops."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "telehealth_visit",
+          "start": "2024-12-11T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in during chemotherapy",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-12-11T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-12-11T12:40",
+              "author": "PCP",
+              "body": "Video, pt at home, ID verified.\n\nCheck-in mid-chemo: cycle 4 last week. Fatigue for a few days after each round, appetite ok, no fevers or infections so far. Home BP 118-126/74-80, a bit lower than usual; no lightheadedness.\nNeck/arm: much better with PT, 5 sessions so far, tingling now rare.\nNew: hot flashes and night sweats over the last few weeks, and no period since October. Oncology told her chemo can stop periods. Sleep broken by the sweats.\nNeurology letter not yet received - she says they called it a pinched nerve and sent her to PT.\n\nA/P\n1. On TCH - tolerating; per oncology.\n2. Cervical radiculopathy improving with PT. Continue home exercises.\n3. Hot flashes/amenorrhea since chemo - expected with treatment; she'll raise it with oncology; revisit if it persists.\n4. HTN - home readings fine, continue both meds; hold HCTZ on any day she's vomiting or not drinking.\nF/u in office after chemo ends."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "portal_message",
+          "start": "2025-01-17T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Done with chemo",
+              "date": "2025-01-17T20:05",
+              "author": "patient",
+              "body": "Sixth and last round of chemo was yesterday!! Now it's just the Herceptin every 3 weeks, and radiation starts mid February. I'd like to come in sometime in February if you have time, nothing urgent."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Done with chemo",
+              "date": "2025-01-20T09:30",
+              "author": "front desk",
+              "body": "Congratulations! You're booked Thursday 2/13 at 4:00 with the doctor."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-13a",
+          "kind": "office_visit",
+          "start": "2025-02-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after chemotherapy; neck pain",
+          "conditions": [
+            {
+              "label": "Cervical radiculopathy",
+              "action": "resolved",
+              "note": "resolved with physical therapy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              82
+            ],
+            "hr": 70,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 70.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-13T16:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-13T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-13T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-02-13T16:42",
+              "author": "PCP",
+              "body": "S: Finished 6 cycles of TCH 1/16. Continuing trastuzumab q3wk. Radiation to R breast/axilla starts Monday, about 6 weeks. Energy coming back slowly. Hair growing in.\nNeck and L arm: no pain or tingling for over a month. Finished PT, does the exercises at home and changed how she sits at the chair at work.\nHot flashes several times a day, worse at night with sweats. No period since October. Oncology aware.\nNeurology letter received in December - reviewed.\n\nO: Vitals as charted, BP at goal. Neck full ROM, no pain. Arm strength and sensation normal to light touch, reflexes symmetric. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P\n1. Cervical radiculopathy - resolved with PT. Off problem list.\n2. Breast ca on trastuzumab, radiation next; tamoxifen to follow per oncology.\n3. Vasomotor symptoms with chemo-related loss of periods - bothersome. She'd like to see a gynecologist about it once radiation is done; she will call the one her friends use.\n4. HTN controlled. BMP today.\n5. Lipids - recheck at physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-31a",
+          "kind": "portal_message",
+          "start": "2025-03-31T07:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Radiation finished",
+              "date": "2025-03-31T07:48",
+              "author": "patient",
+              "body": "FYI finished radiation Friday. Skin is pink and sore under my arm but settling. Oncology is starting me on tamoxifen next week. Still getting Herceptin."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Radiation finished",
+              "date": "2025-03-31T12:20",
+              "author": "PCP",
+              "body": "Great news to finish. Thanks for the update - I'll add tamoxifen to your list once you start."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-07a",
+          "kind": "pharmacy",
+          "start": "2025-04-07T15:10",
+          "medications": [
+            {
+              "drug_text": "tamoxifen 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hormone receptor-positive breast cancer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Medication Fill History",
+              "title": "Fill history reconciliation",
+              "date": "2025-04-08T09:00",
+              "author": "MA",
+              "body": "Pharmacy fill history shows tamoxifen 20 mg tablets, #30, filled 4/7/2025, prescriber outside oncology. Added to med list as outside prescription."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "specialist_visit",
+          "start": "2025-06-10T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "hot flashes and night sweats",
+          "conditions": [
+            {
+              "label": "Menopausal and female climacteric states",
+              "action": "diagnosed",
+              "onset": "2024-12-01",
+              "note": "vasomotor symptoms after chemotherapy-induced amenorrhea"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              78
+            ],
+            "hr": 76,
+            "weight_kg": 70.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-10T11:00",
+              "results": [
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 82
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-10T11:00",
+              "results": [
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "text": "<20"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-10T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-06-10T11:00",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "date": "2025-06-20T14:05",
+              "author": "gynecology",
+              "body": "Outside gynecology office - visit 6/10/2025.\n\n47-year-old seen for hot flashes and night sweats over roughly half a year that wake her most nights and are wearing on her at work. Background: right breast cancer (HER2+, hormone receptor+) treated with lumpectomy, chemotherapy and radiation; currently on trastuzumab infusions and tamoxifen. No menses since chemotherapy last autumn. Hypertension on hydrochlorothiazide and lisinopril. NKDA. Non-smoker, no alcohol.\n\nBP 128/78, HR 76, BMI 26. General exam unremarkable.\n\nLabs: FSH 82 IU/L and estradiol <20 pg/mL, both in the postmenopausal range. CBC and liver tests normal.\n\nAssessment: menopausal vasomotor syndrome after chemotherapy-induced ovarian suppression, aggravated by tamoxifen. Hormone therapy is not an option with her cancer.\n\nPlan: layered clothing, cooler bedroom, sleep routine, avoid known triggers. Offered venlafaxine as a non-hormonal option compatible with tamoxifen; she prefers to hold off for now. Return in 6 months or sooner with bleeding."
+            }
+          ],
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "pharmacy",
+          "start": "2025-07-22T08:45",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request",
+              "date": "2025-07-22T08:45",
+              "author": "MA",
+              "body": "eRx renewal request hydrochlorothiazide 25 mg and lisinopril 10 mg, 90-day supply. Last BMP 2/2025 normal. Approved per protocol x1; physical due in the fall - reminder sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "specialist_visit",
+          "start": "2025-09-08T13:15",
+          "service": "Medical Oncology",
+          "reason": "oncology follow-up during trastuzumab therapy",
+          "conditions": [
+            {
+              "label": "Cardiomyopathy due to drug and external agent",
+              "action": "diagnosed",
+              "onset": "2025-09-08",
+              "note": "trastuzumab-induced cardiotoxicity, asymptomatic left ventricular dysfunction, LVEF 45% from 55%",
+              "icd10": "I42.7"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "trastuzumab 150 MG Injection",
+              "action": "stop",
+              "reason": "LVEF decline; 16 of 17 planned doses given"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 78
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical Oncology Follow-up",
+              "date": "2025-09-15T10:30",
+              "author": "oncology",
+              "body": "Outside medical oncology - follow-up 9/8/2025.\n\nRight breast IDC, pT2 pN0, ER+/PR+/HER2+. Chemotherapy and radiation finished about six months ago; trastuzumab alone every 3 weeks since. Tamoxifen 20 mg daily since April. She has no shortness of breath, chest pain or palpitations.\n\nBP 130/85, HR 78. Examination unremarkable, no edema, lungs clear.\n\nSurveillance echocardiogram today: LVEF 45%. Pre-treatment echocardiogram (9/2024): LVEF 55%.\n\nAssessment: asymptomatic left ventricular dysfunction due to trastuzumab, a 10-point fall to below 50%.\n\nPlan: trastuzumab held today. She has received 16 of 17 planned doses; after discussion we will not resume it. Continue lisinopril. Repeat echocardiogram in 3 months. Continue tamoxifen. Next oncology visit in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "annual_physical",
+          "start": "2025-10-01T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              83
+            ],
+            "hr": 71,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 74.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-01T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-01T08:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 36
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 225
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 126
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 189
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-01T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 313
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T08:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-01T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-01T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-01T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-01T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-01T08:41"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-01T08:58",
+              "author": "PCP",
+              "body": "48F, annual. Missed last year's physical during treatment.\n\nInterval: oncology letter 9/15 received - LVEF 45% from 55% on trastuzumab, no symptoms; trastuzumab stopped for good, repeat echo in December. Tamoxifen since April. Gyn saw her in June for hot flashes, labs postmenopausal range; she declined venlafaxine.\nFeels well, no exertional dyspnea, orthopnea or swelling. Hot flashes still there but she's coping. Weight up about 4 kg since spring - less active, snacking at night when she can't sleep.\nPHQ-2 1.\n\nExam: vitals as charted. R breast healed lumpectomy scar, radiation skin changes mild; no masses either breast, no axillary nodes. Heart RRR, no murmur or gallop, no JVD. Lungs clear. No edema. Neck full ROM.\n\nA/P\n1. Trastuzumab-related LV dysfunction, asymptomatic - trastuzumab removed from med list. Lisinopril continues (also helps here). Repeat echo per oncology.\n2. Breast ca on tamoxifen; surveillance mammogram due ~1 yr after surgery/radiation - oncology arranging.\n3. HTN controlled. CMP.\n4. Lipids, CBC, TSH today.\n5. Weight gain - talked about evening routine and walking again.\n6. Flu + updated COVID today."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "portal_message",
+          "start": "2025-10-03T13:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2025-10-03T13:30",
+              "author": "PCP",
+              "body": "Your labs are back: kidney and liver tests, potassium, blood counts and thyroid are normal. Cholesterol is about where it was last year. Good to see your blood counts fully recovered after chemo."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "outside_records",
+          "start": "2025-12-17T11:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology note - repeat echocardiogram",
+              "date": "2025-12-17T11:20",
+              "author": "oncology",
+              "body": "Outside medical oncology, brief note. Repeat transthoracic echocardiogram 12/10/2025: LVEF 50%, improved from 45% in September. Remains asymptomatic. Trastuzumab remains discontinued. Continue lisinopril and tamoxifen. Surveillance mammogram ordered for January. Next visit in 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-24a",
+          "kind": "specialist_visit",
+          "start": "2025-12-24T09:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "irregular uterine bleeding",
+          "conditions": [
+            {
+              "label": "Benign endometrial hyperplasia",
+              "action": "diagnosed",
+              "onset": "2025-12-24",
+              "note": "hyperplasia without atypia on office biopsy, on tamoxifen",
+              "icd10": "N85.01"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "weight_kg": 78.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-24T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.37
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-12-24T09:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 11
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-24T09:40",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-12-24T09:20",
+              "text": "Transabdominal and transvaginal pelvic ultrasound. Uterus anteverted, mildly enlarged, homogeneous myometrium. Endometrium measures 14 mm, without focal lesion on grayscale. Both ovaries visualized, normal in size and appearance. No adnexal mass. No free fluid.",
+              "conclusion": "Thickened endometrium, 14 mm, in a patient on tamoxifen. Normal ovaries, no adnexal mass."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-12-24T09:30",
+              "text": "Specimen: endometrium, office pipelle biopsy. Fragments of proliferative-type endometrium with an increased gland-to-stroma ratio and glandular crowding; glands with cytologic features matching the background endometrium. No cytologic atypia. No carcinoma.",
+              "conclusion": "Endometrial hyperplasia without atypia.",
+              "issued": "2025-12-30T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Visit",
+              "date": "2026-01-08T10:10",
+              "author": "gynecology",
+              "body": "Outside gynecology office - visit 12/24/2025.\n\nReturns for routine follow-up; seen in June for vasomotor symptoms on tamoxifen. Two months of irregular bleeding - unpredictable spotting and light flow after more than a year without periods. Hot flashes and night sweats continue. Tamoxifen about 8 months.\n\nMeds per patient list: hydrochlorothiazide, lisinopril, tamoxifen, trastuzumab. NKDA.\n\nBP 130/85, BMI 29.\nPelvic exam: uterus slightly enlarged, non-tender. No adnexal masses.\n\nLabs: hemoglobin 13.2 g/dL, platelets 250,000, PT 11 s, aPTT 30 s.\nPelvic ultrasound today: endometrium 14 mm, no adnexal mass.\nOffice endometrial biopsy performed today; result 12/30: endometrial hyperplasia without atypia.\n\nAssessment: endometrial hyperplasia without atypia, on tamoxifen; irregular bleeding as ovarian function returns after chemotherapy.\n\nPlan: levonorgestrel intrauterine system recommended, placement scheduled 1/14. Discussed with her oncologist: continue tamoxifen. Repeat endometrial sampling in 3 to 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.0
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "portal_message",
+          "start": "2026-01-14T18:40",
+          "medications": [
+            {
+              "drug": "levonorgestrel 0.000833 MG/HR Intrauterine System",
+              "action": "historical",
+              "sig": "Intrauterine system placed by gynecology 1/14/2026",
+              "route": "Intrauterine",
+              "course": "chronic",
+              "reason": "endometrial hyperplasia on tamoxifen"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gyn update",
+              "date": "2026-01-14T18:40",
+              "author": "patient",
+              "body": "Wanted you to know - the biopsy in December showed endometrial hyperplasia (no atypical cells, they said). Gyn put in a Mirena today to protect the lining while I stay on tamoxifen. Crampy tonight but ok. Oncology agreed with the plan."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gyn update",
+              "date": "2026-01-15T08:05",
+              "author": "PCP",
+              "body": "Thanks for letting me know. I received their letter last week and have added the IUD to your list. Hope the cramping settles in a day or two; let gyn know if it doesn't."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "imaging",
+          "start": "2026-01-22T10:15",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2026-01-22T10:15",
+              "text": "Bilateral diagnostic mammogram with tomosynthesis, surveillance after right lumpectomy and radiation for breast cancer. Compared with 6/2024. Right breast: post-lumpectomy architectural distortion and scarring in the upper outer quadrant with surgical clips, skin thickening consistent with prior radiation; no new mass or suspicious calcifications. Left breast: heterogeneously dense, no suspicious finding.",
+              "conclusion": "BI-RADS 2: benign post-treatment changes on the right. Annual mammography."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "specialist_visit",
+          "start": "2026-02-23T14:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "follow-up of endometrial hyperplasia; pelvic pain and irregular cycles",
+          "conditions": [
+            {
+              "label": "Asymptomatic Actinomyces colonization of genital tract",
+              "action": "diagnosed",
+              "onset": "2026-02-23",
+              "note": "Actinomyces-like organisms on Pap with IUD; no treatment",
+              "icd10": "Z22.39"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              82
+            ],
+            "hr": 75,
+            "weight_kg": 81.1
+          },
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2026-02-23T14:40",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: atypical glandular cells, not otherwise specified (AGC). Organisms: filamentous bacteria morphologically consistent with Actinomyces species. Clinical history: tamoxifen; levonorgestrel IUD.",
+              "conclusion": "Atypical glandular cells (AGC). Actinomyces-like organisms present.",
+              "issued": "2026-02-27T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Follow-up",
+              "date": "2026-03-02T09:45",
+              "author": "gynecology",
+              "body": "Outside gynecology - follow-up 2/23/2026, brief letter.\n\nFollow-up of endometrial hyperplasia without atypia on tamoxifen; levonorgestrel IUD placed 1/14. Over the last six months, since her cycles came back, bleeding has been irregular, with intermittent pelvic pain. Vital signs normal. BMI 30.\n\nBimanual exam: uterus slightly enlarged, non-tender; no adnexal masses. IUD strings seen at the os.\n\nPap result 2/27: atypical glandular cells; Actinomyces-like organisms.\n\nAssessment: (1) AGC Pap - needs colposcopy with endocervical sampling and endometrial biopsy. (2) Actinomyces colonization with IUD, no symptoms of pelvic infection - no antibiotics, IUD stays. (3) Irregular bleeding and cramping expected in the first months after IUD placement.\n\nPlan: colposcopy, ECC and endometrial biopsy scheduled 3/19.\n\nMeds per her list: hydrochlorothiazide, lisinopril, tamoxifen, trastuzumab, levonorgestrel IUD. NKDA."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.7
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "procedure_visit",
+          "start": "2026-03-19T13:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "colposcopy, endocervical curettage and endometrial biopsy for AGC Pap",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-03-19T13:50",
+              "text": "Specimens: (A) endocervical curettage; (B) endometrium, biopsy. Colposcopy: adequate, squamocolumnar junction fully seen, no acetowhite lesion, no directed biopsy. (A) Fragments of benign endocervical glandular epithelium and mucus; no dysplasia or malignancy. (B) Endometrium with decidualized stroma and inactive glands consistent with progestin effect; no hyperplasia; no atypia; no carcinoma.",
+              "conclusion": "(A) Endocervical curettage: benign, no dysplasia. (B) Endometrial biopsy: progestin effect, no hyperplasia or atypia.",
+              "issued": "2026-03-25T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pathology received - gynecology",
+              "date": "2026-03-30T10:20",
+              "author": "MA",
+              "body": "Pathology report from outside gynecology for 3/19 colposcopy, ECC and endometrial biopsy received by fax. Cover note from gyn: benign; hyperplasia has regressed on the IUD; repeat Pap in one year. Routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside pathology reviewed",
+              "date": "2026-03-30T17:15",
+              "author": "PCP",
+              "body": "Reviewed - reassuring. Will update problem list at her June visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "pharmacy",
+          "start": "2026-04-21T09:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request",
+              "date": "2026-04-21T09:20",
+              "author": "MA",
+              "body": "Pharmacy request: hydrochlorothiazide 25 mg #90 and lisinopril 10 mg #90. Last CMP 10/2025 normal. Sent x1 each. Pt has a June appointment."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-15a",
+          "kind": "office_visit",
+          "start": "2026-06-15T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up; question about ovarian cancer blood test",
+          "conditions": [
+            {
+              "label": "Benign endometrial hyperplasia",
+              "action": "resolved",
+              "note": "regressed on levonorgestrel IUD, biopsy 3/2026",
+              "icd10": "N85.01"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2026-02-01",
+              "note": "BMI 30"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ],
+            "hr": 72,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 81.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-15T11:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-15T11:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 158
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 217
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 34
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 127
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 183
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-15T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-15T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-06-15T11:25",
+              "author": "PCP",
+              "body": "S: Routine follow-up. On tamoxifen, about 14 months now. The endometrial hyperplasia has regressed on the IUD per gyn biopsy in March; spotting has mostly settled. No complaints today, feels well. No dyspnea, chest pain, palpitations or swelling.\nHer question: she saw a news piece about a new blood test that screens for ovarian cancer and wants to know if she should get it.\nMeds: HCTZ 25, lisinopril 10, tamoxifen 20, levonorgestrel IUD. NKDA.\n\nO: BP 128/82, HR 72. BMI 30. Well appearing. Heart regular, no murmur. Lungs clear. Abd soft, non-tender. No edema. Rest of exam unremarkable.\n\nA/P\n1. Ovarian cancer blood test question - walked through it: even if a test catches 90% of cancers (sensitivity) and correctly clears 95% of women without cancer (specificity), ovarian cancer is uncommon enough in a woman at her risk that most positive results would be false alarms, each leading to scans or surgery to sort out. No screening test has been shown to save lives in average-risk women. She has no ovarian cancer in the family. We agreed not to do it. Report any persistent bloating, pelvic pain or early fullness.\n2. Endometrial hyperplasia - resolved on IUD, gyn following; problem list updated. Actinomyces on Pap noted by gyn, no treatment needed, added to list.\n3. Breast ca on tamoxifen; January mammogram benign. Up to date on colonoscopy (2023).\n4. LV dysfunction after trastuzumab - asymptomatic, last LVEF 50%; on lisinopril; oncology following.\n5. HTN controlled. CMP and lipids today.\n6. Weight - BMI now 30 after treatment; obesity added. Walking a few times a week again.\nPhysical in the fall."
+            }
+          ],
+          "measure": [
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T15:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2026-06-16T15:10",
+              "author": "PCP",
+              "body": "Hi Gretchen, labs from yesterday: kidney function, potassium and liver tests are normal. Cholesterol numbers are similar to last fall. See you at your physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T12:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-08-11T12:55",
+              "author": "patient",
+              "body": "Can I get my physical on the calendar for late September? Thursdays are best for me."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-08-11T14:20",
+              "author": "front desk",
+              "body": "You're set for Thursday 9/24 at 8:20. Please come fasting."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-24a",
+          "kind": "annual_physical",
+          "start": "2026-09-24T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Asymptomatic Actinomyces colonization of genital tract|Z22.39": {
+        "code": "Z22.39",
+        "display": "Carrier of other specified bacterial diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Benign endometrial hyperplasia|N85.01": {
+        "code": "N85.01",
+        "display": "Benign endometrial hyperplasia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cardiomyopathy due to drug and external agent|I42.7": {
+        "code": "I42.7",
+        "display": "Cardiomyopathy due to drug and external agent",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Malignant neoplasm of upper-outer quadrant of right female breast|C50.411": {
+        "code": "C50.411",
+        "display": "Malignant neoplasm of upper-outer quadrant of right female breast",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "carboplatin 10 MG/ML Injectable Solution": {
+        "code": "597195",
+        "display": "carboplatin 10 MG/ML Injectable Solution",
+        "ingredient": "carboplatin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "docetaxel 20 MG/ML Injectable Solution": {
+        "code": "1001405",
+        "display": "docetaxel 20 MG/ML Injectable Solution",
+        "ingredient": "docetaxel",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "tamoxifen 20 MG Oral Tablet": {
+        "code": "313195",
+        "display": "tamoxifen 20 MG Oral Tablet",
+        "ingredient": "tamoxifen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "trastuzumab 150 MG Injection": {
+        "code": "1922509",
+        "display": "trastuzumab 150 MG Injection",
+        "ingredient": "trastuzumab",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "3173-2",
+        "display": "aPTT in Blood by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Estradiol": {
+        "code": "2243-4",
+        "display": "Estradiol (E2) [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}
