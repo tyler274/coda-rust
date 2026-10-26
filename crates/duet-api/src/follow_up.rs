@@ -381,6 +381,13 @@ impl AgentAuthority {
             if *id == self.command {
                 continue;
             }
+            // ENG-200: a steer already dispatched to this command is current
+            // patient input to it, like the command's own message.
+            let steer: bool = sqlx::query_scalar("select exists(select 1 from duet_command_steers where user_id=$1 and command_id=$2 and id=$3 and applied_sequence is not null and btrim(input)<>'')")
+                .bind(self.context.account_id).bind(self.command).bind(id).fetch_one(&mut **tx).await?;
+            if steer {
+                continue;
+            }
             // Message IDs match the existing phone projection. Prior exact reads
             // are required even if an unaddressed transcript was in initial context.
             let command = Uuid::from_u128(id.as_u128() ^ (1u128 << 127));

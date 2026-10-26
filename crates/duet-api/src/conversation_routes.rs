@@ -66,7 +66,9 @@ async fn phone_send(
         .store
         .phone_accept_submission(&c, body.id, &body.text, &s.model, &submission)
         .await?;
-    launch(&s, &c, body.id).await?;
+    // A steer joins the reply in progress; launch that command, not the steer.
+    let run = serde_json::from_value(accepted["run"]["id"].clone()).unwrap_or(body.id);
+    launch(&s, &c, run).await?;
     Ok((axum::http::StatusCode::ACCEPTED, Json(accepted)))
 }
 async fn message_source(
@@ -109,7 +111,9 @@ async fn accept(
         )
         .await?;
     // Retry of an accepted command may launch recovery; an active claim rejects duplicate dispatch.
-    launch(&s, &c, body.id).await?;
+    // A steer launches the command it joined.
+    let run = serde_json::from_value(result["run_id"].clone()).unwrap_or(body.id);
+    launch(&s, &c, run).await?;
     Ok(Json(result))
 }
 /// Poll durable pending work after process restart; claims prevent multi-instance duplication.
@@ -140,6 +144,9 @@ pub async fn recover_pending(s: ConversationState) {
         }
     }
 }
+/// Immediate same-command reclaims after steers in one launch. Later steers
+/// still reach the command through the 30s recovery poll.
+const MAX_STEER_RECLAIMS: usize = 8;
 pub(crate) async fn launch(
     s: &ConversationState,
     c: &crate::identity::AccountContext,
@@ -158,14 +165,34 @@ pub(crate) async fn launch(
     };
     let privacy = s.durable.privacy.clone();
     let account = c.account_id;
+    let store = s.store.clone();
+    let context = c.clone();
     tokio::spawn(async move {
-        let _result = owner
-            .execute(
-                &mut provider,
-                harness::execution::Limits::default(),
-                &harness::execution::Cancellation::default(),
-            )
-            .await;
+        // ENG-200: a steer fences out the attempt and returns the same command
+        // to `accepted`. Reclaim it right away, not after the 30s recovery
+        // poll, and stop after a bounded number of steered restarts.
+        let mut reclaims = 0;
+        loop {
+            let result = owner
+                .execute(
+                    &mut provider,
+                    harness::execution::Limits::default(),
+                    &harness::execution::Cancellation::default(),
+                )
+                .await;
+            if result.is_ok()
+                || reclaims >= MAX_STEER_RECLAIMS
+                || !owner.steered().await.unwrap_or(false)
+            {
+                break;
+            }
+            reclaims += 1;
+            // A live claim (another launch got there first) is a no-op.
+            match store.claim(&context, id).await {
+                Ok(next) => owner = next,
+                Err(_) => break,
+            }
+        }
         // Confirm restrictions even if later model work failed; effective
         // cancellation is never rolled back by a journal or transport failure.
         let _confirmed = privacy.confirm_account(account).await;
