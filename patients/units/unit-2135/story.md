@@ -26,3 +26,8 @@
 - 2026-08-24 pathology: clear margins, 0/2 nodes; stage IB; surgical oncology letter (A5)
 - 2026-08-25 portal: patient update, PCP reply (P)
 - 2026-11-11 booked annual physical (P)
+
+
+## Last seen
+
+The practice last saw MRN00002135 on 2026-07-08. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

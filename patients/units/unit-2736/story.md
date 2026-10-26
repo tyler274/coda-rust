@@ -84,3 +84,8 @@
 - 2026-08-12 portal: headaches somewhat less [A5]
 - 2026-08-24 lab prolactin drawn, pending [A5]
 - 2026-09-15 annual physical booked [P]
+
+
+## Last seen
+
+The practice last saw MRN00002736 on 2026-07-08. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

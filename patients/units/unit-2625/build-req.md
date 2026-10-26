@@ -115,3 +115,8 @@ problem-list dump, "(diagnosed ...)" stamp or unfinished plan reaches the chart.
   routes them, and one prior-authorization round for the delayed-release tablet.
 - Portal messages about results, scheduling, the GI letters, and a records request.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002625 on 2025-12-09. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

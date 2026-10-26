@@ -36,3 +36,8 @@
 - 2026-06-16 portal_message: she reports the endocrinology visit, no dose change; no letter (P)
 - 2026-08-11 portal_message: scheduling her physical (P)
 - 2026-09-22 annual_physical: booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00001891 on 2026-05-20. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

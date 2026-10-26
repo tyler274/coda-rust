@@ -86,3 +86,8 @@
 - 2026-07-14 specialist_visit: transplant nephrology letter [P]
 - 2026-08-10 specialist_visit: heme/onc surveillance; EBV undetectable; Cr 1.3 [A13]
 - 2026-09-08 office_visit booked: diabetes/BP follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00002051 on 2026-06-09. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

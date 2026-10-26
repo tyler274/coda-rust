@@ -91,3 +91,8 @@
 - 2026-07-14 optometry letter [A4]
 - 2026-08-20 portal: confirms September visit [P]
 - 2026-09-22 booked follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00002045 on 2025-01-29. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -142,3 +142,8 @@ text reaches the chart. Clinicians are named by role only; outside places are
   post-discharge calls, a scheduling portal message, the naloxone replacement.
 - A booked follow-up on 2026-09-22.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002538 on 2026-05-19. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

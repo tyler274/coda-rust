@@ -101,3 +101,8 @@
 - 2026-07-21 pharmacy refills [P]
 - 2026-08-11 portal: scheduling [P]
 - 2026-09-22 booked: diabetes and coronary follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00002206 on 2026-06-23. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

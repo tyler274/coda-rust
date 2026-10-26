@@ -15,10 +15,26 @@
           "kind": "nurse_visit",
           "start": "2025-02-11T12:15",
           "reason": "shingles vaccine",
-          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-02-11T12:20"}],
-          "procedures": [{"procedure": "Immunization administration", "performed": "2025-02-11T12:20"}],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-02-11T12:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-02-11T12:20"
+            }
+          ],
           "documents": [
-            {"type": "Nurse Note", "title": "Shingrix dose 1", "author": "RN", "date": "2025-02-11T12:40", "body": "Shingrix #1, 0.5 mL IM left deltoid. Recombinant vaccine, fine on her prednisone. Counseled on 1-2 days of soreness or feeling run down. Dose 2 due in 2-6 months, booked for May."}
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix dose 1",
+              "author": "RN",
+              "date": "2025-02-11T12:40",
+              "body": "Shingrix #1, 0.5 mL IM left deltoid. Recombinant vaccine, fine on her prednisone. Counseled on 1-2 days of soreness or feeling run down. Dose 2 due in 2-6 months, booked for May."
+            }
           ]
         },
         {
@@ -27,19 +43,71 @@
           "start": "2025-04-08T16:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "diabetes follow-up",
-          "state": {"labs": {"Hemoglobin A1c": 7.6}},
-          "measure": ["bp", "hr", "weight_kg"],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-08T16:20", "results": [{"test": "Glucose"}]},
-            {"panel": null, "collected": "2025-04-08T16:20", "results": [{"test": "Hemoglobin A1c", "value": 7.6}]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-08T16:20",
+              "results": [
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                }
+              ]
+            }
           ],
           "medications": [
-            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "stop", "reason": "dose increased"},
-            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "start", "sig": "Inject 24 units under the skin at bedtime", "dose": {"value": 24, "unit": "[iU]"}, "frequency": "DAILY", "route": "Subcutaneous", "course": "chronic", "reason": "type 2 diabetes; A1c 7.6 on 20 units without hypoglycemia"}
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "start",
+              "sig": "Inject 24 units under the skin at bedtime",
+              "dose": {
+                "value": 24,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "type 2 diabetes; A1c 7.6 on 20 units without hypoglycemia"
+            }
           ],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-04-08T16:00"}],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-08T16:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2025-04-08T17:45", "body": "January visit was cancelled on our end (snow). \nS: Meter download reviewed: fasting 150s-170s for the past 3 months, no reading under 90 since the 2023 dose change, no sweaty mornings. Taking everything as prescribed.\nO: vitals as charted. Exam unchanged.\nA1c in clinic: 7.6.\nA/P: T2DM above target on glargine 20. Going back up to 24 units at bedtime; lows came at a time when her A1c was 6.2, and she is well above that now. Bedtime and waking checks for two weeks, message me readings. Glucagon kit still in date per pt. Shingrix #2 in May."}
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "author": "PCP",
+              "date": "2025-04-08T17:45",
+              "body": "January visit was cancelled on our end (snow). \nS: Meter download reviewed: fasting 150s-170s for the past 3 months, no reading under 90 since the 2023 dose change, no sweaty mornings. Taking everything as prescribed.\nO: vitals as charted. Exam unchanged.\nA1c in clinic: 7.6.\nA/P: T2DM above target on glargine 20. Going back up to 24 units at bedtime; lows came at a time when her A1c was 6.2, and she is well above that now. Bedtime and waking checks for two weeks, message me readings. Glucagon kit still in date per pt. Shingrix #2 in May."
+            }
           ]
         },
         {
@@ -48,8 +116,20 @@
           "start": "2025-04-24T07:30",
           "reason": "glucose readings",
           "documents": [
-            {"type": "Patient Message", "title": "Sugar readings", "author": "patient", "date": "2025-04-24T07:30", "body": "Two weeks on 24 units. Mornings 118 to 142, bedtimes 150s-180s. No sweating or shaky spells. Is that ok?"},
-            {"type": "Patient Message", "title": "RE: Sugar readings", "author": "PCP", "date": "2025-04-24T12:40", "body": "That looks safe and better. Stay on 24 units. Keep checking mornings a few times a week."}
+            {
+              "type": "Patient Message",
+              "title": "Sugar readings",
+              "author": "patient",
+              "date": "2025-04-24T07:30",
+              "body": "Two weeks on 24 units. Mornings 118 to 142, bedtimes 150s-180s. No sweating or shaky spells. Is that ok?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sugar readings",
+              "author": "PCP",
+              "date": "2025-04-24T12:40",
+              "body": "That looks safe and better. Stay on 24 units. Keep checking mornings a few times a week."
+            }
           ]
         },
         {
@@ -57,10 +137,26 @@
           "kind": "nurse_visit",
           "start": "2025-05-13T12:10",
           "reason": "shingles vaccine dose 2",
-          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-05-13T12:15"}],
-          "procedures": [{"procedure": "Immunization administration", "performed": "2025-05-13T12:15"}],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-05-13T12:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-05-13T12:15"
+            }
+          ],
           "documents": [
-            {"type": "Nurse Note", "title": "Shingrix dose 2", "author": "RN", "date": "2025-05-13T12:30", "body": "Second Shingrix, right deltoid. After dose 1 she was tired for a day. Series complete."}
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix dose 2",
+              "author": "RN",
+              "date": "2025-05-13T12:30",
+              "body": "Second Shingrix, right deltoid. After dose 1 she was tired for a day. Series complete."
+            }
           ]
         },
         {
@@ -69,7 +165,13 @@
           "start": "2025-07-08T14:50",
           "reason": "rheumatology letter",
           "documents": [
-            {"type": "Consult Note", "title": "Rheumatology annual review", "author": "rheumatology", "date": "2025-07-08T14:50", "body": "Outside rheumatology group, visit 06/30/2025.\n\nDear colleague, annual review for SLE. She has had no flares. Denies joint swelling, photosensitive rash, ulcers or pleurisy. Exam without synovitis or rash. Our monitoring blood count, metabolic panel and urinalysis were normal. Disease quiet; prednisone 15 mg daily continued. Follow-up one year.\nMedications per patient: prednisone 15 mg daily, metformin 1000 mg twice daily, insulin glargine 24 units at bedtime, lisinopril 10 mg daily. NKDA."}
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology annual review",
+              "author": "rheumatology",
+              "date": "2025-07-08T14:50",
+              "body": "Outside rheumatology group, visit 06/30/2025.\n\nDear colleague, annual review for SLE. She has had no flares. Denies joint swelling, photosensitive rash, ulcers or pleurisy. Exam without synovitis or rash. Our monitoring blood count, metabolic panel and urinalysis were normal. Disease quiet; prednisone 15 mg daily continued. Follow-up one year.\nMedications per patient: prednisone 15 mg daily, metformin 1000 mg twice daily, insulin glargine 24 units at bedtime, lisinopril 10 mg daily. NKDA."
+            }
           ]
         },
         {
@@ -78,22 +180,88 @@
           "start": "2025-09-23T08:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "annual physical",
-          "state": {"labs": {"Hemoglobin A1c": 7.5}},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-23T08:30", "results": [{"test": "Creatinine"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-23T08:30", "results": [{"test": "Hemoglobin"}]},
-            {"panel": "Lipid Panel", "collected": "2025-09-23T08:30", "results": [{"test": "Low Density Lipoprotein"}]},
-            {"panel": null, "collected": "2025-09-23T08:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
           ],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
-          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-23T09:00"}],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T08:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-23T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-23T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-23T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-23T09:00"
+            }
+          ],
           "procedures": [
-            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-09-23T08:00"},
-            {"procedure": "Immunization administration", "performed": "2025-09-23T09:00"}
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-23T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T09:00"
+            }
           ],
           "documents": [
-            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-09-23T11:20", "body": "Annual, age 50. No lows since the dose went back to 24 in April; fasting mostly 120s-140s. Lupus quiet per rheum letter in July.\nMeds: metformin 1000 BID, glargine 24 qHS, lisinopril 10, prednisone 15, glucagon kit.\nPHQ-2 0.\nExam: vitals as charted. Heart regular. Lungs clear. Abdomen soft. Skin intact. Feet: normal monofilament, pulses palpable.\nPlan: labs today. Flu shot given. COVID next month. Mammogram in December. Shingrix complete. Pap/HPV due next year. Diabetes visit in January."}
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-23T11:20",
+              "body": "Annual, age 50. No lows since the dose went back to 24 in April; fasting mostly 120s-140s. Lupus quiet per rheum letter in July.\nMeds: metformin 1000 BID, glargine 24 qHS, lisinopril 10, prednisone 15, glucagon kit.\nPHQ-2 0.\nExam: vitals as charted. Heart regular. Lungs clear. Abdomen soft. Skin intact. Feet: normal monofilament, pulses palpable.\nPlan: labs today. Flu shot given. COVID next month. Mammogram in December. Shingrix complete. Pap/HPV due next year. Diabetes visit in January."
+            }
           ]
         },
         {
@@ -101,10 +269,26 @@
           "kind": "nurse_visit",
           "start": "2025-10-14T16:45",
           "reason": "COVID vaccine",
-          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-14T16:50"}],
-          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-14T16:50"}],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T16:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T16:50"
+            }
+          ],
           "documents": [
-            {"type": "Nurse Note", "title": "COVID-19 vaccine", "author": "RN", "date": "2025-10-14T17:05", "body": "2025-26 COVID vaccine, left deltoid. Screening negative. No reaction."}
+            {
+              "type": "Nurse Note",
+              "title": "COVID-19 vaccine",
+              "author": "RN",
+              "date": "2025-10-14T17:05",
+              "body": "2025-26 COVID vaccine, left deltoid. Screening negative. No reaction."
+            }
           ]
         },
         {
@@ -114,24 +298,112 @@
           "end": "2025-11-22T16:30",
           "service": "Emergency Medicine",
           "reason": "sudden confusion and slurred speech",
-          "conditions": [{"label": "Cerebral infarction, unspecified", "icd10": "I63.9", "action": "diagnosed", "onset": "2025-11-22", "note": "acute ischemic stroke"}],
+          "conditions": [
+            {
+              "label": "Cerebral infarction, unspecified",
+              "icd10": "I63.9",
+              "action": "diagnosed",
+              "onset": "2025-11-22",
+              "note": "acute ischemic stroke"
+            }
+          ],
           "vitals": [
-            {"time": "2025-11-22T14:08", "bp": [155, 90], "hr": 88, "temp_c": 36.8},
-            {"time": "2025-11-22T15:30", "bp": [148, 86], "hr": 84}
+            {
+              "time": "2025-11-22T14:08",
+              "bp": [
+                155,
+                90
+              ],
+              "hr": 88,
+              "temp_c": 36.8
+            },
+            {
+              "time": "2025-11-22T15:30",
+              "bp": [
+                148,
+                86
+              ],
+              "hr": 84
+            }
           ],
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-22T14:15", "results": [{"test": "Glucose", "value": 180}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-22T14:15", "results": [{"test": "Platelets"}]},
-            {"panel": "Prothrombin Time with INR", "collected": "2025-11-22T14:15", "resulted": "2025-11-22T14:38", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
-            {"panel": null, "collected": "2025-11-22T14:15", "results": [{"test": "Hemoglobin A1c", "value": 7.8}]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-22T14:15",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 180
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-22T14:15",
+              "results": [
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-22T14:15",
+              "resulted": "2025-11-22T14:38",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-22T14:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            }
           ],
-          "reports": [{"study": "CT head without contrast", "performed": "2025-11-22T14:25", "text": "Noncontrast CT of the head. No intracranial hemorrhage. No mass, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. Basal cisterns patent. Calvarium intact.", "conclusion": "No hemorrhage or mass effect."}],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-11-22T14:25",
+              "text": "Noncontrast CT of the head. No intracranial hemorrhage. No mass, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. Basal cisterns patent. Calvarium intact.",
+              "conclusion": "No hemorrhage or mass effect."
+            }
+          ],
           "medications": [
-            {"drug_text": "tenecteplase 50 MG Injection", "action": "start", "sig": "0.25 mg/kg (19 mg) IV bolus once", "dose": {"value": 19, "unit": "mg"}, "frequency": "ONCE", "route": "Intravenous", "course": "short", "reason": "acute ischemic stroke"}
+            {
+              "drug_text": "tenecteplase 50 MG Injection",
+              "action": "start",
+              "sig": "0.25 mg/kg (19 mg) IV bolus once",
+              "dose": {
+                "value": 19,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "acute ischemic stroke"
+            }
           ],
-          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-11-22T14:05"}],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-11-22T14:05"
+            }
+          ],
           "documents": [
-            {"type": "ED Notes", "title": "Emergency department record", "author": "emergency medicine", "date": "2025-11-28T10:15", "body": "Regional hospital emergency department, 11/22/2025 (copy received 11/28/2025).\n\nCC: confusion and slurred speech, about two hours.\n\nHPI: 50-year-old woman with type 2 diabetes, hypertension, Cushing syndrome and lupus on chronic prednisone, with an episode of severe hypoglycemia in 2023. Her husband drove her in after she abruptly became muddled and her words came out garbled around midday. She takes her medicines as prescribed: metformin, insulin glargine 24 units at night, lisinopril 10 mg, prednisone 15 mg. NKDA. Never smoker, social wine.\n\nExam: BP 155/90, P 88, T 36.8 C. Awake and alert. Aphasic. Right lower facial droop. Right arm weak. \n\nWorkup: glucose 180 mg/dL, so hypoglycemia is not the explanation. HbA1c 7.8%. Platelets and INR normal. Noncontrast head CT: no hemorrhage, no mass effect.\n\nCourse: stroke team activated. Within the treatment window, no contraindication identified; risks and benefits reviewed with patient and husband. Tenecteplase 0.25 mg/kg IV bolus given. Repeat neuro checks every 15 minutes, no worsening. Her husband and then her sister, who arrived later, asked for updates; both were updated with the patient's agreement.\n\nImpression: acute ischemic stroke.\nDisposition: admitted to the stroke unit."}
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-11-28T10:15",
+              "body": "Regional hospital emergency department, 11/22/2025 (copy received 11/28/2025).\n\nCC: confusion and slurred speech, about two hours.\n\nHPI: 50-year-old woman with type 2 diabetes, hypertension, Cushing syndrome and lupus on chronic prednisone, with an episode of severe hypoglycemia in 2023. Her husband drove her in after she abruptly became muddled and her words came out garbled around midday. She takes her medicines as prescribed: metformin, insulin glargine 24 units at night, lisinopril 10 mg, prednisone 15 mg. NKDA. Never smoker, social wine.\n\nExam: BP 155/90, P 88, T 36.8 C. Awake and alert. Aphasic. Right lower facial droop. Right arm weak. \n\nWorkup: glucose 180 mg/dL, so hypoglycemia is not the explanation. HbA1c 7.8%. Platelets and INR normal. Noncontrast head CT: no hemorrhage, no mass effect.\n\nCourse: stroke team activated. Within the treatment window, no contraindication identified; risks and benefits reviewed with patient and husband. Tenecteplase 0.25 mg/kg IV bolus given. Repeat neuro checks every 15 minutes, no worsening. Her husband and then her sister, who arrived later, asked for updates; both were updated with the patient's agreement.\n\nImpression: acute ischemic stroke.\nDisposition: admitted to the stroke unit."
+            }
           ]
         },
         {
@@ -142,31 +414,141 @@
           "service": "Neurology",
           "reason": "acute ischemic stroke",
           "vitals": [
-            {"time": "2025-11-22T17:00", "bp": [152, 88], "hr": 82, "temp_c": 36.7, "spo2": 97},
-            {"time": "2025-11-23T08:00", "bp": [146, 84], "hr": 78, "temp_c": 36.6, "spo2": 98},
-            {"time": "2025-11-25T08:00", "bp": [130, 80], "hr": 74, "temp_c": 36.6, "spo2": 98}
+            {
+              "time": "2025-11-22T17:00",
+              "bp": [
+                152,
+                88
+              ],
+              "hr": 82,
+              "temp_c": 36.7,
+              "spo2": 97
+            },
+            {
+              "time": "2025-11-23T08:00",
+              "bp": [
+                146,
+                84
+              ],
+              "hr": 78,
+              "temp_c": 36.6,
+              "spo2": 98
+            },
+            {
+              "time": "2025-11-25T08:00",
+              "bp": [
+                130,
+                80
+              ],
+              "hr": 74,
+              "temp_c": 36.6,
+              "spo2": 98
+            }
           ],
           "labs": [
-            {"panel": "Lipid Panel", "collected": "2025-11-23T05:30", "results": [{"test": "Low Density Lipoprotein"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-23T05:30", "results": [{"test": "Creatinine"}]}
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-11-23T05:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-23T05:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "MRI brain without contrast", "performed": "2025-11-23T09:40", "text": "MRI brain without contrast, including diffusion-weighted imaging. Small focus of restricted diffusion with corresponding low ADC signal in the left frontal lobe within the left middle cerebral artery territory, consistent with acute infarct. No hemorrhage on susceptibility imaging. No mass effect. Ventricles normal in size. No other acute abnormality.", "conclusion": "Small acute left frontal (left MCA territory) infarct. No hemorrhage."},
-            {"study": "Carotid duplex ultrasound", "performed": "2025-11-23T13:15", "text": "Bilateral carotid duplex. Common, internal and external carotid arteries patent with normal waveforms. Velocities within normal limits bilaterally. Vertebral arteries antegrade.", "conclusion": "No hemodynamically significant carotid stenosis."},
-            {"study": "Transthoracic echocardiogram", "performed": "2025-11-23T15:00", "text": "Left ventricle normal in size with normal systolic function and no regional wall motion abnormality. Normal right ventricle. No intracardiac thrombus. Agitated saline study without shunt seen. Valves without significant disease. No pericardial effusion.", "conclusion": "Normal LV size and function. No thrombus. No shunt seen."}
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2025-11-23T09:40",
+              "text": "MRI brain without contrast, including diffusion-weighted imaging. Small focus of restricted diffusion with corresponding low ADC signal in the left frontal lobe within the left middle cerebral artery territory, consistent with acute infarct. No hemorrhage on susceptibility imaging. No mass effect. Ventricles normal in size. No other acute abnormality.",
+              "conclusion": "Small acute left frontal (left MCA territory) infarct. No hemorrhage."
+            },
+            {
+              "study": "Carotid duplex ultrasound",
+              "performed": "2025-11-23T13:15",
+              "text": "Bilateral carotid duplex. Common, internal and external carotid arteries patent with normal waveforms. Velocities within normal limits bilaterally. Vertebral arteries antegrade.",
+              "conclusion": "No hemodynamically significant carotid stenosis."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-11-23T15:00",
+              "text": "Left ventricle normal in size with normal systolic function and no regional wall motion abnormality. Normal right ventricle. No intracardiac thrombus. Agitated saline study without shunt seen. Valves without significant disease. No pericardial effusion.",
+              "conclusion": "Normal LV size and function. No thrombus. No shunt seen."
+            }
           ],
           "medications": [
-            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "secondary stroke prevention"},
-            {"drug": "atorvastatin 80 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 80, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "secondary stroke prevention"},
-            {"drug": "lisinopril 10 MG Oral Tablet", "action": "stop", "reason": "dose increased"},
-            {"drug": "lisinopril 20 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension after stroke"}
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "secondary stroke prevention"
+            },
+            {
+              "drug": "atorvastatin 80 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "secondary stroke prevention"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension after stroke"
+            }
           ],
           "procedures": [
-            {"procedure": "Initial hospital inpatient care", "performed": "2025-11-22T16:30"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-11-25T11:00"}
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-22T16:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-11-25T11:00"
+            }
           ],
           "documents": [
-            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "neurology", "date": "2025-12-08T09:30", "body": "Regional hospital, stroke unit. Admitted 11/22/2025, discharged 11/25/2025. (Received 12/08/2025.)\n\nDiagnosis: acute ischemic stroke, left frontal (left MCA territory), treated with IV tenecteplase.\nOther problems: type 2 diabetes on insulin; hypertension; Cushing syndrome; SLE on chronic prednisone.\n\nCourse: arrived via the ED with aphasia, right facial droop and right arm weakness about two hours after onset; head CT without hemorrhage; tenecteplase given. No neurological worsening and no bleeding complication. MRI the next morning showed a small acute left frontal infarct without hemorrhage. Carotid duplex without significant stenosis. Echocardiogram with normal LV function, no thrombus and no shunt seen on bubble study. Telemetry throughout the stay showed sinus rhythm with no atrial fibrillation. Aspirin started 24 hours after thrombolysis once repeat imaging was clear. High-intensity statin started. Blood pressure allowed to run higher in the first day, then lisinopril increased. Insulin and prednisone continued at home doses; glucose 140s-190s.\n\nAt discharge: speech much improved with mild word-finding difficulty; right arm strength nearly back to normal; walking independently.\n\nDischarge medications: aspirin 81 mg daily (new); atorvastatin 80 mg nightly (new); lisinopril 20 mg daily (increased from 10 mg); metformin 1000 mg twice daily; insulin glargine 24 units at bedtime; prednisone 15 mg daily; glucagon kit as needed. NKDA.\n\nFollow-up: primary care within 1 week; outpatient speech therapy (referral placed); stroke neurology clinic in about 10 weeks. No driving until cleared by neurology."}
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "neurology",
+              "date": "2025-12-08T09:30",
+              "body": "Regional hospital, stroke unit. Admitted 11/22/2025, discharged 11/25/2025. (Received 12/08/2025.)\n\nDiagnosis: acute ischemic stroke, left frontal (left MCA territory), treated with IV tenecteplase.\nOther problems: type 2 diabetes on insulin; hypertension; Cushing syndrome; SLE on chronic prednisone.\n\nCourse: arrived via the ED with aphasia, right facial droop and right arm weakness about two hours after onset; head CT without hemorrhage; tenecteplase given. No neurological worsening and no bleeding complication. MRI the next morning showed a small acute left frontal infarct without hemorrhage. Carotid duplex without significant stenosis. Echocardiogram with normal LV function, no thrombus and no shunt seen on bubble study. Telemetry throughout the stay showed sinus rhythm with no atrial fibrillation. Aspirin started 24 hours after thrombolysis once repeat imaging was clear. High-intensity statin started. Blood pressure allowed to run higher in the first day, then lisinopril increased. Insulin and prednisone continued at home doses; glucose 140s-190s.\n\nAt discharge: speech much improved with mild word-finding difficulty; right arm strength nearly back to normal; walking independently.\n\nDischarge medications: aspirin 81 mg daily (new); atorvastatin 80 mg nightly (new); lisinopril 20 mg daily (increased from 10 mg); metformin 1000 mg twice daily; insulin glargine 24 units at bedtime; prednisone 15 mg daily; glucagon kit as needed. NKDA.\n\nFollow-up: primary care within 1 week; outpatient speech therapy (referral placed); stroke neurology clinic in about 10 weeks. No driving until cleared by neurology."
+            }
           ]
         },
         {
@@ -175,7 +557,13 @@
           "start": "2025-11-24T09:05",
           "reason": "family call",
           "documents": [
-            {"type": "Telephone Encounter", "title": "Call from husband", "author": "RN", "date": "2025-11-24T09:05", "body": "Pt's husband called (pt on speaker, gave permission). She had a stroke Saturday, got the clot-busting medicine in the ED, now in the hospital stroke unit, talking better already. Expected home in a day or two. Scheduled post-hospital visit 12/1 with PCP. Asked them to bring the discharge papers and all bottles. PCP aware."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from husband",
+              "author": "RN",
+              "date": "2025-11-24T09:05",
+              "body": "Pt's husband called (pt on speaker, gave permission). She had a stroke Saturday, got the clot-busting medicine in the ED, now in the hospital stroke unit, talking better already. Expected home in a day or two. Scheduled post-hospital visit 12/1 with PCP. Asked them to bring the discharge papers and all bottles. PCP aware."
+            }
           ]
         },
         {
@@ -185,12 +573,39 @@
           "end": "2025-12-01T10:50",
           "service": "Internal Medicine — Primary Care",
           "reason": "hospital follow-up after stroke",
-          "state": {"bp": [128, 78], "weight_kg": 76.5},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
-          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-12-01T10:00"}],
+          "state": {
+            "bp": [
+              128,
+              78
+            ],
+            "weight_kg": 76.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-12-01T10:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-12-01T12:40", "body": "Seen with her husband, 6 days after discharge from the stroke unit. Discharge summary not yet received; reviewed the patient's discharge paperwork and the pharmacy fill history.\n\nS: Talking much better; sometimes stops mid-sentence hunting for a word. Right arm feels normal to her. No headache, new weakness, vision change or bleeding. Speech therapy evaluation is booked for next week. Not driving. Her sister has been helping during the day.\n\nMeds reconciled from bottles and pharmacy: aspirin 81 daily (new), atorvastatin 80 nightly (new), lisinopril 20 daily (up from 10), metformin 1000 BID, glargine 24 qHS, prednisone 15 daily, glucagon kit. Old lisinopril 10 bottle set aside.\n\nO: BP at goal today. Alert, fluent with occasional word-finding pauses, follows commands. Face symmetric at rest. Strength 5/5 and equal in arms and legs. Gait normal. Heart regular, lungs clear. PHQ-9 4.\n\nA/P:\n1. Acute ischemic stroke, left frontal, s/p tenecteplase: improving. Continue aspirin and high-intensity statin. Speech therapy. Neuro clinic follow-up in February. No driving until neurology says so. Reviewed stroke warning signs, call 911.\n2. HTN: lisinopril 20, BP at goal.\n3. T2DM: A1c 7.8 in hospital. Same insulin for now; recheck in January with lipids and liver tests on the new statin.\n4. Mood: PHQ-9 low, will keep checking.\n5. Work: will complete FMLA paperwork for time off."}
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-12-01T12:40",
+              "body": "Seen with her husband, 6 days after discharge from the stroke unit. Discharge summary not yet received; reviewed the patient's discharge paperwork and the pharmacy fill history.\n\nS: Talking much better; sometimes stops mid-sentence hunting for a word. Right arm feels normal to her. No headache, new weakness, vision change or bleeding. Speech therapy evaluation is booked for next week. Not driving. Her sister has been helping during the day.\n\nMeds reconciled from bottles and pharmacy: aspirin 81 daily (new), atorvastatin 80 nightly (new), lisinopril 20 daily (up from 10), metformin 1000 BID, glargine 24 qHS, prednisone 15 daily, glucagon kit. Old lisinopril 10 bottle set aside.\n\nO: BP at goal today. Alert, fluent with occasional word-finding pauses, follows commands. Face symmetric at rest. Strength 5/5 and equal in arms and legs. Gait normal. Heart regular, lungs clear. PHQ-9 4.\n\nA/P:\n1. Acute ischemic stroke, left frontal, s/p tenecteplase: improving. Continue aspirin and high-intensity statin. Speech therapy. Neuro clinic follow-up in February. No driving until neurology says so. Reviewed stroke warning signs, call 911.\n2. HTN: lisinopril 20, BP at goal.\n3. T2DM: A1c 7.8 in hospital. Same insulin for now; recheck in January with lipids and liver tests on the new statin.\n4. Mood: PHQ-9 low, will keep checking.\n5. Work: will complete FMLA paperwork for time off."
+            }
           ]
         },
         {
@@ -199,9 +614,27 @@
           "start": "2025-12-09T13:20",
           "reason": "FMLA paperwork",
           "documents": [
-            {"type": "Patient Message", "title": "Work forms", "author": "patient", "date": "2025-12-09T13:20", "body": "Hi, my HR department sent the FMLA forms, I uploaded them here. They need it back by the 19th. Thank you so much for everything."},
-            {"type": "Patient Message", "title": "RE: Work forms", "author": "front desk", "date": "2025-12-09T15:00", "body": "Got them. The doctor will complete and we'll fax directly to your HR and send you a copy. Also, your hospital discharge summary arrived yesterday and is in your chart."},
-            {"type": "Letter", "title": "FMLA certification completed", "author": "PCP", "date": "2025-12-12T16:10", "body": "FMLA certification completed for continuous leave from 11/22/2025 with expected return to work after neurology follow-up, estimated February 2026, then intermittent leave for speech therapy and medical appointments. Faxed to employer HR; copy to patient."}
+            {
+              "type": "Patient Message",
+              "title": "Work forms",
+              "author": "patient",
+              "date": "2025-12-09T13:20",
+              "body": "Hi, my HR department sent the FMLA forms, I uploaded them here. They need it back by the 19th. Thank you so much for everything."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Work forms",
+              "author": "front desk",
+              "date": "2025-12-09T15:00",
+              "body": "Got them. The doctor will complete and we'll fax directly to your HR and send you a copy. Also, your hospital discharge summary arrived yesterday and is in your chart."
+            },
+            {
+              "type": "Letter",
+              "title": "FMLA certification completed",
+              "author": "PCP",
+              "date": "2025-12-12T16:10",
+              "body": "FMLA certification completed for continuous leave from 11/22/2025 with expected return to work after neurology follow-up, estimated February 2026, then intermittent leave for speech therapy and medical appointments. Faxed to employer HR; copy to patient."
+            }
           ]
         },
         {
@@ -210,16 +643,61 @@
           "start": "2026-01-13T09:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "stroke and diabetes follow-up",
-          "state": {"labs": {"Low Density Lipoprotein": 60, "Total Cholesterol": 135, "Hemoglobin A1c": 7.5}},
-          "measure": ["bp", "hr", "weight_kg"],
-          "labs": [
-            {"panel": "Lipid Panel", "collected": "2026-01-13T09:20", "results": [{"test": "Low Density Lipoprotein"}]},
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-01-13T09:20", "results": [{"test": "Alanine Aminotransferase"}]},
-            {"panel": null, "collected": "2026-01-13T09:20", "results": [{"test": "Hemoglobin A1c"}]}
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 60,
+              "Total Cholesterol": 135,
+              "Hemoglobin A1c": 7.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-13T09:00"}],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-01-13T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-13T09:20",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-13T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-13T09:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2026-01-13T10:40", "body": "S: Speech therapy twice a week, says her therapist is pleased. Word-finding pauses less often. No new neuro symptoms. Tolerating atorvastatin, no muscle aches. Aspirin, no bleeding. Fasting 130s-150s, no lows.\nO: BP at goal. Speech fluent with rare pauses. Strength symmetric. Heart regular, lungs clear.\nA/P: post-stroke, improving. Lipids, CMP, A1c today. Neuro clinic in February. Continue current meds. Diabetes visit in April."}
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-01-13T10:40",
+              "body": "S: Speech therapy twice a week, says her therapist is pleased. Word-finding pauses less often. No new neuro symptoms. Tolerating atorvastatin, no muscle aches. Aspirin, no bleeding. Fasting 130s-150s, no lows.\nO: BP at goal. Speech fluent with rare pauses. Strength symmetric. Heart regular, lungs clear.\nA/P: post-stroke, improving. Lipids, CMP, A1c today. Neuro clinic in February. Continue current meds. Diabetes visit in April."
+            }
           ]
         },
         {
@@ -228,7 +706,13 @@
           "start": "2026-01-16T11:45",
           "reason": "lab results",
           "documents": [
-            {"type": "Patient Message", "title": "January results", "author": "PCP", "date": "2026-01-16T11:45", "body": "Hi Adriana, the LDL cholesterol dropped to 58 on the atorvastatin, which is where we want it after a stroke. Liver tests are normal on the statin. A1c is 7.9, higher than I'd like; diet over the holidays and less walking likely played a part. We'll recheck in April before changing insulin. Glad the speech therapy is going well."}
+            {
+              "type": "Patient Message",
+              "title": "January results",
+              "author": "PCP",
+              "date": "2026-01-16T11:45",
+              "body": "Hi Adriana, the LDL cholesterol dropped to 58 on the atorvastatin, which is where we want it after a stroke. Liver tests are normal on the statin. A1c is 7.9, higher than I'd like; diet over the holidays and less walking likely played a part. We'll recheck in April before changing insulin. Glad the speech therapy is going well."
+            }
           ]
         },
         {
@@ -238,7 +722,13 @@
           "service": "Neurology",
           "reason": "stroke follow-up",
           "documents": [
-            {"type": "Consult Note", "title": "Stroke clinic follow-up", "author": "neurology", "date": "2026-02-17T16:20", "body": "Outside stroke neurology clinic, visit 02/11/2026.\n\nMs. Pagan returns about 11 weeks after a small left frontal ischemic stroke treated with tenecteplase. Her speech has improved substantially with therapy; she notices an occasional pause to find a word, mostly when tired. No new focal symptoms.\n\nExam: fluent speech with rare word-finding hesitation; comprehension, repetition and naming intact. Cranial nerves normal, face symmetric. Strength 5/5 throughout, normal tone, reflexes symmetric. Sensation and coordination normal. Gait normal.\n\nAssessment: recovering well from left MCA territory ischemic stroke, mild residual word-finding difficulty.\nPlan: continue aspirin 81 mg daily and atorvastatin 80 mg. Blood pressure and diabetes per primary care. Cleared to drive. Finish the current speech therapy course. Follow up as needed.\nMedications reviewed: aspirin, atorvastatin, lisinopril 20 mg, metformin, insulin glargine 24 units, prednisone 15 mg. NKDA."}
+            {
+              "type": "Consult Note",
+              "title": "Stroke clinic follow-up",
+              "author": "neurology",
+              "date": "2026-02-17T16:20",
+              "body": "Outside stroke neurology clinic, visit 02/11/2026.\n\nMs. Pagan returns about 11 weeks after a small left frontal ischemic stroke treated with tenecteplase. Her speech has improved substantially with therapy; she notices an occasional pause to find a word, mostly when tired. No new focal symptoms.\n\nExam: fluent speech with rare word-finding hesitation; comprehension, repetition and naming intact. Cranial nerves normal, face symmetric. Strength 5/5 throughout, normal tone, reflexes symmetric. Sensation and coordination normal. Gait normal.\n\nAssessment: recovering well from left MCA territory ischemic stroke, mild residual word-finding difficulty.\nPlan: continue aspirin 81 mg daily and atorvastatin 80 mg. Blood pressure and diabetes per primary care. Cleared to drive. Finish the current speech therapy course. Follow up as needed.\nMedications reviewed: aspirin, atorvastatin, lisinopril 20 mg, metformin, insulin glargine 24 units, prednisone 15 mg. NKDA."
+            }
           ]
         },
         {
@@ -247,45 +737,54 @@
           "start": "2026-04-14T15:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "diabetes follow-up",
-          "state": {"labs": {"Hemoglobin A1c": 7.4}},
-          "measure": ["bp", "hr", "weight_kg"],
-          "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-14T15:40", "results": [{"test": "Creatinine"}]},
-            {"panel": null, "collected": "2026-04-14T15:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-14T15:20"}],
-          "documents": [
-            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2026-04-14T17:00", "body": "S: Back at her job full time since March. Neuro cleared her to drive in February, letter received. Speech therapy finished. Fasting 120s-150s. No lows. Walking again on weekends.\nO: vitals as recorded. Speech fluent. Heart regular, lungs clear, feet normal.\nA/P:\n1. T2DM on metformin and glargine 24: labs today.\n2. HTN at goal on lisinopril 20.\n3. Post-stroke on aspirin and atorvastatin 80.\nPap/HPV due this year, will do at September visit. Mammogram overdue since December, order sent."}
-          ]
-        },
-        {
-          "id": "2026-06-09a",
-          "kind": "portal_message",
-          "start": "2026-06-09T18:30",
-          "reason": "refills",
-          "documents": [
-            {"type": "Patient Message", "title": "Refills", "author": "patient", "date": "2026-06-09T18:30", "body": "Could you renew the atorvastatin and the lisinopril? The hospital prescriptions are running out. Also the pen needles."},
-            {"type": "Patient Message", "title": "RE: Refills", "author": "MA", "date": "2026-06-10T08:50", "body": "Atorvastatin 80, lisinopril 20 and pen needles sent for 90 days with 3 refills. The doctor wants fasting labs in August before your September visit; order is in."}
-          ]
-        },
-        {
-          "id": "2026-08-18a",
-          "kind": "lab_only",
-          "start": "2026-08-18T07:40",
-          "reason": "labs before September visit",
-          "state": {"labs": {"Hemoglobin A1c": 7.6}},
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-18T07:45", "results": [{"test": "Glucose"}]},
-            {"panel": null, "collected": "2026-08-18T07:45", "results": [{"test": "Hemoglobin A1c"}]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-14T15:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-14T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
           ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2026-08-18T07:45"}]
-        },
-        {
-          "id": "2026-09-10a",
-          "kind": "office_visit",
-          "start": "2026-09-10T08:40",
-          "reason": "diabetes and stroke follow-up",
-          "appointment": "booked"
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-14T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "author": "PCP",
+              "date": "2026-04-14T17:00",
+              "body": "S: Back at her job full time since March. Neuro cleared her to drive in February, letter received. Speech therapy finished. Fasting 120s-150s. No lows. Walking again on weekends.\nO: vitals as recorded. Speech fluent. Heart regular, lungs clear, feet normal.\nA/P:\n1. T2DM on metformin and glargine 24: labs today.\n2. HTN at goal on lisinopril 20.\n3. Post-stroke on aspirin and atorvastatin 80.\nPap/HPV due this year, will do at September visit. Mammogram overdue since December, order sent."
+            }
+          ]
         }
       ]
     }

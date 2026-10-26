@@ -181,3 +181,8 @@ admission; no troponin value.
   visit 2026-09-17.
 - No acute illnesses, injuries, new diagnoses or life events beyond the
   timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002210 on 2026-07-23. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

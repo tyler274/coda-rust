@@ -4,49 +4,6 @@
       "mrn": "MRN00002545",
       "events": [
         {
-          "id": "2026-01-22a",
-          "kind": "office_visit",
-          "start": "2026-01-22T14:00",
-          "end": "2026-01-22T14:25",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Hypertension follow-up",
-          "state": {"weight_kg": 75.5},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-22T14:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
-          ],
-          "procedures": [
-            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-01-22T14:00"},
-            {"procedure": "Venipuncture", "performed": "2026-01-22T14:30"}
-          ],
-          "documents": [
-            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-01-22T14:30", "body": "HTN f/u\n\nDoing ok. Work steady. Takes all three meds, uses a weekly pill box now. No chest or back pain, no SOB, no palpitations. Asked about cocaine - says he's 'mostly' stayed away. Didn't want to go further today; I left the offer of a referral open.\n\nVitals as charted. Heart regular, soft diastolic murmur RSB as before. Lungs clear. No edema.\n\nA/P\nHTN - a bit higher today (ran here from the bus), well controlled at the last several visits. No change; recheck next visit. BMP.\nMarfan s/p dissection repair - continue aspirin.\nStimulant use disorder - harm discussed again; referral any time he wants it.\nRTC 3 months, video ok."}
-          ]
-        },
-        {
-          "id": "2026-01-23a",
-          "kind": "portal_message",
-          "start": "2026-01-23T10:20",
-          "reason": "Lab result",
-          "documents": [
-            {"type": "Patient Communication", "title": "Labs", "author": "PCP", "date": "2026-01-23T10:20", "body": "Kidney function and potassium normal again. Keep it up."}
-          ]
-        },
-        {
-          "id": "2026-04-23a",
-          "kind": "telehealth_visit",
-          "start": "2026-04-23T11:30",
-          "end": "2026-04-23T11:45",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Hypertension check, video",
-          "procedures": [
-            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2026-04-23T11:30"}
-          ],
-          "documents": [
-            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2026-04-23T11:50", "body": "Video visit, pt at his apartment, ID verified by name and DOB.\n\nBP check-in. Feels well. No chest pain, dyspnea, palpitations or lightheadedness. Taking meds daily. Refills on file at pharmacy. No ED visits since last summer.\n\nObs: well-appearing on camera, speaking comfortably, no distress.\n\nA/P: HTN on metoprolol succinate 50 and lisinopril 10, no changes. Marfan s/p repair on aspirin. In-person visit late summer with BMP, sooner if needed."}
-          ]
-        },
-        {
           "id": "2026-07-16a",
           "kind": "hospital_admission",
           "start": "2026-07-16T19:35",
@@ -54,92 +11,86 @@
           "service": "Emergency Medicine; Cardiac Surgery",
           "reason": "Severe chest discomfort and dyspnea",
           "vitals": [
-            {"time": "2026-07-16T19:40", "bp": [160, 55], "hr": 112, "temp_c": 37.9}
+            {
+              "time": "2026-07-16T19:40",
+              "bp": [
+                160,
+                55
+              ],
+              "hr": 112,
+              "temp_c": 37.9
+            }
           ],
-          "conditions": [
-            {"label": "Type A aortic dissection", "icd10": "I71.010", "action": "diagnosed", "onset": "2026-07-16", "note": "Recurrent, native aortic root"}
-          ],
+          "conditions": [],
           "labs": [
-            {"panel": null, "collected": "2026-07-16T19:55", "resulted": "2026-07-21T19:55", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (set 1)"}]},
-            {"panel": null, "collected": "2026-07-16T20:00", "resulted": "2026-07-21T20:00", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (set 2)"}]}
+            {
+              "panel": null,
+              "collected": "2026-07-16T19:55",
+              "resulted": "2026-07-21T19:55",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (set 1)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-16T20:00",
+              "resulted": "2026-07-21T20:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (set 2)"
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "Chest X-ray, 1 view", "performed": "2026-07-16T19:50", "issued": "2026-07-16T20:10", "text": "Portable AP chest. Comparison 08/21/2025. The mediastinum is widened and the aortic knob is prominent. Median sternotomy wires. No pneumothorax. No large pleural effusion.", "conclusion": "Widened mediastinum with prominent aortic knob."},
-            {"study": "Transthoracic echocardiogram", "performed": "2026-07-16T20:05", "issued": "2026-07-16T20:20", "text": "Limited bedside study in the emergency department. Moderate aortic regurgitation. A mobile intimal flap is seen within the aorta. Left ventricular systolic function grossly normal. No pericardial effusion.", "conclusion": "Mobile intimal flap within the aorta; moderate aortic regurgitation."},
-            {"study": "Transesophageal echocardiogram, intraoperative", "loinc": "100877-0", "performed": "2026-07-16T21:30", "text": "Pre-repair: mobile intimal flap in the native aortic root below the prior ascending graft, consistent with Stanford type A dissection. Moderate aortic regurgitation. Left ventricular systolic function normal. Post-repair: valve-sparing root replacement in place, no significant residual aortic regurgitation, normal ventricular function.", "conclusion": "Recurrent Stanford type A dissection of the native aortic root with moderate aortic regurgitation; after repair, no significant residual regurgitation."}
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-07-16T19:50",
+              "issued": "2026-07-16T20:10",
+              "text": "Portable AP chest. Comparison 08/21/2025. The mediastinum is widened and the aortic knob is prominent. Median sternotomy wires. No pneumothorax. No large pleural effusion.",
+              "conclusion": "Widened mediastinum with prominent aortic knob."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-07-16T20:05",
+              "issued": "2026-07-16T20:20",
+              "text": "Limited bedside study in the emergency department. Moderate aortic regurgitation. A mobile intimal flap is seen within the aorta. Left ventricular systolic function grossly normal. No pericardial effusion.",
+              "conclusion": "Mobile intimal flap within the aorta; moderate aortic regurgitation."
+            },
+            {
+              "study": "Transesophageal echocardiogram, intraoperative",
+              "loinc": "100877-0",
+              "performed": "2026-07-16T21:30",
+              "text": "Pre-repair: mobile intimal flap in the native aortic root below the prior ascending graft, consistent with Stanford type A dissection. Moderate aortic regurgitation. Left ventricular systolic function normal. Post-repair: valve-sparing root replacement in place, no significant residual aortic regurgitation, normal ventricular function.",
+              "conclusion": "Recurrent Stanford type A dissection of the native aortic root with moderate aortic regurgitation; after repair, no significant residual regurgitation."
+            }
           ],
           "documents": [
-            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-07-27T09:40", "body": "REGIONAL HOSPITAL — EMERGENCY DEPARTMENT\nDate of service: 07/16/2026\n\nCC: chest pain, short of breath\n\nHPI: 30M, Marfan syndrome, emergency ascending/hemiarch repair for type A dissection 11/2024, cocaine-associated alveolar hemorrhage 7/2025, HTN. Sudden severe chest discomfort and difficulty breathing that started about 40 minutes before he arrived. Acknowledges ongoing cocaine use, both injected and snorted.\n\nMeds: metoprolol succinate 50 daily, lisinopril 10 daily, aspirin 81 daily.\nAllergies: penicillin (rash), iodinated contrast (urticaria).\n\nExam: T 37.9 C (100.2 F), HR 112, BP 160/55. Distressed. Left radial pulse markedly weaker than the right and the left arm is cool. Inspiratory crackles throughout both lungs. High-pitched decrescendo diastolic murmur, loudest at the left 3rd intercostal space. No chest wall trauma or wounds.\n\nData: Portable CXR - widened mediastinum, prominent aortic knob. Bedside echo - moderate AR and a mobile intimal flap in the aorta.\n\nMDM: Recurrent aortic dissection in a patient with Marfan syndrome and prior proximal repair. CT angiography not pursued given contrast allergy and findings already sufficient for surgery; cardiac surgery at bedside, to OR for TEE and repair. Febrile with injection use and a regurgitant murmur: two sets of blood cultures drawn before the OR.\n\nDisposition: OR."},
-            {"type": "Procedure Notes", "title": "Operative Report", "author": "cardiac surgery", "date": "2026-07-27T09:40", "body": "REGIONAL HOSPITAL — CARDIAC SURGERY\nOPERATIVE REPORT\nDate of surgery: 07/16/2026\n\nPreoperative diagnosis: Recurrent acute aortic dissection; Marfan syndrome; status post ascending and hemiarch replacement with valve resuspension (11/2024).\nPostoperative diagnosis: Recurrent acute Stanford type A dissection of the native aortic root; moderate aortic regurgitation.\n\nProcedure: Emergency redo median sternotomy. Valve-sparing aortic root replacement (reimplantation technique) with reimplantation of the coronary ostia and anastomosis to the existing ascending graft. Cardiopulmonary bypass.\n\nIntraoperative TEE: pre-repair mobile intimal flap in the native root below the prior graft, moderate AR; post-repair no significant residual AR, normal LV function.\n\nFindings and course: Careful redo sternal entry. Dense adhesions taken down. The native root was dissected below the previous graft. Root excised with the valve preserved, coronary buttons mobilized, and a root graft sewn in with the valve reimplanted inside it. Coronary buttons reimplanted. Distal anastomosis to the existing ascending graft. Weaned from bypass without difficulty. Hemostasis obtained, chest closed.\n\nCondition: to cardiac surgical ICU, intubated, stable.\nAllergies: penicillin, iodinated contrast."},
-            {"type": "Discharge Summaries", "title": "Discharge Summary", "author": "cardiac surgery", "date": "2026-07-27T09:40", "body": "REGIONAL HOSPITAL — DISCHARGE SUMMARY\nAdmitted: 07/16/2026   Discharged: 07/25/2026\nService: Cardiac Surgery\n\nDiagnoses: Recurrent acute type A aortic dissection of the native aortic root, status post emergency repair. Aortic regurgitation, corrected. Marfan syndrome. Hypertension. Stimulant use disorder, severe, cocaine.\n\nProcedure: 07/16 emergency redo sternotomy with valve-sparing aortic root replacement (reimplantation).\n\nCourse: Presented with acute chest pain and dyspnea; bedside echo showed an intimal flap and moderate AR. Taken directly to the OR; TEE confirmed a type A dissection of the native root below the 2024 graft. Repair as above, post-repair TEE with no significant residual regurgitation. Extubated on POD 1. Blood cultures x2 drawn on arrival: no growth at 5 days. Progressive ambulation, chest tubes out, tolerating diet.\n\nDischarge medications (unchanged):\n- Metoprolol succinate ER 50 mg daily\n- Lisinopril 10 mg daily\n- Aspirin 81 mg daily\n\nAllergies: Penicillin (rash). Iodinated contrast (urticaria).\n\nInstructions: Sternal precautions, no lifting over 10 lb, no driving until cleared. Cardiac surgery clinic in 2-3 weeks. PCP within 1 week. Cardiology aortic clinic after surgical clearance. Cocaine cessation strongly advised."}
-          ]
-        },
-        {
-          "id": "2026-07-17a",
-          "kind": "telephone",
-          "start": "2026-07-17T08:50",
-          "reason": "Family call re hospitalization",
-          "documents": [
-            {"type": "Telephone Encounter", "title": "Phone Call - Mother", "author": "RN", "date": "2026-07-17T09:00", "body": "Mother called. Declan back at the regional hospital, had another emergency aortic operation last night, in the cardiac ICU. She's with him. Will let us know when he goes home. Routed to PCP."},
-            {"type": "Telephone Encounter", "title": "PCP Note", "author": "PCP", "date": "2026-07-17T12:20", "body": "Thank you. Front desk please watch for discharge paperwork and book a post-hospital visit within a week of discharge."}
-          ]
-        },
-        {
-          "id": "2026-07-27a",
-          "kind": "telephone",
-          "start": "2026-07-27T11:10",
-          "reason": "Post-discharge call",
-          "documents": [
-            {"type": "Telephone Encounter", "title": "Transitional Care Call", "author": "RN", "date": "2026-07-27T11:25", "body": "Post-discharge call. Home since Saturday, mother staying with him. Pain controlled. Incision dry, no fever. Same three meds as before, has them. Knows sternal precautions. Visit Wed 7/29 with PCP."}
-          ]
-        },
-        {
-          "id": "2026-07-29a",
-          "kind": "office_visit",
-          "start": "2026-07-29T10:00",
-          "end": "2026-07-29T10:50",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Hospital follow-up after redo aortic root surgery",
-          "conditions": [
-            {"label": "Type A aortic dissection", "icd10": "I71.010", "action": "resolved", "note": "Repaired 07/16/2026, valve-sparing root replacement"},
-            {"label": "Aortic regurgitation", "icd10": "I35.1", "action": "resolved", "note": "Corrected by valve-sparing root replacement 07/16/2026"}
-          ],
-          "state": {"weight_kg": 73.0, "labs": {"Hemoglobin": 12.4}},
-          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
-          "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-29T10:45", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-29T10:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
-            {"panel": null, "collected": "2026-07-29T10:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
-            {"panel": null, "collected": "2026-07-29T10:45", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
-          ],
-          "procedures": [
-            {"procedure": "Transitional care management, high complexity", "performed": "2026-07-29T10:00"},
-            {"procedure": "Venipuncture", "performed": "2026-07-29T10:45"}
-          ],
-          "orders": [
-            {"id": "addiction-referral-2026", "action": "placed", "order": "Addiction medicine referral", "category": "referral", "to": "Addiction Medicine", "reason": "Stimulant use disorder, severe, cocaine, with injection use; recurrent aortic dissection"}
-          ],
-          "documents": [
-            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2026-07-29T10:55", "body": "POST-HOSPITAL VISIT\n\nReviewed ED record, op note, discharge summary.\n\nS: Admitted 7/16-7/25. Sudden chest pain and dyspnea; recurrent type A dissection, this time in the native root below the 2024 graft, with moderate AR. Emergency redo sternotomy and valve-sparing root replacement the same night. Post-repair TEE no significant AR. Blood cultures negative. Extubated next day, uneventful otherwise. Home 4 days. Sore but managing. Walking short distances in the apartment building. No fever, no SOB at rest.\n\nHe told the ED he's been using cocaine regularly, including injecting. He confirms that with me. He says this was the scare that got through: 'two in two years.' He wants help now.\n\nMeds: metoprolol succinate 50 daily, lisinopril 10 daily, aspirin 81 daily.\nAllergies: PCN (rash), contrast (hives).\n\nO: Vitals as charted, weight down ~3 kg. Fresh sternotomy, well approximated, no erythema or drainage, sternum stable. Heart regular, no murmur heard today. Lungs clear. Radial pulses palpable bilaterally. No edema.\n\nA/P:\n1. Recurrent type A dissection s/p valve-sparing root replacement. Problem list updated: dissection repaired, AR corrected. Surgery clinic 8/13. Sternal precautions.\n2. HTN. Continue metoprolol and lisinopril. Aspirin continues. CBC/BMP today.\n3. Stimulant use disorder, severe, cocaine, now with injection use. New addiction medicine referral placed and he agrees to go - referral coordinator to help him book. Repeat HIV and hep C today given injection use.\n\nRTC ~6 weeks, after surgery clearance."}
-          ]
-        },
-        {
-          "id": "2026-07-31a",
-          "kind": "portal_message",
-          "start": "2026-07-31T15:40",
-          "reason": "Results",
-          "documents": [
-            {"type": "Patient Communication", "title": "Your labs", "author": "PCP", "date": "2026-07-31T15:40", "body": "Declan - your blood count is a little low, which is expected after surgery and should come back up on its own; kidney labs are fine. HIV and hepatitis C tests are negative. The addiction medicine office should be calling you; let me know if you haven't heard by Wednesday."},
-            {"type": "Patient Communication", "title": "RE: Your labs", "author": "patient", "date": "2026-07-31T18:22", "body": "thank you. that's a relief. haven't heard yet"}
-          ]
-        },
-        {
-          "id": "2026-08-05a",
-          "kind": "telephone",
-          "start": "2026-08-05T13:15",
-          "reason": "Referral coordination",
-          "documents": [
-            {"type": "Telephone Encounter", "title": "Referral Coordination", "author": "front desk", "date": "2026-08-05T13:15", "body": "Called addiction medicine re: referral sent 7/29. Received, in intake queue; their intake coordinator will call pt to schedule the first appointment, expected in September. Let pt know by phone, he'll watch for the call."}
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-07-27T09:40",
+              "body": "REGIONAL HOSPITAL — EMERGENCY DEPARTMENT\nDate of service: 07/16/2026\n\nCC: chest pain, short of breath\n\nHPI: 30M, Marfan syndrome, emergency ascending/hemiarch repair for type A dissection 11/2024, cocaine-associated alveolar hemorrhage 7/2025, HTN. Sudden severe chest discomfort and difficulty breathing that started about 40 minutes before he arrived. Acknowledges ongoing cocaine use, both injected and snorted.\n\nMeds: metoprolol succinate 50 daily, lisinopril 10 daily, aspirin 81 daily.\nAllergies: penicillin (rash), iodinated contrast (urticaria).\n\nExam: T 37.9 C (100.2 F), HR 112, BP 160/55. Distressed. Left radial pulse markedly weaker than the right and the left arm is cool. Inspiratory crackles throughout both lungs. High-pitched decrescendo diastolic murmur, loudest at the left 3rd intercostal space. No chest wall trauma or wounds.\n\nData: Portable CXR - widened mediastinum, prominent aortic knob. Bedside echo - moderate AR and a mobile intimal flap in the aorta.\n\nMDM: Recurrent aortic dissection in a patient with Marfan syndrome and prior proximal repair. CT angiography not pursued given contrast allergy and findings already sufficient for surgery; cardiac surgery at bedside, to OR for TEE and repair. Febrile with injection use and a regurgitant murmur: two sets of blood cultures drawn before the OR.\n\nDisposition: OR."
+            },
+            {
+              "type": "Procedure Notes",
+              "title": "Operative Report",
+              "author": "cardiac surgery",
+              "date": "2026-07-27T09:40",
+              "body": "REGIONAL HOSPITAL — CARDIAC SURGERY\nOPERATIVE REPORT\nDate of surgery: 07/16/2026\n\nPreoperative diagnosis: Recurrent acute aortic dissection; Marfan syndrome; status post ascending and hemiarch replacement with valve resuspension (11/2024).\nPostoperative diagnosis: Recurrent acute Stanford type A dissection of the native aortic root; moderate aortic regurgitation.\n\nProcedure: Emergency redo median sternotomy. Valve-sparing aortic root replacement (reimplantation technique) with reimplantation of the coronary ostia and anastomosis to the existing ascending graft. Cardiopulmonary bypass.\n\nIntraoperative TEE: pre-repair mobile intimal flap in the native root below the prior graft, moderate AR; post-repair no significant residual AR, normal LV function.\n\nFindings and course: Careful redo sternal entry. Dense adhesions taken down. The native root was dissected below the previous graft. Root excised with the valve preserved, coronary buttons mobilized, and a root graft sewn in with the valve reimplanted inside it. Coronary buttons reimplanted. Distal anastomosis to the existing ascending graft. Weaned from bypass without difficulty. Hemostasis obtained, chest closed.\n\nCondition: to cardiac surgical ICU, intubated, stable.\nAllergies: penicillin, iodinated contrast."
+            },
+            {
+              "type": "Discharge Summaries",
+              "title": "Discharge Summary",
+              "author": "cardiac surgery",
+              "date": "2026-07-27T09:40",
+              "body": "REGIONAL HOSPITAL — DISCHARGE SUMMARY\nAdmitted: 07/16/2026   Discharged: 07/25/2026\nService: Cardiac Surgery\n\nDiagnoses: Recurrent acute type A aortic dissection of the native aortic root, status post emergency repair. Aortic regurgitation, corrected. Marfan syndrome. Hypertension. Stimulant use disorder, severe, cocaine.\n\nProcedure: 07/16 emergency redo sternotomy with valve-sparing aortic root replacement (reimplantation).\n\nCourse: Presented with acute chest pain and dyspnea; bedside echo showed an intimal flap and moderate AR. Taken directly to the OR; TEE confirmed a type A dissection of the native root below the 2024 graft. Repair as above, post-repair TEE with no significant residual regurgitation. Extubated on POD 1. Blood cultures x2 drawn on arrival: no growth at 5 days. Progressive ambulation, chest tubes out, tolerating diet.\n\nDischarge medications (unchanged):\n- Metoprolol succinate ER 50 mg daily\n- Lisinopril 10 mg daily\n- Aspirin 81 mg daily\n\nAllergies: Penicillin (rash). Iodinated contrast (urticaria).\n\nInstructions: Sternal precautions, no lifting over 10 lb, no driving until cleared. Cardiac surgery clinic in 2-3 weeks. PCP within 1 week. Cardiology aortic clinic after surgical clearance. Cocaine cessation strongly advised."
+            }
           ]
         },
         {
@@ -149,26 +100,14 @@
           "service": "Cardiac Surgery",
           "reason": "Postoperative follow-up",
           "documents": [
-            {"type": "Consult Note", "title": "Cardiac Surgery Clinic Letter", "author": "cardiac surgery", "date": "2026-08-14T10:30", "body": "REGIONAL HOSPITAL — CARDIAC SURGERY CLINIC\nDate of visit: 08/13/2026\n\nDear Doctor,\n\nMr. Fischer returned four weeks after emergency redo sternotomy with valve-sparing aortic root replacement on 07/16 for a recurrent type A dissection of the native root.\n\nHe is recovering well. Sternotomy healing, sternum stable. Heart sounds regular. Lungs clear. No edema.\n\nMedications: metoprolol succinate 50 mg daily, lisinopril 10 mg daily, aspirin 81 mg daily. Allergies: penicillin, iodinated contrast.\n\nPlan: Continue all three medications. No lifting over 10 lb until we clear him at the next check. Desk work from home is fine. He will be seen in the cardiology aortic clinic for long-term follow-up. We reinforced that cocaine is a direct threat to his aorta.\n\nCardiac Surgery"}
+            {
+              "type": "Consult Note",
+              "title": "Cardiac Surgery Clinic Letter",
+              "author": "cardiac surgery",
+              "date": "2026-08-14T10:30",
+              "body": "REGIONAL HOSPITAL — CARDIAC SURGERY CLINIC\nDate of visit: 08/13/2026\n\nDear Doctor,\n\nMr. Fischer returned four weeks after emergency redo sternotomy with valve-sparing aortic root replacement on 07/16 for a recurrent type A dissection of the native root.\n\nHe is recovering well. Sternotomy healing, sternum stable. Heart sounds regular. Lungs clear. No edema.\n\nMedications: metoprolol succinate 50 mg daily, lisinopril 10 mg daily, aspirin 81 mg daily. Allergies: penicillin, iodinated contrast.\n\nPlan: Continue all three medications. No lifting over 10 lb until we clear him at the next check. Desk work from home is fine. He will be seen in the cardiology aortic clinic for long-term follow-up. We reinforced that cocaine is a direct threat to his aorta.\n\nCardiac Surgery"
+            }
           ]
-        },
-        {
-          "id": "2026-08-24a",
-          "kind": "portal_message",
-          "start": "2026-08-24T20:31",
-          "reason": "Question about activity",
-          "documents": [
-            {"type": "Patient Communication", "title": "question", "author": "patient", "date": "2026-08-24T20:31", "body": "hi - surgeon said desk work is ok. I have a client meeting where I'd need to carry a laptop bag and a box of print samples. is that too much? also still haven't gotten a date from the addiction place, they said september"},
-            {"type": "Patient Communication", "title": "RE: question", "author": "PCP", "date": "2026-08-25T08:15", "body": "Laptop bag is probably under 10 lb, but let someone else carry the box of samples until surgery clears you. If the addiction medicine office hasn't called with a date by the time I see you on 9/10, we'll call them together from the office."}
-          ]
-        },
-        {
-          "id": "2026-09-10a",
-          "kind": "office_visit",
-          "start": "2026-09-10T10:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Follow-up after aortic surgery, hypertension",
-          "appointment": "booked"
         }
       ]
     }

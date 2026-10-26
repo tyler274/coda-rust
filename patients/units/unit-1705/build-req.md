@@ -199,3 +199,8 @@ name, problem-list dump, "(diagnosed ...)" stamp or quiz text reaches the chart.
   missed PCP visit (2025-03-18), records requests.
 - A diabetes visit booked after today.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001705 on 2026-07-21. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

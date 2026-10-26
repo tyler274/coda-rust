@@ -61,3 +61,8 @@
 - 2026-07-14 eye exam letter (P)
 - 2026-08-24 portal: dental cleaning, amoxicillin refill (A7, P)
 - 2026-09-15 booked diabetes follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002110 on 2026-06-16. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

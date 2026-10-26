@@ -912,39 +912,6 @@
      ]
     },
     {
-     "id": "2026-04-13a",
-     "kind": "portal_message",
-     "start": "2026-04-13T06:55",
-     "service": "Internal Medicine — Primary Care",
-     "reason": "Joint pain and rash back",
-     "orders": [
-      {
-       "id": "rheum-urgent-2026",
-       "action": "placed",
-       "order": "Rheumatology referral",
-       "category": "referral",
-       "to": "Rheumatology",
-       "reason": "Suspected SLE flare, urgent"
-      }
-     ],
-     "documents": [
-      {
-       "type": "Patient Message",
-       "title": "Lupus acting up?",
-       "author": "patient",
-       "date": "2026-04-13T06:55",
-       "body": "I think my lupus is flaring. Since the weekend my wrists and knees are swollen and stiff and really hurt, the red rash is back on my face, and I'm completely wiped out. It feels like when I first got diagnosed. My rheumatology visit isn't until next month. What should I do?"
-      },
-      {
-       "type": "Patient Message",
-       "title": "RE: Lupus acting up?",
-       "author": "PCP",
-       "date": "2026-04-13T09:40",
-       "body": "Hi Nilda - that does sound like a flare. I called the rheumatology office this morning and they have an urgent slot for you on 4/16 at 3:00 pm; it's on your appointment list. Keep taking your hydroxychloroquine. If you get a fever, chest pain, trouble breathing, or swelling in your legs before then, call us or go to the ED."
-      }
-     ]
-    },
-    {
      "id": "2026-04-16a",
      "kind": "specialist_visit",
      "start": "2026-04-16T15:00",
@@ -955,21 +922,7 @@
       "hr",
       "weight_kg"
      ],
-     "medications": [
-      {
-       "drug": "prednisone 20 MG Oral Tablet",
-       "sig": "Take 3 tablets (60 mg) by mouth once daily in the morning with food; taper as directed by rheumatology",
-       "dose": {
-        "value": 60,
-        "unit": "mg"
-       },
-       "frequency": "DAILY",
-       "route": "Oral",
-       "course": "chronic",
-       "reason": "Systemic lupus erythematosus flare",
-       "action": "historical"
-      }
-     ],
+     "medications": [],
      "labs": [
       {
        "panel": "CBC with Differential",
@@ -1013,20 +966,14 @@
        "resulted": "2026-04-16T18:10"
       }
      ],
-     "orders": [
-      {
-       "id": "rheum-urgent-2026",
-       "action": "done",
-       "date": "2026-04-16T15:00"
-      }
-     ],
+     "orders": [],
      "documents": [
       {
        "type": "Consult Note",
        "title": "Rheumatology urgent visit",
        "author": "rheumatology",
        "date": "2026-04-17T13:00",
-       "body": "RHEUMATOLOGY - URGENT VISIT\nDate of service: 04/16/2026\nArranged by her PCP after a portal message 04/13.\n\nMs. Mendez, 38, with SLE since 2023 (quiet on hydroxychloroquine until now) and acute promyelocytic leukemia in second remission (tretinoin finished 03/2026), comes in with several days of worsening joint pain and swelling in the wrists and knees, return of her facial rash, and marked fatigue.\n\nExam: BP 111/72, pulse 63, weight 62.1 kg. Malar rash. Synovitis of both wrists and both knees. Heart and lungs normal. No edema.\n\nLabs 04/16/2026: anti-dsDNA positive; C3 low, C4 low. CBC normal (WBC 4.3, Hgb 12.9, plt 263). Creatinine 0.73. Urinalysis without protein or blood.\n\nAssessment: severe SLE flare - cutaneous and articular - with active serologies. No renal or hematologic involvement.\nPlan:\n1. Prednisone 60 mg daily (3 x 20 mg tablets each morning), then taper once she responds; I will send the taper schedule.\n2. Continue hydroxychloroquine 200 mg daily.\n3. Reviewed common steroid side effects and to call us with any problems.\n4. Recheck in 4-6 weeks.\n\nCurrent medications: prednisone 60 mg daily (new); hydroxychloroquine 200 mg daily; folic acid 1 mg daily; vitamin D3 2000 units daily."
+       "body": "RHEUMATOLOGY - URGENT VISIT\nDate of service: 04/16/2026\nArranged after she called the clinic 04/13.\n\nMs. Mendez, 38, with SLE since 2023 (quiet on hydroxychloroquine until now) and acute promyelocytic leukemia in second remission (tretinoin finished 03/2026), comes in with several days of worsening joint pain and swelling in the wrists and knees, return of her facial rash, and marked fatigue.\n\nExam: BP 111/72, pulse 63, weight 62.1 kg. Malar rash. Synovitis of both wrists and both knees. Heart and lungs normal. No edema.\n\nLabs 04/16/2026: anti-dsDNA positive; C3 low, C4 low. CBC normal (WBC 4.3, Hgb 12.9, plt 263). Creatinine 0.73. Urinalysis without protein or blood.\n\nAssessment: severe SLE flare - cutaneous and articular - with active serologies. No renal or hematologic involvement.\nPlan:\n1. Prednisone 60 mg daily (3 x 20 mg tablets each morning), then taper once she responds; I will send the taper schedule.\n2. Continue hydroxychloroquine 200 mg daily.\n3. Reviewed common steroid side effects and to call us with any problems.\n4. Recheck in 4-6 weeks.\n\nCurrent medications: prednisone 60 mg daily (new); hydroxychloroquine 200 mg daily; folic acid 1 mg daily; vitamin D3 2000 units daily."
       }
      ]
     },
@@ -1077,28 +1024,8 @@
        "spo2": 99
       }
      ],
-     "conditions": [
-      {
-       "label": "Corticosteroid-induced psychotic disorder",
-       "icd10": "F19.959",
-       "action": "diagnosed"
-      }
-     ],
-     "medications": [
-      {
-       "drug_text": "olanzapine 5 MG Oral Tablet",
-       "sig": "Take 1 tablet (5 mg) by mouth at bedtime",
-       "dose": {
-        "value": 5,
-        "unit": "mg"
-       },
-       "frequency": "QHS",
-       "route": "Oral",
-       "course": "chronic",
-       "reason": "Corticosteroid-induced psychosis",
-       "action": "historical"
-      }
-     ],
+     "conditions": [],
+     "medications": [],
      "labs": [
       {
        "panel": "Basic Metabolic Panel (BMP)",
@@ -1191,75 +1118,6 @@
      ]
     },
     {
-     "id": "2026-04-28a",
-     "kind": "telephone",
-     "start": "2026-04-28T16:05",
-     "service": "Internal Medicine — Primary Care",
-     "reason": "ED follow-up call",
-     "documents": [
-      {
-       "type": "Telephone Encounter",
-       "title": "ED follow-up call",
-       "author": "PCP",
-       "date": "2026-04-28T16:20",
-       "body": "Saw ED and psychiatry notes on the HIE - steroid-induced psychosis, discharged home late this morning on olanzapine 5 mg qhs.\nCalled pt. She is home, her family is staying with her. Voices \"quieter,\" still there at times; she knows they aren't real. Slept last night. No thoughts of harming herself or anyone. Rheumatology called her this afternoon with the taper schedule.\nPrednisone remains on her list while it tapers down per rheumatology. Visit booked 5/4. Return precautions reviewed with pt and family member on speaker."
-      }
-     ]
-    },
-    {
-     "id": "2026-04-29a",
-     "kind": "portal_message",
-     "start": "2026-04-29T09:12",
-     "service": "Internal Medicine — Primary Care",
-     "reason": "Work note for school",
-     "documents": [
-      {
-       "type": "Patient Message",
-       "title": "School note again",
-       "author": "patient",
-       "date": "2026-04-29T09:12",
-       "body": "Hi - sorry to ask again. I need a note for school for 4/27 and 4/28 and probably the rest of this week. Thank you for calling yesterday."
-      },
-      {
-       "type": "Letter",
-       "title": "Work excuse",
-       "author": "PCP",
-       "date": "2026-04-29T11:30",
-       "body": "To whom it may concern:\n\nNilda Mendez was seen in the emergency department and kept for observation on 04/27/2026-04/28/2026. Please excuse her from work 04/27/2026 through 05/08/2026. Return to work will be confirmed at her follow-up visit on 05/04/2026.\n\nPrimary Care Physician"
-      }
-     ]
-    },
-    {
-     "id": "2026-05-04a",
-     "kind": "office_visit",
-     "start": "2026-05-04T10:40",
-     "service": "Internal Medicine — Primary Care",
-     "reason": "ED follow-up",
-     "measure": [
-      "bp",
-      "hr",
-      "rr",
-      "temp_c",
-      "spo2",
-      "weight_kg"
-     ],
-     "procedures": [
-      {
-       "procedure": "Office visit, established patient, moderate MDM",
-       "performed": "2026-05-04T10:40"
-      }
-     ],
-     "documents": [
-      {
-       "type": "Progress Notes",
-       "title": "ED Follow-up",
-       "author": "PCP",
-       "date": "2026-05-04T11:45",
-       "body": "ED FOLLOW-UP\n\n38F, SLE with severe flare (prednisone 60 mg started 4/16 by rheum), relapsed APL in second CR (ATRA finished 3/18), seen in ED 4/27-4/28 for corticosteroid-induced psychosis; started olanzapine 5 mg qhs.\n\nSince discharge: voices and paranoid thoughts stopped around 4/30 and haven't returned. Sleeping well. Calm. She has good insight - describes the voices as \"the steroid talking\" and was frightened by how real they seemed. Joints much better and the facial rash has faded. Taking prednisone taper exactly as rheum wrote it; on schedule. No SI/HI.\n\nMeds: prednisone (tapering per rheumatology), olanzapine 5 mg qhs, hydroxychloroquine 200 mg daily, folic acid 1 mg daily, vitamin D3 2000 units daily.\n\nExam: BP 96/68, HR 77, T 37.1, wt 62.9 kg.\nMSE: well-groomed, calm, cooperative, good eye contact. Speech normal. Mood \"relieved,\" affect bright. Thought process linear and goal-directed. No delusions elicited. Denies AH/VH; not responding to internal stimuli. Denies SI/HI. Insight and judgment good.\nWrists and knees without swelling. No malar rash.\n\nA/P:\n1. Corticosteroid-induced psychosis - resolved symptomatically. Continue olanzapine 5 mg qhs for now; plan to stop in about 4 weeks if she stays well.\n2. SLE flare - improving; continue prednisone taper per rheum and HCQ.\n3. APL in second CR - hem/onc surveillance.\n4. Work: may return 5/11.\nRTC 6/1 (can do zoster dose 2 then)."
-      }
-     ]
-    },
-    {
      "id": "2026-05-21a",
      "kind": "specialist_visit",
      "start": "2026-05-21T11:15",
@@ -1329,59 +1187,6 @@
      ]
     },
     {
-     "id": "2026-06-01a",
-     "kind": "office_visit",
-     "start": "2026-06-01T15:20",
-     "service": "Internal Medicine — Primary Care",
-     "reason": "Follow-up, off antipsychotic",
-     "measure": [
-      "bp",
-      "hr",
-      "rr",
-      "temp_c",
-      "spo2",
-      "weight_kg"
-     ],
-     "conditions": [
-      {
-       "label": "Corticosteroid-induced psychotic disorder",
-       "icd10": "F19.959",
-       "action": "resolved"
-      }
-     ],
-     "medications": [
-      {
-       "drug_text": "olanzapine 5 MG Oral Tablet",
-       "action": "stop"
-      }
-     ],
-     "immunizations": [
-      {
-       "vaccine": "Zoster recombinant (Shingrix)",
-       "date": "2026-06-01T15:55"
-      }
-     ],
-     "procedures": [
-      {
-       "procedure": "Office visit, established patient, low MDM",
-       "performed": "2026-06-01T15:20"
-      },
-      {
-       "procedure": "Immunization administration",
-       "performed": "2026-06-01T15:55"
-      }
-     ],
-     "documents": [
-      {
-       "type": "Progress Notes",
-       "title": "Follow-up",
-       "author": "PCP",
-       "date": "2026-06-01T16:10",
-       "body": "FOLLOW-UP\n\n38F seen for follow-up of corticosteroid-induced psychosis (4/27). No hallucinations, paranoia or sleep disturbance for a full month. Back at school since 5/11, finishing the year. Prednisone taper continues per rheumatology, down to a low dose now; joints and skin quiet.\n\nMeds: prednisone taper (rheum), olanzapine 5 mg qhs, hydroxychloroquine 200 mg daily, folic acid 1 mg daily, vitamin D3 2000 units daily.\n\nExam: BP 107/75, HR 63, wt 62.1 kg.\nCalm, euthymic, linear. No psychotic features. Denies SI/HI.\n\nA/P:\n1. Corticosteroid-induced psychosis - resolved. Stop olanzapine today (5 mg, ~5 weeks; no taper needed). Call promptly if any voices or paranoid thoughts return, especially if steroids are ever needed again.\n2. SLE - flare settling; taper per rheum.\n3. Recombinant zoster vaccine dose 2 given today (dose 1 on 4/2) - series complete.\nRTC annual physical, sooner prn."
-      }
-     ]
-    },
-    {
      "id": "2026-06-17a",
      "kind": "specialist_visit",
      "start": "2026-06-17T10:30",
@@ -1436,12 +1241,7 @@
       "hr",
       "weight_kg"
      ],
-     "medications": [
-      {
-       "drug": "prednisone 20 MG Oral Tablet",
-       "action": "stop"
-      }
-     ],
+     "medications": [],
      "labs": [
       {
        "panel": "CBC with Differential",
@@ -1492,45 +1292,6 @@
        "author": "rheumatology",
        "date": "2026-07-07T11:20",
        "body": "RHEUMATOLOGY FOLLOW-UP\nDate of service: 07/06/2026\n\nThe 04/2026 lupus flare has settled. She finished the prednisone taper and is now off prednisone. No joint pain, no rash. No recurrence of the psychiatric symptoms she had in 04/2026; off olanzapine since 06/01.\n\nExam: BP 115/74, weight 62.0 kg. No synovitis, no malar rash.\nLabs: CBC normal (WBC 5.4, Hgb 13.5, plt 240). C3, C4 normal. Creatinine 0.78. Urinalysis negative for protein and blood.\n\nPlan: prednisone off. Continue hydroxychloroquine 200 mg daily. Follow up in 3 months. Annual retinal screening from 2028 (5 years of hydroxychloroquine).\n\nCurrent medications: hydroxychloroquine 200 mg daily; folic acid 1 mg daily; vitamin D3 2000 units daily."
-      }
-     ]
-    },
-    {
-     "id": "2026-07-21a",
-     "kind": "pharmacy",
-     "start": "2026-07-21T08:40",
-     "service": "Internal Medicine — Primary Care",
-     "reason": "Refill request routed to rheumatology",
-     "documents": [
-      {
-       "type": "Refill Request",
-       "title": "Pharmacy refill request",
-       "author": "RN",
-       "date": "2026-07-21T08:55",
-       "body": "Pharmacy sent a renewal request for hydroxychloroquine 200 mg to our office. This is prescribed by her rheumatologist - request forwarded to the rheumatology office and pharmacy notified. Left pt a portal note so she knows where it went."
-      }
-     ]
-    },
-    {
-     "id": "2026-08-18a",
-     "kind": "portal_message",
-     "start": "2026-08-18T19:30",
-     "service": "Internal Medicine — Primary Care",
-     "reason": "Scheduling annual physical",
-     "documents": [
-      {
-       "type": "Patient Message",
-       "title": "Physical",
-       "author": "patient",
-       "date": "2026-08-18T19:30",
-       "body": "Hi! I think I'm due for my yearly physical. Can I get one in a few weeks once school settles down, and get my flu shot at the same time?"
-      },
-      {
-       "type": "Patient Message",
-       "title": "RE: Physical",
-       "author": "front desk",
-       "date": "2026-08-19T08:50",
-       "body": "Hi Ms. Mendez - you're booked for your annual physical on 9/22 at 9:00 am, and we've noted the flu vaccine for that visit. See you then!"
       }
      ]
     },

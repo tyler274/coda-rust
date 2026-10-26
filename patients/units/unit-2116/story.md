@@ -47,3 +47,8 @@
 - 2026-06-03 pharmacy: metoprolol and aspirin refill (P)
 - 2026-08-24/25 portal: schedules annual physical (P)
 - 2026-09-22 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002116 on 2026-02-12. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

@@ -107,3 +107,8 @@ lamp or culture; no prophylaxis before 2026; no workup beyond KOH preps.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
   Nothing is open at today besides the booked physical and the ongoing summer
   prophylaxis.
+
+
+## Last seen
+
+The practice last saw MRN00002661 on 2025-09-23. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

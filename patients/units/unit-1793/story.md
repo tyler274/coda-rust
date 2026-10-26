@@ -55,3 +55,8 @@
 - 2026-07-28 office visit: PHQ-9 13 (P)
 - 2026-08-18 portal: refill and scheduling (P)
 - 2026-09-10 booked: follow-up visit (P)
+
+
+## Last seen
+
+The practice last saw MRN00001793 on 2026-07-28. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

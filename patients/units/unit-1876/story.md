@@ -16,3 +16,8 @@
 - 2026-07-08 portal: aspirin with bypass question; aspirin on list as OB-prescribed (R1, P)
 - 2026-08-17 portal: immunization record for school district (P)
 - 2026-09-21 booked follow-up visit (P)
+
+
+## Last seen
+
+The practice last saw MRN00001876 on 2025-08-25. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

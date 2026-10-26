@@ -19,32 +19,125 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "New patient; sore mouth corners and facial rash",
           "conditions": [
-            {"label": "History of preeclampsia", "action": "history", "note": "Severe preeclampsia in prior pregnancy; delivered at 34 weeks"},
-            {"label": "Status post bariatric surgery", "action": "history", "onset": "2024-03-11", "note": "Roux-en-Y gastric bypass"},
-            {"label": "Postsurgical malabsorption, not elsewhere classified", "icd10": "K91.2", "action": "history", "onset": "2024-03-11"},
-            {"label": "Severe obesity due to excess calories", "action": "diagnosed", "note": "Morbid obesity before bypass"},
-            {"label": "Severe obesity due to excess calories", "action": "resolved", "note": "Resolved after bypass; about 150 lb lost since surgery"}
+            {
+              "label": "History of preeclampsia",
+              "action": "history",
+              "note": "Severe preeclampsia in prior pregnancy; delivered at 34 weeks"
+            },
+            {
+              "label": "Status post bariatric surgery",
+              "action": "history",
+              "onset": "2024-03-11",
+              "note": "Roux-en-Y gastric bypass"
+            },
+            {
+              "label": "Postsurgical malabsorption, not elsewhere classified",
+              "icd10": "K91.2",
+              "action": "history",
+              "onset": "2024-03-11"
+            },
+            {
+              "label": "Severe obesity due to excess calories",
+              "action": "diagnosed",
+              "note": "Morbid obesity before bypass"
+            },
+            {
+              "label": "Severe obesity due to excess calories",
+              "action": "resolved",
+              "note": "Resolved after bypass; about 150 lb lost since surgery"
+            }
           ],
           "medications": [
-            {"drug_text": "prenatal vitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"},
-            {"drug_text": "vitamin B complex Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"},
-            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
-            {"drug_text": "calcium citrate / cholecalciferol Oral Tablet", "action": "historical", "sig": "Take 600 mg/400 IU by mouth twice daily", "frequency": "BID", "route": "Oral", "course": "chronic"}
+            {
+              "drug_text": "prenatal vitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "vitamin B complex Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "calcium citrate / cholecalciferol Oral Tablet",
+              "action": "historical",
+              "sig": "Take 600 mg/400 IU by mouth twice daily",
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic"
+            }
           ],
           "allergies": [
-            {"substance": "No known drug allergies"}
+            {
+              "substance": "No known drug allergies"
+            }
           ],
-          "state": {"weight_kg": 95.3, "height_cm": 165.1},
-          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "state": {
+            "weight_kg": 95.3,
+            "height_cm": 165.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
           "social": [
-            {"item": "Tobacco smoking status", "value": "Never smoker"},
-            {"item": "Occupation", "value": "Elementary school teacher"},
-            {"item": "History of alcohol use", "value": "None (abstinent)"}
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None (abstinent)"
+            }
           ],
-          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2025-08-25T10:05"}],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2025-08-25T10:05"
+            }
+          ],
           "orders": [
-            {"id": "gi-referral", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "Angular cheilitis, glossitis and facial rash after Roux-en-Y gastric bypass"}
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Angular cheilitis, glossitis and facial rash after Roux-en-Y gastric bypass"
+            }
           ],
           "documents": [
             {
@@ -62,17 +155,12 @@
           "start": "2025-09-03T14:10",
           "reason": "Records from prior primary care office and bariatric program",
           "immunizations": [
-            {"vaccine": "Tdap", "date": "2021-09-20T10:00"}
-          ],
-          "documents": [
             {
-              "type": "Outside Records",
-              "title": "Outside Records Summary",
-              "author": "RN",
-              "date": "2025-09-03T14:10",
-              "body": "Outside records arrived from her previous primary care office and the bariatric surgery program at a regional hospital. 41 pages, scanned to media.\n\nHighlights:\n- Roux-en-Y gastric bypass, laparoscopic, March 2024.\n- Prior pregnancy with severe preeclampsia, delivered at 34 weeks.\n- Allergies: NKDA.\n- Supplement list matches what she reported at intake.\n- Tdap 9/20/2021.\n- Pap with HPV co-test 2023, both negative; next due 2028.\n\nAbstracted to health maintenance. Forwarded to PCP for review."
+              "vaccine": "Tdap",
+              "date": "2021-09-20T10:00"
             }
-          ]
+          ],
+          "documents": []
         },
         {
           "id": "2025-09-29a",
@@ -81,31 +169,86 @@
           "end": "2025-09-29T11:30",
           "service": "Gastroenterology",
           "reason": "Oral and facial changes after gastric bypass",
-          "conditions": [
-            {"label": "Riboflavin deficiency", "icd10": "E53.0", "action": "diagnosed", "onset": "2025-07-28"}
+          "conditions": [],
+          "medications": [],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
           ],
-          "medications": [
-            {"drug_text": "riboflavin 100 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Riboflavin deficiency"}
-          ],
-          "measure": ["bp", "hr", "weight_kg"],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-29T11:35", "results": [
-              {"test": "Hemoglobin", "value": 12.2},
-              {"test": "Mean Corpuscular Volume", "value": 84},
-              {"test": "Mean Corpuscular Hemoglobin Concentration", "value": 32}
-            ]},
-            {"panel": "Iron Studies", "collected": "2025-09-29T11:35", "results": [
-              {"test": "Iron", "value": 80},
-              {"test": "Total Iron-Binding Capacity", "value": 300}
-            ]},
-            {"panel": null, "collected": "2025-09-29T11:35", "results": [{"test": "Vitamin B12", "value": 400}]},
-            {"panel": null, "collected": "2025-09-29T11:35", "results": [{"test": "Folate", "value": 10}]},
-            {"panel": null, "collected": "2025-09-29T11:35", "resulted": "2025-10-06T09:00", "results": [
-              {"test": "Riboflavin [Moles/volume] in Serum or Plasma", "loinc": "49038-3", "unit": "nmol/L", "value": 2.4}
-            ]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-29T11:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-09-29T11:35",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 80
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 300
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-29T11:35",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 400
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-29T11:35",
+              "results": [
+                {
+                  "test": "Folate",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-29T11:35",
+              "resulted": "2025-10-06T09:00",
+              "results": [
+                {
+                  "test": "Riboflavin [Moles/volume] in Serum or Plasma",
+                  "loinc": "49038-3",
+                  "unit": "nmol/L",
+                  "value": 2.4
+                }
+              ]
+            }
           ],
           "orders": [
-            {"id": "gi-referral", "action": "done", "date": "2025-09-29T10:40"}
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2025-09-29T10:40"
+            }
           ],
           "documents": [
             {
@@ -114,67 +257,6 @@
               "author": "gastroenterology",
               "date": "2025-10-08T13:25",
               "body": "GASTROENTEROLOGY CONSULTATION\nDate of service: 09/29/2025\nRequested by: primary care\nQuestion: mouth, tongue and facial skin changes after gastric bypass\n\nMs. Cronin is a 32-year-old woman seen at your request. Over the last two months she has developed painful splitting at the angles of the mouth, a sore tongue, and a persistent rash around the nose and eyebrows. Her Roux-en-Y gastric bypass was about 18 months ago and she has lost close to 150 pounds. Nausea has persisted since surgery with occasional emesis, and by her account her diet has been poor as a result.\n\nPast history: severe preeclampsia in a previous pregnancy requiring delivery at 34 weeks; RYGB complicated by malabsorption; morbid obesity before surgery, now resolved.\nMedications: prenatal vitamin daily; vitamin B complex daily; ferrous sulfate 325 mg daily; calcium citrate/vitamin D 600 mg/400 IU twice daily.\nAllergies: no known drug allergies.\nFamily history: mother with severe preeclampsia; maternal grandmother with chronic hypertension; father with type 2 diabetes.\nSocial: teaches elementary school. Never smoker, abstains from alcohol.\n\nExamination: vitals per clinic intake. Bilateral angular cheilitis. The tongue is beefy red and swollen. Greasy, scaling erythematous eruption confined to the nasolabial folds and eyebrows. Abdomen soft and nontender with well-healed laparoscopic port sites.\n\nLaboratory (09/29/2025):\nHemoglobin 12.2 g/dL, MCV 84 fL, MCHC 32 g/dL\nIron 80 mcg/dL, TIBC 300 mcg/dL\nVitamin B12 400 pg/mL\nFolate 10 ng/mL\nPlasma riboflavin (resulted 10/06/2025) 2.4 nmol/L, reference 6.2-39.0, LOW\n\nImpression: Riboflavin (vitamin B2) deficiency following Roux-en-Y gastric bypass, from malabsorption compounded by poor oral intake. The cheilitis, glossitis and seborrheic-pattern dermatitis together are typical. Red cell indices are normocytic and iron, B12 and folate are within range.\n\nRecommendations:\n1. Riboflavin 100 mg by mouth once daily for approximately three months.\n2. Continue the prenatal vitamin, B complex, iron and calcium citrate with D.\n3. Small, protein-first meals spread through the day.\n4. Recheck plasma riboflavin at the end of the course; this can be drawn with her primary care labs.\n\nWe are happy to see her again if needed."
-            }
-          ]
-        },
-        {
-          "id": "2025-10-09a",
-          "kind": "portal_message",
-          "start": "2025-10-09T07:45",
-          "reason": "GI consult follow-up",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "GI letter",
-              "author": "PCP",
-              "date": "2025-10-09T07:45",
-              "body": "Hi Nicole - GI's letter came in. Your riboflavin (vitamin B2) level was low, which explains the mouth corners, tongue and the rash. Their plan is riboflavin 100 mg once a day for about three months, on top of everything you already take. Did you get it started? We'll recheck the level at your physical in January."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: GI letter",
-              "author": "patient",
-              "date": "2025-10-09T15:52",
-              "body": "Yes, started it right after the appointment. Picked up a big bottle so I won't run out. Thanks for checking."
-            }
-          ]
-        },
-        {
-          "id": "2025-10-20a",
-          "kind": "nurse_visit",
-          "start": "2025-10-20T15:40",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Flu and COVID vaccines",
-          "immunizations": [
-            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-20T15:45"},
-            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-20T15:47"}
-          ],
-          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-20T15:45"}],
-          "documents": [
-            {
-              "type": "Nursing Note",
-              "title": "Nurse Visit - Immunizations",
-              "author": "RN",
-              "date": "2025-10-20T16:00",
-              "body": "In after school for vaccines. Denies fever or illness today. No prior vaccine reactions. NKDA.\nInfluenza (trivalent) 0.5 mL IM left deltoid.\nCOVID-19 mRNA (2025-26 formula) 0.3 mL IM right deltoid.\nVIS provided. Waited 15 min, tolerated well. Left ambulatory."
-            }
-          ]
-        },
-        {
-          "id": "2025-11-17a",
-          "kind": "office_visit",
-          "start": "2025-11-17T16:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Follow-up after GI, riboflavin deficiency",
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
-          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-11-17T16:20"}],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Follow-up Visit",
-              "author": "PCP",
-              "date": "2025-11-17T16:25",
-              "body": "S: Back after GI. Seven weeks into riboflavin 100 mg daily. Mouth corners healed within a couple of weeks, tongue no longer sore, rash by the nose and brows gone. Still gets nauseated off and on, vomits rarely now. Taking all supplements daily, set a phone alarm.\nMeds: riboflavin 100 mg daily, prenatal vitamin, B complex, ferrous sulfate 325 mg, calcium citrate/D 600/400 BID. NKDA.\n\nO: vitals as charted. Commissures intact, no erythema. Tongue normal color and papillae. Face and brows clear. Heart RRR, lungs clear.\n\nA/P:\n1. Riboflavin deficiency - responding clinically. Finish the 3-month course; recheck level with January physical labs.\n2. s/p RYGB, intermittent nausea - unchanged. Same small-meal approach.\n\nPhysical in January, fasting labs that morning."
             }
           ]
         }

@@ -89,3 +89,8 @@
 - 2026-07-30 portal: capsule prep question [P, A7]
 - 2026-08-18 INR and CBC check [P]
 - 2026-09-24 booked routine follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00002226 on 2026-02-19. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

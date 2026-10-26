@@ -175,3 +175,8 @@ chart. Nobody remarks on any of these.
   home BP cuff, ibuprofen while pumping, refills, lab results), RN post-discharge
   call, records-request call, a question about fall vaccines while nursing (2026-06-23), pharmacy refill traffic.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001674 on 2026-01-27. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

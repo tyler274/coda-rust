@@ -49,3 +49,8 @@
 - 2026-08-12 ID survivor clinic visit (A5)
 - 2026-08-19 portal: energy and refill (P)
 - 2026-09-16 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002118 on 2025-10-23. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

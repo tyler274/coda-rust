@@ -54,3 +54,8 @@
 2026-07-07 office_visit: cancelled by patient (P)
 2026-08-18 office_visit: follow-up; Na 133; July scan stable per patient (P, A9, A4)
 2026-09-22 office_visit: booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002867 on 2025-12-12. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

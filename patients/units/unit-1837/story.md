@@ -33,3 +33,8 @@
 - 2026-08-11 annual physical: TG 372, Pap (A7, P)
 - 2026-08-13 portal: results and Pap normal (A7, P)
 - 2026-11-10 booked: triglyceride follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00001837 on 2026-04-14. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

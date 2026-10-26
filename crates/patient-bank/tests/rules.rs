@@ -21,7 +21,8 @@ fn seed() -> Seed {
         "preferred_language": "English", "insurance": "commercial employer plan",
         "occupation_hint": "teacher", "complexity": "light", "years_with_practice": 6,
         "target_documents": 40, "target_observations": 200, "anchors": [], "episodes": [],
-        "chart_texture": [], "phone": "+1-413-555-0100"
+        "chart_texture": [], "last_seen": "2026-07-20", "booked": false,
+        "phone": "+1-413-555-0100"
     }))
     .expect("seed")
 }
@@ -472,7 +473,46 @@ fn a_chart_ends_at_today_with_pending_results_and_booked_visits() {
     let cal = calendar::visits(&seed(), &p);
     let slots: Vec<(&str, &str)> = cal.iter().map(|a| (&a.start[..10], a.status)).collect();
     assert_eq!(slots, [("2026-09-15", "booked")]);
-    assert!(errors_for(seed(), p).is_empty());
+    let seen = Seed {
+        last_seen: day("2026-08-25"),
+        booked: true,
+        ..seed()
+    };
+    assert!(errors_for(seen, p).is_empty());
+}
+
+fn day(s: &str) -> patient_bank::ledger::Day {
+    serde_json::from_value(json!(s)).expect("day")
+}
+
+#[test]
+fn the_practice_last_saw_the_patient_on_the_seeds_day() {
+    let body = "Doing well. BP fine today. Continue current plan.";
+    let p = || {
+        patient(json!([
+            visit("e1", "2026-05-12T09:00", note(body)),
+            visit("e2", "2026-07-20T09:00", note(body))
+        ]))
+    };
+    assert!(errors_for(seed(), p()).is_empty());
+    let earlier = Seed {
+        last_seen: day("2026-05-12"),
+        ..seed()
+    };
+    assert!(
+        errors_for(earlier, p())
+            .iter()
+            .any(|e| e.contains("last_seen 2026-05-12"))
+    );
+    let wants = Seed {
+        booked: true,
+        ..seed()
+    };
+    assert!(
+        errors_for(wants, p())
+            .iter()
+            .any(|e| e.contains("booked after today"))
+    );
 }
 
 #[test]

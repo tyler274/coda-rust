@@ -9,15 +9,43 @@
           "start": "2024-10-22T08:40",
           "service": "Internal Medicine — Primary Care",
           "reason": "annual physical",
-          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
-          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-22T09:10"}],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T09:10"
+            }
+          ],
           "procedures": [
-            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-10-22T08:40"},
-            {"procedure": "Immunization administration", "performed": "2024-10-22T09:10"}
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-22T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T09:10"
+            }
           ],
           "documents": [
-            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-10-22T13:15", "body": "28M for his yearly check. Says he's fine, no visits anywhere else since last fall. Still never smoked; social drinking only.\n\nROS: negative, including no GI complaints, no palpitations, no headaches.\n\nExam: vitals reviewed, normal. Eyes, ears, throat normal. Heart with regular rhythm and normal S1/S2. Lungs clear bilaterally. Abdomen soft, no organ enlargement. Skin unremarkable. PHQ-2 = 0.\n\nImpression: well adult.\n- Flu vaccine administered today.\n- Getting this year's COVID shot at his pharmacy next week.\n- Dad's blood pressure history noted again; his own readings remain normal, recheck yearly.\nRTC 1 year."}
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-22T13:15",
+              "body": "28M for his yearly check. Says he's fine, no visits anywhere else since last fall. Still never smoked; social drinking only.\n\nROS: negative, including no GI complaints, no palpitations, no headaches.\n\nExam: vitals reviewed, normal. Eyes, ears, throat normal. Heart with regular rhythm and normal S1/S2. Lungs clear bilaterally. Abdomen soft, no organ enlargement. Skin unremarkable. PHQ-2 = 0.\n\nImpression: well adult.\n- Flu vaccine administered today.\n- Getting this year's COVID shot at his pharmacy next week.\n- Dad's blood pressure history noted again; his own readings remain normal, recheck yearly.\nRTC 1 year."
+            }
           ]
         },
         {
@@ -25,9 +53,20 @@
           "kind": "pharmacy",
           "start": "2024-10-30T12:00",
           "reason": "outside immunization",
-          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-28T18:00"}],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-28T18:00"
+            }
+          ],
           "documents": [
-            {"type": "Immunization Record", "title": "Pharmacy Immunization Report", "author": "pharmacy", "date": "2024-10-30T12:00", "body": "2024-2025 formula Pfizer-BioNTech COVID-19 vaccine given 10/28/2024, left deltoid. No reaction reported at the pharmacy."}
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy Immunization Report",
+              "author": "pharmacy",
+              "date": "2024-10-30T12:00",
+              "body": "2024-2025 formula Pfizer-BioNTech COVID-19 vaccine given 10/28/2024, left deltoid. No reaction reported at the pharmacy."
+            }
           ]
         },
         {
@@ -37,15 +76,76 @@
           "end": "2024-12-31T15:20",
           "service": "Emergency Medicine",
           "reason": "vomiting and diarrhea",
-          "conditions": [{"label": "Bacillus cereus food poisoning", "icd10": "A05.4", "action": "diagnosed", "onset": "2024-12-31"}],
-          "measure": ["bp", "hr", "rr", "spo2", "temp_c"],
-          "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2024-12-31T11:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-31T11:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          "conditions": [
+            {
+              "label": "Bacillus cereus food poisoning",
+              "icd10": "A05.4",
+              "action": "diagnosed",
+              "onset": "2024-12-31"
+            }
           ],
-          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2024-12-31T10:40"}],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-31T11:05",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-31T11:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-12-31T10:40"
+            }
+          ],
           "documents": [
-            {"type": "ED Note", "title": "Emergency Department Record, 12/31/2024", "author": "emergency medicine", "date": "2025-08-08T10:15", "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nVisit date: 12/31/2024\nAllergies: NKDA\n\nCC: vomiting, cramping, watery stools since early this morning.\n\nHPI: 28 y/o male, about 5 hours of nausea with repeated emesis, crampy abdominal pain and loose watery stool. Last night he was at a potluck on campus and ate several dishes; one was fried rice that he says sat out for several hours before it was warmed in a microwave. Others there who skipped the rice are well. Denies fever, hematochezia, travel.\n\nPMH: none; no prior GI history. Meds: none.\nFH: father HTN (dx 54); mother hypothyroid; no siblings.\nSH: never smoker, 1-2 drinks/week, graduate student (public health).\n\nVS: all within normal limits on arrival and recheck.\nExam: appears a little dry but alert and oriented x3. Abdomen soft, nondistended, mild diffuse tenderness, bowel sounds normal. No peritoneal signs.\n\nLabs: CBC and BMP within normal limits.\n\nMDM: short-incubation emetic illness after reheated rice, classic for Bacillus cereus toxin. No signs of invasive infection. Treated supportively with good response; tolerating PO before discharge.\n\nDx: Bacillus cereus food poisoning.\nDispo: home, oral fluids, bland diet, return for blood in stool, fever or inability to keep liquids down. Follow up with PCP as needed."}
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record, 12/31/2024",
+              "author": "emergency medicine",
+              "date": "2025-08-08T10:15",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nVisit date: 12/31/2024\nAllergies: NKDA\n\nCC: vomiting, cramping, watery stools since early this morning.\n\nHPI: 28 y/o male, about 5 hours of nausea with repeated emesis, crampy abdominal pain and loose watery stool. Last night he was at a potluck on campus and ate several dishes; one was fried rice that he says sat out for several hours before it was warmed in a microwave. Others there who skipped the rice are well. Denies fever, hematochezia, travel.\n\nPMH: none; no prior GI history. Meds: none.\nFH: father HTN (dx 54); mother hypothyroid; no siblings.\nSH: never smoker, 1-2 drinks/week, graduate student (public health).\n\nVS: all within normal limits on arrival and recheck.\nExam: appears a little dry but alert and oriented x3. Abdomen soft, nondistended, mild diffuse tenderness, bowel sounds normal. No peritoneal signs.\n\nLabs: CBC and BMP within normal limits.\n\nMDM: short-incubation emetic illness after reheated rice, classic for Bacillus cereus toxin. No signs of invasive infection. Treated supportively with good response; tolerating PO before discharge.\n\nDx: Bacillus cereus food poisoning.\nDispo: home, oral fluids, bland diet, return for blood in stool, fever or inability to keep liquids down. Follow up with PCP as needed."
+            }
           ]
         },
         {
@@ -54,8 +154,20 @@
           "start": "2025-01-02T09:12",
           "reason": "ED visit FYI",
           "documents": [
-            {"type": "Patient Message", "title": "ER on New Year's Eve", "author": "patient", "date": "2025-01-02T09:12", "body": "Hi, wanted you to know I ended up in the ER the morning of the 31st with really bad vomiting and diarrhea. It started a few hours after a potluck — pretty sure it was some fried rice that had been sitting out. The ER doctor called it Bacillus cereus. They gave me supportive care and I went home that afternoon. I'm basically back to normal now, just a little wiped out. Do I need to do anything?"},
-            {"type": "Patient Message", "title": "RE: ER on New Year's Eve", "author": "PCP", "date": "2025-01-02T12:40", "body": "Sorry to hear it — that's a rough way to end the year. That illness runs its course in a day or so, and you're past it. Keep drinking fluids and ease back into food. If you get fever, blood in the stool, or can't keep fluids down, call us or go back in. We'll ask the hospital for the ER note."}
+            {
+              "type": "Patient Message",
+              "title": "ER on New Year's Eve",
+              "author": "patient",
+              "date": "2025-01-02T09:12",
+              "body": "Hi, wanted you to know I ended up in the ER the morning of the 31st with really bad vomiting and diarrhea. It started a few hours after a potluck — pretty sure it was some fried rice that had been sitting out. The ER doctor called it Bacillus cereus. They gave me supportive care and I went home that afternoon. I'm basically back to normal now, just a little wiped out. Do I need to do anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER on New Year's Eve",
+              "author": "PCP",
+              "date": "2025-01-02T12:40",
+              "body": "Sorry to hear it — that's a rough way to end the year. That illness runs its course in a day or so, and you're past it. Keep drinking fluids and ease back into food. If you get fever, blood in the stool, or can't keep fluids down, call us or go back in. We'll ask the hospital for the ER note."
+            }
           ]
         },
         {
@@ -66,19 +178,81 @@
           "service": "Emergency Medicine",
           "reason": "motor vehicle collision, left upper quadrant pain",
           "vitals": [
-            {"time": "2025-07-12T14:25", "bp": [110, 70], "hr": 105, "rr": 20, "spo2": 97}
+            {
+              "time": "2025-07-12T14:25",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 105,
+              "rr": 20,
+              "spo2": 97
+            }
           ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-12T14:45", "results": [{"test": "Hemoglobin", "value": 13.2}, {"test": "Hematocrit", "value": 39.5}, {"test": "Platelets", "value": 250}, {"test": "White Blood Cells", "value": 9.0}]},
-            {"panel": null, "collected": "2025-07-12T14:45", "results": [{"test": "Lactate", "value": 2.8}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-12T14:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-12T14:45",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 2.8
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "CT abdomen and pelvis with contrast", "performed": "2025-07-12T16:05", "text": "CT ABDOMEN AND PELVIS WITH IV CONTRAST\nIndication: restrained driver in MVC, LUQ pain, tachycardia, FAST negative.\nTechnique: axial images after intravenous contrast, portal venous phase, with multiplanar reformats.\nFindings: Laceration of the spleen. No active contrast extravasation. No hemoperitoneum or free fluid. Liver, gallbladder, pancreas, adrenal glands and kidneys without injury. Bowel and mesentery unremarkable. No free air. Bladder unremarkable. Visualized lung bases clear. No acute fracture of the lower ribs, spine or pelvis.", "conclusion": "Splenic laceration without active extravasation or hemoperitoneum. No other traumatic injury."}
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-07-12T16:05",
+              "text": "CT ABDOMEN AND PELVIS WITH IV CONTRAST\nIndication: restrained driver in MVC, LUQ pain, tachycardia, FAST negative.\nTechnique: axial images after intravenous contrast, portal venous phase, with multiplanar reformats.\nFindings: Laceration of the spleen. No active contrast extravasation. No hemoperitoneum or free fluid. Liver, gallbladder, pancreas, adrenal glands and kidneys without injury. Bowel and mesentery unremarkable. No free air. Bladder unremarkable. Visualized lung bases clear. No acute fracture of the lower ribs, spine or pelvis.",
+              "conclusion": "Splenic laceration without active extravasation or hemoperitoneum. No other traumatic injury."
+            }
           ],
-          "conditions": [{"label": "Traumatic splenic laceration", "icd10": "S36.039A", "action": "diagnosed", "onset": "2025-07-12"}],
-          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-07-12T14:20"}],
+          "conditions": [
+            {
+              "label": "Traumatic splenic laceration",
+              "icd10": "S36.039A",
+              "action": "diagnosed",
+              "onset": "2025-07-12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-07-12T14:20"
+            }
+          ],
           "documents": [
-            {"type": "ED Note", "title": "Emergency Department Record, 07/12/2025", "author": "emergency medicine", "date": "2025-08-08T10:15", "body": "EMERGENCY DEPARTMENT TRAUMA RECORD\nVisit date: 07/12/2025\nAllergies: NKDA\n\nCC: LUQ pain and lightheadedness after car crash.\n\nHPI: 29 y/o M, restrained driver, car left the road and hit a tree at moderate speed. Now with left upper abdominal pain and feeling dizzy. Seen here in December for a foodborne illness that resolved.\n\nMeds: none. FH/SH: as previously recorded; never smoker, social alcohol, graduate student.\n\nVS on arrival: BP 110/70, HR 105, RR 20, SpO2 97% RA.\nExam: alert. Abdomen soft, tender in the LUQ, without rebound or guarding. Normal bowel sounds. No flank bruising, no seatbelt sign. Chest wall nontender. Extremities without deformity.\n\nLabs: Hgb 13.2, Hct 39.5, plt 250, WBC 9.0. Lactate 2.8.\nFAST: negative for free fluid.\n\nMDM: tachycardic with LUQ tenderness, mildly low Hgb and elevated lactate despite a negative FAST. CT A/P with contrast obtained: splenic laceration, no extravasation, no hemoperitoneum. Surgery consulted; nonoperative management with admission for serial hemoglobin.\n\nDx: traumatic splenic laceration, occult on FAST.\nDispo: admitted to the surgical service."}
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record, 07/12/2025",
+              "author": "emergency medicine",
+              "date": "2025-08-08T10:15",
+              "body": "EMERGENCY DEPARTMENT TRAUMA RECORD\nVisit date: 07/12/2025\nAllergies: NKDA\n\nCC: LUQ pain and lightheadedness after car crash.\n\nHPI: 29 y/o M, restrained driver, car left the road and hit a tree at moderate speed. Now with left upper abdominal pain and feeling dizzy. Seen here in December for a foodborne illness that resolved.\n\nMeds: none. FH/SH: as previously recorded; never smoker, social alcohol, graduate student.\n\nVS on arrival: BP 110/70, HR 105, RR 20, SpO2 97% RA.\nExam: alert. Abdomen soft, tender in the LUQ, without rebound or guarding. Normal bowel sounds. No flank bruising, no seatbelt sign. Chest wall nontender. Extremities without deformity.\n\nLabs: Hgb 13.2, Hct 39.5, plt 250, WBC 9.0. Lactate 2.8.\nFAST: negative for free fluid.\n\nMDM: tachycardic with LUQ tenderness, mildly low Hgb and elevated lactate despite a negative FAST. CT A/P with contrast obtained: splenic laceration, no extravasation, no hemoperitoneum. Surgery consulted; nonoperative management with admission for serial hemoglobin.\n\nDx: traumatic splenic laceration, occult on FAST.\nDispo: admitted to the surgical service."
+            }
           ]
         },
         {
@@ -88,13 +262,39 @@
           "end": "2025-07-14T11:00",
           "service": "General Surgery",
           "reason": "splenic laceration, observation",
-          "medications": [{"drug": "acetaminophen 500 MG Oral Tablet", "action": "start", "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for pain. Avoid ibuprofen and naproxen.", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "pain after splenic injury"}],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for pain. Avoid ibuprofen and naproxen.",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "pain after splenic injury"
+            }
+          ],
           "procedures": [
-            {"procedure": "Initial hospital inpatient care", "performed": "2025-07-12T19:00"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-07-14T10:30"}
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-07-12T19:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-07-14T10:30"
+            }
           ],
           "documents": [
-            {"type": "Discharge Summary", "title": "Discharge Summary, 07/12-07/14/2025", "author": "general surgery", "date": "2025-08-08T10:15", "body": "SURGICAL SERVICE DISCHARGE SUMMARY\nAdmitted 07/12/2025, discharged 07/14/2025\nAllergies: NKDA\n\nAdmission diagnosis: traumatic splenic laceration after MVC.\n\nHospital course: Admitted from the ED for nonoperative management. Bed rest overnight, serial hemoglobin checks remained stable, and his heart rate normalized by the next morning. No transfusion, no angiography, no operation. Advanced to a regular diet on hospital day 2, ambulating without dizziness. Pain controlled with acetaminophen.\n\nDischarge medications: acetaminophen 500 mg, 1-2 tablets every 6 hours as needed. No NSAIDs.\n\nInstructions: no contact sports, heavy lifting or strenuous exercise for 8 weeks. Return immediately for worsening abdominal pain, left shoulder pain, fainting or lightheadedness. Follow up with primary care within one week.\n\nCondition at discharge: stable."}
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary, 07/12-07/14/2025",
+              "author": "general surgery",
+              "date": "2025-08-08T10:15",
+              "body": "SURGICAL SERVICE DISCHARGE SUMMARY\nAdmitted 07/12/2025, discharged 07/14/2025\nAllergies: NKDA\n\nAdmission diagnosis: traumatic splenic laceration after MVC.\n\nHospital course: Admitted from the ED for nonoperative management. Bed rest overnight, serial hemoglobin checks remained stable, and his heart rate normalized by the next morning. No transfusion, no angiography, no operation. Advanced to a regular diet on hospital day 2, ambulating without dizziness. Pain controlled with acetaminophen.\n\nDischarge medications: acetaminophen 500 mg, 1-2 tablets every 6 hours as needed. No NSAIDs.\n\nInstructions: no contact sports, heavy lifting or strenuous exercise for 8 weeks. Return immediately for worsening abdominal pain, left shoulder pain, fainting or lightheadedness. Follow up with primary care within one week.\n\nCondition at discharge: stable."
+            }
           ]
         },
         {
@@ -103,7 +303,13 @@
           "start": "2025-07-15T08:50",
           "reason": "post-hospital follow-up",
           "documents": [
-            {"type": "Telephone Encounter", "title": "Post-Discharge Call", "author": "RN", "date": "2025-07-15T09:05", "body": "Pt called: was in a car accident Saturday, hospitalized two nights for a torn spleen, sent home yesterday and told to see PCP within a week. Pain manageable with Tylenol, no dizziness, eating fine. Reviewed warning signs. Booked Thursday 7/17 at 10:20. Asked him to bring discharge papers."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2025-07-15T09:05",
+              "body": "Pt called: was in a car accident Saturday, hospitalized two nights for a torn spleen, sent home yesterday and told to see PCP within a week. Pain manageable with Tylenol, no dizziness, eating fine. Reviewed warning signs. Booked Thursday 7/17 at 10:20. Asked him to bring discharge papers."
+            }
           ]
         },
         {
@@ -112,17 +318,60 @@
           "start": "2025-07-17T10:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "follow-up after hospital stay",
-          "conditions": [{"label": "Bacillus cereus food poisoning", "icd10": "A05.4", "action": "resolved"}],
-          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "conditions": [
+            {
+              "label": "Bacillus cereus food poisoning",
+              "icd10": "A05.4",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-17T10:55", "resulted": "2025-07-17T16:30", "results": [{"test": "Hemoglobin", "value": 14.1}, {"test": "Hematocrit"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-17T10:55",
+              "resulted": "2025-07-17T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Transitional care management, moderate complexity", "performed": "2025-07-17T10:20"},
-            {"procedure": "Venipuncture", "performed": "2025-07-17T10:55"}
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-07-17T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-17T10:55"
+            }
           ],
           "documents": [
-            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-07-17T12:30", "body": "29M seen 5 days after an MVC. Per patient and the discharge paperwork he brought (hospital notes not yet received): restrained driver, car hit a tree; LUQ pain and lightheadedness in the ED; CT found a splenic laceration; observed two nights on the surgical floor with stable blood counts, no procedure. Sent home on as-needed acetaminophen with 8 weeks of activity limits.\n\nToday: LUQ soreness improving, using acetaminophen once or twice a day. No dizziness on standing, no left shoulder pain, no lightheadedness. Eating and drinking normally.\n\nExam: vitals normal, not tachycardic. Mild LUQ tenderness without bruising, no guarding, no distension. Heart regular, lungs clear.\n\nA/P\n1. Splenic laceration, nonoperative, recovering as expected. CBC today. Continue acetaminophen as needed, no NSAIDs. No running, soccer or lifting until the 8-week mark. Reviewed reasons to go straight to the ED.\n2. Records: will request the ED and inpatient notes.\n3. Cleaned up the problem list — the December food poisoning has long resolved.\n\nRecheck in early September."}
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-07-17T12:30",
+              "body": "29M seen 5 days after an MVC. Per patient and the discharge paperwork he brought (hospital notes not yet received): restrained driver, car hit a tree; LUQ pain and lightheadedness in the ED; CT found a splenic laceration; observed two nights on the surgical floor with stable blood counts, no procedure. Sent home on as-needed acetaminophen with 8 weeks of activity limits.\n\nToday: LUQ soreness improving, using acetaminophen once or twice a day. No dizziness on standing, no left shoulder pain, no lightheadedness. Eating and drinking normally.\n\nExam: vitals normal, not tachycardic. Mild LUQ tenderness without bruising, no guarding, no distension. Heart regular, lungs clear.\n\nA/P\n1. Splenic laceration, nonoperative, recovering as expected. CBC today. Continue acetaminophen as needed, no NSAIDs. No running, soccer or lifting until the 8-week mark. Reviewed reasons to go straight to the ED.\n2. Records: will request the ED and inpatient notes.\n3. Cleaned up the problem list — the December food poisoning has long resolved.\n\nRecheck in early September."
+            }
           ]
         },
         {
@@ -131,7 +380,13 @@
           "start": "2025-07-18T08:15",
           "reason": "lab result",
           "documents": [
-            {"type": "Result Note", "title": "Blood count", "author": "PCP", "date": "2025-07-18T08:15", "body": "Dylan, your blood count from yesterday is normal — hemoglobin 14.1, which is up from the hospital and right where it should be. That fits with the spleen healing on its own. Keep to the activity limits and I'll see you in September."}
+            {
+              "type": "Result Note",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2025-07-18T08:15",
+              "body": "Dylan, your blood count from yesterday is normal — hemoglobin 14.1, which is up from the hospital and right where it should be. That fits with the spleen healing on its own. Keep to the activity limits and I'll see you in September."
+            }
           ]
         },
         {
@@ -140,7 +395,13 @@
           "start": "2025-07-21T11:00",
           "reason": "records request",
           "documents": [
-            {"type": "Telephone Encounter", "title": "Records Request", "author": "front desk", "date": "2025-07-21T11:00", "body": "Faxed request with signed release to the hospital's health information department for ED and inpatient records from 7/12-7/14/2025, plus the ED visit 12/31/2024."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "author": "front desk",
+              "date": "2025-07-21T11:00",
+              "body": "Faxed request with signed release to the hospital's health information department for ED and inpatient records from 7/12-7/14/2025, plus the ED visit 12/31/2024."
+            }
           ]
         },
         {
@@ -149,8 +410,20 @@
           "start": "2025-08-08T10:15",
           "reason": "hospital records received",
           "documents": [
-            {"type": "Telephone Encounter", "title": "Hospital Records Received", "author": "MA", "date": "2025-08-08T10:40", "body": "Hospital records arrived by fax: ED note 12/31/2024, ED trauma record and CT report 7/12/2025, discharge summary 7/14/2025. Filed to the corresponding dates and routed to PCP."},
-            {"type": "Telephone Encounter", "title": "Records Reviewed", "author": "PCP", "date": "2025-08-08T15:20", "body": "Reviewed. Hospital course matches what he told me. CT: splenic laceration without extravasation or hemoperitoneum; ED labs Hgb 13.2, lactate 2.8, since normalized Hgb here. December ED note consistent with Bacillus cereus. No action beyond the September visit."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital Records Received",
+              "author": "MA",
+              "date": "2025-08-08T10:40",
+              "body": "Hospital records arrived by fax: ED note 12/31/2024, ED trauma record and CT report 7/12/2025, discharge summary 7/14/2025. Filed to the corresponding dates and routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Reviewed",
+              "author": "PCP",
+              "date": "2025-08-08T15:20",
+              "body": "Reviewed. Hospital course matches what he told me. CT: splenic laceration without extravasation or hemoperitoneum; ED labs Hgb 13.2, lactate 2.8, since normalized Hgb here. December ED note consistent with Bacillus cereus. No action beyond the September visit."
+            }
           ]
         },
         {
@@ -159,11 +432,33 @@
           "start": "2025-09-09T16:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "8-week check after splenic injury",
-          "conditions": [{"label": "Traumatic splenic laceration", "icd10": "S36.039A", "action": "resolved"}],
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-09-09T16:00"}],
+          "conditions": [
+            {
+              "label": "Traumatic splenic laceration",
+              "icd10": "S36.039A",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-09-09T16:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-09-09T17:05", "body": "Eight weeks out from the splenic laceration. No abdominal pain for about a month, stopped acetaminophen in late July. No lightheadedness. Itching to start running again.\n\nExam: well. Vitals normal. Abdomen soft, nontender throughout, no palpable spleen tip.\n\nAssessment: splenic laceration healed clinically after nonoperative care.\nPlan: OK to resume running now and build up over a couple of weeks; contact sports after that. Marked resolved. Physical next month with flu shot."}
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-09-09T17:05",
+              "body": "Eight weeks out from the splenic laceration. No abdominal pain for about a month, stopped acetaminophen in late July. No lightheadedness. Itching to start running again.\n\nExam: well. Vitals normal. Abdomen soft, nontender throughout, no palpable spleen tip.\n\nAssessment: splenic laceration healed clinically after nonoperative care.\nPlan: OK to resume running now and build up over a couple of weeks; contact sports after that. Marked resolved. Physical next month with flu shot."
+            }
           ]
         },
         {
@@ -172,15 +467,43 @@
           "start": "2025-10-14T08:40",
           "service": "Internal Medicine — Primary Care",
           "reason": "annual physical",
-          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
-          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T09:15"}],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T09:15"
+            }
+          ],
           "procedures": [
-            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-10-14T08:40"},
-            {"procedure": "Immunization administration", "performed": "2025-10-14T09:15"}
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-14T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T09:15"
+            }
           ],
           "documents": [
-            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-10-14T12:20", "body": "29M, yearly visit. Back to running three days a week since September with no abdominal symptoms. Final year of the MPH. No meds. Never smoker, light social drinking.\n\nInterval history: December ED visit for Bacillus cereus food poisoning; July MVC with splenic laceration managed without surgery, now healed.\n\nROS negative.\nExam: vitals normal. Heart and lungs normal. Abdomen soft, nontender, no splenomegaly. Skin clear. PHQ-2 0.\n\nPlan:\n- Flu shot today.\n- COVID update at his pharmacy.\n- Lipids were normal in 2021; no labs needed this year.\nSee him next October."}
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-14T12:20",
+              "body": "29M, yearly visit. Back to running three days a week since September with no abdominal symptoms. Final year of the MPH. No meds. Never smoker, light social drinking.\n\nInterval history: December ED visit for Bacillus cereus food poisoning; July MVC with splenic laceration managed without surgery, now healed.\n\nROS negative.\nExam: vitals normal. Heart and lungs normal. Abdomen soft, nontender, no splenomegaly. Skin clear. PHQ-2 0.\n\nPlan:\n- Flu shot today.\n- COVID update at his pharmacy.\n- Lipids were normal in 2021; no labs needed this year.\nSee him next October."
+            }
           ]
         },
         {
@@ -188,9 +511,20 @@
           "kind": "pharmacy",
           "start": "2025-10-24T12:00",
           "reason": "outside immunization",
-          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-22T16:40"}],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-22T16:40"
+            }
+          ],
           "documents": [
-            {"type": "Immunization Record", "title": "Pharmacy Immunization Report", "author": "pharmacy", "date": "2025-10-24T12:00", "body": "2025-2026 formula Pfizer-BioNTech COVID-19 vaccine administered 10/22/2025, right deltoid, at a community pharmacy. No adverse reaction."}
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy Immunization Report",
+              "author": "pharmacy",
+              "date": "2025-10-24T12:00",
+              "body": "2025-2026 formula Pfizer-BioNTech COVID-19 vaccine administered 10/22/2025, right deltoid, at a community pharmacy. No adverse reaction."
+            }
           ]
         },
         {
@@ -201,21 +535,62 @@
           "service": "Emergency Medicine",
           "reason": "severe watery diarrhea after travel",
           "vitals": [
-            {"time": "2026-02-27T07:55", "bp": [90, 54], "hr": 116}
+            {
+              "time": "2026-02-27T07:55",
+              "bp": [
+                90,
+                54
+              ],
+              "hr": 116
+            }
           ],
           "conditions": [
-            {"label": "Dehydration", "icd10": "E86.0", "action": "diagnosed", "onset": "2026-02-27"},
-            {"label": "Hypovolemic shock", "icd10": "R57.1", "action": "diagnosed", "onset": "2026-02-27"}
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "diagnosed",
+              "onset": "2026-02-27"
+            },
+            {
+              "label": "Hypovolemic shock",
+              "icd10": "R57.1",
+              "action": "diagnosed",
+              "onset": "2026-02-27"
+            }
           ],
           "labs": [
-            {"panel": null, "collected": "2026-02-27T08:30", "resulted": "2026-02-27T10:10", "results": [
-              {"test": "Leukocytes in stool by microscopy", "loinc": "13655-6", "text": "None seen"},
-              {"test": "Ova and parasites in stool by microscopy", "loinc": "10704-5", "text": "No ova seen"}
-            ]}
+            {
+              "panel": null,
+              "collected": "2026-02-27T08:30",
+              "resulted": "2026-02-27T10:10",
+              "results": [
+                {
+                  "test": "Leukocytes in stool by microscopy",
+                  "loinc": "13655-6",
+                  "text": "None seen"
+                },
+                {
+                  "test": "Ova and parasites in stool by microscopy",
+                  "loinc": "10704-5",
+                  "text": "No ova seen"
+                }
+              ]
+            }
           ],
-          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-02-27T07:50"}],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-27T07:50"
+            }
+          ],
           "documents": [
-            {"type": "ED Note", "title": "Emergency Department Record, 02/27/2026", "author": "emergency medicine", "date": "2026-04-09T09:30", "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nVisit date: 02/27/2026\nAllergies: NKDA\n\nCC: profuse watery diarrhea after returning from Bangladesh.\n\nHPI: 29 y/o M, known to this ED (foodborne illness 12/2024, splenic laceration after MVC 7/2025, both resolved). Got home 2/25 from two weeks of humanitarian work in Bangladesh, where he drank untreated well water and ate street food. Last evening developed sudden high-volume watery diarrhea, roughly hourly overnight, painless, no blood or mucus. Increasingly thirsty, lightheaded, cramping in the legs and hands. No fever, no abdominal pain, no recent antibiotics. Takes no medications.\n\nFH: father HTN, mother hypothyroid. SH: never smoker, social alcohol, MPH student.\n\nVS: BP 90/54, HR 116.\nExam: lethargic, eyes sunken, mucous membranes dry, cap refill delayed, hands and feet cool, skin turgor reduced. Abdomen soft, nontender, not distended. Stool observed: large volume, pale gray, watery, non-bloody, little odor — rice-water appearance.\n\nStool microscopy: no WBCs, no ova. Stool culture with Vibrio and toxin testing sent.\n\nMDM: hypovolemic shock from severe secretory diarrhea after travel to an endemic area; cholera is the leading concern. Rapid IV fluid boluses started, admitted to medicine for ongoing volume replacement. Infection prevention and the state health department notified of a suspected case.\n\nDx: severe dehydration with hypovolemic shock; suspected cholera.\nDispo: admit."}
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record, 02/27/2026",
+              "author": "emergency medicine",
+              "date": "2026-04-09T09:30",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nVisit date: 02/27/2026\nAllergies: NKDA\n\nCC: profuse watery diarrhea after returning from Bangladesh.\n\nHPI: 29 y/o M, known to this ED (foodborne illness 12/2024, splenic laceration after MVC 7/2025, both resolved). Got home 2/25 from two weeks of humanitarian work in Bangladesh, where he drank untreated well water and ate street food. Last evening developed sudden high-volume watery diarrhea, roughly hourly overnight, painless, no blood or mucus. Increasingly thirsty, lightheaded, cramping in the legs and hands. No fever, no abdominal pain, no recent antibiotics. Takes no medications.\n\nFH: father HTN, mother hypothyroid. SH: never smoker, social alcohol, MPH student.\n\nVS: BP 90/54, HR 116.\nExam: lethargic, eyes sunken, mucous membranes dry, cap refill delayed, hands and feet cool, skin turgor reduced. Abdomen soft, nontender, not distended. Stool observed: large volume, pale gray, watery, non-bloody, little odor — rice-water appearance.\n\nStool microscopy: no WBCs, no ova. Stool culture with Vibrio and toxin testing sent.\n\nMDM: hypovolemic shock from severe secretory diarrhea after travel to an endemic area; cholera is the leading concern. Rapid IV fluid boluses started, admitted to medicine for ongoing volume replacement. Infection prevention and the state health department notified of a suspected case.\n\nDx: severe dehydration with hypovolemic shock; suspected cholera.\nDispo: admit."
+            }
           ]
         },
         {
@@ -225,19 +600,61 @@
           "end": "2026-03-01T14:00",
           "service": "Internal Medicine — Hospital Medicine",
           "reason": "suspected cholera with hypovolemic shock",
-          "conditions": [{"label": "Cholera due to Vibrio cholerae 01, biovar cholerae", "icd10": "A00.0", "action": "diagnosed", "onset": "2026-02-26"}],
-          "medications": [{"drug": "doxycycline hyclate 100 MG Oral Capsule", "action": "start", "sig": "Take 3 capsules (300 mg) by mouth once", "dose": {"value": 300, "unit": "mg"}, "frequency": "ONCE", "route": "Oral", "course": "short", "reason": "cholera"}],
+          "conditions": [
+            {
+              "label": "Cholera due to Vibrio cholerae 01, biovar cholerae",
+              "icd10": "A00.0",
+              "action": "diagnosed",
+              "onset": "2026-02-26"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 3 capsules (300 mg) by mouth once",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Oral",
+              "course": "short",
+              "reason": "cholera"
+            }
+          ],
           "labs": [
-            {"panel": null, "collected": "2026-02-27T08:30", "resulted": "2026-03-01T09:00", "results": [
-              {"test": "Stool culture", "loinc": "625-4", "text": "Vibrio cholerae O1 isolated. Toxigenic strain."}
-            ]}
+            {
+              "panel": null,
+              "collected": "2026-02-27T08:30",
+              "resulted": "2026-03-01T09:00",
+              "results": [
+                {
+                  "test": "Stool culture",
+                  "loinc": "625-4",
+                  "text": "Vibrio cholerae O1 isolated. Toxigenic strain."
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Initial hospital inpatient care", "performed": "2026-02-27T13:00"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-03-01T13:30"}
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-27T13:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-03-01T13:30"
+            }
           ],
           "documents": [
-            {"type": "Discharge Summary", "title": "Discharge Summary, 02/27-03/01/2026", "author": "hospital medicine", "date": "2026-04-09T09:30", "body": "HOSPITAL MEDICINE DISCHARGE SUMMARY\nAdmitted 02/27/2026, discharged 03/01/2026\nAllergies: NKDA\n\nPrincipal diagnosis: cholera (Vibrio cholerae O1, toxigenic) with severe dehydration and hypovolemic shock.\nPrior history: Bacillus cereus food poisoning 12/2024; splenic laceration 7/2025, nonoperative.\n\nCourse: Arrived from the ED after initial IV boluses. Continued aggressive isotonic IV fluids with strict intake/output matching for the first day; blood pressure and heart rate normalized within hours. Transitioned to oral rehydration solution on day 2 as stool output fell. Given a single 300 mg oral dose of doxycycline once the clinical picture was clear. Diarrhea slowed markedly by the second night and stopped before discharge. Contact precautions maintained.\n\nMicrobiology: stool culture grew Vibrio cholerae O1, toxigenic (final 03/01). Case reported to the state health department.\n\nDischarge medications: none.\nInstructions: continue oral rehydration solution with any further loose stools, careful hand hygiene, no food preparation for others until stools normal. Follow up with PCP within a week."}
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary, 02/27-03/01/2026",
+              "author": "hospital medicine",
+              "date": "2026-04-09T09:30",
+              "body": "HOSPITAL MEDICINE DISCHARGE SUMMARY\nAdmitted 02/27/2026, discharged 03/01/2026\nAllergies: NKDA\n\nPrincipal diagnosis: cholera (Vibrio cholerae O1, toxigenic) with severe dehydration and hypovolemic shock.\nPrior history: Bacillus cereus food poisoning 12/2024; splenic laceration 7/2025, nonoperative.\n\nCourse: Arrived from the ED after initial IV boluses. Continued aggressive isotonic IV fluids with strict intake/output matching for the first day; blood pressure and heart rate normalized within hours. Transitioned to oral rehydration solution on day 2 as stool output fell. Given a single 300 mg oral dose of doxycycline once the clinical picture was clear. Diarrhea slowed markedly by the second night and stopped before discharge. Contact precautions maintained.\n\nMicrobiology: stool culture grew Vibrio cholerae O1, toxigenic (final 03/01). Case reported to the state health department.\n\nDischarge medications: none.\nInstructions: continue oral rehydration solution with any further loose stools, careful hand hygiene, no food preparation for others until stools normal. Follow up with PCP within a week."
+            }
           ]
         },
         {
@@ -246,8 +663,20 @@
           "start": "2026-02-28T19:22",
           "reason": "hospitalized",
           "documents": [
-            {"type": "Patient Message", "title": "In the hospital", "author": "patient", "date": "2026-02-28T19:22", "body": "Messaging from a hospital bed — got back from the Bangladesh trip on Wednesday and by Thursday night I had nonstop watery diarrhea. Blood pressure was low in the ER yesterday morning and they admitted me for IV fluids. They think it's cholera and are waiting on the stool culture. Feeling a lot better tonight. They said to see you after discharge."},
-            {"type": "Patient Message", "title": "RE: In the hospital", "author": "PCP", "date": "2026-02-28T20:10", "body": "Thanks for telling me, and glad tonight is better. Follow their fluid plan. Once you're home, message us and we'll get you in that week."}
+            {
+              "type": "Patient Message",
+              "title": "In the hospital",
+              "author": "patient",
+              "date": "2026-02-28T19:22",
+              "body": "Messaging from a hospital bed — got back from the Bangladesh trip on Wednesday and by Thursday night I had nonstop watery diarrhea. Blood pressure was low in the ER yesterday morning and they admitted me for IV fluids. They think it's cholera and are waiting on the stool culture. Feeling a lot better tonight. They said to see you after discharge."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: In the hospital",
+              "author": "PCP",
+              "date": "2026-02-28T20:10",
+              "body": "Thanks for telling me, and glad tonight is better. Follow their fluid plan. Once you're home, message us and we'll get you in that week."
+            }
           ]
         },
         {
@@ -256,9 +685,27 @@
           "start": "2026-03-03T10:05",
           "reason": "letter request",
           "documents": [
-            {"type": "Patient Message", "title": "Home + school note", "author": "patient", "date": "2026-03-03T10:05", "body": "Home since Sunday. Culture on the hospital portal says Vibrio cholerae O1. Diarrhea stopped. Could you write a short note for my program covering classes I missed 2/26 through this week? Also want that follow-up visit."},
-            {"type": "Letter", "title": "Medical Excuse Letter", "author": "PCP", "date": "2026-03-03T13:30", "body": "To whom it may concern: Dylan Mazur was under medical care from February 26 through March 6, 2026, and was unable to attend classes or program activities during that time. He may return to normal activities on March 9. Please contact the office with any questions."},
-            {"type": "Patient Message", "title": "RE: Home + school note", "author": "front desk", "date": "2026-03-03T13:40", "body": "Letter is attached under Letters. You're booked tomorrow, Wednesday, at 11:00."}
+            {
+              "type": "Patient Message",
+              "title": "Home + school note",
+              "author": "patient",
+              "date": "2026-03-03T10:05",
+              "body": "Home since Sunday. Culture on the hospital portal says Vibrio cholerae O1. Diarrhea stopped. Could you write a short note for my program covering classes I missed 2/26 through this week? Also want that follow-up visit."
+            },
+            {
+              "type": "Letter",
+              "title": "Medical Excuse Letter",
+              "author": "PCP",
+              "date": "2026-03-03T13:30",
+              "body": "To whom it may concern: Dylan Mazur was under medical care from February 26 through March 6, 2026, and was unable to attend classes or program activities during that time. He may return to normal activities on March 9. Please contact the office with any questions."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home + school note",
+              "author": "front desk",
+              "date": "2026-03-03T13:40",
+              "body": "Letter is attached under Letters. You're booked tomorrow, Wednesday, at 11:00."
+            }
           ]
         },
         {
@@ -268,38 +715,76 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "follow-up after hospital stay for cholera",
           "conditions": [
-            {"label": "Cholera due to Vibrio cholerae 01, biovar cholerae", "icd10": "A00.0", "action": "resolved"},
-            {"label": "Dehydration", "icd10": "E86.0", "action": "resolved"},
-            {"label": "Hypovolemic shock", "icd10": "R57.1", "action": "resolved"}
+            {
+              "label": "Cholera due to Vibrio cholerae 01, biovar cholerae",
+              "icd10": "A00.0",
+              "action": "resolved"
+            },
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "resolved"
+            },
+            {
+              "label": "Hypovolemic shock",
+              "icd10": "R57.1",
+              "action": "resolved"
+            }
           ],
-          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-04T11:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-04T11:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Transitional care management, moderate complexity", "performed": "2026-03-04T11:00"},
-            {"procedure": "Venipuncture", "performed": "2026-03-04T11:35"}
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-03-04T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-04T11:35"
+            }
           ],
           "documents": [
-            {"type": "Progress Notes", "title": "Post-Discharge Visit", "author": "PCP", "date": "2026-03-04T13:00", "body": "29M, three days after discharge. Hospital records not yet here; history from patient and his hospital portal.\n\nReturned 2/25 from two weeks of humanitarian work in Bangladesh (untreated well water, street food). Abrupt torrential watery diarrhea from the evening of 2/26; ED 2/27 with low BP and fast pulse, admitted, IV fluids then oral rehydration, one dose of doxycycline. Stool culture final: Vibrio cholerae O1, toxigenic. Health department has already called him.\n\nNow: last loose stool Saturday. Eating normally, drinking plenty, urine pale. No dizziness, cramps gone. No fever. No meds.\n\nExam: looks well, mucous membranes moist. Vitals normal, no orthostatic symptoms. Abdomen soft, nontender, normal bowel sounds.\n\nA/P\n1. Cholera with severe dehydration and hypovolemic shock, resolved. BMP today to confirm electrolytes and kidney function recovered. Hand hygiene; he knows the drill from public health school.\n2. Request hospital records.\n3. Letter for school sent yesterday.\nPhysical in the fall."}
-          ]
-        },
-        {
-          "id": "2026-03-05a",
-          "kind": "portal_message",
-          "start": "2026-03-05T09:40",
-          "reason": "lab result",
-          "documents": [
-            {"type": "Result Note", "title": "Chemistry panel", "author": "PCP", "date": "2026-03-05T09:40", "body": "Your blood chemistry from yesterday is normal — sodium, potassium, bicarbonate and kidney function all back in range. You've fully bounced back. Nothing else needed."}
-          ]
-        },
-        {
-          "id": "2026-03-24a",
-          "kind": "telephone",
-          "start": "2026-03-24T14:15",
-          "reason": "records request",
-          "documents": [
-            {"type": "Telephone Encounter", "title": "Records Request, Second Attempt", "author": "front desk", "date": "2026-03-24T14:15", "body": "First request for the Feb 27-Mar 1 admission records sent 3/4, nothing received. Called hospital HIM; they had no release on file for this admission. Re-faxed the signed release and request."}
+            {
+              "type": "Progress Notes",
+              "title": "Post-Discharge Visit",
+              "author": "PCP",
+              "date": "2026-03-04T13:00",
+              "body": "29M, three days after discharge. Hospital records not yet here; history from patient and his hospital portal.\n\nReturned 2/25 from two weeks of humanitarian work in Bangladesh (untreated well water, street food). Abrupt torrential watery diarrhea from the evening of 2/26; ED 2/27 with low BP and fast pulse, admitted, IV fluids then oral rehydration, one dose of doxycycline. Stool culture final: Vibrio cholerae O1, toxigenic. Health department has already called him.\n\nNow: last loose stool Saturday. Eating normally, drinking plenty, urine pale. No dizziness, cramps gone. No fever. No meds.\n\nExam: looks well, mucous membranes moist. Vitals normal, no orthostatic symptoms. Abdomen soft, nontender, normal bowel sounds.\n\nA/P\n1. Cholera with severe dehydration and hypovolemic shock, resolved. BMP today to confirm electrolytes and kidney function recovered. Hand hygiene; he knows the drill from public health school.\n2. Request hospital records.\n3. Letter for school sent yesterday.\nPhysical in the fall."
+            }
           ]
         },
         {
@@ -307,20 +792,7 @@
           "kind": "outside_records",
           "start": "2026-04-09T09:30",
           "reason": "hospital records received",
-          "documents": [
-            {"type": "Telephone Encounter", "title": "Hospital Records Received", "author": "MA", "date": "2026-04-09T09:50", "body": "ED record 2/27/2026 and discharge summary 3/1/2026 received by fax. Filed and routed to PCP. Admission lab flowsheet not included."},
-            {"type": "Telephone Encounter", "title": "Records Reviewed", "author": "PCP", "date": "2026-04-09T16:05", "body": "Read through. Matches his account: hypovolemic shock in the ED, culture-confirmed toxigenic V. cholerae O1, single-dose doxycycline, discharged on day 3. No follow-up items."}
-          ]
-        },
-        {
-          "id": "2026-08-18a",
-          "kind": "portal_message",
-          "start": "2026-08-18T20:30",
-          "reason": "scheduling",
-          "documents": [
-            {"type": "Patient Message", "title": "Fall physical", "author": "patient", "date": "2026-08-18T20:30", "body": "Is there a morning slot in mid-October for my physical? Anything after the first week works."},
-            {"type": "Patient Message", "title": "RE: Fall physical", "author": "front desk", "date": "2026-08-19T09:10", "body": "Booked: Tuesday, October 13 at 8:40."}
-          ]
+          "documents": []
         },
         {
           "id": "2026-10-13a",

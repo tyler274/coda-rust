@@ -48,3 +48,8 @@
 - 2026-07-14 outside: EP 3-month visit, no episodes or therapies (A6)
 - 2026-08-18 portal: asks about driving after 09-14 and basketball; PCP replies (A6, P)
 - 2026-10-20 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002007 on 2026-03-26. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -41,3 +41,8 @@
 - 2026-02-24 office visit: pelvic pain follow-up (P)
 - 2026-07-14 portal: ibuprofen refill, schedule physical (P)
 - 2026-09-10 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00001760 on 2026-02-24. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

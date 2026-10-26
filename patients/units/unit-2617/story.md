@@ -35,3 +35,8 @@
 - 2026-07-28 gastroenterology follow-up (labs 07-27): HBsAg still reactive, HBV DNA 310; repeat in December. (A8)
 - 2026-08-17 lab: liver tests near normal, resulted 08-18, not yet reviewed. (A8)
 - 2026-09-10 booked follow-up with flu vaccine. (P)
+
+
+## Last seen
+
+The practice last saw MRN00002617 on 2026-07-09. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

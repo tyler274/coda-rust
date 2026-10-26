@@ -172,3 +172,8 @@ Allowed without listing, with ordinary normal results unless a level above says 
 - Booked visit after 2026-08-27: a triglyceride follow-up on 2026-11-10.
 
 No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001837 on 2026-04-14. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -9,11 +9,35 @@
           "start": "2024-01-22T14:15",
           "reason": "ophthalmology letter",
           "medications": [
-            {"drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution", "action": "historical", "sig": "1 drop in each eye up to four times daily as needed for dryness", "dose": {"value": 1, "unit": "drop"}, "frequency": "PRN", "route": "Ophthalmic", "course": "chronic", "reason": "ocular surface dryness"}
+            {
+              "drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+              "action": "historical",
+              "sig": "1 drop in each eye up to four times daily as needed for dryness",
+              "dose": {
+                "value": 1,
+                "unit": "drop"
+              },
+              "frequency": "PRN",
+              "route": "Ophthalmic",
+              "course": "chronic",
+              "reason": "ocular surface dryness"
+            }
           ],
-          "orders": [{"id": "ophtho-referral", "action": "done", "date": "2024-01-16T09:00"}],
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "done",
+              "date": "2024-01-16T09:00"
+            }
+          ],
           "documents": [
-            {"type": "Consult Note", "title": "Ophthalmology consultation", "author": "ophthalmology", "date": "2024-01-22T14:15", "body": "Outside ophthalmology group. Visit 01/16/2024.\n\nReferred for intermittent blurred vision and dry, gritty eyes in a patient with biopsy-proven sarcoidosis.\n\nVisual acuity 20/20 each eye with near correction not required. Pupils equal, no afferent defect. Intraocular pressures normal. Slit lamp: lids and lashes normal; conjunctiva quiet; reduced tear film break-up time both eyes with mild punctate staining inferiorly; anterior chamber deep and quiet, no cells or flare; no keratic precipitates; iris without nodules. Dilated exam: clear vitreous, normal optic discs, macula and vessels normal, no periphlebitis or choroidal lesions.\n\nImpression: no evidence of uveitis or posterior segment sarcoidosis. Ocular surface dryness, likely accounting for the fluctuating blur with reading.\nPlan: preservative-free carboxymethylcellulose artificial tears up to four times daily, screen breaks when grading. Yearly eye exam given her sarcoidosis, sooner for redness, pain or light sensitivity.\n\nAllergies: NKDA."}
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology consultation",
+              "author": "ophthalmology",
+              "date": "2024-01-22T14:15",
+              "body": "Outside ophthalmology group. Visit 01/16/2024.\n\nReferred for intermittent blurred vision and dry, gritty eyes in a patient with biopsy-proven sarcoidosis.\n\nVisual acuity 20/20 each eye with near correction not required. Pupils equal, no afferent defect. Intraocular pressures normal. Slit lamp: lids and lashes normal; conjunctiva quiet; reduced tear film break-up time both eyes with mild punctate staining inferiorly; anterior chamber deep and quiet, no cells or flare; no keratic precipitates; iris without nodules. Dilated exam: clear vitreous, normal optic discs, macula and vessels normal, no periphlebitis or choroidal lesions.\n\nImpression: no evidence of uveitis or posterior segment sarcoidosis. Ocular surface dryness, likely accounting for the fluctuating blur with reading.\nPlan: preservative-free carboxymethylcellulose artificial tears up to four times daily, screen breaks when grading. Yearly eye exam given her sarcoidosis, sooner for redness, pain or light sensitivity.\n\nAllergies: NKDA."
+            }
           ]
         },
         {
@@ -21,7 +45,13 @@
           "kind": "portal_message",
           "start": "2024-01-23T07:40",
           "documents": [
-            {"type": "Patient Message", "title": "Eye doctor letter", "author": "PCP", "date": "2024-01-23T07:40", "body": "Good news from the eye doctor: no inflammation inside the eyes from the sarcoid. The blur seems to be from dry eyes, so use the artificial tears they recommended. They want to see you once a year."}
+            {
+              "type": "Patient Message",
+              "title": "Eye doctor letter",
+              "author": "PCP",
+              "date": "2024-01-23T07:40",
+              "body": "Good news from the eye doctor: no inflammation inside the eyes from the sarcoid. The blur seems to be from dry eyes, so use the artificial tears they recommended. They want to see you once a year."
+            }
           ]
         },
         {
@@ -30,15 +60,65 @@
           "start": "2024-04-09T15:40",
           "service": "Internal Medicine — Primary Care",
           "reason": "sarcoidosis follow-up",
-          "state": {"labs": {"Calcium": 11.1}},
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-04-09T16:10", "results": [{"test": "Calcium", "value": 11.1}, {"test": "Creatinine"}, {"test": "Alkaline Phosphatase"}]},
-            {"panel": "CBC with Differential", "collected": "2024-04-09T16:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          "state": {
+            "labs": {
+              "Calcium": 11.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-04-09T15:40"}],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-04-09T16:10",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.1
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-04-09T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-09T15:40"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-04-09T16:30", "body": "Routine follow-up.\n\nEyes better with the drops, blur only at the end of long grading nights. Energy so-so, better on weekends. Occasional dry cough, nothing new. No fevers. Shins clear since January. UC quiet.\n\nMeds: mesalamine 1.2 g BID, artificial tears prn. NKDA.\n\nExam: well. Lungs clear. Heart regular. Skin clear.\n\nA/P: sarcoidosis, stable on observation; calcium recheck today. Ophthalmology yearly. Pulmonology follow-up is overdue; she will call them. UC: continue mesalamine. RTC at physical in September."}
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-04-09T16:30",
+              "body": "Routine follow-up.\n\nEyes better with the drops, blur only at the end of long grading nights. Energy so-so, better on weekends. Occasional dry cough, nothing new. No fevers. Shins clear since January. UC quiet.\n\nMeds: mesalamine 1.2 g BID, artificial tears prn. NKDA.\n\nExam: well. Lungs clear. Heart regular. Skin clear.\n\nA/P: sarcoidosis, stable on observation; calcium recheck today. Ophthalmology yearly. Pulmonology follow-up is overdue; she will call them. UC: continue mesalamine. RTC at physical in September."
+            }
           ]
         },
         {
@@ -46,7 +126,13 @@
           "kind": "portal_message",
           "start": "2024-04-11T12:20",
           "documents": [
-            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2024-04-11T12:20", "body": "Calcium remains mildly elevated and steady. Blood counts and kidney function are normal."}
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-04-11T12:20",
+              "body": "Calcium remains mildly elevated and steady. Blood counts and kidney function are normal."
+            }
           ]
         },
         {
@@ -55,7 +141,13 @@
           "start": "2024-06-11T10:30",
           "reason": "GI follow-up letter",
           "documents": [
-            {"type": "Outside Records", "title": "Gastroenterology follow-up letter", "author": "gastroenterology", "date": "2024-06-11T10:30", "body": "Gastroenterology, office visit 06/04/2024. Ulcerative colitis in sustained clinical remission on mesalamine 1.2 g twice daily. No rectal bleeding, one or two formed stools daily. Sarcoidosis followed by pulmonology. Abdomen benign. Plan: continue mesalamine; renewed prescription for one year with refills. Return in one year. Allergies: no known drug allergies."}
+            {
+              "type": "Outside Records",
+              "title": "Gastroenterology follow-up letter",
+              "author": "gastroenterology",
+              "date": "2024-06-11T10:30",
+              "body": "Gastroenterology, office visit 06/04/2024. Ulcerative colitis in sustained clinical remission on mesalamine 1.2 g twice daily. No rectal bleeding, one or two formed stools daily. Sarcoidosis followed by pulmonology. Abdomen benign. Plan: continue mesalamine; renewed prescription for one year with refills. Return in one year. Allergies: no known drug allergies."
+            }
           ]
         },
         {
@@ -63,8 +155,20 @@
           "kind": "portal_message",
           "start": "2024-08-27T20:05",
           "documents": [
-            {"type": "Patient Message", "title": "Work form", "author": "patient", "date": "2024-08-27T20:05", "body": "Hi, the district wants a health form for staff with chronic conditions this year (just confirming I can work and listing any accommodations). Can you fill it out at my physical? Nothing needs to change, I just want it on file in case I have more appointments."},
-            {"type": "Patient Message", "title": "RE: Work form", "author": "MA", "date": "2024-08-28T08:15", "body": "Sure, bring it to your physical on 9/10 and the doctor will complete it."}
+            {
+              "type": "Patient Message",
+              "title": "Work form",
+              "author": "patient",
+              "date": "2024-08-27T20:05",
+              "body": "Hi, the district wants a health form for staff with chronic conditions this year (just confirming I can work and listing any accommodations). Can you fill it out at my physical? Nothing needs to change, I just want it on file in case I have more appointments."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Work form",
+              "author": "MA",
+              "date": "2024-08-28T08:15",
+              "body": "Sure, bring it to your physical on 9/10 and the doctor will complete it."
+            }
           ]
         },
         {
@@ -73,16 +177,65 @@
           "start": "2024-09-10T08:15",
           "service": "Internal Medicine — Primary Care",
           "reason": "annual physical",
-          "state": {"weight_kg": 69.6},
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T08:50", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
-            {"panel": "Urinalysis", "collected": "2024-09-10T08:50", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}]}
+          "state": {
+            "weight_kg": 69.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-10T08:15"}],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-09-10T08:50",
+              "results": [
+                {
+                  "test": "Urine Protein"
+                },
+                {
+                  "test": "Urine Blood"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-10T08:15"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-09-10T09:05", "body": "Annual. Weight back up to 69.6 kg. Feels about as good as she has in a couple of years. Cough rare. Eyes fine with drops. UC quiet, saw GI in June. Has not rescheduled pulmonology; given their number again.\n\nMeds: mesalamine 1.2 g BID, carboxymethylcellulose drops prn. NKDA. PHQ-2 0.\n\nExam: well. Eyes quiet. Neck no adenopathy. Heart regular. Lungs clear. Abdomen soft. Shins clear. Neuro nonfocal.\n\nPlan: CMP, UA. District health form completed: no restrictions. Flu and COVID in October. Pap next due 2028. Mammogram to start at 40."}
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-10T09:05",
+              "body": "Annual. Weight back up to 69.6 kg. Feels about as good as she has in a couple of years. Cough rare. Eyes fine with drops. UC quiet, saw GI in June. Has not rescheduled pulmonology; given their number again.\n\nMeds: mesalamine 1.2 g BID, carboxymethylcellulose drops prn. NKDA. PHQ-2 0.\n\nExam: well. Eyes quiet. Neck no adenopathy. Heart regular. Lungs clear. Abdomen soft. Shins clear. Neuro nonfocal.\n\nPlan: CMP, UA. District health form completed: no restrictions. Flu and COVID in October. Pap next due 2028. Mammogram to start at 40."
+            }
           ]
         },
         {
@@ -92,12 +245,29 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "vaccines",
           "immunizations": [
-            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T15:33"},
-            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T15:35"}
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T15:33"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T15:35"
+            }
           ],
-          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T15:33"}],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:33"
+            }
+          ],
           "documents": [
-            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2024-10-08T15:48", "body": "Flu (trivalent) IM left deltoid, 2024-25 COVID IM right deltoid. Tolerated without issue, out after 15 minutes."}
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2024-10-08T15:48",
+              "body": "Flu (trivalent) IM left deltoid, 2024-25 COVID IM right deltoid. Tolerated without issue, out after 15 minutes."
+            }
           ]
         },
         {
@@ -106,12 +276,43 @@
           "start": "2024-12-03T12:10",
           "service": "Internal Medicine — Primary Care",
           "reason": "right facial weakness",
-          "measure": ["bp", "hr", "temp_c", "spo2"],
-          "orders": [{"id": "neuro-referral", "action": "placed", "order": "Neurology referral, urgent", "category": "referral", "to": "Neurology", "reason": "right peripheral facial weakness in sarcoidosis"}],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-12-03T12:10"}],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral, urgent",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "right peripheral facial weakness in sarcoidosis"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-03T12:10"
+            }
+          ],
           "documents": [
-            {"type": "Telephone Encounter", "title": "Same-day request", "author": "RN", "date": "2024-12-03T07:20", "body": "Pt texted: right side of face feels heavy and her smile is crooked, building for about a week. No arm or leg weakness, speech clear, no headache. Coworker noticed it. Triage: gradual, face only, more than a week. Same-day slot at her lunch break 12:10."},
-            {"type": "Progress Notes", "title": "Same-day Visit", "author": "PCP", "date": "2024-12-03T12:50", "body": "About a week of gradually worsening right facial weakness. Started as trouble whistling and a droop at the corner of her mouth, now the right eye doesn't close all the way and it waters. No limb weakness, numbness, vision loss, speech or swallowing trouble, no ear pain or vesicles. Dry cough has crept back over the last couple of months, some breathlessness. No fever.\n\nExam: vitals normal. Right facial weakness involving forehead, eye closure and mouth; left side normal. No vesicles in the ear canal. Other cranial nerves intact. Strength and sensation normal in all four limbs, reflexes symmetric, gait normal.\n\nA/P: right peripheral facial nerve palsy, progressive over a week, in a patient with biopsy-proven sarcoidosis; facial nerve involvement from sarcoid is a real possibility. No central signs. Urgent neurology referral, office called directly and fit her in 12/16. Eye protection now: artificial tears through the day, tape the lid closed at night. Return or ED for any limb weakness, speech change or a severe headache."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Same-day request",
+              "author": "RN",
+              "date": "2024-12-03T07:20",
+              "body": "Pt texted: right side of face feels heavy and her smile is crooked, building for about a week. No arm or leg weakness, speech clear, no headache. Coworker noticed it. Triage: gradual, face only, more than a week. Same-day slot at her lunch break 12:10."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Same-day Visit",
+              "author": "PCP",
+              "date": "2024-12-03T12:50",
+              "body": "About a week of gradually worsening right facial weakness. Started as trouble whistling and a droop at the corner of her mouth, now the right eye doesn't close all the way and it waters. No limb weakness, numbness, vision loss, speech or swallowing trouble, no ear pain or vesicles. Dry cough has crept back over the last couple of months, some breathlessness. No fever.\n\nExam: vitals normal. Right facial weakness involving forehead, eye closure and mouth; left side normal. No vesicles in the ear canal. Other cranial nerves intact. Strength and sensation normal in all four limbs, reflexes symmetric, gait normal.\n\nA/P: right peripheral facial nerve palsy, progressive over a week, in a patient with biopsy-proven sarcoidosis; facial nerve involvement from sarcoid is a real possibility. No central signs. Urgent neurology referral, office called directly and fit her in 12/16. Eye protection now: artificial tears through the day, tape the lid closed at night. Return or ED for any limb weakness, speech change or a severe headache."
+            }
           ]
         },
         {
@@ -120,23 +321,90 @@
           "start": "2024-12-16T10:30",
           "service": "Neurology",
           "reason": "right facial weakness",
-          "conditions": [{"label": "Sarcoidosis of other sites", "icd10": "D86.89", "action": "diagnosed", "onset": "2024-11-25", "note": "right facial nerve palsy (neurosarcoidosis)"}],
-          "measure": ["bp", "hr", "temp_c"],
+          "conditions": [
+            {
+              "label": "Sarcoidosis of other sites",
+              "icd10": "D86.89",
+              "action": "diagnosed",
+              "onset": "2024-11-25",
+              "note": "right facial nerve palsy (neurosarcoidosis)"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-16T11:20", "results": [{"test": "Calcium", "value": 11.2}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2024-12-16T11:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2024-12-16T11:20", "results": [
-              {"test": "Angiotensin converting enzyme", "loinc": "2742-5", "unit": "U/L", "text": "Elevated"},
-              {"test": "Antinuclear Antibodies", "text": "Negative"},
-              {"test": "Rheumatoid Factor", "text": "Negative"}
-            ]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-16T11:20",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-16T11:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-16T11:20",
+              "results": [
+                {
+                  "test": "Angiotensin converting enzyme",
+                  "loinc": "2742-5",
+                  "unit": "U/L",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Negative"
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "Chest X-ray, 2 views", "performed": "2024-12-16T11:00", "text": "PA and lateral. Bilateral hilar lymphadenopathy. No consolidation or effusion. Heart size normal.", "conclusion": "Bilateral hilar lymphadenopathy."}
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-12-16T11:00",
+              "text": "PA and lateral. Bilateral hilar lymphadenopathy. No consolidation or effusion. Heart size normal.",
+              "conclusion": "Bilateral hilar lymphadenopathy."
+            }
           ],
-          "orders": [{"id": "neuro-referral", "action": "done", "date": "2024-12-16T10:30"}],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2024-12-16T10:30"
+            }
+          ],
           "documents": [
-            {"type": "Consult Note", "title": "Neurology consultation", "author": "neurology", "date": "2025-01-06T09:45", "body": "Outside neurology clinic. Consultation 12/16/2024.\n\nReason: right facial weakness, urgent referral from primary care.\n\nShe is 37, with biopsy-confirmed sarcoidosis (pulmonary and nodal), ulcerative colitis and a prior parathyroid adenoma, last seen by her physician a year ago for fatigue and eye complaints. Three weeks of progressive weakness of the right face. Two months of persistent dry cough with occasional breathlessness. No fever, weight loss or night sweats.\n\nMedications: mesalamine; artificial tears. Allergies: NKDA.\nFamily history: maternal aunt with sarcoidosis, mother with lupus, father with type 2 diabetes, paternal cousin with ulcerative colitis.\n\nExamination: right lower motor neuron facial palsy with drooping of the mouth, incomplete closure of the right eye and inability to raise the right eyebrow. Remaining cranial nerves normal. Motor, sensory, reflexes and coordination normal. Lungs without wheezes, rales or rhonchi.\n\nLabs: calcium 11.2 mg/dL, ACE elevated, CBC normal, ANA negative, RF negative.\nChest radiograph: bilateral hilar lymphadenopathy.\n\nImpression: right facial nerve palsy attributed to neurosarcoidosis, the most common cranial neuropathy in sarcoid.\nPlan: protect the right cornea with lubricating drops during the day and taping at night; eye patch outdoors on windy days. Expect gradual recovery over weeks to months. Return if new cranial nerve or limb symptoms develop."}
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "author": "neurology",
+              "date": "2025-01-06T09:45",
+              "body": "Outside neurology clinic. Consultation 12/16/2024.\n\nReason: right facial weakness, urgent referral from primary care.\n\nShe is 37, with biopsy-confirmed sarcoidosis (pulmonary and nodal), ulcerative colitis and a prior parathyroid adenoma, last seen by her physician a year ago for fatigue and eye complaints. Three weeks of progressive weakness of the right face. Two months of persistent dry cough with occasional breathlessness. No fever, weight loss or night sweats.\n\nMedications: mesalamine; artificial tears. Allergies: NKDA.\nFamily history: maternal aunt with sarcoidosis, mother with lupus, father with type 2 diabetes, paternal cousin with ulcerative colitis.\n\nExamination: right lower motor neuron facial palsy with drooping of the mouth, incomplete closure of the right eye and inability to raise the right eyebrow. Remaining cranial nerves normal. Motor, sensory, reflexes and coordination normal. Lungs without wheezes, rales or rhonchi.\n\nLabs: calcium 11.2 mg/dL, ACE elevated, CBC normal, ANA negative, RF negative.\nChest radiograph: bilateral hilar lymphadenopathy.\n\nImpression: right facial nerve palsy attributed to neurosarcoidosis, the most common cranial neuropathy in sarcoid.\nPlan: protect the right cornea with lubricating drops during the day and taping at night; eye patch outdoors on windy days. Expect gradual recovery over weeks to months. Return if new cranial nerve or limb symptoms develop."
+            }
           ]
         },
         {
@@ -144,8 +412,20 @@
           "kind": "portal_message",
           "start": "2024-12-18T21:10",
           "documents": [
-            {"type": "Patient Message", "title": "Eye taping", "author": "patient", "date": "2024-12-18T21:10", "body": "Neurology said this is from the sarcoid and should get better on its own over time. The taping at night is awkward. Is there a better tape to use? And can I keep using the same drops all day?"},
-            {"type": "Patient Message", "title": "RE: Eye taping", "author": "RN", "date": "2024-12-19T08:05", "body": "Paper surgical tape from any pharmacy works best and is gentle on the skin; close the lid fully, then tape horizontally across it. Yes, the same artificial tears are fine as often as you need during the day. Call if the eye becomes red or painful or your vision changes."}
+            {
+              "type": "Patient Message",
+              "title": "Eye taping",
+              "author": "patient",
+              "date": "2024-12-18T21:10",
+              "body": "Neurology said this is from the sarcoid and should get better on its own over time. The taping at night is awkward. Is there a better tape to use? And can I keep using the same drops all day?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Eye taping",
+              "author": "RN",
+              "date": "2024-12-19T08:05",
+              "body": "Paper surgical tape from any pharmacy works best and is gentle on the skin; close the lid fully, then tape horizontally across it. Yes, the same artificial tears are fine as often as you need during the day. Call if the eye becomes red or painful or your vision changes."
+            }
           ]
         },
         {
@@ -154,7 +434,13 @@
           "start": "2025-01-07T10:15",
           "reason": "records received",
           "documents": [
-            {"type": "Telephone Encounter", "title": "Neurology note received", "author": "MA", "date": "2025-01-07T10:15", "body": "Neurology consult 12/16/24 received 1/6, scanned and routed to PCP. Pt has f/u here 2/11."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Neurology note received",
+              "author": "MA",
+              "date": "2025-01-07T10:15",
+              "body": "Neurology consult 12/16/24 received 1/6, scanned and routed to PCP. Pt has f/u here 2/11."
+            }
           ]
         },
         {
@@ -163,14 +449,46 @@
           "start": "2025-02-11T15:45",
           "service": "Internal Medicine — Primary Care",
           "reason": "facial palsy follow-up",
-          "state": {"labs": {"Calcium": 11.0}},
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-02-11T16:15", "results": [{"test": "Calcium"}, {"test": "Creatinine"}]}
+          "state": {
+            "labs": {
+              "Calcium": 11.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-11T15:45"}],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-02-11T16:15",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-11T15:45"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-02-11T16:35", "body": "Follow-up right facial palsy (neurosarcoid per neurology 12/16).\n\nSlowly coming back: can close the eye now with effort, still tapes at night. Smile still a little lopsided. Eye not red or painful. Cough settled again.\n\nExam: right face with mild residual weakness, eye closes fully with effort, forehead moves partially. Cornea clear by penlight. Lungs clear. Remainder nonfocal.\n\nA/P: improving facial palsy. Keep lubricating until full closure without effort. Calcium today. Recheck at physical; neurology as needed."}
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-02-11T16:35",
+              "body": "Follow-up right facial palsy (neurosarcoid per neurology 12/16).\n\nSlowly coming back: can close the eye now with effort, still tapes at night. Smile still a little lopsided. Eye not red or painful. Cough settled again.\n\nExam: right face with mild residual weakness, eye closes fully with effort, forehead moves partially. Cornea clear by penlight. Lungs clear. Remainder nonfocal.\n\nA/P: improving facial palsy. Keep lubricating until full closure without effort. Calcium today. Recheck at physical; neurology as needed."
+            }
           ]
         },
         {
@@ -178,8 +496,20 @@
           "kind": "portal_message",
           "start": "2025-05-20T19:40",
           "documents": [
-            {"type": "Patient Message", "title": "Scheduling", "author": "patient", "date": "2025-05-20T19:40", "body": "Can I move my physical to after school gets out? Mid to late June works best. Also my face is basically back to normal, I stopped taping a few weeks ago."},
-            {"type": "Patient Message", "title": "RE: Scheduling", "author": "front desk", "date": "2025-05-21T09:00", "body": "You're booked for Tuesday 6/17 at 9:00. Glad to hear about your face!"}
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "author": "patient",
+              "date": "2025-05-20T19:40",
+              "body": "Can I move my physical to after school gets out? Mid to late June works best. Also my face is basically back to normal, I stopped taping a few weeks ago."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "author": "front desk",
+              "date": "2025-05-21T09:00",
+              "body": "You're booked for Tuesday 6/17 at 9:00. Glad to hear about your face!"
+            }
           ]
         },
         {
@@ -188,18 +518,85 @@
           "start": "2025-06-17T09:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "annual physical",
-          "conditions": [{"label": "Sarcoidosis of other sites", "icd10": "D86.89", "action": "resolved", "note": "right facial palsy recovered"}],
-          "state": {"weight_kg": 70.2},
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-06-17T09:40", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Albumin"}]},
-            {"panel": "CBC with Differential", "collected": "2025-06-17T09:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
-            {"panel": "Lipid Panel", "collected": "2025-06-17T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]}
+          "conditions": [
+            {
+              "label": "Sarcoidosis of other sites",
+              "icd10": "D86.89",
+              "action": "resolved",
+              "note": "right facial palsy recovered"
+            }
           ],
-          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-06-17T09:00"}],
+          "state": {
+            "weight_kg": 70.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-17T09:40",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-06-17T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-06-17T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-06-17T09:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-06-17T09:50", "body": "Annual, first week of summer break.\n\nFace fully recovered; stopped taping in April and only uses drops occasionally. Cough gone for now. Energy decent. UC quiet, sees GI this month. No joint complaints.\n\nMeds: mesalamine 1.2 g BID, artificial tears prn. NKDA. PHQ-9 2.\n\nExam: symmetric facial movement, eye closure complete. Lungs clear. Heart regular. Abdomen soft. Skin clear. No synovitis.\n\nPlan: facial palsy resolved. CMP, CBC with diff, lipids. Flu and COVID in the fall. Ophthalmology yearly visit due; reminded."}
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-06-17T09:50",
+              "body": "Annual, first week of summer break.\n\nFace fully recovered; stopped taping in April and only uses drops occasionally. Cough gone for now. Energy decent. UC quiet, sees GI this month. No joint complaints.\n\nMeds: mesalamine 1.2 g BID, artificial tears prn. NKDA. PHQ-9 2.\n\nExam: symmetric facial movement, eye closure complete. Lungs clear. Heart regular. Abdomen soft. Skin clear. No synovitis.\n\nPlan: facial palsy resolved. CMP, CBC with diff, lipids. Flu and COVID in the fall. Ophthalmology yearly visit due; reminded."
+            }
           ]
         },
         {
@@ -207,7 +604,13 @@
           "kind": "portal_message",
           "start": "2025-06-19T11:30",
           "documents": [
-            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2025-06-19T11:30", "body": "Labs look stable: calcium still a touch high as it has been, kidney function, blood counts and cholesterol all normal. Enjoy the summer."}
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-06-19T11:30",
+              "body": "Labs look stable: calcium still a touch high as it has been, kidney function, blood counts and cholesterol all normal. Enjoy the summer."
+            }
           ]
         },
         {
@@ -217,12 +620,29 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "vaccines",
           "immunizations": [
-            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T15:32"},
-            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T15:34"}
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T15:32"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T15:34"
+            }
           ],
-          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-07T15:32"}],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T15:32"
+            }
+          ],
           "documents": [
-            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2025-10-07T15:45", "body": "Influenza and 2025-26 COVID vaccines given IM, one in each deltoid. No reaction during observation."}
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2025-10-07T15:45",
+              "body": "Influenza and 2025-26 COVID vaccines given IM, one in each deltoid. No reaction during observation."
+            }
           ]
         },
         {
@@ -231,7 +651,13 @@
           "start": "2025-12-10T17:20",
           "reason": "joint swelling with fever",
           "documents": [
-            {"type": "Telephone Encounter", "title": "Triage call", "author": "PCP", "date": "2025-12-10T17:20", "body": "Pt called after school. Two weeks of right knee pain and swelling, now the left ankle too, getting worse; low-grade temps to about 100 at home; a rash on her lower legs. Limping, hard to stand at the board. No injury. Bowels normal.\n\nA hot swollen knee with fever needs the joint tapped to exclude infection today or tomorrow; we cannot do that safely in the office this evening. Advised ED. She will go first thing in the morning if tonight's temp stays under 101, tonight if higher or if she can't bear weight."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Triage call",
+              "author": "PCP",
+              "date": "2025-12-10T17:20",
+              "body": "Pt called after school. Two weeks of right knee pain and swelling, now the left ankle too, getting worse; low-grade temps to about 100 at home; a rash on her lower legs. Limping, hard to stand at the board. No injury. Bowels normal.\n\nA hot swollen knee with fever needs the joint tapped to exclude infection today or tomorrow; we cannot do that safely in the office this evening. Advised ED. She will go first thing in the morning if tonight's temp stays under 101, tonight if higher or if she can't bear weight."
+            }
           ]
         },
         {
@@ -241,42 +667,165 @@
           "end": "2025-12-11T13:10",
           "service": "Emergency Medicine",
           "reason": "right knee and left ankle swelling, fever",
-          "conditions": [{"label": "Enteropathic arthropathies, multiple sites", "icd10": "M07.69", "action": "diagnosed", "onset": "2025-11-27", "note": "peripheral arthritis associated with ulcerative colitis"}],
+          "conditions": [
+            {
+              "label": "Enteropathic arthropathies, multiple sites",
+              "icd10": "M07.69",
+              "action": "diagnosed",
+              "onset": "2025-11-27",
+              "note": "peripheral arthritis associated with ulcerative colitis"
+            }
+          ],
           "medications": [
-            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets by mouth every 6 hours as needed for pain, max 6 tablets a day", "dose": {"value": 1000, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "short", "reason": "joint pain"}
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain, max 6 tablets a day",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "joint pain"
+            }
           ],
           "vitals": [
-            {"time": "2025-12-11T07:48", "temp_c": 37.9, "bp": [124, 78], "hr": 92, "rr": 16, "spo2": 99},
-            {"time": "2025-12-11T12:45", "temp_c": 37.4, "bp": [118, 74], "hr": 84, "rr": 16, "spo2": 99}
+            {
+              "time": "2025-12-11T07:48",
+              "temp_c": 37.9,
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 92,
+              "rr": 16,
+              "spo2": 99
+            },
+            {
+              "time": "2025-12-11T12:45",
+              "temp_c": 37.4,
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 84,
+              "rr": 16,
+              "spo2": 99
+            }
           ],
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2025-12-11T08:10", "results": [{"test": "Hemoglobin", "value": 12.1}, {"test": "White Blood Cells", "value": 9.8}]},
-            {"panel": null, "collected": "2025-12-11T08:10", "results": [
-              {"test": "Erythrocyte Sedimentation Rate", "value": 45},
-              {"test": "C Reactive Protein", "value": 32},
-              {"test": "Rheumatoid Factor", "text": "Negative"},
-              {"test": "Antinuclear Antibodies", "text": "Negative"}
-            ]},
-            {"panel": null, "collected": "2025-12-11T09:30", "results": [
-              {"test": "Synovial fluid leukocytes", "loinc": "26469-7", "unit": "/uL", "value": 16400},
-              {"test": "Synovial fluid crystals", "loinc": "5781-0", "text": "No crystals seen"},
-              {"test": "Synovial fluid Gram stain", "loinc": "14363-6", "text": "No organisms seen"}
-            ]},
-            {"panel": null, "collected": "2025-12-11T09:30", "resulted": "2025-12-14T10:00", "results": [
-              {"test": "Synovial fluid culture", "loinc": "621-3", "text": "No growth at 72 hours"}
-            ]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-11T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-11T08:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 45
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 32
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-11T09:30",
+              "results": [
+                {
+                  "test": "Synovial fluid leukocytes",
+                  "loinc": "26469-7",
+                  "unit": "/uL",
+                  "value": 16400
+                },
+                {
+                  "test": "Synovial fluid crystals",
+                  "loinc": "5781-0",
+                  "text": "No crystals seen"
+                },
+                {
+                  "test": "Synovial fluid Gram stain",
+                  "loinc": "14363-6",
+                  "text": "No organisms seen"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-11T09:30",
+              "resulted": "2025-12-14T10:00",
+              "results": [
+                {
+                  "test": "Synovial fluid culture",
+                  "loinc": "621-3",
+                  "text": "No growth at 72 hours"
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "Knee X-ray", "performed": "2025-12-11T08:40", "text": "Right knee, three views. Soft tissue swelling and suprapatellar fullness. Joint spaces preserved. No erosions. Bone mineralization normal. No fracture.", "conclusion": "Soft tissue swelling without joint space narrowing, erosion or osteopenia."},
-            {"study": "Ankle X-ray", "performed": "2025-12-11T08:45", "text": "Left ankle, three views. Periarticular soft tissue swelling. Mortise intact, joint spaces preserved. No erosions. Normal mineralization. No fracture.", "conclusion": "Soft tissue swelling without joint space narrowing, erosion or osteopenia."}
+            {
+              "study": "Knee X-ray",
+              "performed": "2025-12-11T08:40",
+              "text": "Right knee, three views. Soft tissue swelling and suprapatellar fullness. Joint spaces preserved. No erosions. Bone mineralization normal. No fracture.",
+              "conclusion": "Soft tissue swelling without joint space narrowing, erosion or osteopenia."
+            },
+            {
+              "study": "Ankle X-ray",
+              "performed": "2025-12-11T08:45",
+              "text": "Left ankle, three views. Periarticular soft tissue swelling. Mortise intact, joint spaces preserved. No erosions. Normal mineralization. No fracture.",
+              "conclusion": "Soft tissue swelling without joint space narrowing, erosion or osteopenia."
+            }
           ],
           "procedures": [
-            {"procedure": "Emergency department visit, moderate MDM", "performed": "2025-12-11T07:40"},
-            {"procedure": "Arthrocentesis or injection, major joint", "performed": "2025-12-11T09:25"}
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-12-11T07:40"
+            },
+            {
+              "procedure": "Arthrocentesis or injection, major joint",
+              "performed": "2025-12-11T09:25"
+            }
           ],
           "documents": [
-            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2025-12-12T08:30", "body": "Regional hospital emergency department. Physician record, 12/11/2025.\n\nCC: right knee and left ankle pain and swelling.\n\nHPI: 38-year-old woman with sarcoidosis, ulcerative colitis, a past parathyroid problem and a prior facial nerve palsy. Two weeks of increasing pain and swelling of the right knee, then the left ankle, with low-grade fevers at home and a rash on both lower legs. No trauma, no tick bite she knows of, no new sexual partner, no urinary or eye symptoms. Her colitis is well controlled on mesalamine.\n\nMeds: mesalamine, artificial tears. Allergies: NKDA.\n\nExam: T 37.9 C, HR 92, BP 124/78, RR 16, SpO2 99%. Right knee warm with effusion, motion limited by pain. Left ankle warm and swollen, similar. No deformity. Pustular rash over both lower legs. Lungs clear. Abdomen soft.\n\nArthrocentesis, right knee, lateral approach, sterile technique, after consent: about 25 mL cloudy yellow fluid. Tolerated well.\n\nResults: hemoglobin 12.1 g/dL, WBC 9,800/uL. ESR 45 mm/h. CRP 3.2 mg/dL. RF negative, ANA negative. Synovial fluid WBC 16,400/uL, no crystals, Gram stain without organisms; culture pending at discharge.\nRadiographs right knee and left ankle: soft tissue swelling only, no joint space narrowing, erosions or osteopenia.\n\nMDM: inflammatory oligoarthritis of large lower-extremity joints in a patient with ulcerative colitis; synovial count and Gram stain do not suggest septic arthritis. Most consistent with enteropathic (IBD-associated) peripheral arthritis. NSAIDs avoided given her colitis.\n\nDisposition: discharged. Acetaminophen for pain, rest and ice. Follow up with primary care this week and rheumatology. Return for fever above 101, a hotter or more swollen joint, or inability to bear weight. The lab will call if the culture grows."},
-            {"type": "Telephone Encounter", "title": "ED culture result", "author": "RN", "date": "2025-12-14T11:10", "body": "Called by the hospital lab: right knee fluid culture no growth at 72 hours. Pt informed; knee still swollen but fever gone. Post-ED visit stays 12/16."}
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-12-12T08:30",
+              "body": "Regional hospital emergency department. Physician record, 12/11/2025.\n\nCC: right knee and left ankle pain and swelling.\n\nHPI: 38-year-old woman with sarcoidosis, ulcerative colitis, a past parathyroid problem and a prior facial nerve palsy. Two weeks of increasing pain and swelling of the right knee, then the left ankle, with low-grade fevers at home and a rash on both lower legs. No trauma, no tick bite she knows of, no new sexual partner, no urinary or eye symptoms. Her colitis is well controlled on mesalamine.\n\nMeds: mesalamine, artificial tears. Allergies: NKDA.\n\nExam: T 37.9 C, HR 92, BP 124/78, RR 16, SpO2 99%. Right knee warm with effusion, motion limited by pain. Left ankle warm and swollen, similar. No deformity. Pustular rash over both lower legs. Lungs clear. Abdomen soft.\n\nArthrocentesis, right knee, lateral approach, sterile technique, after consent: about 25 mL cloudy yellow fluid. Tolerated well.\n\nResults: hemoglobin 12.1 g/dL, WBC 9,800/uL. ESR 45 mm/h. CRP 3.2 mg/dL. RF negative, ANA negative. Synovial fluid WBC 16,400/uL, no crystals, Gram stain without organisms; culture pending at discharge.\nRadiographs right knee and left ankle: soft tissue swelling only, no joint space narrowing, erosions or osteopenia.\n\nMDM: inflammatory oligoarthritis of large lower-extremity joints in a patient with ulcerative colitis; synovial count and Gram stain do not suggest septic arthritis. Most consistent with enteropathic (IBD-associated) peripheral arthritis. NSAIDs avoided given her colitis.\n\nDisposition: discharged. Acetaminophen for pain, rest and ice. Follow up with primary care this week and rheumatology. Return for fever above 101, a hotter or more swollen joint, or inability to bear weight. The lab will call if the culture grows."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "ED culture result",
+              "author": "RN",
+              "date": "2025-12-14T11:10",
+              "body": "Called by the hospital lab: right knee fluid culture no growth at 72 hours. Pt informed; knee still swollen but fever gone. Post-ED visit stays 12/16."
+            }
           ]
         },
         {
@@ -285,42 +834,43 @@
           "start": "2025-12-16T15:30",
           "service": "Internal Medicine — Primary Care",
           "reason": "post-ED follow-up, knee and ankle",
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
-          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
-          "orders": [{"id": "rheum-referral-2", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "enteropathic peripheral arthritis"}],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-12-16T15:30"}],
-          "documents": [
-            {"type": "Progress Notes", "title": "Post-ED Visit", "author": "PCP", "date": "2025-12-16T16:20", "body": "Seen in the ED 12/11 for a swollen right knee and left ankle with fevers. ED record received: knee tapped, synovial WBC 16,400, no crystals, Gram stain negative; culture final no growth. ESR 45, CRP 3.2 mg/dL, RF and ANA negative. X-rays soft tissue swelling only. ED dx enteropathic (IBD-related) arthritis.\n\nNow: no fever since the weekend. Knee less tight after the tap, still sore on stairs; ankle swollen in the evenings. Pain 4/10 with acetaminophen. The rash on her legs is fading. UC quiet, no bleeding.\n\nExam: afebrile. Right knee with a small effusion, warm, flexion to about 100 degrees. Left ankle mildly swollen and tender. Lower legs with a few fading spots. Lungs clear.\n\nA/P:\n1. Enteropathic peripheral arthritis with UC. Rheumatology referral, asked for the soonest slot. Acetaminophen as needed; avoid ibuprofen and naproxen because of the colitis. Out of work rest of this week; note given.\n2. UC: let GI know about the arthritis; she will message them.\n3. Sarcoidosis, hypercalcemia: unchanged plan."}
-          ]
-        },
-        {
-          "id": "2026-01-21a",
-          "kind": "pharmacy",
-          "start": "2026-01-21T10:40",
-          "reason": "pharmacy query",
-          "medications": [
-            {"drug_text": "sulfasalazine 500 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily for 7 days, then 2 tablets twice daily with food", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "enteropathic arthritis"}
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
           ],
-          "orders": [{"id": "rheum-referral-2", "action": "done", "date": "2026-01-14T09:00"}],
-          "documents": [
-            {"type": "Telephone Encounter", "title": "Pharmacy call", "author": "MA", "date": "2026-01-21T10:40", "body": "Pharmacist called: filled sulfasalazine DR 500 mg from outside rheumatology on 1/14 (1 BID x 7 days then 2 BID), and their system flagged it alongside mesalamine. Wanted to confirm we are aware of both. We had no rheumatology note yet. Per PCP: rheumatology and GI manage these; the overlap is a known combination, OK to dispense both. Added sulfasalazine to med list as an outside prescription. Rheumatology office asked for their note and lab plan."},
-            {"type": "Telephone Encounter", "title": "Rheumatology office callback", "author": "MA", "date": "2026-01-22T14:05", "body": "Rheumatology office returned call: they want CBC and CMP at 2-4 weeks, then every 3 months while on sulfasalazine, drawn here and faxed to them. Letter to follow. Lab-only visit booked 2/10."}
-          ]
-        },
-        {
-          "id": "2026-02-10a",
-          "kind": "lab_only",
-          "start": "2026-02-10T07:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "sulfasalazine monitoring",
-          "state": {"labs": {"Calcium": 10.9}},
-          "labs": [
-            {"panel": "CBC with Differential", "collected": "2026-02-10T07:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Absolute Neutrophil Count"}]},
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-02-10T07:35", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Creatinine"}, {"test": "Calcium"}]}
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
           ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2026-02-10T07:35"}],
+          "orders": [
+            {
+              "id": "rheum-referral-2",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "enteropathic peripheral arthritis"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-16T15:30"
+            }
+          ],
           "documents": [
-            {"type": "Result Note", "title": "Monitoring labs", "author": "PCP", "date": "2026-02-11T12:15", "body": "Sulfasalazine 4-week labs: blood counts normal including neutrophils, liver enzymes and kidney function normal. Calcium mildly elevated as usual. Faxed to rheumatology. Portal note sent to patient."}
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "author": "PCP",
+              "date": "2025-12-16T16:20",
+              "body": "Seen in the ED 12/11 for a swollen right knee and left ankle with fevers. ED record received: knee tapped, synovial WBC 16,400, no crystals, Gram stain negative; culture final no growth. ESR 45, CRP 3.2 mg/dL, RF and ANA negative. X-rays soft tissue swelling only. ED dx enteropathic (IBD-related) arthritis.\n\nNow: no fever since the weekend. Knee less tight after the tap, still sore on stairs; ankle swollen in the evenings. Pain 4/10 with acetaminophen. The rash on her legs is fading. UC quiet, no bleeding.\n\nExam: afebrile. Right knee with a small effusion, warm, flexion to about 100 degrees. Left ankle mildly swollen and tender. Lower legs with a few fading spots. Lungs clear.\n\nA/P:\n1. Enteropathic peripheral arthritis with UC. Rheumatology referral, asked for the soonest slot. Acetaminophen as needed; avoid ibuprofen and naproxen because of the colitis. Out of work rest of this week; note given.\n2. UC: let GI know about the arthritis; she will message them.\n3. Sarcoidosis, hypercalcemia: unchanged plan."
+            }
           ]
         },
         {
@@ -329,7 +879,13 @@
           "start": "2026-03-02T13:20",
           "reason": "rheumatology letter",
           "documents": [
-            {"type": "Consult Note", "title": "Rheumatology consultation", "author": "rheumatology", "date": "2026-03-02T13:20", "body": "Outside rheumatology practice. Visit 01/14/2026.\n\nReferred after an ED visit for oligoarthritis of the right knee and left ankle. Known to us from 2023 for sarcoidosis. Joint symptoms since late November with fevers; ED synovial fluid inflammatory without crystals or infection, culture negative, ESR and CRP elevated, RF and ANA negative, radiographs without erosions.\n\nNow: right knee and left ankle still painful and swollen by evening, morning stiffness under an hour. UC quiet on mesalamine. No back pain, no eye redness.\n\nExam: small right knee effusion, mild left ankle synovitis. No other joint involvement. Skin clear.\n\nAssessment: peripheral enteropathic arthritis, large-joint, associated with ulcerative colitis.\nPlan: start sulfasalazine 500 mg twice daily for one week, then 1000 mg twice daily. Discussed with her gastroenterologist; mesalamine continues. CBC and CMP at 2-4 weeks and every 3 months, drawn with primary care. Avoid NSAIDs. Follow up in 3 months.\n\nAllergies: NKDA."}
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology consultation",
+              "author": "rheumatology",
+              "date": "2026-03-02T13:20",
+              "body": "Outside rheumatology practice. Visit 01/14/2026.\n\nReferred after an ED visit for oligoarthritis of the right knee and left ankle. Known to us from 2023 for sarcoidosis. Joint symptoms since late November with fevers; ED synovial fluid inflammatory without crystals or infection, culture negative, ESR and CRP elevated, RF and ANA negative, radiographs without erosions.\n\nNow: right knee and left ankle still painful and swollen by evening, morning stiffness under an hour. UC quiet on mesalamine. No back pain, no eye redness.\n\nExam: small right knee effusion, mild left ankle synovitis. No other joint involvement. Skin clear.\n\nAssessment: peripheral enteropathic arthritis, large-joint, associated with ulcerative colitis.\nPlan: start sulfasalazine 500 mg twice daily for one week, then 1000 mg twice daily. Discussed with her gastroenterologist; mesalamine continues. CBC and CMP at 2-4 weeks and every 3 months, drawn with primary care. Avoid NSAIDs. Follow up in 3 months.\n\nAllergies: NKDA."
+            }
           ]
         },
         {
@@ -338,55 +894,14 @@
           "start": "2026-04-27T10:50",
           "reason": "rheumatology follow-up letter",
           "documents": [
-            {"type": "Consult Note", "title": "Rheumatology follow-up", "author": "rheumatology", "date": "2026-04-27T10:50", "body": "Outside rheumatology. Follow-up 04/15/2026.\n\nOn sulfasalazine 1000 mg twice daily since late January with mild nausea in the first week only. Knee and ankle swelling have settled; she is back to full days at school without limping. No new joints.\n\nExam: no effusion at the right knee, full range; left ankle without synovitis.\n\nMonitoring labs from 02/10 normal.\n\nAssessment: enteropathic peripheral arthritis, in remission on sulfasalazine.\nPlan: continue sulfasalazine 1000 mg twice daily; labs every 3 months with primary care; return in 6 months."}
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up",
+              "author": "rheumatology",
+              "date": "2026-04-27T10:50",
+              "body": "Outside rheumatology. Follow-up 04/15/2026.\n\nOn sulfasalazine 1000 mg twice daily since late January with mild nausea in the first week only. Knee and ankle swelling have settled; she is back to full days at school without limping. No new joints.\n\nExam: no effusion at the right knee, full range; left ankle without synovitis.\n\nMonitoring labs from 02/10 normal.\n\nAssessment: enteropathic peripheral arthritis, in remission on sulfasalazine.\nPlan: continue sulfasalazine 1000 mg twice daily; labs every 3 months with primary care; return in 6 months."
+            }
           ]
-        },
-        {
-          "id": "2026-05-12a",
-          "kind": "lab_only",
-          "start": "2026-05-12T07:25",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "sulfasalazine monitoring",
-          "labs": [
-            {"panel": "CBC with Differential", "collected": "2026-05-12T07:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-12T07:30", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Creatinine"}, {"test": "Calcium"}]}
-          ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2026-05-12T07:30"}],
-          "documents": [
-            {"type": "Result Note", "title": "Monitoring labs", "author": "PCP", "date": "2026-05-13T08:40", "body": "3-month sulfasalazine labs normal: counts, liver and kidney tests. Calcium unchanged at its usual mildly elevated level. Faxed to rheumatology."}
-          ]
-        },
-        {
-          "id": "2026-06-23a",
-          "kind": "annual_physical",
-          "start": "2026-06-23T09:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "annual physical",
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
-          "labs": [
-            {"panel": "Urinalysis", "collected": "2026-06-23T09:40", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}]}
-          ],
-          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-06-23T09:00"}],
-          "documents": [
-            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-06-23T09:55", "body": "Annual. School out last week.\n\nJoints quiet since spring on sulfasalazine; rheumatology happy. No fevers. Occasional dry cough, nothing new. Face normal. Eyes fine, uses drops now and then; has not seen ophthalmology this year, will book. UC no flares, GI visit coming up next month.\n\nMeds: mesalamine 1.2 g BID, sulfasalazine 1000 mg BID, artificial tears prn. NKDA. PHQ-2 0.\n\nExam: well. Facial movement symmetric. Lungs clear. Heart regular. Abdomen soft. Joints without effusion or warmth. Shins clear.\n\nPlan: UA today; blood work drawn in May is current. Next sulfasalazine labs in August. Flu and COVID this fall. Mammogram screening at 40 next February; order placed at the next visit. Follow-up in September for sarcoid and calcium."}
-          ]
-        },
-        {
-          "id": "2026-08-18a",
-          "kind": "portal_message",
-          "start": "2026-08-18T18:30",
-          "documents": [
-            {"type": "Patient Message", "title": "Labs before school", "author": "patient", "date": "2026-08-18T18:30", "body": "Teacher PD days start next week. Can I do my August blood work at the September appointment instead? Also the pharmacy says my sulfasalazine refills are done, rheumatology already sent a new one so just FYI."},
-            {"type": "Patient Message", "title": "RE: Labs before school", "author": "PCP", "date": "2026-08-18T20:05", "body": "Yes, we can draw everything at the September visit. Thanks for the heads-up on the refill."}
-          ]
-        },
-        {
-          "id": "2026-09-22a",
-          "kind": "office_visit",
-          "start": "2026-09-22T15:30",
-          "reason": "sarcoidosis and calcium follow-up, sulfasalazine labs",
-          "appointment": "booked"
         }
       ]
     }

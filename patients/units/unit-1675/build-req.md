@@ -141,3 +141,8 @@ no 24-hour urine or protein/creatinine ratio; no treatment named for the encount
 - Home BP logs: 2026-06-03 mostly 120s/around 80 on nifedipine (between the
   RN call and A7 ranges).
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001675 on 2026-05-21. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

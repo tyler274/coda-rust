@@ -9,20 +9,65 @@
           "start": "2026-01-20T09:30",
           "service": "Internal Medicine — Primary Care",
           "reason": "Welcome to Medicare preventive visit",
-          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg", "height_cm"],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
           "labs": [
-            {"panel": null, "collected": "2026-01-20T09:15", "results": [{"test": "Hemoglobin A1c"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-20T09:15", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+            {
+              "panel": null,
+              "collected": "2026-01-20T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-20T09:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
           ],
           "surveys": [
-            {"survey": "PHQ-9 total score", "value": 1}
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
           ],
           "procedures": [
-            {"procedure": "Initial preventive physical examination (Welcome to Medicare)", "performed": "2026-01-20T09:30"},
-            {"procedure": "Venipuncture", "performed": "2026-01-20T09:15"}
+            {
+              "procedure": "Initial preventive physical examination (Welcome to Medicare)",
+              "performed": "2026-01-20T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-20T09:15"
+            }
           ],
           "orders": [
-            {"id": "aaa-us", "action": "placed", "order": "Abdominal ultrasound", "category": "imaging", "reason": "One-time abdominal aortic aneurysm screening, male ever-smoker age 65"}
+            {
+              "id": "aaa-us",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "One-time abdominal aortic aneurysm screening, male ever-smoker age 65"
+            }
           ],
           "documents": [
             {
@@ -57,28 +102,148 @@
           "service": "Emergency Medicine; Hospital Medicine",
           "reason": "Left knee pain and swelling with fever",
           "conditions": [
-            {"label": "Staphylococcal arthritis, left knee", "icd10": "M00.062", "action": "diagnosed", "onset": "2026-02-03"}
+            {
+              "label": "Staphylococcal arthritis, left knee",
+              "icd10": "M00.062",
+              "action": "diagnosed",
+              "onset": "2026-02-03"
+            }
           ],
           "medications": [
-            {"drug": "cephalexin 500 MG Oral Capsule", "action": "start", "sig": "Take 2 capsules (1000 mg) by mouth four times daily through 03/05/2026", "dose": {"value": 1000, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "MSSA septic arthritis, left knee"}
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 2 capsules (1000 mg) by mouth four times daily through 03/05/2026",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "MSSA septic arthritis, left knee"
+            }
           ],
-          "vitals": {"temp_c": 38.3, "hr": 102},
-          "measure": ["bp", "rr", "spo2"],
+          "vitals": {
+            "temp_c": 38.3,
+            "hr": 102
+          },
+          "measure": [
+            "bp",
+            "rr",
+            "spo2"
+          ],
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2026-02-05T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-05T10:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
-            {"panel": null, "collected": "2026-02-05T10:05", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (set 1 of 2)", "resulted": "2026-02-10T08:00"}]},
-            {"panel": null, "collected": "2026-02-05T10:10", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (set 2 of 2)", "resulted": "2026-02-10T08:00"}]},
-            {"panel": null, "collected": "2026-02-05T10:40", "resulted": "2026-02-05T12:10", "results": [
-              {"test": "Appearance of Synovial fluid", "loinc": "29605-3", "text": "Cloudy"},
-              {"test": "Leukocytes [#/volume] in Synovial fluid", "loinc": "26469-7", "unit": "/uL", "value": 50000},
-              {"test": "Neutrophils/Leukocytes in Synovial fluid", "loinc": "17836-8", "unit": "%", "value": 90},
-              {"test": "Microscopic observation [Identifier] in Synovial fluid by Gram stain", "loinc": "14363-6", "text": "No organisms seen"},
-              {"test": "Glucose [Mass/volume] in Synovial fluid", "loinc": "2348-1", "unit": "mg/dL", "value": 40},
-              {"test": "Protein [Mass/volume] in Synovial fluid", "loinc": "2886-0", "unit": "g/dL", "value": 4.5},
-              {"test": "Crystals [Presence] in Synovial fluid by Light microscopy", "loinc": "38458-6", "text": "None seen"}
-            ]},
-            {"panel": null, "collected": "2026-02-05T10:40", "results": [{"test": "Bacteria identified in Synovial fluid by Culture", "loinc": "621-3", "text": "Staphylococcus aureus, methicillin-susceptible (MSSA); susceptible to oxacillin and cefazolin", "resulted": "2026-02-07T09:30"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-02-05T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-05T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-05T10:05",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (set 1 of 2)",
+                  "resulted": "2026-02-10T08:00"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-05T10:10",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (set 2 of 2)",
+                  "resulted": "2026-02-10T08:00"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-05T10:40",
+              "resulted": "2026-02-05T12:10",
+              "results": [
+                {
+                  "test": "Appearance of Synovial fluid",
+                  "loinc": "29605-3",
+                  "text": "Cloudy"
+                },
+                {
+                  "test": "Leukocytes [#/volume] in Synovial fluid",
+                  "loinc": "26469-7",
+                  "unit": "/uL",
+                  "value": 50000
+                },
+                {
+                  "test": "Neutrophils/Leukocytes in Synovial fluid",
+                  "loinc": "17836-8",
+                  "unit": "%",
+                  "value": 90
+                },
+                {
+                  "test": "Microscopic observation [Identifier] in Synovial fluid by Gram stain",
+                  "loinc": "14363-6",
+                  "text": "No organisms seen"
+                },
+                {
+                  "test": "Glucose [Mass/volume] in Synovial fluid",
+                  "loinc": "2348-1",
+                  "unit": "mg/dL",
+                  "value": 40
+                },
+                {
+                  "test": "Protein [Mass/volume] in Synovial fluid",
+                  "loinc": "2886-0",
+                  "unit": "g/dL",
+                  "value": 4.5
+                },
+                {
+                  "test": "Crystals [Presence] in Synovial fluid by Light microscopy",
+                  "loinc": "38458-6",
+                  "text": "None seen"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-05T10:40",
+              "results": [
+                {
+                  "test": "Bacteria identified in Synovial fluid by Culture",
+                  "loinc": "621-3",
+                  "text": "Staphylococcus aureus, methicillin-susceptible (MSSA); susceptible to oxacillin and cefazolin",
+                  "resulted": "2026-02-07T09:30"
+                }
+              ]
+            }
           ],
           "reports": [
             {
@@ -89,10 +254,22 @@
             }
           ],
           "procedures": [
-            {"procedure": "Emergency department visit, high MDM", "performed": "2026-02-05T09:40"},
-            {"procedure": "Arthrocentesis or injection, major joint", "performed": "2026-02-05T10:40"},
-            {"procedure": "Initial hospital inpatient care", "performed": "2026-02-05T15:00"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-02-10T12:00"}
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-05T09:40"
+            },
+            {
+              "procedure": "Arthrocentesis or injection, major joint",
+              "performed": "2026-02-05T10:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-05T15:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-02-10T12:00"
+            }
           ],
           "documents": [
             {
@@ -124,9 +301,18 @@
           "start": "2026-02-12T11:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "Hospital follow-up, left knee septic arthritis",
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
           "procedures": [
-            {"procedure": "Transitional care management, moderate complexity", "performed": "2026-02-12T11:20"}
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-02-12T11:20"
+            }
           ],
           "documents": [
             {
@@ -161,10 +347,18 @@
           "service": "Infectious Disease",
           "reason": "Septic arthritis follow-up",
           "conditions": [
-            {"label": "Staphylococcal arthritis, left knee", "icd10": "M00.062", "action": "resolved"}
+            {
+              "label": "Staphylococcal arthritis, left knee",
+              "icd10": "M00.062",
+              "action": "resolved"
+            }
           ],
           "medications": [
-            {"drug": "cephalexin 500 MG Oral Capsule", "action": "stop", "reason": "Course completed"}
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Course completed"
+            }
           ],
           "documents": [
             {
@@ -182,15 +376,53 @@
           "start": "2026-04-07T09:40",
           "service": "Internal Medicine — Primary Care",
           "reason": "Diabetes and CKD follow-up",
-          "state": {"labs": {"Hemoglobin A1c": 9.2, "Glucose": 180}},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 9.2,
+              "Glucose": 180
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": null, "collected": "2026-04-07T09:30", "results": [{"test": "Hemoglobin A1c"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-07T09:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+            {
+              "panel": null,
+              "collected": "2026-04-07T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-07T09:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-07T09:40"},
-            {"procedure": "Venipuncture", "performed": "2026-04-07T09:30"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-07T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-07T09:30"
+            }
           ],
           "documents": [
             {
@@ -216,7 +448,11 @@
             }
           ],
           "orders": [
-            {"id": "aaa-us", "action": "done", "date": "2026-04-14T08:30"}
+            {
+              "id": "aaa-us",
+              "action": "done",
+              "date": "2026-04-14T08:30"
+            }
           ],
           "documents": [
             {
@@ -256,13 +492,32 @@
           "start": "2026-07-07T13:40",
           "service": "Internal Medicine — Primary Care",
           "reason": "Chronic care follow-up",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": null, "collected": "2026-07-07T13:30", "results": [{"test": "Hemoglobin A1c"}]}
+            {
+              "panel": null,
+              "collected": "2026-07-07T13:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-07-07T13:40"},
-            {"procedure": "Venipuncture", "performed": "2026-07-07T13:30"}
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-07T13:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-07T13:30"
+            }
           ],
           "documents": [
             {
@@ -297,22 +552,132 @@
           "service": "Emergency Medicine; Hospital Medicine",
           "reason": "Low back pain with fever",
           "conditions": [
-            {"label": "Osteomyelitis of vertebra, lumbar region", "icd10": "M46.26", "action": "diagnosed", "onset": "2026-07-21"}
+            {
+              "label": "Osteomyelitis of vertebra, lumbar region",
+              "icd10": "M46.26",
+              "action": "diagnosed",
+              "onset": "2026-07-21"
+            }
           ],
           "medications": [
-            {"drug_text": "cefazolin 2000 MG Injection", "action": "start", "sig": "Infuse 2 g IV every 8 hours via PICC through 09/15/2026", "dose": {"value": 2000, "unit": "mg"}, "frequency": "Q8H", "route": "Intravenous", "reason": "MSSA vertebral osteomyelitis L4-L5"}
+            {
+              "drug_text": "cefazolin 2000 MG Injection",
+              "action": "start",
+              "sig": "Infuse 2 g IV every 8 hours via PICC through 09/15/2026",
+              "dose": {
+                "value": 2000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H",
+              "route": "Intravenous",
+              "reason": "MSSA vertebral osteomyelitis L4-L5"
+            }
           ],
-          "vitals": {"temp_c": 38.5},
-          "measure": ["bp", "hr", "rr", "spo2"],
+          "vitals": {
+            "temp_c": 38.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2"
+          ],
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2026-08-04T10:30", "results": [{"test": "White Blood Cells", "value": 12.0}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-04T10:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
-            {"panel": null, "collected": "2026-08-04T10:30", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 85}]},
-            {"panel": null, "collected": "2026-08-04T10:30", "results": [{"test": "C Reactive Protein", "value": 25}]},
-            {"panel": null, "collected": "2026-08-04T10:35", "results": [{"test": "Blood Culture", "text": "Staphylococcus aureus, methicillin-susceptible (MSSA), in aerobic and anaerobic bottles (set 1 of 2); susceptible to oxacillin and cefazolin", "resulted": "2026-08-05T07:40"}]},
-            {"panel": null, "collected": "2026-08-04T10:40", "results": [{"test": "Blood Culture", "text": "Staphylococcus aureus, methicillin-susceptible (MSSA) (set 2 of 2); susceptibilities as set 1", "resulted": "2026-08-05T09:15"}]},
-            {"panel": null, "collected": "2026-08-06T06:00", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (repeat set 1 of 2)", "resulted": "2026-08-11T08:00"}]},
-            {"panel": null, "collected": "2026-08-06T06:05", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (repeat set 2 of 2)", "resulted": "2026-08-11T08:00"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-04T10:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-04T10:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-04T10:30",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 85
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-04T10:30",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-04T10:35",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Staphylococcus aureus, methicillin-susceptible (MSSA), in aerobic and anaerobic bottles (set 1 of 2); susceptible to oxacillin and cefazolin",
+                  "resulted": "2026-08-05T07:40"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-04T10:40",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Staphylococcus aureus, methicillin-susceptible (MSSA) (set 2 of 2); susceptibilities as set 1",
+                  "resulted": "2026-08-05T09:15"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-06T06:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (repeat set 1 of 2)",
+                  "resulted": "2026-08-11T08:00"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-06T06:05",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (repeat set 2 of 2)",
+                  "resulted": "2026-08-11T08:00"
+                }
+              ]
+            }
           ],
           "reports": [
             {
@@ -329,9 +694,18 @@
             }
           ],
           "procedures": [
-            {"procedure": "Emergency department visit, high MDM", "performed": "2026-08-04T10:05"},
-            {"procedure": "Initial hospital inpatient care", "performed": "2026-08-04T17:00"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-08-10T12:30"}
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-08-04T10:05"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-08-04T17:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-08-10T12:30"
+            }
           ],
           "documents": [
             {
@@ -355,12 +729,61 @@
           "kind": "outside_records",
           "start": "2026-08-11T15:20",
           "reason": "Home infusion weekly labs",
-          "state": {"labs": {"Erythrocyte Sedimentation Rate": 78, "C Reactive Protein": 18}},
+          "state": {
+            "labs": {
+              "Erythrocyte Sedimentation Rate": 78,
+              "C Reactive Protein": 18
+            }
+          },
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2026-08-11T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-11T08:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
-            {"panel": null, "collected": "2026-08-11T08:40", "results": [{"test": "Erythrocyte Sedimentation Rate"}]},
-            {"panel": null, "collected": "2026-08-11T08:40", "results": [{"test": "C Reactive Protein"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-11T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-11T08:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-11T08:40",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-11T08:40",
+              "results": [
+                {
+                  "test": "C Reactive Protein"
+                }
+              ]
+            }
           ],
           "documents": [
             {
@@ -378,9 +801,18 @@
           "start": "2026-08-13T10:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "Hospital follow-up, vertebral osteomyelitis",
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
           "procedures": [
-            {"procedure": "Transitional care management, high complexity", "performed": "2026-08-13T10:20"}
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-08-13T10:20"
+            }
           ],
           "documents": [
             {
@@ -397,12 +829,61 @@
           "kind": "outside_records",
           "start": "2026-08-18T16:05",
           "reason": "Home infusion weekly labs",
-          "state": {"labs": {"Erythrocyte Sedimentation Rate": 62, "C Reactive Protein": 11}},
+          "state": {
+            "labs": {
+              "Erythrocyte Sedimentation Rate": 62,
+              "C Reactive Protein": 11
+            }
+          },
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2026-08-18T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-18T09:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
-            {"panel": null, "collected": "2026-08-18T09:10", "results": [{"test": "Erythrocyte Sedimentation Rate"}]},
-            {"panel": null, "collected": "2026-08-18T09:10", "results": [{"test": "C Reactive Protein"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-18T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-18T09:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-18T09:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-18T09:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein"
+                }
+              ]
+            }
           ],
           "documents": [
             {
@@ -411,13 +892,6 @@
               "author": "home infusion pharmacy",
               "date": "2026-08-18T16:05",
               "body": "OPAT weekly labs, week 2. Cefazolin 2 g IV q8h, day 14 of planned course through 09/15/2026. Allergies: NKDA.\nDrawn 08/18/2026 by home infusion RN. CBC/diff, BMP, ESR, CRP attached.\nPICC R arm intact, site without erythema, dressing and cap changed. Patient afebrile, no rash, no diarrhea. Back pain improving.\nCopy: ID clinic, PCP."
-            },
-            {
-              "type": "Result Note",
-              "title": "Week 2 Infusion Labs",
-              "author": "PCP",
-              "date": "2026-08-19T07:40",
-              "body": "Reviewed. Counts normal, creatinine stable, ESR and CRP still falling. ID sees him tomorrow."
             }
           ]
         },
@@ -442,12 +916,61 @@
           "kind": "outside_records",
           "start": "2026-08-25T15:50",
           "reason": "Home infusion weekly labs",
-          "state": {"labs": {"Erythrocyte Sedimentation Rate": 50, "C Reactive Protein": 7}},
+          "state": {
+            "labs": {
+              "Erythrocyte Sedimentation Rate": 50,
+              "C Reactive Protein": 7
+            }
+          },
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2026-08-25T08:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-25T08:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
-            {"panel": null, "collected": "2026-08-25T08:50", "results": [{"test": "Erythrocyte Sedimentation Rate"}]},
-            {"panel": null, "collected": "2026-08-25T08:50", "results": [{"test": "C Reactive Protein"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-25T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-25T08:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-25T08:50",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-25T08:50",
+              "results": [
+                {
+                  "test": "C Reactive Protein"
+                }
+              ]
+            }
           ],
           "documents": [
             {

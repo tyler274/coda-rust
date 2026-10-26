@@ -138,3 +138,8 @@ raised in the chart; no genetic or other work-up of the recurrent ruptures.
   vitamin, portal messages about results and scheduling, one no-show, a booked
   annual physical 2026-10-20.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001684 on 2025-03-11. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

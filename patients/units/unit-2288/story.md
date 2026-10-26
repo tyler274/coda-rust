@@ -67,3 +67,8 @@
 - 2026-06-30 telephone: pramipexole stopped (A13)
 - 2026-08-18 office_visit: fewer hallucinations, neurology recheck booked (A13)
 - 2026-09-22 office_visit booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002288 on 2026-06-16. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

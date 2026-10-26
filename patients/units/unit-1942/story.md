@@ -20,3 +20,8 @@
 - 2026-04-14 pharmacy: cetirizine refill request approved (P)
 - 2026-07-28 portal_message: scheduling the fall physical (P)
 - 2026-09-22 annual_physical: booked, with Pap (P)
+
+
+## Last seen
+
+The practice last saw MRN00001942 on 2025-09-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

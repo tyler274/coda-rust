@@ -4,20 +4,6 @@
       "mrn": "MRN00002807",
       "events": [
         {
-          "id": "2026-01-20a",
-          "kind": "telephone",
-          "start": "2026-01-20T14:35",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "GI scheduling",
-              "author": "front desk",
-              "date": "2026-01-20T14:41",
-              "body": "Call from outside GI office. Referral reviewed by their physician and triaged to direct-access upper endoscopy first: EGD booked 2/10/26, clinic follow-up with GI 3/3/26. They asked for the barium swallow report and last office note - faxed both. Pt already notified by them."
-            }
-          ]
-        },
-        {
           "id": "2026-02-10a",
           "kind": "procedure_visit",
           "start": "2026-02-10T07:45",
@@ -25,10 +11,17 @@
           "service": "Gastroenterology",
           "reason": "Dysphagia, esophageal dysmotility",
           "orders": [
-            {"id": "gi-referral-2", "action": "done", "date": "2026-02-10T07:45"}
+            {
+              "id": "gi-referral-2",
+              "action": "done",
+              "date": "2026-02-10T07:45"
+            }
           ],
           "procedures": [
-            {"procedure": "Upper endoscopy with biopsy", "performed": "2026-02-10T08:20"}
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2026-02-10T08:20"
+            }
           ],
           "reports": [
             {
@@ -46,20 +39,6 @@
               "author": "gastroenterology",
               "date": "2026-02-12T11:05",
               "body": "Outside gastroenterology - endoscopy unit\nProcedure date: 02/10/2026\nPatient: Abigail Paquette, DOB 07/27/1980\nProcedure: esophagogastroduodenoscopy with cold forceps biopsy\nIndication: dysphagia to solids and liquids; esophagram with corkscrew contractions.\nSedation: monitored anesthesia care, propofol per anesthesia record.\nAllergies: NKDA.\n\nFindings:\n- Esophagus: normal caliber and mucosa throughout. No rings, furrows, exudate, stricture or mass. Z-line regular. Biopsies taken from the distal and the proximal/mid esophagus to exclude eosinophilic esophagitis.\n- Stomach: normal mucosa; retroflexion normal, no hiatal hernia.\n- Duodenum: normal through the second portion.\nThe scope traversed the GE junction without resistance.\n\nImpression: normal upper endoscopy; no structural cause for dysphagia. Pathology pending.\nRecommendations: follow up in GI clinic 03/03/2026 as scheduled. Resume regular diet today.\nNo complications. Discharged home with an escort."
-            },
-            {
-              "type": "Outside Records",
-              "title": "Pathology received",
-              "author": "front desk",
-              "date": "2026-02-16T09:30",
-              "body": "Pathology for 2/10 EGD biopsies received from outside GI and scanned. Routed to PCP."
-            },
-            {
-              "type": "Result Note",
-              "title": "EGD pathology",
-              "author": "PCP",
-              "date": "2026-02-16T12:15",
-              "body": "Esophageal biopsies benign, no eosinophilic esophagitis. GI will go over at her 3/3 visit. No action from me."
             }
           ]
         },
@@ -70,7 +49,14 @@
           "service": "Gastroenterology",
           "reason": "Follow-up, dysphagia",
           "orders": [
-            {"id": "hrm", "action": "placed", "order": "High-resolution esophageal manometry", "category": "procedure", "to": "Gastroenterology", "reason": "Esophageal dysmotility with corkscrew esophagram"}
+            {
+              "id": "hrm",
+              "action": "placed",
+              "order": "High-resolution esophageal manometry",
+              "category": "procedure",
+              "to": "Gastroenterology",
+              "reason": "Esophageal dysmotility with corkscrew esophagram"
+            }
           ],
           "documents": [
             {
@@ -90,7 +76,11 @@
           "service": "Gastroenterology",
           "reason": "High-resolution esophageal manometry",
           "orders": [
-            {"id": "hrm", "action": "done", "date": "2026-04-08T08:00"}
+            {
+              "id": "hrm",
+              "action": "done",
+              "date": "2026-04-08T08:00"
+            }
           ],
           "reports": [
             {
@@ -127,55 +117,6 @@
               "body": "Outside gastroenterology group - video visit 04/21/2026\nPatient: Abigail Paquette\n\nReviewed her manometry with her: normal sphincter relaxation and premature contractions on 4 of 10 swallows, which classifies her esophageal dysmotility as distal esophageal spasm. Achalasia excluded. This matches the corkscrew esophagram and her symptom triggers.\n\nWe talked through management. Episodes remain intermittent. Because they are intermittent and she does well between them, she would like to keep to the measures already in place rather than start a medication. Reasonable. If episodes become more frequent or harder to tolerate, a trial of a calcium channel blocker is the next step, and we would revisit other options after that.\n\nPlan: continue avoiding temperature extremes in drinks, small bites, eating slowly, upright after meals. No medications started. Return to GI clinic in about six months, sooner as needed. Medications: none. Allergies: NKDA.\n\nGastroenterology"
             }
           ]
-        },
-        {
-          "id": "2026-05-04a",
-          "kind": "portal_message",
-          "start": "2026-05-04T20:11",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "GI results",
-              "author": "patient",
-              "date": "2026-05-04T20:11",
-              "body": "Hi - I assume you got the GI notes. Just wanted to make sure you're in the loop that it's esophageal spasm and we're not doing any meds for now. I see them again in the fall."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: GI results",
-              "author": "PCP",
-              "date": "2026-05-05T07:48",
-              "body": "Got them, thanks Abby. I agree with the plan. Glad to finally have a name for it. If the episodes pick up before your GI visit, tell me and we can move things along."
-            }
-          ]
-        },
-        {
-          "id": "2026-07-28a",
-          "kind": "portal_message",
-          "start": "2026-07-28T13:26",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Physical",
-              "author": "patient",
-              "date": "2026-07-28T13:26",
-              "body": "Time for my yearly physical. Any Tuesday morning in late September works."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Physical",
-              "author": "front desk",
-              "date": "2026-07-28T16:02",
-              "body": "You're booked for Tuesday 9/22 at 8:15. The doctor will also do your Pap that day, since it's due."
-            }
-          ]
-        },
-        {
-          "id": "2026-09-22a",
-          "kind": "annual_physical",
-          "start": "2026-09-22T08:15",
-          "reason": "Annual physical, Pap with HPV due",
-          "appointment": "booked"
         }
       ]
     }

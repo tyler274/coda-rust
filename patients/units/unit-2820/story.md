@@ -41,3 +41,8 @@
 - 2026-07-24 specialist_visit: dermatology surveillance, no recurrence; letter received 7/28 (A5)
 - 2026-08-18 portal_message: schedules physical (P)
 - 2026-09-29 annual_physical: booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002820 on 2025-09-30. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

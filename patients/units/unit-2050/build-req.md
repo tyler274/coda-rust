@@ -149,3 +149,8 @@ changed; sertraline dose never changed.
   treatment; records requests around the admissions.
 - A visit booked for 2026-09-23. Nothing else open today.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002050 on 2026-06-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

@@ -77,3 +77,8 @@ One line per contact, date order, tagged with the build-req letter it rests on.
 - 2026-07-28 pharmacy: risperidone refill (P)
 - 2026-08-18 portal_message: booking risperidone monitoring follow-up (P)
 - 2026-09-22 office_visit: booked follow-up, fasting glucose/A1c, lipids, weight for risperidone (P)
+
+
+## Last seen
+
+The practice last saw MRN00002546 on 2025-09-16. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

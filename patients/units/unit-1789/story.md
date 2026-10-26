@@ -95,3 +95,8 @@ One line per contact, date order, with the build-req letter each rests on.
 - 2026-07-21 nephrology follow-up: UPCR 0.13 (A5)
 - 2026-08-11 portal: schedules physical (P)
 - 2026-09-17 booked: annual physical (P)
+
+
+## Last seen
+
+The practice last saw MRN00001789 on 2025-08-19. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

@@ -24,3 +24,8 @@
 - 2026-03-10 trauma clinic: cleared, liver laceration resolved (A4)
 - 2026-04-21 office visit cancelled by patient (P)
 - 2026-12-10 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002581 on 2026-03-06. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

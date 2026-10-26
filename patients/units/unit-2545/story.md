@@ -33,3 +33,8 @@
 - 2026-08-13 cardiac surgery post-op visit letter. [A15]
 - 2026-08-24 portal: question about desk work and lifting. [P]
 - 2026-09-10 follow-up visit booked. [P]
+
+
+## Last seen
+
+The practice last saw MRN00002545 on 2024-11-22. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

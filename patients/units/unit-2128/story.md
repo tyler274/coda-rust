@@ -48,3 +48,8 @@
 - 2026-07-09 outside surgical oncology surveillance letter (P)
 - 2026-08-20 lab draw, CMP resulted, glucagon pending (P)
 - 2026-09-15 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002128 on 2026-02-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

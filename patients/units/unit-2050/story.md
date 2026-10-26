@@ -50,3 +50,8 @@
 - 2026-07-23 Thu — pharmacy refills [P]
 - 2026-08-19 Wed — portal: scheduling, flu shot question [P]
 - 2026-09-23 Wed — booked follow-up visit [P]
+
+
+## Last seen
+
+The practice last saw MRN00002050 on 2026-06-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

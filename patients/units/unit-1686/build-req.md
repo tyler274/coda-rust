@@ -126,3 +126,8 @@ hemorrhage; no contraception or birth-spacing discussion; no RSV vaccine in preg
 - Refills, pharmacy messages, OB records and discharge summaries received, and a
   recent portal message about her iron.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001686 on 2026-06-08. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

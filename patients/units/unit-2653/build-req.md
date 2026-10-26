@@ -116,3 +116,8 @@ repeat PFT and no pulmonology return visit. Nobody remarks on either.
   forms and records. A prior-practice records request.
 - Reports and exams state ordinary normal findings beyond what the timeline gives.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002653 on 2026-05-14. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

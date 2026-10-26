@@ -104,3 +104,8 @@
 2026-08-05 portal: mammogram result (P)
 2026-08-18 portal: flu/COVID planned for the September visit (P)
 2026-09-15 booked routine follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002753 on 2026-07-14. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

@@ -4,76 +4,6 @@
       "mrn": "MRN00002244",
       "events": [
         {
-          "id": "2026-02-10a",
-          "kind": "pharmacy",
-          "start": "2026-02-10T09:10",
-          "reason": "Refill request",
-          "documents": [
-            {
-              "type": "Refill Request",
-              "title": "Medication Refills",
-              "author": "MA",
-              "date": "2026-02-10T09:10",
-              "body": "Renewal request from his pharmacy, lisinopril 20 mg and atorvastatin 40 mg, 90-day supplies. Daughter listed as alternate contact for pickup. Labs current. Approved by PCP, sent with 3 refills."
-            }
-          ]
-        },
-        {
-          "id": "2026-03-10a",
-          "kind": "office_visit",
-          "start": "2026-03-10T10:20",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Follow-up: dementia, blood pressure",
-          "measure": [
-            "bp",
-            "hr",
-            "spo2",
-            "weight_kg"
-          ],
-          "labs": [
-            {
-              "panel": "Basic Metabolic Panel (BMP)",
-              "collected": "2026-03-10T10:55",
-              "results": [
-                {
-                  "test": "Sodium"
-                },
-                {
-                  "test": "Potassium"
-                },
-                {
-                  "test": "Creatinine"
-                },
-                {
-                  "test": "Glucose"
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Office visit, established patient, moderate MDM",
-              "performed": "2026-03-10T10:20"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Follow-up Visit",
-              "author": "PCP",
-              "date": "2026-03-10T11:00",
-              "body": "3-month follow-up, wife with him.\n\nWife reports things have been steady since December: same forgetfulness and slowness getting started, no further sudden change. He walks with her most afternoons. Takes his pills from the box she sets up. Eating and sleeping fine. No falls, no new weakness or speech trouble.\n\nBP at goal. Weight unchanged. Pleasant, a bit flat. Mild left drift unchanged. Gait steady.\n\n1. Vascular dementia: stable by family report. Continue routine and supervision.\n2. Right frontal ischemic stroke: lisinopril and atorvastatin.\n3. HTN: continue lisinopril 20; BMP today.\n4. HLD: atorvastatin 40.\nNeurology recheck around May/June. RTC 3 months."
-            },
-            {
-              "type": "Result Note",
-              "title": "BMP result",
-              "author": "PCP",
-              "date": "2026-03-11T08:10",
-              "body": "Normal electrolytes and kidney function. No change."
-            }
-          ]
-        },
-        {
           "id": "2026-06-01a",
           "kind": "ed_visit",
           "start": "2026-06-01T07:50",
@@ -167,29 +97,8 @@
           "end": "2026-06-03T12:30",
           "service": "Hospital Medicine",
           "reason": "Acute ischemic stroke, right cerebellum",
-          "conditions": [
-            {
-              "label": "Acute ischemic stroke, right cerebellum",
-              "icd10": "I63.541",
-              "action": "diagnosed",
-              "onset": "2026-06-01"
-            }
-          ],
-          "medications": [
-            {
-              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
-              "action": "start",
-              "sig": "Take 1 tablet by mouth daily",
-              "dose": {
-                "value": 81,
-                "unit": "mg"
-              },
-              "frequency": "DAILY",
-              "route": "Oral",
-              "course": "chronic",
-              "reason": "Ischemic stroke"
-            }
-          ],
+          "conditions": [],
+          "medications": [],
           "labs": [
             {
               "panel": "Lipid Panel",
@@ -250,54 +159,6 @@
           ]
         },
         {
-          "id": "2026-06-04a",
-          "kind": "telephone",
-          "start": "2026-06-04T10:45",
-          "reason": "Post-discharge call",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Transitional Care Call",
-              "author": "RN",
-              "date": "2026-06-04T10:45",
-              "body": "Called home after 6/1 to 6/3 admission for a small right cerebellar stroke. Spoke with wife. Dizziness much better, no vomiting, he is walking around the house with her nearby. New med: aspirin 81 mg daily, bought OTC and added to his pill box; lisinopril and atorvastatin unchanged. Reviewed when to call 911. TCM visit Tues 6/9 with PCP."
-            }
-          ]
-        },
-        {
-          "id": "2026-06-09a",
-          "kind": "office_visit",
-          "start": "2026-06-09T09:40",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Hospital follow-up, cerebellar stroke",
-          "vitals": {
-            "bp": [
-              136,
-              82
-            ]
-          },
-          "measure": [
-            "hr",
-            "spo2",
-            "weight_kg"
-          ],
-          "procedures": [
-            {
-              "procedure": "Transitional care management, high complexity",
-              "performed": "2026-06-09T09:40"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Post-Hospital Visit",
-              "author": "PCP",
-              "date": "2026-06-09T10:25",
-              "body": "TCM visit, with wife. Admitted 6/1 to 6/3 for a small acute right cerebellar infarct (records reviewed): sudden vertigo, nausea, slurred speech and right-hand clumsiness at onset, MRI-confirmed.\n\nSince home: no more spinning. A little unsure on his feet the first two days, steadier now. Speech back to his baseline per wife. No headache. Taking aspirin 81 mg plus his usual two meds. No bleeding or bruising. Cognition per wife unchanged from before the admission.\n\nExam: BP 136/82. Alert, flat affect as before. Speech clear. No nystagmus on primary gaze. Finger-to-nose accurate on both sides. Gait narrow-based and steady.\n\nA/P\n1. Acute ischemic stroke, right cerebellum: on aspirin 81 mg daily now. Neurology follow-up in July.\n2. Prior right frontal stroke, vascular dementia: wife supervising, no driving.\n3. HTN: 136/82 today on lisinopril 20, continue.\n4. HLD: atorvastatin 40, continue.\nRTC for wellness visit in September or sooner."
-            }
-          ]
-        },
-        {
           "id": "2026-07-20a",
           "kind": "specialist_visit",
           "start": "2026-07-20T14:00",
@@ -312,35 +173,6 @@
               "body": "STROKE NEUROLOGY CLINIC, visit 7/20/2026\n\nDear colleague,\n\nMr. Rousseau returned with his wife seven weeks after his right cerebellar infarct. The dizziness is fully gone and he is back to walking with her daily. Family describe his memory and initiative as unchanged from the winter.\n\nMedications: aspirin 81 mg, lisinopril 20 mg, atorvastatin 40 mg. NKDA.\n\nExam: alert, apathetic but engaged. No nystagmus. Finger-to-nose accurate on both sides. Gait steady, able to tandem a few steps.\n\nImpression: recovered from a small right cerebellar infarct; prior right frontal infarct with vascular dementia.\n\nPlan: continue aspirin, atorvastatin and lisinopril. Return in 6 months.\n\nWith best regards,\nStroke neurology"
             }
           ]
-        },
-        {
-          "id": "2026-08-11a",
-          "kind": "portal_message",
-          "start": "2026-08-11T19:20",
-          "reason": "Aspirin question from daughter",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Aspirin question",
-              "author": "patient",
-              "date": "2026-08-11T19:20",
-              "body": "Hi, this is Dennis's daughter writing from his account. Quick question. Does Dad need a prescription for the baby aspirin or is the store brand ok? Thanks."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Aspirin question",
-              "author": "PCP",
-              "date": "2026-08-12T08:30",
-              "body": "Hi, no prescription needed. Store-brand 81 mg aspirin is fine, the coated kind, once a day. We'll see him for his wellness visit on September 22."
-            }
-          ]
-        },
-        {
-          "id": "2026-09-22a",
-          "kind": "annual_physical",
-          "start": "2026-09-22T08:40",
-          "reason": "Medicare annual wellness visit",
-          "appointment": "booked"
         }
       ]
     }

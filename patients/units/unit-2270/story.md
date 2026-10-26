@@ -106,3 +106,8 @@
 - 2026-08-18 skilled nursing summary arrives late [A11]
 - 2026-08-19 neurosurgery follow-up CT (letter 2026-08-25, not yet commented on) [A11]
 - 2026-09-22 booked follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00002270 on 2026-04-14. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

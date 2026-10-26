@@ -86,3 +86,8 @@
 - 2026-06-22 office visit chronic follow-up (P)
 - 2026-08-24 portal message: refill request (P)
 - 2026-09-21 annual wellness visit booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002243 on 2026-06-22. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

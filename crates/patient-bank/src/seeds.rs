@@ -128,6 +128,11 @@ pub struct Seed {
     /// Concrete things that happened somewhere in the history.
     pub episodes: Vec<String>,
     pub chart_texture: Vec<String>,
+    /// The day the practice last saw the patient: its last held visit. Nothing in the
+    /// practice's care comes after it but messages, refills and outside records.
+    pub last_seen: Day,
+    /// Whether a visit is booked on the practice calendar after today.
+    pub booked: bool,
     /// Who the patient is outside the clinic: background, household, work, beliefs.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub life: Vec<String>,

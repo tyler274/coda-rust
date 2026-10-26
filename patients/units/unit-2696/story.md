@@ -73,3 +73,8 @@
 - 2026-06-09 portal: refills (P)
 - 2026-08-18 lab_only: A1c, BMP before September visit (P)
 - 2026-09-10 office_visit booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002696 on 2026-04-14. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

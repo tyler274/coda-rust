@@ -49,3 +49,8 @@ One line per contact, date order, with the build-req letter each rests on.
 - 2026-03-10 portal: back at work, feeling well (P)
 - 2026-08-11 portal: scheduling the fall physical (P)
 - 2026-09-22 booked annual preventive visit (P)
+
+
+## Last seen
+
+The practice last saw MRN00001893 on 2026-01-08. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

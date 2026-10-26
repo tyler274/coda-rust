@@ -102,3 +102,8 @@
 - 2026-08-21 portal (husband): question about aide hours [P]
 - 2026-08-24 telephone: palliative care contacting husband; home health aide ordered [A9]
 - 2026-09-16 booked PCP follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00002849 on 2026-07-01. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

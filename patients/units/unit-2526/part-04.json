@@ -875,40 +875,8 @@
           "end": "2025-11-12T12:00",
           "service": "Cardiothoracic Surgery — Inpatient",
           "reason": "Tearing chest pain radiating to the back",
-          "conditions": [
-            {
-              "label": "Type A aortic dissection",
-              "icd10": "I71.010",
-              "action": "diagnosed",
-              "onset": "2025-10-30",
-              "note": "Stanford type A; repaired 2025-10-30 with ascending aortic replacement and hemiarch"
-            }
-          ],
-          "medications": [
-            {
-              "drug_text": "ticagrelor 90 MG Oral Tablet",
-              "action": "stop",
-              "reason": "Stopped for emergency aortic surgery; DAPT course essentially complete"
-            },
-            {
-              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
-              "action": "stop",
-              "reason": "Dose increased"
-            },
-            {
-              "drug": "24 HR metoprolol succinate 100 MG Extended Release Oral Tablet",
-              "action": "start",
-              "sig": "Take 1 tablet by mouth daily",
-              "dose": {
-                "value": 100,
-                "unit": "mg"
-              },
-              "frequency": "DAILY",
-              "route": "Oral",
-              "course": "chronic",
-              "reason": "Blood pressure and heart rate control after aortic dissection repair"
-            }
-          ],
+          "conditions": [],
+          "medications": [],
           "state": {
             "bp": [
               122,
@@ -1023,88 +991,6 @@
               "author": "cardiac surgery",
               "date": "2025-11-13T10:00",
               "body": "DISCHARGE SUMMARY\n\nAdmitted 10/30/2025, discharged 11/12/2025\n\nDiagnosis: acute Stanford type A aortic dissection, cocaine-associated.\nProcedure 10/30/2025: emergent replacement of the ascending aorta with hemiarch repair under circulatory arrest; redo sternotomy (prior mitral repair).\n\nCourse: Taken to the OR from the ED. Platelet transfusion for recent ticagrelor. Extubated POD 1. ICU 4 days. Creatinine rose after surgery and settled near 3.8; no dialysis. Mitral repair inspected intraoperatively, intact. No atrial fibrillation during the stay. Ticagrelor stopped - he was within days of finishing 12 months of DAPT; aspirin continues. Metoprolol increased for strict blood pressure and heart rate control.\n\nDischarge medications:\n- CHANGED metoprolol succinate 100 mg daily\n- STOPPED ticagrelor\n- aspirin 81 mg daily\n- atorvastatin 80 mg nightly\n- amlodipine 5 mg daily\n- furosemide 40 mg daily\n- nitroglycerin SL prn\n- tenofovir DF 300 mg daily\n- acyclovir 400 mg twice daily\n- daratumumab: oncology to decide when to resume\n- acetaminophen as needed for incision pain\n\nTarget BP under 120/80. No lifting over 10 lb for 8 weeks. No cocaine - another dissection or heart attack could be fatal.\nFollow-up: PCP within 1 week, cardiac surgery 4 weeks, cardiology.\nAllergies: NKDA.\n\nCardiac Surgery"
-            }
-          ]
-        },
-        {
-          "id": "2025-11-17a",
-          "kind": "office_visit",
-          "start": "2025-11-17T10:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Follow-up after aortic dissection repair",
-          "measure": [
-            "bp",
-            "hr",
-            "temp_c",
-            "spo2",
-            "weight_kg"
-          ],
-          "labs": [
-            {
-              "panel": "Basic Metabolic Panel (BMP)",
-              "collected": "2025-11-17T10:40",
-              "results": [
-                {
-                  "test": "Creatinine"
-                },
-                {
-                  "test": "Potassium"
-                },
-                {
-                  "test": "Blood Urea Nitrogen"
-                }
-              ]
-            },
-            {
-              "panel": "Complete Blood Count (CBC)",
-              "collected": "2025-11-17T10:40",
-              "results": [
-                {
-                  "test": "Hemoglobin"
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Transitional care management, high complexity",
-              "performed": "2025-11-17T10:00"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Post-Hospital Visit",
-              "author": "PCP",
-              "date": "2025-11-17T11:20",
-              "body": "Hospital f/u: type A aortic dissection 10/30 after cocaine, emergent ascending aorta/hemiarch replacement. Discharge summary reviewed.\n\nHome, managing on his own. Sternum sore, using acetaminophen. Walking in the apartment and hallway. Short of breath on stairs, improving. No fever. Appetite poor, lost weight in the hospital.\nSays this was the last time with cocaine. Back to smoking, about a pack a day.\n\nMeds reconciled: metoprolol succinate 100, aspirin 81, atorvastatin 80, amlodipine 5, furosemide 40, nitro prn, tenofovir DF 300, acyclovir 400 BID, acetaminophen prn. Ticagrelor stopped. Daratumumab on hold per oncology.\n\nExam: BP and HR as charted. Sternotomy incision clean, dry, edges well approximated, no erythema. Heart regular. Lungs clear. Trace edema.\n\nA/P\n1. Type A dissection s/p repair - BP target <120/80, today at goal. Lifting restrictions reviewed. CT surgery f/u in December.\n2. CKD 4 - creatinine 3.8 at discharge, BMP today.\n3. CAD - aspirin, statin, BB.\n4. Cocaine/tobacco - he is using this moment; offered counseling referral, he wants to try on his own first.\n5. Myeloma - oncology to restart dara.\n\nRTC 6 weeks, sooner prn."
-            }
-          ],
-          "state": {
-            "labs": {
-              "Blood Urea Nitrogen": 43
-            }
-          }
-        },
-        {
-          "id": "2025-11-19a",
-          "kind": "portal_message",
-          "start": "2025-11-19T09:12",
-          "reason": "Medication question",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "question",
-              "author": "patient",
-              "date": "2025-11-19T09:12",
-              "body": "Is it ok to stop the amlodipine? I read online the metoprolol is enough. BP this morning was 116/72"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: question",
-              "author": "PCP",
-              "date": "2025-11-19T12:40",
-              "body": "Please keep taking both. After the aortic repair we want your pressure under 120/80 all the time, and 116/72 is right where it should be because of both pills working together. Keep sending me readings."
             }
           ]
         }

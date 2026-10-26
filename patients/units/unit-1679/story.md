@@ -58,3 +58,8 @@
 - 2026-07-14 pharmacy: refill (P)
 - 2026-08-18 portal_message: ENT ultrasound scheduled for September (A8, P)
 - 2026-09-17 office_visit: booked, back pain and medication follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00001679 on 2026-03-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

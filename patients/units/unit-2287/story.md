@@ -44,3 +44,8 @@
 - 2026-08-20 specialist_visit: infectious disease follow-up (A6)
 - 2026-08-25 outside_records: home-infusion weekly labs, not yet commented on (A5)
 - 2026-09-24 office_visit: booked follow-up after cefazolin course (P)
+
+
+## Last seen
+
+The practice last saw MRN00002287 on 2026-08-13. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -37,3 +37,8 @@
 - 2026-08-18 portal: patient asks to have GI labs drawn at the practice (A5)
 - 2026-08-26 lab only: hepatic panel and CA 19-9 for GI, pending (A5)
 - 2026-09-21 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002625 on 2025-12-09. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

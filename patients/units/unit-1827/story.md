@@ -87,3 +87,8 @@ One line per contact, date order, tagged with the build-req letter it rests on.
 - 2026-07-16 portal: result note (P)
 - 2026-08-18 portal: confirms physical and flu shot (P)
 - 2026-09-16 annual_physical booked, with influenza vaccine (P)
+
+
+## Last seen
+
+The practice last saw MRN00001827 on 2024-11-06. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

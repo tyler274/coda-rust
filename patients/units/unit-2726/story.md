@@ -77,3 +77,8 @@
 - 2026-07-13 outside oncology: surveillance MRI clear [A10]
 - 2026-08-10 portal: scheduling physical [P]
 - 2026-09-21 annual physical booked [P]
+
+
+## Last seen
+
+The practice last saw MRN00002726 on 2024-11-18. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

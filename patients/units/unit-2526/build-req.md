@@ -242,3 +242,8 @@ care office whose records follow. He brings:
   two missed visits (2019-07, 2023-08), a cardiology referral never scheduled.
 - A booked follow-up visit 2026-09-21.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002526 on 2025-10-01. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

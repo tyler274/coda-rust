@@ -68,3 +68,8 @@
 - 2026-08-21 lab draw: HCV RNA pending [A2]
 - 2026-08-24 portal: hepatology visit set for 2026-10-06 [P]
 - 2026-09-22 booked follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00001820 on 2026-08-11. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

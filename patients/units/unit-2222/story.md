@@ -167,3 +167,8 @@ One line per contact, date order, tagged with the build-req letter it rests on.
 - 2026-08-18 portal message: Wellness visit [P]
 - 2026-08-27 lab only: Pre-visit fasting labs [P]
 - 2026-09-08 annual physical: Annual wellness visit (booked) [P]
+
+
+## Last seen
+
+The practice last saw MRN00002222 on 2024-10-29. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

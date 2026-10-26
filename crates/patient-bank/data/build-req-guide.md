@@ -45,6 +45,12 @@ you want one):
   discharge summary, an urgent care note, each received by the practice. Add the
   practice contact that plausibly sent the patient there (a referral visit) or
   followed up after (a post-ED or post-discharge visit) as P.
+- **Last seen.** The seed's `last_seen` is the day the practice last saw the
+  patient: its last held visit (office, telehealth, physical or nurse visit), on
+  that day exactly. No practice visit comes after it. Many patients have not been
+  seen in months or years, like any real panel. Outside care the source places
+  later still happens, and the practice may hear of it only as records (see
+  Records).
 - **Joining.** If the first source encounter reads as established care ("routine
   follow-up", "returns"), the patient joined earlier: give a new-patient visit date
   (an addition) and what they brought. A condition the profile lists from the start
@@ -56,7 +62,8 @@ you want one):
 - **After the source ends.** A condition the source sets up follows its usual next
   steps to today: a localized tumor is treated, a suspected diagnosis is confirmed
   or set aside, a started drug is monitored. Each step is an addition with its
-  findings given exactly. Nothing new is diagnosed; naming the specific form of a
+  findings given exactly, and happens where it would: the specialist's steps at
+  the specialist, the practice's only at a practice visit on or before `last_seen`. Nothing new is diagnosed; naming the specific form of a
   source condition (the glucagonoma a pancreatic tumor workup finds) is part of its
   course. Around that, the primary-care layer.
 
@@ -72,6 +79,10 @@ outside care reaches the practice only as the patient's account, a short ED note
 or a fill history, with few numbers. However complete, every source encounter
 reaches the chart somehow, and nothing it does reach contradicts build-req. A
 number the chart never received is simply absent.
+
+After `last_seen` nothing is reconciled. Records that arrive are filed as received;
+the practice's problem and medication lists stay as they were at the last visit,
+so a drug a specialist started appears in the letter, not on the practice list.
 
 ## Resolutions
 
@@ -96,7 +107,11 @@ Resolve every contradiction. The common ones:
 Where the source changes nothing at a decision a busy clinician might get wrong (no
 drug raised for an LDL of 130, no imaging after a neurological event), the gap
 stays: list it under "Left as the source has it". Do not repair the source's
-medicine. A diagnosis with no standard treatment at all is not a gap of that kind:
+medicine inside its span. After the source ends, a practice visit on or before
+`last_seen` takes the usual next step a physician would: a diagnosis that has
+outlasted its label gets its lasting name (an acute stress reaction still present
+months later is PTSD), and standard therapy is added after the event that calls
+for it. Each such step is an addition. A patient not seen since keeps the gap. A diagnosis with no standard treatment at all is not a gap of that kind:
 see Additions.
 
 ## Additions
@@ -126,7 +141,7 @@ Write it for this patient, following the pilots:
   smoker) may be listed as an addition with its results.
 - Refills, pharmacy and prior-authorization traffic, portal messages about results,
   refills and scheduling, a missed visit.
-- A booked visit after today.
+- A booked visit after today, only when the seed's `booked` is true.
 - Reports and exams state ordinary normal findings for what the source does not
   mention. An abnormal finding appears only as the source or build-req gives it: a
   report may carry the descriptors its kind always carries (how a size was measured,

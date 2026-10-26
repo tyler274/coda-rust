@@ -34,3 +34,8 @@
 2026-07-28 office_visit: post-ED follow-up, anaphylaxis resolved, epinephrine two-pack, allergy/immunology referral placed (P, A4)
 2026-08-18 portal_message: school epinephrine form; allergy appointment not yet scheduled (P, A4)
 2026-09-17 annual_physical: booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002676 on 2026-03-11. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

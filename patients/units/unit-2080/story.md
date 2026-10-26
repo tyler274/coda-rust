@@ -126,3 +126,8 @@ first-degree AV block. Sober since February 2021.
 - 2026-09-16 office_visit: booked routine follow-up (P)
 
 Notes: lab tests outside the catalog (total T4, C-peptide, serum insulin, reticulocytes, smear, LDH, hepatitis B core antibody) and studies outside the report catalog (PET-CT, barium esophagram, MRCP, TEE) are carried in the documents that report them, with build-req's values.
+
+
+## Last seen
+
+The practice last saw MRN00002080 on 2026-06-16. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

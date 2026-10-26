@@ -157,3 +157,8 @@ Allowed without listing, with ordinary normal results unless a level above says 
   visit.
 
 No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002234 on 2026-08-11. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.
