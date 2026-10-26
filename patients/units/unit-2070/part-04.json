@@ -1,0 +1,1066 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002070",
+      "events": [
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "4-month follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-02-14a",
+          "kind": "telephone",
+          "start": "2024-02-14T09:30",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Visit Outreach",
+              "author": "front desk",
+              "date": "2024-02-14T09:30",
+              "body": "Left voicemail about yesterday's missed visit with our number to rebook. Second attempt 2/16, no answer. Letter mailed."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-07-08a",
+          "kind": "specialist_visit",
+          "start": "2024-07-08T10:00",
+          "service": "Hematology & Oncology",
+          "reason": "Recurrent infections, bruising, weight loss",
+          "conditions": [
+            {
+              "label": "Overwhelming post-splenectomy infection (OPSI) risk",
+              "icd10": "Z91.89",
+              "action": "diagnosed",
+              "onset": "2024-07-08",
+              "note": "Asplenia with poor penicillin adherence"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.8,
+              "Mean Corpuscular Volume": 92,
+              "White Blood Cells": 3.2,
+              "Platelets": 120
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-08T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-08T10:40",
+              "results": [
+                {
+                  "test": "Peripheral blood smear",
+                  "loinc": "6742-1",
+                  "text": "Howell-Jolly bodies present."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "author": "hematology",
+              "date": "2024-07-26T15:10",
+              "body": "HEMATOLOGY & ONCOLOGY - FOLLOW-UP\nDate of service: 07/08/2024\nPatient: Gregory Kearney, DOB 11/11/1975\n\nMr. Kearney is 48 and was seen here in 2022 for folate deficiency anemia. He called to come back on his own because he has kept getting sick with infections over the past several months, bruises easily, and has lost about 10 kg over six months without trying. Splenectomy after a car accident roughly a decade ago. He admits he rarely takes his penicillin.\n\nMeds as reported: folic acid 1 mg daily, thiamine 100 mg daily, cholecalciferol 2000 units daily, penicillin VK 250 mg twice daily (rarely taken), hydroxychloroquine 200 mg twice weekly (never started).\nAllergies: NKDA.\nSocial: heavy daily alcohol use continues.\n\nExam: afebrile. Pale. Multiple ecchymoses of varying age on the arms and legs. Abdomen soft and unremarkable, no hepatosplenomegaly. No lymphadenopathy.\n\nLabs: Hgb 9.8 g/dL, MCV 92 fL, WBC 3.2, platelets 120. Peripheral smear: Howell-Jolly bodies.\n\nAssessment:\n1. Asplenia with overwhelming post-splenectomy infection risk, heightened by alcohol use, cirrhosis, malnutrition, low white count and non-adherence to prophylaxis.\n2. Anemia with leukopenia and mild thrombocytopenia in the setting of alcohol use and cirrhosis; the smear changes are those of asplenia.\n\nPlan:\n- Long discussion about OPSI: fever or shaking chills means same-day emergency care, not waiting it out.\n- Take penicillin VK 250 mg twice daily every day.\n- Keep post-splenectomy vaccines current with his PCP; a pneumococcal update is due.\n- Continue folic acid and thiamine.\n- PCP to follow counts; we are available as needed.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-15a",
+          "kind": "office_visit",
+          "start": "2024-08-15T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hematology",
+          "state": {
+            "weight_kg": 53.0,
+            "labs": {
+              "Albumin": 3.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-15T07:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-08-15T07:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-08-15T08:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2024-08-15T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-08-15T08:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-15T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-08-15T08:30",
+              "body": "S: First visit here in almost a year (missed February, cancelled May). Hematology letter from 7/8 reviewed: OPSI risk, Howell-Jolly bodies, counts down. He went to them himself after a rough winter and spring of being sick on and off. He never came here for those. Lost weight, pants falling off. Drinking daily. Taking folic acid and D3 most days. Penicillin: he has the bottle, 'trying.'\nO: weight 53 kg. Thin with muscle wasting. Several bruises on the forearms and shins. No jaundice, no ascites. Lungs clear.\nA/P:\n1. Asplenia with OPSI risk, per hematology. PCV20 today as they suggested; MenACWY was boosted 2023. Penicillin VK re-sent, same dose. Went over the fever plan again, wrote it on a card for his wallet: fever or chills, call us and go to the ED.\n2. Severe malnutrition: weight now 53 kg. Same food plan; he says money is tight. Gave the list of local food pantries.\n3. Folate deficiency anemia, cytopenias: counts as per hematology; CBC next visit.\n4. Cirrhosis, hep C: CMP, INR today.\n5. AUD severe: AUDIT-C 12. Declined referral.\nRTC 3 months, I'd like to see him more often."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-08-16T12:20",
+              "body": "Albumin down to 3.0, liver tests and INR his usual. Consistent with the weight loss and drinking. No change in plan; follow-up booked."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "nurse_visit",
+          "start": "2024-10-24T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-24T07:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-24T07:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-24T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2024-10-24T07:30",
+              "body": "Flu L deltoid, 2024-25 COVID R deltoid. Tolerated. Pt asked to push his November follow-up to January because of work; rebooked."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "state": {
+            "weight_kg": 54.0,
+            "labs": {
+              "Hemoglobin": 11.2,
+              "Mean Corpuscular Volume": 98,
+              "White Blood Cells": 3.7,
+              "Platelets": 126
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-01-28T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-01-28T07:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-01-28T07:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-28T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-28T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-01-28T08:05",
+              "body": "S: Quiet winter at work. No fevers since summer. Taking the penicillin 'most mornings,' the second dose rarely. Folic acid, thiamine, D3 daily. Still drinking every day, about the same.\nO: weight 54 kg, up a kilo. Bruising less. No jaundice, no ascites.\nCBC: hemoglobin in the 11s, white count and platelets mildly low, about his baseline.\nA/P: cirrhosis compensated, hep C, AUD severe, asplenia with OPSI risk, folate deficiency anemia, severe malnutrition, vitamin D deficiency, PCT. Stable. Continue all. Counseling as always.\nRTC 4 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2025-01-29T10:30",
+              "body": "Counts and liver tests at his baseline. Letter sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "pharmacy",
+          "start": "2025-03-20T13:10",
+          "reason": "Fill history",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Fill History Review",
+              "author": "MA",
+              "date": "2025-03-20T13:10",
+              "body": "Pharmacy fill report: folic acid, thiamine and D3 filled on time since fall. Penicillin VK last filled October, 30 tablets. Hydroxychloroquine never filled. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "office_visit",
+          "start": "2025-06-12T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "state": {
+            "weight_kg": 55.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-12T16:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-12T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-12T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-12T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-06-12T16:40",
+              "body": "S: Back to full mowing season. Hands blistering again with the sun, gloves help. Still has not started the hydroxychloroquine. Penicillin on and off, admits it. Drinking unchanged. Eating a bit better.\nO: weight 55 kg. Dorsal hands with a few erosions and scarring. No jaundice, no ascites.\nA/P: no change in his problems or medicines. Labs today. FIT kit given. Counseling on alcohol, sun protection and penicillin.\nRTC for physical in September."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2025-06-13T15:10",
+              "body": "Labs unchanged from January. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-01a",
+          "kind": "lab_only",
+          "start": "2025-07-01T10:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-30T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-07-01T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT Result",
+              "author": "PCP",
+              "date": "2025-07-01T15:20",
+              "body": "FIT negative. He turns 50 in November; we'll talk about colonoscopy versus continuing FIT at the physical."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "labs": {
+              "25-hydroxy Vitamin D": 27,
+              "Parathyroid Hormone, Intact": 63
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T07:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-23T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-09-23T07:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-23T07:50",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D"
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact"
+                },
+                {
+                  "test": "Gamma Glutamyl Transferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-23T07:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-23T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-23T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-23T08:30",
+              "body": "ANNUAL EXAM\nLives alone in his rental. Working construction and grounds through the fall. Drinking every day, roughly a bottle. Former wife still checks on him now and then. PHQ-9 6: tired, sleeps badly, not hopeless, no thoughts of self-harm.\nMeds: folic acid, thiamine, D3 daily; penicillin VK on and off; hydroxychloroquine never started.\nROS: no fevers, no chest pain, no breathlessness, no belly swelling, no black stools, no vomiting blood, no confusion.\nExam: thin, weight steady around 55 kg. HEENT normal. Heart regular, no murmur today. Lungs clear. Abdomen soft, midline scar, no ascites. Hands with scarring and darker patches. No edema. Fine tremor, gait steady.\nHealth maintenance: FIT negative July. Asplenia vaccines: PCV20 2024, MenACWY 2023 (next 2028), MenB and Hib done. Hep A/B series done. Tdap 2018. Flu and COVID at the October nurse visit.\nA/P: problems unchanged. Labs today incl. vitamin D and PTH. Same counseling. RTC 4 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2025-09-24T13:00",
+              "body": "Liver tests and INR about his usual. Platelets and white count mildly low as before. Hemoglobin in the 11s. Vitamin D 26, PTH still a touch high. Keep D3 2000 daily. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T07:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-21T07:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2025-10-21T07:30",
+              "body": "Seasonal flu L deltoid and 2025-26 COVID R deltoid. No problems. Next PCP visit January."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "portal_message",
+          "start": "2025-12-09T21:40",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "refills",
+              "author": "patient",
+              "date": "2025-12-09T21:40",
+              "body": "need the folic acid and the vitamin b one and the D. same pharmacy. thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: refills",
+              "author": "RN",
+              "date": "2025-12-10T08:50",
+              "body": "Sent folic acid, thiamine (that's the vitamin B one) and D3 for 90 days each to your pharmacy. Do you need the penicillin too? Let us know."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "state": {
+            "weight_kg": 56.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-20T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-01-20T07:55",
+              "body": "S: Doing 'the same.' Light work this winter. No fevers. Drinking daily. Meds as before; penicillin a few times a week at best.\nO: weight 56 kg. No jaundice, no ascites, no asterixis.\nA/P: stable chronic problems. Labs were done in September; next set in spring. Asked him again about cutting down; he said maybe after the busy season. RTC April."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "telephone",
+          "start": "2026-03-12T15:30",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2026-03-12T15:30",
+              "body": "Pt called for penicillin VK, says he wants to 'actually take it this year.' Sent 90 days. Reminded him of the April visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-16a",
+          "kind": "office_visit",
+          "start": "2026-04-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-16T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-16T07:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-04-16T07:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-16T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-16T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-04-16T08:00",
+              "body": "S: Starting the mowing season. Feels okay. Penicillin twice a day 'most days' since March, which is the best he's done. Folic acid, thiamine, D3 daily. Drinking daily, about the same. No fevers, no swelling, no bleeding, no confusion. Hands quiet so far this spring.\nO: vitals as charted, weight steady. No jaundice, no ascites, fine tremor, no asterixis.\nA/P:\n1. Compensated alcoholic cirrhosis, chronic hep C: CBC, CMP, INR today.\n2. AUD severe: AUDIT-C 12. Offered referral again, declined.\n3. Asplenia / OPSI risk: good to hear about the penicillin. Fever plan reviewed.\n4. Folate deficiency anemia, severe malnutrition, vitamin D deficiency, PCT: continue as is.\nRTC 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-17a",
+          "kind": "portal_message",
+          "start": "2026-04-17T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2026-04-17T12:30",
+              "body": "Gregory, your labs are about where they have been: liver tests mildly elevated, platelets and white count a little low, hemoglobin steady. No changes. Keep up the penicillin and the vitamins."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-28a",
+          "kind": "pharmacy",
+          "start": "2026-05-28T10:20",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill Authorization",
+              "author": "RN",
+              "date": "2026-05-28T10:20",
+              "body": "Pharmacy request: folic acid, thiamine, cholecalciferol. Approved, 90 days each."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-18a",
+          "kind": "hospital_admission",
+          "start": "2026-07-18T22:40",
+          "end": "2026-08-07T13:00",
+          "service": "Regional hospital — Medicine / Critical Care",
+          "reason": "Acute pancreatitis",
+          "vitals": [
+            {
+              "time": "2026-07-21T09:10",
+              "temp_c": 38.2,
+              "bp": [
+                162,
+                98
+              ],
+              "hr": 126,
+              "rr": 24
+            },
+            {
+              "time": "2026-07-21T15:30",
+              "temp_c": 38.3,
+              "bp": [
+                100,
+                62
+              ],
+              "hr": 112,
+              "rr": 32,
+              "spo2": 83
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-21T15:45",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 236
+                },
+                {
+                  "test": "Calcium",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-21T15:50",
+              "results": [
+                {
+                  "test": "Oxygen partial pressure, arterial",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 55
+                },
+                {
+                  "test": "Inhaled oxygen concentration",
+                  "loinc": "3150-0",
+                  "unit": "%",
+                  "value": 60
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-07-21T15:55",
+              "text": "EXAM: Portable chest, AP.\nHISTORY: Acute pancreatitis, hypoxemia.\nFINDINGS: Bilateral patchy airspace opacities throughout both lungs. Heart size normal. No pneumothorax. No large pleural effusion. Bones intact.",
+              "conclusion": "Bilateral patchy opacities."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-07-21T16:20",
+              "text": "Limited bedside study, ICU.\nLeft ventricle normal in size with normal systolic function. Right ventricle not well seen. No pericardial effusion.",
+              "conclusion": "Normal left ventricular function. No pericardial effusion."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-07-21T15:40",
+              "text": "Sinus tachycardia. Normal axis. Normal intervals. No acute ST or T wave changes.",
+              "conclusion": "No acute abnormality."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Consultation",
+              "author": "psychiatry",
+              "date": "2026-08-20T10:00",
+              "body": "REGIONAL HOSPITAL - CONSULTATION-LIAISON PSYCHIATRY\nDate of service: 07/21/2026\nPatient: Gregory Kearney, DOB 11/11/1975\nRequested by: medicine team\nReason: acute confusion and agitation\n\nHPI: 50-year-old man admitted 3 days ago with acute pancreatitis. Background of severe alcohol use disorder, alcoholic cirrhosis, chronic hepatitis C, asplenia, porphyria cutanea tarda and nutritional deficiencies. Over the last day nursing found him more and more restless and irritable. This morning his former wife, visiting, found him confused and shaking and called the nurse. He is now seeing snakes on the floor of the room. She gives a history of about 25 years of heavy daily drinking; he has had nothing to drink since he came in.\n\nMeds prior to admission: folic acid, thiamine, cholecalciferol, penicillin VK (inconsistent); hydroxychloroquine prescribed, never taken.\nAllergies: NKDA.\n\nVitals at time of consult: T 38.2 C, BP 162/98, HR 126, RR 24.\n\nMental status: disoriented to time and place, oriented to self. Frightened, hypervigilant, pulling at his IV lines. Visual hallucinations. Diaphoretic with fine tremor of the hands. Heart and lungs otherwise unremarkable; neurologic exam otherwise nonfocal.\n\nAssessment: alcohol withdrawal delirium, onset roughly 72 hours after his last drink.\n\nRecommendations:\n1. Symptom-triggered withdrawal treatment per the primary team's protocol, with close monitoring.\n2. One-to-one sitter; frequent reorientation, lights on by day and dim at night, family at bedside when possible.\n3. Continue thiamine supplementation.\n4. Avoid restraints if at all possible.\n5. Addiction medicine follow-up after discharge; he will need a plan for his drinking.\nWe will follow.\n\nConsultation-Liaison Psychiatry"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "ICU Transfer Note",
+              "author": "critical care",
+              "date": "2026-08-20T10:00",
+              "body": "REGIONAL HOSPITAL - MEDICAL ICU TRANSFER / ADMISSION NOTE\nDate of service: 07/21/2026\nPatient: Gregory Kearney, DOB 11/11/1975\n\nReason for ICU: hypoxemic respiratory failure.\n\nHPI: 50-year-old man with severe alcohol use disorder, alcoholic cirrhosis, asplenia, porphyria cutanea tarda and malnutrition, admitted from our ED on 7/18 with acute pancreatitis after two days of severe epigastric pain boring into his back and repeated vomiting, taking little by mouth. On hospital day 3 he developed alcohol withdrawal delirium (psychiatry seen this morning) and this afternoon became acutely short of breath on the floor. He was put on supplemental oxygen with little change in his saturation. He was transferred to the ICU.\n\nAllergies: NKDA.\n\nVitals on transfer: T 38.3 C, HR 112, RR 32, BP 100/62, SpO2 83% on room air.\n\nExam: tachypneic and in visible distress, using accessory muscles. Diffuse bilateral crackles. Heart tachycardic, regular. Abdomen with epigastric tenderness and guarding.\n\nData: glucose 236 mg/dL (elevated). Calcium 7.1 mg/dL (low). ABG on FiO2 0.60: PaO2 55 mmHg. Portable chest x-ray: bilateral patchy opacities. Bedside echo: normal LV function, no pericardial effusion. ECG: no acute changes.\n\nCourse in the first hours: aggressive IV fluid resuscitation and supportive care continued; oxygenation did not improve and he was intubated and placed on mechanical ventilation.\n\nAssessment:\n1. Acute respiratory distress syndrome with refractory hypoxemia. With normal LV function, no effusion and an unremarkable ECG, a cardiac cause is excluded; this is lung injury from his systemic illness, the acute pancreatitis.\n2. Acute alcoholic pancreatitis.\n3. Alcohol withdrawal delirium.\n4. Asplenia, cirrhosis, malnutrition.\n\nPlan: lung-protective ventilation, supportive care for pancreatitis, withdrawal management with psychiatry following, nutrition consult.\n\nMedical Intensive Care Unit"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "telephone",
+          "start": "2026-07-23T11:20",
+          "reason": "Family call: patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from Former Wife",
+              "author": "RN",
+              "date": "2026-07-23T11:20",
+              "body": "Call from pt's former wife (pt's verbal permission to share info with her is not on file; information taken, none given beyond confirming he is our patient). She says he was admitted to the regional hospital on the 18th with pancreatitis, went into withdrawal on the third day and then had trouble breathing, and is in the ICU on a ventilator. She wanted us to know. Thanked her. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Note",
+              "author": "PCP",
+              "date": "2026-07-23T13:05",
+              "body": "Noted. Front desk please request ICU and hospital records and ask for the discharge summary when available."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "outside_records",
+          "start": "2026-07-24T09:30",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Records Request",
+              "author": "front desk",
+              "date": "2026-07-24T09:30",
+              "body": "Sent request to the regional hospital health information office for current admission records and discharge summary. Told it can take a couple of weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "telephone",
+          "start": "2026-08-12T14:45",
+          "reason": "Hospital follow-up request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient Call",
+              "author": "RN",
+              "date": "2026-08-12T14:45",
+              "body": "Pt called himself. Says he went home from the hospital Friday the 7th. He was 'on the breathing machine about a week.' Voice hoarse, says he's weak and sleeping a lot. No fever today. They gave him new papers and prescriptions; asked him to bring every bottle and all the discharge papers to his visit. Booked hospital follow-up for 9/2, first available with PCP. Told him to call us or 911 for fever, trouble breathing, confusion or belly pain. We still have not received a discharge summary."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "outside_records",
+          "start": "2026-08-20T10:00",
+          "reason": "Hospital records received",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Records Received",
+              "author": "front desk",
+              "date": "2026-08-20T10:10",
+              "body": "Received from the regional hospital: ICU transfer note 7/21, psychiatry consult 7/21, chest x-ray, echo and ECG reports. No discharge summary in the packet; second request sent. Scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-02a",
+          "kind": "office_visit",
+          "start": "2026-09-02T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

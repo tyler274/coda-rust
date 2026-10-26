@@ -1,0 +1,2191 @@
+{
+  "unit": "unit-2103",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002103",
+      "given": "Steven",
+      "family": "Sears",
+      "birth_date": "1976-11-11",
+      "address_line": "19 Reservoir Road",
+      "phone": "+1-774-555-0183",
+      "email": "steven.sears@example.test",
+      "marital_status": "single",
+      "summary": "Former flavoring-plant operator on disability with COPD (GOLD Group C) who keeps smoking 1.5 packs a day. Pulmonology diagnoses occupational bronchiolitis obliterans in 2025; in August 2026 a coughing fit causes a left tension pneumothorax treated in an outside ED and ICU.",
+      "events": [
+        {
+          "id": "2022-06-14a",
+          "kind": "establish_care",
+          "start": "2022-06-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care; COPD",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "note": "Diagnosed at prior practice; followed by an outside pulmonology group"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "2022-06-14"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule once daily",
+              "dose": {
+                "value": 18,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 1-2 puffs every 4-6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 90,
+                "unit": "mcg"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              79
+            ],
+            "hr": 68,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 84.3,
+            "height_cm": 178.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.27
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-14T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 95
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-06-14T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 91
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 129
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-14T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-14T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Rare, 1-2 drinks on holidays"
+            },
+            {
+              "item": "Occupation",
+              "value": "Former flavoring manufacturing plant operator, on disability leave"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-06-14T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-06-14T10:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-06-14T10:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-06-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-06-14T09:20",
+              "author": "PCP",
+              "body": "45 y/o man transferring care, here to get set up with a new primary. Main issue is COPD, diagnosed at his old practice; he still sees an outside lung group about once a year and does not have their notes with him.\n\nBreathing: winded on one flight of stairs or carrying groceries in from the car, morning cough most days with a little clear phlegm. Uses tiotropium every morning and his albuterol inhaler a few times a week, more in humid weather. No flares needing prednisone that he can remember in the past year. No chest pain, no ankle swelling.\n\nSmokes about a pack and a half a day, has since his late teens. Has tried cutting down on his own a couple of times. Not ready to set a quit date; we left the door open.\n\nWorked as an operator at a flavoring manufacturing plant for years; on disability leave now. Alcohol only on holidays, a drink or two. No other drugs.\n\nPSH: arthroscopic repair of a torn knee meniscus, 2018, uneventful.\nFH: father had COPD, diagnosed around 55. Mother with high blood pressure and type 2 diabetes. Older brother has asthma.\nAllergies: none to medications.\nMeds: tiotropium 18 mcg inhaled daily; albuterol HFA 1-2 puffs q4-6h prn.\n\nExam: pleasant, talking comfortably. Vitals as recorded. HEENT unremarkable. No JVD. Heart RRR without murmur. Lungs: somewhat diminished air movement throughout, no wheeze today, no crackles. Abdomen soft. No clubbing, no edema. Both knees with full range of motion.\nPHQ-2: 0.\n\nAssessment and plan:\n1. COPD on LAMA plus rescue inhaler, symptoms steady. Checked his HandiHaler technique, which is good. Will request outside pulmonology and old PCP records.\n2. Tobacco use, about 1.5 ppd. Advised clearly that quitting is the single biggest thing for his lungs. Precontemplative today.\n3. Health maintenance: PCV20 today given chronic lung disease and smoking. Hep C and HIV screen, CBC, CMP, lipids, A1c (family history of diabetes) drawn today. FIT kit at next visit. Flu and COVID in the fall.\n\nReturn in 5 to 6 months, sooner if his breathing changes."
+            }
+          ],
+          "state": {
+            "spo2": 95,
+            "weight_kg": 84.2,
+            "height_cm": 178.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4,
+              "Low Density Lipoprotein": 92
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "portal_message",
+          "start": "2022-06-21T16:40",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "date": "2022-06-21T16:40",
+              "author": "PCP",
+              "body": "Hi Steven, your blood work from last week came back fine. Blood counts, kidney and liver tests, cholesterol and sugar (A1c) are all in the normal range, and the hepatitis C and HIV screens are negative. Nothing to change. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-06a",
+          "kind": "outside_records",
+          "start": "2022-07-06T11:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care Practice",
+              "date": "2022-07-06T11:15",
+              "author": "front desk",
+              "body": "38 pages received by fax from his previous primary care office, covering roughly the last six years.\n\nSummary for chart: problem list shows COPD and tobacco use. Medication list matches what he reported (tiotropium daily, albuterol as needed). Allergies: NKDA. Routine screening labs over those years within normal limits. Knee arthroscopy 2018 noted. No pulmonology letters were included in the packet.\n\nFiled to media. Routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records Review",
+              "date": "2022-07-07T08:10",
+              "author": "PCP",
+              "body": "Old records reviewed. Consistent with his history; nothing new. Will ask him to sign a release for the pulmonology group so we can get their spirometry."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T14:00",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "bp": [
+              109,
+              78
+            ],
+            "hr": 54,
+            "spo2": 94
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-13T14:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-13T14:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-13T14:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2022-10-13T14:00",
+              "author": "RN",
+              "body": "In for seasonal vaccines. Denies fever or current illness. No prior vaccine reactions.\nFlu (quadrivalent) 0.5 mL IM left deltoid. Pfizer bivalent COVID booster IM right deltoid. VIS given for both.\nObserved 15 minutes, no reaction. Reminded him he is due for a COPD check next month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "office_visit",
+          "start": "2022-11-29T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "vitals": {
+            "bp": [
+              119,
+              76
+            ],
+            "hr": 72,
+            "rr": 15,
+            "spo2": 95,
+            "weight_kg": 85.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-11-29T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-11-29T10:40",
+              "author": "PCP",
+              "body": "S: Back for his COPD. Cold weather makes the morning cough a little worse but no flare, no fevers, no change in sputum color. Rescue inhaler maybe 3-4 times a week. Still a pack and a half a day. Never signed the release for the lung group; did it at the front desk today.\nO: Vitals reviewed. Lungs with decreased breath sounds at the bases bilaterally, no wheeze, no rales. Heart regular. No edema.\nA/P: COPD, stable on tiotropium + albuterol. Refilled both. Smoking: we talked about patches and medication options; he would rather wait until after the holidays. Gave FIT kit to mail back. Return in about 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-09a",
+          "kind": "lab_only",
+          "start": "2022-12-09T09:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-06T07:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "done",
+              "date": "2022-12-09T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "FIT Result",
+              "date": "2022-12-09T13:20",
+              "author": "MA",
+              "body": "Your stool test for colon cancer screening was negative. We'll send another kit next year."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "office_visit",
+          "start": "2023-03-21T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "vitals": {
+            "bp": [
+              110,
+              76
+            ],
+            "hr": 68,
+            "rr": 14,
+            "spo2": 95,
+            "weight_kg": 84.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-21T13:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-21T14:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-03-21T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-03-21T13:30",
+              "author": "PCP",
+              "body": "COPD check. Got through the winter without a flare. Same exertional limit, one flight then he has to stop at the landing. Albuterol a few times a week. Smoking unchanged; he did not start the patch he picked up in January.\n\nNo pulmonology records yet despite the release; front desk to re-send.\n\nExam: no distress, speaking full sentences. Lungs with reduced air entry, prolonged expiration, no wheeze. RRR. No edema.\n\nPlan: same inhalers. Tdap today (no record of one in the old chart). Annual wellness visit in June with fasting labs. Encouraged him to try again on cigarettes, even cutting down."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "annual_physical",
+          "start": "2023-06-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              121,
+              77
+            ],
+            "hr": 75,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 95,
+            "weight_kg": 85.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-20T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 102
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-20T09:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 129
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 167
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-20T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2023-06-20T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-20T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-06-20T08:40",
+              "author": "PCP",
+              "body": "Initial Medicare wellness visit (Medicare through disability).\n\nHealth risk review: lives on his own, manages his own household and finances, drives. No falls in the past year. Hearing and vision fine for daily tasks; wears readers. Sleep okay apart from coughing some mornings. Diet is a lot of takeout; walks to the mailbox and around the yard, limited by breath.\n\nTobacco: still ~1.5 ppd. Alcohol: holidays only.\nPHQ-2 negative.\nNo cognitive concerns raised by him or apparent in conversation.\n\nExam: well appearing. BP and pulse as charted. Lungs with diminished breath sounds, no wheeze. Cardiac exam normal. Abdomen benign. Skin without concerning lesions.\n\nPrevention plan reviewed and printed: FIT yearly (negative last December), PCV20 and Tdap done, flu and COVID each fall. Not yet 50, so no lung cancer screening CT or shingles vaccine yet.\nCOPD unchanged, refills sent.\nAdvance directive: he will think about a health care proxy.\nFasting labs today."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "date": "2023-06-22T12:05",
+              "author": "PCP",
+              "body": "Labs from your wellness visit look good: kidney, liver, sugar and cholesterol are all normal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T15:20",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "bp": [
+              118,
+              76
+            ],
+            "hr": 62
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-12T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-12T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-12T15:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-12T15:20",
+              "author": "MA",
+              "body": "Pt here for flu and 2023-24 COVID vaccine. Feeling well, no fever. Flu shot L arm, Moderna updated COVID R arm. Tolerated without issue, waited 15 min. FIT kit reminder given; he says he will pick one up at his December visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "office_visit",
+          "start": "2023-12-05T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2023-12-05T11:35",
+              "author": "front desk",
+              "body": "Pt did not arrive for 11:00 follow-up. Called, left voicemail asking him to reschedule. Mailed a FIT kit to his home address per PCP."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "lab_only",
+          "start": "2023-12-18T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-12-14T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "FIT Result",
+              "date": "2023-12-18T14:45",
+              "author": "MA",
+              "body": "Steven, the colon screening kit you mailed in was negative. Please call us to reschedule the lung check you missed earlier this month."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "pharmacy",
+          "start": "2024-01-17T10:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2024-01-17T10:25",
+              "author": "RN",
+              "body": "Pharmacy fax: refill request for tiotropium 18 mcg capsules with HandiHaler, 90-day supply. Last seen in clinic March 2023 apart from wellness visit in June; missed December. Approved one 90-day fill per protocol. Pt called and asked to book a COPD visit; he said he'd call back after checking his ride."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "office_visit",
+          "start": "2024-03-11T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worse cough and wheezing",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "diagnosed",
+              "onset": "2024-03-07"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (40 mg) by mouth once daily for 5 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              72
+            ],
+            "hr": 63,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 93,
+            "weight_kg": 84.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-11T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "date": "2024-03-11T15:10",
+              "author": "PCP",
+              "body": "Texted this morning, worked in same day.\n\nFour or five days of more cough, more wheezing and thicker yellow-white sputum, using albuterol every few hours since the weekend (normally a few times a week). No fever or chills. No chest pain. No leg swelling. Sleeping propped up on an extra pillow because of the cough. Still smoking, a bit less the last few days because it makes him cough.\n\nExam: afebrile. Mildly dyspneic with conversation but finishing sentences. Scattered expiratory wheezes both lungs, no focal crackles, no dullness. Heart tachy-normal and regular. No edema. Calves soft.\n\nAssessment: COPD exacerbation, moderate, managed as outpatient. No signs of pneumonia on exam and he is afebrile, so no x-ray and no antibiotic today.\nPlan: prednisone 40 mg daily x5 days. Albuterol 2 puffs every 4 hours while awake for the next few days, then back to as needed. Continue tiotropium. Return or go to the ED for breathing at rest, chest pain, confusion or fever. Nurse to call him in a week."
+            }
+          ],
+          "state": {
+            "spo2": 93
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "telephone",
+          "start": "2024-03-20T09:45",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up Call",
+              "date": "2024-03-20T09:45",
+              "author": "RN",
+              "body": "Called pt re: flare. Finished the prednisone Friday. Cough back to his usual morning cough, sputum clear again, albuterol down to once or twice a day. No fever. Sleeping flat. Advised to keep his June wellness visit. Pt agreeable. PCP aware."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "annual_physical",
+          "start": "2024-06-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              124,
+              76
+            ],
+            "hr": 62,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 95,
+            "weight_kg": 84.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-18T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 49.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.61
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-18T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 94
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-18T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 176
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 120
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-18T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-06-18T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-18T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-06-18T09:00",
+              "author": "PCP",
+              "body": "Subsequent AWV.\n\nInterval: one COPD flare in March, treated with a prednisone burst, recovered fully. Otherwise steady. Has a lung specialist appointment in August.\n\nFunction: independent at home; still drives; no falls. Vision and hearing adequate. Mood good; PHQ-2 score 1 (some days low energy, he puts it down to the breathing).\nTobacco: 1.5 ppd. Discussed again; he says maybe after the summer.\nAlcohol: holidays.\n\nExam: comfortable at rest. Lungs: distant breath sounds, no wheeze today. Heart RRR. Abdomen soft. No edema.\n\nPlan:\n- COPD: continue tiotropium and albuterol. Will ask pulmonology to send their note this time.\n- Screening: FIT due in the fall. Flu and COVID in October.\n- Labs: CBC, CMP, lipids, A1c today.\n- Health care proxy form given again."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "date": "2024-06-20T17:15",
+              "author": "PCP",
+              "body": "All of your labs from Tuesday are normal. No changes needed."
+            }
+          ],
+          "state": {
+            "spo2": 95
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "specialist_visit",
+          "start": "2024-08-21T10:00",
+          "service": "Pulmonology",
+          "reason": "COPD follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              72
+            ],
+            "hr": 67,
+            "spo2": 94
+          },
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2024-08-21T10:20",
+              "text": "Pre- and post-bronchodilator spirometry. Acceptable and repeatable efforts. FEV1 60% of predicted with a reduced FEV1/FVC ratio, an obstructive pattern. No significant change after bronchodilator.",
+              "conclusion": "Moderate obstructive ventilatory defect, FEV1 60% predicted, without bronchodilator response."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Spirometry",
+              "performed": "2024-08-21T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up Letter",
+              "date": "2024-09-10T09:30",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONOLOGY GROUP\nDate of visit: 08/21/2024\nRe: Steven Sears, DOB 11/11/1976\n\nDear colleague,\n\nI saw Mr. Sears for his periodic COPD review. He describes dyspnea after one flight of stairs, a daily morning cough, and one exacerbation this spring that you treated with oral steroids. He continues to smoke about a pack and a half daily.\n\nCurrent medications: tiotropium 18 mcg inhaled daily; albuterol MDI as needed.\nAllergies: no known drug allergies.\n\nExam: no distress. Lungs with reduced air entry bilaterally, no wheeze. Heart regular.\n\nSpirometry today: FEV1 60% predicted, obstructive, no meaningful bronchodilator response.\n\nImpression: COPD, GOLD Group C given his exacerbation history. Continue tiotropium and albuterol for now. I strongly advised smoking cessation. If he has further flares, adding an ICS/LABA would be reasonable. I will see him again in about six months.\n\nThank you for allowing us to participate in his care.\n\nPulmonology"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Letter Reviewed",
+              "date": "2024-09-10T15:00",
+              "author": "PCP",
+              "body": "Pulm letter from 8/21 received today. FEV1 60% predicted, GOLD Group C. No med changes. Filed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "nurse_visit",
+          "start": "2024-10-10T13:40",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "bp": [
+              108,
+              78
+            ],
+            "hr": 74,
+            "spo2": 95
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-10T13:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-10T13:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-10T13:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-10T13:40",
+              "author": "RN",
+              "body": "Seasonal vaccines. No acute symptoms today. Flu vaccine IM L deltoid, 2024-25 Pfizer COVID IM R deltoid. No reaction during observation. FIT kit to be handed out at next provider visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-11-25a",
+          "kind": "office_visit",
+          "start": "2024-11-25T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD flare",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "diagnosed",
+              "onset": "2024-11-21"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (40 mg) by mouth once daily for 5 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            },
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 5 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation with purulent sputum"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              90
+            ],
+            "hr": 67,
+            "rr": 13,
+            "temp_c": 36.4,
+            "spo2": 93,
+            "weight_kg": 84.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-25T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "date": "2024-11-25T08:50",
+              "author": "PCP",
+              "body": "Called Saturday, seen first thing Monday.\n\nSince Thursday: breathing worse, coughing up green phlegm, wheezy at night, going through his albuterol. No fever at home. No hemoptysis. No chest pain.\n\nThis is his second flare this year.\n\nExam: temp normal. Speaks in full sentences with some pauses. Diffuse expiratory wheezing, no crackles, no asymmetry. Heart regular. No edema.\n\nA/P:\nCOPD exacerbation with purulent sputum. Prednisone 40 mg x5 days and doxycycline 100 mg BID x5 days. Albuterol as needed. ED if worse.\nTwo exacerbations in 2024 now; pulmonology suggested adding an ICS/LABA if this happened again. Will revisit once he is through this one, in about 6 weeks.\nFIT kit given today.\nSmoking: he asked whether his lungs would get better if he quit; told him the decline slows and flares get fewer. He is thinking about it."
+            }
+          ],
+          "state": {
+            "spo2": 93
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "lab_only",
+          "start": "2024-12-10T08:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-06T06:45",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-12-10T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "FIT Result",
+              "date": "2024-12-10T11:00",
+              "author": "MA",
+              "body": "FIT negative. Next one due in a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "office_visit",
+          "start": "2025-01-06T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up after exacerbation",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "60 ACTUAT fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler",
+              "action": "start",
+              "sig": "Inhale 1 puff twice daily; rinse mouth after use",
+              "dose": {
+                "value": 1,
+                "unit": "puff"
+              },
+              "frequency": "BID",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD with recurrent exacerbations"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              77
+            ],
+            "hr": 76,
+            "rr": 13,
+            "spo2": 96,
+            "weight_kg": 84.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-06T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral-2025",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "COPD, two exacerbations in 2024, ICS/LABA added"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-01-06T14:20",
+              "author": "PCP",
+              "body": "Recheck after the November flare. Sputum cleared within a week of the antibiotic. But he still feels short of breath with ordinary activity and coughs through the day, worse than his baseline last summer. Rescue inhaler most days.\n\nTwo moderate exacerbations in 2024, both needing steroids; FEV1 60% predicted at pulmonology in August.\n\nExam: no distress at rest. Mild prolonged expiration, no wheeze today, no crackles. Heart regular. No edema.\n\nA/P:\n1. COPD, GOLD Group C, persistent symptoms with exacerbations on LAMA alone. Adding fluticasone/salmeterol 250/50 one inhalation twice daily on top of tiotropium; albuterol stays as rescue. Demonstrated the Diskus with a trainer, he did it back correctly. Rinse and spit after each dose.\n2. Referral back to his pulmonologist to reassess in about a month.\n3. Smoking unchanged at 1.5 ppd. Advised again."
+            }
+          ],
+          "state": {
+            "spo2": 95
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "pharmacy",
+          "start": "2025-01-08T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization",
+              "date": "2025-01-08T11:10",
+              "author": "RN",
+              "body": "Pharmacy notified that the Part D plan wants prior authorization for fluticasone/salmeterol 250/50. Submitted with diagnosis COPD, two exacerbations requiring steroids in 2024, on tiotropium. Approved same afternoon for 12 months. Pharmacy filling generic. Pt informed by phone."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "specialist_visit",
+          "start": "2025-02-03T09:30",
+          "service": "Pulmonology",
+          "reason": "COPD follow-up on new ICS/LABA",
+          "conditions": [
+            {
+              "label": "Bronchiolitis obliterans",
+              "action": "diagnosed",
+              "onset": "2025-02-03",
+              "note": "Occupational, flavoring manufacturing exposure; per outside pulmonology",
+              "icd10": "J44.81"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              79
+            ],
+            "hr": 63,
+            "rr": 16,
+            "spo2": 94
+          },
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2025-02-03T09:50",
+              "text": "Spirometry with acceptable efforts. FEV1 60% of predicted, unchanged from the study of August 2024. Obstructive pattern persists.",
+              "conclusion": "Stable moderate obstruction, FEV1 60% predicted, no improvement on added ICS/LABA."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Spirometry",
+              "performed": "2025-02-03T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral-2025",
+              "action": "done",
+              "date": "2025-02-03T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up Letter",
+              "date": "2025-04-02T10:15",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONOLOGY GROUP\nDate of visit: 02/03/2025\nRe: Steven Sears, 48-year-old man\n\nDear colleague,\n\nThank you for sending Mr. Sears back. Four weeks ago you added fluticasone propionate/salmeterol 250/50 twice daily to his tiotropium. He tells me breathing feels easier and he has had fewer flare-ups since. He still has a cough and some wheeze from time to time, mostly at night.\n\nMedications: tiotropium 18 mcg daily, fluticasone propionate/salmeterol 250/50 mcg one inhalation twice daily, albuterol 90 mcg MDI as needed.\nAllergies: NKDA.\nSocial: current smoker, 1.5 packs per day for 30 years (45 pack-years). Worked for many years as an operator at a flavoring manufacturing plant; on disability leave. Rare alcohol.\nFamily: father with COPD from his mid-fifties; mother with hypertension and diabetes; older brother with asthma.\n\nExam: SpO2 94% on room air at rest. Mild expiratory wheezes heard on both sides. Heart regular, no edema.\n\nSpirometry: FEV1 60% predicted, the same as in August.\n\nImpression: He feels better on the ICS/LABA, but his airflow has not changed at all. A fixed obstruction of this kind in a man with years of exposure in flavoring production is very concerning for bronchiolitis obliterans from that exposure, in addition to his COPD. I have ordered a high-resolution CT with inspiratory and expiratory imaging to look for air trapping.\n\nPlan:\n- Continue tiotropium, fluticasone/salmeterol and albuterol.\n- No return to flavoring work.\n- Smoking cessation is essential; we discussed this at length.\n- Follow-up in about six months, sooner after the CT if needed.\n\nPulmonology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr"
+          ]
+        },
+        {
+          "id": "2025-02-24a",
+          "kind": "imaging",
+          "start": "2025-02-24T13:00",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-02-24T13:00",
+              "text": "TECHNIQUE: High-resolution CT of the chest without contrast, with thin-section inspiratory images and additional expiratory images.\nFINDINGS: Lungs: mosaic attenuation in both lungs. On expiratory images, lobular and patchy areas of air trapping in both lungs. No pulmonary nodule or mass. No consolidation. No interstitial fibrosis or honeycombing. No bronchiectasis. Pleura: no effusion, no pneumothorax. Heart normal in size; no pericardial effusion. No enlarged mediastinal or hilar lymph nodes. Upper abdomen within the scan unremarkable.",
+              "conclusion": "Mosaic attenuation with expiratory air trapping, consistent with bronchiolitis obliterans in the given clinical context. No nodule or mass."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "office_visit",
+          "start": "2025-03-10T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "vitals": {
+            "bp": [
+              116,
+              76
+            ],
+            "hr": 71,
+            "rr": 17,
+            "spo2": 95,
+            "weight_kg": 83.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-10T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-03-10T10:30",
+              "author": "PCP",
+              "body": "Follow-up on the combination inhaler. He feels it helps: fewer bad days, no flare since November. Night cough and some wheeze still.\n\nHe saw pulmonology last month and had a special CT a couple of weeks ago. He was told the small airways in his lungs are scarred from the chemicals at the flavoring plant, \"popcorn lung\" as he put it, on top of the COPD. We have no letter or CT report yet.\n\nExam: comfortable. Lungs with faint end-expiratory wheeze at the bases, no crackles. RRR. No edema.\n\nA/P:\n1. Bronchiolitis obliterans, occupational, per the patient's report of his pulmonology visit; added to problem list. Records requested from the pulmonology group and the imaging center today.\n2. COPD on triple inhaled therapy, better symptom control. Continue.\n3. Tobacco: urged again, in light of the new diagnosis. Not ready.\nReturn after his wellness visit in June."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2025-03-10T11:50",
+              "author": "front desk",
+              "body": "Records request faxed to the outside pulmonology group for the 02/03 visit note and to the imaging center for the 02/24 chest CT."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-02a",
+          "kind": "outside_records",
+          "start": "2025-04-02T10:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pulmonology Letter and CT Report Received",
+              "date": "2025-04-02T10:15",
+              "author": "front desk",
+              "body": "Second request answered. Received by fax: pulmonology visit note dated 02/03/2025 and HRCT chest report dated 02/24/2025. Scanned and routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Reviewed",
+              "date": "2025-04-02T16:30",
+              "author": "PCP",
+              "body": "Reviewed. Pulm letter confirms what he told us: FEV1 unchanged at 60% despite ICS/LABA, bronchiolitis obliterans suspected from flavoring exposure. HRCT shows mosaic attenuation with air trapping on expiration, which fits. Problem list already updated. No change in meds."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "annual_physical",
+          "start": "2025-06-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              117,
+              82
+            ],
+            "hr": 79,
+            "rr": 13,
+            "temp_c": 36.6,
+            "spo2": 95,
+            "weight_kg": 83.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-17T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-17T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-06-17T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 133
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-17T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-06-17T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-17T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-06-17T08:30",
+              "author": "PCP",
+              "body": "AWV, subsequent.\n\nThis year: started fluticasone/salmeterol in January; pulmonology diagnosed bronchiolitis obliterans from his work exposure, confirmed on HRCT. No flares in 2025 so far. Uses albuterol a few times a week.\n\nSafety and function: no falls, lives alone and manages well, still driving. Mood fine, PHQ-2 zero. Memory: no concerns.\nTobacco: 1.5 ppd; did not want to talk about it much today.\n\nExam: no distress. BP fine. Lungs diminished, no wheeze. Heart normal. Abdomen soft. No edema.\n\nPlan:\n- Continue the three inhalers. Refills sent.\n- Labs today.\n- Flu and COVID in the fall; FIT in the fall.\n- Lung cancer screening and shingles vaccine once he turns 50 next year (November 2026).\n- Health care proxy: still thinking."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "date": "2025-06-19T09:40",
+              "author": "PCP",
+              "body": "Hi Steven, everything from Tuesday's blood work came back in the normal range."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T14:30",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "bp": [
+              119,
+              73
+            ],
+            "hr": 48,
+            "spo2": 96
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-09T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-09T14:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-09T14:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-09T14:30",
+              "author": "MA",
+              "body": "2025-26 flu (trivalent) and Moderna COVID given, L and R deltoid. No fever, feels ok. Watched 15 min, fine. He has a COPD visit booked in November."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and bronchiolitis obliterans follow-up",
+          "vitals": {
+            "bp": [
+              119,
+              85
+            ],
+            "hr": 60,
+            "rr": 16,
+            "spo2": 96,
+            "weight_kg": 84.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-11-18T11:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-11-18T11:15",
+              "author": "PCP",
+              "body": "Routine follow-up. No flares this year, first year without one in a while. Still the night cough and the stairs. He says he saw the lung doctor in August, who told him things were stable and to keep going with the same inhalers; we never got a note from that visit.\n\nUsing all three inhalers as directed; rinses after the Diskus. Still smoking about a pack and a half.\n\nExam: speaking comfortably. Lungs with reduced air entry, no wheeze, no crackles. Heart regular. No edema, no clubbing.\n\nA/P: COPD with bronchiolitis obliterans, stable per patient and exam. Continue tiotropium, fluticasone/salmeterol, albuterol. FIT kit given. Cessation advice repeated. Next visit in spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "lab_only",
+          "start": "2025-12-02T09:10",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-28T07:15",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-12-02T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "FIT Result",
+              "date": "2025-12-02T12:30",
+              "author": "MA",
+              "body": "Your colon screening test was negative. Have a good holiday."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "portal_message",
+          "start": "2026-01-22T07:55",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Refill Request",
+              "date": "2026-01-22T07:55",
+              "author": "patient",
+              "body": "Hi, I need refills on the Advair-type one and the Spiriva capsules. Pharmacy says no refills left. Also new year so I guess my insurance card changed, same plans though. Thanks, Steve"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Refill Request",
+              "date": "2026-01-22T11:20",
+              "author": "RN",
+              "body": "Both inhalers renewed for 90 days with refills through the spring. Please bring the new cards to your next visit or upload a photo in the portal. Your next COPD check should be in May; the front desk will reach out."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-15a",
+          "kind": "office_visit",
+          "start": "2026-05-15T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and bronchiolitis obliterans follow-up",
+          "vitals": {
+            "bp": [
+              102,
+              78
+            ],
+            "hr": 76,
+            "rr": 15,
+            "spo2": 94,
+            "weight_kg": 83.7
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-15T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-05-15T09:40",
+              "author": "PCP",
+              "body": "Spring check on his lungs. Got through another winter without a flare needing steroids. Breathing is about where it has been for the last year: one flight, then a rest. Coughs on waking and in the evenings, sometimes hard enough to bring tears. Albuterol 3 to 5 times a week.\n\nInhalers: tiotropium mornings, fluticasone/salmeterol twice a day, rinsing after. Technique reviewed with the HandiHaler and Diskus; both fine.\n\nTobacco: still a pack and a half a day. Asked about smoking; he knows where we stand and said he is not going to make promises.\n\nPulmonology: due for his next visit there; he has not heard from them about scheduling and will call.\n\nExam: alert, talking comfortably. Lungs: diminished breath sounds throughout, prolonged expiration, no wheeze, no crackles. Heart regular rate and rhythm. No edema. No clubbing.\n\nAssessment and plan:\n1. COPD, GOLD Group C, with occupational bronchiolitis obliterans. Stable, no exacerbations in more than a year on triple inhaled therapy. No changes.\n2. Tobacco dependence, 45 pack-years. Counseled.\n3. Health maintenance: wellness visit due in June, labs then. Turns 50 in November; we will talk about the screening CT and shingles shots then.\n\nRefills sent. Call or text with any change in breathing."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "telephone",
+          "start": "2026-06-16T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling",
+              "date": "2026-06-16T10:05",
+              "author": "front desk",
+              "body": "Called to schedule his annual wellness visit. Pt said he would check dates and call back. Left on the recall list."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "ed_visit",
+          "start": "2026-08-05T16:42",
+          "end": "2026-08-05T18:35",
+          "service": "Emergency Medicine",
+          "reason": "Sudden severe shortness of breath and left chest pain after coughing",
+          "conditions": [
+            {
+              "label": "Tension pneumothorax",
+              "action": "diagnosed",
+              "onset": "2026-08-05",
+              "note": "Left; per outside ED",
+              "icd10": "J93.0"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-08-05T16:42",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 122,
+              "rr": 30,
+              "temp_c": 37.2,
+              "spo2": 88
+            },
+            {
+              "time": "2026-08-05T17:10",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 104,
+              "spo2": 95
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-08-05T16:52",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.32
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 50
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 60
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-08-05T16:50",
+              "text": "Portable AP chest. Large left pneumothorax with collapse of the left lung. The mediastinum is shifted to the right. Right lung clear. No right-sided pneumothorax.",
+              "conclusion": "Large left pneumothorax with mediastinal shift.",
+              "issued": "2026-08-05T17:04"
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-08-05T17:35",
+              "text": "Portable AP chest after intervention. Left chest tube in place with its tip toward the apex. Left lung re-expanded. Mediastinum returned to midline. Endotracheal tube tip above the carina. Right lung clear.",
+              "conclusion": "Left lung re-expanded after chest tube placement; endotracheal tube in good position.",
+              "issued": "2026-08-05T17:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-08-05T16:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "date": "2026-08-20T14:10",
+              "author": "emergency medicine",
+              "body": "COMMUNITY MEDICAL CENTER, EMERGENCY SERVICES\nArrival 08/05/2026 16:42\nPatient: Steven Sears, 49 M\n\nHPI: 49-year-old man with COPD (GOLD Group C) and bronchiolitis obliterans diagnosed by his pulmonologist in February 2025, on fluticasone propionate/salmeterol since January 2025. Brought in after a violent bout of coughing at home, followed at once by severe breathlessness and pain in the left side of the chest. On arrival he is anxious and diaphoretic and can only get out a few words at a time.\n\nHome meds: tiotropium 18 mcg daily; fluticasone propionate/salmeterol 250/50 mcg twice daily; albuterol 90 mcg as needed.\nAllergies: NKDA.\nPMH: COPD; bronchiolitis obliterans. PSH: knee arthroscopy with meniscus repair, 2018.\nSocial: smokes 1.5 ppd, 45 pack-years. Former flavoring plant operator, on disability. Rare alcohol.\nFamily: father COPD; mother HTN and type 2 DM; brother asthma.\n\nTriage vitals: BP 90/60, HR 122, RR 30, SpO2 88% on room air, T 37.2 C.\n\nExam: distended neck veins. Trachea displaced to the right. Left hemithorax hyperresonant with markedly decreased breath sounds; right side with air movement. Tachycardic, no murmur.\n\nPortable CXR: large left pneumothorax with shift of the mediastinum.\nABG on room air: pH 7.32 / PaCO2 50 / PaO2 60 / HCO3 24.\n\nED course: clinical tension pneumothorax. Worsening rapidly. Needle decompression of the left chest at the second intercostal space, midclavicular line, with an audible rush of air and prompt improvement in blood pressure. Airway secured by rapid-sequence intubation for airway protection given his deterioration and fatigue. Left tube thoracostomy placed, connected to suction. Repeat film: left lung re-expanded, tube and ETT in good position. After decompression BP 112/70, HR 104, SpO2 95% on the ventilator.\n\nImpression: left tension pneumothorax in a patient with COPD and bronchiolitis obliterans.\nDisposition: admitted to the ICU, critical condition at time of transfer.\n\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "portal_message",
+          "start": "2026-08-14T19:20",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Was in the hospital",
+              "date": "2026-08-14T19:20",
+              "author": "patient",
+              "body": "Wanted to let you know I was in the hospital last week. I had a bad coughing fit on the 5th and my left lung collapsed. They put a tube in my chest and a breathing tube down my throat and I was in the ICU. Breathing tube came out after 2 days, chest tube a few days after that, and I came home Wednesday the 12th. Same inhalers as before. They said no flying, quit smoking, and see my lung doctor and a chest surgeon about stopping it from happening again. I have some soreness where the tube was. Do you need to see me?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: Was in the hospital",
+              "date": "2026-08-15T08:45",
+              "author": "PCP",
+              "body": "Steven, I'm sorry you went through that, and glad you're home. Yes, I want to see you. The front desk will call Monday to book a visit, and we will request the hospital records. Please keep the pulmonology and surgery appointments. If you get sudden shortness of breath or chest pain again, call 911 right away, don't wait. Soreness at the tube site should ease over a couple of weeks; tell us if it gets red, swollen or drains."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "telephone",
+          "start": "2026-08-17T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital Records Request and Scheduling",
+              "date": "2026-08-17T09:15",
+              "author": "front desk",
+              "body": "Requested ED record and discharge summary from the hospital for the 08/05-08/12 stay. Called pt, booked post-hospital visit 09/03. Pt has a pulmonology visit later this month, surgery visit date not yet set."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "outside_records",
+          "start": "2026-08-20T14:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital Records Received",
+              "date": "2026-08-20T14:10",
+              "author": "front desk",
+              "body": "Received from the hospital: ED physician record, 08/05/2026 (4 pages). Discharge summary not included; hospital records office says it is not yet signed and will be faxed when finalized. Filed and routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Reviewed",
+              "date": "2026-08-20T17:00",
+              "author": "PCP",
+              "body": "ED record reviewed: left tension pneumothorax 8/5, needle decompression, intubation, left chest tube, ICU. Awaiting discharge summary. Will go over everything at the 9/3 visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-03a",
+          "kind": "office_visit",
+          "start": "2026-09-03T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Bronchiolitis obliterans|J44.81": {
+        "code": "J44.81",
+        "display": "Bronchiolitis obliterans and bronchiolitis obliterans syndrome",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tension pneumothorax|J93.0": {
+        "code": "J93.0",
+        "display": "Spontaneous tension pneumothorax",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "tiotropium 0.018 MG Inhalation Powder": {
+        "code": "485032",
+        "display": "tiotropium 0.018 MG Inhalation Powder",
+        "ingredient": "tiotropium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001881",
+      "given": "Christine",
+      "family": "Jenkins",
+      "birth_date": "1997-06-18",
+      "address_line": "118 Pleasant Street, Easthampton, MA 01027",
+      "phone": "+1-978-555-0192",
+      "email": "christine.jenkins@example.test",
+      "marital_status": "single",
+      "summary": "Healthy administrative assistant who joins the practice at 23 in 2021 for routine prevention. Contraceptive counseling in late 2024, a Bartholin's gland cyst seen by gynecology in 2025, and in March 2026, after her last practice visit, an admission elsewhere for disseminated gonococcal infection treated with ceftriaxone.",
+      "events": [
+        {
+          "id": "2021-06-01a",
+          "kind": "portal_message",
+          "start": "2021-06-01T19:42",
+          "reason": "new patient intake",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New patient - scheduling",
+              "author": "patient",
+              "date": "2021-06-01T19:42",
+              "body": "Hi, I just signed up for a membership and the form said to message to set up my first appointment. I'm healthy, not on anything, mostly want a regular doctor again since I moved out here from the eastern part of the state. My old office was near my parents' place. Mornings are easiest before work. Thanks, Christine"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New patient - scheduling",
+              "author": "front desk",
+              "date": "2021-06-02T09:05",
+              "body": "Welcome, Christine! You're booked Tuesday 6/8 at 8:00 for your new patient physical. Please send us the name and fax of your previous office and we'll request your records. Come about 10 minutes early to finish the health history online or at the kiosk."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "establish_care",
+          "start": "2021-06-08T08:00",
+          "end": "2021-06-08T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 63.2, "height_cm": 165.0, "bp": [112, 70]},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Administrative assistant"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-08T08:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-08T08:45", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2021-06-08T08:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2021-06-08T08:45", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2021-06-08T08:40", "results": [{"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}]},
+            {"panel": null, "collected": "2021-06-08T08:40", "results": [{"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-30T10:00"},
+            {"vaccine": "Tdap", "date": "2021-06-08T08:40"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2021-06-08T08:00"},
+            {"procedure": "Venipuncture", "performed": "2021-06-08T08:45"}
+          ],
+          "orders": [
+            {"id": "prior-records-2021", "action": "placed", "order": "Request records from prior primary care office", "category": "procedure", "reason": "new patient"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2021-06-08T08:50",
+              "body": "23 yo woman establishing care. Moved to Easthampton last year for work, admin assistant at an office in town. Feels well, no complaints today. Wants a physical and to get set up.\n\nPMH: none. Never hospitalized. No surgeries.\nMeds: none. No supplements.\nAllergies: none to medications.\nGyn: menses regular, monthly. G0. No history of STIs. Last Pap at her old office in 2019, she recalls it was fine. Thinks she had the HPV shots in middle school.\nFH: nothing she knows of that runs in the family.\nSH: never a smoker, does not drink, no recreational drugs. Lives alone. Walks most evenings.\nVaccines: two Pfizer COVID doses this spring at a pharmacy clinic (April). Unsure about last tetanus.\n\nROS negative across systems.\n\nExam: Vitals as charted, BMI in normal range. Well appearing. HEENT unremarkable, thyroid not enlarged. Cardiac exam regular rhythm, no murmur. Lungs clear bilaterally. Abdomen soft, nontender. Skin without lesions. No edema. Mood and affect appropriate.\n\nPlan:\n1. Health maintenance. Screening labs today: CBC, CMP. One-time HIV and hepatitis C screening, she agrees. Urine chlamydia/gonorrhea screen given age. PHQ-2 is 0.\n2. Tdap given today (no record of a booster since childhood).\n3. Records request to her prior PCP for the Pap and vaccine history. Pap next year if 2019 result confirmed normal.\n4. Return in a year for a physical, sooner as needed. She knows she can text the office."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-11a",
+          "kind": "portal_message",
+          "start": "2021-06-11T12:15",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2021-06-11T12:15",
+              "body": "Hi Christine, everything from Tuesday came back normal. Blood count, kidney and liver tests are all fine, and the HIV, hepatitis C, chlamydia and gonorrhea screens were all negative. Nothing to do. Good to meet you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your recent lab results",
+              "author": "patient",
+              "date": "2021-06-11T17:30",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2021-06-24a",
+          "kind": "outside_records",
+          "start": "2021-06-24T14:10",
+          "reason": "prior primary care records",
+          "immunizations": [
+            {"vaccine": "HPV, quadrivalent", "date": "2009-09-14T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2009-11-20T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2010-03-19T10:00"}
+          ],
+          "orders": [
+            {"id": "prior-records-2021", "action": "done", "date": "2021-06-24T14:10"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "outside primary care",
+              "date": "2021-06-24T14:10",
+              "body": "Records received from patient's previous family practice (eastern MA), 14 pages.\n\nContents: annual exam notes 2015 to 2019, immunization record, one cervical cytology report.\n\nCervical cytology 08/2019: negative for intraepithelial lesion or malignancy, satisfactory specimen.\nImmunizations on file: childhood series complete; HPV quadrivalent x3 (2009 to 2010); influenza most years. No tetanus booster listed after the childhood series.\nProblem list at that office: none. Medications: none. Allergies: NKDA.\n\nFiled to chart. Vaccine history entered. Pap due 2022."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-21a",
+          "kind": "nurse_visit",
+          "start": "2021-10-21T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu shot",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-21T07:50"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2021-10-21T07:55",
+              "body": "In before work for seasonal flu vaccine. Feeling well, no fever. No prior vaccine reactions. VIS given. Influenza quadrivalent 0.5 mL IM left deltoid. Tolerated, waited 15 min, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-04a",
+          "kind": "portal_message",
+          "start": "2022-05-04T08:20",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "author": "patient",
+              "date": "2022-05-04T08:20",
+              "body": "Hi, I think I'm due for my yearly physical and the Pap. Is there anything next week? Thursday morning would be perfect."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "author": "front desk",
+              "date": "2022-05-04T10:02",
+              "body": "Booked: Thursday 5/12, 8:30. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-12a",
+          "kind": "annual_physical",
+          "start": "2022-05-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical with Pap",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-05-12T08:55", "results": [{"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}]},
+            {"panel": null, "collected": "2022-05-12T08:55", "results": [{"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}]}
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2022-05-12T08:55",
+              "issued": "2022-05-17T15:00",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-05-12T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-05-12T09:15",
+              "body": "Here for yearly exam and Pap. Doing well. Work is busy but fine. Still walking, started a pottery class.\n\nNo meds, NKDA. Menses regular. Not currently in a relationship; was sexually active with one partner over the winter, used condoms. No pelvic pain or discharge.\nSH unchanged, no tobacco or alcohol.\n\nExam: vitals as charted. Well, pleasant. Neck supple. Regular heart sounds, no murmur. Lungs clear. Abdomen benign.  Pelvic: normal external genitalia, vagina and cervix normal appearing, Pap and swabs obtained, bimanual without tenderness or masses.\n\nPHQ-9: 1.\n\nPlan:\n- Pap (cytology alone at her age) and urine/vaginal GC/CT sent.\n- Prior records showed HPV series complete and Tdap given here last year.\n- Flu in the fall.\n- RTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-18a",
+          "kind": "portal_message",
+          "start": "2022-05-18T11:40",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap and swab results",
+              "author": "PCP",
+              "date": "2022-05-18T11:40",
+              "body": "Christine, your Pap was normal and the chlamydia/gonorrhea tests were negative. Next Pap in 3 years (2025)."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-28a",
+          "kind": "nurse_visit",
+          "start": "2022-10-28T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-28T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-28T16:16"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2022-10-28T16:30",
+              "body": "Friday afternoon walk-in slot for seasonal vaccines. Afebrile, feels well. Last COVID dose April 2021. Influenza quadrivalent 0.5 mL IM to the left arm; Pfizer bivalent booster 0.3 mL IM to the right arm. Observed 15 minutes, no reaction. Told her a sore arm or tiredness the next day is expected."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

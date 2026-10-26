@@ -1,0 +1,1095 @@
+{
+  "unit": "unit-2809",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002809",
+      "given": "Tracy",
+      "family": "Hanlon",
+      "birth_date": "1982-03-22",
+      "address_line": "62 Reservoir Road, Leeds, MA 01053",
+      "phone": "+1-518-555-0117",
+      "email": "tracy.hanlon@example.test",
+      "marital_status": "single",
+      "summary": "Graphic designer with treated hypothyroidism and obesity who joined in July 2024. Right carpal tunnel syndrome diagnosed by outside neurology in late 2024, managed with a night splint, worsened by early 2026 and was released surgically by orthopedics in June 2026 after her last practice visit.",
+      "events": [
+        {
+          "id": "2024-07-08a",
+          "kind": "outside_records",
+          "start": "2024-07-08T14:10",
+          "reason": "Prior primary-care records received",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-20T08:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-04-12T10:00",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV co-test. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-05-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2024-07-08T14:10",
+              "author": "front desk",
+              "body": "Records from her previous primary-care office came in by fax ahead of her new-patient visit next week, 14 pages. Contents: last two office notes, medication list, immunization record, 2023 thyroid labs, 2022 cervical screening.\n\nHighlights pulled for the PCP:\n- Hypothyroidism, on levothyroxine 75 mcg daily for years; TSH in range June 2023, no dose change noted.\n- Weight counseling documented at both notes.\n- Pap with HPV co-test April 2022: negative / HPV not detected.\n- Tdap May 2019.\n- Surgical: tonsils out as a child, gallbladder out around 2017.\n- NKDA.\n\nIndexed to chart under outside records."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          }
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "establish_care",
+          "start": "2024-07-16T09:00",
+          "end": "2024-07-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Hypothyroidism",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "long-standing, on replacement"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2015-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.075 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 75,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypothyroidism"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              77
+            ],
+            "hr": 62,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 91.5,
+            "height_cm": 164.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-07-16T09:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-16T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 306
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-07-16T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 191
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 115
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-16T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-16T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graphic designer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-07-16T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-16T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-07-16T10:20",
+              "author": "PCP",
+              "body": "NEW PATIENT\n42F graphic designer transferring care; liked the idea of being able to text her doctor. Prior office records reviewed (filed 7/8).\n\nHypothyroidism: on levothyroxine 75 mcg for years, takes it first thing with water, coffee 30-40 min later. Energy fine, no cold intolerance, no constipation, periods regular. Last TSH 2023 in range per old records.\n\nWeight: has carried extra weight since her late 20s. Mostly desk-bound for work; walks on weekends, tried a few apps. Wants to work on it but not interested in medication right now.\n\nPMH: hypothyroidism, obesity.\nPSH: tonsillectomy age 7; cholecystectomy ~2017.\nMeds: levothyroxine 75 mcg qAM.\nAllergies: NKDA.\nFH: mother hypothyroid; father type 2 DM.\nSH: never smoker, a glass of wine or two a week, no drugs. Works from a home studio and some days in an office in town.\n\nROS: negative for chest pain, palpitations, dyspnea, GI or GU complaints, rash, numbness, mood change.\n\nEXAM\nVitals as recorded; BMI about 34.\nWell-appearing, pleasant. Thyroid not enlarged, no nodules felt. Heart RRR without murmur. Lungs clear. Abdomen soft, well-healed small surgical scars. No edema. Affect bright. PHQ-2 0.\n\nASSESSMENT / PLAN\n1. Hypothyroidism - clinically euthyroid. Continue levothyroxine 75 mcg. TSH today.\n2. Obesity, BMI ~34 - talked through small steps: a lunchtime walk, fewer evening snacks, aiming for 5% over a year. A1c and lipids today given her dad's diabetes.\n3. Health maintenance - HIV and hep C screens once, today. Mammogram ordered (none since turning 40). Pap/HPV 2022 normal, next 2027. Tdap 2019. Flu and COVID this fall.\n\nRTC for a physical next summer, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 92.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-07-18a",
+          "kind": "portal_message",
+          "start": "2024-07-18T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-07-18T16:40",
+              "author": "PCP",
+              "body": "Hi Tracy, everything from Tuesday is back and normal: thyroid level right where it should be on your current dose, blood sugar/A1c in the normal range, cholesterol fine for your risk (LDL flags just over the lab's cutoff, nothing to treat), kidney and liver tests and blood counts normal, HIV and hepatitis C screens negative. No changes. The mammogram order is in; scheduling should reach out, or you can call them directly."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "imaging",
+          "start": "2024-08-06T11:20",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-08-06T11:20",
+              "text": "Technique: bilateral digital screening mammography with tomosynthesis, standard CC and MLO views. No prior studies available for comparison. Breast composition: scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: negative. Routine annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-08-06T11:20"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-08a",
+          "kind": "portal_message",
+          "start": "2024-08-08T09:15",
+          "reason": "Mammogram result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram",
+              "date": "2024-08-08T09:15",
+              "author": "RN",
+              "body": "Your screening mammogram from Tuesday was read as negative, nothing of concern. Next one is due in about a year. -RN for the PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "office_visit",
+          "start": "2024-10-08T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right hand numbness and tingling",
+          "vitals": {
+            "bp": [
+              123,
+              66
+            ],
+            "hr": 65,
+            "spo2": 98,
+            "weight_kg": 91.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-10-08T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T14:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T14:37"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "right hand numbness and paresthesias"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-10-08T14:40",
+              "author": "PCP",
+              "body": "S: About 7 wks of pins-and-needles in the R hand, mostly thumb through ring finger. Worst at night, shakes the hand out to get back to sleep. Notices it after long sessions on the tablet and mouse. No neck pain, no fall or injury, L hand fine. Thyroid meds unchanged.\n\nO: Vitals as charted. Neck nontender, full ROM, no pain with rotation. R hand: reports reduced feel at the thumb and index fingertips to light touch. Skin normal, no swelling.\n\nA/P: R hand paresthesias, median-nerve pattern most likely. Neurology referral placed for evaluation. In the meantime, keep the wrist straight while working, take breaks.\nFlu and updated COVID vaccine given today, tolerated.\nTSH was normal in July."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "specialist_visit",
+          "start": "2024-11-21T10:30",
+          "service": "Neurology",
+          "reason": "Right hand numbness and tingling",
+          "conditions": [
+            {
+              "label": "Carpal tunnel syndrome",
+              "action": "diagnosed",
+              "onset": "2024-08-20",
+              "note": "right"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2024-11-21T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2024-11-25T08:45",
+              "author": "neurology",
+              "body": "OUTPATIENT NEUROLOGY CONSULTATION\nDate of visit: 11/21/2024\nReason for referral: right hand sensory symptoms (referred by her primary care physician)\n\nHISTORY\nMs. Hanlon is a 42-year-old right-handed graphic designer who has had steadily increasing numbness and tingling in the right hand over roughly three months. She describes intermittent burning and pins and needles in the thumb, index and middle fingers and the thumb side of the ring finger. Symptoms are worse overnight and occasionally wake her. Over the past few weeks she has been dropping things more often, which she has noticed at her drawing desk. The symptoms are getting in the way of her work at the keyboard and tablet. She has had no neck pain, injury, or weakness in the left arm.\n\nPast history: hypothyroidism, obesity. Surgeries: tonsillectomy in childhood, cholecystectomy.\nMedications: levothyroxine 75 mcg daily.\nAllergies: NKDA.\nFamily history: hypothyroidism in her mother; type 2 diabetes in her father.\nSocial: never smoker; drinks socially, one or two a week.\n\nEXAMINATION\nAlert, fluent, cranial nerves normal. Right hand: diminished light touch and pinprick over the palmar thumb and index finger. Mild flattening of the thenar eminence. Weakness of right thumb abduction and opposition. Tinel sign at the wrist and Phalen maneuver did not reproduce symptoms. Strength, tone, reflexes and sensation otherwise normal in all four limbs; gait and coordination normal.\n\nIMPRESSION\nRight carpal tunnel syndrome, with sensory loss in the median distribution and early thenar involvement.\n\nRECOMMENDATIONS\n- Neutral-position wrist splint at night.\n- Workstation changes: keyboard and mouse at elbow height, wrist kept straight, short breaks every hour.\n- Return or contact us if symptoms progress.\n\nThank you for this referral.\nOutpatient neurology"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "portal_message",
+          "start": "2024-12-03T20:12",
+          "reason": "Question about wrist splint",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wrist brace",
+              "date": "2024-12-03T20:12",
+              "author": "patient",
+              "body": "Hi - the neurologist said to wear a wrist splint at night. Does it matter which one? The drugstore has like six kinds. Also wondering if I need a prescription for insurance."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wrist brace",
+              "date": "2024-12-04T08:05",
+              "author": "PCP",
+              "body": "Good question. Look for one with a stiff bar on the palm side that holds the wrist flat, not bent back. An over-the-counter one is fine and usually cheaper than going through insurance. Wear it every night for at least a few weeks before judging it. Let me know how it goes."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "pharmacy",
+          "start": "2025-03-18T11:02",
+          "reason": "Refill request, levothyroxine",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2025-03-18T11:02",
+              "author": "MA",
+              "body": "Pharmacy e-request for levothyroxine 75 mcg #90 with refills. Last TSH 7/2024 normal, physical not until summer. Sent per protocol: 90-day supply, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "annual_physical",
+          "start": "2025-07-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              70
+            ],
+            "hr": 74,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 93.3,
+            "height_cm": 163.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-07-22T09:10",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-22T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 311
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-07-22T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 83
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-22T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-07-22T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-22T09:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-07-22T09:30",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL, 43F\n\nInterval: Saw neurology in November for the R hand, told carpal tunnel. Has worn an OTC night splint most nights since December. Says the night waking is less frequent but the tingling is still there most days, more after deadline weeks. Raised the monitor, bought a vertical mouse. Doesn't want anything more done right now.\nThyroid: no symptoms, taking levothyroxine faithfully.\nWeight up a couple of pounds over the year; busy stretch at work, less walking.\n\nMeds: levothyroxine 75 mcg daily. NKDA.\nSH unchanged: never smoker, 1-2 drinks/wk.\n\nROS otherwise negative.\n\nExam: vitals in flowsheet. NAD. Thyroid normal size. RRR, lungs clear. Abd soft, nontender. R hand: grossly normal appearance; she reports less feeling in the thumb and index pads. No edema. Mood good, PHQ-2 0.\n\nA/P\n- Hypothyroidism: stable. TSH with today's draw; continue 75 mcg.\n- Obesity, BMI ~34: revisited goals; she is going to try a weekday walking group near her office. Not interested in medication. A1c and lipids today.\n- R carpal tunnel syndrome: partial response to splinting. Continue splint and ergonomic changes; she will message if grip or numbness worsens and we can send her to hand surgery.\n- HM: mammogram ordered. Cervical screening next 2027. Flu and COVID in the fall. Colon screening starts at 45.\n\nSee in 6 months to check on the hand and thyroid."
+            }
+          ],
+          "state": {
+            "weight_kg": 93.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "portal_message",
+          "start": "2025-07-24T12:30",
+          "reason": "Physical results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2025-07-24T12:30",
+              "author": "PCP",
+              "body": "Tracy - all normal again: TSH, A1c, cholesterol panel, metabolic panel and blood count. Stay on the same thyroid dose. Good luck with the walking group."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "imaging",
+          "start": "2025-08-12T10:40",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-08-12T10:40",
+              "text": "Technique: bilateral digital screening mammography with tomosynthesis, CC and MLO views. Comparison: 08/06/2024. Breast composition: scattered areas of fibroglandular density. No new mass, distortion or suspicious calcifications. Stable appearance.",
+              "conclusion": "BI-RADS 1: negative. Return to annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-08-12T10:40"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Seasonal vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T16:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2025-10-14T16:40",
+              "author": "RN",
+              "body": "In for fall vaccines. Screened: no fever today, no prior vaccine reactions, NKDA. Flu (trivalent) 0.5 mL IM L deltoid; 2025-26 COVID mRNA IM R deltoid. Observed 15 min, felt fine, left at 16:38. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Six-month follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2026-01-12T17:05",
+              "author": "front desk",
+              "body": "Pt left a voicemail - client deadline, can't make 1/13. Will message to rebook."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "portal_message",
+          "start": "2026-01-27T21:48",
+          "reason": "Hand symptoms worse",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hand getting worse",
+              "date": "2026-01-27T21:48",
+              "author": "patient",
+              "body": "Sorry I bailed on my appointment. The right hand has gotten worse over the last couple months even with the brace. It's numb a lot of the day now and my grip is noticeably weaker - I keep fumbling my stylus. Can I come in soon?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hand getting worse",
+              "date": "2026-01-28T08:20",
+              "author": "front desk",
+              "body": "Hi Tracy, the earliest the PCP has is Friday 2/6 at 1:15. Booked you in; reply here if that doesn't work."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "office_visit",
+          "start": "2026-02-06T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right hand worse; thyroid follow-up",
+          "vitals": {
+            "bp": [
+              115,
+              73
+            ],
+            "hr": 72,
+            "spo2": 98,
+            "weight_kg": 91.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-06T13:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-06T13:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-06T13:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "placed",
+              "order": "Orthopedic hand surgery referral",
+              "category": "referral",
+              "to": "Orthopedic Surgery",
+              "reason": "right carpal tunnel syndrome, worsening despite splinting"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-02-06T13:55",
+              "author": "PCP",
+              "body": "Subjective\nR hand worse since about November despite wearing the splint nightly. Numb through much of the workday now, not just at night. Grip weaker - fumbling her stylus and pens. No neck pain, nothing in the L hand. Thyroid: feels well, no missed doses.\n\nObjective\nVitals per flowsheet; weight down a little from summer.\nNeck nontender. R hand: she reports reduced sensation in the thumb and index fingers; grip subjectively weaker on the right.\n\nAssessment and plan\n1. R carpal tunnel syndrome, progressing after more than a year of splinting. Referred to orthopedic hand surgery. Keep the splint on at night until then.\n2. Hypothyroidism: TSH today, levothyroxine 75 mcg unchanged.\n3. Obesity: walking group most weeks; encouraged.\n\nPhysical due in the summer."
+            }
+          ],
+          "state": {
+            "weight_kg": 91.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "portal_message",
+          "start": "2026-02-09T10:05",
+          "reason": "TSH result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid test",
+              "date": "2026-02-09T10:05",
+              "author": "PCP",
+              "body": "Your TSH from Friday is normal. Same dose. The hand surgery referral went out this morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "telephone",
+          "start": "2026-02-11T14:30",
+          "reason": "Referral scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral status",
+              "date": "2026-02-11T14:30",
+              "author": "front desk",
+              "body": "Ortho hand office called back: no auth needed under her PPO. First new-patient slot is 5/6. Pt notified by phone and agreed; she'll ask to be put on their cancellation list."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-06a",
+          "kind": "specialist_visit",
+          "start": "2026-05-06T09:40",
+          "service": "Orthopedic Surgery",
+          "reason": "Right hand numbness and weak grip",
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "done",
+              "date": "2026-05-06T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Hand Surgery Consultation",
+              "date": "2026-05-11T11:20",
+              "author": "orthopedic surgery",
+              "body": "ORTHOPEDIC HAND CLINIC - NEW PATIENT\nVisit date: 05/06/2026\nReferring: primary care\n\nHPI: 44-year-old right-hand-dominant woman with hypothyroidism and obesity seen for the right hand. She was evaluated by neurology in 2024 for the same symptoms and has used a night splint since. Numbness and tingling are worse than before, still worst at night and sometimes waking her. New over the last months: trouble opening jars and keeping hold of a coffee mug because her grip has weakened. Works long hours at a keyboard.\n\nMeds: levothyroxine 75 mcg daily. Allergies: NKDA.\nPSH: tonsillectomy, cholecystectomy.\nFH: mother hypothyroidism; father type 2 diabetes.\n\nExam, right hand and wrist: sensation decreased over the palmar thumb, index and middle fingers. Visible thenar muscle atrophy. Tapping over the volar wrist reproduces her paresthesias (Tinel positive). Phalen test positive at 30 seconds. Skin intact, full wrist and finger range of motion.\n\nAssessment: right carpal tunnel syndrome with thenar atrophy.\n\nPlan: nerve conduction study with EMG of both upper limbs to stage it. Given the atrophy we discussed surgical release, which she would like to pursue after the study. Risks and recovery reviewed.\n\nOrthopedic Surgery, hand service"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "procedure_visit",
+          "start": "2026-05-20T13:00",
+          "service": "Neurophysiology",
+          "reason": "Nerve conduction study and EMG",
+          "reports": [
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2026-05-20T13:00",
+              "text": "Indication: right hand numbness with thenar atrophy. Hand temperature maintained above 32 C. Nerve conduction: right median sensory response absent across the wrist. Right median motor: distal latency 6.8 ms, recorded at abductor pollicis brevis; amplitude 2.1 mV. Right ulnar motor and sensory studies normal. Left median and left ulnar motor and sensory studies normal. Needle EMG: right abductor pollicis brevis shows fibrillation potentials and reduced recruitment. Remaining right C6-T1 muscles sampled are normal.",
+              "conclusion": "Severe right median mononeuropathy at the wrist. No electrodiagnostic evidence of cervical radiculopathy.",
+              "issued": "2026-05-22T09:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Nerve conduction study with needle EMG",
+              "performed": "2026-05-20T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Electrodiagnostic report received",
+              "date": "2026-05-22T15:10",
+              "author": "MA",
+              "body": "NCS/EMG report from the outside neurophysiology lab (ordered by ortho) received and scanned. Copy also sent to the ordering hand surgeon."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "procedure_visit",
+          "start": "2026-06-17T07:30",
+          "end": "2026-06-17T10:15",
+          "service": "Orthopedic Surgery",
+          "reason": "Right carpal tunnel release",
+          "procedures": [
+            {
+              "procedure": "Carpal tunnel release",
+              "performed": "2026-06-17T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report - Right Carpal Tunnel Release",
+              "date": "2026-06-22T10:00",
+              "author": "orthopedic surgery",
+              "body": "OUTPATIENT SURGERY CENTER - OPERATIVE REPORT\nDate of surgery: 06/17/2026\nPreoperative diagnosis: right carpal tunnel syndrome, severe by electrodiagnostic testing\nPostoperative diagnosis: same\nProcedure: right open carpal tunnel release\nAnesthesia: local with monitored sedation, upper arm tourniquet\nAllergies: NKDA\n\nFindings: the transverse carpal ligament was divided completely. The median nerve beneath it was flattened, otherwise intact, with no mass in the canal.\n\nDescription: the right upper limb was prepped and draped. A longitudinal palmar incision was made in line with the radial border of the ring finger. Palmar fascia divided, transverse carpal ligament released under direct vision from proximal to distal, protecting the nerve and its motor branch. Hemostasis after tourniquet release. Skin closed with nylon sutures, soft bulky dressing applied.\n\nEstimated blood loss minimal. No complications. Discharged home the same morning in stable condition.\n\nOrthopedic Surgery, hand service"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "specialist_visit",
+          "start": "2026-07-01T10:20",
+          "service": "Orthopedic Surgery",
+          "reason": "Post-op check, right carpal tunnel release",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Post-operative Visit",
+              "date": "2026-07-06T13:45",
+              "author": "orthopedic surgery",
+              "body": "HAND CLINIC - POST-OP\nDate: 07/01/2026, two weeks after right open carpal tunnel release.\n\nShe is pleased: the nighttime numbness and waking have stopped. Daytime tingling much reduced. Thumb still feels weak.\n\nExam: incision healed, sutures removed today. No signs of infection. Thenar atrophy and weakness of thumb abduction unchanged at this stage.\n\nPlan: hand therapy referral for scar care and strengthening. Explained that thenar muscle recovery is slow and may be incomplete after severe compression. Return in 3 months.\n\nOrthopedic Surgery, hand service"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "portal_message",
+          "start": "2026-07-08T19:30",
+          "reason": "Update after hand surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgery update",
+              "date": "2026-07-08T19:30",
+              "author": "patient",
+              "body": "Just a heads-up that I had the carpal tunnel surgery in June. Sleeping through the night for the first time in ages! Starting hand therapy next week. Thumb is still weak but they said that takes a while."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surgery update",
+              "date": "2026-07-09T07:50",
+              "author": "PCP",
+              "body": "Great news, thanks for letting me know - I have the surgeon's notes. Stick with the therapy. We'll catch up at your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "pharmacy",
+          "start": "2026-08-04T10:12",
+          "reason": "Refill request, levothyroxine",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-08-04T10:12",
+              "author": "MA",
+              "body": "E-request levothyroxine 75 mcg. TSH 2/2026 in range; physical booked 9/11. 90 days sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-11a",
+          "kind": "annual_physical",
+          "start": "2026-09-11T08:30",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {}
+}

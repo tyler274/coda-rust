@@ -1,0 +1,187 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002103",
+      "given": "Steven",
+      "family": "Sears",
+      "birth_date": "1976-11-11",
+      "address_line": "19 Reservoir Road",
+      "phone": "+1-774-555-0183",
+      "email": "steven.sears@example.test",
+      "marital_status": "single",
+      "summary": "Former flavoring-plant operator on disability with COPD (GOLD Group C) who keeps smoking 1.5 packs a day. Pulmonology diagnoses occupational bronchiolitis obliterans in 2025; in August 2026 a coughing fit causes a left tension pneumothorax treated in an outside ED and ICU.",
+      "events": [
+        {
+          "id": "2022-06-14a",
+          "kind": "establish_care",
+          "start": "2022-06-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care; COPD",
+          "conditions": [
+            {"label": "Chronic obstructive pulmonary disease", "action": "history", "note": "Diagnosed at prior practice; followed by an outside pulmonology group"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "onset": "2022-06-14"}
+          ],
+          "medications": [
+            {"drug_text": "tiotropium 0.018 MG Inhalation Powder", "action": "historical", "sig": "Inhale contents of 1 capsule once daily", "dose": {"value": 18, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic", "reason": "COPD"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 1-2 puffs every 4-6 hours as needed for shortness of breath", "dose": {"value": 90, "unit": "mcg"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic", "reason": "COPD"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 84.2, "height_cm": 178.0, "spo2": 95, "labs": {"Hemoglobin A1c": 5.4, "Low Density Lipoprotein": 92}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "Rare, 1-2 drinks on holidays"},
+            {"item": "Occupation", "value": "Former flavoring manufacturing plant operator, on disability leave"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-06-14T10:05", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-06-14T10:05", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-06-14T10:05", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-06-14T10:05", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2022-06-14T10:05", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-06-14T10:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-06-14T10:00"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-06-14T09:20"},
+            {"procedure": "Venipuncture", "performed": "2022-06-14T10:05"},
+            {"procedure": "Immunization administration", "performed": "2022-06-14T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-06-14T09:20", "body": "45 y/o man transferring care, here to get set up with a new primary. Main issue is COPD, diagnosed at his old practice; he still sees an outside lung group about once a year and does not have their notes with him.\n\nBreathing: winded on one flight of stairs or carrying groceries in from the car, morning cough most days with a little clear phlegm. Uses tiotropium every morning and his albuterol inhaler a few times a week, more in humid weather. No flares needing prednisone that he can remember in the past year. No chest pain, no ankle swelling.\n\nSmokes about a pack and a half a day, has since his late teens. Has tried cutting down on his own a couple of times. Not ready to set a quit date; we left the door open.\n\nWorked as an operator at a flavoring manufacturing plant for years; on disability leave now. Alcohol only on holidays, a drink or two. No other drugs.\n\nPSH: arthroscopic repair of a torn knee meniscus, 2018, uneventful.\nFH: father had COPD, diagnosed around 55. Mother with high blood pressure and type 2 diabetes. Older brother has asthma.\nAllergies: none to medications.\nMeds: tiotropium 18 mcg inhaled daily; albuterol HFA 1-2 puffs q4-6h prn.\n\nExam: pleasant, talking comfortably. Vitals as recorded. HEENT unremarkable. No JVD. Heart RRR without murmur. Lungs: somewhat diminished air movement throughout, no wheeze today, no crackles. Abdomen soft. No clubbing, no edema. Both knees with full range of motion.\nPHQ-2: 0.\n\nAssessment and plan:\n1. COPD on LAMA plus rescue inhaler, symptoms steady. Checked his HandiHaler technique, which is good. Will request outside pulmonology and old PCP records.\n2. Tobacco use, about 1.5 ppd. Advised clearly that quitting is the single biggest thing for his lungs. Precontemplative today.\n3. Health maintenance: PCV20 today given chronic lung disease and smoking. Hep C and HIV screen, CBC, CMP, lipids, A1c (family history of diabetes) drawn today. FIT kit at next visit. Flu and COVID in the fall.\n\nReturn in 5 to 6 months, sooner if his breathing changes."}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "portal_message",
+          "start": "2022-06-21T16:40",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab Results", "author": "PCP", "date": "2022-06-21T16:40", "body": "Hi Steven, your blood work from last week came back fine. Blood counts, kidney and liver tests, cholesterol and sugar (A1c) are all in the normal range, and the hepatitis C and HIV screens are negative. Nothing to change. Talk soon."}
+          ]
+        },
+        {
+          "id": "2022-07-06a",
+          "kind": "outside_records",
+          "start": "2022-07-06T11:15",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from Prior Primary Care Practice", "author": "front desk", "date": "2022-07-06T11:15", "body": "38 pages received by fax from his previous primary care office, covering roughly the last six years.\n\nSummary for chart: problem list shows COPD and tobacco use. Medication list matches what he reported (tiotropium daily, albuterol as needed). Allergies: NKDA. Routine screening labs over those years within normal limits. Knee arthroscopy 2018 noted. No pulmonology letters were included in the packet.\n\nFiled to media. Routed to PCP."},
+            {"type": "Progress Notes", "title": "Records Review", "author": "PCP", "date": "2022-07-07T08:10", "body": "Old records reviewed. Consistent with his history; nothing new. Will ask him to sign a release for the pulmonology group so we can get their spirometry."}
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T14:00",
+          "reason": "Influenza and COVID vaccines",
+          "measure": ["bp", "hr", "spo2"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-13T14:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-13T14:12"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-13T14:10"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2022-10-13T14:00", "body": "In for seasonal vaccines. Denies fever or current illness. No prior vaccine reactions.\nFlu (quadrivalent) 0.5 mL IM left deltoid. Pfizer bivalent COVID booster IM right deltoid. VIS given for both.\nObserved 15 minutes, no reaction. Reminded him he is due for a COPD check next month."}
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "office_visit",
+          "start": "2022-11-29T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "orders": [{"id": "fit-2022", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-11-29T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-11-29T10:40", "body": "S: Back for his COPD. Cold weather makes the morning cough a little worse but no flare, no fevers, no change in sputum color. Rescue inhaler maybe 3-4 times a week. Still a pack and a half a day. Never signed the release for the lung group; did it at the front desk today.\nO: Vitals reviewed. Lungs with decreased breath sounds at the bases bilaterally, no wheeze, no rales. Heart regular. No edema.\nA/P: COPD, stable on tiotropium + albuterol. Refilled both. Smoking: we talked about patches and medication options; he would rather wait until after the holidays. Gave FIT kit to mail back. Return in about 4 months."}
+          ]
+        },
+        {
+          "id": "2022-12-09a",
+          "kind": "lab_only",
+          "start": "2022-12-09T09:00",
+          "labs": [{"panel": null, "collected": "2022-12-06T07:30", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}],
+          "orders": [{"id": "fit-2022", "action": "done", "date": "2022-12-09T09:00"}],
+          "documents": [
+            {"type": "Patient Communication", "title": "FIT Result", "author": "MA", "date": "2022-12-09T13:20", "body": "Your stool test for colon cancer screening was negative. We'll send another kit next year."}
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "office_visit",
+          "start": "2023-03-21T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "immunizations": [{"vaccine": "Tdap", "date": "2023-03-21T14:00"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-03-21T13:30"},
+            {"procedure": "Immunization administration", "performed": "2023-03-21T14:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-03-21T13:30", "body": "COPD check. Got through the winter without a flare. Same exertional limit, one flight then he has to stop at the landing. Albuterol a few times a week. Smoking unchanged; he did not start the patch he picked up in January.\n\nNo pulmonology records yet despite the release; front desk to re-send.\n\nExam: no distress, speaking full sentences. Lungs with reduced air entry, prolonged expiration, no wheeze. RRR. No edema.\n\nPlan: same inhalers. Tdap today (no record of one in the old chart). Annual wellness visit in June with fasting labs. Encouraged him to try again on cigarettes, even cutting down."}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "annual_physical",
+          "start": "2023-06-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-06-20T09:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2023-06-20T09:30", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-06-20T09:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2023-06-20T08:40"},
+            {"procedure": "Venipuncture", "performed": "2023-06-20T09:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-06-20T08:40", "body": "Initial Medicare wellness visit (Medicare through disability).\n\nHealth risk review: lives on his own, manages his own household and finances, drives. No falls in the past year. Hearing and vision fine for daily tasks; wears readers. Sleep okay apart from coughing some mornings. Diet is a lot of takeout; walks to the mailbox and around the yard, limited by breath.\n\nTobacco: still ~1.5 ppd. Alcohol: holidays only.\nPHQ-2 negative.\nNo cognitive concerns raised by him or apparent in conversation.\n\nExam: well appearing. BP and pulse as charted. Lungs with diminished breath sounds, no wheeze. Cardiac exam normal. Abdomen benign. Skin without concerning lesions.\n\nPrevention plan reviewed and printed: FIT yearly (negative last December), PCV20 and Tdap done, flu and COVID each fall. Not yet 50, so no lung cancer screening CT or shingles vaccine yet.\nCOPD unchanged, refills sent.\nAdvance directive: he will think about a health care proxy.\nFasting labs today."},
+            {"type": "Patient Communication", "title": "Lab Results", "author": "PCP", "date": "2023-06-22T12:05", "body": "Labs from your wellness visit look good: kidney, liver, sugar and cholesterol are all normal."}
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T15:20",
+          "reason": "Influenza and COVID vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-12T15:25"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-12T15:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-12T15:25"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "MA", "date": "2023-10-12T15:20", "body": "Pt here for flu and 2023-24 COVID vaccine. Feeling well, no fever. Flu shot L arm, Moderna updated COVID R arm. Tolerated without issue, waited 15 min. FIT kit reminder given; he says he will pick one up at his December visit."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "office_visit",
+          "start": "2023-12-05T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed Appointment", "author": "front desk", "date": "2023-12-05T11:35", "body": "Pt did not arrive for 11:00 follow-up. Called, left voicemail asking him to reschedule. Mailed a FIT kit to his home address per PCP."}
+          ]
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "lab_only",
+          "start": "2023-12-18T10:00",
+          "labs": [{"panel": null, "collected": "2023-12-14T07:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}],
+          "documents": [
+            {"type": "Patient Communication", "title": "FIT Result", "author": "MA", "date": "2023-12-18T14:45", "body": "Steven, the colon screening kit you mailed in was negative. Please call us to reschedule the lung check you missed earlier this month."}
+          ]
+        }
+      ]
+    }
+  ]
+}

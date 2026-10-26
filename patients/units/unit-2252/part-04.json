@@ -1,0 +1,755 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002252",
+   "events": [
+    {
+     "id": "2025-01-14a",
+     "kind": "outside_records",
+     "start": "2025-01-14T14:20",
+     "service": "Oncology",
+     "reason": "Restaging and start of consolidation immunotherapy",
+     "medications": [
+      {
+       "drug": "folic acid 1 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Pemetrexed completed"
+      },
+      {
+       "drug_text": "durvalumab 50 MG/ML Injection",
+       "action": "historical",
+       "sig": "1500 mg IV every 4 weeks at the cancer center",
+       "dose": {
+        "value": 1500,
+        "unit": "mg"
+       },
+       "frequency": "Every 4 weeks",
+       "route": "Intravenous",
+       "course": "chronic",
+       "reason": "Consolidation after chemoradiation, stage IIIB NSCLC (oncology)"
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT chest",
+       "performed": "2025-01-06T09:00",
+       "text": "CT chest with IV contrast. Comparison PET-CT 09/03/2024 and LDCT 08/20/2024. The right upper lobe mass has decreased in size to 2.6 cm. Right hilar, subcarinal and left paratracheal nodes are smaller. Expected post-radiation change in the right upper lobe and medial right lung. No pleural effusion. No new nodule. Right chest port in place. Postoperative ascending aorta.",
+       "conclusion": "Partial response of the right upper lobe mass and nodes after chemoradiation. Right effusion resolved. No new disease."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Thoracic Oncology Follow-up",
+       "author": "oncology",
+       "date": "2025-01-09T15:00",
+       "body": "Dear colleague,\n\nMr. Woodward completed concurrent chemoradiation for stage IIIB adenocarcinoma: carboplatin/pemetrexed x4 (10/3 to 12/5/2024) and 60 Gy in 30 fractions ending 11/14/2024. Restaging CT 1/6/2025 shows a partial response with no new disease; the right effusion has not recurred.\n\nHe feels better each week. Cough minimal. Weight stable since December.\n\nWe started consolidation durvalumab 1500 mg IV every 4 weeks today, planned for 12 months. Folic acid and B12 are no longer needed and have been stopped. We reviewed immune side effects - new cough or breathlessness, diarrhea, rash, marked fatigue - and to call us for any of them. Thyroid and liver tests will be checked with each infusion.\n\nRegards,\nThoracic oncology\ncc: PCP"
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside Letter Reviewed",
+       "author": "PCP",
+       "date": "2025-01-14T16:45",
+       "body": "Partial response after chemoradiation. Durvalumab started 1/9, every 4 weeks for a year. Folic acid off the list; durvalumab added as an oncology-administered medication."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-25a",
+     "kind": "office_visit",
+     "start": "2025-02-25T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "conditions": [
+      {
+       "label": "Pleural effusion",
+       "icd10": "J90",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 13.8
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-02-25T14:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-02-25T14:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-02-25T13:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-02-25T14:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-02-25T14:15",
+       "body": "On durvalumab since 1/9, two infusions so far, no side effects he's noticed. Energy coming back. Did some ice fishing. Cough gone. No diarrhea, no rash.\n\nMeds: lisinopril 20, atorvastatin 40, multivitamin; durvalumab every 4 weeks at the cancer center.\n\nExam: vitals as charted. Lungs clear. Heart regular, no murmur. Port site fine. No edema.\n\nLabs today: hemoglobin back in the normal range.\n\nA/P\n- NSCLC on consolidation durvalumab: tolerating. Oncology checking thyroid and liver labs with infusions.\n- Effusion: resolved on January CT.\n- Anemia after chemo: resolved.\n- HTN/HLD: stable.\n- Mood: good, PHQ-2 0.\nRTC 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-28a",
+     "kind": "office_visit",
+     "start": "2025-04-28T08:20",
+     "end": "2025-04-28T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Three weeks of low-grade fevers, fatigue and weight loss",
+     "vitals": {
+      "temp_c": 37.9
+     },
+     "state": {
+      "weight_kg": 84.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-04-28T09:00",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 11.8
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 11.2
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-04-28T09:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-28T09:00",
+       "results": [
+        {
+         "test": "Erythrocyte Sedimentation Rate",
+         "value": 62
+        },
+        {
+         "test": "C Reactive Protein",
+         "value": 48,
+         "unit": "mg/L"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-28T09:05",
+       "resulted": "2025-04-30T09:40",
+       "results": [
+        {
+         "test": "Blood Culture",
+         "text": "Set 1 of 2: Gram-positive cocci in chains detected after 48 hours. Identification and susceptibility to follow."
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-28T09:15",
+       "resulted": "2025-04-30T09:40",
+       "results": [
+        {
+         "test": "Blood Culture",
+         "text": "Set 2 of 2: Gram-positive cocci in chains detected after 48 hours. Identification and susceptibility to follow."
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2025-04-28T08:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-04-28T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2025-04-28T09:25",
+       "body": "Texted Saturday asking to be seen. Three weeks of low-grade fevers, mostly evenings, to about 100 F at home, with sweats on and off. Tired out - naps every afternoon. Belt is looser; weight down about 4 kg since February without trying. Also describes a dull ache low in the abdomen and constipation on and off for a few months, which he hadn't mentioned because he blamed the treatment. No blood he has noticed. No cough beyond baseline, no dyspnea, no urinary symptoms, no rash, no joint pain. No dental work. No new medicines. Last durvalumab 4/17.\n\nHx: stage IIIB lung adenocarcinoma on consolidation durvalumab; type A dissection with tamponade 2022 s/p ascending graft and pericardial window; HTN; HLD; first-degree AV block. Has never had colorectal cancer screening.\n\nExam: T 37.9 C. Other vitals as charted. Looks tired. Port site: no redness, tenderness or drainage. Mouth: no lesions. Heart: regular, NEW holosystolic murmur, loudest at the apex - not present at any prior exam here. Lungs clear. Abdomen soft, nontender, no mass felt. No splinter hemorrhages, no Janeway lesions or Osler nodes, no conjunctival petechiae. No edema.\n\nAssessment: fever, weight loss and a new murmur in a man with a port and a prosthetic aortic graft - endocarditis until proven otherwise. Also differential includes port infection, immune-related effects of durvalumab, or progression.\n\nPlan\n- Two sets of blood cultures from separate peripheral sites before any antibiotic.\n- CBC, CMP, ESR, CRP today.\n- Holding off on empiric antibiotics while he is stable so cultures are not compromised; strict instructions to go to the ED for rigors, confusion or chest pain.\n- Oncology informed by message; next durvalumab on hold pending this workup.\n- Will call with cultures; if positive, direct admission for TEE and IV therapy.\n- The bowel complaints will need their own workup once we know what this is."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-28b",
+     "kind": "portal_message",
+     "start": "2025-04-28T17:30",
+     "reason": "Same-day lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Today's labs",
+       "author": "PCP",
+       "date": "2025-04-28T17:30",
+       "body": "Raymond, first results are in. Your white count is mildly up at 11.8 and your blood count is lower than February (hemoglobin 11.2). The inflammation markers are clearly raised (ESR 62, CRP 48). That fits an infection. Cultures take 1-3 days. Keep checking your temperature and call me tonight or tomorrow if you feel worse."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-30a",
+     "kind": "telephone",
+     "start": "2025-04-30T09:55",
+     "reason": "Positive blood cultures",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Critical result: blood cultures",
+       "author": "PCP",
+       "date": "2025-04-30T10:15",
+       "body": "Lab called 09:40: both blood culture sets positive at 48 h, gram-positive cocci in chains. Called Raymond: still febrile last night, otherwise unchanged. Explained this confirms a bloodstream infection and with the new murmur the heart valve is the concern. Arranged direct admission to the hospital medicine service this morning; spoke with the admitting hospitalist, who will get infectious disease, TEE, and cardiology. He is driving in with a neighbor."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-30b",
+     "kind": "hospital_admission",
+     "start": "2025-04-30T12:30",
+     "end": "2025-05-09T14:00",
+     "service": "Hospital Medicine",
+     "reason": "Streptococcal bacteremia with suspected endocarditis",
+     "conditions": [
+      {
+       "label": "Infective Endocarditis (Aortic Valve) with Complications",
+       "icd10": "I33.0",
+       "action": "diagnosed",
+       "onset": "2025-04-07",
+       "note": "Streptococcus gallolyticus, penicillin-susceptible"
+      },
+      {
+       "label": "Malignant neoplasm of colon",
+       "action": "diagnosed",
+       "onset": "2025-02-01",
+       "note": "Descending colon adenocarcinoma, partially obstructing"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "ceftriaxone 2000 MG Injection",
+       "action": "historical",
+       "sig": "2 g IV every 24 hours via port through 6/10/2025",
+       "dose": {
+        "value": 2000,
+        "unit": "mg"
+       },
+       "frequency": "Every 24 hours",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "Streptococcus gallolyticus aortic valve endocarditis"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-05-02T06:00",
+       "resulted": "2025-05-07T08:00",
+       "results": [
+        {
+         "test": "Blood Culture",
+         "text": "No growth at 5 days."
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2025-05-07T11:00",
+       "text": "Staging CT. Comparison none of the abdomen. Focal circumferential wall thickening of the descending colon corresponding to the colonoscopic mass. No pericolonic lymph node enlargement. Liver without focal lesion. Adrenals, pancreas, spleen and kidneys normal. No ascites. No free air. No osseous lesion.",
+       "conclusion": "Descending colon mass without evidence of hepatic or other distant metastasis."
+      },
+      {
+       "study": "Surgical pathology report",
+       "performed": "2025-05-06T10:30",
+       "issued": "2025-05-08T13:00",
+       "text": "Specimen: descending colon mass, cold forceps biopsies. Microscopic: invasive moderately differentiated adenocarcinoma arising in a background of adenomatous mucosa.",
+       "conclusion": "Descending colon, mass: invasive adenocarcinoma, moderately differentiated."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2025-04-30T12:30"
+      },
+      {
+       "procedure": "Colonoscopy with biopsy",
+       "performed": "2025-05-06T10:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2025-05-09T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital Medicine Discharge Summary",
+       "author": "hospital medicine",
+       "date": "2025-05-09T14:00",
+       "body": "Admitted 04/30/2025 by direct admission from his PCP; discharged 05/09/2025.\n\nPrincipal diagnosis: infective endocarditis of the native aortic valve, Streptococcus gallolyticus.\nSecondary: adenocarcinoma of the descending colon, newly diagnosed. Stage IIIB lung adenocarcinoma on durvalumab (held). S/p ascending aortic graft 2022. HTN. HLD. First-degree AV block.\n\nCourse:\nBlood cultures from his PCP office (4/28) grew gram-positive cocci in chains in both sets; identified as Streptococcus gallolyticus, penicillin-susceptible. Repeat cultures 5/2 no growth. Infectious disease consulted: IV ceftriaxone 2 g daily, 6 weeks from the first negative culture, through 6/10/2025. His existing port was evaluated and judged uninvolved; used for home infusion.\nTEE 5/1: mobile vegetation on the aortic valve. No perivalvular abscess. Mitral valve without vegetation. Ascending aortic graft intact without perigraft collection. LV function normal. Cardiology and cardiac surgery reviewed: medical therapy, no indication for surgery at this time.\nTelemetry: sinus rhythm with first-degree AV block; no higher-grade block during the stay.\nBecause this organism is linked with colon tumors, GI performed colonoscopy 5/6: partially obstructing mass in the descending colon, biopsied; scope could not pass beyond it. Pathology: invasive adenocarcinoma, moderately differentiated. Staging CT abdomen/pelvis 5/7: no liver or distant metastasis. Colorectal surgery consulted; plan resection after the antibiotic course. Bowel regimen given; no obstruction during stay.\nDurvalumab on hold; oncology aware.\nFevers resolved by day 3.\n\nDischarge medications: ceftriaxone 2 g IV every 24 h via port through 6/10/2025 (home infusion); lisinopril 20 mg daily; atorvastatin 40 mg daily; multivitamin daily.\nAllergies: NKDA.\nFollow-up: PCP within 1 week; ID in 4 weeks with weekly CBC/CMP through home infusion; colorectal surgery in June; oncology.\n\nHospital medicine"
+      },
+      {
+       "type": "Consult Note",
+       "title": "Infectious Disease Consultation",
+       "author": "infectious disease",
+       "date": "2025-05-01T16:00",
+       "body": "Asked to see for streptococcal bacteremia. 67M with stage IIIB lung adenocarcinoma on durvalumab, chest port, ascending aortic graft (2022), three weeks of fevers and weight loss, new apical systolic murmur found by his PCP. Both culture sets drawn at his PCP office on 4/28 growing Streptococcus gallolyticus, penicillin-susceptible. TEE today: mobile vegetation on the aortic valve, no abscess, graft without perigraft collection, mitral valve without vegetation. Port site clean.\n\nImpression: native aortic valve endocarditis due to S. gallolyticus. This organism carries a strong association with colorectal neoplasia; he has never been screened and reports months of lower abdominal discomfort and constipation.\n\nRecommendations: ceftriaxone 2 g IV every 24 hours for 6 weeks from the first negative culture. Repeat blood cultures until clear. GI for colonoscopy this admission. The port does not need removal if cultures clear promptly. Will follow."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-12a",
+     "kind": "telephone",
+     "start": "2025-05-12T10:30",
+     "reason": "Post-discharge call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Transitional care call",
+       "author": "RN",
+       "date": "2025-05-12T10:45",
+       "body": "Discharge summary received 5/9 and routed. Called pt: home since Friday. No fever. Home infusion nurse visited Saturday, ceftriaxone running daily through the port without problems. Taking lisinopril, atorvastatin, multivitamin. Using the bowel regimen. Visit with PCP 5/14 confirmed."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-14a",
+     "kind": "office_visit",
+     "start": "2025-05-14T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-hospital follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin": 11.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-05-14T11:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-05-14T11:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2025-05-14T11:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-05-14T11:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2025-05-14T11:45",
+       "body": "Five days home. Reviewed discharge summary in full.\n\nSummary of admission: S. gallolyticus bacteremia from aortic valve endocarditis (TEE vegetation, no abscess, graft fine), on ceftriaxone 2 g daily through 6/10 via his port. Colonoscopy found a partially obstructing descending colon adenocarcinoma; no spread on CT. Surgery after antibiotics.\n\nNow: no fevers since the hospital. Energy slowly better. Home infusion nurse comes weekly. Bowels moving with the regimen they gave him; lower belly ache milder. Eating.\n\nHe said it straight: \"So the colonoscopy I kept refusing would've found it.\" We talked about it without blame. He is focused on getting through.\n\nExam: afebrile, vitals as charted. Port accessed, dressing clean. Heart regular; the apical systolic murmur is still there but softer than on 4/28. Lungs clear. Abdomen soft, nontender, no distension. No edema.\n\nA/P\n1. Aortic valve endocarditis, S. gallolyticus: ceftriaxone through 6/10. Weekly labs via home infusion. ID in June.\n2. Descending colon adenocarcinoma: colorectal surgery consult booked June.\n3. Stage IIIB NSCLC: durvalumab held; oncology will restart when cleared.\n4. Anemia: hemoglobin still mildly low, from infection and the tumor. Recheck after surgery.\n5. HTN/HLD: continue lisinopril and atorvastatin.\nTCM. RTC after surgery; call any time."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-12a",
+     "kind": "outside_records",
+     "start": "2025-06-12T15:10",
+     "service": "Infectious Disease",
+     "reason": "Infectious disease follow-up",
+     "medications": [
+      {
+       "drug_text": "ceftriaxone 2000 MG Injection",
+       "action": "stop",
+       "reason": "6-week course completed 6/10/2025"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-06-11T09:00",
+       "resulted": "2025-06-16T08:00",
+       "results": [
+        {
+         "test": "Blood Culture",
+         "text": "No growth at 5 days."
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Infectious Disease Clinic Letter",
+       "author": "infectious disease",
+       "date": "2025-06-11T10:30",
+       "body": "Dear colleague,\n\nMr. Woodward completed 6 weeks of IV ceftriaxone 2 g daily for penicillin-susceptible Streptococcus gallolyticus native aortic valve endocarditis on 06/10/2025. No fever since early May. Weekly CBC and chemistry through home infusion stayed stable. No rash, no diarrhea.\n\nExam: afebrile, BP 128/78. A soft systolic murmur at the apex. Port site clean. No embolic signs.\n\nSurveillance blood cultures drawn today. Antibiotics stopped. Port remains for oncology use and was flushed.\n\nHe understands to call for any fever over 100.4 F. Resection of the colon cancer can proceed as planned. No further ID follow-up needed unless fevers recur.\n\nRegards,\nInfectious disease"
+      }
+     ]
+    },
+    {
+     "id": "2025-06-24a",
+     "kind": "outside_records",
+     "start": "2025-06-24T13:00",
+     "service": "Colorectal Surgery",
+     "reason": "Colorectal surgery consultation",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Colorectal Surgery Consultation",
+       "author": "colorectal surgery",
+       "date": "2025-06-20T11:00",
+       "body": "Dear colleague,\n\nI saw Mr. Woodward for a partially obstructing descending colon adenocarcinoma found at colonoscopy during his admission for S. gallolyticus endocarditis. Staging CT showed no distant disease. He has finished IV antibiotics. Bowels moving with daily laxative; no obstructive symptoms.\n\nBackground noted: stage IIIB lung adenocarcinoma after chemoradiation, durvalumab on hold; ascending aortic graft 2022; HTN; first-degree AV block. NKDA.\n\nExam: abdomen soft, nondistended, no palpable mass. Port right chest.\n\nPlan: laparoscopic left hemicolectomy on 07/16/2025. Cleared by cardiology and oncology. Completion colonoscopy of the proximal colon intraoperatively or soon after recovery, since the scope could not pass the mass.\n\nRegards,\nColorectal surgery"
+      }
+     ]
+    },
+    {
+     "id": "2025-07-16a",
+     "kind": "hospital_admission",
+     "start": "2025-07-16T06:30",
+     "end": "2025-07-20T12:00",
+     "service": "Colorectal Surgery",
+     "reason": "Laparoscopic left hemicolectomy",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2025-07-16T10:00",
+       "issued": "2025-07-22T16:00",
+       "text": "Specimen: left colon, laparoscopic left hemicolectomy. Tumor: adenocarcinoma, moderately differentiated, descending colon, invading through the muscularis propria into pericolorectal tissue. Margins: proximal, distal and radial margins negative. Lymph nodes: 0 of 18 involved. No tumor deposits.",
+       "conclusion": "Adenocarcinoma of descending colon, pT3 N0 (0/18), margins negative. AJCC stage IIA."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2025-07-16T06:30"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2025-07-20T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Colorectal Surgery Discharge Summary",
+       "author": "colorectal surgery",
+       "date": "2025-07-20T12:00",
+       "body": "Admitted 07/16/2025, discharged 07/20/2025.\n\nProcedure 07/16: laparoscopic left hemicolectomy with primary anastomosis. Intraoperative colonoscopy of the proximal colon: no further lesions.\n\nCourse: uncomplicated. Diet advanced by day 2, bowel function by day 3. Pain controlled with acetaminophen. Telemetry sinus rhythm, first-degree AV block.\n\nPathology: pT3 N0 (0/18) moderately differentiated adenocarcinoma, margins negative - stage IIA.\n\nDischarge medications: lisinopril 20 mg daily, atorvastatin 40 mg daily, multivitamin, acetaminophen as needed.\nAllergies: NKDA.\nFollow-up: surgery clinic 2 weeks; oncology regarding pathology and resuming durvalumab; PCP."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-23a",
+     "kind": "portal_message",
+     "start": "2025-07-23T12:30",
+     "reason": "Surgical pathology",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your surgery pathology",
+       "author": "PCP",
+       "date": "2025-07-23T12:30",
+       "body": "Raymond, I saw the final pathology from your colon surgery: the cancer was fully removed with clear edges, and none of the 18 lymph nodes had cancer in them. That is stage IIA. Oncology will go over whether anything more is needed, but this is a good result. How is the recovery going?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your surgery pathology",
+       "author": "patient",
+       "date": "2025-07-23T18:12",
+       "body": "Best news this year. Walking laps around the yard. Sore but ok."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-07a",
+     "kind": "outside_records",
+     "start": "2025-08-07T09:40",
+     "service": "Oncology",
+     "reason": "Oncology follow-up after colectomy",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Oncology Follow-up",
+       "author": "oncology",
+       "date": "2025-08-05T14:00",
+       "body": "Dear colleague,\n\nMr. Woodward is recovering well from laparoscopic left hemicolectomy on 7/16. Pathology: pT3 N0 (0/18), margins negative, stage IIA descending colon adenocarcinoma. Given no high-risk features, adjuvant chemotherapy is not recommended; we discussed this together and he agrees. Colonoscopy in 1 year, then per guidelines.\n\nFor his stage IIIB lung cancer, durvalumab resumed today, 1500 mg every 4 weeks, to finish the planned year, now expected in December. Thyroid and liver tests on today's labs normal.\n\nRegards,\nThoracic oncology\ncc: PCP"
+      }
+     ]
+    },
+    {
+     "id": "2025-09-03a",
+     "kind": "office_visit",
+     "start": "2025-09-03T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after colon surgery",
+     "conditions": [
+      {
+       "label": "Infective Endocarditis (Aortic Valve) with Complications",
+       "icd10": "I33.0",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "weight_kg": 86.0,
+      "labs": {
+       "Hemoglobin": 14.4
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-09-03T10:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-09-03T10:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-09-03T10:40",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2025-09-03T10:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-09-03T10:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-09-03T10:35"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-09-03T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-09-03T10:50",
+       "body": "Seven weeks after his left hemicolectomy (7/16; pT3 N0, stage IIA, no chemo needed). Durvalumab resumed 8/5, to finish in December.\n\nHe feels the best he has all year. Eating well, weight back up to 86 kg. Bowels regular now, no laxative needed, the low belly ache is gone. No fevers since May. No chest pain, palpitations, lightheadedness or breathlessness.\n\nMeds: lisinopril 20, atorvastatin 40, multivitamin; durvalumab q4 wk at the cancer center.\n\nExam: vitals as charted. Laparoscopic port incisions healed. Heart regular, no murmur heard today. Lungs clear. Abdomen soft, nontender. Port site clean. No edema.\n\nA/P\n1. Aortic valve endocarditis - treated, cultures clear, murmur gone. Resolved on the problem list. Antibiotic prophylaxis before dental work discussed - will have the dentist contact us.\n2. Colon adenocarcinoma stage IIA, resected - oncology surveillance; colonoscopy July 2026.\n3. Stage IIIB NSCLC - on durvalumab through December.\n4. HTN, HLD - stable. Labs today.\n5. High-dose flu today; COVID update when the fall vaccine is out.\nLots of specialists this year; plan to see him here in early winter, will message results."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-05a",
+     "kind": "portal_message",
+     "start": "2025-09-05T12:10",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your labs from Wednesday",
+       "author": "PCP",
+       "date": "2025-09-05T12:10",
+       "body": "Good news across the board: blood count is back to normal, kidney and liver tests normal, cholesterol where it has been on the atorvastatin. Nothing to change. Enjoy September."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your labs from Wednesday",
+       "author": "patient",
+       "date": "2025-09-05T19:44",
+       "body": "Finally some boring news. Thanks."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

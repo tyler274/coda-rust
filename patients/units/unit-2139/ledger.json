@@ -1,0 +1,2068 @@
+{
+  "unit": "unit-2139",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002139",
+      "given": "Norman",
+      "family": "Hale",
+      "birth_date": "1967-11-28",
+      "address_line": "41 Straits Road",
+      "phone": "+1-413-555-0189",
+      "email": "norman.hale@example.test",
+      "marital_status": "married",
+      "summary": "58-year-old civil service administrator with atrial fibrillation, CAD and a mechanical aortic valve on warfarin, who joined in 2024 after a catheterization complicated by a retroperitoneal hematoma. In 2025 a ciprofloxacin course with poor intake led to a vitamin K deficiency coagulopathy admission, and later an ED visit found Coombs-negative valve-related hemolysis.",
+      "events": [
+        {
+          "id": "2024-09-06a",
+          "kind": "telephone",
+          "start": "2024-09-06T10:15",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake",
+              "date": "2024-09-06T10:15",
+              "author": "front desk",
+              "body": "Caller wants to transfer care, previous PCP retired over the summer. Booked new patient visit 9/18, 60 min slot. Says he had heart valve surgery in June and is on warfarin, INRs are done through the cardiology anticoag clinic. Release for prior PCP office signed electronically, request sent. Asked him to bring all med bottles and his anticoag clinic card."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "establish_care",
+          "start": "2024-09-18T08:30",
+          "end": "2024-09-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Atrial fibrillation, unspecified",
+              "action": "history",
+              "onset": "2019-01-01",
+              "note": "Predates valve surgery; anticoagulated with warfarin",
+              "icd10": "I48.91"
+            },
+            {
+              "label": "Coronary artery disease",
+              "action": "history",
+              "onset": "2024-05-01"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2015-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2015-01-01"
+            },
+            {
+              "label": "Gastroesophageal reflux disease without esophagitis",
+              "action": "history",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "Presence of prosthetic heart valve",
+              "action": "history",
+              "onset": "2024-06-01",
+              "note": "Mechanical aortic valve replacement, June 2024",
+              "icd10": "Z95.2"
+            },
+            {
+              "label": "Postprocedural hematoma following cardiac catheterization",
+              "action": "history",
+              "onset": "2024-05-01",
+              "note": "Retroperitoneal hematoma after femoral-access coronary angiography, May 2024",
+              "icd10": "I97.630"
+            },
+            {
+              "label": "Long-term current use of anticoagulants",
+              "action": "history",
+              "onset": "2024-06-01"
+            },
+            {
+              "label": "Postprocedural hematoma following cardiac catheterization",
+              "action": "resolved",
+              "onset": "2024-05-01",
+              "icd10": "I97.630"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "warfarin sodium 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take as directed by anticoagulation clinic; dose varies, goal INR 2.0-3.0",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Mechanical aortic valve, atrial fibrillation"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 100 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily before breakfast",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Shellfish",
+              "reaction": "Itching",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              88
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 91.1,
+            "height_cm": 177.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-18T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 98
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-18T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.18
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-18T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 154
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 105
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-09-18T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 26.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-18T09:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Civil service administrator"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 beers on weekends"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2024-09-18T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-18T09:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Former smoker, 25 pack-years, quit 2022"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-09-18T10:40",
+              "author": "PCP",
+              "body": "56M here to establish. Prior PCP retired; records requested.\n\nCardiac history, his account (no outside records in hand yet): AF for a number of years, rate controlled on metoprolol. Known CAD followed by an outside cardiology group. In May had a coronary angiogram through the right groin ahead of valve surgery and developed a retroperitoneal bleed afterward, managed at that hospital. June: mechanical aortic valve replacement at an outside cardiac surgery program. Recovered well, back at work in August. Warfarin since surgery, dosed by the cardiology anticoag clinic, goal 2.0-3.0, last check 'in range' per him. BP and cholesterol treated for about a decade. Reflux controlled on pantoprazole.\n\nPSH: lap chole around age 45; cath and AVR as above.\nMeds: warfarin per clinic, metoprolol succinate 100, ASA 81, atorvastatin 40, lisinopril 20, pantoprazole 40.\nAllergies: PCN (anaphylaxis), shellfish (itching).\nFH: father MI at 62, also HTN. Mother AF and T2DM. Older brother CAD.\nSH: civil service administrator. Smoked 25 pk-yr, stopped in 2022. Beer 1-2 on weekends. \n\nROS: no exertional chest discomfort, no palpitations he notices, no bleeding gums, no blood in urine or stool, no orthopnea.\n\nExam: BP and pulse as charted. NAD. Sternotomy scar well healed. Crisp mechanical valve click, irregularly irregular at a controlled rate, no added murmur. Lungs clear. Right groin without mass or bruit. Abdomen soft. Legs without swelling. PHQ-2 0.\n\nA/P\n1. Mechanical AVR (6/2024) on warfarin, AF: anticoag clinic continues to dose; INR drawn today with labs so we have one on file. Asked him to tell us and the clinic before any new antibiotic or OTC pain reliever.\n2. CAD, HTN, HLD: at goal by today's BP, lipids pending. Continue current regimen.\n3. Hx RP hematoma post-cath: noted.\n4. GERD: stable on PPI.\n5. Health maintenance: hep C, HIV, hep B screening today. Flu vaccine today. Meets criteria for annual lung screening, low-dose CT ordered. Colonoscopy history to be confirmed from old records. Will plan shingles and pneumococcal at next visit.\nF/u 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              78
+            ],
+            "weight_kg": 92.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Low Density Lipoprotein": 82,
+              "Prothrombin Time-International Normalized Ratio": 2.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "outside_records",
+          "start": "2024-09-20T14:05",
+          "reason": "Records from prior primary care practice",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2024-09-20T14:05",
+              "author": "MA",
+              "body": "11 pages from the prior primary care office arrived and were indexed. Contents: medication list matching what patient reported, office notes through spring 2024 for blood pressure and lipids, colonoscopy summary from 2018 (age 50) normal with 10-year repeat, Tdap given 2019. No cardiac surgery or anticoagulation clinic records in the packet; those were managed elsewhere."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "portal_message",
+          "start": "2024-09-23T07:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "date": "2024-09-23T07:50",
+              "author": "PCP",
+              "body": "Hi Norman, your labs from the 18th look good. Kidney and liver function normal, blood counts normal, LDL cholesterol is at goal on the atorvastatin. INR came back in your target range. Hepatitis and HIV screens were negative. Radiology will call to schedule the lung screening CT. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "imaging",
+          "start": "2024-10-08T13:20",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-10-08T13:20",
+              "text": "Indication: annual lung cancer screening, former smoker, 25 pack-years, quit 2022. Technique: low-dose helical CT of the chest without contrast. Findings: Median sternotomy wires intact. Mechanical aortic valve prosthesis. Heart size normal, no pericardial effusion. No pulmonary nodules. No consolidation or effusion. Airways patent. No lymphadenopathy. Upper abdomen: cholecystectomy clips.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-10-08T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lung screening CT result",
+              "date": "2024-10-09T12:10",
+              "author": "PCP",
+              "body": "LDCT negative, Lung-RADS 1. Next one fall 2025. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "pharmacy",
+          "start": "2024-10-22T16:30",
+          "reason": "Vaccine given at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-19T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside vaccine entered",
+              "date": "2024-10-22T16:30",
+              "author": "MA",
+              "body": "Patient messaged a photo of his vaccine card: 2024-25 COVID vaccine given 10/19 at a retail pharmacy. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "office_visit",
+          "start": "2024-12-11T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              88
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 92.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-11T15:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-12-11T15:35"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-12-11T15:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-12-11T16:05",
+              "author": "PCP",
+              "body": "Follow-up, valve/AF/BP.\n\nDoing well. Saw cardiology in November, no changes made. Anticoag clinic checks him every few weeks, says they have been in range. Walking at lunch most days. No bruising beyond the usual small ones, no nosebleeds, no dark stools. Reflux quiet.\n\nExam: vitals reviewed. Comfortable. Valve click crisp, rhythm irregular, rate fine. Chest clear. No ankle swelling.\n\nImpression/plan: stable on current meds, no changes. First Shingrix and PCV20 given today, R and L deltoid. Second Shingrix due in 2-6 months. RTC 3 months, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "pharmacy",
+          "start": "2025-01-14T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request",
+              "date": "2025-01-14T09:10",
+              "author": "MA",
+              "body": "Electronic request from pharmacy for metoprolol succinate 100 mg and lisinopril 20 mg, 90-day supply. On current med list, seen 12/11. Sent per protocol, 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-17a",
+          "kind": "office_visit",
+          "start": "2025-02-17T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diarrhea for one week",
+          "conditions": [
+            {
+              "label": "Diarrhea, unspecified",
+              "action": "diagnosed",
+              "onset": "2025-02-10",
+              "icd10": "R19.7"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 10 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Diarrheal illness"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              70
+            ],
+            "hr": 82,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 92.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-17T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "date": "2025-02-17T12:05",
+              "author": "PCP",
+              "body": "Same-day visit. Stomach bug about a week ago with cramping and loose watery stools that have not let up, 4-6 a day. Not eating much, mostly toast and broth. No blood in the stool, no vomiting now. Nobody else at home sick.\n\nExam: afebrile, vitals as charted. Mucous membranes slightly dry. Abdomen soft, mildly tender diffusely, active bowel sounds, no guarding.\n\nA/P: prolonged diarrheal illness. Given duration, starting ciprofloxacin 500 bid x 10 days (PCN anaphylaxis). Oral fluids, advance diet as tolerated. He will let the anticoag clinic know he is on an antibiotic. Call if blood in stool, fever, or not improving in a few days."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "portal_message",
+          "start": "2025-02-20T19:40",
+          "reason": "Still having loose stools",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Still not right",
+              "date": "2025-02-20T19:40",
+              "author": "patient",
+              "body": "Day 3 on the antibiotic. Stools a little less often but still loose and I have zero appetite. Should I keep taking it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Still not right",
+              "date": "2025-02-21T08:25",
+              "author": "RN",
+              "body": "Good morning Mr. Hale. Yes, please finish the full course. Keep sipping fluids with some salt and sugar in them and small bland meals. If you see blood, run a fever, or feel lightheaded, call us right away and we will see you today."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "hospital_admission",
+          "start": "2025-02-26T14:50",
+          "end": "2025-03-01T11:30",
+          "service": "Internal Medicine",
+          "reason": "Worsening shortness of breath and fatigue",
+          "conditions": [
+            {
+              "label": "Coagulopathy due to vitamin K deficiency",
+              "action": "diagnosed",
+              "onset": "2025-02-26",
+              "icd10": "D68.4"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Stopped on admission"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-26T15:30",
+              "results": [
+                {
+                  "test": "Prothrombin time",
+                  "loinc": "5902-2",
+                  "unit": "s",
+                  "value": 29
+                },
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 48
+                },
+                {
+                  "test": "Platelet count",
+                  "loinc": "777-3",
+                  "unit": "10*3/uL",
+                  "value": 210
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-03-03T10:15",
+              "author": "hospitalist",
+              "body": "Regional hospital, Internal Medicine. Admitted 2/26/2025, discharged 3/1/2025.\n\nReason for admission: progressive dyspnea and tiredness.\n\nBrief history: 57-year-old man with AF (listed by cardiology as nonvalvular), CAD, HTN, HLD, GERD and a mechanical aortic valve (6/2024) on warfarin. Roughly two weeks of very poor intake after a GI illness with ongoing diarrhea, and on an outpatient antibiotic course from his primary care physician.\n\nExam on admission: numerous bruises on both arms and legs; scattered petechiae on the oral mucosa.\n\nKey labs: PT 29 s, PTT 48 s, platelet count 210,000/mm3.\n\nDiagnosis: coagulopathy from vitamin K deficiency (poor intake, diarrhea, antibiotic exposure) on warfarin.\n\nHospital course: warfarin held, vitamin K 2.5 mg given by mouth once, antibiotic discontinued. Diet resumed and tolerated. Warfarin restarted before discharge; anticoagulation clinic to resume management.\n\nDischarge medications: warfarin per anticoagulation clinic, metoprolol succinate 100 mg daily, aspirin 81 mg daily, atorvastatin 40 mg daily, lisinopril 20 mg daily, pantoprazole 40 mg daily. Ciprofloxacin stopped.\nAllergies: penicillin (anaphylaxis), shellfish (pruritus).\nFollow-up: PCP within 1 week; INR check per anticoagulation clinic in 2-3 days."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "office_visit",
+          "start": "2025-03-05T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {
+              "label": "Coagulopathy due to vitamin K deficiency",
+              "action": "resolved",
+              "onset": "2025-02-26",
+              "icd10": "D68.4"
+            },
+            {
+              "label": "Diarrhea, unspecified",
+              "action": "resolved",
+              "onset": "2025-02-10",
+              "icd10": "R19.7"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              79
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 91.5
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-03-05T10:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-05T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.22
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-05T10:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-05T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-03-05T11:00",
+              "author": "PCP",
+              "body": "Seen after 2/26-3/1 admission (summary received 3/3). Admitted short of breath and wiped out, with bruising and mouth petechiae; PT 29, PTT 48, platelets normal. Treated as vitamin K deficiency from poor intake/diarrhea/antibiotic while on warfarin: vit K, cipro stopped, warfarin back on before discharge.\n\nToday feels much better, breathing back to normal, eating normally since the weekend, stools formed. Bruises yellowing. Anticoag clinic checked him Monday and adjusted his dose.\n\nExam: vitals as charted. Fading ecchymoses forearms and shins, none new. Mouth clear. Valve click crisp, rate controlled. Lungs clear.\n\nA/P: coagulopathy resolved; diarrhea resolved. INR and CBC today. Continue warfarin per clinic and remaining meds unchanged. Reviewed again: any new antibiotic, and any stretch of not eating, should go through the clinic for an extra INR. RTC June."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-06a",
+          "kind": "portal_message",
+          "start": "2025-03-06T13:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from yesterday",
+              "date": "2025-03-06T13:15",
+              "author": "PCP",
+              "body": "Norman, INR 2.6, right where it should be. Blood count and kidney labs normal. I sent a copy to the anticoagulation clinic."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "office_visit",
+          "start": "2025-06-11T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              74
+            ],
+            "hr": 66,
+            "spo2": 96,
+            "weight_kg": 91.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-06-11T14:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-06-11T14:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-06-11T15:10",
+              "author": "PCP",
+              "body": "Routine f/u. No problems since spring. Clinic INRs in range per him, dose steady. No bleeding. BP good at home. Doing yard work without trouble.\nExam: vitals reviewed, comfortable, valve click present, irregular rhythm, lungs clear, no edema.\nPlan: continue meds. Shingrix #2 today (series complete). Physical in the fall with labs."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "pharmacy",
+          "start": "2025-07-09T10:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pantoprazole refill",
+              "date": "2025-07-09T10:30",
+              "author": "MA",
+              "body": "Pantoprazole 40 mg 90-day refill requested by pharmacy. Approved, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "office_visit",
+          "start": "2025-08-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2025-08-20T10:30",
+              "author": "front desk",
+              "body": "No-show for 10:00. Voicemail left. Patient called back at noon, mixed up the date with the physical; kept the September physical, this one closed."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "annual_physical",
+          "start": "2025-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              140,
+              74
+            ],
+            "hr": 81,
+            "rr": 18,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 91.7,
+            "height_cm": 178.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-24T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-24T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.15
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-24T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 153
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 81
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 122
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 105
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-24T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-24T08:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung screening, former smoker 25 pack-years"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-24T09:45",
+              "author": "PCP",
+              "body": "Annual exam, 57M.\n\nInterval: feels well. No recurrence of the bleeding problem from February. Clinic INRs in range by his report. Walks 30-40 minutes most days. Not smoking. A couple of beers on weekends. Sleeping fine, mood good.\n\nMeds reviewed, unchanged: warfarin per clinic, metoprolol succinate 100, ASA 81, atorvastatin 40, lisinopril 20, pantoprazole 40. Allergies PCN (anaphylaxis), shellfish (itching).\n\nROS negative across systems.\n\nExam: vitals as charted. Well appearing. HEENT normal, dentition fair. Neck supple, no thyroid enlargement. Mechanical valve click, irregularly irregular, controlled. Lungs clear throughout. Abdomen soft, healed lap scars. No edema, pulses 2+ distally. Skin: no bruising. Neuro grossly intact. PHQ-9 1.\n\nAssessment/plan:\n- Mechanical AVR, AF on warfarin: stable, clinic manages.\n- CAD, HTN, HLD: BP at goal, lipids drawn today.\n- GERD: stable.\n- Prevention: colonoscopy 2018 normal, next 2028. Lung screening due, LDCT ordered. Flu today; updated COVID at pharmacy when available. Shingrix and PCV20 complete. Tdap 2019.\nCMP, CBC, lipids today. RTC 3-4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c",
+            "rr"
+          ]
+        },
+        {
+          "id": "2025-09-26a",
+          "kind": "portal_message",
+          "start": "2025-09-26T08:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2025-09-26T08:05",
+              "author": "PCP",
+              "body": "Everything from Wednesday's labs is normal, including the cholesterol numbers. Keep it up."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "imaging",
+          "start": "2025-10-07T15:45",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-10-07T15:45",
+              "text": "Indication: annual screening, former smoker. Comparison: 2024-10-08. Technique: low-dose noncontrast CT chest. Findings: Sternotomy wires and mechanical aortic valve again seen. Normal heart size. Lungs clear without nodule, mass or consolidation. No pleural effusion. Mediastinal and hilar nodes not enlarged. Visualized upper abdomen unremarkable apart from surgical clips in the gallbladder fossa.",
+              "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-10-07T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Screening CT result",
+              "date": "2025-10-08T07:30",
+              "author": "PCP",
+              "body": "Second annual LDCT negative, Lung-RADS 1. Patient informed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "pharmacy",
+          "start": "2025-10-17T12:00",
+          "reason": "Vaccine given at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-14T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside vaccine entered",
+              "date": "2025-10-17T12:00",
+              "author": "MA",
+              "body": "State registry shows 2025-26 COVID vaccine on 10/14 at a retail pharmacy. Added to history."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-07a",
+          "kind": "ed_visit",
+          "start": "2025-11-07T18:40",
+          "end": "2025-11-07T23:55",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue and dark urine for 3 days",
+          "conditions": [
+            {
+              "label": "Hemolytic anemia due to mechanical heart valve",
+              "action": "diagnosed",
+              "onset": "2025-11-04",
+              "icd10": "D59.4"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-11-07T18:55",
+              "bp": [
+                130,
+                80
+              ],
+              "hr": 90,
+              "rr": 16,
+              "temp_c": 37.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-11-07T19:20",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Red-brown"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-07T19:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.02
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-07T19:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 3.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 42.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-07T19:20",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "Decreased"
+                },
+                {
+                  "test": "Direct antiglobulin test",
+                  "loinc": "1007-4",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2025-11-10T09:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, seen 11/7/2025.\n\nCC: tired and dark urine x3 days.\nHPI: 57M with AF (nonvalvular per his cardiology list), mechanical aortic valve on warfarin, and a prior coagulopathy admission, presenting with three days of fatigue and tea-colored urine. No injury, no new medicines, no recent infection.\nMeds: warfarin, aspirin 81, metoprolol succinate 100, atorvastatin 40, lisinopril 20, pantoprazole 40. Allergies: PCN (anaphylaxis), shellfish (pruritus).\nVitals: T 37.2 C, BP 130/80, HR 90, RR 16.\nExam: not jaundiced, sclerae white. Mechanical valve click; no murmur, rub or gallop. Abdomen benign.\nLabs: UA red-brown, heme positive, no RBCs on microscopy. Hgb 9.2, Hct 27.8, plt 250K. LDH elevated, haptoglobin low, DAT negative. INR 3.5.\nImpression: DAT-negative intravascular hemolysis, likely related to the mechanical valve. INR above goal.\nDisposition: hemodynamically stable, discharged home. Hold tonight's warfarin; anticoagulation clinic INR recheck early next week. Cardiology notified for outpatient echo. PCP follow-up this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "telephone",
+          "start": "2025-11-10T11:30",
+          "reason": "ED follow-up call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "date": "2025-11-10T11:30",
+              "author": "RN",
+              "body": "ED note from Friday received. Called pt: urine is lighter today, still tired. Held one warfarin dose as told, clinic rechecks INR tomorrow. Cardiology office already called him about an echo. Booked with PCP Wednesday."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "office_visit",
+          "start": "2025-11-12T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, dark urine",
+          "vitals": {
+            "bp": [
+              115,
+              73
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 91.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-12T14:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 238
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.24
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-12T14:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.7
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 32.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-12T14:15",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 412
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-11-12T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2025-11-12T14:50",
+              "author": "PCP",
+              "body": "Seen after ED visit 11/7 for fatigue and dark urine: Hgb 9.2, LDH up, haptoglobin low, DAT neg, UA heme+ without RBCs. INR 3.5 there. ED read it as valve-related hemolysis.\n\nNow: urine back to normal color since the weekend. Still more tired than usual, short of wind on stairs at the end of the day. No chest pain, no fevers. Clinic INR yesterday in range per pt. Echo with cardiology set for December.\n\nExam: vitals as charted. Mildly pale conjunctivae, no scleral icterus. Valve click crisp, irregular rhythm. Lungs clear. No edema.\n\nA/P: hemolytic anemia related to mechanical AVR, DAT negative. Repeat CBC, LDH, INR today. Cardiology to evaluate valve with echo. Return precautions: dark urine again, worsening breathlessness, chest pain. F/u after echo, January."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hematocrit": 29.1,
+              "Hemoglobin": 9.6,
+              "Prothrombin Time-International Normalized Ratio": 2.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-13a",
+          "kind": "portal_message",
+          "start": "2025-11-13T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Yesterday's blood work",
+              "date": "2025-11-13T16:20",
+              "author": "PCP",
+              "body": "Hi Norman, hemoglobin 9.6, a bit better than in the ED. LDH, the marker of red cells breaking down, is still high at 412, which fits what is going on. INR 2.7. Nothing to change before the echo. Call if the dark urine comes back."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "portal_message",
+          "start": "2025-12-19T20:10",
+          "reason": "Update after cardiology",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Echo done",
+              "date": "2025-12-19T20:10",
+              "author": "patient",
+              "body": "Had the echo and saw cardiology this week. They said the new valve is working fine and there is no leak around it. Said a little red cell breakdown happens with this kind of valve. They started me on folic acid 1 mg once a day. Wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Echo done",
+              "date": "2025-12-22T08:40",
+              "author": "PCP",
+              "body": "Good news, thanks for letting me know. I will add the folic acid to your list. We will recheck your blood count when I see you in January. Happy holidays."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "office_visit",
+          "start": "2026-01-21T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after cardiology",
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Valve-related hemolysis; started by cardiology"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              75
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 91.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-21T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-21T11:00",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 318
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-21T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-01-21T11:25",
+              "author": "PCP",
+              "body": "F/u hemolysis. Cardiology letter not received; per pt, December echo showed the mechanical aortic valve functioning normally without paravalvular leak, and they attributed the hemolysis to the valve itself, mild. Started folic acid 1 mg daily, added to our list as an outside start. Requested the cardiology note.\n\nEnergy better. No dark urine since November. Stairs fine again. No bleeding.\n\nExam: BP/HR charted. Color better. Valve click, irregular rhythm at a controlled rate. Lungs clear. No edema.\n\nA/P: valve-related hemolytic anemia, improving. CBC and LDH today. Other problems stable, meds unchanged. See in 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hematocrit": 32.0,
+              "Hemoglobin": 10.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "portal_message",
+          "start": "2026-01-23T09:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2026-01-23T09:30",
+              "author": "PCP",
+              "body": "Hemoglobin up to 10.6 and LDH down to 318. Heading the right way. Keep taking the folic acid."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "pharmacy",
+          "start": "2026-02-18T14:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Atorvastatin refill",
+              "date": "2026-02-18T14:45",
+              "author": "MA",
+              "body": "Pharmacy requested atorvastatin 40 mg #90. Last lipids 9/2025 at goal. Refilled x1."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-06a",
+          "kind": "portal_message",
+          "start": "2026-04-06T12:15",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Moving my appointment",
+              "date": "2026-04-06T12:15",
+              "author": "patient",
+              "body": "Can I push my April 15 appointment back a week or so? Work audit that week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Moving my appointment",
+              "date": "2026-04-06T15:00",
+              "author": "front desk",
+              "body": "Done, you are now Friday April 24 at 9:00."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "office_visit",
+          "start": "2026-04-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              73
+            ],
+            "hr": 70,
+            "spo2": 96,
+            "weight_kg": 92.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-24T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.68
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-24T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-04-24T09:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-24T09:40",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 296
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-24T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-04-24T10:05",
+              "author": "PCP",
+              "body": "3-mo f/u.\n\nFeels like himself. Back to daily walks. Urine normal color. No bruising, no nosebleeds. Anticoag clinic visits every 4 weeks now, in range. Taking folic acid. Cardiology note still not in; he has a cardiology visit planned for the summer.\n\nMeds: warfarin per clinic, metoprolol succinate 100, ASA 81, atorvastatin 40, lisinopril 20, pantoprazole 40, folic acid 1.\n\nExam: vitals as charted, BP at goal. Valve click crisp, irregularly irregular, rate 70s. Lungs clear. Abdomen soft. No edema.\n\nA/P\n- Valve-related hemolytic anemia: CBC, LDH today.\n- Mechanical AVR/AF on warfarin: INR today as well, clinic continues.\n- HTN/CAD/HLD: stable, BMP today; lipids at the fall physical.\n- GERD: stable.\nNext visit September; LDCT due in the fall."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hematocrit": 33.6,
+              "Hemoglobin": 11.1,
+              "Prothrombin Time-International Normalized Ratio": 2.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "portal_message",
+          "start": "2026-04-27T08:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Friday's labs",
+              "date": "2026-04-27T08:20",
+              "author": "PCP",
+              "body": "Hemoglobin 11.1, better again. LDH 296, only slightly above normal now. INR 2.5 and kidney labs normal. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "pharmacy",
+          "start": "2026-06-10T11:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Metoprolol and lisinopril refill",
+              "date": "2026-06-10T11:05",
+              "author": "MA",
+              "body": "90-day metoprolol succinate 100 mg and lisinopril 20 mg requested. Seen 4/24. Approved x1 each."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T18:35",
+          "reason": "Vaccine question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall shots",
+              "date": "2026-08-12T18:35",
+              "author": "patient",
+              "body": "Should I get the flu shot at my September appointment or at the pharmacy? Also still on for the 14th?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fall shots",
+              "date": "2026-08-12T20:00",
+              "author": "RN",
+              "body": "Hi Norman, you are confirmed for September 14 at 9:30. We should have this season's flu vaccine by then, so we can give it at that visit. The COVID shot can be done at the pharmacy whenever it is out."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T09:30",
+          "reason": "Routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Atrial fibrillation, unspecified|I48.91": {
+        "code": "I48.91",
+        "display": "Unspecified atrial fibrillation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Coagulopathy due to vitamin K deficiency|D68.4": {
+        "code": "D68.4",
+        "display": "Acquired coagulation factor deficiency",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Diarrhea, unspecified|R19.7": {
+        "code": "R19.7",
+        "display": "Diarrhea, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hemolytic anemia due to mechanical heart valve|D59.4": {
+        "code": "D59.4",
+        "display": "Other nonautoimmune hemolytic anemias",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Postprocedural hematoma following cardiac catheterization|I97.630": {
+        "code": "I97.630",
+        "display": "Postprocedural hematoma of a circulatory system organ or structure following a cardiac catheterization",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Presence of prosthetic heart valve|Z95.2": {
+        "code": "Z95.2",
+        "display": "Presence of prosthetic heart valve",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "3173-2",
+        "display": "aPTT in Blood by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Direct antiglobulin test": {
+        "code": "1007-4",
+        "display": "Direct antiglobulin test.polyspecific reagent [Presence] on Red Blood Cells",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Haptoglobin": {
+        "code": "4542-7",
+        "display": "Haptoglobin [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lactate dehydrogenase": {
+        "code": "2532-0",
+        "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Platelet count": {
+        "code": "777-3",
+        "display": "Platelets [#/volume] in Blood by Automated count",
+        "unit": "10*3/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Prothrombin time": {
+        "code": "5902-2",
+        "display": "Prothrombin time (PT)",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

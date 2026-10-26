@@ -1,0 +1,213 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001730",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "telephone",
+          "start": "2024-01-09T14:00",
+          "orders": [
+            {"id": "endo-ref-2023", "action": "cancelled", "date": "2024-01-09T14:00"},
+            {"id": "repeat-am-labs-2023", "action": "cancelled", "date": "2024-01-09T14:00"}
+          ],
+          "documents": [
+            {"type": "Administrative Note", "title": "Referral closed", "author": "front desk", "date": "2024-01-09T14:00", "body": "Referral audit: endocrinology referral from 8/2023 never scheduled after the 9/14 cancellation; closed per 90-day policy. Associated lab order (AM cortisol/BMP) expired, not drawn. Left voicemail for pt that she can call if she still wants the appointment."}
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "portal_message",
+          "start": "2024-02-20T20:31",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill - nose spray", "author": "patient", "date": "2024-02-20T20:31", "body": "Could you send a refill of my desmopressin spray? My hematologist retired and the bottle I have expired in January. I've only used it twice this winter for nosebleeds."},
+            {"type": "Patient Message", "title": "RE: Refill - nose spray", "author": "PCP", "date": "2024-02-21T08:44", "body": "Sent a new bottle to your pharmacy. Same as before: one spray in one nostril only for a bleed that won't stop with 10-15 minutes of pressure, and no more than one dose in a day without calling. Limit how much water you drink for the rest of that day. If you'd like a new hematologist, let us know and we'll set it up."}
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "annual_physical",
+          "start": "2024-05-21T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 56.5, "bp": [104, 66], "labs": {"Hemoglobin": 11.7, "Ferritin": 21, "25-hydroxy Vitamin D": 34, "Iron": 64, "Transferrin Saturation": 17, "Mean Corpuscular Volume": 83}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-05-21T09:10", "results": [{"test": "Hemoglobin", "value": 11.7}]},
+            {"panel": "Iron Studies", "collected": "2024-05-21T09:10", "results": [{"test": "Ferritin", "value": 21}, {"test": "Iron"}]},
+            {"panel": "Lipid Panel", "collected": "2024-05-21T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-05-21T09:10", "results": [{"test": "25-hydroxy Vitamin D", "value": 34}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2024-05-21T08:55", "issued": "2024-05-24T11:00", "text": "Specimen: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM; high-risk HPV negative."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-05-21T08:30"},
+            {"procedure": "Venipuncture", "performed": "2024-05-21T09:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-05-21T08:30", "body": "ANNUAL PHYSICAL\n\n33 y/o, son is 10 months old and walking along the furniture. Working full time at the library again. Energy 'fine for a parent of a baby.' Occasional nosebleed. On HRT, no breakthrough bleeding. No new concerns.\n\nMeds: ferrous sulfate 325 daily, ethinyl estradiol/norethindrone acetate 5 mcg/1 mg daily, vitamin D3 2000 IU, desmopressin nasal PRN.\nAllergies: latex.\nPMH: vWD type 1, Kallmann syndrome, iron deficiency; 2023 delivery with uterine inversion, PPH x2, D&C.\nFH/SH unchanged. Never smoker, no alcohol.\n\nROS otherwise negative.\n\nEXAM: Slim, well. Vitals as recorded. HEENT normal, no epistaxis. Thyroid normal. Heart RRR without murmur; lungs clear. Breasts deferred - pt declined today. Abdomen benign. Pelvic: external genitalia normal, cervix normal; Pap/HPV obtained (non-latex speculum cover and gloves). Skin: no bruising today. Mood bright, PHQ-2 0.\n\nPLAN:\n- CBC, ferritin, lipids, vitamin D.\n- Pap with HPV today.\n- Continue meds. Flu and COVID in the fall.\n- Hematology: her doctor has retired; she'll think about a new one before any future pregnancy."}
+          ]
+        },
+        {
+          "id": "2024-05-24a",
+          "kind": "portal_message",
+          "start": "2024-05-24T15:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical results", "author": "PCP", "date": "2024-05-24T15:20", "body": "Maya, your Pap is normal and HPV negative, so the next one isn't due for five years. Hemoglobin 11.7 and ferritin 21 - the best they've been since you joined us. Cholesterol is good and vitamin D is 34. Keep the iron going."}
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T17:00",
+          "reason": "Influenza and COVID vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-17T17:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-17T17:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-17T17:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Vaccines", "author": "MA", "date": "2024-10-17T17:00", "body": "Late-day vaccine clinic. Flu (trivalent) L arm, 2024-25 COVID R arm. Latex-free supplies. Held pressure longer for vWD; small bandage only. Stayed 15 min without problems."}
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "telehealth_visit",
+          "start": "2024-11-19T12:20",
+          "reason": "Planning a second pregnancy",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-11-19T12:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2024-11-19T12:20", "body": "Video visit from the library break room; identity confirmed.\n\nShe and her husband want a second child and she has asked the same REI group to see her again in January. Wants to know what to tell them and whether anything should change first.\n\nDiscussed: last pregnancy ended with inversion and two hemorrhages; obstetrics and REI should know that from the start, and a hematologist should be involved in delivery planning. She'll ask obstetrics to arrange one. Iron stores were at their best in May; keep iron going. She will stop HRT when REI tells her to.\n\nNo symptoms today. Continue current meds. Will send her a summary of the 2023 hospital stays through the portal so she can share it."}
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "outside_records",
+          "start": "2025-01-17T10:05",
+          "reason": "Reproductive endocrinology consultation",
+          "documents": [
+            {"type": "Consult Note", "title": "Reproductive Endocrinology Return Consultation", "author": "reproductive endocrinology", "date": "2025-01-17T10:05", "body": "REPRODUCTIVE ENDOCRINOLOGY - RETURN VISIT\nDate of visit: 2025-01-14\n\nMs. Klein, now 33, returns hoping for a second pregnancy. Kallmann syndrome; conceived in 2022 on her second gonadotropin cycle. That pregnancy ended in a vaginal birth complicated by acute uterine inversion and primary postpartum hemorrhage, then a secondary hemorrhage from retained placenta needing D&C. Type 1 von Willebrand disease; iron deficiency on oral iron. Latex allergy.\n\nPlan:\n- Gonadotropin ovulation induction as before, with monitoring here.\n- Stop her estradiol/norethindrone now; first stimulation with her next scheduled start.\n- Early referral to obstetrics once pregnant, with a request that hematology take part in delivery planning given the prior hemorrhages."}
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "telephone",
+          "start": "2025-01-21T10:40",
+          "medications": [
+            {"drug_text": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet", "action": "stop", "reason": "Held for ovulation induction"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Medication update", "author": "RN", "date": "2025-01-21T10:40", "body": "Pt reports REI had her stop the estradiol/norethindrone last week ahead of stimulation. Removed from active med list. Iron, vitamin D, desmopressin unchanged."}
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "portal_message",
+          "start": "2025-04-22T18:05",
+          "conditions": [
+            {"label": "Supervision of high risk pregnancy", "icd10": "O09.90", "action": "diagnosed", "onset": "2025-04-01", "note": "Conceived with gonadotropin ovulation induction; prior uterine inversion and postpartum hemorrhage; von Willebrand disease"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Positive again", "author": "patient", "date": "2025-04-22T18:05", "body": "REI just called - positive test on the first try this time. Wanted to let you know. Same meds as before?"},
+            {"type": "Patient Message", "title": "RE: Positive again", "author": "PCP", "date": "2025-04-23T07:58", "body": "Wonderful news, congratulations. Yes - keep the iron and vitamin D, and the desmopressin only for a bleed that won't stop. Please make sure your OB has the 2023 hospital summaries; I can fax them if that's easier."}
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "outside_records",
+          "start": "2025-05-08T13:30",
+          "reason": "Reproductive endocrinology update",
+          "documents": [
+            {"type": "Outside Records", "title": "Reproductive Endocrinology Early Pregnancy Note", "author": "reproductive endocrinology", "date": "2025-05-08T13:30", "body": "REPRODUCTIVE ENDOCRINOLOGY\nDate of visit: 2025-05-06\n\nUltrasound: single intrauterine pregnancy, cardiac activity present, measurements match dates. Conceived on the first gonadotropin cycle this year.\n\nCare transferred to her obstetrician. We flagged the prior uterine inversion, the two postpartum hemorrhages and her von Willebrand disease in the transfer letter."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-10T12:15",
+          "reason": "Pregnancy check-in, refills",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-06-10T12:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2025-06-10T12:15", "body": "Brief video check-in, about 12 weeks. Nausea most mornings but keeping food down. OB visits started. One nosebleed last month, stopped with pressure. Needs iron refill. Son is almost two and keeps her busy.\n\nMeds: ferrous sulfate, vitamin D3, desmopressin PRN. HRT off since January.\n\nPlan: iron refilled x 12 months. OB and hematology to plan the delivery. We'll see her after the baby comes."}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-22T11:15",
+          "reason": "Obstetrics update",
+          "documents": [
+            {"type": "Outside Records", "title": "Obstetrics Prenatal Update", "author": "obstetrics", "date": "2025-08-22T11:15", "body": "OUTSIDE OBSTETRICS - LETTER TO PRIMARY CARE\nDate of visit: 2025-08-19\n\nG2P1 at about 22 weeks, conceived with ovulation induction. Anatomy ultrasound normal: appropriately grown single fetus, normal survey, placenta fundal and clear of the os.\n\nHistory: her first birth (2023) was vaginal and was followed by an acute uterine inversion with primary postpartum hemorrhage needing manual replacement and transfusion, then a secondary hemorrhage from retained placenta needing D&C. Type 1 von Willebrand disease. Kallmann syndrome. Iron deficiency.\n\nPlan after counseling: scheduled cesarean at 39 weeks given the prior inversion, with hematology input on hemostatic support. She has asked for tubal ligation at the same operation and has signed consent. Blood bank sample and crossmatch to be arranged before surgery."}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "outside_records",
+          "start": "2025-10-21T09:20",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T10:30"},
+            {"vaccine": "Tdap", "date": "2025-10-14T10:32"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Obstetrics Immunization Record", "author": "obstetrics", "date": "2025-10-21T09:20", "body": "Given at the obstetrics office 2025-10-14 at 30 weeks: influenza (trivalent) 0.5 mL IM left deltoid; Tdap 0.5 mL IM right deltoid. No reaction."}
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "hospital_admission",
+          "start": "2025-12-16T06:00",
+          "end": "2025-12-19T12:00",
+          "service": "Obstetrics",
+          "reason": "Scheduled cesarean delivery with tubal ligation",
+          "conditions": [
+            {"label": "Acute postpartum hemorrhage", "icd10": "O72.1", "action": "diagnosed", "onset": "2025-12-16"},
+            {"label": "Acute posthemorrhagic anemia", "icd10": "D62", "action": "diagnosed", "onset": "2025-12-16"},
+            {"label": "Supervision of high risk pregnancy", "icd10": "O09.90", "action": "resolved", "onset": "2025-04-01"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Obstetric Discharge Summary", "author": "obstetrics", "date": "2025-12-23T14:10", "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted: 2025-12-16  Discharged: 2025-12-19\n\n34-year-old G2P1 at 39 weeks for scheduled cesarean (indication: prior acute uterine inversion) and bilateral tubal ligation. Type 1 von Willebrand disease - hematology recommendations followed in the OR. Kallmann syndrome. Iron deficiency. Latex allergy - latex-free room.\n\nPROCEDURE 12/16: low transverse cesarean section under spinal anesthesia with delivery of a healthy infant, followed by bilateral tubal ligation. The case was complicated by significant hemorrhage; she was transfused 2 units of packed red cells and hemostasis was achieved.\n\nPostoperative course: slow to mobilize because of fatigue and lightheadedness, otherwise unremarkable. Incision clean. Breastfeeding attempted with lactation support; supply low, supplementing.\n\nDIAGNOSES: term pregnancy, delivered by cesarean; bilateral tubal ligation; postpartum hemorrhage with acute blood-loss anemia, transfused; type 1 von Willebrand disease.\n\nDISCHARGE MEDICATIONS: ferrous sulfate 325 mg daily; vitamin D3 2000 IU daily; desmopressin nasal PRN.\n\nFOLLOW-UP: obstetrics wound check in one week."}
+          ]
+        },
+        {
+          "id": "2025-12-22a",
+          "kind": "specialist_visit",
+          "start": "2025-12-22T10:00",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Post-operative visit after cesarean",
+          "vitals": {"bp": [92, 56], "hr": 92},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-22T10:40", "results": [{"test": "Sodium", "value": 132}, {"test": "Glucose", "value": 64}]},
+            {"panel": null, "collected": "2025-12-22T10:40", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics Post-operative Visit", "author": "obstetrics", "date": "2025-12-29T15:30", "body": "OBSTETRICS - POSTOPERATIVE VISIT\nDate of visit: 2025-12-22\n\nOne week after her cesarean and tubal ligation (second child), a delivery complicated by hemorrhage requiring transfusion. She came with her husband and the baby.\n\nShe describes deep exhaustion, an inability to produce any milk though she has been putting the baby to the breast often, lightheadedness whenever she stands, and difficulty keeping her mind on things. Of note she has had no vaginal bleeding or lochia at all since the delivery.\n\nVitals: BP 92/56, pulse 92. Exam unremarkable other than pallor; incision healing well.\nLabs today: sodium 132, glucose 64. Urine pregnancy test negative.\n\nAssessment: postoperative check after cesarean with significant hemorrhage. Her symptoms, absent lochia, low sodium and low glucose after a second major postpartum bleed raise concern for pituitary insufficiency.\nPlan: we are sending this note to her primary care physician and recommend prompt endocrinology evaluation of pituitary function. Return precautions given for vomiting, confusion or fainting."}
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "outside_records",
+          "start": "2025-12-29T15:40",
+          "reason": "Obstetrics records received",
+          "documents": [
+            {"type": "Administrative Note", "title": "Outside Records Received", "author": "front desk", "date": "2025-12-29T15:40", "body": "Obstetric discharge summary (12/16-12/19, received 12/23) and post-op visit note 12/22 (received today) filed. Post-op note flagged by OB for PCP attention - routed."}
+          ]
+        },
+        {
+          "id": "2025-12-30a",
+          "kind": "telephone",
+          "start": "2025-12-30T08:35",
+          "orders": [
+            {"id": "endo-ref-2025", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "Suspected pituitary insufficiency after postpartum hemorrhage"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call re: OB note", "author": "PCP", "date": "2025-12-30T08:35", "body": "Read the OB post-op note: Na 132, glucose 64, orthostatic symptoms, no lactation and no lochia after a second hemorrhage. Called pt: endocrinology referral placed today for a pituitary evaluation, asked for the first available. Told her to eat regularly, salt her food, and go to the ED for vomiting, confusion or fainting. She understands. She'll get the baby's checkup done this week and is home with her husband."}
+          ]
+        }
+      ]
+    }
+  ]
+}

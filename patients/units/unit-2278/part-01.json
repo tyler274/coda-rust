@@ -1,0 +1,550 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002278",
+   "given": "Edward",
+   "family": "Coolidge",
+   "birth_date": "1959-02-04",
+   "address_line": "41 Pelham Ridge Road",
+   "phone": "+1-774-555-0115",
+   "email": "edward.coolidge@example.test",
+   "marital_status": "married",
+   "summary": "Retired construction foreman with stage IV lung adenocarcinoma on pembrolizumab at an outside oncology group, severe COPD on 2 L home oxygen, type 2 diabetes with nephropathy, CKD 3b, PAD after a left fem-pop bypass and hypertension. Two septic shock admissions (2024 pneumonia with an iatrogenic pneumothorax from a subclavian line; 2026 with no source and AKI). Married; his wife is his proxy.",
+   "events": [
+    {
+     "id": "2023-08-09a",
+     "kind": "telephone",
+     "start": "2023-08-09T10:20",
+     "reason": "new patient intake",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient intake call",
+       "author": "front desk",
+       "date": "2023-08-09T10:20",
+       "body": "Wife called to set Edward up as a new patient. Moving his primary care closer to home; his oncology stays where it is. On home oxygen, so asked for a first-floor room and a morning slot. New patient visit booked 8/22 at 9:00. Release signed by pt at the window this afternoon for records from the prior primary care office and from his oncology group. Both requests sent."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-14a",
+     "kind": "outside_records",
+     "start": "2023-08-14T14:05",
+     "reason": "records from prior primary care practice",
+     "reports": [
+      {
+       "study": "Spirometry",
+       "performed": "2022-03-08T09:30",
+       "text": "Outside pulmonary function laboratory. Pre- and post-bronchodilator spirometry, acceptable and repeatable efforts. Post-bronchodilator FEV1/FVC 0.54. Post-bronchodilator FEV1 41% predicted. Minimal change after albuterol.",
+       "conclusion": "Severe airflow obstruction consistent with COPD."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records",
+       "author": "outside primary care",
+       "date": "2023-08-14T14:05",
+       "body": "Records packet from the patient's previous primary care office, 38 pages, received by fax.\n\nSummary letter from that office: Mr. Coolidge was followed there for COPD on continuous home oxygen at 2 L, type 2 diabetes with diabetic kidney disease, chronic kidney disease stage 3b, hypertension and peripheral arterial disease. Left femoral-popliteal bypass with a synthetic graft in 2019. Diagnostic cardiac catheterization in 2018; the report is not in the packet. In May 2023 a left upper lobe mass was biopsied under CT guidance and mediastinoscopy was done; adenocarcinoma, now under an outside oncology group. Quit smoking at that time after about 50 pack-years.\n\nScreening: colonoscopy 2018, no polyps.\n\nMedications at last visit: albuterol-ipratropium inhaler as needed, metformin 500 mg twice daily, aspirin 81 mg, atorvastatin 40 mg, amlodipine 5 mg, oxycodone 5 mg as needed (oncology), home oxygen.\n\nAllergies: sulfa antibiotics (hives); iodinated contrast (anaphylaxis).\n\nAlso enclosed: spirometry from March 2022, filed as a result."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-22a",
+     "kind": "establish_care",
+     "start": "2023-08-22T09:00",
+     "end": "2023-08-22T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "new patient, establish care",
+     "conditions": [
+      {
+       "label": "Malignant neoplasm of upper lobe, left bronchus or lung",
+       "icd10": "C34.12",
+       "action": "diagnosed",
+       "onset": "2023-05-11",
+       "note": "Stage IV adenocarcinoma; outside oncology"
+      },
+      {
+       "label": "Chronic obstructive pulmonary disease",
+       "action": "diagnosed",
+       "note": "Severe, chronic bronchitis phenotype"
+      },
+      {
+       "label": "Dependence on supplemental oxygen",
+       "action": "diagnosed",
+       "note": "2 L/min continuous by nasal cannula"
+      },
+      {
+       "label": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+       "action": "diagnosed",
+       "note": "Diabetic nephropathy"
+      },
+      {
+       "label": "Chronic kidney disease, stage 3b",
+       "action": "diagnosed"
+      },
+      {
+       "label": "Peripheral arterial disease",
+       "action": "diagnosed",
+       "onset": "2019-01-01",
+       "note": "Status post left femoral-popliteal bypass, synthetic graft, 2019"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed"
+      },
+      {
+       "label": "History of tobacco dependence",
+       "action": "history",
+       "note": "50 pack-years, quit May 2023"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "ipratropium bromide 0.02 MG/ACTUAT / albuterol 0.1 MG/ACTUAT Inhalation Spray",
+       "action": "historical",
+       "sig": "Inhale 2 puffs every 6 hours as needed for shortness of breath",
+       "frequency": "Q6H PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "COPD"
+      },
+      {
+       "drug": "metformin hydrochloride 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals. Hold if not eating or eGFR below 30.",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "peripheral arterial disease"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "peripheral arterial disease"
+      },
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug_text": "oxycodone hydrochloride 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for cancer-related pain",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "cancer-related pain; prescribed by oncology"
+      },
+      {
+       "drug_text": "pembrolizumab 25 MG/ML Injectable Solution",
+       "action": "historical",
+       "sig": "200 mg IV every 3 weeks at oncology infusion",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "Q3W",
+       "route": "Intravenous",
+       "course": "chronic",
+       "reason": "stage IV lung adenocarcinoma; given by oncology"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Sulfonamide antibiotics",
+       "reaction": "Hives",
+       "severity": "moderate",
+       "criticality": "low",
+       "type": "allergy"
+      },
+      {
+       "substance": "Iodinated contrast media",
+       "reaction": "Anaphylaxis",
+       "severity": "severe",
+       "criticality": "high",
+       "type": "allergy"
+      }
+     ],
+     "state": {
+      "bp": [
+       134,
+       78
+      ],
+      "weight_kg": 74.0,
+      "height_cm": 178.0,
+      "labs": {
+       "Creatinine": 1.9,
+       "Blood Urea Nitrogen": 30,
+       "Hemoglobin A1c": 7.2,
+       "Microalbumin/Creatinine Ratio": 410,
+       "Low Density Lipoprotein": 74,
+       "Hemoglobin": 14.0,
+       "Glucose": 145
+      }
+     },
+     "vitals": {
+      "bp": [
+       134,
+       78
+      ],
+      "weight_kg": 74.0,
+      "height_cm": 178.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "1 to 2 beers per week"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired construction foreman"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-08-22T10:05",
+       "resulted": "2023-08-23T07:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-08-22T10:05",
+       "resulted": "2023-08-22T16:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-08-22T10:05",
+       "resulted": "2023-08-23T07:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-08-22T10:05",
+       "resulted": "2023-08-23T07:40",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2023-08-22T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, high MDM",
+       "performed": "2023-08-22T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-08-22T10:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-08-22T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2023-08-22T09:00",
+       "body": "64M here with his wife to establish care. Prior PCP records reviewed (packet received 8/14).\n\nHPI: Diagnosed in May with a left upper lobe adenocarcinoma, stage IV per his oncologist, after a CT-guided biopsy and a mediastinoscopy. Started immunotherapy infusions in June, every three weeks, and is tolerating them; some tiredness for a day or two after each. Oncology manages his pain prescription; he takes the oxycodone maybe once a day, sometimes not at all. Breathing is his usual: on 2 L around the clock, uses the Combivent a few times a week when he exerts. Diabetes on metformin alone, says sugars were fine at the last office. Kidney numbers have been reduced for years. Left leg bypass in 2019, no leg pain walking around the house now.\n\nPMH: as above plus hypertension. Heart cath in 2018, says he was told nothing needed fixing; no report available.\nPSH: L fem-pop bypass 2019 (synthetic graft); CT-guided LUL core biopsy and mediastinoscopy 5/2023.\nMeds: Combivent 2 puffs q6h prn; metformin 500 mg BID with meals; ASA 81; atorvastatin 40; amlodipine 5; oxycodone IR 5 mg q6h prn (oncology); pembrolizumab q3 weeks (oncology); home O2 2 L/min continuous.\nAllergies: sulfa antibiotics (hives); iodinated contrast (anaphylaxis, needs premedication if ever unavoidable).\nFH: father lung cancer, died at 67, smoked heavily. Mother living, 87, type 2 diabetes and CKD. Older brother MI at 62.\nSH: married, lives with wife in Amherst. Retired construction foreman. Smoked about 50 pack-years, stopped in May at the diagnosis. A beer or two a week. Wife drives him to appointments.\n\nROS: no fever, no chest pain, no hemoptysis, no leg ulcers, no urinary complaints. PHQ-2 0.\n\nExam: thin, pleasant, on nasal cannula, speaks in full sentences. Vitals as charted. HEENT unremarkable. Neck supple. Heart RRR, no murmur. Lungs: air movement decreased throughout, no wheeze, no crackles. Abdomen soft, nontender. Ext: well-healed left thigh and knee incisions, feet warm, pedal pulses present, no ulcers, monofilament sensation intact both feet. Neuro grossly intact.\n\nAssessment and plan:\n1. Stage IV LUL adenocarcinoma on pembrolizumab: oncology leads; requested their notes and pathology.\n2. Severe COPD on continuous O2: continue Combivent prn and oxygen. PCV20 today.\n3. T2DM with nephropathy, CKD 3b: metformin at current dose is appropriate for his kidney function. A1c, CMP, UACR today.\n4. HTN: 134/78 on amlodipine 5, fine.\n5. PAD s/p bypass: aspirin and atorvastatin, lipid panel today.\n6. One-time hepatitis C and HIV screening, agreed.\n7. Flu, COVID and RSV vaccines in early October at a nurse visit.\n\nRTC about 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-23a",
+     "kind": "portal_message",
+     "start": "2023-08-23T12:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2023-08-23T12:40",
+       "body": "Hi Mr. Coolidge, your labs from yesterday are back. Kidney function is reduced, about where your old office had it, and the urine protein is elevated as expected with diabetic kidney disease. A1c is in a reasonable range for you. Cholesterol on the atorvastatin looks good. Blood counts are normal. Hepatitis C and HIV screens were negative. No changes for now. We'll recheck in December."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-06a",
+     "kind": "outside_records",
+     "start": "2023-09-06T11:15",
+     "reason": "oncology records",
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2023-05-11T10:30",
+       "issued": "2023-05-16T15:00",
+       "text": "Specimen: lung, left upper lobe, CT-guided core needle biopsy, four cores. Microscopic: invasive adenocarcinoma. Immunohistochemistry supports a lung primary. Tissue sent for molecular testing and PD-L1 staining (reported separately).",
+       "conclusion": "Left upper lobe, core biopsy: invasive adenocarcinoma, lung primary."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Medical oncology consultation (outside)",
+       "author": "oncology",
+       "date": "2023-09-06T11:15",
+       "body": "Outside medical oncology. Date of consultation: 06/05/2023. Received 9/6/2023 at PCP request.\n\nReason: newly diagnosed lung adenocarcinoma.\n\n64-year-old retired foreman, 50 pack-year smoker who stopped last month, with severe COPD on continuous oxygen, diabetes, stage 3b CKD and PAD. Left upper lobe mass biopsied 5/11 under CT guidance, invasive adenocarcinoma; mediastinoscopy with nodal sampling performed. Staging complete: stage IV disease.\n\nBiomarkers: next-generation sequencing shows no actionable driver alteration. PD-L1 tumor proportion score 60%.\n\nAllergies: sulfa antibiotics (hives); iodinated contrast (anaphylaxis). Imaging here will be done without IV contrast.\n\nPlan: single-agent pembrolizumab 200 mg IV every 3 weeks, first dose planned this month. Platinum doublet not favored given kidney function and pulmonary reserve. Restaging CT chest without contrast every 3 cycles or so. Oxycodone 5 mg every 6 hours as needed for cancer-related pain, prescribed through this office. Immunotherapy side effects reviewed with the patient and his wife."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-03a",
+     "kind": "nurse_visit",
+     "start": "2023-10-03T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-10-03T10:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2023-10-03T10:37"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2023-10-03T10:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-03T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse visit: vaccines",
+       "author": "RN",
+       "date": "2023-10-03T10:30",
+       "body": "In with wife for fall vaccines. Checked with oncology infusion schedule: last pembrolizumab dose 9/26, no conflict. Screening questions negative. High-dose flu L deltoid, updated Moderna COVID R deltoid, RSV L deltoid lower site. VIS sheets given. Observed 15 minutes on his own oxygen, no reaction. Told to expect a sore arm and maybe a tired day."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-24a",
+     "kind": "outside_records",
+     "start": "2023-10-24T15:30",
+     "reason": "oncology follow-up letter",
+     "reports": [
+      {
+       "study": "CT chest",
+       "performed": "2023-10-17T08:45",
+       "text": "CT chest without IV contrast (contrast allergy). Comparison: staging study, May 2023. Left upper lobe mass measures 2.8 cm, not significantly changed. No new pulmonary nodules. No pleural effusion. Heart size normal. No acute findings in the imaged upper abdomen.",
+       "conclusion": "Stable left upper lobe mass, 2.8 cm. No new lesions."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Oncology follow-up letter",
+       "author": "oncology",
+       "date": "2023-10-24T15:30",
+       "body": "Outside medical oncology. Visit 10/19/2023.\n\nDear colleague, Mr. Coolidge has had five cycles of pembrolizumab 200 mg every 3 weeks. Tolerating it with mild fatigue. No rash, no diarrhea, no new cough. Restaging CT chest without contrast 10/17 shows the left upper lobe mass stable at 2.8 cm with no new lesions: stable disease. We will continue the same treatment and repeat imaging in about three months. Oxycodone continues as needed, using little. Allergies on file: sulfa antibiotics, iodinated contrast."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-14a",
+     "kind": "office_visit",
+     "start": "2023-12-14T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes, kidney and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-12-14T09:55",
+       "resulted": "2023-12-14T15:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-12-14T09:55",
+       "resulted": "2023-12-15T08:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-12-14T09:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-12-14T09:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2023-12-14T09:20",
+       "body": "Follow-up DM2/CKD 3b/HTN. Oncology letter from October reviewed: stable disease on pembrolizumab, CT unchanged.\n\nFeels about the same. Breathing at baseline on 2 L, using the rescue inhaler a couple of times a week. Appetite fair. No hypoglycemia symptoms, doesn't check sugars at home. No foot sores. Oxycodone rarely, per oncology.\n\nExam: comfortable on cannula. Vitals as charted. Heart regular, no murmur. Lungs with reduced air entry, no wheeze. No ankle swelling. Feet intact, no ulcers.\n\nA/P:\n- DM2 with nephropathy: on metformin 500 BID, A1c and BMP today.\n- CKD 3b: BMP today, avoid NSAIDs (reminded him).\n- HTN: at goal on amlodipine.\n- COPD on O2, lung cancer: per oncology.\nRTC 3 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,265 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001725",
+      "events": [
+        {
+          "id": "2022-03-07a",
+          "kind": "office_visit",
+          "start": "2022-03-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Irregular periods, not conceiving; painful lumps under arms",
+          "state": {"weight_kg": 85.4},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "orders": [
+            {"id": "obgyn-referral-2022", "action": "placed", "order": "OB/GYN referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "oligomenorrhea, unable to conceive for 11 months, increased hair growth"},
+            {"id": "derm-referral-2022", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "recurrent painful draining nodules axillae and groin"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-07T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-03-07T10:20", "body": "CC: two things - can't get pregnant, and the bumps under her arms.\n\n1) Trying since last April, about 11 months. Periods only come every 2-3 months, and when they do they're heavy and go on for a long time. Has noticed more hair on her chin, lip and lower belly over the last couple of years and has been plucking. No nipple discharge. No heat/cold intolerance.\n\n2) Keeps getting painful lumps in both armpits and in the groin creases that swell, open and drain, then heal and come back in the same spots. Has had them on and off for a while, getting more frequent.\n\nStill smoke free. On nitrofurantoin qhs and prenatal vitamin.\n\nExam: vitals as charted, BMI 32 - down from 36 when she started here. Some coarse dark hairs on chin and upper lip. Thyroid normal size. Axillae: a few tender nodules both sides with healed scarring and a draining tract on the L. Inguinal folds with similar scarred nodules. No fluctuant abscess today.\n\nAssessment:\n- Oligomenorrhea with hirsutism and subfertility. Sister has PCOS. Referring to OB/GYN for evaluation; they'll do the hormone workup and imaging.\n- Recurrent draining nodules in intertriginous areas, looks like hidradenitis. Derm referral.\n- Weight down nicely.\nFollow up after the consults."}
+          ]
+        },
+        {
+          "id": "2022-04-18a",
+          "kind": "specialist_visit",
+          "start": "2022-04-18T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Oligomenorrhea and subfertility",
+          "conditions": [
+            {"label": "Polycystic ovary syndrome", "action": "diagnosed", "onset": "2022-04-18"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "polycystic ovary syndrome"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-04-18T13:50", "results": [{"test": "Fasting Glucose", "value": 98, "unit": "mg/dL"}]},
+            {"panel": null, "collected": "2022-04-18T13:50", "results": [{"test": "Testosterone, Total", "value": 82, "unit": "ng/dL"}]},
+            {"panel": null, "collected": "2022-04-18T13:50", "results": [{"test": "Prolactin", "value": 14, "unit": "ng/mL"}]},
+            {"panel": null, "collected": "2022-04-18T13:50", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.1, "unit": "u[IU]/mL"}]},
+            {"panel": "Lipid Panel", "collected": "2022-04-18T13:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2022-04-18T14:30", "text": "Transabdominal and transvaginal imaging. Uterus anteverted, normal in size and contour, endometrium uniform. Both ovaries contain multiple small follicles arranged around the periphery. No dominant cyst or adnexal mass. No free fluid.", "conclusion": "Multiple small peripheral follicles in both ovaries. Otherwise normal pelvic ultrasound."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Consultation", "author": "obstetrics and gynecology", "date": "2022-04-25T09:00", "body": "Gynecology consultation, seen 04/18/2022. Referred by primary care.\n\nThank you for sending Ms. Harris, 28, for irregular cycles and difficulty conceiving. Menses come roughly every two to three months and are often heavy and prolonged. She has been trying to conceive for a year without success. Over about two years she has seen more hair on the face and abdomen. She denies thyroid symptoms and galactorrhea.\n\nMedications: nitrofurantoin 100 mg nightly, prenatal vitamin. Allergies: NKDA. Former smoker, stopped a year ago when they began trying. No alcohol. Family: mother with type 2 diabetes and gallstones, sister with PCOS, father with hypertension.\n\nExam: BMI 32. Darkened velvety skin at the back and sides of the neck consistent with acanthosis nigricans. Mild terminal hair on the upper lip and chin. Remainder unremarkable.\n\nResults: fasting glucose 98 mg/dL. Total testosterone 82 ng/dL (reference 15-70). Prolactin 14 ng/mL. TSH 2.1. Lipids within normal limits. Pelvic ultrasound shows numerous small peripheral follicles in both ovaries.\n\nImpression: polycystic ovary syndrome, with oligo-ovulation, clinical and biochemical hyperandrogenism, and polycystic ovarian morphology. Insulin resistance suggested by the acanthosis.\n\nPlan: start metformin, increasing to 1000 mg twice daily with meals over a few weeks as tolerated. Continue the prenatal vitamin. Continue weight efforts. Will follow in clinic.\n\nObstetrics & Gynecology"}
+          ]
+        },
+        {
+          "id": "2022-04-25a",
+          "kind": "outside_records",
+          "start": "2022-04-25T15:10",
+          "orders": [{"id": "obgyn-referral-2022", "action": "done", "date": "2022-04-25T15:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Outside letter reviewed", "author": "PCP", "date": "2022-04-25T15:10", "body": "GYN letter reviewed: PCOS. Metformin started there, titrating to 1000 mg BID. Added to med list and problem list."}
+          ]
+        },
+        {
+          "id": "2022-05-02a",
+          "kind": "portal_message",
+          "start": "2022-05-02T20:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Metformin question", "author": "patient", "date": "2022-05-02T20:15", "body": "Hi, the gyn started me on metformin. My stomach is a little off since I went up on the dose. Is that normal and will it go away?"},
+            {"type": "Patient Message", "title": "RE: Metformin question", "author": "PCP", "date": "2022-05-03T08:30", "body": "Very common in the first few weeks, and it usually settles. Take it in the middle of a meal rather than before. If it's still bothering you in a month, let me or the GYN office know and we can slow the increase."}
+          ]
+        },
+        {
+          "id": "2022-06-13a",
+          "kind": "specialist_visit",
+          "start": "2022-06-13T10:30",
+          "service": "Dermatology",
+          "reason": "Recurrent axillary and groin nodules",
+          "conditions": [
+            {"label": "Hidradenitis suppurativa", "action": "diagnosed", "onset": "2020-01-01", "note": "Hurley stage II"}
+          ],
+          "medications": [
+            {"drug_text": "clindamycin phosphate 10 MG/ML Topical Gel", "action": "historical", "sig": "Apply a thin layer to affected areas twice daily", "frequency": "BID", "route": "Topical", "course": "chronic", "reason": "hidradenitis suppurativa and acne"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Dermatology Consultation", "author": "dermatology", "date": "2022-06-21T10:00", "body": "Dermatology new patient consultation\nDate of service: 06/13/2022\nReason for referral: recurrent painful nodules\n\nHistory: 28-year-old woman with recently diagnosed PCOS who reports recurring painful nodules and abscesses in both axillae and the groin, with spots that drain and reform along tracts. Meds: metformin, nitrofurantoin, prenatal vitamin. NKDA. Former smoker.\n\nExamination: bilateral axillae with several inflamed nodules, two interconnected sinus tracts, and rope-like scarring. Inguinal folds with recurrent nodules and a single sinus tract on the right, with areas of normal skin between lesions. A few comedones and papules on the jawline.\n\nAssessment: hidradenitis suppurativa, Hurley stage II. Mild acne.\n\nPlan: clindamycin 1% gel to affected areas twice daily, which will also cover the jawline. Loose cotton clothing, avoid shaving over active lesions. Weight loss helps. Return in about 6 to 9 months.\n\nDermatology"}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "outside_records",
+          "start": "2022-06-21T16:00",
+          "orders": [{"id": "derm-referral-2022", "action": "done", "date": "2022-06-21T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Outside letter reviewed", "author": "PCP", "date": "2022-06-21T16:00", "body": "Derm: HS, Hurley II. Clindamycin gel BID. Lists updated."}
+          ]
+        },
+        {
+          "id": "2022-08-15a",
+          "kind": "office_visit",
+          "start": "2022-08-15T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Abdominal cramping with bowel changes",
+          "state": {"weight_kg": 85.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "orders": [
+            {"id": "gi-referral-2022", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "recurrent lower abdominal pain relieved by defecation with alternating stool pattern"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-08-15T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-08-15T14:00", "body": "Belly cramps since about April. More than once a week, crampy lower abdominal pain, often within an hour of eating, better after she has a bowel movement. Goes back and forth between loose stools for a few days and then constipated for a few days. No blood, no black stools, no nighttime waking with diarrhea. No travel, nobody sick at home, no antibiotics other than her usual nitrofurantoin. Weight stable. Taking metformin 1000 BID, PCOS follow-up with GYN.\n\nExam: afebrile, vitals as charted. Abdomen soft, mild diffuse discomfort lower quadrants without guarding, no masses, normal bowel sounds.\n\nA/P: recurrent abdominal pain with altered bowel habit. Pattern sounds functional but she would like a specialist opinion and that's reasonable. GI referral. Fiber, regular meals, food diary in the meantime. Return precautions reviewed."},
+            {"type": "Telephone Encounter", "title": "Referral scheduled", "author": "front desk", "date": "2022-08-18T11:20", "body": "GI office called, new patient appt set for 10/3. Pt notified by phone."}
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "annual_physical",
+          "start": "2022-09-26T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "state": {"weight_kg": 85.2},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-26T09:05", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-26T09:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-09-26T09:05", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2022-09-26T08:50", "issued": "2022-09-30T12:00", "text": "Liquid-based preparation. Specimen adequate, transformation zone component present.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-26T09:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-09-26T09:00"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-09-26T08:20"},
+            {"procedure": "Immunization administration", "performed": "2022-09-26T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-09-26T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-09-26T08:20", "body": "Preventive visit, 28 y/o.\n\nSince last year: PCOS diagnosed by GYN in April, on metformin 1000 BID, GI side effects settled. Derm diagnosed hidradenitis in June; using clindamycin gel, still gets flares but fewer draining spots. Bowel symptoms continue on and off, GI appt next week. Still trying to conceive, cycles still irregular. Not smoking. No UTIs.\n\nMeds: metformin 1000 mg BID, nitrofurantoin 100 mg qhs, prenatal vitamin, clindamycin 1% gel BID. NKDA.\n\nExam: vitals as charted, BMI 32. NAD. HEENT clear. Neck: acanthosis at nape, thyroid normal. Heart RRR without murmur. Lungs clear to auscultation. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Skin: healing scars and two small nodules R axilla, no abscess. No edema. PHQ-9: 4.\n\nPlan:\n- Pap today, cytology only at 28.\n- Flu and bivalent COVID today.\n- CMP, lipids, A1c.\n- Keep GI and GYN follow-up.\nSee next fall."},
+            {"type": "Patient Message", "title": "Pap and lab results", "author": "PCP", "date": "2022-09-30T15:20", "body": "Your Pap smear was normal, so the next one is due in three years. Blood work also normal, including sugar and liver tests."}
+          ]
+        },
+        {
+          "id": "2022-10-03a",
+          "kind": "specialist_visit",
+          "start": "2022-10-03T09:00",
+          "service": "Gastroenterology",
+          "reason": "Recurrent abdominal pain with alternating bowel habit",
+          "conditions": [
+            {"label": "Irritable bowel syndrome", "action": "diagnosed", "onset": "2022-04-01", "note": "mixed type"}
+          ],
+          "medications": [
+            {"drug_text": "dicyclomine hydrochloride 10 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth three times daily as needed for abdominal cramping", "dose": {"value": 10, "unit": "mg"}, "frequency": "TID PRN", "route": "Oral", "course": "chronic", "reason": "irritable bowel syndrome"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-03T09:45", "results": [{"test": "Hemoglobin", "value": 11.2, "unit": "g/dL"}, {"test": "Mean Corpuscular Volume", "value": 86, "unit": "fL"}, {"test": "White Blood Cells", "value": 7.0, "unit": "10*3/uL"}]},
+            {"panel": null, "collected": "2022-10-03T09:45", "results": [{"test": "C Reactive Protein", "value": 2, "unit": "mg/L"}]},
+            {"panel": null, "collected": "2022-10-03T09:45", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 15, "unit": "mm/h"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Consultation", "author": "gastroenterology", "date": "2022-10-12T08:30", "body": "GASTROENTEROLOGY - NEW PATIENT\nVisit date: 10/03/2022\n\nReferral question: recurrent abdominal pain with change in bowel habit.\n\nHPI: 28-year-old with PCOS (seen by gynecology) and hidradenitis (seen by dermatology). For roughly six months she has had abdominal pain more than weekly, commonly brought on by meals and relieved by defecation, with alternating stretches of diarrhea and constipation. No recent travel, no ill contacts, no antibiotic courses apart from long-standing low-dose nitrofurantoin. No rectal bleeding or nocturnal stools.\n\nMeds: metformin 1000 mg BID, nitrofurantoin 100 mg nightly, prenatal vitamin, topical clindamycin. NKDA.\nFamily history: noncontributory.\nSocial: former smoker, no alcohol.\n\nExam: abdomen soft and not distended, no tenderness, no masses, bowel sounds normal.\n\nLabs today: Hgb 11.2 g/dL, MCV 86 fL, WBC 7.0. CRP 2 mg/L, ESR 15 mm/hr.\n\nImpression: irritable bowel syndrome, mixed subtype, by Rome IV criteria. Normal inflammatory markers are reassuring.\n\nRecommendations: dicyclomine 10 mg up to three times a day as needed for cramping. Dietary fiber and a low-FODMAP trial with handout. Follow up here as needed.\n\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "outside_records",
+          "start": "2022-10-12T13:30",
+          "orders": [{"id": "gi-referral-2022", "action": "done", "date": "2022-10-12T13:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Outside letter reviewed", "author": "PCP", "date": "2022-10-12T13:30", "body": "GI consult reviewed: IBS-M, dicyclomine prn. Med and problem lists updated."}
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "portal_message",
+          "start": "2022-11-07T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Update on stomach", "author": "patient", "date": "2022-11-07T12:10", "body": "Just an update - the dicyclomine helps on bad days and the fiber seems to be helping too. Mostly using it a couple times a week."},
+            {"type": "Patient Message", "title": "RE: Update on stomach", "author": "RN", "date": "2022-11-07T15:45", "body": "Glad to hear it. Doctor has seen your message. Keep us posted."}
+          ]
+        },
+        {
+          "id": "2023-02-13a",
+          "kind": "office_visit",
+          "start": "2023-02-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up PCOS, hidradenitis, IBS",
+          "state": {"weight_kg": 85.8},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-02-13T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-02-13T11:00", "body": "Routine check in.\n\nPCOS: on metformin, cycles still 5-8 weeks apart. Not pregnant yet, coming up on two years of trying. GYN following.\nHS: using clindamycin gel, flares in the armpits about monthly, groin quieter.\nIBS: dicyclomine a few times a week, fiber daily. Better than last summer.\nNo urinary infections.\nShe mentions her hair seems thinner at the top of her head; has a derm follow-up in April and will bring it up there.\n\nExam: BMI 32. Well appearing. Heart regular, no murmur; lungs clear. Abdomen benign. Axillae with old scars, one small tender nodule L, no abscess.\n\nA/P: stable on current regimen. Continue meds. Derm in April. Physical in the fall."}
+          ]
+        },
+        {
+          "id": "2023-04-06a",
+          "kind": "specialist_visit",
+          "start": "2023-04-06T14:15",
+          "service": "Dermatology",
+          "reason": "Thinning hair at crown",
+          "vitals": {"bp": [125, 78]},
+          "labs": [
+            {"panel": null, "collected": "2023-04-06T15:00", "results": [{"test": "Fasting Glucose", "value": 96, "unit": "mg/dL"}]},
+            {"panel": null, "collected": "2023-04-06T15:00", "results": [{"test": "Testosterone, Total", "value": 82, "unit": "ng/dL"}]},
+            {"panel": null, "collected": "2023-04-06T15:00", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.5, "unit": "u[IU]/mL"}]},
+            {"panel": "Lipid Panel", "collected": "2023-04-06T15:00", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Dermatology Follow-up", "author": "dermatology", "date": "2023-04-14T09:40", "body": "Dermatology return visit - 04/06/2023\n\nKnown to our practice for hidradenitis suppurativa since June 2022, with polycystic ovary syndrome diagnosed by gynecology in April 2022. Today her main concern is gradual thinning over the crown during the past year. She describes cycles every 35 to 60 days and finds weight hard to shift even with regular exercise and careful eating. Past acne treated with topicals. Using clindamycin gel for HS.\n\nMeds: metformin 1000 mg BID, nitrofurantoin 100 mg daily, prenatal vitamin, dicyclomine prn, clindamycin 1% gel BID. NKDA.\n\nBP 125/78. BMI 32. Diffuse widening of the central part over the vertex with preserved frontal hairline; no scarring, no scale. Coarse terminal hair on the chin, upper lip and sideburn area in a male-type distribution. Thyroid not enlarged, no nodules felt. Axillary HS quiet today.\n\nLabs: fasting glucose 96 mg/dL; total testosterone 82 ng/dL (reference 8-60); TSH 2.5; lipids normal.\n\nAssessment: thinning at the crown and hirsutism, both consistent with the androgen excess of her known PCOS. Thyroid normal. HS stable on topical therapy.\n\nPlan: continue current topical regimen for HS. Gentle hair care, avoid tight styles. Coordinate hormonal management with gynecology. Return in one year or sooner for flares.\n\nDermatology"}
+          ]
+        },
+        {
+          "id": "2023-04-14a",
+          "kind": "outside_records",
+          "start": "2023-04-14T16:20",
+          "documents": [
+            {"type": "Progress Notes", "title": "Outside letter reviewed", "author": "PCP", "date": "2023-04-14T16:20", "body": "Derm f/u reviewed. Crown thinning and hirsutism attributed to PCOS. No med changes."}
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "office_visit",
+          "start": "2023-06-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "telephone",
+          "start": "2023-06-13T10:00",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2023-06-13T10:00", "body": "Called re: missed appt yesterday. Pt says she forgot, work was busy. Doing fine. Will just keep her physical in September."}
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "annual_physical",
+          "start": "2023-09-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 86.4, "labs": {"Hemoglobin": 12.4}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-25T08:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-25T08:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-25T08:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-09-25T08:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-25T08:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-25T08:35"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-25T08:00"},
+            {"procedure": "Immunization administration", "performed": "2023-09-25T08:35"},
+            {"procedure": "Venipuncture", "performed": "2023-09-25T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-25T08:00", "body": "29F, physical.\n\nInterval: missed June visit. Derm in April said hair thinning is from PCOS, no new treatment. HS flares come and go, managing with gel. IBS mostly controlled, dicyclomine maybe once a week. Still trying to conceive; she would rather not talk about it much today. Not smoking for 2.5 years. No alcohol.\n\nMeds reviewed, unchanged: metformin 1000 BID, nitrofurantoin 100 qhs, prenatal vitamin, dicyclomine 10 prn, clindamycin gel BID. NKDA.\n\nExam: vitals per flowsheet, BMI 32.5. NAD. Thyroid normal. Heart: regular, no murmurs. Lungs: clear. Abd: soft, NT/ND. Skin: axillary scarring, no active abscess; facial hair. Extremities without edema. PHQ-9 3.\n\nPlan: flu and updated COVID given. Labs - CMP, CBC, lipids, A1c. Pap next due 2025. Continue current meds. RTC 1 yr."},
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2023-09-27T07:40", "body": "Results are back and look fine. Blood count is normal, liver and kidney tests normal, cholesterol and A1c normal. See you next year, or sooner if you need us."}
+          ]
+        }
+      ]
+    }
+  ]
+}

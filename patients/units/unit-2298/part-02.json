@@ -1,0 +1,266 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002298",
+      "events": [
+        {
+          "id": "2023-01-10a",
+          "kind": "procedure_visit",
+          "start": "2023-01-10T07:30",
+          "end": "2023-01-10T14:30",
+          "service": "Urology",
+          "reason": "Transurethral resection of bladder tumor",
+          "conditions": [{"label": "Urothelial carcinoma of the bladder", "icd10": "C67.2", "action": "diagnosed", "onset": "2022-12-01", "note": "pTa low grade, right lateral wall; TURBT 01/2023"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-01-10T09:10", "issued": "2023-01-13T15:00", "text": "SURGICAL PATHOLOGY\nSpecimen: Bladder tumor, right lateral wall, transurethral resection; separate deep resection base.\nGross: Multiple tan papillary fragments, aggregate 2.4 cm; base fragments 1.1 cm aggregate.\nMicroscopic: Papillary urothelial neoplasm with slender fibrovascular cores, orderly architecture and mild nuclear variation, low mitotic activity. No invasion into the lamina propria. Base specimen contains detrusor (muscularis propria) free of tumor. No lymphovascular invasion identified.", "conclusion": "Papillary urothelial carcinoma, low grade, noninvasive (pTa). Muscularis propria present and not involved."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Pathology received: TURBT", "author": "RN", "date": "2023-01-19T11:20", "body": "Pathology from TURBT 01/10/2023 received by fax from the urology group: low-grade noninvasive papillary urothelial carcinoma, pTa, muscle present and uninvolved. No operative note included. Requested op note. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2023-01-12a",
+          "kind": "telephone",
+          "start": "2023-01-12T10:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-procedure check-in", "author": "RN", "date": "2023-01-12T10:50", "body": "Pt called to let us know he had the bladder scraping done Tuesday, went home same day, catheter out before discharge. Urine pink yesterday, lighter today, urology told him that's expected for a few days. No fever. Back on aspirin per urology instructions. Follow-up with urology in 3 months for a look-in scope. Advised to call urology or us with clots, fever or trouble passing urine."}
+          ]
+        },
+        {
+          "id": "2023-02-13a",
+          "kind": "office_visit",
+          "start": "2023-02-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cough with blood-streaked sputum, weight loss",
+          "conditions": [
+            {"label": "Unintentional weight loss", "action": "diagnosed", "onset": "2022-10-01"},
+            {"label": "Gross hematuria", "icd10": "R31.0", "action": "resolved", "note": "Source found: bladder urothelial carcinoma, resected"}
+          ],
+          "state": {"weight_kg": 80.5},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2023-02-13T11:45"}],
+          "orders": [
+            {"id": "ldct-2022", "action": "cancelled", "date": "2023-02-13T11:45"},
+            {"id": "cxr-2023-02", "action": "placed", "order": "Chest X-ray, 2 views", "category": "imaging", "reason": "Cough, blood-streaked sputum, weight loss"},
+            {"id": "ctchest-2023-02", "action": "placed", "order": "CT chest", "category": "imaging", "reason": "Cough, blood-streaked sputum; prior TB cavity"},
+            {"id": "id-referral", "action": "placed", "order": "Infectious disease referral", "category": "referral", "to": "Infectious Disease", "reason": "Cough and blood-streaked sputum with remote TB"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-02-13T11:45", "body": "CC: cough, some blood in what he coughs up.\nHPI: 66M. Cough on and off for several weeks, worse mornings, now and then a thread of blood mixed in the phlegm. Not large amounts, no clots. Has also lost weight since the fall without trying - belt is a notch tighter - and is more tired than usual. No fevers or chills he's noticed. No chest pain. Breathing about baseline. Still smoking, ~3/4 ppd.\nBladder: TURBT in January, low-grade noninvasive; urine has been clear since.\nExam: thinner than last visit (weight as charted). Afebrile, SpO2 as charted. Fingers clubbed - looking back I'm not sure I noted this before. Decreased breath sounds over the right upper chest, no wheeze, no crackles. No cervical or supraclavicular nodes. Heart regular. No edema.\nA/P:\n1. Cough with blood-streaked sputum and weight loss in a heavy smoker with an old right upper lobe TB cavity. Concerns: reactivation TB, infection in the old cavity, malignancy. CXR today and CT chest. Referring to ID given TB history; asked him to wear a mask around others until we know more. Cancelling the pending screening CT - this is now a diagnostic workup.\n2. Hematuria resolved after TURBT; urology surveillance.\n3. Smoking - strongly advised to stop.\nWill call with results."}
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "imaging",
+          "start": "2023-02-14T09:30",
+          "service": "Radiology",
+          "orders": [{"id": "cxr-2023-02", "action": "done", "date": "2023-02-14T09:30"}],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2023-02-14T09:30", "text": "PA and lateral chest.\nComparison: none on file (prior LDCT 11/2021).\nFindings: Cavitary lesion in the right upper lobe containing a rounded radiodense mass. Remainder of the lungs clear. No pleural effusion or pneumothorax. Heart size normal. Mediastinal contours normal for age.", "conclusion": "Right upper lobe cavitary lesion with an intracavitary radiodense mass. CT chest recommended."}
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "imaging",
+          "start": "2023-02-21T13:15",
+          "service": "Radiology",
+          "orders": [{"id": "ctchest-2023-02", "action": "done", "date": "2023-02-21T13:15"}],
+          "reports": [
+            {"study": "CT chest", "performed": "2023-02-21T13:15", "text": "CT CHEST WITHOUT CONTRAST, supine and prone.\nComparison: LDCT 11/09/2021.\nFindings: The chronic right upper lobe cavity seen on the prior exam now contains a rounded soft-tissue mass, with a crescent of air between the mass and the cavity wall. On prone images the mass shifts to the dependent wall of the cavity, indicating it is mobile. Calcified granulomas unchanged. No new nodule. No hilar or mediastinal lymphadenopathy. No pleural effusion. Heart normal in size; coronary stent. Upper abdomen unremarkable.", "conclusion": "Mobile intracavitary mass within the pre-existing right upper lobe cavity, most consistent with a fungus ball (aspergilloma). No lymphadenopathy."}
+          ]
+        },
+        {
+          "id": "2023-02-22a",
+          "kind": "portal_message",
+          "start": "2023-02-22T08:45",
+          "documents": [
+            {"type": "Patient Message", "title": "CT result", "author": "PCP", "date": "2023-02-22T08:45", "body": "Mark - the CT shows something sitting inside the old TB hole at the top of your right lung, and it rolls around when you change position. That pattern usually means a ball of fungus growing in the old cavity rather than a tumor. Infectious disease will sort out whether that is what it is and make sure the TB isn't back. Your appointment with them is March 3. Keep the mask on around people until they've checked your sputum."}
+          ]
+        },
+        {
+          "id": "2023-03-03a",
+          "kind": "specialist_visit",
+          "start": "2023-03-03T10:20",
+          "service": "Infectious Disease",
+          "reason": "Cavitary lung lesion with intracavitary mass; remote TB",
+          "conditions": [{"label": "Pulmonary aspergillosis", "icd10": "B44.1", "action": "diagnosed", "onset": "2023-02-21", "note": "Aspergilloma in old TB cavity, right upper lobe"}],
+          "orders": [{"id": "id-referral", "action": "done", "date": "2023-03-03T10:20"}],
+          "labs": [
+            {"panel": null, "collected": "2023-03-03T11:00", "resulted": "2023-03-08T10:00", "results": [{"test": "Acid-fast stain, sputum (3 specimens)", "loinc": "11545-1", "text": "No acid-fast bacilli seen"}]},
+            {"panel": null, "collected": "2023-03-03T11:00", "resulted": "2023-04-14T09:00", "results": [{"test": "Mycobacterial culture, sputum", "loinc": "543-9", "text": "No mycobacteria isolated at 6 weeks"}]},
+            {"panel": null, "collected": "2023-03-03T11:00", "resulted": "2023-03-10T14:00", "results": [{"test": "Aspergillus fumigatus IgG antibody", "loinc": "19726-9", "text": "Positive"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Consultation", "author": "infectious disease", "date": "2023-04-04T15:10", "body": "INFECTIOUS DISEASE CLINIC - CONSULT LETTER\nDate of service: 03/03/2023\nReferred by: PCP, for cough and blood-streaked sputum with an intracavitary mass in an old TB cavity.\n\n66-year-old man, remote pulmonary TB treated decades ago, metastatic prostate adenocarcinoma on leuprolide, low-grade bladder cancer resected 01/2023, ischemic cardiomyopathy, COPD. Several months of intermittent cough with streaks of blood in the sputum, unintended weight loss and fatigue. Not currently having fevers, chills or night sweats.\nMeds: aspirin, atorvastatin, metoprolol succinate, lisinopril, furosemide, tiotropium, albuterol, leuprolide, oxycodone prn. NKDA. Smokes about a pack a day, 45 pack-years.\n\nExam: Hemodynamically stable, in no acute distress. Digital clubbing. Breath sounds decreased over the right upper lobe. No lymphadenopathy. No signs of systemic infection.\n\nImaging: PCP's chest film shows a right upper lobe cavity with a radiodense mass within it; the CT confirms a mobile mass inside the pre-existing cavity with an air crescent.\n\nStudies sent from clinic: induced sputum x3 - AFB smears negative on all three; mycobacterial culture final at 6 weeks, no growth. Aspergillus IgG positive.\n\nAssessment: Aspergilloma (simple fungus ball) colonizing the old tuberculous cavity, the likely source of the blood-streaked sputum. No evidence of reactivated TB; airborne precautions can stop.\nPlan: No antifungal therapy for a simple aspergilloma at this time; observe. If hemoptysis becomes more than streaks, he needs urgent evaluation (pulmonology/interventional radiology). Repeat imaging in a few months or sooner with symptoms. Strongly encouraged smoking cessation.\n\nApologies for the delay in this letter."}
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "telephone",
+          "start": "2023-03-21T14:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request: ID", "author": "front desk", "date": "2023-03-21T14:40", "body": "Pt called asking if we got 'the fungus doctor's' report; he was told the TB tests were negative and he can stop the mask. Nothing in chart yet. Faxed request to ID clinic for 03/03 consult note. Pt aware."}
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "office_visit",
+          "start": "2023-05-09T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Persistent cough, weight loss, night sweats",
+          "state": {"weight_kg": 77.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2023-05-09T09:50"}],
+          "orders": [{"id": "pulm-referral", "action": "placed", "order": "Pulmonology referral, urgent", "category": "referral", "to": "Pulmonary & Critical Care", "reason": "Persistent cough, blood-tinged sputum, weight loss, night sweats; aspergilloma"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-05-09T09:50", "body": "S: The cough has not let up - about 3 months now. Over the past couple of weeks the blood-tinged phlegm is back. Down about 10 lb since winter. Some nights he wakes up damp. Tired. ID saw him in March: aspergilloma in the old cavity, TB studies negative, plan was to watch. Letter finally came in April.\nO: Weight as charted, down again. Afebrile. Clubbing. Decreased breath sounds R upper chest. No nodes palpable. Heart regular.\nA/P: Persistent cough with blood-tinged sputum, ongoing weight loss and night sweats. More than I'd want to attribute to the fungus ball alone, and he is a heavy smoker. Urgent pulmonology referral for evaluation and repeat imaging. He knows to go to the ED for anything more than streaks of blood. Smoking: still ~3/4 ppd.\nFollow-up after pulmonology."}
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "specialist_visit",
+          "start": "2023-06-12T08:30",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Persistent cough, blood-tinged sputum",
+          "conditions": [{"label": "Suspected malignant neoplasm of lung", "icd10": "R91.8", "action": "diagnosed", "onset": "2023-06-12", "note": "4 cm right hilar mass with mediastinal lymphadenopathy"}],
+          "orders": [{"id": "pulm-referral", "action": "done", "date": "2023-06-12T08:30"}],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2023-06-12T08:45", "text": "PA and lateral chest.\nComparison: 02/14/2023.\nFindings: New right hilar mass. Known right upper lobe cavity with intracavitary density, unchanged. No effusion. Heart size normal.", "conclusion": "New right hilar mass. CT recommended."},
+            {"study": "CT chest", "performed": "2023-06-12T11:20", "issued": "2023-06-12T16:40", "text": "CT CHEST WITH CONTRAST.\nComparison: 02/21/2023.\nFindings: 4.0 cm soft-tissue mass in the right hilum extending into the central right upper lobe, new since February. Enlarged mediastinal lymph nodes in the right paratracheal and subcarinal stations. The right upper lobe aspergilloma cavity is unchanged. No pleural effusion. No other pulmonary nodule. Upper abdomen without focal lesion.", "conclusion": "New 4 cm right hilar mass with mediastinal lymphadenopathy, highly suspicious for primary lung malignancy. Tissue diagnosis recommended."}
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "telephone",
+          "start": "2023-06-14T16:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pulmonology visit update", "author": "PCP", "date": "2023-06-14T16:35", "body": "Called Mark after he left a message. Saw pulmonology Monday; they did an x-ray and CT same day and told him there is a mass by the right lung root with swollen glands in the middle of the chest, likely cancer, and that some blood work showed his calcium was high. They are sending him to oncology. No pulm note in our chart; CT report arrived 06/20 per records (requested 06/14). He sounded flat but okay; lives alone, said he'd rather keep busy. Told him I'd call once I've seen the report and that he can call me any time. Asked him to drink fluids well given the calcium and to call with confusion, vomiting or severe constipation. Records request sent to pulmonology for their note and the calcium result."},
+            {"type": "Outside Records", "title": "Imaging received: chest x-ray and CT chest 06/12/2023", "author": "RN", "date": "2023-06-20T09:05", "body": "Reports for chest x-ray and CT chest 06/12/2023 (ordered by pulmonology) received by fax. No consult note or labs included; second request sent to pulmonology. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2023-08-01a",
+          "kind": "specialist_visit",
+          "start": "2023-08-01T13:40",
+          "service": "Oncology",
+          "reason": "Lung mass, hypercalcemia",
+          "conditions": [{"label": "Malignancy-associated hypercalcemia", "icd10": "E83.52", "action": "diagnosed", "onset": "2023-06-12"}],
+          "medications": [
+            {"drug_text": "zoledronic acid 0.8 MG/ML Injectable Solution", "action": "historical", "sig": "4 mg IV once (given at oncology)", "dose": {"value": 4, "unit": "mg"}, "frequency": "ONCE", "route": "Intravenous", "course": "short", "reason": "Malignancy-associated hypercalcemia"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-01T13:10", "results": [{"test": "Hemoglobin", "value": 13.4}, {"test": "White Blood Cells", "value": 7.2}, {"test": "Platelets", "value": 275}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-08-01T13:10", "results": [{"test": "Sodium", "value": 139}, {"test": "Potassium", "value": 4.1}, {"test": "Calcium", "value": 12.2}, {"test": "Creatinine", "value": 0.9}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical Oncology Consultation", "author": "oncology", "date": "2023-08-08T12:00", "body": "REGIONAL CANCER CENTER - MEDICAL ONCOLOGY\nNew consultation, 08/01/2023. Referred by pulmonology.\n\nHPI: 67-year-old man (turned 67 in July) with metastatic prostate adenocarcinoma on leuprolide, recently resected low-grade bladder cancer, and an aspergilloma in an old TB cavity, now with a new right hilar mass on CT (06/2023). Ongoing cough and fatigue, continued weight loss, and in the last few weeks solid food has started to hang up when he swallows. He has had no blood in the sputum recently and no recent chest infections.\nSmoking: a pack a day for about 45 years, still smoking.\nMeds: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 10, furosemide 40, tiotropium 18 mcg, albuterol prn, leuprolide 7.5 mg monthly, oxycodone 5 mg prn. NKDA.\nFamily: mother lung cancer; brother prostate cancer; father MI.\n\nExam: Thin. Breath sounds decreased over the right lung field. Digital clubbing. No palpable supraclavicular nodes. Heart regular.\n\nLabs today: Hgb 13.4 g/dL, WBC 7.2 K/uL, platelets 275 K/uL, Na 139, K 4.1, calcium 12.2 mg/dL, creatinine 0.9 mg/dL.\nImaging reviewed: centrally located right upper lobe mass with cavitation, contiguous with the right hilum, and mediastinal adenopathy.\n\nAssessment:\n1. Central right upper lobe/hilar mass with mediastinal nodes - lung primary until proven otherwise.\n2. Hypercalcemia of malignancy, calcium 12.2.\n3. New dysphagia to solids.\nPlan: IV normal saline in the infusion suite today and zoledronic acid 4 mg IV once. Recheck calcium in 4-6 weeks with PCP or here. Bronchoscopy with EBUS scheduled 08/10 for tissue and nodal sampling. Staging to follow pathology. Soft diet for now."}
+          ]
+        },
+        {
+          "id": "2023-08-10a",
+          "kind": "procedure_visit",
+          "start": "2023-08-10T07:00",
+          "end": "2023-08-10T13:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Bronchoscopy with EBUS",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-08-10T08:30", "issued": "2023-08-17T14:00", "text": "SURGICAL PATHOLOGY / CYTOLOGY\nSpecimens: (A) Right upper lobe endobronchial biopsy; (B) EBUS-TBNA station 4R; (C) EBUS-TBNA station 7.\nMicroscopic: (A) Small fragments of bronchial mucosa infiltrated by carcinoma with crush artifact; (B, C) Malignant cells present, partly crushed, in clusters with areas of keratinization.\nComment: Limited material. Immunostains for neuroendocrine markers are being performed on additional core material; an addendum will follow.", "conclusion": "Non-small cell carcinoma, favor squamous cell carcinoma, right upper lobe and mediastinal lymph nodes (4R, 7). Addendum to follow."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Pathology received: bronchoscopy/EBUS", "author": "RN", "date": "2023-08-21T10:30", "body": "Bronchoscopy pathology from 08/10/2023 received from the cancer center. Preliminary: non-small cell carcinoma favor squamous, RUL and nodes 4R and 7; addendum pending. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T12:20",
+          "conditions": [
+            {"label": "Non-small cell lung cancer, right upper lobe", "icd10": "C34.11", "action": "diagnosed", "onset": "2023-08-10", "note": "Preliminary bronchoscopy pathology; addendum pending"},
+            {"label": "Suspected malignant neoplasm of lung", "icd10": "R91.8", "action": "resolved"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pathology results discussed", "author": "PCP", "date": "2023-08-22T12:40", "body": "Spoke with Mark about the bronchoscopy. Oncology had already told him it is lung cancer, the 'non-small' type per the preliminary report, with more stains pending that could change the type. He meets oncology again in early October once staging is planned. Swallowing about the same, eating soft foods. Asked him to get his calcium rechecked here in September as oncology suggested; lab slip mailed. Problem list updated with the preliminary diagnosis."}
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "outside_records",
+          "start": "2023-09-12T09:15",
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-08-10T08:30", "issued": "2023-09-05T16:00", "text": "ADDENDUM - SURGICAL PATHOLOGY (specimens from 08/10/2023)\nAdditional core material from the right upper lobe lesion and station 7 was examined with immunohistochemistry. Two populations are present: (1) sheets of small cells with scant cytoplasm, finely granular chromatin, nuclear molding and abundant mitoses, positive for synaptophysin and INSM1, with a Ki-67 index of about 85%; (2) a minor component of keratinizing squamous carcinoma, p40 positive, neuroendocrine markers negative. Both components are present in the station 7 node.", "conclusion": "Combined small cell carcinoma with a squamous cell carcinoma component, right upper lobe, with nodal involvement (station 7). This supersedes the preliminary diagnosis of non-small cell carcinoma."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Pathology addendum received", "author": "RN", "date": "2023-09-12T09:15", "body": "Addendum to the 08/10 bronchoscopy pathology received from the cancer center: combined small cell carcinoma with a squamous component. Routed to PCP urgently; pt has an appointment here 09/19."}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "office_visit",
+          "start": "2023-09-19T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up lung cancer diagnosis; calcium recheck",
+          "conditions": [
+            {"label": "Small cell lung cancer, right upper lobe", "icd10": "C34.11", "action": "diagnosed", "onset": "2023-08-10", "note": "Combined small cell carcinoma with squamous component on pathology addendum 09/05/2023"},
+            {"label": "Non-small cell lung cancer, right upper lobe", "icd10": "C34.11", "action": "resolved", "note": "Superseded by final pathology"},
+            {"label": "Malignancy-associated hypercalcemia", "icd10": "E83.52", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 73.0, "labs": {"Calcium": 9.4}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-09-19T11:15", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2023-09-19T11:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-09-19T11:10", "body": "Here to go over the lung pathology and recheck calcium.\nThe addendum came back last week: the tumor is a combined small cell carcinoma with a smaller squamous part - so small cell is the diagnosis that drives treatment, not the 'non-small cell' read from August. I went over what that means with him: small cell is fast-growing but often responds well to chemo and radiation; oncology will stage it and lay out treatment on 10/6. He had a lot of questions about why it changed; explained the first sample was small and crushed and the extra stains showed both cell types.\nSymptoms: still coughing, no blood lately. Swallowing solids slowly, sticks to soups and eggs. Down to weight as charted. Mood: 'not great, not terrible', PHQ-9 = 6, no SI. Brother checks in by phone.\nExam: thin, NAD. Clubbing. Decreased BS right lung. Heart regular. No edema.\nA/P:\n1. Combined SCLC, right upper lobe, nodal disease - problem list updated; NSCLC entry closed.\n2. Hypercalcemia after zoledronic acid in August: BMP today, expect normal.\n3. Weight loss - add a supplement shake daily, small frequent meals.\n4. HFrEF/CAD/COPD stable.\n5. Flu and COVID at a nurse visit before chemo starts.\nSmoking: he says he is down to half a pack. Encouraged a full stop before radiation; offered nicotine patch - cost an issue, he'll think about it."}
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "portal_message",
+          "start": "2023-09-20T09:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Calcium result", "author": "PCP", "date": "2023-09-20T09:00", "body": "Your calcium is back to normal after the infusion in August, and kidney function is fine. I've sent a copy to oncology."}
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines before chemotherapy",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-03T14:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T14:12"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T14:12"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit: Flu and COVID", "author": "RN", "date": "2023-10-03T14:25", "body": "High-dose flu L arm, 2023-24 COVID R arm, timed ahead of chemo per PCP. Afebrile, screening negative. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2023-10-06a",
+          "kind": "specialist_visit",
+          "start": "2023-10-06T09:30",
+          "service": "Oncology",
+          "reason": "Follow-up, small cell lung carcinoma staging and plan",
+          "reports": [
+            {"study": "MRI brain without contrast", "performed": "2023-09-28T15:00", "text": "MRI BRAIN (staging), multiplanar multisequence imaging.\nFindings: No intracranial mass, abnormal signal or restricted diffusion. Ventricles and sulci normal for age. No extra-axial collection. Calvarium without suspicious marrow lesion.", "conclusion": "No evidence of intracranial metastatic disease."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical Oncology Follow-up", "author": "oncology", "date": "2023-10-13T16:20", "body": "REGIONAL CANCER CENTER - MEDICAL ONCOLOGY FOLLOW-UP\nVisit date: 10/06/2023\n\nFollow-up after diagnostic workup. Final pathology: combined small cell carcinoma with a squamous component, right upper lobe, nodes 4R and 7 positive. He continues to smoke heavily.\n\nStaging: PET-CT (09/26) shows FDG-avid disease confined to the right hilar/central RUL mass and right paratracheal and subcarinal nodes; no contralateral or supraclavicular disease; the known sclerotic pelvic and spine lesions from prostate cancer show no new uptake. MRI brain (09/28) negative. Limited-stage small cell lung cancer.\nCalcium normalized after zoledronic acid (PCP recheck 9/19).\n\nPlan: Concurrent chemoradiation - carboplatin and etoposide, 4 cycles every 21 days (carboplatin chosen over cisplatin given his cardiomyopathy), with thoracic radiation 60 Gy in 30 fractions, starting 10/16. Antiemetics per protocol. After treatment: restaging CT; discussed prophylactic cranial irradiation versus MRI surveillance - he prefers MRI surveillance. Prostate cancer: continue leuprolide with urology. Continue soft diet; nutrition referral.\nStrongly urged to stop smoking before radiation."}
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "telephone",
+          "start": "2023-11-14T11:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill and check-in", "author": "RN", "date": "2023-11-14T11:20", "body": "Pt called for furosemide and metoprolol refills to his pharmacy - sent per protocol, 90-day supply at generic cash price. In chemo cycle 2 and daily radiation; tired, eating small amounts, says the cancer center is 'on top of it'. Ankles okay, breathing okay. Reminded him to call oncology first with fever."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4302 @@
+{
+  "unit": "unit-2067",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002067",
+      "given": "Charles",
+      "family": "Moran",
+      "birth_date": "1965-09-21",
+      "address_line": "212 Bridge Road, Apt 3",
+      "phone": "+1-860-555-0162",
+      "email": "charles.moran@example.test",
+      "marital_status": "single",
+      "summary": "Long-haul truck driver and distance runner with a 2018 kidney transplant on tacrolimus and prednisone, hypertension, hyperlipidemia, mild COPD and knee osteoarthritis. Course in the practice: transplant renal artery stenosis stented in 2022, stage IA lung adenocarcinoma resected in 2023, a forearm squamous cell carcinoma treated with Mohs, and NSAID-related duodenal ulcer bleeds in 2024 and 2025 (the second after his last visit).",
+      "events": [
+        {
+          "id": "2020-09-14a",
+          "kind": "establish_care",
+          "start": "2020-09-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2012-06-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2014-01-01"
+            },
+            {
+              "label": "Kidney transplant status",
+              "action": "history",
+              "onset": "2018-03-09"
+            },
+            {
+              "label": "Chronic kidney disease, stage 2",
+              "action": "history",
+              "onset": "2018-03-09",
+              "note": "Graft function, baseline creatinine about 1.2"
+            },
+            {
+              "label": "Long term (current) use of calcineurin inhibitor",
+              "action": "history",
+              "onset": "2018-03-09",
+              "icd10": "Z79.621"
+            },
+            {
+              "label": "Peptic ulcer disease",
+              "action": "history",
+              "onset": "2009-01-01",
+              "note": "Remote, by history"
+            },
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "onset": "2016-01-01",
+              "note": "Mild, by history"
+            },
+            {
+              "label": "Bilateral primary osteoarthritis of knee",
+              "action": "history",
+              "onset": "2017-01-01"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "1984-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tacrolimus 5 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Kidney transplant, prescribed by transplant center"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Kidney transplant, prescribed by transplant center"
+            },
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug_text": "naproxen sodium 220 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily as needed for knee pain",
+              "dose": {
+                "value": 220,
+                "unit": "mg"
+              },
+              "frequency": "BID PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Knee osteoarthritis (over the counter)"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "start",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath or wheeze",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              81
+            ],
+            "hr": 84,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 81.8,
+            "height_cm": 177.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.14
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 97
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 118
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 40
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 151
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 148
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.9
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Long-haul truck driver"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-14T15:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-14T16:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-14T16:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2020-09-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-09-14T15:20",
+              "author": "PCP",
+              "body": "New patient, 54 yo M, transferring care; his old PCP retired. Drives long-haul, gone 4-5 days at a stretch, prefers portal and video when he is on the road.\n\nPMH: kidney transplant March 2018 at an outside transplant center, followed there yearly, graft has been stable per patient (baseline creatinine around 1.2). HTN for years, on amlodipine and HCTZ. Hyperlipidemia on atorvastatin. Peptic ulcer years ago, no details, no bleeding he knows of. COPD, mild, told so after breathing tests a few years back, uses albuterol maybe once a month, needs a new inhaler. Both knees ache, worse after long runs; takes OTC naproxen 220 mg twice a day when they act up.\nPSH: kidney transplant 2018.\nMeds: tacrolimus 5 mg BID and prednisone 5 mg daily (transplant team writes these), amlodipine 10 mg daily, HCTZ 25 mg daily, atorvastatin 40 mg daily, naproxen sodium 220 mg BID prn, albuterol prn.\nAllergies: NKDA.\nFH: father had an MI at 62 (CAD). Mother with high blood pressure. Maternal uncle on dialysis, cause never known.\nSH: single, lives alone in an apartment in town. Smokes about half a pack a day, ~25 pack-years. Not ready to quit cold, would like to cut down in steps. Alcohol a drink or two a month. Runs long distances, several races a year.\n\nROS negative except knees.\nExam: BP as charted. Well-appearing, lean. HEENT unremarkable. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear, no wheeze, good air movement. Abdomen soft; well-healed right lower quadrant transplant incision, graft nontender. Knees: crepitus both, no effusion. No edema. Skin: no lesions.\n\nA/P\n1. Kidney transplant, stable per history. Immunosuppression per transplant center. Requesting their records and our prior office's.\n2. HTN, near goal. Continue amlodipine/HCTZ.\n3. Hyperlipidemia, continue atorvastatin 40. Lipids today.\n4. Tobacco: gradual-reduction plan - drop 2-3 cigarettes a week, pick a quit date once he's under 5 a day. Will check in by video in ~3 months.\n5. COPD, mild by hx: albuterol refilled.\n6. Knee OA: using naproxen sparingly per pt.\n7. HM: flu and Tdap today. Records will tell us colonoscopy status.\nLabs: CMP, CBC, lipids, A1c, Mg, UA."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 82.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Creatinine": 1.2,
+              "Hemoglobin": 13.6,
+              "Hemoglobin A1c": 5.6,
+              "High Density Lipoprotein": 40,
+              "Low Density Lipoprotein": 120,
+              "Magnesium": 1.9,
+              "Microalbumin/Creatinine Ratio": 11,
+              "Total Cholesterol": 190,
+              "Triglycerides": 150
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-09-17a",
+          "kind": "portal_message",
+          "start": "2020-09-17T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2020-09-17T08:40",
+              "author": "PCP",
+              "body": "Hi Charles, your labs look good. Kidney function is right where the transplant records say your baseline sits, blood counts and liver tests are normal, A1c is normal, and urine shows no protein. LDL is 120 on the atorvastatin, which we'll keep an eye on. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-28a",
+          "kind": "outside_records",
+          "start": "2020-09-28T11:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care and transplant center",
+              "date": "2020-09-28T11:15",
+              "author": "PCP",
+              "body": "Records received and reviewed (58 pages).\n\nPrior PCP: HTN since early 2010s, hyperlipidemia, knee OA. Remote peptic ulcer noted in history only. COPD noted after spirometry in 2016, mild. Smoker throughout. Colonoscopy 2017 as part of transplant evaluation: normal, repeat in 10 years.\n\nTransplant center: kidney transplant 03/2018, uncomplicated course. Native kidney disease cause not established. Hepatitis C antibody and HIV screen negative during evaluation. Maintenance tacrolimus and prednisone; tacrolimus troughs in range on recent checks. Graft creatinine 1.1-1.3 since 2019.\n\nNothing here changes our plan. Colonoscopy next due 2027."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-19a",
+          "kind": "outside_records",
+          "start": "2020-10-19T14:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Transplant nephrology annual visit",
+              "date": "2020-10-19T14:00",
+              "author": "transplant nephrology",
+              "body": "Transplant Nephrology Clinic\nVisit date: 10/14/2020\n\nDear colleague,\nThank you for taking over primary care for Mr. Moran, now 2.5 years after his kidney transplant. He feels well. Graft function is stable with a creatinine of 1.2, no proteinuria, and his tacrolimus trough is within our target range. Blood pressure in clinic 136/82.\n\nImmunosuppression unchanged: tacrolimus 5 mg twice daily, prednisone 5 mg daily. We will continue to prescribe both. Please avoid live vaccines.\n\nAllergies: NKDA.\nFollow-up here in one year with labs every 3 months through our lab.\n\nSincerely,\nTransplant Nephrology"
+            }
+          ]
+        },
+        {
+          "id": "2020-12-07a",
+          "kind": "telehealth_visit",
+          "start": "2020-12-07T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Smoking reduction follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-12-07T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-12-07T17:30",
+              "author": "PCP",
+              "body": "Video visit, pt in his truck at a rest stop in good connection, identity verified.\n\nSmoking: down from ~10 to about 6 cigarettes a day. Hardest times are the long night stretches. Has a quit date in mind for spring. Discussed what to expect the first two weeks and options if he wants NRT - he'd rather not.\nHome BP readings from his wrist cuff 120s-130s/80s.\nBreathing fine, no inhaler use this month.\nKnees okay, running less with the cold.\n\nA/P: good progress on tobacco; continue stepwise reduction toward a quit date. BP fine. Office visit in the spring for labs."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-11a",
+          "kind": "portal_message",
+          "start": "2021-01-11T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine",
+              "date": "2021-01-11T20:05",
+              "author": "patient",
+              "body": "Do I qualify for the covid shot yet with my transplant? Pharmacy says sign up online but I'm never home long."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine",
+              "date": "2021-01-12T08:30",
+              "author": "PCP",
+              "body": "Yes - your transplant medicines put you in an early group, and the mRNA vaccines are safe with them. Sign up through the state site; pharmacies along your routes count too. Let us know the dates so we can record them. Your transplant team may suggest an extra dose later."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-08a",
+          "kind": "pharmacy",
+          "start": "2021-02-08T10:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-08T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "date": "2021-02-09T09:10",
+              "author": "MA",
+              "body": "COVID-19 vaccine dose 1 (Pfizer) given 2/8/21 at a community pharmacy clinic. Entered from state registry."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-01a",
+          "kind": "pharmacy",
+          "start": "2021-03-01T11:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-01T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "date": "2021-03-02T08:45",
+              "author": "MA",
+              "body": "COVID-19 vaccine dose 2 (Pfizer) 3/1/21, pharmacy clinic. From registry."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-22a",
+          "kind": "office_visit",
+          "start": "2021-03-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and cholesterol follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              85
+            ],
+            "hr": 71,
+            "spo2": 97,
+            "weight_kg": 82.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-22T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.19
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 72
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-03-22T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 113
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 40
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 153
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 144
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-03-22T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-03-22T08:00",
+              "author": "PCP",
+              "body": "S: f/u HTN/lipids, in town this week. Smoking down to 3-4 a day, quit date set for May. No cough beyond the usual morning clearing. Running again, 20-25 miles a week. Knees sore after long runs, naproxen once or twice a week.\nMeds unchanged. Got both COVID shots.\nO: BP as charted, HR regular. Lungs clear. No edema.\nA/P: HTN controlled on amlodipine/HCTZ. Lipids and BMP today. Tobacco - nearly there, encouraged."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "portal_message",
+          "start": "2021-03-24T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2021-03-24T12:10",
+              "author": "PCP",
+              "body": "Kidney function and potassium are steady. LDL about the same as last fall. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-26a",
+          "kind": "portal_message",
+          "start": "2021-05-26T21:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Quit",
+              "date": "2021-05-26T21:40",
+              "author": "patient",
+              "body": "Doc - two weeks with zero cigarettes as of today. Threw out the last pack at a truck stop outside Albany. Cravings are worst after dinner. Just wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Quit",
+              "date": "2021-05-27T07:55",
+              "author": "PCP",
+              "body": "That is great news, Charles. Congratulations. Cravings after meals usually fade over the next month or two; a walk or a piece of gum after dinner helps some people. If you have a slip, message me rather than giving up on it. I'll update your chart."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "office_visit",
+          "start": "2021-06-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, shingles vaccine",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "resolved",
+              "onset": "1984-01-01",
+              "note": "Quit May 2021"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2021-05-12"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              143,
+              81
+            ],
+            "hr": 78,
+            "weight_kg": 81.3
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-06-21T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-06-21T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-06-21T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-06-21T16:00",
+              "author": "PCP",
+              "body": "Quit smoking mid-May, ~6 weeks out, no slips. Weight up a pound or two, not bothered. Breathing feels better on runs.\nBP fine. Lungs clear.\nA/P: former smoker now (25 pk-yr, quit 5/2021) - chart updated. Shingrix #1 today (recombinant, okay with his immunosuppression). #2 in 2-6 months. Annual physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-08-30a",
+          "kind": "pharmacy",
+          "start": "2021-08-30T14:15",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-08-30T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "date": "2021-08-31T09:00",
+              "author": "MA",
+              "body": "Third primary COVID dose (Pfizer) for immunocompromised status, 8/30/21, retail pharmacy. Registry entry."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "nurse_visit",
+          "start": "2021-09-20T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-20T07:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-09-20T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit",
+              "date": "2021-09-20T07:40",
+              "author": "RN",
+              "body": "Here for 2nd Shingrix. Reports a sore arm and one tired day after dose 1. Given L deltoid, tolerated. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-04a",
+          "kind": "outside_records",
+          "start": "2021-10-04T13:30",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Transplant nephrology annual visit",
+              "date": "2021-10-04T13:30",
+              "author": "transplant nephrology",
+              "body": "Transplant Nephrology Clinic\nVisit date: 09/29/2021\n\nMr. Moran returns for yearly review 3.5 years post-transplant. He has quit smoking, which we applaud. No infections this year. Creatinine 1.2, urine protein negative, tacrolimus level in range. BP 130/80.\n\nNo change to tacrolimus 5 mg BID or prednisone 5 mg daily. He has completed a 3-dose COVID series and Shingrix; please continue yearly influenza vaccine (inactivated only). Allergies: NKDA.\n\nReturn in 12 months.\nTransplant Nephrology"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-08a",
+          "kind": "annual_physical",
+          "start": "2021-11-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              137,
+              82
+            ],
+            "hr": 77,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 82.1,
+            "height_cm": 177.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 70
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 233
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 121
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 191
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 40
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 148
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 151
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "unit": "ng/mL",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-11-08T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-11-08T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-11-08T09:35"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-11-08T09:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2021",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Former smoker, 25 pack-years, quit 2021"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-11-08T09:00",
+              "author": "PCP",
+              "body": "Annual exam. 56 yo M. Feels well; still smoke-free since May. Ran a half marathon in October. Knees grumble afterward, naproxen a couple days, then fine.\nMeds: tacrolimus 5 BID, prednisone 5, amlodipine 10, HCTZ 25, atorvastatin 40, naproxen 220 prn, albuterol prn (hasn't needed it since summer). NKDA.\nROS: no chest pain, breathing good, no GI symptoms, no urinary complaints, mood good.\nExam: vitals as charted. HEENT normal. Neck no nodes or thyromegaly. Heart regular, no murmur. Lungs clear throughout. Abd soft, graft site nontender. Prostate deferred. Joints - knee crepitus, full ROM. Skin without suspicious lesions, some sun-weathering on L forearm from the truck window. No edema.\n\nA/P\n- Health maintenance: flu and PCV20 today. Colonoscopy 2017 normal, due 2027. Shingrix done, COVID x3 done. PSA after discussion - he wanted it, drawn today.\n- Lung cancer screening: new 2021 criteria now include him (age 56, 25 pk-yr, quit <15 yr). Low-dose CT ordered; scheduling will call him.\n- HTN, lipids, transplant - labs today; continue current regimen.\n- Sun protection on the driving arm."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "portal_message",
+          "start": "2021-11-10T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2021-11-10T16:20",
+              "author": "PCP",
+              "body": "Charles - all of this year's labs are fine, including the PSA. Kidney numbers steady. Imaging scheduling will reach out about the screening CT."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "telephone",
+          "start": "2021-12-13T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling call",
+              "date": "2021-12-13T10:05",
+              "author": "front desk",
+              "body": "Called to schedule low-dose CT chest. Pt on the road until next week, asked us to call back. Left callback number."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-14a",
+          "kind": "pharmacy",
+          "start": "2022-02-14T09:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2022-02-14T09:20",
+              "author": "MA",
+              "body": "Pharmacy fax: refill amlodipine 10 mg and HCTZ 25 mg, 90-day supply. Last BP check 11/2021 fine. Sent per protocol, 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-07a",
+          "kind": "portal_message",
+          "start": "2022-03-07T13:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Screening CT reminder",
+              "date": "2022-03-07T13:00",
+              "author": "front desk",
+              "body": "Hello Mr. Moran, our records show the low-dose lung screening CT your doctor ordered in November has not been scheduled yet. Please call or reply here with a few days that work around your driving schedule."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "lab_only",
+          "start": "2022-05-24T07:15",
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-05-24T07:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "unit": "mg/dL",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "unit": "mg/dL",
+                  "value": 40
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "unit": "mg/dL",
+                  "value": 120
+                },
+                {
+                  "test": "Triglycerides",
+                  "unit": "mg/dL",
+                  "value": 150
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 150
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-24T07:15",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "unit": "mg/dL",
+                  "value": 96
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-24T07:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "unit": "%",
+                  "value": 5.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-05-24T07:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.14
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-24T07:15"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-31a",
+          "kind": "office_visit",
+          "start": "2022-05-31T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine check-up",
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 72,
+            "spo2": 97,
+            "weight_kg": 82.0
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-05-31T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-05-31T10:40",
+              "author": "PCP",
+              "body": "Routine visit. No complaints today. Taking everything as prescribed.\n\nHe signed up this spring for a long-term research study looking at diet and heart disease (questionnaires and food diaries, no study drug). The study team shared that people eating more fiber seemed to have fewer heart problems, so he has switched to oatmeal most mornings and packs vegetables for the road. Asked whether he should trust that. We talked about why an early finding from an observational study can be explained by other habits that go along with eating fiber (fiber eaters also tend to exercise more, smoke less), and that more fiber is a good idea for him either way.\n\nStill not smoking, a year now. Running 3-4 days a week.\nMeds: tacrolimus 5 BID, prednisone 5, amlodipine 10, HCTZ 25, atorvastatin 40, naproxen 220 prn, albuterol prn. NKDA.\n\nExam: BP 132/84. Comfortable. Heart regular, no murmur. Lungs clear. Abdomen benign. No edema. Exam otherwise unremarkable.\n\nLabs from 5/24 (fasting): TC 190, HDL 40, LDL 120, TG 150, fasting glucose 96, A1c 5.6.\n\nA/P\n- HTN at goal on current two drugs.\n- Lipids stable on atorvastatin 40, no change.\n- A1c normal on chronic prednisone.\n- Lung screening CT still not done - he says he'll book it on his next stretch home.\n- Recheck in ~6 months, physical in the fall."
+            }
+          ],
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-08a",
+          "kind": "portal_message",
+          "start": "2022-08-08T19:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Headaches and BP",
+              "date": "2022-08-08T19:50",
+              "author": "patient",
+              "body": "Been getting headaches most days and a few dizzy spells when I stand up from the cab. Checked my pressure at a truck stop machine and on my cuff, getting 150s and 160s over high 90s. Taking my pills. Transplant clinic appointment isn't until October. What should I do?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Headaches and BP",
+              "date": "2022-08-09T08:15",
+              "author": "PCP",
+              "body": "Thanks for telling me. With your transplant, a new jump in blood pressure is something your kidney team should look at soon. I called their office this morning and they are moving your visit up to later this month; they will call you with the date. Keep taking your medicines and keep a log. If you get a severe headache, chest pain, weakness, trouble speaking or vision changes, go to the ER."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to transplant nephrology",
+              "date": "2022-08-09T08:05",
+              "author": "PCP",
+              "body": "Spoke with the transplant nephrology nurse re: new elevated home BPs 150-160s/high 90s with headaches. They will see him in clinic on 8/26. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-26a",
+          "kind": "specialist_visit",
+          "start": "2022-08-26T13:30",
+          "service": "Transplant Nephrology",
+          "reason": "Headaches, dizziness and elevated blood pressure",
+          "conditions": [
+            {
+              "label": "Secondary hypertension due to renal artery stenosis",
+              "action": "diagnosed",
+              "onset": "2022-08-26",
+              "icd10": "I15.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              162,
+              98
+            ],
+            "hr": 77
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-08-26T13:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "unit": "mg/dL",
+                  "value": 1.2
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 71
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "tx-doppler",
+              "action": "placed",
+              "order": "Transplant renal ultrasound with Doppler",
+              "category": "imaging",
+              "reason": "Suspected renal artery stenosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Transplant nephrology clinic note",
+              "date": "2022-08-30T10:00",
+              "author": "transplant nephrology",
+              "body": "Transplant Nephrology Clinic\nDate of visit: 08/26/2022\nReferring: primary care\n\nHistory: Mr. Moran, kidney transplant 2018, seen at the request of his primary care physician (last primary care visit in May). He describes headaches and episodes of lightheadedness going back roughly six months, which he had put down to long driving shifts. Home and kiosk readings have climbed into the 150s-160s systolic. He reports taking amlodipine and hydrochlorothiazide daily and has been keeping salt down.\n\nCurrent medications: tacrolimus 5 mg twice daily, prednisone 5 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, naproxen sodium 220 mg twice daily as needed, albuterol as needed.\nAllergies: NKDA.\nSocial: former smoker, quit last year; drives long-haul.\n\nExam: BP 162/98 seated, repeated. Heart regular. A bruit with both systolic and diastolic components is heard over the epigastrium. Peripheral pulses equal and symmetric. No JVD, lungs clear, no edema, no other sign of heart failure.\n\nLabs today: creatinine 1.2, at his baseline; renal function otherwise normal.\n\nAssessment: new resistant hypertension with a bruit in a transplant recipient, concerning for renal artery stenosis. Secondary hypertension due to renal artery stenosis.\nPlan: Doppler ultrasound of the transplant kidney and its artery next week. Continue current antihypertensives meanwhile. If stenosis is confirmed we will refer to interventional radiology.\n\nTransplant Nephrology"
+            }
+          ],
+          "state": {
+            "bp": [
+              160,
+              97
+            ]
+          },
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "imaging",
+          "start": "2022-09-06T10:00",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2022-09-06T10:00",
+              "text": "EXAM: Ultrasound of the transplant kidney with color and spectral Doppler.\nINDICATION: Resistant hypertension, abdominal bruit, kidney transplant 2018.\nFINDINGS: Right iliac fossa transplant kidney measures 11.6 cm, normal in size with normal cortical echogenicity. No hydronephrosis. No perinephric collection. Transplant renal vein patent. At the arterial anastomosis the peak systolic velocity is 310 cm/s with aliasing, and intrarenal arterial waveforms downstream are tardus-parvus in appearance.\nIMPRESSION: Findings consistent with significant stenosis of the transplant renal artery at the anastomosis. Otherwise normal transplant kidney.",
+              "conclusion": "Significant transplant renal artery stenosis at the anastomosis (PSV 310 cm/s)."
+            }
+          ],
+          "orders": [
+            {
+              "id": "tx-doppler",
+              "action": "done",
+              "date": "2022-09-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Outside imaging received",
+              "date": "2022-09-08T12:30",
+              "author": "PCP",
+              "body": "Doppler shows transplant renal artery stenosis. Transplant nephrology has referred him to IR. Message sent to pt."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "procedure_visit",
+          "start": "2022-09-27T08:00",
+          "end": "2022-09-27T15:30",
+          "service": "Interventional Radiology",
+          "reason": "Transplant renal artery stenosis",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Transplant renal artery angioplasty and stent",
+              "date": "2022-09-28T09:00",
+              "author": "interventional radiology",
+              "body": "Interventional Radiology Procedure Report\nDate of procedure: 09/27/2022\n\nProcedure: Transplant renal arteriogram, balloon angioplasty and stent placement.\nIndication: Hemodynamically significant transplant renal artery stenosis on Doppler with resistant hypertension.\nAllergies: NKDA.\nAccess: Left common femoral artery, ultrasound guided. Moderate sedation.\nFindings: Focal high-grade stenosis just beyond the anastomosis of the transplant renal artery. Kidney perfuses well beyond it.\nIntervention: Angioplasty followed by a balloon-expandable stent. Completion angiogram shows brisk flow with no residual narrowing and no dissection. Low contrast volume used.\nHemostasis with closure device. No complications.\nDisposition: Observed and discharged home the same afternoon. Creatinine check in 1 week via transplant lab. Antihypertensives unchanged for now; transplant nephrology to follow pressures."
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              80
+            ]
+          }
+        },
+        {
+          "id": "2022-10-17a",
+          "kind": "office_visit",
+          "start": "2022-10-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after renal artery stent; vaccines",
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 77,
+            "spo2": 99,
+            "weight_kg": 82.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-10-17T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-17T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-17T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-17T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-10-17T15:40",
+              "author": "PCP",
+              "body": "Here 3 wks after transplant renal artery stent. Headaches gone within days; no more dizzy spells. Home readings 120s/70s-80s. Groin site healed.\nStill amlodipine 10 + HCTZ 25, nothing added.\nBP today 128/80.\nExam: groin without hematoma or bruit. Heart RRR. Lungs clear.\nA/P: renovascular HTN after stent, now controlled on same regimen. Transplant team following creatinine. Flu + bivalent COVID booster today."
+            }
+          ],
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "office_visit",
+          "start": "2022-11-07T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cough and weight loss",
+          "vitals": {
+            "bp": [
+              125,
+              83
+            ],
+            "hr": 76,
+            "rr": 13,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 79.2
+          },
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2022-11-07T09:30",
+              "text": "EXAM: Chest, PA and lateral.\nINDICATION: Cough for two weeks, weight loss, former smoker on immunosuppression.\nCOMPARISON: None available.\nFINDINGS: There is a rounded mass in the right upper lobe measuring approximately 2 cm. No pleural effusion. No pneumothorax. Heart size normal. Mediastinal contours normal. Bones unremarkable.\nIMPRESSION: 2 cm right upper lobe mass. CT chest recommended.",
+              "conclusion": "2 cm right upper lobe mass; CT recommended."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-11-07T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-chest-2022",
+              "action": "placed",
+              "order": "CT chest",
+              "category": "imaging",
+              "reason": "Right upper lobe mass on X-ray"
+            },
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "Right upper lobe lung mass, urgent"
+            },
+            {
+              "id": "ldct-2021",
+              "action": "cancelled",
+              "date": "2022-11-07T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-11-07T08:20",
+              "author": "PCP",
+              "body": "CC: cough x 2 wks, weight down.\nHPI: dry cough, started late Oct, not getting better. Scale shows about 5 lb lost over the last month without trying; he hadn't changed his running. No fever, sweats or blood in sputum. No chest pain. Mild extra breathlessness on hills. Never did the screening CT.\nPMH: kidney tx on tacrolimus/prednisone, COPD mild, former smoker 25 pk-yr quit 5/2021.\nExam: vitals as charted, afebrile, sat normal. Weight down from summer. Lungs: breath sounds slightly diminished over the right upper chest, no crackles, no wheeze. No cervical or supraclavicular nodes. Heart RRR.\nCXR today: ~2 cm RUL mass.\nA/P: RUL lung mass in a former heavy smoker with weight loss - concerning for malignancy. CT chest ordered this week; urgent pulmonology referral placed. Discussed with him frankly; he understands. Cancelled the old screening order since he'll have a diagnostic CT. Notified transplant team."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-11-10a",
+          "kind": "imaging",
+          "start": "2022-11-10T11:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2022-11-10T11:30",
+              "text": "EXAM: CT chest without contrast.\nINDICATION: Right upper lobe mass on radiograph.\nCOMPARISON: Chest radiograph 11/07/2022.\nFINDINGS: Solid mass in the right upper lobe measuring 2.0 x 1.8 cm in axial dimensions. No hilar or mediastinal lymphadenopathy. No pleural effusion. No other pulmonary nodules. Visualized upper abdomen unremarkable. Osseous structures intact.\nIMPRESSION: 2.0 cm solid right upper lobe mass without lymphadenopathy, suspicious for primary lung malignancy. Tissue sampling recommended.",
+              "conclusion": "2.0 cm right upper lobe mass, no lymphadenopathy."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-chest-2022",
+              "action": "done",
+              "date": "2022-11-10T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "CT result call",
+              "date": "2022-11-10T17:15",
+              "author": "PCP",
+              "body": "Called pt with CT result: mass confirmed, about 2 cm, no enlarged lymph nodes. Pulmonology appt 11/25. He asked if it could be anything but cancer - told him it could, but the biopsy will tell us, and that no enlarged nodes is good news. He'll be off the road that week."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-25a",
+          "kind": "specialist_visit",
+          "start": "2022-11-25T09:30",
+          "service": "Pulmonology",
+          "reason": "Right upper lobe lung mass",
+          "vitals": {
+            "bp": [
+              121,
+              85
+            ],
+            "hr": 89,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 79.6
+          },
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2022-11-25T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology consultation",
+              "date": "2022-11-28T14:00",
+              "author": "pulmonology",
+              "body": "Pulmonary Medicine Consultation\nDate of service: 11/25/2022\nReason: right upper lobe mass\n\nHPI: 57-year-old man, kidney transplant recipient on tacrolimus and prednisone, seen by transplant nephrology in August, with COPD and a 25 pack-year smoking history (stopped about 18 months ago). Over the last month he has developed a new cough and has lost about five pounds. He denies fevers, night sweats and coughing up blood.\nMeds: tacrolimus, prednisone, amlodipine, hydrochlorothiazide, atorvastatin, naproxen as needed, albuterol as needed.\nAllergies: NKDA.\nSocial: long-haul truck driver; alcohol 1-2 drinks a month.\nFamily: father with CAD.\n\nExam: Vital signs normal. Breath sounds are reduced over the right upper lobe; no wheezes or crackles. No lymphadenopathy. Cardiac exam normal. No clubbing.\n\nImaging reviewed: chest radiograph 11/07 with a 2 cm right upper lobe mass; CT chest 11/10 confirming a 2.0 cm solid mass with no lymph node enlargement.\n\nAssessment: solitary 2 cm right upper lobe mass in a former smoker, high suspicion for primary lung cancer, radiographically node-negative.\nPlan:\n1. CT-guided needle biopsy, scheduled 12/01.\n2. Full pulmonary function testing with DLCO.\n3. PET-CT for staging.\n4. Referral to thoracic surgery once tissue diagnosis is back.\nWill send results to primary care.\n\nPulmonary Medicine"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "rr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-01a",
+          "kind": "procedure_visit",
+          "start": "2022-12-01T08:30",
+          "end": "2022-12-01T13:00",
+          "service": "Interventional Radiology",
+          "reason": "CT-guided lung biopsy",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "CT-guided right upper lobe lung biopsy",
+              "date": "2022-12-01T12:00",
+              "author": "interventional radiology",
+              "body": "Procedure: CT-guided percutaneous core needle biopsy, right upper lobe mass.\nDate: 12/01/2022\nAllergies: NKDA.\nPosterior approach, patient prone. Local anesthesia and moderate sedation. 19-gauge coaxial needle advanced to the 2.0 cm mass; four 20-gauge cores obtained and sent to pathology.\nPost-procedure CT and 2-hour chest film: no pneumothorax. No hemoptysis.\nDischarged home with precautions."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-05a",
+          "kind": "outside_records",
+          "start": "2022-12-05T16:30",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of lung",
+              "action": "diagnosed",
+              "onset": "2022-12-01",
+              "note": "Right upper lobe, 2 cm, non-small cell"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-12-01T09:15",
+              "text": "SPECIMEN: Lung, right upper lobe mass, CT-guided core needle biopsy.\nGROSS: Four tan cores, 0.8 to 1.4 cm, entirely submitted.\nMICROSCOPIC: Cores contain infiltrating malignant epithelial cells forming nests and irregular glands within desmoplastic stroma. No small cell features.\nDIAGNOSIS: Non-small cell lung carcinoma.\nNote: Results discussed with the ordering pulmonologist.",
+              "conclusion": "Non-small cell lung carcinoma, right upper lobe.",
+              "issued": "2022-12-05T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Biopsy result",
+              "date": "2022-12-06T08:40",
+              "author": "PCP",
+              "body": "Pulmonology called pt yesterday with biopsy: non-small cell lung cancer. I called him this morning to check in. He's shaken but practical, wants to know next steps. Staging PET and PFTs scheduled next week, then thoracic surgery. Offered a video visit to talk it through - booked for 12/16. Lung cancer added to problem list."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-08a",
+          "kind": "outside_records",
+          "start": "2022-12-08T14:00",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2022-12-08T10:00",
+              "text": "Pulmonary function testing: spirometry, lung volumes and DLCO.\nEffort and reproducibility acceptable.\nFEV1/FVC 0.66. FEV1 81% predicted. FVC within normal limits. No significant bronchodilator response. Lung volumes normal. DLCO 76% predicted.\nINTERPRETATION: Mild obstructive ventilatory defect. Mildly reduced diffusing capacity. Values support tolerance of lobectomy.",
+              "conclusion": "Mild obstruction (FEV1/FVC 0.66, FEV1 81%); DLCO 76%."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-14a",
+          "kind": "specialist_visit",
+          "start": "2022-12-14T11:00",
+          "service": "Thoracic Surgery",
+          "reason": "Right upper lobe non-small cell lung cancer",
+          "vitals": {
+            "bp": [
+              122,
+              76
+            ],
+            "hr": 90,
+            "spo2": 99,
+            "weight_kg": 79.6
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Thoracic surgery consultation",
+              "date": "2022-12-15T09:30",
+              "author": "thoracic surgery",
+              "body": "Thoracic Surgery Consultation\nDate: 12/14/2022\n\nMr. Moran is a 57-year-old former smoker and kidney transplant recipient with a 2.0 cm right upper lobe mass; core biopsy 12/01 shows non-small cell carcinoma.\n\nStaging: PET-CT 12/12 shows FDG uptake in the right upper lobe mass only, with no hilar, mediastinal or distant uptake. Clinical stage IA (cT1b N0 M0).\nPFTs 12/08: FEV1 81%, DLCO 76% predicted.\nAllergies: NKDA. Medications per primary care list.\n\nExam: well, active, runs regularly. Lungs with reduced breath sounds right apex. Heart regular.\n\nRecommendation: video-assisted thoracoscopic right upper lobectomy with mediastinal lymph node dissection. Risks and benefits reviewed; he wishes to proceed. Transplant nephrology aware; stress-dose steroids per anesthesia. Surgery scheduled 01/10/2023.\n\nThoracic Surgery"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-16a",
+          "kind": "telehealth_visit",
+          "start": "2022-12-16T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Discuss lung cancer diagnosis and plan",
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2022-12-16T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2022-12-16T12:30",
+              "author": "PCP",
+              "body": "Video, pt at home.\nWent over the PET (no spread), PFTs (fine for surgery) and the thoracic surgery plan for RUL lobectomy 1/10. He's relieved it looks early. Main worries are time off work and whether he can keep running - surgeon told him likely yes after recovery.\nSleeping okay, appetite fine, weight steady since Nov. PHQ-2 1.\nEmployer giving him medical leave.\nA/P: stage IA NSCLC RUL, surgery planned. Will see him after discharge. Short-term disability forms - he'll send them. Transplant team managing peri-op steroids."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "telephone",
+          "start": "2022-12-20T14:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Disability paperwork",
+              "date": "2022-12-20T14:30",
+              "author": "front desk",
+              "body": "Short-term disability forms from pt's employer received by fax. Routed to PCP for completion; surgery date 1/10/23, expected return-to-work per surgeon. Completed and faxed back 12/22, copy scanned."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "hospital_admission",
+          "start": "2023-01-10T06:00",
+          "end": "2023-01-13T11:30",
+          "service": "Thoracic Surgery",
+          "reason": "Right upper lobectomy for lung cancer",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-01-10T10:40",
+              "text": "SPECIMENS: A. Lung, right upper lobe, lobectomy. B-E. Mediastinal and hilar lymph nodes (stations 2R, 4R, 7, 10R, 11R).\nGROSS: Right upper lobe, 15.5 x 9.0 x 4.0 cm. A firm tan-white mass, 2.0 cm in greatest dimension, lies 2.5 cm from the bronchial margin and does not pucker the pleura.\nMICROSCOPIC: Invasive adenocarcinoma. Visceral pleura not involved. No lymphovascular invasion identified.\nMARGINS: Bronchial, vascular and parenchymal margins negative.\nLYMPH NODES: 0 of 9 lymph nodes involved.\nPATHOLOGIC STAGE: pT1b N0 (AJCC 8th edition), stage IA2.",
+              "conclusion": "Invasive adenocarcinoma of the right upper lobe, 2.0 cm, margins negative, 0/9 nodes, pT1b N0, stage IA2.",
+              "issued": "2023-01-16T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Thoracic surgery discharge summary",
+              "date": "2023-01-16T15:00",
+              "author": "thoracic surgery",
+              "body": "Discharge Summary - Thoracic Surgery\nAdmitted: 01/10/2023  Discharged: 01/13/2023\n\nProcedure 01/10: video-assisted thoracoscopic right upper lobectomy with mediastinal lymph node dissection. Uncomplicated. Single chest tube removed postoperative day 2 after air leak resolved. Stress-dose hydrocortisone given perioperatively and tapered back to his home prednisone by discharge. Tacrolimus continued with levels checked by the transplant team; creatinine stable at baseline.\n\nFinal pathology: invasive adenocarcinoma, 2.0 cm, all margins negative, 0 of 9 nodes, pT1b N0, stage IA2.\n\nCondition at discharge: ambulating independently, room air saturations normal, pain controlled.\nAllergies: NKDA.\nDischarge medications: home medications unchanged (tacrolimus 5 mg BID, prednisone 5 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, albuterol as needed). Naproxen held for now.\nInstructions: no lifting over 10 lb or driving for 2 weeks; walking daily. Thoracic surgery clinic in 2-3 weeks; oncology to review pathology. PCP follow-up in 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-23a",
+          "kind": "office_visit",
+          "start": "2023-01-23T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after lobectomy",
+          "vitals": {
+            "bp": [
+              124,
+              74
+            ],
+            "hr": 78,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 79.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-23T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-01-23T11:00",
+              "author": "PCP",
+              "body": "10 days post VATS RUL lobectomy. Walking 2 miles a day. Some soreness at the port sites and along the right side, settling. The cough he had before surgery is fading. No fever, no sputum, no leg swelling. Appetite back.\nPath came back stage IA2 adenocarcinoma, nodes negative - surgeon and oncology going over it with him next month.\nMeds: home regimen, has not restarted naproxen.\nExam: afebrile, sat normal on RA. Incisions clean and dry, no erythema. Breath sounds slightly reduced R apex, no crackles. Calves soft.\nA/P: recovering well. Pathology reviewed with him. Keep walking. Oncology and surgery f/u scheduled. Return to driving cleared by surgery on their timeline."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-20a",
+          "kind": "outside_records",
+          "start": "2023-02-20T10:30",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Thoracic oncology consultation",
+              "date": "2023-02-20T10:30",
+              "author": "oncology",
+              "body": "Thoracic Oncology\nVisit date: 02/15/2023\n\nDear colleague,\nI saw Mr. Moran after his right upper lobectomy for a 2.0 cm adenocarcinoma, pT1b N0, stage IA2, with negative margins. He has recovered well and is back to walking and light jogging.\n\nFor completely resected stage IA disease, adjuvant systemic therapy is not recommended, and he agrees. Plan surveillance CT chest every 6 months for 2 years, then yearly. Next scan July 2023.\n\nAllergies: NKDA. Medications: per your list; tacrolimus and prednisone per transplant.\n\nThank you for involving us.\nThoracic Oncology"
+            },
+            {
+              "type": "Letter",
+              "title": "Thoracic surgery postoperative visit",
+              "date": "2023-02-21T08:15",
+              "author": "thoracic surgery",
+              "body": "Postoperative visit 02/01/2023: incisions healed, lungs expanding well on chest film, no air or fluid. Cleared to drive and return to work 2/13. Can resume running gradually. Discharged from surgical follow-up; surveillance with oncology."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "pharmacy",
+          "start": "2023-03-13T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "date": "2023-03-13T08:50",
+              "author": "MA",
+              "body": "Atorvastatin 40 mg refill request from pharmacy. Lipids 5/2022. Sent 90 days x 1; due for labs at May visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "office_visit",
+          "start": "2023-05-22T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              81
+            ],
+            "hr": 81,
+            "spo2": 98,
+            "weight_kg": 80.5
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-05-22T15:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 119
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 41
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 141
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 147
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-05-22T15:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.21
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 70
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-22T15:00",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-05-22T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-05-22T14:20",
+              "author": "PCP",
+              "body": "Routine f/u. Back to full-time driving since February and running 3 days a week, about 10-12 miles total. Breathing fine. Weight coming back.\n\nHe brought a printout about a research trial of a new cholesterol drug that is recruiting people with high LDL and asked if he should sign up. Went through how a study like that runs: people are assigned by chance to the new drug or a dummy pill, they measure LDL over a few months, and a short study can't tell you much about heart attacks or rare side effects. Told him he's welcome to call the study line, though his transplant medicines and recent cancer surgery may keep him out. He's not sure he wants the extra visits with his schedule. Not enrolled.\n\nMeds unchanged. Hasn't gone back to naproxen much since surgery, a few times for the knees.\nExam: BP as charted. Lungs clear, slightly decreased R apex. Heart regular. No edema.\nA/P: HTN controlled. Lipids today on atorvastatin 40. Post-lobectomy, surveillance CT in July via oncology. Physical late summer."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-24a",
+          "kind": "portal_message",
+          "start": "2023-05-24T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-05-24T09:30",
+              "author": "PCP",
+              "body": "Labs are stable: kidney function at your usual, liver tests and magnesium normal, cholesterol about where it has been. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "pharmacy",
+          "start": "2023-06-12T11:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "date": "2023-06-12T11:40",
+              "author": "MA",
+              "body": "Albuterol HFA refill request. Last fill nearly a year ago, uses rarely per last note. Sent 1 inhaler, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "imaging",
+          "start": "2023-07-17T13:00",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2023-07-17T13:00",
+              "text": "EXAM: CT chest without contrast.\nINDICATION: Surveillance, right upper lobectomy 01/2023 for stage IA adenocarcinoma.\nCOMPARISON: CT chest 11/10/2022.\nFINDINGS: Postsurgical changes of right upper lobectomy with staple line intact and expected volume loss. No nodule or mass along the staple line. No new pulmonary nodules. No lymphadenopathy. No pleural effusion.\nIMPRESSION: Expected postoperative changes. No evidence of recurrence.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Oncology surveillance visit",
+              "date": "2023-07-24T11:00",
+              "author": "oncology",
+              "body": "Thoracic Oncology follow-up 07/19/2023: six months after lobectomy, asymptomatic, running again. CT 7/17 without recurrence. Next CT January 2024. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-28a",
+          "kind": "annual_physical",
+          "start": "2023-08-28T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 75,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 80.7,
+            "height_cm": 178.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-28T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.39
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-28T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-08-28T09:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.012
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-28T09:20",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-08-28T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-28T08:40",
+              "author": "PCP",
+              "body": "Physical. 57 yo. Feeling strong, ran a 10K in July. Smoke-free over 2 years. Knees: same, occasional naproxen.\nPMH: kidney tx 2018, renovascular HTN s/p transplant renal artery stent 9/2022, stage IA2 RUL adenocarcinoma s/p lobectomy 1/2023 (NED 7/2023), hyperlipidemia, COPD mild, knee OA, PUD remote.\nMeds: tacrolimus 5 BID, prednisone 5, amlodipine 10, HCTZ 25, atorvastatin 40, naproxen 220 prn, albuterol prn. NKDA.\nROS negative.\nExam: vitals as charted. Skin: no suspicious lesions today, sun damage on L forearm. HEENT, neck normal. Heart RRR no murmur. Lungs clear, healed thoracoscopy scars R. Abd soft. Joints: knee crepitus. Neuro grossly normal.\nA/P: well visit. Labs per transplant mostly; CBC, A1c, UA, urine microalbumin here. Colonoscopy due 2027. Flu + updated COVID in Oct at a nurse visit. Sunscreen/sleeve on the driver's side, and to show us any sore that doesn't heal given his transplant meds."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "outside_records",
+          "start": "2023-09-18T15:10",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Transplant nephrology annual visit",
+              "date": "2023-09-18T15:10",
+              "author": "transplant nephrology",
+              "body": "Transplant Nephrology\nVisit: 09/13/2023\n\nFive and a half years post-transplant. BP well controlled since last year's stent. Creatinine 1.3, tacrolimus trough in range. Recovered from lobectomy. Immunosuppression unchanged: tacrolimus 5 mg BID, prednisone 5 mg daily. NKDA. Return 1 year, quarterly labs."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-09a",
+          "kind": "nurse_visit",
+          "start": "2023-10-09T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-09T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-09T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-09T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit",
+              "date": "2023-10-09T16:30",
+              "author": "RN",
+              "body": "Flu (L arm) and 2023-24 COVID (R arm). No prior reactions beyond a sore arm. Observed 15 min, fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-13a",
+          "kind": "office_visit",
+          "start": "2023-11-13T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Non-healing sore on right forearm",
+          "vitals": {
+            "bp": [
+              135,
+              81
+            ],
+            "hr": 71,
+            "temp_c": 36.9,
+            "weight_kg": 80.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-13T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "unit": "10*3/uL",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "unit": "10*3/uL",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.35
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-13T10:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "unit": "mg/dL",
+                  "value": 1.4
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "unit": "mg/dL",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 25
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 30
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 58
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-13T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Non-healing growing ulcer right forearm, transplant recipient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-11-13T09:40",
+              "author": "PCP",
+              "body": "Sore on the R forearm that won't heal. He first noticed a small rough spot around early September; it scabbed, came off, and has kept getting bigger. Not painful, bleeds a little if bumped. No fevers. Remembered our talk in August and came in.\nExam: R dorsal forearm ~2 cm ulcerated lesion with a raised rolled border and crusted center. No axillary or epitrochlear nodes. Rest of the exposed skin with sun damage only.\nA/P: enlarging non-healing ulcer in a transplant recipient on tacrolimus/prednisone - high concern for skin cancer, SCC most likely. Urgent dermatology referral; derm office will see him in 3 weeks (soonest). CBC and CMP today for them."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2023-11-14T12:00",
+              "author": "PCP",
+              "body": "Hgb 13.2, WBC 7.5, plt 250. Cr 1.4 (a bit above his usual 1.2-1.3), BUN 18, ALT 25, AST 30. Forwarded to transplant nephrology and dermatology. Transplant team will repeat with their next quarterly labs."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "procedure_visit",
+          "start": "2023-12-04T10:20",
+          "service": "Dermatology",
+          "reason": "Non-healing ulcer right forearm",
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2023-12-04T12:10",
+              "text": "EXAM: Chest, PA and lateral.\nINDICATION: Suspected cutaneous squamous cell carcinoma in a transplant recipient; prior right upper lobectomy.\nCOMPARISON: CT chest 07/17/2023.\nFINDINGS: Postsurgical changes of right upper lobectomy. Lungs otherwise clear. No nodules or masses. No hilar or mediastinal enlargement. No effusion. Heart size normal. No osseous lesions.\nIMPRESSION: No evidence of metastatic disease.",
+              "conclusion": "No evidence of metastatic disease."
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2023-12-04T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Dermatology procedure visit",
+              "date": "2023-12-06T09:00",
+              "author": "dermatology",
+              "body": "Dermatology Clinic - Procedure Visit\nDate: 12/04/2023\n\n58-year-old man, kidney transplant 2018 on tacrolimus and prednisone, referred by primary care for a non-healing ulcer of the right forearm that has been enlarging over roughly three months. No fever, weight loss or night sweats.\nHistory also notable for resected stage IA lung adenocarcinoma (1/2023).\nMedications: tacrolimus 5 mg BID, prednisone 5 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, naproxen 220 mg as needed.\nAllergies: NKDA.\n\nExam: right dorsal forearm, 2.0 cm ulcer with raised, everted margins and a central keratin-filled core. No regional lymphadenopathy (epitrochlear, axillary). Full skin examination otherwise unremarkable.\n\nRecent labs (11/13): Hgb 13.2, WBC 7,500, platelets 250,000; creatinine 1.4, BUN 18, ALT 25, AST 30.\nChest X-ray obtained today given immunosuppression and cancer history: no evidence of metastatic disease.\n\nProcedure: after informed consent and local lidocaine, deep shave biopsy of the ulcer edge. Hemostasis with aluminum chloride. Specimen to dermatopathology.\n\nImpression: clinically squamous cell carcinoma. Will arrange Mohs surgery once pathology confirms.\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-08a",
+          "kind": "outside_records",
+          "start": "2023-12-08T14:45",
+          "conditions": [
+            {
+              "label": "Squamous cell carcinoma of skin of right upper limb",
+              "action": "diagnosed",
+              "onset": "2023-12-04",
+              "note": "Right forearm, well differentiated",
+              "icd10": "C44.622"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-12-04T10:45",
+              "text": "SPECIMEN: Skin, right forearm, deep shave biopsy.\nMICROSCOPIC: Atypical keratinocytes in nests and strands invading the dermis, with keratin pearl formation. Well differentiated. Tumor extends to the deep and peripheral margins of the biopsy.\nDIAGNOSIS: Invasive squamous cell carcinoma, well differentiated.",
+              "conclusion": "Invasive squamous cell carcinoma, well differentiated, right forearm.",
+              "issued": "2023-12-08T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Skin biopsy",
+              "date": "2023-12-08T16:00",
+              "author": "PCP",
+              "body": "Derm path: invasive SCC, well differentiated, R forearm. Dermatology scheduling Mohs in January. Added to problem list. Messaged pt."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-11a",
+          "kind": "procedure_visit",
+          "start": "2024-01-11T07:45",
+          "end": "2024-01-11T13:10",
+          "service": "Dermatology — Mohs Surgery",
+          "reason": "Squamous cell carcinoma right forearm",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Mohs micrographic surgery",
+              "date": "2024-01-15T10:00",
+              "author": "dermatology",
+              "body": "Mohs Surgery Report\nDate: 01/11/2024\nDiagnosis: invasive squamous cell carcinoma, well differentiated, right dorsal forearm (biopsy 12/04/2023).\nAllergies: NKDA.\n\nPre-op lesion 2.0 cm. Local anesthesia.\nStage 1: tumor present at one deep edge. Stage 2: clear on all margins.\nFinal defect 3.1 x 2.6 cm, repaired with layered (intermediate) closure. Estimated blood loss minimal.\nWound care reviewed; sutures out in 14 days.\n\nPlan: full skin checks every 6 months given his immunosuppression. Sun protection reviewed.\nMohs Surgery / Dermatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "imaging",
+          "start": "2024-01-22T12:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2024-01-22T12:30",
+              "text": "EXAM: CT chest without contrast.\nINDICATION: Lung cancer surveillance, 1 year after right upper lobectomy.\nCOMPARISON: 07/17/2023.\nFINDINGS: Stable postoperative changes of right upper lobectomy. No new or enlarging nodule. No lymphadenopathy. No effusion. Bones unremarkable.\nIMPRESSION: Stable. No evidence of recurrent or metastatic disease.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Oncology surveillance visit",
+              "date": "2024-01-29T09:40",
+              "author": "oncology",
+              "body": "Thoracic Oncology 01/24/2024: one year after resection, no symptoms, CT clear. Also had Mohs for a forearm SCC this month. Next CT July 2024. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "office_visit",
+          "start": "2024-03-11T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; cholesterol and heart risk",
+          "conditions": [
+            {
+              "label": "Squamous cell carcinoma of skin of right upper limb",
+              "action": "resolved",
+              "onset": "2023-12-04",
+              "note": "Mohs 1/2024, clear margins",
+              "icd10": "C44.622"
+            },
+            {
+              "label": "History of other malignant neoplasm of skin",
+              "action": "diagnosed",
+              "onset": "2024-01-11",
+              "note": "SCC right forearm, Mohs 1/2024"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              77
+            ],
+            "hr": 76,
+            "spo2": 100,
+            "weight_kg": 81.4
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-11T14:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 113
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 186
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 41
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 161
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 145
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-11T14:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.22
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 69
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-11T13:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Cardiovascular risk review: family history of premature MI, kidney transplant, LDL 120 on atorvastatin"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-03-11T13:30",
+              "author": "PCP",
+              "body": "S: Mohs done in Jan, forearm healed with a neat scar. CT in Jan clear. Feeling well, training for a spring half.\nHe's been thinking about his heart since his dad's MI at 62 (he's 58) and wants a cardiology opinion. Also heard about another big trial of a new cholesterol medicine and wonders if he'd qualify.\nMeds unchanged. NKDA.\nO: BP and HR as charted. Heart RRR, no murmur. Lungs clear. Forearm scar well healed, no nodules. No edema.\nA/P\n- Lipids/CV risk: LDL has been ~120 on atorvastatin 40. Referral to cardiology for a risk review as he asked; lipids today for them.\n- SCC R forearm s/p Mohs - moved to history. Derm checks q6 mo.\n- Lung ca stage IA2 s/p lobectomy, NED.\n- HTN controlled."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-31a",
+          "kind": "specialist_visit",
+          "start": "2024-05-31T10:00",
+          "service": "Cardiology",
+          "reason": "Cardiovascular risk evaluation",
+          "vitals": {
+            "bp": [
+              121,
+              80
+            ],
+            "hr": 65,
+            "weight_kg": 79.8
+          },
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "done",
+              "date": "2024-05-31T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation",
+              "date": "2024-06-04T15:30",
+              "author": "cardiology",
+              "body": "Cardiology Consultation\nDate: 05/31/2024\nReferred by primary care for cardiovascular risk review.\n\nMr. Moran is 58, a kidney transplant recipient (2018) with hypertension (transplant renal artery stent 2022), hyperlipidemia on atorvastatin 40 mg, resected early-stage lung adenocarcinoma, cutaneous SCC treated with Mohs, and a former 25 pack-year smoker. Father had an MI at 62. He has no chest pain, exertional symptoms or palpitations and runs several days a week.\n\nMedications: tacrolimus 5 mg BID, prednisone 5 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, naproxen sodium 220 mg BID as needed, albuterol as needed.\nAllergies: NKDA.\n\nExam: BP and heart rate normal. Regular rhythm, no murmur. Carotids without bruit. Lungs clear. No edema.\nLipids (03/2024, primary care): LDL about 120.\n\nHe asked about enrolling in a large multicenter outcomes trial comparing a new lipid-lowering agent with statin therapy. We reviewed what participation would involve, including several years of visits, blinded assignment and frequent blood draws. Given the visit burden with his work and his transplant care, he decided not to enroll.\n\nImpression: elevated cardiovascular risk, asymptomatic. Continue atorvastatin 40 mg daily and current blood pressure regimen. Follow up with us as needed.\nCardiology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-05a",
+          "kind": "outside_records",
+          "start": "2024-06-05T08:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Cardiology letter reviewed",
+              "date": "2024-06-05T08:20",
+              "author": "PCP",
+              "body": "Cardiology consult from 5/31 reviewed. Not enrolling in the lipid trial; keep atorvastatin 40 and current BP meds. No changes. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-22a",
+          "kind": "imaging",
+          "start": "2024-07-22T11:15",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2024-07-22T11:15",
+              "text": "EXAM: CT chest without contrast.\nINDICATION: Surveillance after right upper lobectomy for adenocarcinoma (01/2023).\nCOMPARISON: 01/22/2024.\nFINDINGS: Unchanged postoperative appearance. No pulmonary nodule. No mediastinal or hilar adenopathy. No pleural effusion.\nIMPRESSION: No evidence of recurrence.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Oncology surveillance visit",
+              "date": "2024-07-29T14:20",
+              "author": "oncology",
+              "body": "Thoracic Oncology 07/24/2024: 18 months out, well, CT without recurrence. Final 6-month scan January 2025, then yearly. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "outside_records",
+          "start": "2024-07-29T16:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Dermatology skin check",
+              "date": "2024-07-29T16:00",
+              "author": "dermatology",
+              "body": "Dermatology full-skin exam 07/25/2024. Right forearm Mohs site well healed, no recurrence. Chronic sun damage on the left arm and face, no suspicious lesions today. Recheck in 6 months. Continue daily sunscreen and a sun sleeve while driving."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-19a",
+          "kind": "outside_records",
+          "start": "2024-08-19T10:20",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Transplant nephrology annual visit",
+              "date": "2024-08-19T10:20",
+              "author": "transplant nephrology",
+              "body": "Transplant Nephrology, visit 08/14/2024. Six years post-transplant, graft stable (creatinine 1.2), tacrolimus level in range, BP 126/78. After this year's skin cancer we discussed immunosuppression and will keep the current regimen: tacrolimus 5 mg BID, prednisone 5 mg daily. NKDA. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "annual_physical",
+          "start": "2024-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 83,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 81.2,
+            "height_cm": 178.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-16T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 67
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-16T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.33
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-16T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 4.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-16T08:45",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-16T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-16T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-09-16T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-16T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-16T08:00",
+              "author": "PCP",
+              "body": "Physical, turned 59 next week. Ran his spring half. Feels well. Knees stiff after long runs, using naproxen more this summer - a couple of tablets most days during training. No GI complaints.\nMeds: tacrolimus 5 BID, prednisone 5, amlodipine 10, HCTZ 25, atorvastatin 40, naproxen 220 prn, albuterol prn. NKDA.\nROS negative.\nExam: vitals as charted. Skin: forearm scar fine, no new lesions. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Knees: crepitus, no effusion. No edema.\nA/P: healthy visit. Flu + COVID today. Labs. Colonoscopy due 2027. Cardiology saw him in May, no changes. Derm and oncology surveillance on track."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "portal_message",
+          "start": "2024-09-18T07:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-09-18T07:30",
+              "author": "PCP",
+              "body": "Charles, your physical labs are all in the usual range - kidney, liver, blood count, sugar and magnesium. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-28a",
+          "kind": "hospital_admission",
+          "start": "2024-11-28T15:40",
+          "end": "2024-12-01T12:30",
+          "service": "Emergency Medicine / Hospital Medicine",
+          "reason": "Hematemesis and melena",
+          "conditions": [
+            {
+              "label": "Acute duodenal ulcer with hemorrhage",
+              "action": "diagnosed",
+              "onset": "2024-11-28",
+              "note": "NSAID-related; EGD 11/29/2024",
+              "icd10": "K26.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily before meals for 8 weeks",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "reason": "Bleeding duodenal ulcer"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily for 3 months",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "reason": "Blood loss"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-11-28T15:45",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120
+            },
+            {
+              "time": "2024-11-28T18:30",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 98
+            },
+            {
+              "time": "2024-11-30T08:00",
+              "bp": [
+                124,
+                76
+              ],
+              "hr": 80
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-28T15:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 9.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-29T05:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 8.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-11-28T15:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2024-12-03T09:00",
+              "author": "emergency medicine",
+              "body": "Emergency Department Physician Record\nArrival: 11/28/2024 15:40\n\nCC: vomiting blood, black stools.\nHPI: 59-year-old man with a kidney transplant and a history of peptic ulcer disease vomited blood twice and passed black stool over the last two hours. A sharp, gnawing upper abdominal pain has been building over the past week. He has been taking over-the-counter naproxen frequently for knee pain while training. Also on daily prednisone.\nMeds: tacrolimus, prednisone, amlodipine, hydrochlorothiazide, atorvastatin, naproxen OTC, albuterol prn.\nAllergies: NKDA.\n\nExam: BP 90/60, HR 120. Pale and diaphoretic. Abdomen soft with mild epigastric tenderness; no masses, no hepatosplenomegaly.\nLabs: hemoglobin 9.4. INR normal.\n\nED course: two large-bore IVs, crystalloid bolus with improvement in pressure, IV pantoprazole bolus and infusion, type and cross. GI consulted for endoscopy. Admitted to medicine.\nImpression: acute upper GI hemorrhage, likely peptic ulcer, NSAID-associated."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Upper endoscopy report",
+              "date": "2024-12-03T09:05",
+              "author": "gastroenterology",
+              "body": "Esophagogastroduodenoscopy\nDate: 11/29/2024\nIndication: hematemesis and melena.\nAllergies: NKDA. Moderate sedation.\nFindings: Esophagus normal. Stomach with a small amount of old blood, mucosa otherwise normal; biopsies of antrum and body for H. pylori. Duodenal bulb: 1.5 cm ulcer with a non-bleeding visible vessel. Second portion normal.\nTherapy: dilute epinephrine injection around the vessel, then two hemostatic clips. Good hemostasis.\nImpression: duodenal bulb ulcer with non-bleeding visible vessel, treated endoscopically.\nRecommendations: high-dose PPI, avoid all NSAIDs, follow biopsy results.\nAddendum 12/02: gastric biopsies negative for Helicobacter pylori."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2024-12-03T09:10",
+              "author": "hospital medicine",
+              "body": "Discharge Summary\nAdmitted 11/28/2024, discharged 12/01/2024.\nDiagnosis: acute upper GI hemorrhage from a duodenal bulb ulcer, NSAID-associated, H. pylori negative.\n\nCourse: Hemoglobin 9.4 on arrival, 8.3 the next morning; transfused 1 unit packed red cells. EGD 11/29 with epinephrine and clips to a visible vessel. No rebleeding. Diet advanced. Tacrolimus and prednisone continued; antihypertensives held on day 1 and resumed day 2 as pressures recovered. Creatinine at baseline.\n\nDischarge medications:\nNEW pantoprazole 40 mg twice daily for 8 weeks, then stop if off NSAIDs (review with PCP)\nNEW ferrous sulfate 325 mg daily for 3 months\nSTOP naproxen and all NSAIDs\nCONTINUE tacrolimus 5 mg BID, prednisone 5 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, albuterol as needed\nAllergies: NKDA.\nFollow-up: PCP within 1 week with CBC."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "telephone",
+          "start": "2024-12-03T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2024-12-03T11:20",
+              "author": "RN",
+              "body": "TCM call 2 days after discharge. No vomiting, stools turning brown. Some fatigue. Taking pantoprazole twice a day and iron. Knows to stop naproxen. Has not driven since. Appt 12/6 with PCP, CBC that day. Return precautions for black stool, vomiting blood, fainting."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-06a",
+          "kind": "office_visit",
+          "start": "2024-12-06T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, GI bleed",
+          "medications": [
+            {
+              "drug_text": "naproxen sodium 220 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Bleeding duodenal ulcer"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for knee pain, no more than 6 tablets a day",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Knee osteoarthritis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              84
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 81.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-06T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 11.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-12-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2024-12-06T10:00",
+              "author": "PCP",
+              "body": "Seen 1 week after admission for a bleeding duodenal ulcer (11/28-12/1). Records reviewed: EGD with visible vessel, clipped; 1 unit PRBC; H. pylori neg.\nNow: no further black stools since 11/30, no vomiting. Tired but improving. No lightheadedness. Taking pantoprazole BID and ferrous sulfate; mild constipation from iron.\nHe was taking a lot more naproxen than I realized during his training. We went over why it can't come back - ulcer history plus prednisone.\nMeds: tacrolimus 5 BID, prednisone 5, amlodipine 10, HCTZ 25, atorvastatin 40, pantoprazole 40 BID, ferrous sulfate 325 daily, albuterol prn. NKDA.\nExam: BP/HR as charted, no orthostasis. Mild pallor. Abdomen soft, nontender. Heart regular.\nHgb today 11.4.\nA/P\n1. Duodenal ulcer bleed, NSAID-related: complete 8 wks pantoprazole BID. Naproxen removed from list - no NSAIDs at all, including OTC. Will reassess PPI at end of course.\n2. Blood loss: Hgb recovering, iron x 3 months, CBC in ~2 months.\n3. Knee pain: acetaminophen up to 3 g/day.\n4. Off driving another week."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-20a",
+          "kind": "imaging",
+          "start": "2025-01-20T10:45",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-01-20T10:45",
+              "text": "EXAM: CT chest without contrast.\nINDICATION: Two-year surveillance after right upper lobectomy for stage IA adenocarcinoma.\nCOMPARISON: 07/22/2024.\nFINDINGS: Stable postoperative right hemithorax. No new nodules or masses. No adenopathy. No effusion.\nIMPRESSION: No evidence of recurrence.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Oncology surveillance visit",
+              "date": "2025-01-27T13:00",
+              "author": "oncology",
+              "body": "Thoracic Oncology 01/22/2025: two years from resection without recurrence. Recent hospital stay for a bleeding ulcer noted; recovering. Moving to yearly CT, next January 2026. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "telephone",
+          "start": "2025-01-27T12:15",
+          "conditions": [
+            {
+              "label": "Acute duodenal ulcer with hemorrhage",
+              "action": "resolved",
+              "onset": "2024-11-28",
+              "icd10": "K26.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "8-week course complete, off NSAIDs"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PPI course",
+              "date": "2025-01-27T12:15",
+              "author": "PCP",
+              "body": "Spoke with pt. Finished 8 weeks of pantoprazole BID this week. No pain, no black stools. Says he has not taken any naproxen since the hospital; acetaminophen for the knees is 'okay, not great'. Per GI discharge plan, stop pantoprazole now that he is off NSAIDs. Finish iron through early March. CBC 2/10. Bleed episode resolved on the problem list."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "lab_only",
+          "start": "2025-02-10T07:30",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-10T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 265
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.14
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-10T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC",
+              "date": "2025-02-10T15:20",
+              "author": "PCP",
+              "body": "Hgb back to 13.0. Good recovery. Finish the iron course. Pt notified."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.4
+            }
+          }
+        },
+        {
+          "id": "2025-03-03a",
+          "kind": "portal_message",
+          "start": "2025-03-03T18:05",
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "3-month course complete"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron pills",
+              "date": "2025-03-03T18:05",
+              "author": "patient",
+              "body": "Took the last of the iron today. Do I need more? Happy to be done with them honestly."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron pills",
+              "date": "2025-03-04T08:10",
+              "author": "PCP",
+              "body": "No more needed - your blood count was back to normal in February. I've taken it off your list."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "outside_records",
+          "start": "2025-03-24T09:50",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Transplant nephrology visit",
+              "date": "2025-03-24T09:50",
+              "author": "transplant nephrology",
+              "body": "Transplant Nephrology, visit 03/19/2025 (moved up after his November GI bleed). Graft stable, creatinine 1.2, tacrolimus level in range through the admission. Strongly agree with permanent NSAID avoidance. Immunosuppression unchanged: tacrolimus 5 mg BID, prednisone 5 mg daily. NKDA. Return in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "telehealth_visit",
+          "start": "2025-04-14T17:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and knee pain check-in",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-04-14T17:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-04-14T17:45",
+              "author": "PCP",
+              "body": "Video from a hotel room on a run through upstate NY; connection fine.\nHome BP log 120s-130/70s. No headaches.\nKnees: acetaminophen takes the edge off; has cut long runs to 8 miles. Asked about naproxen once more - reminded him no NSAIDs, ever, after the bleed. He accepted that.\nNo GI symptoms since winter.\nA/P: BP controlled. Knee OA on acetaminophen. Office visit in June for labs; physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "office_visit",
+          "start": "2025-06-09T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up and labs",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "portal_message",
+          "start": "2025-06-10T10:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2025-06-10T10:00",
+              "author": "front desk",
+              "body": "We missed you at your appointment yesterday. Please reply or call to reschedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2025-06-10T21:30",
+              "author": "patient",
+              "body": "Sorry, got held at a dock in Maine an extra day. Just book me with the physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-04a",
+          "kind": "outside_records",
+          "start": "2025-08-04T11:30",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Dermatology skin check",
+              "date": "2025-08-04T11:30",
+              "author": "dermatology",
+              "body": "Dermatology full-skin exam 07/31/2025. No recurrence at the right forearm Mohs site. Chronic photodamage only; no lesions requiring biopsy. Continue sun protection. Return in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "annual_physical",
+          "start": "2025-10-03T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              80
+            ],
+            "hr": 78,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 81.7,
+            "height_cm": 178.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-03T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.22
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 68
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-03T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-03T09:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 122
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 191
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 40
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 146
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 151
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-03T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-03T09:00",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-10-03T09:00",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-03T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-03T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-03T08:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-03T08:55"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2025-10-03T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-03T08:20",
+              "author": "PCP",
+              "body": "Annual physical. Turned 60 last month. Feels well. Still driving long-haul, talks about retiring in a few years. Running 2-3 days a week, shorter distances. No GI symptoms. Knees ache, acetaminophen helps. No dyspnea; hasn't used albuterol in months.\n\nProblems: kidney transplant 2018 (graft stable), renovascular HTN s/p transplant renal artery stent 2022, stage IA2 RUL adenocarcinoma s/p lobectomy 1/2023 (NED, yearly CT), cutaneous SCC R forearm s/p Mohs 1/2024, duodenal ulcer bleed 11/2024 (resolved, NSAID-related), hyperlipidemia, COPD mild, bilateral knee OA, former smoker (quit 2021).\nMeds: tacrolimus 5 mg BID, prednisone 5 mg daily, amlodipine 10 mg daily, HCTZ 25 mg daily, atorvastatin 40 mg daily, acetaminophen 500 mg prn, albuterol prn.\nAllergies: NKDA.\n\nROS otherwise negative.\nExam: vitals as charted. Alert, fit-appearing. Skin: Mohs scar R forearm, sun damage L arm, nothing new. HEENT unremarkable. Neck no nodes. Heart RRR, no murmur. Lungs clear, healed R thoracoscopy scars. Abd soft, nontender; transplant site nontender. Knees crepitus, no effusion. No edema. Neuro nonfocal.\n\nA/P\n- Health maintenance: flu, updated COVID and RSV vaccines today (immunocompromised, age 60). Colonoscopy due 2027. PHQ-2 0.\n- Labs today: CMP, CBC, lipids, A1c, UA, urine albumin.\n- Ulcer bleed: no NSAIDs. Reinforced.\n- Transplant, oncology, derm follow-up per their schedules.\n- Return in 6 months or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "portal_message",
+          "start": "2025-10-06T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2025-10-06T12:40",
+              "author": "PCP",
+              "body": "Hi Charles - labs from Friday look good. Kidney function steady, blood count normal, cholesterol about the same, A1c normal, urine clean. Have a safe few months on the road and book your spring visit when you know your schedule."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "hospital_admission",
+          "start": "2025-11-25T21:10",
+          "end": "2025-11-28T13:00",
+          "service": "Emergency Medicine / Hospital Medicine",
+          "reason": "Recurrent hematemesis and melena",
+          "vitals": [
+            {
+              "time": "2025-11-25T21:15",
+              "bp": [
+                95,
+                60
+              ],
+              "hr": 110
+            },
+            {
+              "time": "2025-11-26T02:00",
+              "bp": [
+                114,
+                72
+              ],
+              "hr": 94
+            },
+            {
+              "time": "2025-11-27T08:00",
+              "bp": [
+                122,
+                76
+              ],
+              "hr": 82
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-25T21:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 9.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "unit": "%",
+                  "value": 27.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.02
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-25T21:30",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "unit": "mg/dL",
+                  "value": 36
+                },
+                {
+                  "test": "Creatinine",
+                  "unit": "mg/dL",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2025-12-04T10:15",
+              "author": "emergency medicine",
+              "body": "Emergency Department Physician Record\nArrival: 11/25/2025 21:10\n\nCC: vomiting blood and black stools.\nHPI: 60-year-old man, kidney transplant recipient, history of peptic ulcer disease with a bleeding duodenal ulcer last year, now with six hours of hematemesis and melena. Burning epigastric pain, worse over the past week. Reports he has gone back to over-the-counter naproxen for knee pain in recent weeks.\nMeds: tacrolimus 5 mg BID, prednisone 5 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, naproxen sodium 220 mg BID as needed (OTC).\nAllergies: NKDA.\n\nExam: BP 95/60, HR 110. Pale, diaphoretic. Abdomen with mild epigastric tenderness, no rebound or guarding. Rectal: melena.\nLabs: hemoglobin 9.2, hematocrit 27.8%, BUN 36, creatinine 0.9 (BUN/creatinine ratio 40).\n\nED course: IV access x2, fluids with improvement, IV pantoprazole, GI consulted. Admitted.\nImpression: recurrent upper GI bleed, suspected recurrent NSAID-related peptic ulcer."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-12-04T10:20",
+              "author": "hospital medicine",
+              "body": "Discharge Summary\nAdmitted 11/25/2025, discharged 11/28/2025.\nDiagnosis: upper GI hemorrhage from a duodenal bulb ulcer, recurrent, NSAID-associated.\n\nEGD 11/26/2025: clean-based duodenal bulb ulcer without stigmata of recent hemorrhage; no endoscopic therapy needed. Stomach and esophagus normal.\nHemodynamics normalized with fluids. No transfusion. No further bleeding during the stay. Tacrolimus and prednisone continued.\n\nDischarge medications:\nNEW pantoprazole 40 mg twice daily\nSTOP naproxen - patient counseled again on strict NSAID avoidance\nCONTINUE tacrolimus, prednisone, amlodipine, hydrochlorothiazide, atorvastatin\nAllergies: NKDA.\nFollow-up: PCP in 1-2 weeks with CBC."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-01a",
+          "kind": "telephone",
+          "start": "2025-12-01T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-12-01T14:10",
+              "author": "RN",
+              "body": "Hospital notified us of a second admission for a bleeding ulcer (11/25-11/28). Called pt: home, no further black stool, taking pantoprazole twice daily. Admits he went back to naproxen when his knees flared. Scheduled hospital follow-up with PCP 12/8 with CBC. Reviewed bleeding precautions."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-04a",
+          "kind": "outside_records",
+          "start": "2025-12-04T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "date": "2025-12-04T10:30",
+              "author": "front desk",
+              "body": "ED record and discharge summary for admission 11/25-11/28/2025 received by fax and scanned. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-08b",
+          "kind": "telephone",
+          "start": "2025-12-08T07:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2025-12-08T07:50",
+              "author": "front desk",
+              "body": "Pt called to cancel today's hospital follow-up, back on the road - dispatcher needed him. Feels fine. Offered video visit; he'll call back with dates. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "office_visit",
+          "start": "2025-12-08T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "pharmacy",
+          "start": "2026-01-12T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-01-12T09:05",
+              "author": "MA",
+              "body": "Pharmacy request for amlodipine 10 mg and HCTZ 25 mg, 90 days. Last visit 10/2025. Refilled x 1; pt still owes us a hospital follow-up, reminder sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-26a",
+          "kind": "imaging",
+          "start": "2026-01-26T13:20",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-01-26T13:20",
+              "text": "EXAM: CT chest without contrast.\nINDICATION: Annual surveillance, right upper lobectomy 01/2023 for adenocarcinoma.\nCOMPARISON: 01/20/2025.\nFINDINGS: Postoperative changes unchanged. No new nodule. No lymphadenopathy. No effusion.\nIMPRESSION: No evidence of recurrence.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Oncology surveillance visit",
+              "date": "2026-02-02T10:10",
+              "author": "oncology",
+              "body": "Thoracic Oncology 01/28/2026: three years after resection, CT without recurrence. Had a second ulcer bleed in November, on pantoprazole since discharge. Next CT January 2027. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "outside_records",
+          "start": "2026-02-16T15:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Dermatology skin check",
+              "date": "2026-02-16T15:00",
+              "author": "dermatology",
+              "body": "Dermatology full-skin exam 02/11/2026. Mohs site right forearm clear. No new suspicious lesions. Sun protection reinforced. Return in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "outside_records",
+          "start": "2026-03-16T11:40",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Transplant nephrology annual visit",
+              "date": "2026-03-16T11:40",
+              "author": "transplant nephrology",
+              "body": "Transplant Nephrology, visit 03/11/2026. Eight years post-transplant. Graft stable, creatinine 1.2, tacrolimus level in range. Second NSAID-related ulcer bleed in November 2025 reviewed; he reports no NSAIDs since. Current medications per our list: tacrolimus 5 mg BID, prednisone 5 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, pantoprazole 40 mg twice daily since discharge. NKDA. Return 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "portal_message",
+          "start": "2026-04-20T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill and appointment",
+              "date": "2026-04-20T20:15",
+              "author": "patient",
+              "body": "Need my atorvastatin refilled, down to a week. Also I know I owe you a visit, schedule is crazy until summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill and appointment",
+              "date": "2026-04-20T21:00",
+              "author": "MA",
+              "body": "Atorvastatin 40 mg sent to your pharmacy, 90 days. Please call the front desk when your summer schedule firms up - you are due for a visit and labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "portal_message",
+          "start": "2026-08-10T19:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-08-10T19:30",
+              "author": "patient",
+              "body": "Can I get in for my physical sometime in October? Home most of that month."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-08-11T09:15",
+              "author": "front desk",
+              "body": "Hi Mr. Moran, the October schedule opens on September 1. We'll reach out then with a few morning options for your physical."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute duodenal ulcer with hemorrhage|K26.0": {
+        "code": "K26.0",
+        "display": "Acute duodenal ulcer with hemorrhage",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Long term (current) use of calcineurin inhibitor|Z79.621": {
+        "code": "Z79.621",
+        "display": "Long term (current) use of calcineurin inhibitor",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary hypertension due to renal artery stenosis|I15.0": {
+        "code": "I15.0",
+        "display": "Renovascular hypertension",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Squamous cell carcinoma of skin of right upper limb|C44.622": {
+        "code": "C44.622",
+        "display": "Squamous cell carcinoma of skin of right upper limb, including shoulder",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "naproxen sodium 220 MG Oral Tablet": {
+        "code": "849574",
+        "display": "naproxen sodium 220 MG Oral Tablet",
+        "ingredient": "naproxen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "tacrolimus 5 MG Oral Capsule": {
+        "code": "198378",
+        "display": "tacrolimus 5 MG Oral Capsule",
+        "ingredient": "tacrolimus",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}
