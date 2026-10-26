@@ -569,6 +569,32 @@ fn chip_number(
     number
 }
 
+/// What one server-sent frame asks the client to read again.
+#[derive(Debug, PartialEq, Eq)]
+pub enum EventRefetch {
+    /// Nothing changed that this view shows.
+    Nothing,
+    /// The open patient's workspace and chat.
+    OpenPatient,
+    /// Every projection on screen: the server missed events (bus lag or a
+    /// Redis reconnect), so any of them may be stale.
+    Everything,
+}
+
+/// Classifies one frame. `resync` refetches everything once; other events
+/// refetch only what belongs to the open patient.
+#[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
+pub fn event_refetch(event: &str, data: &str, selected: Option<&str>) -> EventRefetch {
+    if event == "resync" {
+        return EventRefetch::Everything;
+    }
+    if workspace_event_rereads(event, data, selected) {
+        EventRefetch::OpenPatient
+    } else {
+        EventRefetch::Nothing
+    }
+}
+
 /// A workspace or conversation event for the open patient means the chat should be read again.
 // Callers are wasm-gated (follow_workspace_events in lib.rs); the function is
 // exercised by unit tests on every target.
@@ -1525,6 +1551,31 @@ mod tests {
             r#"{"kind":"draft","target":{"patient_workspace_id":"pw-mary","chat_id":"c1"},"revision":1}"#,
             Some("pw-mary"),
         ));
+        // A server-side gap rereads everything, even with no patient open.
+        assert_eq!(
+            event_refetch("resync", "{}", None),
+            EventRefetch::Everything
+        );
+        assert_eq!(
+            event_refetch("resync", "{}", Some("pw-mary")),
+            EventRefetch::Everything
+        );
+        assert_eq!(
+            event_refetch(
+                "workspace_changed",
+                r#"{"patient_workspace_id":"pw-mary"}"#,
+                Some("pw-mary")
+            ),
+            EventRefetch::OpenPatient
+        );
+        assert_eq!(
+            event_refetch(
+                "workspace_changed",
+                r#"{"patient_workspace_id":"pw-other"}"#,
+                Some("pw-mary")
+            ),
+            EventRefetch::Nothing
+        );
         assert!(pieces.iter().all(|piece| match piece {
             SynopsisPiece::Text(text) => !text.contains("[[patient_source"),
             SynopsisPiece::Chips(_) => true,

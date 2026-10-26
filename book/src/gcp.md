@@ -36,6 +36,7 @@ Vercel retirement.
 | Flake output | Image | Role | Entrypoint binary |
 | --- | --- | --- | --- |
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
+| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker |
 | `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains |
 | `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: Duet-owned chain and runtime grants, then optional front-door chain |
@@ -185,13 +186,18 @@ runs on pushes to `main`, after every check job, when the repository variable
 `staging` environment's `GCP_WORKLOAD_IDENTITY_PROVIDER` and
 `GCP_DEPLOYER_SERVICE_ACCOUNT` (with `GCP_PROJECT_ID` and `GCP_REGION`), then:
 
-1. builds the four Nix images and pushes each to `apps/` tagged with the commit,
+1. builds the physician and Duet runtime and migration images and
+   `physician-worker-image`, and pushes each to `apps/` tagged with the commit,
    recording its digest;
 2. for `physician`, then `duet`: updates `<app>-migrate` to the migration digest
    and executes it to completion, then updates the `<app>` service to the runtime
    digest and requires its latest Ready revision to serve that digest with all
    traffic;
-3. uploads a receipt (digests, executions, revisions) as the
+3. updates `physician-worker` to its digest, with the same Ready-revision check,
+   once that service exists. The first push, before the scaling plan creates the
+   service, still publishes the digest for `images.physician.worker` and leaves
+   the service alone;
+4. uploads a receipt (digests, executions, revisions) as the
    `release-receipt-*` artifact.
 
 Cloud Run moves traffic only to a revision that passes its `/readyz` startup
@@ -288,11 +294,13 @@ grant or setting, and the root's tests check this.
 `PHYSICIAN_REDIS_URL` embeds the AUTH string, so it lives only in Doppler, as
 does `PHYSICIAN_REDIS_CA_PEM`. Neither value is committed.
 
-Do not apply this plan until the site that queues chat turns and
-`physician-worker` are on `main` and deployed. Applying sets
-`PHYSICIAN_CHAT_TOPIC` on the physician service; the site running today does
-not read it. The worker image pinned below is published separately, so the plan
-itself does not depend on the application code.
+Merge the code before applying the plan. That order is safe: without
+`PHYSICIAN_CHAT_TOPIC` the site starts, logs a warning and runs chat inline, as
+it did before the worker. Without `PHYSICIAN_REDIS_URL` it keeps the in-process
+bus. Applying the plan sets the topic on the service, and from then on the site
+queues turns for the worker. With the topic set, `reply.revise` answers 503
+"Hosted reply revision is unavailable." until reply revision also moves to the
+worker (see [Remaining gaps](physician-site.md#remaining-gaps)).
 
 Activation, in order, from an authorized engineering account:
 

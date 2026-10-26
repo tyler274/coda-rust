@@ -36,6 +36,35 @@ The store is the [`AuthStore`](/crates/physician-auth/src/lib.rs) trait over Sea
 
 The retained GKE deployment reference is <a href="/infra/gcp/physician-runtime/README%2Emd"><code>infra/gcp/physician-runtime</code></a>: one private GKE Autopilot cluster, one private Cloud SQL Postgres 16 instance with IAM database authentication (no database password), separate keyless site and migration identities, and `PHYSICIAN_AUTH=required` riding the site's environment as configuration intent. The current isolated Rust staging path is Cloud Run under [GCP deployment](gcp.md#rust-staging-bootstrap-and-deployment-gate); configuration is not hosted access proof.
 
+## Scaling across instances
+
+A turn that finishes on one `physician-sample` instance has to show up on a stream another instance is holding open. [`physician-bus`](/crates/physician-bus/src/lib.rs) is the physician product's fan-out. It carries `workspace_changed`, `workspace_settled`, and `resync`. `resync` is what a subscriber gets when it lags or the connection drops, and the Dioxus client refetches on that event. Sign-in and panel changes stay on the existing Postgres `NOTIFY` feed, which also fires for the migration job and for `psql`.
+
+`RedisBus` is the `fred` client: TLS plus AUTH, `PHYSICIAN_REDIS_URL` as a `rediss://` URL and `PHYSICIAN_REDIS_CA_PEM` as the Memorystore server CA. With `PHYSICIAN_REDIS_URL` unset, `LocalBus` keeps those events inside one process. That is the local and test path.
+
+Hosted `message.submit` accepts the turn in Postgres and publishes `{scope, input_id}` on the Pub/Sub topic `physician-chat-turns`. The topic carries only that pair. `physician-worker` checks the push token's audience and the `physician-pubsub-push` email, claims the leased turn, runs the model, commits, and publishes `workspace_changed`. A non-2xx response is a redelivery. After 5 attempts the message goes to the dead-letter topic. The subscription's ack deadline is 600 seconds, and retries back off from 10 seconds to 600 seconds.
+
+When a push cannot claim its turn, the worker answers from the saved conversation. It acknowledges a turn that is committed, stopped, replaced by a newer message, or running under another live claim. It answers 500 for a turn that is still waiting and for one that recovery gave up on. The second case is what lets Pub/Sub dead-letter the message: it counts each message's own deliveries, so a message the sweep republished under a new ID still reaches the dead-letter topic.
+
+Outside hosting, `PUBSUB_EMULATOR_HOST` turns off push-token checks, because the emulator sends no token. The worker then starts only on a loopback listener (`127.0.0.1` or `[::1]`). `PORT` alone binds `0.0.0.0`, so it, a wildcard, or any other address refuses to start. Hosted runs refuse the emulator setting altogether.
+
+The site queues turns only when `PHYSICIAN_CHAT_TOPIC` is set. Without it, hosted or not, chat runs inline in the site process as it did before the worker, and a hosted start logs a warning. `PHYSICIAN_CHAT_TOPIC` without `PHYSICIAN_DATABASE_URL` refuses to start, because the turn is accepted in Postgres.
+
+| `PHYSICIAN_CHAT_TOPIC` | `PHYSICIAN_DATABASE_URL` | Startup |
+| --- | --- | --- |
+| unset | unset | Chat runs inline. Hosted logs a warning. |
+| unset | set | Chat runs inline. Hosted logs a warning. |
+| set | unset | Refuses to start. |
+| set | set | Turns go to Postgres and the topic. The worker runs the model. |
+
+With the topic set, `reply.revise` answers 503 "Hosted reply revision is unavailable." Reply revision runs the model in the site process, and with the topic set the site no longer runs the model. It works again once revision moves to the worker.
+
+The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker stays on request-based CPU: the push request is the turn. Duet has no Redis instance and no chat-turn topic.
+
+Memorystore Basic 1 GB is about $35/month, against the $10 `coda-rust-stg` budget alert. Raise that alert before applying. Nothing is applied without a reviewed saved plan. An operator writes `PHYSICIAN_REDIS_URL` into the Doppler config `stg_physician_runtime`. The activation steps, including the CA bundle and the cost table, are [Physician scaling](gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns).
+
+`nix develop` provides `valkey` and the Pub/Sub emulator (`google-cloud-sdk` with the `pubsub-emulator` component, and `jre_headless` to run it).
+
 - <a href="/submodules/coda-agents/docs/architecture%2Emd#system-boundary">Architecture: the system boundary and model roles</a>
 - <a href="/submodules/coda-agents/docs/architecture%2Emd#external-clinical-evidence">Architecture: external clinical evidence</a>
 - <a href="/submodules/coda-agents/docs/runtime-protocol%2Emd">Runtime protocol</a>
@@ -45,3 +74,7 @@ The retained GKE deployment reference is <a href="/infra/gcp/physician-runtime/R
 - <a href="/submodules/coda-agents/docs/readiness%2Emd#current-local-product-work">Readiness: current work</a>
 - <a href="/submodules/coda-agents/docs/testing%2Emd#proof-by-boundary">Testing: proof by boundary</a>
 - <a href="/submodules/coda-agents/README%2Emd#run-and-verify">Run and verify</a>
+
+## Remaining gaps
+
+- **Hosted reply revision.** With `PHYSICIAN_CHAT_TOPIC` set, `reply.revise` answers 503. Follow-up: accept the revision in Postgres, publish it on the chat-turn topic, and have `physician-worker` run it. Then remove the 503 in [`live.rs`](/crates/physician-sample/src/live.rs).
