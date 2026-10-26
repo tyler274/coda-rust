@@ -465,10 +465,12 @@ map; Page and state inventory), with later decisions winning.
   (north-star.md, The page).
 - When you ask in conversation, Duet saves or changes them right away, and its
   message shows exactly what it saved, with Undo (Dev 2026-10-26).
-- Duet may propose a dated note on its own from what you tell it, in your words
-  and without a diagnosis or urgency judgment; it saves nothing until you save
-  it, by Save or by saying so (ENG-52; Dev 2026-10-26). Proposing on its own
-  alerts only once you turn on alerts for Duet's own work.
+- Duet may propose a dated note from what you tell it, in your words and
+  without a diagnosis or urgency judgment; it saves nothing until you save it,
+  by Save or by saying so (ENG-52; Dev 2026-10-26). Offered in its reply to
+  you, it is conversation. Offered later, unprompted, it is Duet's own work:
+  it waits while proactive work is paused (Dev 2026-10-26) and alerts only
+  once you turn on alerts for Duet's own work.
 - A saved note is a record entered by you, kept apart from Duet's private
   understanding. Duet reads it, For my doctor can hold it, and while you're
   connected it flows to your practice, as do your medications (ENG-52;
